@@ -5,7 +5,7 @@ description: "This tutorial reviews the fundamental principles, packages and met
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 1 hour
 packagesLibraries: raster, rgdal
 topics: raster, spatial-data-gis
 languagesTool: R
@@ -136,7 +136,7 @@ we'll use a naming convention of `datatype_HARV`.
     ## dimensions : 1367, 1697, 2319799  (nrow, ncol, ncell)
     ## resolution : 1, 1  (x, y)
     ## extent     : 731453, 733150, 4712471, 4713838  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
     ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif 
     ## names      : HARV_dsmCrop 
     ## values     : 305.07, 416.07  (min, max)
@@ -297,14 +297,14 @@ method. We can assign this string to an R object, too.
     crs(DSM_HARV)
 
     ## CRS arguments:
-    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
     # assign crs to an object (class) to use for reprojection and other tasks
     myCRS <- crs(DSM_HARV)
     myCRS
 
     ## CRS arguments:
-    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 The `CRS` of our `DSM_HARV` object tells us that our data are in the UTM 
 projection.
@@ -373,7 +373,7 @@ coordinate reference system string `crs()`. Notice our data contains: `+units=m`
     crs(DSM_HARV)
 
     ## CRS arguments:
-    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+    ##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 ## Calculate Raster Min and Max Values
 
@@ -435,11 +435,11 @@ with the `NoDataValue` as `NA`.
 
     # reassign cells with 0,0,0 to NA
     # this is simply demonstration code - we will not teach this.
-    f <- function(x) {
+    func <- function(x) {
       x[rowSums(x == 0) == 3, ] <- NA
       x}
     
-    newRGBImage <- calc(RGB_stack, f)
+    newRGBImage <- calc(RGB_stack, func)
     
     
     par(col.axis="white",col.lab="white",tck=0)
@@ -497,8 +497,8 @@ identifying outliers and bad data values in our raster data.
          ylab="Frequency",
          col="wheat")
 
-    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot = plot, ...): 4% of the raster cells
-    ## were used. 100000 values used.
+    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot =
+    ## plot, ...): 4% of the raster cells were used. 100000 values used.
 
 ![Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
 

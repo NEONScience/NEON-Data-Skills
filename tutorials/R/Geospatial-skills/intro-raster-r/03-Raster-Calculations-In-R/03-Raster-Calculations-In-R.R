@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 # load raster package
 library(raster)
 
@@ -84,7 +84,7 @@ plot(CHM_ov_HARV,
   main="Canopy Height Model - Overlay Subtract\n NEON Harvard Forest Field Site")
 
 
-## ----write-raster-------------------------------------------------------------------------------
+## ----write-raster------------------------------------------------------
 # export CHM object to new GeotIFF
 writeRaster(CHM_ov_HARV, paste0(wd,"chm_HARV.tiff"),
             format="GTiff",  # specify output format - GeoTIFF

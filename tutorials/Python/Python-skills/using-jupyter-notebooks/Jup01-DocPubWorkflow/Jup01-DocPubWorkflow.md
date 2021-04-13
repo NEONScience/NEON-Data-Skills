@@ -6,7 +6,7 @@ dateCreated: 2017-06-12
 dateUpdated: 2020-04-20
 authors: Megan A. Jones
 contributors: Maria Paula Mugnani
-estimatedTime:
+estimatedTime: 0.5 hour
 packagesLibraries:
 topics: data-management, rep-sci
 languagesTool: Python

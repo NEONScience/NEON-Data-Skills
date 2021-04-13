@@ -5,7 +5,7 @@ description: "This tutorial covers how to plot subsetted time series data (e.g.,
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah Wasser
 contributors: Collin J. Storlie
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, scales, gridExtra, grid, dplyr, reshape2
 topics: time-series, phenology
 languagesTool: R
@@ -245,7 +245,7 @@ AirTempDaily_jd + facet_grid(year ~ .)
 
 If we use `facet_wrap` we can specify the number of columns.
 
-```{r rearrange-facets-columns, "A multi-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Top Left Panel: 2009. Top Right Panel: 2010. Bottom Left Panel: 2011. Bottom Right Panel: Blank. Plot titles, fonts, axis scales and axes labels have been specified by the user." }
+```{r rearrange-facets-columns, fig.cap="A multi-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Top Left Panel: 2009. Top Right Panel: 2010. Bottom Left Panel: 2011. Bottom Right Panel: Blank. Plot titles, fonts, axis scales and axes labels have been specified by the user." }
 
 # display in two columns
 AirTempDaily_jd + facet_wrap(~year, ncol = 2)

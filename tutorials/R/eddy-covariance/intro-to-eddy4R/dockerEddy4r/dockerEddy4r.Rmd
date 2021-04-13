@@ -5,7 +5,7 @@ description: "This tutorial provides the basic steps for setting up and using Do
 dateCreated: 2018-03-06
 authors: Megan A. Jones
 contributors: 
-estimatedTime: 
+estimatedTime: 1 hour
 packagesLibraries: 
 topics: data management, micrometeorology
 languagesTool: R, Docker
@@ -87,7 +87,7 @@ the following command to make sure you are using version 1.13 or higher.
 You will need an open shell window (Linux; Mac=Terminal) or the Docker 
 Quickstart Terminal (Windows).
 
-``` {bash docker-version}
+``` {bash docker-version, eval=FALSE}
 
 docker --version
 	
@@ -99,7 +99,7 @@ Note: If you run just the word ``docker`` you should see a whole bunch of
 lines showing the different options available with ``docker``. Alternatively 
 you can test your installation by running the following:
 
-``` {bash docker-world}
+``` {bash docker-world, eval=FALSE}
 
 docker run hello-world
 ```

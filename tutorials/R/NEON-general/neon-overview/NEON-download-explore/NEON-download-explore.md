@@ -4,10 +4,10 @@ title: "Download and Explore NEON Data"
 description: Tutorial for downloading data from the Data Portal and the neonUtilities package, then exploring and understanding the downloaded data
 dateCreated: '2018-11-07'
 dataProducts: DP1.00024.001, DP1.20063.001, DP3.30015.001
-authors: [Claire K. Lunch]
-contributors: [Christine Laney, Megan A. Jones, Donal O'Leary]
+authors: Claire K. Lunch
+contributors: Christine Laney, Megan A. Jones, Donal O'Leary
 estimatedTime: 1 - 2 hours
-packagesLibraries: [devtools, neonUtilities, raster]
+packagesLibraries: devtools, neonUtilities, raster
 topics: data-management, rep-sci
 languageTool: R, API
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore.R

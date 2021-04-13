@@ -1,4 +1,4 @@
-## ----load-libraries-data------------------------------------------------------------------------
+## ----load-libraries-data-----------------------------------------------
 # import libraries
 library(raster)
 library(rgdal)
@@ -46,7 +46,7 @@ levelplot(NDVI_HARV_stack,
 
 
 
-## ----clean-up-names-----------------------------------------------------------------------------
+## ----clean-up-names----------------------------------------------------
 
 # view names for each raster layer
 names(NDVI_HARV_stack)

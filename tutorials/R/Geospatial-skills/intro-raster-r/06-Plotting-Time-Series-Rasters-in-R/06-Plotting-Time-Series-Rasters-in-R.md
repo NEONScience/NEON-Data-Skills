@@ -5,11 +5,11 @@ description: "This tutorial covers how to efficiently and effectively plot a sta
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors: Donal O'Leary, Jason Brown
-estimatedTime: 
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal, rasterVis
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
-dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
+dataProduct: DP2.30026.001, DP3.30026.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/06-Plotting-Time-Series-Rasters-in-R/06-Plotting-Time-Series-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-raster-rastervis-levelplot-r
@@ -98,6 +98,57 @@ please create it now.
     library(raster)
     library(rgdal)
     library(rasterVis)
+
+    ## Loading required package: terra
+
+    ## terra version 1.1.4
+
+    ## 
+    ## Attaching package: 'terra'
+
+    ## The following objects are masked from 'package:tidyr':
+    ## 
+    ##     expand, fill, pack, separate
+
+    ## The following object is masked from 'package:zoo':
+    ## 
+    ##     time<-
+
+    ## The following object is masked from 'package:grid':
+    ## 
+    ##     depth
+
+    ## The following object is masked from 'package:scales':
+    ## 
+    ##     rescale
+
+    ## The following object is masked from 'package:ggmap':
+    ## 
+    ##     inset
+
+    ## The following object is masked from 'package:rgdal':
+    ## 
+    ##     project
+
+    ## The following objects are masked from 'package:dplyr':
+    ## 
+    ##     collapse, desc, near
+
+    ## The following object is masked from 'package:knitr':
+    ## 
+    ##     spin
+
+    ## Loading required package: lattice
+
+    ## Loading required package: latticeExtra
+
+    ## 
+    ## Attaching package: 'latticeExtra'
+
+    ## The following object is masked from 'package:ggplot2':
+    ## 
+    ##     layer
+
     library(RColorBrewer)
     
     # set working directory to ensure R can find the file we wish to import
@@ -110,7 +161,63 @@ please create it now.
     
     # Create a time series raster stack
     NDVI_HARV_stack <- stack(all_NDVI_HARV)
-    
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
     # apply scale factor
     NDVI_HARV_stack <- NDVI_HARV_stack/10000
 
@@ -198,9 +305,10 @@ First let's remove "_HARV_NDVI_crop" from each label.
     # view names for each raster layer
     names(NDVI_HARV_stack)
 
-    ##  [1] "X005_HARV_ndvi_crop" "X037_HARV_ndvi_crop" "X085_HARV_ndvi_crop" "X133_HARV_ndvi_crop"
-    ##  [5] "X181_HARV_ndvi_crop" "X197_HARV_ndvi_crop" "X213_HARV_ndvi_crop" "X229_HARV_ndvi_crop"
-    ##  [9] "X245_HARV_ndvi_crop" "X261_HARV_ndvi_crop" "X277_HARV_ndvi_crop" "X293_HARV_ndvi_crop"
+    ##  [1] "X005_HARV_ndvi_crop" "X037_HARV_ndvi_crop" "X085_HARV_ndvi_crop"
+    ##  [4] "X133_HARV_ndvi_crop" "X181_HARV_ndvi_crop" "X197_HARV_ndvi_crop"
+    ##  [7] "X213_HARV_ndvi_crop" "X229_HARV_ndvi_crop" "X245_HARV_ndvi_crop"
+    ## [10] "X261_HARV_ndvi_crop" "X277_HARV_ndvi_crop" "X293_HARV_ndvi_crop"
     ## [13] "X309_HARV_ndvi_crop"
 
     # use gsub to modify label names.that we'll use for the plot 
@@ -209,10 +317,12 @@ First let's remove "_HARV_NDVI_crop" from each label.
     # view Names
     rasterNames
 
-    ##  [1] "Day 005_HARV_ndvi_crop" "Day 037_HARV_ndvi_crop" "Day 085_HARV_ndvi_crop"
-    ##  [4] "Day 133_HARV_ndvi_crop" "Day 181_HARV_ndvi_crop" "Day 197_HARV_ndvi_crop"
-    ##  [7] "Day 213_HARV_ndvi_crop" "Day 229_HARV_ndvi_crop" "Day 245_HARV_ndvi_crop"
-    ## [10] "Day 261_HARV_ndvi_crop" "Day 277_HARV_ndvi_crop" "Day 293_HARV_ndvi_crop"
+    ##  [1] "Day 005_HARV_ndvi_crop" "Day 037_HARV_ndvi_crop"
+    ##  [3] "Day 085_HARV_ndvi_crop" "Day 133_HARV_ndvi_crop"
+    ##  [5] "Day 181_HARV_ndvi_crop" "Day 197_HARV_ndvi_crop"
+    ##  [7] "Day 213_HARV_ndvi_crop" "Day 229_HARV_ndvi_crop"
+    ##  [9] "Day 245_HARV_ndvi_crop" "Day 261_HARV_ndvi_crop"
+    ## [11] "Day 277_HARV_ndvi_crop" "Day 293_HARV_ndvi_crop"
     ## [13] "Day 309_HARV_ndvi_crop"
 
     # Remove HARV_NDVI_crop from the second part of the string 
@@ -221,8 +331,9 @@ First let's remove "_HARV_NDVI_crop" from each label.
     # view names for each raster layer
     rasterNames
 
-    ##  [1] "Day 005" "Day 037" "Day 085" "Day 133" "Day 181" "Day 197" "Day 213" "Day 229" "Day 245"
-    ## [10] "Day 261" "Day 277" "Day 293" "Day 309"
+    ##  [1] "Day 005" "Day 037" "Day 085" "Day 133" "Day 181" "Day 197"
+    ##  [7] "Day 213" "Day 229" "Day 245" "Day 261" "Day 277" "Day 293"
+    ## [13] "Day 309"
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Instead of substituting "x" and

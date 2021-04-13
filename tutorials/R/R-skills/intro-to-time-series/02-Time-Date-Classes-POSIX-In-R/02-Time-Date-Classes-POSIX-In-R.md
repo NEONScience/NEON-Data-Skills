@@ -1,20 +1,23 @@
 ---
-syncID: 2e8e865ff45e47f2b1ba26c0992baa9e
-title: "Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt"
-description: "This tutorial explores working with date and time classes in R. We will overview the differences between As.Date, POSIXct and POSIXlt as used to convert a date/time field in character (string) format to a date-time format that is recognized by R. This conversion supports efficient plotting, subsetting and analysis of time series data."
-dateCreated: 2015-10-22
-authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
-contributors: Leah A. Wasser
-estimatedTime:
-packagesLibraries: lubridate
-topics: time-series, phenology
-languagesTool: R
-dataProduct:
+title: 'Time Series 02: Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/02-Time-Date-Classes-POSIX-In-R/02-Time-Date-Classes-POSIX-In-R.R
+contributors: Leah A. Wasser, Collin J. Storlie
+dataProduct: 
+dateCreated: '2015-10-22'
+description: This tutorial explores working with date and time classes in R. We will
+  overview the differences between As.Date, POSIXct and POSIXlt as used to convert
+  a date/time field in character (string) format to a date-time format that is recognized
+  by R. This conversion supports efficient plotting, subsetting and analysis of time
+  series data.
+estimatedTime: 30 minutes
+languagesTool: R
+packagesLibraries: lubridate
+syncID: 2e8e865ff45e47f2b1ba26c0992baa9e
+authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
+topics: time-series, phenology
 tutorialSeries: tabular-time-series
 urlTitle: dc-convert-date-time-POSIX-r
 ---
-
 
 This tutorial explores working with date and time field in R. We will overview
 the differences between `as.Date`, `POSIXct` and `POSIXlt` as used to convert
@@ -90,8 +93,8 @@ with date-time data classes.
     # Load packages required for entire script
     library(lubridate)  #work with dates
     
-    # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    #Set the working directory and place your downloaded data there
+    wd <- "~/Documents/"
 
 ## Import CSV File
 First, let's import our time series data. We are interested in temperature, 
@@ -99,14 +102,21 @@ precipitation and photosynthetically active radiation (PAR) - metrics that are
 strongly associated with vegetation green-up and brown down (phenology or 
 phenophase timing). We will use the `hf001-10-15min-m.csv` file 
 that contains atmospheric data for the NEON Harvard Forest field site,
-aggregated at 15-minute intervals. 
+aggregated at 15-minute intervals. Download the dataset for these exercises <a href ="https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv" target="_blank">here</a>.
+
 
 
     # Load csv file of 15 min meteorological data from Harvard Forest
+    # https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
     # Factors=FALSE so strings, series of letters/words/numerals, remain characters
     harMet_15Min <- read.csv(
-      file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv",
+      file=paste0(wd,"hf001-10-15min-m.csv"),
       stringsAsFactors = FALSE)
+
+    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
+    ## hf001-10-15min-m.csv': No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
 
 ## Date and Time Data
 Let's revisit the data structure of our `harMet_15Min` object. What is the class
@@ -116,13 +126,12 @@ of the `date-time` column?
     # view column data class
     class(harMet_15Min$datetime)
 
-    ## [1] "character"
+    ## Error in eval(expr, envir, enclos): object 'harMet_15Min' not found
 
     # view sample data
     head(harMet_15Min$datetime)
 
-    ## [1] "2005-01-01T00:15" "2005-01-01T00:30" "2005-01-01T00:45" "2005-01-01T01:00"
-    ## [5] "2005-01-01T01:15" "2005-01-01T01:30"
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harMet_15Min' not found
 
 Our `datetime` column is stored as a `character` class. We need to convert it to 
 date-time class. What happens when we use the `as.Date` method that we learned
@@ -132,11 +141,13 @@ about in the
 
     # convert column to date class
     dateOnly_HARV <- as.Date(harMet_15Min$datetime)
-    
+
+    ## Error in as.Date(harMet_15Min$datetime): object 'harMet_15Min' not found
+
     # view data
     head(dateOnly_HARV)
 
-    ## [1] "2005-01-01" "2005-01-01" "2005-01-01" "2005-01-01" "2005-01-01" "2005-01-01"
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'dateOnly_HARV' not found
 
 When we use `as.Date`, we lose the time stamp. 
 
@@ -308,7 +319,7 @@ format.
     # view one date-time field
     harMet_15Min$datetime[1]
 
-    ## [1] "2005-01-01T00:15"
+    ## Error in eval(expr, envir, enclos): object 'harMet_15Min' not found
 
 Looking at the results above, we see that our data are stored in the format:
 Year-Month-Day "T" Hour:Minute (`2005-01-01T00:15`). We can use this information 
@@ -334,18 +345,18 @@ it and interpret the correct date and time as follows:
     # convert single instance of date/time in format year-month-day hour:min:sec
     as.POSIXct(harMet_15Min$datetime[1],format="%Y-%m-%dT%H:%M")
 
-    ## [1] "2005-01-01 00:15:00 MST"
+    ## Error in as.POSIXct(harMet_15Min$datetime[1], format = "%Y-%m-%dT%H:%M"): object 'harMet_15Min' not found
 
     ## The format of date-time MUST match the specified format or the data will not
     # convert; see what happens when you try it a different way or without the "T"
     # specified
     as.POSIXct(harMet_15Min$datetime[1],format="%d-%m-%Y%H:%M")
 
-    ## [1] NA
+    ## Error in as.POSIXct(harMet_15Min$datetime[1], format = "%d-%m-%Y%H:%M"): object 'harMet_15Min' not found
 
     as.POSIXct(harMet_15Min$datetime[1],format="%Y-%m-%d%H:%M")
 
-    ## [1] NA
+    ## Error in as.POSIXct(harMet_15Min$datetime[1], format = "%Y-%m-%d%H:%M"): object 'harMet_15Min' not found
 
 Using the syntax we've learned, we can convert the entire `datetime` column into 
 `POSIXct` class.
@@ -354,17 +365,18 @@ Using the syntax we've learned, we can convert the entire `datetime` column into
     new.date.time <- as.POSIXct(harMet_15Min$datetime,
                                 format="%Y-%m-%dT%H:%M" #format time
                                 )
-    
+
+    ## Error in as.POSIXct(harMet_15Min$datetime, format = "%Y-%m-%dT%H:%M"): object 'harMet_15Min' not found
+
     # view output
     head(new.date.time)
 
-    ## [1] "2005-01-01 00:15:00 MST" "2005-01-01 00:30:00 MST" "2005-01-01 00:45:00 MST"
-    ## [4] "2005-01-01 01:00:00 MST" "2005-01-01 01:15:00 MST" "2005-01-01 01:30:00 MST"
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'new.date.time' not found
 
     # what class is the output
     class(new.date.time)
 
-    ## [1] "POSIXct" "POSIXt"
+    ## Error in eval(expr, envir, enclos): object 'new.date.time' not found
 
 
 ### About Time Zones
@@ -402,7 +414,7 @@ one more time, and define the associated timezone (`tz=`).
                 format = "%Y-%m-%dT%H:%M",
                 tz = "America/New_York")
 
-    ## [1] "2005-01-01 00:15:00 EST"
+    ## Error in as.POSIXct(harMet_15Min$datetime[1], format = "%Y-%m-%dT%H:%M", : object 'harMet_15Min' not found
 
 The output above, shows us that the time zone is now correctly set as EST.  
 
@@ -416,15 +428,17 @@ Now, using the syntax that we learned above, we can convert the entire
     harMet_15Min$datetime <- as.POSIXct(harMet_15Min$datetime,
                                     format = "%Y-%m-%dT%H:%M",
                                     tz = "America/New_York")
-    
+
+    ## Error in as.POSIXct(harMet_15Min$datetime, format = "%Y-%m-%dT%H:%M", : object 'harMet_15Min' not found
+
     # view structure and time zone of the newly defined datetime column
     str(harMet_15Min$datetime)
 
-    ##  POSIXct[1:376800], format: "2005-01-01 00:15:00" "2005-01-01 00:30:00" "2005-01-01 00:45:00" ...
+    ## Error in str(harMet_15Min$datetime): object 'harMet_15Min' not found
 
     tz(harMet_15Min$datetime)
 
-    ## [1] "America/New_York"
+    ## Error in tz(harMet_15Min$datetime): object 'harMet_15Min' not found
 
 Now that our `datetime` data are properly identified as a `POSIXct` date-time
 data class we can continue on and look at the patterns of precipitation,

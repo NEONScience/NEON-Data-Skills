@@ -5,12 +5,12 @@ description: "This tutorial covers how to extract and plot NDVI pixel values fro
 dateCreated: 2014-11-26
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister, Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal, ggplot2
 topics: 
 subtopics: raster, spatial-data-gis
 languagesTool: R
-dataProduct: NEON.DP2.30026.001, NEON.DP3.30026.001
+dataProduct: DP2.30026.001, DP3.30026.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/07-Extract-NDVI-From-Rasters-in-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-ndvi-calc-raster-time-series
@@ -115,7 +115,63 @@ tutorials so you may be able to skip this first step!).
     
     # Create a time series raster stack
     NDVI_HARV_stack <- stack(all_HARV_NDVI)
-    
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
     # apply scale factor
     NDVI_HARV_stack <- NDVI_HARV_stack/10000
 
@@ -286,7 +342,8 @@ column is also stored as class `Date`.
     # did it work? 
     head(avg_NDVI_HARV$Date)
 
-    ## [1] "2011-01-05" "2011-02-06" "2011-03-26" "2011-05-13" "2011-06-30" "2011-07-16"
+    ## [1] "2011-01-05" "2011-02-06" "2011-03-26" "2011-05-13" "2011-06-30"
+    ## [6] "2011-07-16"
 
     # What are the classes of the two columns now? 
     class(avg_NDVI_HARV$Date)
@@ -320,6 +377,77 @@ Joaquin Experimental Range field sites. NDVI data for SJER are located in the
 </div>
 
 
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
+
+    ## Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO",
+    ## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+    ## ellipsoid in CRS definition
 
 ## Plot NDVI Using ggplot
 We now have a clean data.frame with properly scaled NDVI and Julian days. Let's

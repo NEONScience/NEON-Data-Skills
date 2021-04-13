@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Spatial Data in Text Format</title>
+<title><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -166,8 +166,8 @@ hr {
 <p>This tutorial will review how to import spatial points stored in <code>.csv</code> (Comma
 Separated Value) format into
 R as a spatial object - a <code>SpatialPointsDataFrame</code>. We will also
-reproject data imported in a shapefile format, and export a shapefile from an
-R spatial object and plot raster and vector data as
+reproject data imported in a shapefile format, export a shapefile from an
+R spatial object, and plot raster and vector data as
 layers in the same plot. </p>
 
 <div id="ds-objectives" markdown="1">
@@ -194,20 +194,62 @@ on your computer to complete this tutorial.
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Data to Download
-{% include/dataSubsets/_data_Site-Layout-Files.html %}
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
 
-{% include/dataSubsets/_data_Airborne-Remote-Sensing.html %}
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
+
+
+<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
+
+The LiDAR and imagery data used to create this raster teaching data subset 
+were collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
+field sites and processed at NEON headquarters. 
+The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
+
+
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 </div>
 
 <h2>Spatial Data in Text Format</h2>
 
 <p>The <code>HARV_PlotLocations.csv</code> file contains <code>x, y</code> (point) locations for study 
-plot where NEON collects data on
+plots where NEON collects data on
 <a href="https://www.neonscience.org/data-collection/terrestrial-organismal-sampling" target="_blank"> vegetation and other ecological metrics</a>.
 We would like to:</p>
 
@@ -220,10 +262,10 @@ shapefile can be imported into any GIS software.</li>
 
 <p>Spatial data are sometimes stored in a text file format (<code>.txt</code> or <code>.csv</code>). If 
 the text file has an associated <code>x</code> and <code>y</code> location column, then we can 
-convert it into an R spatial object which in the case of point data,
+convert it into an R spatial object, which, in the case of point data,
 will be a <code>SpatialPointsDataFrame</code>. The <code>SpatialPointsDataFrame</code> 
 allows us to store both the <code>x,y</code> values that represent the coordinate location
-of each point and the associated attribute data - or columns describing each
+of each point and the associated attribute data, or columns describing each
 feature in the spatial object.</p>
 
 <div id="ds-dataTip" markdown="1">
@@ -235,7 +277,7 @@ attributes.
 <p>We will use the <code>rgdal</code> and <code>raster</code> libraries in this tutorial. </p>
 
 <pre><code># load packages
-library(rgdal)  # for vector work; sp package should always load with rgdal. 
+library(rgdal)  # for vector work; sp package should always load with rgdal 
 library (raster)   # for metadata/attributes- vectors or rasters
 
 # set working directory to data folder
@@ -244,9 +286,9 @@ library (raster)   # for metadata/attributes- vectors or rasters
 
 <h2>Import .csv</h2>
 
-<p>To begin let&#39;s import <code>.csv</code> file that contains plot coordinate <code>x, y</code>
-locations at the NEON Harvard Forest Field Site (<code>HARV_PlotLocations.csv</code>) in
-R. Note that we set <code>stringsAsFactors=FALSE</code> so our data import as a
+<p>To begin let&#39;s import the <code>.csv</code> file that contains plot coordinate <code>x, y</code>
+locations at the NEON Harvard Forest Field Site (<code>HARV_PlotLocations.csv</code>) into
+R. Note that we set <code>stringsAsFactors=FALSE</code> so our data imports as a
 <code>character</code> rather than a <code>factor</code> class.</p>
 
 <pre><code># Read the .csv file
@@ -279,7 +321,7 @@ str(plot.locations_HARV)
 <p>Also note that <code>plot.locations_HARV</code> is a <code>data.frame</code> that contains 21 
 locations (rows) and 15 variables (attributes). </p>
 
-<p>Next, let&#39;s identify explore  <code>data.frame</code> to determine whether it contains
+<p>Next, let&#39;s explore <code>data.frame</code> to determine whether it contains
 columns with coordinate values. If we are lucky, our <code>.csv</code> will contain columns
 labeled:</p>
 
@@ -289,21 +331,22 @@ labeled:</p>
 <li>easting and northing (UTM coordinates)</li>
 </ul>
 
-<p>Let&#39;s check out the column <code>names</code> of our file.</p>
+<p>Let&#39;s check out the column <code>names</code> of our file to look for these.</p>
 
 <pre><code># view column names
 names(plot.locations_HARV)
 
-##  [1] &quot;easting&quot;    &quot;northing&quot;   &quot;geodeticDa&quot; &quot;utmZone&quot;    &quot;plotID&quot;     &quot;stateProvi&quot;
-##  [7] &quot;county&quot;     &quot;domainName&quot; &quot;domainID&quot;   &quot;siteID&quot;     &quot;plotType&quot;   &quot;subtype&quot;   
-## [13] &quot;plotSize&quot;   &quot;elevation&quot;  &quot;soilTypeOr&quot; &quot;plotdim_m&quot;
+##  [1] &quot;easting&quot;    &quot;northing&quot;   &quot;geodeticDa&quot; &quot;utmZone&quot;    &quot;plotID&quot;    
+##  [6] &quot;stateProvi&quot; &quot;county&quot;     &quot;domainName&quot; &quot;domainID&quot;   &quot;siteID&quot;    
+## [11] &quot;plotType&quot;   &quot;subtype&quot;    &quot;plotSize&quot;   &quot;elevation&quot;  &quot;soilTypeOr&quot;
+## [16] &quot;plotdim_m&quot;
 </code></pre>
 
 <h2>Identify X,Y Location Columns</h2>
 
 <p>View the column names, we can see that our <code>data.frame</code>  that contains several 
 fields that might contain spatial information. The <code>plot.locations_HARV$easting</code>
-and <code>plot.locations_HARV$northing</code> columns contain coordinate values. </p>
+and <code>plot.locations_HARV$northing</code> columns contain these coordinate values. </p>
 
 <pre><code># view first 6 rows of the X and Y columns
 head(plot.locations_HARV$easting)
@@ -327,7 +370,7 @@ head(plot.locations_HARV[,2])
 
 <p>So, we have coordinate values in our <code>data.frame</code> but in order to convert our
 <code>data.frame</code> to a <code>SpatialPointsDataFrame</code>, we also need to know the CRS
-associated with those coordinate values. </p>
+associated with these coordinate values. </p>
 
 <p>There are several ways to figure out the CRS of spatial data in text format.</p>
 
@@ -341,7 +384,7 @@ file header or somewhere in the data columns.</li>
 
 <p>Following the <code>easting</code> and <code>northing</code> columns, there is a <code>geodeticDa</code> and a 
 <code>utmZone</code> column. These appear to contain CRS information
-(<code>datum</code> and <code>projection</code>). Let&#39;s view those next. </p>
+(<code>datum</code> and <code>projection</code>), so let&#39;s view those next. </p>
 
 <pre><code># view first 6 rows of the X and Y columns
 head(plot.locations_HARV$geodeticDa)
@@ -353,7 +396,7 @@ head(plot.locations_HARV$utmZone)
 ## [1] &quot;18N&quot; &quot;18N&quot; &quot;18N&quot; &quot;18N&quot; &quot;18N&quot; &quot;18N&quot;
 </code></pre>
 
-<p>It is not typical to store CRS information in a column. But this particular
+<p>It is not typical to store CRS information in a column, but this particular
 file contains CRS information this way. The <code>geodeticDa</code> and <code>utmZone</code> columns
 contain the information that helps us determine the CRS: </p>
 
@@ -365,7 +408,7 @@ contain the information that helps us determine the CRS: </p>
 <p>In 
 <a href="https://www.neonscience.org/dc-vector-data-reproject-crs-r" target="_blank"> <em>When Vector Data Don&#39;t Line Up - Handling Spatial Projection &amp; CRS in R</em> tutorial</a>
 we learned about the components of a <code>proj4</code> string. We have everything we need 
-to now assign a CRS to our data.frame.</p>
+to now assign a CRS to our <code>data.frame</code>.</p>
 
 <p>To create the <code>proj4</code> associated with <code>UTM Zone 18 WGS84</code> we could look up the 
 projection on the 
@@ -382,7 +425,7 @@ easier to simply assign the <code>crs()</code> in <code>proj4</code> format from
 new spatial object. Let&#39;s import the roads layer from Harvard forest and check 
 out its CRS.</p>
 
-<p>Note: if you do not have a CRS to borrow from another raster, see Option 2 in 
+<p>Note: if you do not have a CRS to borrow from another raster, see <strong><em>Option 2</em></strong> in 
 the next section for how to convert to a spatial object and assign a 
 CRS. </p>
 
@@ -398,7 +441,7 @@ lines_HARV &lt;- readOGR( &quot;NEON-DS-Site-Layout-Files/HARV/&quot;, &quot;HAR
 crs(lines_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 # view extent
 extent(lines_HARV)
@@ -422,7 +465,7 @@ utm18nCRS &lt;- crs(lines_HARV)
 utm18nCRS
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 class(utm18nCRS)
 
@@ -433,13 +476,13 @@ class(utm18nCRS)
 
 <h2>.csv to R SpatialPointsDataFrame</h2>
 
-<p>Next, let&#39;s convert our <code>data.frame</code> into a <code>SpatialPointsDataFrame</code>. To do
+<p>Let&#39;s convert our <code>data.frame</code> into a <code>SpatialPointsDataFrame</code>. To do
 this, we need to specify:</p>
 
 <ol>
 <li>The columns containing X (<code>easting</code>) and Y (<code>northing</code>) coordinate values</li>
 <li>The CRS that the column coordinate represent (units are included in the CRS).</li>
-<li>Optional: the other columns stored in the data frame that you wish to append
+<li><strong>Optional</strong>: the other columns stored in the data frame that you wish to append
 as attributes to your spatial object. </li>
 </ol>
 
@@ -461,13 +504,13 @@ plot.locationsSp_HARV &lt;- SpatialPointsDataFrame(plot.locations_HARV[,1:2],
 crs(plot.locationsSp_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 </code></pre>
 
 <h4>Option 2: Assigning CRS</h4>
 
 <p>If we didn&#39;t have a raster from which to borrow the CRS, we can directly assign 
-it using either of two equivalent but slightly different syntaxes. </p>
+it using either of two equivalent, but slightly different syntaxes. </p>
 
 <pre><code># first, convert the data.frame to spdf
 r &lt;- SpatialPointsDataFrame(plot.locations_HARV[,1:2],
@@ -491,14 +534,14 @@ plot(plot.locationsSp_HARV,
      main=&quot;Map of Plot Locations&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-points-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-points-1.png" alt="NEON Harvard Forest plot locations."/></p>
 
 <h2>Define Plot Extent</h2>
 
 <p>In 
 <a href="https://www.neonscience.org/dc-open-shapefiles-r" target="_blank"><em>Open and Plot Shapefiles in R</em></a>
 we learned about spatial object <code>extent</code>. When we plot several spatial layers in
-R, the first layer that is plotted, becomes the extent of the plot. If we add
+R, the first layer that is plotted becomes the extent of the plot. If we add
 additional layers that are outside of that extent, then the data will not be
 visible in our plot. It is thus useful to know how to set the spatial extent of
 a plot using <code>xlim</code> and <code>ylim</code>.</p>
@@ -531,23 +574,23 @@ plot(plot.locationsSp_HARV,
      pch=8, add=TRUE)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/plot-data-1.png" alt="Area of Interest Boundary (NEON Harvard Forest Field Site)."/></p>
 
 <pre><code># no plots added, why? CRS?
 # view CRS of each
 crs(aoiBoundary_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 crs(plot.locationsSp_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 </code></pre>
 
 <p>When we attempt to plot the two layers together, we can see that the plot
-locations are not rendered. We can see that our data are in the same projection, 
+locations are not rendered. Our data are in the same projection, 
 so what is going on?</p>
 
 <pre><code># view extent of each
@@ -592,7 +635,7 @@ legend(&quot;bottomright&quot;,
        lwd=6)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/compare-extents-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/compare-extents-1.png" alt="Comparison of extent boundaries between plot locations and AOI spatial object at NEON Harvard Forest Field Site."/></p>
 
 <p>The <strong>extents</strong> of our two objects are <strong>different</strong>. <code>plot.locationsSp_HARV</code> is
 much larger than <code>aoiBoundary_HARV</code>. When we plot <code>aoiBoundary_HARV</code> first, R
@@ -603,7 +646,7 @@ values from the spatial object that has a larger extent. Let&#39;s try it.</p>
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/spatial_extent.png" alt="The three different vector types represented within a given spatial extent."></a>
     <figcaption>The spatial extent of a shapefile or R spatial object
     represents the geographic <b> edge </b> or location that is the furthest
     north, south, east and west. Thus is represents the overall geographic
@@ -649,7 +692,7 @@ legend(&quot;bottomright&quot;,
        cex=.8)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/set-plot-extent-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/set-plot-extent-1.png" alt="Plot locations and AOI boundary at NEON Harvard Forest Field Site with modified extents."/></p>
 
 <div id="ds-challenge" markdown="1">
 ## Challenge - Import & Plot Additional Points
@@ -673,7 +716,7 @@ for more on working with geographic coordinate systems. You may want to &ldquo;b
 the projection from the objects used in that tutorial!
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-2.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-3.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-1.png" alt="Vegetation and phenology plot locations at NEON Harvard Forest Field Site; one phenology plot is missing."/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-2.png" alt="Comparison of extent boundaries between vegetation and phenology plot locations at NEON Harvard Forest Field Site."/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/04-csv-to-shapefile-in-R/rfigs/challenge-code-phen-plots-3.png" alt="Vegetation and phenology plot locations at NEON Harvard Forest Field Site; all points are visible."/></p>
 
 <h2>Export a Shapefile</h2>
 

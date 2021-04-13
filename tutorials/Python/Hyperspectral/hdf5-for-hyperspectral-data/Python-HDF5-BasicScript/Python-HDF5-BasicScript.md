@@ -6,7 +6,7 @@ dateCreated: 2015-5-08
 dateUpdated: 2020-04-24
 authors: David Hulslander, Josh Elliot, Leah A. Wasser, Tristan Goulden
 contributors: Maria Paula Mugnani
-estimatedTime:
+estimatedTime: 0.5 hours
 packagesLibraries: h5py, numpy, matplotlib
 topics: HDF5
 languagesTool: python

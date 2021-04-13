@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 
 # load packages
 library(rgdal)  # for vector work; sp package should always load with rgdal. 
@@ -9,7 +9,7 @@ library (raster)   # for metadata/attributes- vectors or rasters
 
 
 
-## ----read-csv-----------------------------------------------------------------------------
+## ----read-csv----------------------------------------------------------
 
 # Read the .csv file
 State.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",
@@ -20,7 +20,7 @@ class(State.Boundary.US)
 
 
 
-## ----find-coordinates---------------------------------------------------------------------
+## ----find-coordinates, fig.cap="Continental U.S. state boundaries."----
 
 # view column names
 plot(State.Boundary.US, 
@@ -28,7 +28,7 @@ plot(State.Boundary.US,
 
 
 
-## ----check-out-coordinates----------------------------------------------------------------
+## ----check-out-coordinates, fig.cap="Continental U.S. state boundaries with the U.S. boundary emphasized with a thicker border."----
 # Read the .csv file
 Country.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",
           "US-Boundary-Dissolved-States")
@@ -49,7 +49,7 @@ plot(Country.Boundary.US,
 
 
 
-## ----explore-units------------------------------------------------------------------------
+## ----explore-units, fig.cap="Fisher Tower location represented by a point."----
 
 # Import a point shapefile 
 point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
@@ -63,7 +63,7 @@ plot(point_HARV,
      main="Harvard Fisher Tower Location")
 
 
-## ----layer-point-on-states----------------------------------------------------------------
+## ----layer-point-on-states, fig.cap="Continental U.S. state boundaries with the U.S. boundary emphasized with a thicker border; note that the Fisher Tower point is not currently visible."----
 # plot state boundaries  
 plot(State.Boundary.US, 
      main="Map of Continental US State Boundaries \n with Tower Location",
@@ -83,7 +83,7 @@ plot(point_HARV,
 
 
 
-## ----crs-sleuthing------------------------------------------------------------------------
+## ----crs-sleuthing-----------------------------------------------------
 
 # view CRS of our site data
 crs(point_HARV)
@@ -93,7 +93,7 @@ crs(State.Boundary.US)
 crs(Country.Boundary.US)
 
 
-## ----view-extent--------------------------------------------------------------------------
+## ----view-extent-------------------------------------------------------
 
 # extent for HARV in UTM
 extent(point_HARV)
@@ -103,7 +103,7 @@ extent(State.Boundary.US)
 
 
 
-## ----crs-sptranform-----------------------------------------------------------------------
+## ----crs-sptranform----------------------------------------------------
 
 # reproject data
 point_HARV_WGS84 <- spTransform(point_HARV,
@@ -115,7 +115,7 @@ crs(point_HARV_WGS84)
 extent(point_HARV_WGS84)
 
 
-## ----plot-again---------------------------------------------------------------------------
+## ----plot-again, fig.cap="Continental U.S. state boundaries with the U.S. country border emphasized with a thicker border and with the Fisher Tower represented as a point."----
 
 # plot state boundaries  
 plot(State.Boundary.US, 
@@ -136,7 +136,7 @@ plot(point_HARV_WGS84,
 
 
 
-## ----challenge-code-MASS-Map,  include=TRUE, results="hide", echo=FALSE, warning=FALSE----
+## ----challenge-code-MASS-Map,  include=TRUE, results="hide", echo=FALSE, warning=FALSE, fig.cap="A close-up view of the northeastern U.S. with the Fisher Tower location as a point symbol."----
 # import mass boundary layer
 # read the .csv file
 NE.States.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",

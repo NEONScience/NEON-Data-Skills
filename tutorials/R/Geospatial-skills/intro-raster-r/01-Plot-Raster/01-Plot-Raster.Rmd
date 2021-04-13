@@ -5,7 +5,7 @@ description: "This tutorial explains how to plot a raster in R using R's base pl
 dateCreated: 2015-10-2
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
 contributors:	Jason Brown
-estimatedTime:	
+estimatedTime: 30 minutes
 packagesLibraries: raster, rgdal
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R

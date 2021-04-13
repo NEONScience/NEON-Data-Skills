@@ -1,4 +1,4 @@
-## ----set-plotly-creds, eval=FALSE, comment=NA-------------------------------------------
+## ----set-plotly-creds, eval=FALSE, comment=NA--------------------------
 # set plotly user name
 Sys.setenv("plotly_username"="YOUR_USERNAME")
 # set plotly API key
@@ -6,7 +6,7 @@ Sys.setenv("plotly_api_key"="YOUR_KEY")
 
 
 
-## ----load-libraries-hidden, echo=FALSE, results="hide"----------------------------------
+## ----load-libraries-hidden, echo=FALSE, results="hide"-----------------
 # this package is only added to get the webpage derived from this code to render
 # the plotly graphs.  It is NOT needed for any of the analysis or data 
 # visualizations.
@@ -16,7 +16,7 @@ Sys.setenv("plotly_api_key"="YOUR_KEY")
 library(webshot) # embed the plotly plots
 
 
-## ----create-plotly-plot-----------------------------------------------------------------
+## ----create-plotly-plot------------------------------------------------
 
 # load packages
 library(ggplot2) # to create plots and feed to ggplotly()
@@ -30,13 +30,13 @@ unempPerCapita <- plot_ly(x =economics$date, y = economics$unemploy/economics$po
 
 
 
-## ----plotly1, eval=FALSE, comment=NA----------------------------------------------------
+## ----plotly1, eval=FALSE, comment=NA-----------------------------------
 
 unempPerCapita 
 
 
 
-## ----ggplotly---------------------------------------------------------------------------
+## ----ggplotly----------------------------------------------------------
 ## plot with ggplot, then ggplotly
 
 unemployment <- ggplot(economics, aes(date,unemploy)) + geom_line()
@@ -44,12 +44,12 @@ unemployment
 
 
 
-## ----plotly2, eval=FALSE, comment=NA----------------------------------------------------
+## ----plotly2, eval=FALSE, comment=NA-----------------------------------
 ggplotly(unemployment)
 
 
 
-## ----pub-plotly, eval=FALSE, comment=NA-------------------------------------------------
+## ----pub-plotly, eval=FALSE, comment=NA--------------------------------
 
 # publish plotly plot to your plotly online account
 api_create(unemployment)

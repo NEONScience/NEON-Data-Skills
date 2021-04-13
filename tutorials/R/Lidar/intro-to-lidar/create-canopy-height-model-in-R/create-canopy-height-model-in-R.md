@@ -107,11 +107,11 @@ surface model (DSM) and the digital terrain model (DTM).
     
     # set working directory to ensure R can find the file we wish to import and where
     # we want to save our files. Be sure to move the download into your working directory!
-    wd="~/Documents/data/" #This will depend on your local environment
+    wd="~/Git/data/" #This will depend on your local environment
     setwd(wd)
 
 First, we will import the Digital Surface Model (DSM). The 
-<a href="{{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
 represents the elevation of the top of the objects on the ground (trees, 
 buildings, etc).
 
@@ -126,8 +126,8 @@ buildings, etc).
     ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : /Users/olearyd/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif 
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
+    ## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif 
     ## names      : SJER2013_DSM
 
     # plot the DSM
@@ -174,7 +174,7 @@ trees with negative heights!
     ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
     ## source     : memory
     ## names      : layer 
     ## values     : -1.399994, 40.29001  (min, max)
@@ -212,7 +212,7 @@ efficient way to do this would be to create a function to create your CHMs.
     ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
     ## source     : memory
     ## names      : layer 
     ## values     : -40.29001, 1.399994  (min, max)
@@ -225,7 +225,7 @@ efficient way to do this would be to create a function to create your CHMs.
     ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
     ## source     : memory
     ## names      : layer 
     ## values     : -40.29001, 1.399994  (min, max)

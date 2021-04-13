@@ -3,12 +3,12 @@ title: 'Data Activity: Visualize Elevation Change using LiDAR in R to Better Und
   the 2013 Colorado Floods'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/NEON-Boulder-Flood-LiDAR-in-R.R
 contributors: Donal O'Leary, Felipe Sanchez
-dataProduct: null
+dataProduct: 
 dateCreated: '2015-05-18'
 description: This tutorial teaches how to use Digital Terrain Models derived from
   LiDAR data to create Digital Elevation Models of Differences that allow us to measure
   the change in elevation of an area after a disturbance event.
-estimatedTime: null
+estimatedTime: 1 hour
 languagesTool: R
 packagesLibraries: rgdal, raster
 syncID: f578b1b20ef9483183a8c0abbf417440

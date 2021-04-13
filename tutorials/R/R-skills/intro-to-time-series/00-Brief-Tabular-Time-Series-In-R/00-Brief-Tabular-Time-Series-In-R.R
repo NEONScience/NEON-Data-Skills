@@ -1,29 +1,30 @@
-## ----load-packages------------------------------------------------------------------------
+## ----load-packages-----------------------------------------------------
 # Load packages required for entire script. 
 # library(PackageName)  # purpose of package
 library(ggplot2)   # efficient, pretty plotting - required for qplot function
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+# provide the location for where you've unzipped the lesson data
+wd <- "~/Documents/"
 
 
 
-## ----import-csv---------------------------------------------------------------------------
+## ----import-csv--------------------------------------------------------
 
 # Load csv file of daily meteorological data from Harvard Forest
 harMet.daily <- read.csv(
-      file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv",
+      file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv"),
       stringsAsFactors = FALSE
       )
 
 
-## ----dataframe----------------------------------------------------------------------------
+## ----dataframe---------------------------------------------------------
 # what type of R object is our imported data?
 class(harMet.daily)
 
 
 
-## ----view-data-structure------------------------------------------------------------------
+## ----view-data-structure-----------------------------------------------
 
 # view first 6 rows of the dataframe 
 head(harMet.daily)
@@ -32,30 +33,30 @@ head(harMet.daily)
 str(harMet.daily)
 
 
-## ----data-class-examples------------------------------------------------------------------
+## ----data-class-examples, message=TRUE, warning=FALSE------------------
 
 a <- "mouse"
 b <- "sparrow"
 class(a)
 class(b)
 
-# subract a-b 
+# subtract a-b 
 a-b
 
 
 
-## ----data-class-num-----------------------------------------------------------------------
+## ----data-class-num----------------------------------------------------
 
 c <- 2
 d <- 1
 class(c)
 class(d)
-# subract a-b 
+# subtract a-b 
 c-d
 
 
 
-## ----data-class-example-2-----------------------------------------------------------------
+## ----data-class-example-2----------------------------------------------
 
 # create a new object
 speciesObserved <- c("speciesb","speciesc","speciesa")
@@ -76,15 +77,14 @@ min(prec)
 
 
 
-## ----plot-data----------------------------------------------------------------------------
+## ----plot-data, fig.cap='Relationship Between Daily Air Temperature and Time at Harvard Forest Research Site'----
 # quickly plot air temperature
 qplot(x=date, y=airt, 
       data=harMet.daily,
       main="Daily Air Temperature\nNEON Harvard Forest Field Site")
 
 
-
-## ----view-class---------------------------------------------------------------------------
+## ----view-class--------------------------------------------------------
 # View data class for each column that we wish to plot
 class(harMet.daily$date)
 
@@ -92,7 +92,7 @@ class(harMet.daily$airt)
 
 
 
-## ----convert-date-time--------------------------------------------------------------------
+## ----convert-date-time-------------------------------------------------
 
 # convert column to date class
 harMet.daily$date <- as.Date(harMet.daily$date)
@@ -104,7 +104,7 @@ class(harMet.daily$date)
 head(harMet.daily$date)
 
 
-## ----qplot-data---------------------------------------------------------------------------
+## ----qplot-data, fig.cap='Relationship Between Daily Air Temperature and Time at Harvard Forest Research Site'----
 # quickly plot the data and include a title using main=""
 # In title string we can use '\n' to force the string to break onto a new line
 qplot(x=date,y=airt, 
@@ -113,7 +113,7 @@ qplot(x=date,y=airt,
 
 
 
-## ----challenge-code-plotting, echo=FALSE--------------------------------------------------
+## ----challenge-code-plotting, echo=FALSE, fig.cap=c('Relationship Between Daily Precipitation and Time at Harvard Forest Research Site','Relationship Between Daily Precipitation and Daily Air Temperature at Harvard Forest Research Site')----
 # 1
 qplot(x=date,y=prec, 
       data=harMet.daily,

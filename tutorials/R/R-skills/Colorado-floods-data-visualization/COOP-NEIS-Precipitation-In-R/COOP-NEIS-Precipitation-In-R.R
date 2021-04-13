@@ -1,4 +1,4 @@
-## ----load-libraries--------------------------
+## ----load-libraries----------------------------------------------------
 # load packages
 library(ggplot2) # create efficient, professional plots
 library(plotly) # create cool interactive plots
@@ -22,7 +22,7 @@ FALSE #webshot::install_phantomjs()
 FALSE library(webshot) # embed the plotly plots
 
 
-## ----import-precip---------------------------
+## ----import-precip-----------------------------------------------------
 
 # import precip data into R data.frame by 
 # defining the file name to be opened
@@ -37,7 +37,7 @@ str(precip.boulder)
 
 
 
-## ----convert-date----------------------------
+## ----convert-date------------------------------------------------------
 
 # convert to date/time and retain as a new field
 precip.boulder$DateTime <- as.POSIXct(precip.boulder$DATE, 
@@ -57,7 +57,7 @@ hist(precip.boulder$HPCP)
 
 
 
-## ----no-data-values--------------------------
+## ----no-data-values----------------------------------------------------
 # assing NoData values to NA
 precip.boulder$HPCP[precip.boulder$HPCP==999.99] <- NA 
 
@@ -99,7 +99,7 @@ precPlot_daily1 <- ggplot(data=precip.boulder,  # the data frame
 precPlot_daily1
 
 
-## ----daily-summ------------------------------
+## ----daily-summ--------------------------------------------------------
 
 # aggregate the Precipitation (PRECIP) data by DATE
 precip.boulder_daily <-aggregate(precip.boulder$HPCP,   # data to aggregate
@@ -112,7 +112,7 @@ precip.boulder_daily <-aggregate(precip.boulder$HPCP,   # data to aggregate
 head(precip.boulder_daily)
 
 
-## ----rename-fields---------------------------
+## ----rename-fields-----------------------------------------------------
 
 # rename the columns
 names(precip.boulder_daily)[names(precip.boulder_daily)=="Group.1"] <- "DATE"
@@ -172,7 +172,7 @@ precPlot_flood2
 
 
 
-## ----plotly-prep, eval=FALSE, comment=NA-----
+## ----plotly-prep, eval=FALSE, comment=NA-------------------------------
 
 # setup your plot.ly credentials; if not already set up
 #Sys.setenv("plotly_username"="your.user.name.here")
@@ -186,7 +186,7 @@ precPlot_flood2
 ggplotly(precPlot_flood2)
 
 
-## ----plotly-post-precip-data, eval=FALSE, comment=NA----
+## ----plotly-post-precip-data, eval=FALSE, comment=NA-------------------
 # publish plotly plot to your plot.ly online account when you are happy with it
 api_create(precPlot_flood2)
 
@@ -240,7 +240,7 @@ ggplotly(precPlot_all)
 
 
 
-## ----inches----------------------------------
+## ----inches------------------------------------------------------------
 
 # convert from 100th inch by dividing by 100
 precip.boulder$PRECIP<-precip.boulder$HPCP/100

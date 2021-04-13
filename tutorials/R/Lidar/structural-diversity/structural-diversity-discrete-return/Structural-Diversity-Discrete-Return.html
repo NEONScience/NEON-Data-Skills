@@ -247,11 +247,7 @@ downloaded from the NEON Data Portal.</p>
 <pre><code>############### Packages ################### 
 library(lidR)
 
-## Loading required package: raster
-
-## Loading required package: sp
-
-## lidR 2.2.4 using 4 threads. Help on &lt;gis.stackexchange.com&gt;. Bug report on &lt;github.com/Jean-Romain/lidR&gt;.
+## lidR 3.0.3 using 1 threads. Help on &lt;gis.stackexchange.com&gt;. Bug report on &lt;github.com/Jean-Romain/lidR&gt;.
 
 library(gstat)
 
@@ -337,8 +333,8 @@ data.200m &lt;-
 #by adjusting the &#39;drop_z_&#39; arguments when reading in the .laz files.
 dtm &lt;- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-## Warning: There were 7 degenerated ground points. Some X Y coordinates were repeated but with different Z
-## coordinates. min Z were retained.
+## Warning: There were 7 degenerated ground points. Some X Y coordinates
+## were repeated but with different Z coordinates. min Z were retained.
 
 data.200m &lt;- lasnormalize(data.200m, dtm)
 
@@ -388,7 +384,7 @@ chm &lt;- grid_canopy(data.40m, res = 1, dsmtin())
 plot(chm) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/structural-diversity/structural-diversity/rfigs/calculate-structural-diversity-metrics-1.png" alt="Canopy Height Model (CHM) of HARV study area"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/structural-diversity/structural-diversity-discrete-return/rfigs/calculate-structural-diversity-metrics-1.png" alt="Canopy Height Model (CHM) of HARV study area"/></p>
 
 <pre><code>#MEAN OUTER CANOPY HEIGHT (MOCH)
 #calculate MOCH, the mean CHM height value
@@ -429,9 +425,7 @@ cover.fraction &lt;- 1 - deepgap.fraction
 #in the plot point cloud
 vert.sd &lt;- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
 
-## Warning: &#39;lasmetrics&#39; is deprecated.
-## Use &#39;cloud_metrics&#39; instead.
-## See help(&quot;Deprecated&quot;)
+## Error in lasmetrics(data.40m, sd(Z, na.rm = TRUE)): could not find function &quot;lasmetrics&quot;
 
 #SD of VERTICAL SD of HEIGHT
 #rasterize plot point cloud and calculate the standard deviation 
@@ -497,6 +491,8 @@ HARV_structural_diversity &lt;-
                        sd.sd, entro,GFP.AOP, VAI.AOP, VCI.AOP),
                      ncol = 15)) 
 
+## Error in matrix(c(x, y, mean.max.canopy.ht, max.canopy.ht, rumple, deepgaps, : object &#39;vert.sd&#39; not found
+
 #provide descriptive names for the calculated metrics
 colnames(HARV_structural_diversity) &lt;- 
    c(&quot;easting&quot;, &quot;northing&quot;, &quot;mean.max.canopy.ht.aop&quot;,
@@ -505,15 +501,12 @@ colnames(HARV_structural_diversity) &lt;-
      &quot;top.rugosity.aop&quot;, &quot;vert.sd.aop&quot;, &quot;sd.sd.aop&quot;, 
      &quot;entropy.aop&quot;, &quot;GFP.AOP.aop&quot;, &quot;VAI.AOP.aop&quot;, &quot;VCI.AOP.aop&quot;) 
 
+## Error in colnames(HARV_structural_diversity) &lt;- c(&quot;easting&quot;, &quot;northing&quot;, : object &#39;HARV_structural_diversity&#39; not found
+
 #View the results
 HARV_structural_diversity 
 
-##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop deepgap.fraction.aop
-## 1  727500  4702500               17.47636           24.1664   2.807299            7             0.004375
-##   cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop
-## 1           0.995625         4.323543    5.941824  2.272381   0.9147319    0.863887     6.65967
-##   VCI.AOP.aop
-## 1   0.6393701
+## Error in eval(expr, envir, enclos): object &#39;HARV_structural_diversity&#39; not found
 </code></pre>
 
 <h2>Combining Everything Into One Function</h2>
@@ -532,10 +525,11 @@ data.200m &lt;- lasclipRectangle(TEAK,
 
 dtm &lt;- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-## Warning: There were 4 degenerated ground points. Some X Y Z coordinates were repeated. They were removed.
+## Warning: There were 4 degenerated ground points. Some X Y Z coordinates
+## were repeated. They were removed.
 
-## Warning: There were 41 degenerated ground points. Some X Y coordinates were repeated but with different Z
-## coordinates. min Z were retained.
+## Warning: There were 41 degenerated ground points. Some X Y coordinates
+## were repeated but with different Z coordinates. min Z were retained.
 
 data.200m &lt;- lasnormalize(data.200m, dtm)
 
@@ -597,16 +591,7 @@ structural_diversity_metrics &lt;- function(data.40m) {
 
 TEAK_structural_diversity &lt;- structural_diversity_metrics(data.40m)
 
-## Warning: &#39;lasmetrics&#39; is deprecated.
-## Use &#39;cloud_metrics&#39; instead.
-## See help(&quot;Deprecated&quot;)
-
-##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop deepgap.fraction.aop
-## 1  316400  4091700               18.26802          40.60467   5.060158           76               0.0475
-##   cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop
-## 1             0.9525         10.18562    11.56424  4.320685   0.8390816   0.9683643    2.455946
-##   VCI.AOP.aop
-## 1   0.6766286
+## Error in lasmetrics(data.40m, sd(Z, na.rm = TRUE)): could not find function &quot;lasmetrics&quot;
 </code></pre>
 
 <h2>Comparing Metrics Between Forests</h2>
@@ -616,21 +601,17 @@ TEAK_structural_diversity &lt;- structural_diversity_metrics(data.40m)
 <pre><code>combined_results=rbind(HARV_structural_diversity, 
                        TEAK_structural_diversity)
 
+## Error in rbind(HARV_structural_diversity, TEAK_structural_diversity): object &#39;HARV_structural_diversity&#39; not found
+
 # Add row names for clarity
 row.names(combined_results)=c(&quot;HARV&quot;,&quot;TEAK&quot;)
+
+## Error in row.names(combined_results) = c(&quot;HARV&quot;, &quot;TEAK&quot;): object &#39;combined_results&#39; not found
 
 # Take a look to compare
 combined_results
 
-##      easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop deepgaps.aop
-## HARV  727500  4702500               17.47636          24.16640   2.807299            7
-## TEAK  316400  4091700               18.26802          40.60467   5.060158           76
-##      deepgap.fraction.aop cover.fraction.aop top.rugosity.aop vert.sd.aop sd.sd.aop entropy.aop
-## HARV             0.004375           0.995625         4.323543    5.941824  2.272381   0.9147319
-## TEAK             0.047500           0.952500        10.185618   11.564239  4.320685   0.8390816
-##      GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
-## HARV   0.8638870    6.659670   0.6393701
-## TEAK   0.9683643    2.455946   0.6766286
+## Error in eval(expr, envir, enclos): object &#39;combined_results&#39; not found
 </code></pre>
 
 </body>

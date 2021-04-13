@@ -5,7 +5,7 @@ description: "Learn about LiDAR point cloud file formats .las and .laz. Explore 
 dateCreated:   2014-07-21 
 authors: Leah A. Wasser
 contributors: Donal O'Leary
-estimatedTime: 0.25 - 0.5 Hours
+estimatedTime: 0.5 Hours
 packagesLibraries:
 topics: lidar, remote-sensing, data-viz
 languagesTool: plasio

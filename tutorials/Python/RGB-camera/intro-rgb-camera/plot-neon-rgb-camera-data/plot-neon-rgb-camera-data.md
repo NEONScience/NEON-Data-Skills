@@ -3,68 +3,46 @@ syncID: 67a5e95e1b7445aca7d7750b75c0ee98
 title: "Plotting a NEON RGB Camera Image (GeoTIFF) in Python"
 description: "This lesson is a brief introduction to RGB camera images and the GeoTIFF raster format in Python."
 dateCreated: 2018-06-30
-authors: Bridget Hass 
-contributors: 
-estimatedTime: 
+authors: Bridget Hass, 
+contributors: Donal O'Leary
+estimatedTime: 0.5 hour
 packagesLibraries: 
 topics: data-analysis, data-visualization, spatial-data-gis 
 languagesTool: python
-dataProduct: DP3.30010
-code1: /Python/remote-sensing/rgb-camera/plot-neon-rgb-camera-data.ipynb
+dataProduct: DP3.30010.001
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/RGB-camera/intro-rgb-camera/plot-neon-rgb-camera-data/plot-neon-rgb-camera-data.ipynb
 tutorialSeries: jupyter-notebooks
 urlTitle: plot-neon-rgb-py
-
 ---
 
-This tutorial introduces NEON RGB camera images and functions to read in and 
-plot GeoTIFF rasters in Python. In this tutorial, we will read in an RGB camera 
-tile of the NEON Smithsonian Environmental Research Center (SERC) site. We will 
-run the user-defined functions `RGBraster2array` and `plotRGBimage` to read in 
-the image as an array, plot an RGB image of this raster, and plot a histogram of 
-the intensities of one of the three bands. 
 
-<div id="ds-objectives" markdown="1">
+This tutorial introduces NEON RGB camera images and functions to read in and plot GeoTIFF rasters in Python. In this tutorial, we will read in an RGB camera tile of the NEON Smithsonian Environmental Research Center (SERC) site. We will run the user-defined functions `RGBraster2array` and `plotRGBimage` to read in the image as an array, plot an RGB image of this raster, and plot a histogram of the intensities of one of the three bands. 
 
-## Objectives
+### Objectives
 
 After completing this tutorial, you will be able to: 
 
 * Plot a NEON RGB Camera Tile (Data Product 
 * Plot a histogram of a single band of an RGB Camera Tile
 
-## Download the Data 
+### Download the Data 
 
 Download the NEON GeoTiFF file of the 
-<a href="https://neondata.sharefile.com/d-s274babd550a45e7a">camera (RGB) imagery tile</a>
-collected over the Smithsonian Environmental Research Station (SERC) NEON field 
-site. Place this data in a location where you know where it is. You will need to 
-know the file path to this data.  
+<a href="https://ndownloader.figshare.com/files/27465803">camera (RGB) imagery tile</a>
+collected over the Smithsonian Environmental Research Station (SERC) NEON field site. Place this data in a location where you know where it is. You will need to know the file path to this data.  
 
-## Background on RGB
+### Background
 
 As part of the 
-<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborn Operation Platform's</a> 
-suite of remote sensing instruments, the digital camera produces 
-high-resolution (0.25 m) photographs of the earth’s surface. The camera records 
-light energy that has reflected off the ground in the visible part 
-(red, green and blue) of the light spectrum. Often the camera images are used to 
-provide context for the hyperspectral and LiDAR data. 
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborne Operation Platform's</a> 
+suite of remote sensing instruments, the digital camera producing high-resolution (10 cm) photographs of the earth’s surface. The camera records light energy that has reflected off the ground in the visible part (red, green and blue) of the light spectrum. Often the camera images are used to provide context for the hyperspectral and LiDAR data. 
 
-**Note:** Don't worry about understanding everything in the `raster2array` 
-function at this point. If you are curious, we encourage you to read the 
-docstrings, but we will go into more detail during the data institute. 
+**Note:** Don't worry about understanding everything in the `raster2array` function at this point. If you are curious, we encourage you to read the docstrings, but we will go into more detail during the data institute. 
 
-**Data Tip:** To run a cell you can either select `Cell > Run Cells` with your 
-cursor in the cell you want to run, or use the shortcut key `Shift + Enter`. For 
-more handy shortcuts, refer to the tab `Help > Keyboard Shortcuts`. 
+**Data Tip:** To run a cell you can either select `Cell > Run Cells` with your cursor in the cell you want to run, or use the shortcut key `Shift + Enter`. For more handy shortcuts, refer to the tab `Help > Keyboard Shortcuts`. 
 
-</div>
-
-### Check Python Version
-
-
-First make sure that you are running the Python 3.5 environment by running the 
-cell below:
+## Set up Enviornment
+First, make sure that you are running the Python 3.5 environment by running the code in the cell below:
 
 
 ```python
@@ -72,19 +50,16 @@ import sys
 sys.version
 ```
 
-    '3.5.4 |Anaconda, Inc.| (default, Nov  8 2017, 14:34:30) [MSC v.1900 64 bit (AMD64)]'
 
-**Data Institute Participants**: You should be running `3.5.x`. If this is not the case, close this console (both the notebook and Home page), and shut down your command prompt that is running your Jupyter notebook. Re-open your command prompt, navigate to your workking directory, and activate your p35 environment by typing `activate p35` in Windows or `source activate p35` in Mac if you followed the pre-institute computer set-up instructions. Once you see `(p35)` at the beginning of your command prompt, you can type `jupyter notebook` to run your notebook.
 
-<figure>
-    <a href="https://www.neonscience.org/images/Python/rgb-camera/activate_py35.png">
-    <img src="/images/Python/rgb-camera/activate_py35.png"></a>
-    <figcaption> Activating `Python 3.5` environment from the command prompt. Source: National Ecological Observatory Network(NEON)  
-    </figcaption>
-</figure>
 
-**Other tutorial users**: Jupyter Notebooks is not required to complete this tutorial. However, as of June 2018 the GDAL package wasn't fully compatible with Python 3.6 so we recommend using a Python 3.5 environment. 
+    '3.7.7 (default, Mar 23 2020, 17:31:31) \n[Clang 4.0.1 (tags/RELEASE_401/final)]'
 
+
+
+**Data Institue Participants**: You should be running `3.5.x`. If this is not the case, close this console (both the notebook and Home page), and shut down your command prompt that is running your Jupyter notebook. Re-open your command prompt, navigate to your workking directory, and activate your p35 environment by typing `activate p35` in Windows or `source activate p35` in Mac if you followed the pre-institute computer set-up instructions. Once you see `(p35)` at the beginning of your command prompt, you can type `jupyter notebook` to run your notebook.
+
+**Other tutorial users**: Jupyter Notebooks is not required to complete this tutorial. This tutorial was processed using Python version 3.7.7.
 
 Now that you are in the right environment, first we will import the gdal package, which contains tools for programming and manipulating the Geospatial Data Abstraction Library (GDAL). For more information on GDAL, please refer to <a href="http://www.gdal.org/" target="_blank">gdal.org</a>.
 
@@ -93,21 +68,13 @@ Now that you are in the right environment, first we will import the gdal package
 import gdal
 ```
 
-If you get the following message 
-
-<figure>
-    <a href="https://www.neonscience.org/images/Python/rgb-camera/no_module_named_gdal.png">
-    <img src="/images/Python/rgb-camera/no_module_named_gdal.png"></a>
-    <figcaption> Typical error when the correct module is not found. Source: National Ecological Observatory Network(NEON)  
-    </figcaption>
-</figure>
+If you get the following message:
+    `ModuleNotFoundError: No Module Named GDAL`
 
 **Troubleshooting steps** --> try one of the following:
 - from a Jupyter Python cell, run the command:
 `!conda install gdal`
 - from a Command Prompt (Windows) or Terminal (Mac), activate the appropriate environment
-
-## Read in RGB Camera Image
 
 Next we will import the `numpy` and `matplotlib` packages. Numpy stands for **Num**erical **Py**thon This is a standard package that comes with the Anaconda installation of Python, so you should not need to do any additional steps to install it. 
 
@@ -140,12 +107,12 @@ def RGBraster2array(RGB_geotif):
             bands
             driver
             projection
-            geotransform 
-            pixelWidth 
-            pixelHeight 
+            geotransform
+            pixelWidth
+            pixelHeight
             extent
-            noDataValue  
-            scaleFactor 
+            noDataValue
+            scaleFactor
     --------
     Example Execution:
     --------
@@ -189,11 +156,11 @@ def RGBraster2array(RGB_geotif):
     return array, metadata
 ```
 
-After running this cell, we can call the function, as below. Note that you need to specify the relative path (as shown here with the `./`, indicating that file is saved in your working directory) or the absolute path (eg. `D:\\RSDI_2018\\data`) - you'll need to use double slashes to indicate that you are pointing to a directory. 
+After running this cell, we can call the function, as below. Note that you need to specify the relative path (as shown here with the `./`, indicating that file is saved in your working directory) or the absolute path (eg. `D:\\RSDI_2018\\data`) - you'll need to use double slashes to indicate that you are pointing to a directory. Please use the correct file path to where you saved the GeoTIFF file downloaded at the befining of the lesson.  
 
 
 ```python
-RGB_geotif = './2017_SERC_2_368000_4306000_image.tif'
+RGB_geotif = '/Users/olearyd/Git/data/2017_SERC_2_368000_4306000_image.tif'
 SERC_RGBcam_array, SERC_RGBcam_metadata = RGBraster2array(RGB_geotif)
 ```
 
@@ -232,8 +199,7 @@ for key in sorted(SERC_RGBcam_metadata.keys()):
     pixelWidth
     projection
     scaleFactor
-    
-## Plot RGB Camera Image
+
 
 Next, we'll define a function to plot the array data. Run the cell below:
 
@@ -281,6 +247,11 @@ def plot_band_array(band_array,
 ```
 
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/RGB-camera/intro-rgb-camera/plot-neon-rgb-camera-data/plot-neon-rgb-camera-data_files/plot-neon-rgb-camera-data_18_0.png)
+
+
+Defining the function above will initially produce a blank plotting area (that's ok!).
+
 Now run this function using the inputs you defined earlier:
 
 
@@ -293,7 +264,8 @@ plot_band_array(SERC_RGBcam_array,
 ```
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/plot-neon-rgb-camera-data/output_19_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/RGB-camera/intro-rgb-camera/plot-neon-rgb-camera-data/plot-neon-rgb-camera-data_files/plot-neon-rgb-camera-data_20_0.png)
+
 
 Lastly, we can plot a histogram of the first band (red), which we can extract by using `splicing`. Since Python is 0-based, to extract all values of the first band, we can use: `SERC_RGBcam_array[:,:,0]`. *Notes*: It speeds up the algorithm to flatten the 2-D array into one dimension using `numpy.ravel`; `20` specifies the number of bins. 
 
@@ -307,23 +279,23 @@ plt.xlabel('Brightness'); plt.ylabel('Frequency')
 
 
 
-    Text(0,0.5,'Frequency')
+    Text(0, 0.5, 'Frequency')
 
 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/plot-neon-rgb-camera-data/output_21_1.png)
 
-## Challenge Exercises
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/RGB-camera/intro-rgb-camera/plot-neon-rgb-camera-data/plot-neon-rgb-camera-data_files/plot-neon-rgb-camera-data_22_1.png)
 
+
+## Exercises: 
 Now that you've followed along to read in and plot an RGB camera image and band, try the following exercises on your own:
 
-1. **Plot histograms** of the green and blue bands.
+1. **Plot histograms of the green and blue bands**
 
-2. **Explore the data** to see what you can learn about the `SERC_RGBcam_array` 
-and associated `SERC_RGBcam_metadata`. 
+2. **Explore the data** to see what you can learn about the `SERC_RGBcam_array` and associated `SERC_RGBcam_metadata` 
 
     a. Determine the minimum and maximum reflectance for each band. Print these values with a print statement. *HINT*: Use the `numpy` functions `np.amin()` and `np.amax()`
     
-    b. What UTM zone is this data in? *Hint:* Print out `SERC_RGBcam_metadata['projection']`
+    b. What UTM zone is this data in? *HINT: Print out* `SERC_RGBcam_metadata['projection']`
     
-    c. Use the `plot_band_array` function to plot each band of the camera image separately. *HINT*: Use splicing to extract each band (e.g., `SERC_RGBcam_array[:,:,0]`). 
+    c. Use the `plot_band_array` function to plot each band of the camera image separately. *HINT*: Use splicing to extract each band (eg. `SERC_RGBcam_array[:,:,0]`). 

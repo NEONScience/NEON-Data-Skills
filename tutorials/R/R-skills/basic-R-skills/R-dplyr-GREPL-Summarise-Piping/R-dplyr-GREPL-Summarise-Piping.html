@@ -489,7 +489,7 @@ print(paste(&#39;In 2014, NEON technicians captured&#39;,
                    &#39;female Peromyscus spp. at Harvard Forest.&#39;,
                    sep = &#39; &#39;))
 
-## [1] &quot;In 2014, NEON technicians captured 618 female Peromyscus spp. at Harvard Forest.&quot;
+## [1] &quot;In 2014, NEON technicians captured 558 female Peromyscus spp. at Harvard Forest.&quot;
 </code></pre>
 
 <h2>group_by() + summarise()</h2>
@@ -525,6 +525,8 @@ dataBySpSex &lt;- group_by(myData, scientificName, sex)
 # step 2: summarize the number of individuals of each using the new df
 countsBySpSex &lt;- summarise(dataBySpSex, n_individuals = n())
 
+## `summarise()` regrouping output by &#39;scientificName&#39; (override with `.groups` argument)
+
 # view the data (just top 10 rows)
 head(countsBySpSex, 10)
 
@@ -532,7 +534,7 @@ head(countsBySpSex, 10)
 ## # Groups:   scientificName [5]
 ##    scientificName          sex   n_individuals
 ##    &lt;chr&gt;                   &lt;chr&gt;         &lt;int&gt;
-##  1 Blarina brevicauda      F                60
+##  1 Blarina brevicauda      F                50
 ##  2 Blarina brevicauda      M                 8
 ##  3 Blarina brevicauda      U                22
 ##  4 Blarina brevicauda      &lt;NA&gt;             19
@@ -541,7 +543,7 @@ head(countsBySpSex, 10)
 ##  7 Mammalia sp.            &lt;NA&gt;              1
 ##  8 Microtus pennsylvanicus F                 2
 ##  9 Myodes gapperi          F               103
-## 10 Myodes gapperi          M               109
+## 10 Myodes gapperi          M                99
 </code></pre>
 
 <p>Note: the output of step 1 (<code>dataBySpSex</code>) does not look any different than the 
@@ -588,13 +590,15 @@ dataBySpFem &lt;- myData %&gt;%
                   group_by(scientificName) %&gt;%
                   summarise(n_individuals = n())
 
+## `summarise()` ungrouping output (override with `.groups` argument)
+
 # view the data
 dataBySpFem
 
 ## # A tibble: 3 x 2
 ##   scientificName         n_individuals
 ##   &lt;chr&gt;                          &lt;int&gt;
-## 1 Peromyscus leucopus              515
+## 1 Peromyscus leucopus              455
 ## 2 Peromyscus maniculatus            98
 ## 3 Peromyscus sp.                     5
 </code></pre>
@@ -624,7 +628,7 @@ names(dataBySpFem_agg) &lt;- c(&#39;scientificName&#39;, &#39;n_individuals&#39;
 dataBySpFem_agg
 
 ##           scientificName n_individuals
-## 1    Peromyscus leucopus           515
+## 1    Peromyscus leucopus           455
 ## 2 Peromyscus maniculatus            98
 ## 3         Peromyscus sp.             5
 
@@ -649,7 +653,7 @@ dataBySpFem_byHand &lt;- data.frame(&#39;scientificName&#39;=sciName,
 dataBySpFem_byHand
 
 ##           scientificName n_individuals
-## 1    Peromyscus leucopus           515
+## 1    Peromyscus leucopus           455
 ## 2 Peromyscus maniculatus            98
 ## 3         Peromyscus sp.             5
 </code></pre>

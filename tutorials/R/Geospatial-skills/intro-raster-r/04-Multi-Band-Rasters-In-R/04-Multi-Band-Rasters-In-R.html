@@ -302,11 +302,11 @@ would render as a single image in grayscale. We will therefore use a grayscale
 palette to render individual bands. 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png" alt="Red, green, and blue bands of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png" alt="Red, green, and blue bands of NEON&#39;s site Harvard Forest"/></p>
 
 <p>Or we can composite all three bands together to make a color image.</p>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-RGB-now-1.png" alt="Composite image of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-RGB-now-1.png" alt="Composite image of NEON&#39;s site Harvard Forest"/></p>
 
 <p>In a multi-band dataset, the rasters will always have the same <em>extent</em>,
 <em>CRS</em> and <em>resolution</em>.  </p>
@@ -334,7 +334,7 @@ plot(RGB_band1_HARV,
      main=&quot;RGB Imagery - Band 1-Red\nNEON Harvard Forest Field Site&quot;) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-single-band-1.png" alt="Red band of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-single-band-1.png" alt="Red band of NEON&#39;s site Harvard Forest"/></p>
 
 <pre><code># view attributes: Check out dimension, CRS, resolution, values attributes, and 
 # band.
@@ -345,7 +345,7 @@ RGB_band1_HARV
 ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho 
 ## values     : 0, 255  (min, max)
@@ -406,7 +406,7 @@ plot(RGB_band2_HARV,
      main=&quot;RGB Imagery - Band 2- Green\nNEON Harvard Forest Field Site&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-specific-band-1.png" alt="Green band of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/read-specific-band-1.png" alt="Green band of NEON&#39;s site Harvard Forest"/></p>
 
 <pre><code># view attributes of band 2 
 RGB_band2_HARV
@@ -416,7 +416,7 @@ RGB_band2_HARV
 ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho 
 ## values     : 0, 255  (min, max)
@@ -464,7 +464,7 @@ RGB_stack_HARV
 ## dimensions : 2317, 3073, 7120141, 3  (nrow, ncol, ncell, nlayers)
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## names      : HARV_RGB_Ortho.1, HARV_RGB_Ortho.2, HARV_RGB_Ortho.3 
 ## min values :                0,                0,                0 
 ## max values :              255,              255,              255
@@ -485,7 +485,7 @@ RGB_stack_HARV@layers
 ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.1 
 ## values     : 0, 255  (min, max)
@@ -497,7 +497,7 @@ RGB_stack_HARV@layers
 ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.2 
 ## values     : 0, 255  (min, max)
@@ -509,7 +509,7 @@ RGB_stack_HARV@layers
 ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.3 
 ## values     : 0, 255  (min, max)
@@ -522,7 +522,7 @@ RGB_stack_HARV[[1]]
 ## dimensions : 2317, 3073, 7120141  (nrow, ncol, ncell)
 ## resolution : 0.25, 0.25  (x, y)
 ## extent     : 731998.5, 732766.8, 4712956, 4713536  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## source     : /Users/olearyd/Git/data/NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif 
 ## names      : HARV_RGB_Ortho.1 
 ## values     : 0, 255  (min, max)
@@ -536,7 +536,7 @@ plot(RGB_stack_HARV,
      col=grayscale_colors)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-1.png" alt="Histograms of each RGB band showing the distribution of values for NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-2.png" alt="Raster of each RGB band for NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-1.png" alt="Histograms of each RGB band showing the distribution of values for NEON&#39;s site Harvard Forest"/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-2.png" alt="Raster of each RGB band for NEON&#39;s site Harvard Forest"/></p>
 
 <pre><code># revert to a single plot layout 
 par(mfrow=c(1,1)) 
@@ -547,7 +547,7 @@ plot(RGB_stack_HARV[[2]],
      col=grayscale_colors)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-3.png" alt="Band 2 of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-raster-layers-3.png" alt="Band 2 of NEON&#39;s site Harvard Forest"/></p>
 
 <h3>Create A Three Band Image</h3>
 
@@ -571,7 +571,7 @@ plotRGB(RGB_stack_HARV,
         r = 1, g = 2, b = 3)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-rgb-image-1.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-rgb-image-1.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest"/></p>
 
 <p>The image above looks pretty good. We can explore whether applying a stretch to
 the image might improve clarity and contrast using  <code>stretch=&quot;lin&quot;</code> or 
@@ -608,7 +608,7 @@ plotRGB(RGB_stack_HARV,
         stretch = &quot;lin&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest"/></p>
 
 <pre><code>plotRGB(RGB_stack_HARV,
         r = 1, g = 2, b = 3, 
@@ -616,7 +616,7 @@ plotRGB(RGB_stack_HARV,
         stretch = &quot;hist&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest with slightly more contrast"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest with slightly more contrast"/></p>
 
 <p>In this case, the stretch doesn&#39;t enhance the contrast our image significantly
 given the distribution of reflectance (or brightness) values is distributed well
@@ -643,7 +643,7 @@ tutorial.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/challenge-code-NoData-1.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest with NAvalues removed"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/challenge-code-NoData-1.png" alt="Composite RGB image of NEON&#39;s site Harvard Forest with NAvalues removed"/></p>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** We can create a RasterStack from 
@@ -669,7 +669,7 @@ and <code>brick</code> R objects.</p>
 <pre><code># view size of the RGB_stack object that contains our 3 band image
 object.size(RGB_stack_HARV)
 
-## 44248 bytes
+## 50104 bytes
 
 # convert stack to a brick
 RGB_brick_HARV &lt;- brick(RGB_stack_HARV)
@@ -677,7 +677,7 @@ RGB_brick_HARV &lt;- brick(RGB_stack_HARV)
 # view size of the brick
 object.size(RGB_brick_HARV)
 
-## 13856 bytes
+## 170898632 bytes
 </code></pre>
 
 <p>Notice that in the <code>RasterBrick</code>, all of the bands are stored within the actual 
@@ -690,7 +690,7 @@ object. Thus, the <code>RasterBrick</code> object size is much larger than the
 plotRGB(RGB_brick_HARV)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-brick-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-brick-1.png" alt=" "/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: What Methods Can Be Used on an R Object?
@@ -702,6 +702,10 @@ methods(class=class(objectNameHere)). Use this to figure out:
 3. Why do you think there is a difference? 
 
 </div>
+
+<pre><code>## Warning in .S3methods(generic.function, class, envir): &#39;class&#39; is of
+## length &gt; 1; only the first element will be used
+</code></pre>
 
 </body>
 

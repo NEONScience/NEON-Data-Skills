@@ -1,13 +1,13 @@
 ---
 title: 'Data Activity: Visualize Stream Discharge Data in R to Better Understand the 2013 Colorado Floods'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/USGS-Stream-Discharge-In-R.R
-contributors: Felipe Sanchez
-dataProduct: null
+contributors: Felipe Sanchez, Donal O'Leary
+dataProduct: 
 dateCreated: '2015-05-18'
 description: This lesson walks through the steps needed to download and visualize USGS
   Stream Discharge data in R to better understand the drivers and impacts of the 2013
   Colorado floods.
-estimatedTime: null
+estimatedTime: 1 hour
 languagesTool: R
 packagesLibraries: ggplot2, plotly
 syncID: 13cf43a9835e40ebbd16c7d3b2dfda79
@@ -152,6 +152,8 @@ We will use `ggplot2` to efficiently plot our data and `plotly` to create intera
     wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
     setwd(wd)
 
+    ## Error in setwd(wd): cannot change working directory
+
 ##  Import USGS Stream Discharge Data Into R
 
 Now that we better understand the data that we are working with, let's import it into R. First, open up the `discharge/06730200-discharge_daily_1986-2013.txt` file in a text editor. 
@@ -182,24 +184,17 @@ Data Structure** section).
 
     #import data
     discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), sep= "\t",skip=24, header=TRUE,stringsAsFactors = FALSE)
-    
+
+    ## Warning in file(file, "rt"): cannot open file 'C:/Users/
+    ## fsanchez/Documents/data/disturb-events-co13/discharge/06730200-
+    ## discharge_daily_1986-2013.txt': No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
     #view first few lines
     head(discharge)
 
-    ##   agency_cd  site_no   datetime
-    ## 1        5s      15s        20d
-    ## 2      USGS 06730200 1986-10-01
-    ## 3      USGS 06730200 1986-10-02
-    ## 4      USGS 06730200 1986-10-03
-    ## 5      USGS 06730200 1986-10-04
-    ## 6      USGS 06730200 1986-10-05
-    ##   X17663_00060_00003 X17663_00060_00003_cd
-    ## 1                14n                   10s
-    ## 2                 30                     A
-    ## 3                 30                     A
-    ## 4                 30                     A
-    ## 5                 30                     A
-    ## 6                 30                     A
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'discharge' not found
 
 When we import these data, we can see that the first row of data is a second
 header row rather than actual data. We can remove the second row of header 
@@ -211,12 +206,14 @@ number of rows in the object.
     # nrow: how many rows are in the R object
     nrow(discharge)
 
-    ## [1] 9955
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'nrow': object 'discharge' not found
 
     # remove the first line from the data frame (which is a second list of headers)
     # the code below selects all rows beginning at row 2 and ending at the total
     # number of rows. 
     discharge <- discharge[2:nrow(discharge),]
+
+    ## Error in eval(expr, envir, enclos): object 'discharge' not found
 
 ## Metadata 
 We now have an R object that includes only rows containing data values. Each 
@@ -237,21 +234,21 @@ in R.
     #view names
     names(discharge)
 
-    ## [1] "agency_cd"            
-    ## [2] "site_no"              
-    ## [3] "datetime"             
-    ## [4] "X17663_00060_00003"   
-    ## [5] "X17663_00060_00003_cd"
+    ## Error in eval(expr, envir, enclos): object 'discharge' not found
 
     #rename the fifth column to disValue representing discharge value
     names(discharge)[4] <- "disValue"
+
+    ## Error in names(discharge)[4] <- "disValue": object 'discharge' not found
+
     names(discharge)[5] <- "qualCode"
-    
+
+    ## Error in names(discharge)[5] <- "qualCode": object 'discharge' not found
+
     #view names
     names(discharge)
 
-    ## [1] "agency_cd" "site_no"   "datetime" 
-    ## [4] "disValue"  "qualCode"
+    ## Error in eval(expr, envir, enclos): object 'discharge' not found
 
 ## View Data Structure
 
@@ -261,12 +258,7 @@ Let's have a look at the structure of our data.
     #view structure of data
     str(discharge)
 
-    ## 'data.frame':	9954 obs. of  5 variables:
-    ##  $ agency_cd: chr  "USGS" "USGS" "USGS" "USGS" ...
-    ##  $ site_no  : chr  "06730200" "06730200" "06730200" "06730200" ...
-    ##  $ datetime : chr  "1986-10-01" "1986-10-02" "1986-10-03" "1986-10-04" ...
-    ##  $ disValue : chr  "30" "30" "30" "30" ...
-    ##  $ qualCode : chr  "A" "A" "A" "A" ...
+    ## Error in str(discharge): object 'discharge' not found
 
 It appears as if the discharge value is a `character` (`chr`) class. This is 
 likely because we had an additional row in our data. Let's convert the discharge
@@ -277,19 +269,16 @@ class: `integer` given there are no decimal places.
     # view class of the disValue column
     class(discharge$disValue)
 
-    ## [1] "character"
+    ## Error in eval(expr, envir, enclos): object 'discharge' not found
 
     # convert column to integer
     discharge$disValue <- as.integer(discharge$disValue)
-    
+
+    ## Error in eval(expr, envir, enclos): object 'discharge' not found
+
     str(discharge)
 
-    ## 'data.frame':	9954 obs. of  5 variables:
-    ##  $ agency_cd: chr  "USGS" "USGS" "USGS" "USGS" ...
-    ##  $ site_no  : chr  "06730200" "06730200" "06730200" "06730200" ...
-    ##  $ datetime : chr  "1986-10-01" "1986-10-02" "1986-10-03" "1986-10-04" ...
-    ##  $ disValue : int  30 30 30 30 30 30 30 30 30 31 ...
-    ##  $ qualCode : chr  "A" "A" "A" "A" ...
+    ## Error in str(discharge): object 'discharge' not found
 
 
 ### Converting Time Stamps
@@ -309,20 +298,17 @@ To learn more about different date/time classes, see the
     #view class
     class(discharge$datetime)
 
-    ## [1] "character"
+    ## Error in eval(expr, envir, enclos): object 'discharge' not found
 
     #convert to date/time class - POSIX
-    discharge$datetime <- as.POSIXct(discharge$datetime, tz ="us/mountain")
-    
+    discharge$datetime <- as.POSIXct(discharge$datetime, tz ="America/Denver")
+
+    ## Error in as.POSIXct(discharge$datetime, tz = "America/Denver"): object 'discharge' not found
+
     #recheck data structure
     str(discharge)
 
-    ## 'data.frame':	9954 obs. of  5 variables:
-    ##  $ agency_cd: chr  "USGS" "USGS" "USGS" "USGS" ...
-    ##  $ site_no  : chr  "06730200" "06730200" "06730200" "06730200" ...
-    ##  $ datetime : POSIXct, format:  ...
-    ##  $ disValue : int  30 30 30 30 30 30 30 30 30 31 ...
-    ##  $ qualCode : chr  "A" "A" "A" "A" ...
+    ## Error in str(discharge): object 'discharge' not found
 
 ### No Data Values
 Next, let's query our data to check whether there are no data values in 
@@ -333,12 +319,12 @@ be, `NA` or `-9999` are common values
     # check total number of NA values
     sum(is.na(discharge$datetime))
 
-    ## [1] 0
+    ## Error in eval(expr, envir, enclos): object 'discharge' not found
 
     # check for "strange" values that could be an NA indicator
     hist(discharge$disValue)
 
-![Histogram of discharge value. X-axis represents discharge values and the Y-axis shows the frequency.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/no-data-values-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'hist': object 'discharge' not found
 
 Excellent! The data contains no NoData values.  
 
@@ -353,7 +339,7 @@ package to create our plot.
       ggtitle("Stream Discharge (CFS) for Boulder Creek") +
       xlab("Date") + ylab("Discharge (Cubic Feet per Second)")
 
-![Stream Discharge for Boulder Creek. X-axis represents the Date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/plot-flood-data-1.png)
+    ## Error in ggplot(discharge, aes(datetime, disValue)): object 'discharge' not found
 
 #### Questions: 
 
@@ -372,7 +358,6 @@ October 15 2013.
     # Define Start and end times for the subset as R objects that are the time class
     start.end <- as.POSIXct(c("2013-08-15 00:00:00","2013-10-15 00:00:00"),tz= "America/Denver")
     
-    
     # plot the data - Aug 15-October 15
     ggplot(discharge,
           aes(datetime,disValue)) +
@@ -381,10 +366,7 @@ October 15 2013.
           xlab("Date") + ylab("Discharge (Cubic Feet per Second)") +
           ggtitle("Stream Discharge (CFS) for Boulder Creek\nAugust 15 - October 15, 2013")
 
-    ## Warning: Removed 9892 rows containing missing values
-    ## (geom_point).
-
-![Stream discharge for Boulder Creek for the time period between August 15th and October 15th of 2013. X-axis represents the date and the Y-axis shows the discharge in cubic feet per second.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R/rfigs/define-time-subset-1.png)
+    ## Error in ggplot(discharge, aes(datetime, disValue)): object 'discharge' not found
 
 We get a warning message because we are "ignoring" lots of the data in the
 dataset.
@@ -409,9 +391,9 @@ Here we create a new R object with entries corresponding to just the dates we wa
     # subset out some of the data - Aug 15 - October 15
     discharge.aug.oct2013 <- subset(discharge, 
                             datetime >= as.POSIXct('2013-08-15 00:00',
-                                                  tz = "us/mountain") & 
+                                                  tz = "America/Denver") & 
                             datetime <= as.POSIXct('2013-10-15 23:59', 
-                                                  tz = "us/mountain"))
+                                                  tz = "America/Denver"))
     
     # plot the data
     disPlot.plotly <- ggplot(data=discharge.aug.oct2013,

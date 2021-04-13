@@ -261,6 +261,62 @@ all_HARV_NDVI &lt;- list.files(paste0(wd,&quot;NEON-DS-Landsat-NDVI/HARV/2011/ND
 # Create a time series raster stack
 NDVI_HARV_stack &lt;- stack(all_HARV_NDVI)
 
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
 # apply scale factor
 NDVI_HARV_stack &lt;- NDVI_HARV_stack/10000
 </code></pre>
@@ -434,7 +490,8 @@ avg_NDVI_HARV$Date&lt;- origin + (avg_NDVI_HARV$julianDay-1)
 # did it work? 
 head(avg_NDVI_HARV$Date)
 
-## [1] &quot;2011-01-05&quot; &quot;2011-02-06&quot; &quot;2011-03-26&quot; &quot;2011-05-13&quot; &quot;2011-06-30&quot; &quot;2011-07-16&quot;
+## [1] &quot;2011-01-05&quot; &quot;2011-02-06&quot; &quot;2011-03-26&quot; &quot;2011-05-13&quot; &quot;2011-06-30&quot;
+## [6] &quot;2011-07-16&quot;
 
 # What are the classes of the two columns now? 
 class(avg_NDVI_HARV$Date)
@@ -468,6 +525,79 @@ NEON-DS-Landsat-NDVI/SJER/2011/NDVI directory.
 
 </div>
 
+<pre><code>## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+
+## Warning in showSRID(uprojargs, format = &quot;PROJ&quot;, multiline = &quot;NO&quot;,
+## prefer_proj = prefer_proj): Discarded datum Unknown based on WGS84
+## ellipsoid in CRS definition
+</code></pre>
+
 <h2>Plot NDVI Using ggplot</h2>
 
 <p>We now have a clean data.frame with properly scaled NDVI and Julian days. Let&#39;s
@@ -486,7 +616,7 @@ ggplot(avg_NDVI_HARV, aes(julianDay, meanNDVI), na.rm=TRUE) +
   theme(text = element_text(size=20))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/ggplot-data-1.png" alt="Scatterplot of mean NDVI for NEON&#39;s site Harvard Forest in 2011"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/ggplot-data-1.png" alt="Scatterplot of mean NDVI for NEON&#39;s site Harvard Forest in 2011"/></p>
 
 <div id="ds-challenge" markdown="1">
 
@@ -496,7 +626,7 @@ Create a complementary plot for the SJER data. Plot the data points in a
 different color. 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-ggplot-data-1.png" alt="Scatterplot of mean NDVI for NEON&#39;s site San Joaquin Experimental Range in 2011"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-ggplot-data-1.png" alt="Scatterplot of mean NDVI for NEON&#39;s site San Joaquin Experimental Range in 2011"/></p>
 
 <h2>Compare NDVI from Two Different Sites in One Plot</h2>
 
@@ -519,7 +649,7 @@ ggplot(NDVI_HARV_SJER, aes(julianDay, meanNDVI, colour=site)) +
   theme(text = element_text(size=20))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/merge-df-single-plot-1.png" alt="Scatterplot comparing mean NDVI for NEON&#39;s sites Harvard Forest and San Joaquin Experimental Range in 2011"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/merge-df-single-plot-1.png" alt="Scatterplot comparing mean NDVI for NEON&#39;s sites Harvard Forest and San Joaquin Experimental Range in 2011"/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot NDVI with Date
@@ -528,7 +658,7 @@ on the x-axis.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-plot2-1.png" alt="Scatterplot comparing mean NDVI for NEON&#39;s sites Harvard Forest and San Joaquin Experimental Range in 2011 with the date on the x-axis"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/challenge-code-plot2-1.png" alt="Scatterplot comparing mean NDVI for NEON&#39;s sites Harvard Forest and San Joaquin Experimental Range in 2011 with the date on the x-axis"/></p>
 
 <h2>Remove Outlier Data</h2>
 
@@ -561,7 +691,7 @@ for (aFile in rgb.allCropped){
 par(mfrow=c(1,1))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-Harv-1.png" alt="Time series of RGB images showing greenness over time for NEON&#39;s site Harvard Forest"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-Harv-1.png" alt="Time series of RGB images showing greenness over time for NEON&#39;s site Harvard Forest"/></p>
 
 <p>Notice that the data points with very low NDVI values can be associated with
 images that are filled with clouds. Thus, we can attribute the low NDVI values
@@ -595,7 +725,7 @@ for (aFile in rgb.allCropped.SJER)
 par(mfrow=c(1,1))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-SJER-1.png" alt="Time series of RGB images showing greenness over time for NEON&#39;s site San Joaquin Experimental Range"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/view-all-rgb-SJER-1.png" alt="Time series of RGB images showing greenness over time for NEON&#39;s site San Joaquin Experimental Range"/></p>
 
 <p>Without significant additional processing, we will not be able to retrieve a
 strong reflection from vegetation, from a remotely sensed image that is 
@@ -637,7 +767,7 @@ ggplot(avg_NDVI_HARV_clean, aes(julianDay, meanNDVI)) +
   theme(text = element_text(size=20))
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/plot-clean-HARV-1.png" alt="Scatterplot of mean NDVI with outliers removed for NEON&#39;s site Harvard Forest in 2011"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/07-Extract-NDVI-From-Rasters-in-R/rfigs/plot-clean-HARV-1.png" alt="Scatterplot of mean NDVI with outliers removed for NEON&#39;s site Harvard Forest in 2011"/></p>
 
 <p>Now our outlier data points are removed and the pattern of &ldquo;green-up&rdquo; and
 &ldquo;brown-down&rdquo; makes a bit more sense.</p>

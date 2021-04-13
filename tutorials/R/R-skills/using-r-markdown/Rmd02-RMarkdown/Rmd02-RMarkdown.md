@@ -4,10 +4,10 @@ title: "Document Code with R Markdown"
 description: "This tutorial cover how to use R Markdown files to document code."
 dateCreated: 2016-01-01
 authors:
-contributors:
-estimatedTime:
-packagesLibraries: [knitr, rmarkdown]
-topics: data-management
+contributors: Ben Shetterly
+estimatedTime: 1 hour
+packagesLibraries: knitr, rmarkdown, rgdal, raster
+topics: data-management, rep-sci
 languagesTool: R
 dataProduct:
 code1:
@@ -68,7 +68,8 @@ the dataset, move it to this directory.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/FileStructureScreenShot.png"
+	alt="Mac OS Finder window with directory structure showing 'NEONDI-2016' folder contents"></a>
 	<figcaption> The <strong>data</strong> directory with the teaching data subset. This is the suggested organization for all Data Institute teaching data subsets. 
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -113,7 +114,9 @@ NOTE: The document title is not the same as the file name.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/KnitButton-screenshot.png"
+	alt="RStudio window with R Markdown template of new document and 'Knit HTML' button 
+circled."></a>
 	<figcaption> Location of the knit button in RStudio in Version 0.99.486.
 	Source: National Ecological Observatory Network (NEON)
 	</figcaption>
@@ -130,7 +133,9 @@ Next, we'll break down the structure of an R Markdown file.
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/NewRmd-html-screenshot.png"
+	alt="RStudio window with R Markdown template of new document, including header, 
+markdown, and code chunk."></a>
 	<figcaption>Screenshot of a new R Markdown document in RStudio. Notice the different
 	parts of the document. 
 	Source: National Ecological Observatory Network (NEON)  
@@ -245,7 +250,7 @@ The initial line of a code chunk must appear as:
  ```</code></pre>
 
 The `r` part of the chunk header identifies this chunk as an R code chunk and is 
-mandatory. Next to the `{r}`, there is a chunk name. This name is not required 
+mandatory. Next to the `{r`, there is a chunk name. This name is not required 
 for basic knitting however, it is good practice to give each chunk a unique 
 name as it is required for more advanced knitting approaches. 
 
@@ -255,26 +260,53 @@ name as it is required for more advanced knitting approaches.
 
 Continue working on your document. Below the last section that you've just added, 
 create a code chunk that loads the packages required to work with raster data 
-in R, and sets the working directory.
+in R.
 
-<pre><code>```{r setup-read-data }
+<pre><code>```{r setup-library }
+   
    library(rgdal)
    library(raster)
-
-   # set working directory to ensure R can find the file we wish to import
-   setwd("~/Documents/data/NEONDI-2016/")
-
+ 
  ```</code></pre>
 
-(For help setting the working directory, see the NEON Data Skills tutorial
+In R scripts, setting the working directory is normally done once near the beginning of your script. In R Markdown files, knit code chunks behave a little differently, and a warning appears upon kitting a chunk that sets a working directory.
+
+<pre><code>```{r code-setwd}
+
+   # set working directory to ensure R can find the file we wish to import.
+   # This will depend on your local environment.
+   setwd("~/Documents/data/NEONDI-2016/") 
+
+```</code></pre>
+<pre><code>You changed the working directory to ~/Documents/data/NEONDI-2016/ (probably via setwd()). It will be restored to [directory path of current .rmd file]. See the Note section in ?knitr::knit ?knitr::knit</code></pre>
+
+That's a bad sign if you want to set the working directory in one code chunk, and read or write data in another code chunk. To allow for a working data directory that is different from your Rmd file's current directory, you can store the directory path in a string variable.
+
+<pre><code>```{r code-setwd-stringvariable}
+
+	# set working directory as a string variable for use in other code chunks.
+	# This will depend on your local environment.
+	wd <- "~/Documents/data/NEONDI-2016/"
+	setwd(wd)
+
+ ```</code></pre>
+The `setwd(wd)` line could be at the start of a lengthier code chunk that reads 
+from and writes to data files. Alternatively, since the variable will be kept in 
+this document's R environment, it can be used with paste() or paste0() when you 
+need to refer to a filepath. Proceed to the next step for an example of this.
+
+(For further instruction on setting the working directory, see the NEON Data Skills tutorial
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank">*Set A Working Directory in R*</a>.)
 
-Then, add another chunk that loads the `TEAK_lidarDSM` raster file.
+Let's add another chunk that loads the `TEAK_lidarDSM` raster file.
 
 <pre><code>```{r load-dsm-raster }
-
-   # import dsm
-   teak_dsm <- raster("NEONdata/D17-California/TEAK/2013/lidar/TEAK_lidarDSM.tif")
+   # check for the working directory
+   getwd()
+   # In this new chunk, the working directory has reverted to default upon kitting. 
+   # Combining the working directory string variable and 
+   # additional path to the file, import a DSM file.
+   teak_dsm <- raster(paste0(wd, "NEONdata/D17-California/TEAK/2013/lidar/TEAK_lidarDSM.tif"))
    
  ```</code></pre>
 
@@ -285,9 +317,9 @@ You can run code chunks:
 * **Line-by-line:** with cursor on current line, Ctrl + Enter (Windows/Linux) or
 Command + Enter (Mac OS X).
 * **By chunk:** You can run the entire chunk (or multiple chunks) by
-clicking on the `Chunks` dropdown button in the upper right corner of the script
-environment and choosing the appropriate option. Keyboard shortcuts are
-available for these options.
+clicking on the "Run" button in the upper right corner of the RStudio script
+panel and choosing the appropriate option (Run Current Chunk, Run Next Chunk). 
+Keyboard shortcuts are available for these options.
 
 </div>
 
@@ -317,18 +349,18 @@ Three common code chunk options are:
 * `eval = FALSE`: Do not **eval**uate (or run) this code chunk when
 knitting the RMD document. The code in this chunk will still render in our knitted
 HTML output, however it will not be evaluated or run by R.
-* `echo=FALSE`: Hide the code in the output. The code is
+* `echo = FALSE`: Hide the code in the output. The code is
 evaluated when the RMD file is knit, however only the output is rendered on the 
 output document.
-* `results=hide`: The code chunk will be evaluated but the results or the code 
+* `results = hide`: The code chunk will be evaluated but the results of the code 
 will not be rendered on the output document. This is useful if you are viewing the 
 structure of a large object (e.g. outputs of a large `data.frame`).
 
 Multiple code chunk options can be used for the same chunk. For more on code
 chunk options, read
-<a href="http://rmarkdown.rstudio.com/authoring_rcodechunks.html" target="_blank"> the RStudio documentation</a>
+<a href="https://bookdown.org/yihui/rmarkdown/r-code.html" target="_blank">R Markdown: The Definitive Guide</a>
 or the
-<a href="http://yihui.name/knitr/demo/output/" target="_blank"> knitr documentation</a>.
+<a href="https://yihui.org/knitr/options/#chunk-options" target="_blank"> knitr documentation</a>.
 
 <div id="ds-challenge" markdown="1">
 ## Activity: Add More Code to Your R Markdown

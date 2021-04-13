@@ -1,4 +1,4 @@
-## ----function-farKelv-----------------------------------------
+## ----function-farKelv-----------------------------------------------------------------
 fahr_to_kelvin <- function(temp) {
 	kelvin <- ((temp - 32) * (5/9)) + 273.15
 	kelvin
@@ -6,7 +6,7 @@ fahr_to_kelvin <- function(temp) {
 
 
 
-## ----function-format, eval=FALSE------------------------------
+## ----function-format, eval=FALSE------------------------------------------------------
 ## 
 ## FunctionNameHere <- function(Input-variable-here){
 ## 	what-to-do-here
@@ -15,7 +15,7 @@ fahr_to_kelvin <- function(temp) {
 ## 
 
 
-## ----call-function--------------------------------------------
+## ----call-function--------------------------------------------------------------------
 # call function for F=32 degrees
 fahr_to_kelvin(32)
 
@@ -25,20 +25,20 @@ paste('The boiling point of water (212 Fahrenheit) is',
       'degrees Kelvin.')
 
 
-## ----funct-test-----------------------------------------------
+## ----funct-test-----------------------------------------------------------------------
 fahr_to_kelvin_test <- function(temp) {
 	kelvin <- ((temp - 32) * (5 / 9)) + 273.15
 }
 
 
 
-## ----funct-test-2---------------------------------------------
+## ----funct-test-2---------------------------------------------------------------------
 
 fahr_to_kelvin_test(32)
 
 
 
-## ----funct-test-3---------------------------------------------
+## ----funct-test-3---------------------------------------------------------------------
 # assign to a
 a <- fahr_to_kelvin_test(32)
 
@@ -46,7 +46,7 @@ a <- fahr_to_kelvin_test(32)
 a
 
 
-## ----scope----------------------------------------------------
+## ----scope----------------------------------------------------------------------------
 x <- 1:3
 x
 
@@ -62,7 +62,7 @@ plus_one(x)
 x
 
 
-## ----scope-2--------------------------------------------------
+## ----scope-2--------------------------------------------------------------------------
 plus_one <- function(input) {
   output <- input + 1     # store results to output variable
   output                  # return output variable
@@ -74,7 +74,7 @@ x
 
 
 
-## ----challenge-code-kelv-to-cels, include=TRUE, results="hide", echo=FALSE----
+## ----challenge-code-kelv-to-cels, include=TRUE, results="hide", echo=FALSE------------
 
 kelvin_to_celsius <- function(temp) {
 	Celsius <- temp - 273.15
@@ -85,7 +85,7 @@ paste('absolute zero (0 Kelvin) in Celsius:', kelvin_to_celsius(0))
 	
 
 
-## ----compound-function----------------------------------------
+## ----compound-function----------------------------------------------------------------
 
 # use two functions (F->K & K->C) to create a new one (F->C)
 fahr_to_celsius <- function(temp) {

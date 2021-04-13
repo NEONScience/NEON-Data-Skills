@@ -1,4 +1,4 @@
-## ----load-packages-data-------------------------------------------------------------------
+## ----load-packages-data------------------------------------------------
 # load packages
 # rgdal: for vector work; sp package should always load with rgdal. 
 library(rgdal)  
@@ -21,7 +21,7 @@ point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
 
 
 
-## ----view-shapefile-metadata--------------------------------------------------------------
+## ----view-shapefile-metadata-------------------------------------------
 # view class
 class(x = point_HARV)
 
@@ -39,7 +39,7 @@ extent(point_HARV)
 point_HARV
 
 
-## ----shapefile-attributes-----------------------------------------------------------------
+## ----shapefile-attributes----------------------------------------------
 # just view the attributes & first 6 attribute values of the data
 head(lines_HARV@data)
 
@@ -48,13 +48,13 @@ length(lines_HARV@data)
 
 
 
-## ----view-shapefile-attributes------------------------------------------------------------
+## ----view-shapefile-attributes-----------------------------------------
 # view just the attribute names for the lines_HARV spatial object
 names(lines_HARV@data)
 
 
 
-## ----challenge-code-attributes-classes, results="hide", echo=FALSE------------------------
+## ----challenge-code-attributes-classes, results="hide", echo=FALSE-----
 # 1
 length(names(point_HARV@data))  #14 attributes
 names(aoiBoundary_HARV@data)  #1 attribute
@@ -66,7 +66,7 @@ head(point_HARV@data)  #Harvard University, LTER
 point_HARV@data  # C Country
 
 
-## ----explore-attribute-values-------------------------------------------------------------
+## ----explore-attribute-values------------------------------------------
 # view all attributes in the lines shapefile within the TYPE field
 lines_HARV$TYPE
 
@@ -75,7 +75,7 @@ levels(lines_HARV@data$TYPE)
 
 
 
-## ----Subsetting-shapefiles----------------------------------------------------------------
+## ----Subsetting-shapefiles---------------------------------------------
 # select features that are of TYPE "footpath"
 # could put this code into other function to only have that function work on
 # "footpath" lines
@@ -89,7 +89,7 @@ footpath_HARV
 length(footpath_HARV)
 
 
-## ----plot-subset-shapefile----------------------------------------------------------------
+## ----plot-subset-shapefile, fig.cap="Foothpaths at NEON Harvard Forest Field Site."----
 # plot just footpaths
 plot(footpath_HARV,
      lwd=6,
@@ -97,7 +97,7 @@ plot(footpath_HARV,
 
 
 
-## ----plot-subset-shapefile-unique-colors--------------------------------------------------
+## ----plot-subset-shapefile-unique-colors, fig.cap="Foothpaths at NEON Harvard Forest Field Site with color varied by feature type."----
 # plot just footpaths
 plot(footpath_HARV,
      col=c("green","blue"), # set color for each feature 
@@ -106,7 +106,7 @@ plot(footpath_HARV,
 
 
 
-## ----challenge-code-feature-subset, results="hide", echo=FALSE----------------------------
+## ----challenge-code-feature-subset, results="hide", echo=FALSE, fig.cap=c("Boardwalks at NEON Harvard Forest Field Site with color varied by feature type.", "Stone walls at NEON Harvard Forest Field Site with color varied by feature type.")----
 
 # save an object with only boardwalk lines
 boardwalk_HARV<-lines_HARV[lines_HARV$TYPE == "boardwalk",]
@@ -137,7 +137,7 @@ plot(stoneWall_HARV,
 
 
 
-## ----convert-to-factor--------------------------------------------------------------------
+## ----convert-to-factor-------------------------------------------------
 # view the original class of the TYPE column
 class(lines_HARV$TYPE)
 
@@ -155,7 +155,7 @@ levels(lines_HARV$TYPE)
 summary(lines_HARV$TYPE)
 
 
-## ----palette-and-plot---------------------------------------------------------------------
+## ----palette-and-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor level."----
 # Check the class of the attribute - is it a factor?
 class(lines_HARV$TYPE)
 
@@ -181,7 +181,7 @@ plot(lines_HARV,
 
 
 
-## ----adjust-line-width--------------------------------------------------------------------
+## ----adjust-line-width, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and uniformly thick line width."----
 # make all lines thicker
 plot(lines_HARV, 
      col=roadColors,
@@ -190,7 +190,7 @@ plot(lines_HARV,
 
 
 
-## ----line-width-unique--------------------------------------------------------------------
+## ----line-width-unique, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by attribute factor value."----
 class(lines_HARV$TYPE)
 levels(lines_HARV$TYPE)
 # create vector of line widths
@@ -203,7 +203,7 @@ plot(lines_HARV,
      lwd=lineWidths)
 
 
-## ----bicycle-map, include=TRUE, results="hide", echo=FALSE--------------------------------
+## ----bicycle-map, include=TRUE, results="hide", echo=FALSE, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by specific attribute value."----
 
 # view the factor levels
 levels(lines_HARV$TYPE)
@@ -220,7 +220,7 @@ plot(lines_HARV,
 
 
 
-## ----add-legend-to-plot-------------------------------------------------------------------
+## ----add-legend-to-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a default legend."----
 plot(lines_HARV, 
      col=roadColors,
      main="NEON Harvard Forest Field Site\n Roads & Trails\n Default Legend")
@@ -236,7 +236,7 @@ legend("bottomright",   # location of legend
 
 
 
-## ----modify-legend-plot-------------------------------------------------------------------
+## ----modify-legend-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a modified legend."----
 
 plot(lines_HARV, 
      col=roadColors,
@@ -250,7 +250,7 @@ legend("bottomright",
 
 
 
-## ----plot-different-colors----------------------------------------------------------------
+## ----plot-different-colors, fig.cap="Roads and trails at NEON Harvard Forest Field Site with manually set colors and with a modified legend."----
 
 # manually set the colors for the plot!
 newColors <- c("springgreen", "blue", "magenta", "orange")
@@ -269,7 +269,7 @@ legend("bottomright",
 
 
 
-## ----bicycle-map-2, include=TRUE, results="hide", echo=FALSE------------------------------
+## ----bicycle-map-2, include=TRUE, results="hide", echo=FALSE, fig.cap="Roads where Bikes and Horses are Allowed on NEON Harvard Forest Field Site with lines varied by attribute factor and with a modified legend. "----
 # view levels 
 levels(lines_HARV$BicyclesHo)
 # make sure the attribute is of class "Factor"
@@ -308,7 +308,7 @@ legend("bottomright",
 
 
 
-## ----challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE----------------
+## ----challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE, fig.cap=c("Contiguous U.S. State Boundaries with color varied by region and with a modified legend.", "Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and one symbol for all types and with a modified legend.", "Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and unique symbols for each type and with a modified legend.")----
 ## 1
 # Read the shapefile file
 State.Boundary.US <- readOGR("NEON-DS-Site-Layout-Files/US-Boundary-Layers",

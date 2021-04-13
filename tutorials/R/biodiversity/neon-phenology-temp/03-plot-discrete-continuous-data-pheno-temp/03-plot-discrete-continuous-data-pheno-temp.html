@@ -269,7 +269,7 @@ tempPlot_dayMax &lt;- ggplot(temp_day, aes(Date, dayMax)) +
 grid.arrange(phenoPlot, tempPlot_dayMax) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/stacked-plots-1.png" alt="One graphic showing two plots arranged vertically by using the grid.arrange function form the gridExtra package. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/stacked-plots-1.png" alt="One graphic showing two plots arranged vertically by using the grid.arrange function form the gridExtra package. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
 
 <p>Now, we can see both plots in the same window.  But, hmmm&hellip; the x-axis on both 
 plots is kinda wonky. We want the same spacing in the scale across the year (e.g.,
@@ -309,7 +309,7 @@ tempPlot_dayMax &lt;- tempPlot_dayMax +
 grid.arrange(phenoPlot, tempPlot_dayMax) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/format-x-axis-labels-1.png" alt="Graphic showing the arranged plots created in the previous step, with the x-axis formatted to only read &#39;month&#39; in both plots. However, it is important to note that this step only partially fixes the problem. The plots still have different ranges on the x-axis, which makes it harder to see trends. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/format-x-axis-labels-1.png" alt="Graphic showing the arranged plots created in the previous step, with the x-axis formatted to only read &#39;month&#39; in both plots. However, it is important to note that this step only partially fixes the problem. The plots still have different ranges on the x-axis, which makes it harder to see trends. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
 
 <p>But this only solves one of the problems, we still have a different range on the
 x-axis which makes it harder to see trends. </p>
@@ -349,7 +349,7 @@ tempPlot_dayMax_setX &lt;- ggplot(temp_day, aes(Date, dayMax)) +
 grid.arrange(phenoPlot_setX, tempPlot_dayMax_setX) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/set-x-axis-1.png" alt="Graphic showing the arranged plots created in the previous step, with the x-axis formatted to only read &#39;month&#39;, and scaled so they align with each other. This is achieved by adding the limits parameter to the scale_x_date function in the ggplot call. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/set-x-axis-1.png" alt="Graphic showing the arranged plots created in the previous step, with the x-axis formatted to only read &#39;month&#39;, and scaled so they align with each other. This is achieved by adding the limits parameter to the scale_x_date function in the ggplot call. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
 
 <p>Now we can really see the pattern over the full year. This emphasizes the point
 that during much of the late fall, winter, and early spring none of the trees 
@@ -385,7 +385,7 @@ tempPlot_dayMaxFiltered &lt;- ggplot(temp_day_filt, aes(Date, dayMax)) +
 grid.arrange(phenoPlot, tempPlot_dayMaxFiltered)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/align-datasets-replot-1.png" alt="Graphic of the arranged plots created in the previous steps with only the data that overlap. This was achieved by filtering the daily max temperature data by the observation date in the total individuals in Leaf dataset. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/align-datasets-replot-1.png" alt="Graphic of the arranged plots created in the previous steps with only the data that overlap. This was achieved by filtering the daily max temperature data by the observation date in the total individuals in Leaf dataset. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
 
 <p>With this plot, we really look at the area of overlap in the plotted data (but 
 this does cut out the time where the data are collected but not plotted). </p>
@@ -407,7 +407,7 @@ scales. You can read his own discussion of the topic on this
 is provided as a demonstration of this capability. Note, by showing this code 
 here, we don&#39;t necessarily endorse having plots with two y-axes.</p>
 
-<p>This code is adapted from code by <a href="heareresearch.blogspot.com/2014/10/10-30-2014-dual-y-axis-graph-ggplot2_30.html" target="_blank">Jake Heare</a>. </p>
+<p>This code is adapted from code by <a href="http://heareresearch.blogspot.com/2014/10/10-30-2014-dual-y-axis-graph-ggplot2_30.html" target="_blank">Jake Heare</a>. </p>
 
 <pre><code># Source: http://heareresearch.blogspot.com/2014/10/10-30-2014-dual-y-axis-graph-ggplot2_30.html
 
@@ -464,7 +464,7 @@ g &lt;- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
 grid.draw(g)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/two-y-axes-ggplot-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/two-y-axes-ggplot-1.png" alt=" "/></p>
 
 <pre><code># Plot 2: Both pheno data and temp data as line graphs
 grid.newpage()
@@ -513,7 +513,7 @@ g &lt;- gtable_add_grob(g, ax, pp$t, length(g$widths) - 1, pp$b)
 grid.draw(g)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/two-y-axes-ggplot-2.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/03-plot-discrete-continuous-data-pheno-temp/rfigs/two-y-axes-ggplot-2.png" alt=" "/></p>
 
 </body>
 

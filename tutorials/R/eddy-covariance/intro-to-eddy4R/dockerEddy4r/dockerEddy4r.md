@@ -5,12 +5,12 @@ description: "This tutorial provides the basic steps for setting up and using Do
 dateCreated: 2018-03-06
 authors: Megan A. Jones
 contributors: 
-estimatedTime: 
+estimatedTime: 1 hour
 packagesLibraries: 
 topics: data management, micrometeorology
 languagesTool: R, Docker
 dataProduct: DP4.00200.001
-code1:
+code1: 
 tutorialSeries: eddy4r
 urlTitle: set-up-docker
 ---
@@ -92,8 +92,6 @@ Quickstart Terminal (Windows).
     docker --version
     	
 
-    ## Docker version 19.03.5, build 633a0ea
-
 When run, you will see which version of Docker you are currently running.
 
 Note: If you run just the word ``docker`` you should see a whole bunch of 
@@ -103,28 +101,6 @@ you can test your installation by running the following:
 
     
     docker run hello-world
-
-    ## 
-    ## Hello from Docker!
-    ## This message shows that your installation appears to be working correctly.
-    ## 
-    ## To generate this message, Docker took the following steps:
-    ##  1. The Docker client contacted the Docker daemon.
-    ##  2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-    ##     (amd64)
-    ##  3. The Docker daemon created a new container from that image which runs the
-    ##     executable that produces the output you are currently reading.
-    ##  4. The Docker daemon streamed that output to the Docker client, which sent it
-    ##     to your terminal.
-    ## 
-    ## To try something more ambitious, you can run an Ubuntu container with:
-    ##  $ docker run -it ubuntu bash
-    ## 
-    ## Share images, automate workflows, and more with a free Docker ID:
-    ##  https://hub.docker.com/
-    ## 
-    ## For more examples and ideas, visit:
-    ##  https://docs.docker.com/get-started/
 
 Notice that the first line states that the image can't be found locally. The 
 next few lines are pulling the image, so if you were to run the `hello-world` 

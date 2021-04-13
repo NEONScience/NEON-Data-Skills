@@ -1,17 +1,17 @@
-## ----load-libraries-----------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 # Load packages required for entire script
 library(lubridate)  # work with dates
 library(ggplot2)  # plotting
 
 # set working directory to ensure R can find the file we wish to import
-# setwd("working-dir-path-here")
+wd <- "~/Documents/"
 
 # Load csv file containing 15 minute averaged atmospheric data 
 # for the NEON Harvard Forest Field Site
 
 # Factors=FALSE so data are imported as numbers and characters 
 harMet_15Min <- read.csv(
-  file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv",
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv"),
   stringsAsFactors = FALSE)
 
 # convert to POSIX date time class - US Eastern Time Zone
@@ -21,7 +21,7 @@ harMet_15Min$datetime <- as.POSIXct(harMet_15Min$datetime,
 
 
 
-## ----subset-by-time-----------------------------------------------------------------------
+## ----subset-by-time----------------------------------------------------
 # subset data - 2009-2011
 harMet15.09.11 <- subset(harMet_15Min,
                          datetime >= as.POSIXct('2009-01-01 00:00',
@@ -35,14 +35,14 @@ tail(harMet15.09.11[1])
 
 
 
-## ----write-csv----------------------------------------------------------------------------
+## ----write-csv---------------------------------------------------------
 # write harMet15 subset data to .csv
 write.csv(harMet15.09.11, 
-          file="Met_HARV_15min_2009_2011.csv")
+          file=paste0(wd,"Met_HARV_15min_2009_2011.csv"))
 
 
 
-## ----challenge-code-subsetting, include=TRUE, results="hide", echo=FALSE------------------
+## ----challenge-code-subsetting, include=TRUE, results="hide", echo=FALSE, fig.cap=c("Daily Rainfall at Harvard Forest for the month of July, 2010","Daily Dewpoint at Harvard Forest for the month of July, 2011")----
 
 # subset out data points from July 2010
 harMet15_July2010 <- subset(harMet15.09.11,
@@ -91,7 +91,7 @@ qplot (datetime, dewp,
 
 
 
-## ----missing values-----------------------------------------------------------------------
+## ----missing values----------------------------------------------------
 
 # Check for NA values
 sum(is.na(harMet15.09.11$datetime))
@@ -101,14 +101,14 @@ sum(is.na(harMet15.09.11$airt))
 harMet15.09.11[is.na(harMet15.09.11$airt),]
 
 
-## ----no-data-value-challenge, echo=FALSE, results="hide"----------------------------------
+## ----no-data-value-challenge, echo=FALSE, results="hide"---------------
 # check for no data values
 sum(is.na(harMet15.09.11$prec))
 sum(is.na(harMet15.09.11$parr))
 
 
 
-## ----na-in-calculations-------------------------------------------------------------------
+## ----na-in-calculations------------------------------------------------
 
 # calculate mean of air temperature
 mean(harMet15.09.11$airt)
@@ -118,17 +118,17 @@ sum(is.na(harMet15.09.11$airt))
 
 
 
-## ----na-rm--------------------------------------------------------------------------------
+## ----na-rm-------------------------------------------------------------
 # calculate mean of air temperature, ignore NA values
 mean(harMet15.09.11$airt, 
      na.rm=TRUE)
 
 
 
-## ----Challenge-code-harMet.daily, include=TRUE, results="hide", echo=FALSE----------------
+## ----Challenge-code-harMet.daily, include=TRUE, results="hide", echo=FALSE, fig.cap="Relationship between Date and Daily Average Temperature at Harvard Forest between 2009 and 2012"----
 
 # 1. import daily file
-harMet.daily <- read.csv("NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv", 
+harMet.daily <- read.csv(paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv"), 
       stringsAsFactors = FALSE)
 # view file structure
 str(harMet.daily)

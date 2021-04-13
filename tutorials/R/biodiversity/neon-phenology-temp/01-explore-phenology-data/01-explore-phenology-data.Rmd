@@ -5,7 +5,7 @@ description: "Learn to work with NEON plant phenology observation data (NEON.DP1
 dateCreated: 2017-08-01
 authors: Megan A. Jones, Natalie Robinson, Lee Stanish
 contributors: Katie Jones, Cody Flagg, Karlee Bradley, Felipe Sanchez
-estimatedTime: 
+estimatedTime: 1 hour
 packagesLibraries: dplyr, ggplot2
 topics: time-series, phenology, organisms
 languagesTool: R
@@ -213,7 +213,7 @@ With this information, we can download our data using the neonUtilities package.
 If you are not using a NEON token to download your data, remove the 
 `token = Sys.getenv(NEON_TOKEN)` line of code (learn more about NEON API tokens 
 in the 
-<a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">*Using an API Token when Accessing NEON Data with neonUtilities* tutorial</a>). 
+<a href="https://www.neonscience.org/neon-api-tokens-tutorial" target="_blank">*Using an API Token when Accessing NEON Data with neonUtilities* tutorial</a>). 
 
 If you are using the data downloaded at the start of the tutorial, use the 
 commented out code in the second half of this code chunk. 

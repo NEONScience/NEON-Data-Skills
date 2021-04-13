@@ -5,8 +5,8 @@ description: "This page details how to complete the assignment for pre-Institute
 dateCreated: 2017-06-12
 dateUpdated: 2020-04-21
 authors: Maria Paula Mugnani
-contributors: 
-estimatedTime:
+contributors: Donal O'Leary
+estimatedTime: 1 hour
 packagesLibraries:
 topics: data-management, rep-sci
 languagesTool: Python
@@ -33,7 +33,7 @@ This will be accomplished by:
   *Import file onto Jupyter Notebooks
   *Check the raster size
 
-
+</div>
 
 ## Assignment: Open a Tiff File in Jupyter Notebook 
 

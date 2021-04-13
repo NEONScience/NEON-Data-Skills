@@ -5,7 +5,7 @@ description: "This tutorial is a data integration wrap-up culmination activity f
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Leah A. Wasser
 contributors: Collin J. Storlie
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, scales, gridExtra, grid, dplyr, reshape2
 topics: time-series, phenology
 languagesTool:
@@ -132,7 +132,7 @@ library(grid)   # for arranging plots
 library(dplyr)  # for subsetting by season
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # read in the Harvard micro-meteorological data; if you don't already have it
 harMetDaily.09.11 <- read.csv(
@@ -314,7 +314,7 @@ Second, plot PAR, air temperature and NDVI in a single pane for ease of
 comparison.  
 </div>
 
-``` {r challengeplot-same-xaxis, echo=FALSE, fig.cap=c("A scatterplot showing the relationship between date and daily air temperature at Harvard Forest during 2011.","Three scatterplots combined in a single image.  Above: a scatterplot showing the relationship between date and daily photosynthetically active radiation at Harvard Forest during 2011.  Middle: A scatterplot showing the relationship between date and daily air temperature at Harvard Forest during 2011.  Below: A scatterplot showing the relationship between date and daily NDVI at Harvard Forest during 2011. Notice x-axis scales are now concordant between the three panels."}
+``` {r challengeplot-same-xaxis, echo=FALSE, fig.cap=c("A scatterplot showing the relationship between date and daily air temperature at Harvard Forest during 2011.","Three scatterplots combined in a single image.  Above: a scatterplot showing the relationship between date and daily photosynthetically active radiation at Harvard Forest during 2011.  Middle: A scatterplot showing the relationship between date and daily air temperature at Harvard Forest during 2011.  Below: A scatterplot showing the relationship between date and daily NDVI at Harvard Forest during 2011. Notice x-axis scales are now concordant between the three panels.")}
 # 1
 # plot air temp
 plot.airt.2011 <- ggplot(harMet.daily2011, aes(date, airt))+

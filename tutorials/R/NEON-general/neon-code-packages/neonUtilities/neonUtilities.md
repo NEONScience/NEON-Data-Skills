@@ -3,8 +3,8 @@ syncID: a1388c25d16342cca2643bc2df3fbd8e
 title: "Use the neonUtilities Package to Access NEON Data"
 description: "Use the neonUtilities R package to download data, and to convert downloaded data from zipped month-by-site files into a table with all data of interest. Temperature data are used as an example. "
 dateCreated: 2017-08-01
-authors: [Claire K. Lunch, Megan A. Jones]
-contributors: [Maxwell Burner]
+authors: Claire K. Lunch, Megan A. Jones
+contributors: Maxwell Burner
 estimatedTime: 40 minutes
 packagesLibraries: neonUtilities
 topics: data-management, rep-sci

@@ -2,12 +2,12 @@
 title: 'Data Activity: Visualize Precipitation Data in R to Better Understand the
   2013 Colorado Floods'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/COOP-NEIS-Precipitation-In-R.R
-contributors: Felipe Sanchez
-dataProduct: null
+contributors: Felipe Sanchez, Donal O'Leary
+dataProduct: 
 dateCreated: '2015-05-18'
 description: This lesson walks through the steps need to download and visualize precipitation
   data in R to better understand the drivers and impacts of the 2013 Colorado floods.
-estimatedTime: null
+estimatedTime: 1 hour
 languagesTool: R
 packagesLibraries: ggplot2, plotly
 syncID: 53641e3826d3401abc682d5896010539
@@ -207,6 +207,8 @@ nteractive plots.
     wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
     setwd(wd)
 
+    ## Error in setwd(wd): cannot change working directory
+
 
 
 ## Import Precipitation Data
@@ -225,45 +227,22 @@ the R object structure.
     # defining the file name to be opened
     
     precip.boulder <- read.csv(paste0(wd,"disturb-events-co13/precip/805325-precip_daily_2003-2013.csv"), stringsAsFactors = FALSE, header = TRUE )
-    
+
+    ## Warning in file(file, "rt"): cannot open file 'C:/Users/
+    ## fsanchez/Documents/data/disturb-events-co13/precip/805325-
+    ## precip_daily_2003-2013.csv': No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
     # view first 6 lines of the data
     head(precip.boulder)
 
-    ##       STATION    STATION_NAME ELEVATION
-    ## 1 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 2 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 3 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 4 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 5 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 6 COOP:050843 BOULDER 2 CO US    1650.5
-    ##   LATITUDE LONGITUDE           DATE HPCP
-    ## 1 40.03389 -105.2811 20030101 01:00  0.0
-    ## 2 40.03389 -105.2811 20030201 01:00  0.0
-    ## 3 40.03389 -105.2811 20030202 19:00  0.2
-    ## 4 40.03389 -105.2811 20030202 22:00  0.1
-    ## 5 40.03389 -105.2811 20030203 02:00  0.1
-    ## 6 40.03389 -105.2811 20030205 02:00  0.1
-    ##   Measurement.Flag Quality.Flag
-    ## 1                g             
-    ## 2                g             
-    ## 3                              
-    ## 4                              
-    ## 5                              
-    ## 6
+    ## Error in head(precip.boulder): object 'precip.boulder' not found
 
     # view structure of data
     str(precip.boulder)
 
-    ## 'data.frame':	1840 obs. of  9 variables:
-    ##  $ STATION         : chr  "COOP:050843" "COOP:050843" "COOP:050843" "COOP:050843" ...
-    ##  $ STATION_NAME    : chr  "BOULDER 2 CO US" "BOULDER 2 CO US" "BOULDER 2 CO US" "BOULDER 2 CO US" ...
-    ##  $ ELEVATION       : num  1650 1650 1650 1650 1650 ...
-    ##  $ LATITUDE        : num  40 40 40 40 40 ...
-    ##  $ LONGITUDE       : num  -105 -105 -105 -105 -105 ...
-    ##  $ DATE            : chr  "20030101 01:00" "20030201 01:00" "20030202 19:00" "20030202 22:00" ...
-    ##  $ HPCP            : num  0 0 0.2 0.1 0.1 ...
-    ##  $ Measurement.Flag: chr  "g" "g" " " " " ...
-    ##  $ Quality.Flag    : chr  " " " " " " " " ...
+    ## Error in str(precip.boulder): object 'precip.boulder' not found
 
 ## About the Data 
 Viewing the structure of these data, we can see that different types of data are included in 
@@ -310,12 +289,15 @@ plot the data. We can convert it to a date/time class using `as.POSIXct()`.
     # convert to date/time and retain as a new field
     precip.boulder$DateTime <- as.POSIXct(precip.boulder$DATE, 
                                       format="%Y%m%d %H:%M") 
+
+    ## Error in as.POSIXct(precip.boulder$DATE, format = "%Y%m%d %H:%M"): object 'precip.boulder' not found
+
                                       # date in the format: YearMonthDay Hour:Minute 
     
     # double check structure
     str(precip.boulder$DateTime)
 
-    ##  POSIXct[1:1840], format: "2003-01-01 01:00:00" ...
+    ## Error in str(precip.boulder$DateTime): object 'precip.boulder' not found
 
 * For more information on date/time classes, see the NEON tutorial 
 <a href="https://www.neonscience.org/dc-convert-date-time-POSIX-r" target="_blank"> *Dealing With Dates & Times in R - as.Date, POSIXct, POSIXlt*</a>.
@@ -329,7 +311,7 @@ values, are labelled with the placeholder `999.99`. Do we have any NoData values
     # or other "weird" values that might be NA if we didn't know the NA value
     hist(precip.boulder$HPCP)
 
-![Histogram displaying the frquency of total precipitation in inches for the recorded hour.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/no-data-values-hist-1.png)
+    ## Error in hist(precip.boulder$HPCP): object 'precip.boulder' not found
 
 Looking at the histogram, it looks like we have mostly low values (which makes sense) but a few values
 up near 1000 -- likely 999.99. We can assign these entries to be `NA`, the value that
@@ -338,12 +320,14 @@ R interprets as no data.
 
     # assing NoData values to NA
     precip.boulder$HPCP[precip.boulder$HPCP==999.99] <- NA 
-    
+
+    ## Error in precip.boulder$HPCP[precip.boulder$HPCP == 999.99] <- NA: object 'precip.boulder' not found
+
     # check that NA values were added; 
     # we can do this by finding the sum of how many NA values there are
     sum(is.na(precip.boulder))
 
-    ## [1] 94
+    ## Error in eval(expr, envir, enclos): object 'precip.boulder' not found
 
 There are 94 NA values in our dataset. This is missing data. 
 
@@ -371,13 +355,12 @@ Now that we've cleaned up the data, we can view it. To do this we will plot usin
           geom_bar(stat="identity") +   # create a bar graph
           xlab("Date") + ylab("Precipitation (Inches)") +  # label the x & y axes
           ggtitle("Hourly Precipitation - Boulder Station\n 2003-2013")  # add a title
-    
+
+    ## Error in ggplot(data = precip.boulder, aes(DateTime, HPCP)): object 'precip.boulder' not found
+
     precPlot_hourly
 
-    ## Warning: Removed 94 rows containing missing values
-    ## (position_stack).
-
-![Bar graph of Hourly Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-precip-hourly-1.png)
+    ## Error in eval(expr, envir, enclos): object 'precPlot_hourly' not found
 
 As we can see, plots of hourly date lead to very small numbers and is difficult
 to represent all information on a figure. Hint: If you can't see any bars on your
@@ -398,25 +381,27 @@ with only dates (no time) and then re-plot.
     # (this will strip the time, but that is saved in DateTime)
     precip.boulder$DATE <- as.Date(precip.boulder$DateTime, # convert to Date class
                                       format="%Y%m%d %H:%M") 
+
+    ## Error in as.Date(precip.boulder$DateTime, format = "%Y%m%d %H:%M"): object 'precip.boulder' not found
+
                                       #DATE in the format: YearMonthDay Hour:Minute 
     
     # double check conversion
     str(precip.boulder$DATE)
 
-    ##  Date[1:1840], format: "2003-01-01" "2003-02-01" ...
+    ## Error in str(precip.boulder$DATE): object 'precip.boulder' not found
 
     precPlot_daily1 <- ggplot(data=precip.boulder,  # the data frame
           aes(DATE, HPCP)) +   # the variables of interest
           geom_bar(stat="identity") +   # create a bar graph
           xlab("Date") + ylab("Precipitation (Inches)") +  # label the x & y axes
           ggtitle("Daily Precipitation - Boulder Station\n 2003-2013")  # add a title
-    
+
+    ## Error in ggplot(data = precip.boulder, aes(DATE, HPCP)): object 'precip.boulder' not found
+
     precPlot_daily1
 
-    ## Warning: Removed 94 rows containing missing values
-    ## (position_stack).
-
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, spanning years 2003 - 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-summaries-1.png)
+    ## Error in eval(expr, envir, enclos): object 'precPlot_daily1' not found
 
 R will automatically combine all data from the same day and plot it as one entry.  
 
@@ -432,18 +417,15 @@ We will use the date class DATE field we created in the previous code for this.
     	by=list(precip.boulder$DATE),  # variable to aggregate by
     	FUN=sum,   # take the sum (total) of the precip
     	na.rm=TRUE)  # if the are NA values ignore them
+
+    ## Error in aggregate(precip.boulder$HPCP, by = list(precip.boulder$DATE), : object 'precip.boulder' not found
+
     	# if this is FALSE any NA value will prevent a value be totalled
     
     # view the results
     head(precip.boulder_daily)
 
-    ##      Group.1   x
-    ## 1 2003-01-01 0.0
-    ## 2 2003-02-01 0.0
-    ## 3 2003-02-03 0.4
-    ## 4 2003-02-05 0.2
-    ## 5 2003-02-06 0.1
-    ## 6 2003-02-07 0.1
+    ## Error in head(precip.boulder_daily): object 'precip.boulder_daily' not found
 
 So we now have daily data but the column names don't mean anything. We can 
 give them meaningful names by using the `names()` function. Instead of naming the column of 
@@ -452,18 +434,17 @@ precipitation values with the original `HPCP`, let's call it `PRECIP`.
 
     # rename the columns
     names(precip.boulder_daily)[names(precip.boulder_daily)=="Group.1"] <- "DATE"
+
+    ## Error in names(precip.boulder_daily)[names(precip.boulder_daily) == "Group.1"] <- "DATE": object 'precip.boulder_daily' not found
+
     names(precip.boulder_daily)[names(precip.boulder_daily)=="x"] <- "PRECIP"
-    
+
+    ## Error in names(precip.boulder_daily)[names(precip.boulder_daily) == "x"] <- "PRECIP": object 'precip.boulder_daily' not found
+
     # double check rename
     head(precip.boulder_daily)
 
-    ##         DATE PRECIP
-    ## 1 2003-01-01    0.0
-    ## 2 2003-02-01    0.0
-    ## 3 2003-02-03    0.4
-    ## 4 2003-02-05    0.2
-    ## 5 2003-02-06    0.1
-    ## 6 2003-02-07    0.1
+    ## Error in head(precip.boulder_daily): object 'precip.boulder_daily' not found
 
 Now we can plot the daily data. 
 
@@ -474,10 +455,12 @@ Now we can plot the daily data.
           geom_bar(stat="identity") +   # create a bar graph
           xlab("Date") + ylab("Precipitation (Inches)") +  # label the x & y axes
           ggtitle("Daily Precipitation - Boulder Station\n 2003-2013")  # add a title
-    
+
+    ## Error in ggplot(data = precip.boulder_daily, aes(DATE, PRECIP)): object 'precip.boulder_daily' not found
+
     precPlot_daily
 
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using combined hourly data for each day. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/daily-prec-plot-1.png)
+    ## Error in eval(expr, envir, enclos): object 'precPlot_daily' not found
 
 Compare this plot to the plot we created using the first method. Are they the same? 
 
@@ -510,13 +493,12 @@ scale on the x-axis with `scale_x_date()`.
           scale_x_date(limits=limits) +
           xlab("Date") + ylab("Precipitation (Inches)") +
           ggtitle("Precipitation - Boulder Station\n August 15 - October 15, 2013")
-    
+
+    ## Error in ggplot(data = precip.boulder_daily, aes(DATE, PRECIP)): object 'precip.boulder_daily' not found
+
     precPlot_flood
 
-    ## Warning: Removed 777 rows containing missing values
-    ## (position_stack).
-
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/plot-Aug-Oct-2013-1.png)
+    ## Error in eval(expr, envir, enclos): object 'precPlot_flood' not found
 
 Now we can easily see the dramatic rainfall event in mid-September! 
 
@@ -533,25 +515,29 @@ Now let's create a subset of the data and plot it.
     precip.boulder_AugOct <- subset(precip.boulder_daily, 
                             DATE >= as.Date('2013-08-15') & 
     												DATE <= as.Date('2013-10-15'))
-    
+
+    ## Error in subset(precip.boulder_daily, DATE >= as.Date("2013-08-15") & : object 'precip.boulder_daily' not found
+
     # check the first & last dates
     min(precip.boulder_AugOct$DATE)
 
-    ## [1] "2013-08-21"
+    ## Error in eval(expr, envir, enclos): object 'precip.boulder_AugOct' not found
 
     max(precip.boulder_AugOct$DATE)
 
-    ## [1] "2013-10-10"
+    ## Error in eval(expr, envir, enclos): object 'precip.boulder_AugOct' not found
 
     # create new plot
     precPlot_flood2 <- ggplot(data=precip.boulder_AugOct, aes(DATE,PRECIP)) +
       geom_bar(stat="identity") +
       xlab("Time") + ylab("Precipitation (inches)") +
       ggtitle("Daily Total Precipitation \n Boulder Creek 2013") 
-    
+
+    ## Error in ggplot(data = precip.boulder_AugOct, aes(DATE, PRECIP)): object 'precip.boulder_AugOct' not found
+
     precPlot_flood2 
 
-![Bar graph of Daily Precipitation (Inches) for the Boulder station, 050843, using a subset of the data spanning 2 months around the floods. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/subset-data-1.png)
+    ## Error in eval(expr, envir, enclos): object 'precPlot_flood2' not found
 
 
 ## Interactive Plots - Plotly
@@ -581,7 +567,32 @@ The full dataset takes considerable time to download, so we recommend you use th
 
 As an added challenge, aggregate the data by month instead of by day.  
 
-![Bar graph of Daily Precipitation (Inches) for the full record of precipitation data available for the Boulder station, 050843. Data spans years 1948 through 2013. X-axis and Y-axis are Date and Precipitation in Inches, repectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/COOP-NEIS-Precipitation-In-R/rfigs/all-boulder-station-data-1.png)
+
+    ## Warning in file(file, "rt"): cannot open file 'C:/Users/
+    ## fsanchez/Documents/data/disturb-events-co13/precip/805333-
+    ## precip_daily_1948-2013.csv': No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
+    ## Error in prec.boulder.all$HPCP[prec.boulder.all$HPCP == 999.99] <- NA: object 'prec.boulder.all' not found
+
+    ## Error in as.POSIXct(prec.boulder.all$DATE, format = "%Y%m%d %H:%M"): object 'prec.boulder.all' not found
+
+    ## Error in as.POSIXlt(x, tz = tz): object 'prec.boulder.all' not found
+
+    ## Error in aggregate(prec.boulder.all$HPCP, by = list(prec.boulder.all$YearMon), : object 'prec.boulder.all' not found
+
+    ## Error in names(prec.boulder.all_monthly)[names(prec.boulder.all_monthly) == : object 'prec.boulder.all_monthly' not found
+
+    ## Error in names(prec.boulder.all_monthly)[names(prec.boulder.all_monthly) == : object 'prec.boulder.all_monthly' not found
+
+    ## Error in paste(prec.boulder.all_monthly$DATE, "/01", sep = ""): object 'prec.boulder.all_monthly' not found
+
+    ## Error in as.Date(prec.boulder.all_monthly$DATE): object 'prec.boulder.all_monthly' not found
+
+    ## Error in ggplot(data = prec.boulder.all_monthly, aes(DATE, PRECIP)): object 'prec.boulder.all_monthly' not found
+
+    ## Error in eval(expr, envir, enclos): object 'precPlot_all' not found
 
 
 
@@ -600,38 +611,13 @@ inches.
 
     # convert from 100th inch by dividing by 100
     precip.boulder$PRECIP<-precip.boulder$HPCP/100
-    
+
+    ## Error in eval(expr, envir, enclos): object 'precip.boulder' not found
+
     # view & check to make sure conversion occurred
     head(precip.boulder)
 
-    ##       STATION    STATION_NAME ELEVATION
-    ## 1 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 2 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 3 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 4 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 5 COOP:050843 BOULDER 2 CO US    1650.5
-    ## 6 COOP:050843 BOULDER 2 CO US    1650.5
-    ##   LATITUDE LONGITUDE       DATE HPCP
-    ## 1 40.03389 -105.2811 2003-01-01  0.0
-    ## 2 40.03389 -105.2811 2003-02-01  0.0
-    ## 3 40.03389 -105.2811 2003-02-03  0.2
-    ## 4 40.03389 -105.2811 2003-02-03  0.1
-    ## 5 40.03389 -105.2811 2003-02-03  0.1
-    ## 6 40.03389 -105.2811 2003-02-05  0.1
-    ##   Measurement.Flag Quality.Flag
-    ## 1                g             
-    ## 2                g             
-    ## 3                              
-    ## 4                              
-    ## 5                              
-    ## 6                              
-    ##              DateTime PRECIP
-    ## 1 2003-01-01 01:00:00  0.000
-    ## 2 2003-02-01 01:00:00  0.000
-    ## 3 2003-02-02 19:00:00  0.002
-    ## 4 2003-02-02 22:00:00  0.001
-    ## 5 2003-02-03 02:00:00  0.001
-    ## 6 2003-02-05 02:00:00  0.001
+    ## Error in head(precip.boulder): object 'precip.boulder' not found
 
 #### Question
 Compare `HPCP` and `PRECIP`. Did we do the conversion correctly?  

@@ -1,8 +1,8 @@
 ---
 title: Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013
   Colorado Floods
-code1: null
-contributors: null
+code1: 
+contributors: Donal O'Leary
 dataProduct: DP3.30024.001
 dateCreated: '2015-05-18'
 description: This teaching module demonstrates ways that scientists identify and use
@@ -12,7 +12,7 @@ description: This teaching module demonstrates ways that scientists identify and
   with impacts on the local human populations. Specifically, it focuses on the causes
   and impacts of flooding that occurred in 2013 throughout Colorado with an emphasis
   on Boulder county.
-estimatedTime: null
+estimatedTime: 4 hours
 languagesTool: spreadsheet, R, plotly
 packagesLibraries: ggplot2, plotly
 syncID: 1ca06930711c4a50bf9cf3b6fd5aec5f

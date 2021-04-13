@@ -6,7 +6,7 @@ dataProduct: null
 dateCreated: '2020-05-01'
 description: Read in a NEON LiDAR file (.laz) and calculate several forest structural diversity
   metrics.
-estimatedTime: 0.5 hour
+estimatedTime: 30 minutes
 languagesTool: R
 packagesLibraries: lidR, gstat
 syncID: 7a3d01f3a2a84e6092774e2d21e13a16

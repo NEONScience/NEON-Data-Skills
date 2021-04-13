@@ -5,7 +5,7 @@ description: "This tutorial introduces the importance of tools supporting docume
 dateCreated: 2016-01-01
 authors:
 contributors: Ben Shetterly
-estimatedTime:
+estimatedTime: 20 minutes
 packagesLibraries:
 topics: data-management, rep-sci
 languagesTool: R

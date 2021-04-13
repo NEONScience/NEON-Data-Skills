@@ -5,7 +5,7 @@ description: "This tutorial provides an overview of how to create a a plot of mu
 dateCreated:  2016-02-09
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
 contributors: Sarah Newman, Maya R. Stahl
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R
@@ -370,7 +370,7 @@ Create a custom legend.
 
 </div>
 
-``` {r challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE, fig.cap= c("Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines].", "Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines], and study plots symbols vary by soil type."}
+``` {r challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE, fig.cap= c("Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines].", "Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines], and study plots symbols vary by soil type.")}
 ## 1
 # open plot locations
 plotLocations <- readOGR("NEON-DS-Site-Layout-Files/HARV",

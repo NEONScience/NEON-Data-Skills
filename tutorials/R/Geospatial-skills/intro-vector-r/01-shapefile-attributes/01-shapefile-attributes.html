@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Shapefile Metadata &amp; Attributes</title>
+<title><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -191,11 +191,36 @@ on your computer to complete this tutorial.
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Download Data
-{% include/dataSubsets/_data_Site-Layout-Files.html %}
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
+
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 </div>
 
@@ -291,7 +316,7 @@ length(point_HARV)
 crs(point_HARV)
 
 ## CRS arguments:
-##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+##  +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs
 
 # view extent- note - this only works with the raster package loaded
 extent(point_HARV)
@@ -308,7 +333,7 @@ point_HARV
 ## class       : SpatialPointsDataFrame 
 ## features    : 1 
 ## extent      : 732183.2, 732183.2, 4713265, 4713265  (xmin, xmax, ymin, ymax)
-## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## variables   : 14
 ## names       : Un_ID, Domain, DomainName,       SiteName, Type,       Sub_Type,     Lat,      Long, Zone,       Easting,       Northing,                Ownership,    County, annotation 
 ## value       :     A,      1,  Northeast, Harvard Forest, Core, Advanced Tower, 42.5369, -72.17266,   18, 732183.193774, 4713265.041137, Harvard University, LTER, Worcester,         C1
@@ -329,9 +354,9 @@ stone wall).</p>
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/vector-general/Attribute_Table.png" alt="Example attribute tables for each different type of vector object."></a>
     <figcaption>The shapefile format allows us to store attributes for each
-    feature (vector object) stored in the shapefile. The attribute table, is 
+    feature (vector object) stored in the shapefile. The attribute table is 
     similar to a spreadsheet. There is a row for each feature. The first column
     contains the unique ID of the feature. We can add additional columns that
     describe the feature. Image Source: National Ecological Observatory Network
@@ -346,27 +371,34 @@ function to count the number of attributes associated with a spatial object too.
 <pre><code># just view the attributes &amp; first 6 attribute values of the data
 head(lines_HARV@data)
 
-##   OBJECTID_1 OBJECTID       TYPE             NOTES MISCNOTES RULEID          MAPLABEL
-## 0         14       48 woods road Locust Opening Rd      &lt;NA&gt;      5 Locust Opening Rd
-## 1         40       91   footpath              &lt;NA&gt;      &lt;NA&gt;      6              &lt;NA&gt;
-## 2         41      106   footpath              &lt;NA&gt;      &lt;NA&gt;      6              &lt;NA&gt;
-## 3        211      279 stone wall              &lt;NA&gt;      &lt;NA&gt;      1              &lt;NA&gt;
-## 4        212      280 stone wall              &lt;NA&gt;      &lt;NA&gt;      1              &lt;NA&gt;
-## 5        213      281 stone wall              &lt;NA&gt;      &lt;NA&gt;      1              &lt;NA&gt;
-##   SHAPE_LENG             LABEL BIKEHORSE RESVEHICLE RECMAP Shape_Le_1
-## 0 1297.35706 Locust Opening Rd         Y         R1      Y 1297.10617
-## 1  146.29984              &lt;NA&gt;         Y         R1      Y  146.29983
-## 2  676.71804              &lt;NA&gt;         Y         R2      Y  676.71807
-## 3  231.78957              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   &lt;NA&gt;  231.78962
-## 4   45.50864              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   &lt;NA&gt;   45.50859
-## 5  198.39043              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;   &lt;NA&gt;  198.39041
-##                              ResVehic_1                  BicyclesHo
-## 0    R1 - All Research Vehicles Allowed Bicycles and Horses Allowed
-## 1    R1 - All Research Vehicles Allowed Bicycles and Horses Allowed
-## 2 R2 - 4WD/High Clearance Vehicles Only Bicycles and Horses Allowed
-## 3                                  &lt;NA&gt;                        &lt;NA&gt;
-## 4                                  &lt;NA&gt;                        &lt;NA&gt;
-## 5                                  &lt;NA&gt;                        &lt;NA&gt;
+##   OBJECTID_1 OBJECTID       TYPE             NOTES MISCNOTES RULEID
+## 0         14       48 woods road Locust Opening Rd      &lt;NA&gt;      5
+## 1         40       91   footpath              &lt;NA&gt;      &lt;NA&gt;      6
+## 2         41      106   footpath              &lt;NA&gt;      &lt;NA&gt;      6
+## 3        211      279 stone wall              &lt;NA&gt;      &lt;NA&gt;      1
+## 4        212      280 stone wall              &lt;NA&gt;      &lt;NA&gt;      1
+## 5        213      281 stone wall              &lt;NA&gt;      &lt;NA&gt;      1
+##            MAPLABEL SHAPE_LENG             LABEL BIKEHORSE RESVEHICLE
+## 0 Locust Opening Rd 1297.35706 Locust Opening Rd         Y         R1
+## 1              &lt;NA&gt;  146.29984              &lt;NA&gt;         Y         R1
+## 2              &lt;NA&gt;  676.71804              &lt;NA&gt;         Y         R2
+## 3              &lt;NA&gt;  231.78957              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;
+## 4              &lt;NA&gt;   45.50864              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;
+## 5              &lt;NA&gt;  198.39043              &lt;NA&gt;      &lt;NA&gt;       &lt;NA&gt;
+##   RECMAP Shape_Le_1                            ResVehic_1
+## 0      Y 1297.10617    R1 - All Research Vehicles Allowed
+## 1      Y  146.29983    R1 - All Research Vehicles Allowed
+## 2      Y  676.71807 R2 - 4WD/High Clearance Vehicles Only
+## 3   &lt;NA&gt;  231.78962                                  &lt;NA&gt;
+## 4   &lt;NA&gt;   45.50859                                  &lt;NA&gt;
+## 5   &lt;NA&gt;  198.39041                                  &lt;NA&gt;
+##                    BicyclesHo
+## 0 Bicycles and Horses Allowed
+## 1 Bicycles and Horses Allowed
+## 2 Bicycles and Horses Allowed
+## 3                        &lt;NA&gt;
+## 4                        &lt;NA&gt;
+## 5                        &lt;NA&gt;
 
 # how many attributes are in our vector data object?
 length(lines_HARV@data)
@@ -383,9 +415,9 @@ of attribute values using  <code>head(lines_HARV@data)</code>. </p>
 <pre><code># view just the attribute names for the lines_HARV spatial object
 names(lines_HARV@data)
 
-##  [1] &quot;OBJECTID_1&quot; &quot;OBJECTID&quot;   &quot;TYPE&quot;       &quot;NOTES&quot;      &quot;MISCNOTES&quot;  &quot;RULEID&quot;    
-##  [7] &quot;MAPLABEL&quot;   &quot;SHAPE_LENG&quot; &quot;LABEL&quot;      &quot;BIKEHORSE&quot;  &quot;RESVEHICLE&quot; &quot;RECMAP&quot;    
-## [13] &quot;Shape_Le_1&quot; &quot;ResVehic_1&quot; &quot;BicyclesHo&quot;
+##  [1] &quot;OBJECTID_1&quot; &quot;OBJECTID&quot;   &quot;TYPE&quot;       &quot;NOTES&quot;      &quot;MISCNOTES&quot; 
+##  [6] &quot;RULEID&quot;     &quot;MAPLABEL&quot;   &quot;SHAPE_LENG&quot; &quot;LABEL&quot;      &quot;BIKEHORSE&quot; 
+## [11] &quot;RESVEHICLE&quot; &quot;RECMAP&quot;     &quot;Shape_Le_1&quot; &quot;ResVehic_1&quot; &quot;BicyclesHo&quot;
 </code></pre>
 
 <div id="ds-challenge" markdown="1">
@@ -403,15 +435,16 @@ spatial objects.
 <h2>Explore Values within One Attribute</h2>
 
 <p>We can explore individual values stored within a particular attribute.
-Again, comparing attributes to a spreadsheet or a <code>data.frame</code>, this is similar
+Again, comparing attributes to a spreadsheet or a <code>data.frame</code> is similar
 to exploring values in a column. We can do this using the <code>$</code> and the name of
 the attribute: <code>objectName$attributeName</code>. </p>
 
 <pre><code># view all attributes in the lines shapefile within the TYPE field
 lines_HARV$TYPE
 
-##  [1] woods road footpath   footpath   stone wall stone wall stone wall stone wall stone wall
-##  [9] stone wall boardwalk  woods road woods road woods road
+##  [1] woods road footpath   footpath   stone wall stone wall stone wall
+##  [7] stone wall stone wall stone wall boardwalk  woods road woods road
+## [13] woods road
 ## Levels: boardwalk footpath stone wall woods road
 
 # view unique values within the &quot;TYPE&quot; attributes
@@ -437,7 +470,7 @@ lines_HARV[lines_HARV$TYPE == &quot;footpath&quot;,]
 ## class       : SpatialLinesDataFrame 
 ## features    : 2 
 ## extent      : 731954.5, 732232.3, 4713131, 4713726  (xmin, xmax, ymin, ymax)
-## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## variables   : 15
 ## names       : OBJECTID_1, OBJECTID,     TYPE, NOTES, MISCNOTES, RULEID, MAPLABEL,    SHAPE_LENG, LABEL, BIKEHORSE, RESVEHICLE, RECMAP,    Shape_Le_1,                            ResVehic_1,                  BicyclesHo 
 ## min values  :         40,       91, footpath,    NA,        NA,      6,       NA, 146.299844868,    NA,         Y,         R1,      Y, 146.299831389,    R1 - All Research Vehicles Allowed, Bicycles and Horses Allowed 
@@ -450,7 +483,7 @@ footpath_HARV
 ## class       : SpatialLinesDataFrame 
 ## features    : 2 
 ## extent      : 731954.5, 732232.3, 4713131, 4713726  (xmin, xmax, ymin, ymax)
-## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs         : +proj=utm +zone=18 +datum=WGS84 +units=m +no_defs 
 ## variables   : 15
 ## names       : OBJECTID_1, OBJECTID,     TYPE, NOTES, MISCNOTES, RULEID, MAPLABEL,    SHAPE_LENG, LABEL, BIKEHORSE, RESVEHICLE, RECMAP,    Shape_Le_1,                            ResVehic_1,                  BicyclesHo 
 ## min values  :         40,       91, footpath,    NA,        NA,      6,       NA, 146.299844868,    NA,         Y,         R1,      Y, 146.299831389,    R1 - All Research Vehicles Allowed, Bicycles and Horses Allowed 
@@ -474,9 +507,9 @@ plot(footpath_HARV,
      main=&quot;NEON Harvard Forest Field Site\n Footpaths&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-1.png" alt="Foothpaths at NEON Harvard Forest Field Site."/></p>
 
-<p>Interesting. Above, it appeared as if we had 2 features in our footpaths subset.
+<p>Interesting! Above, it appeared as if we had 2 features in our footpaths subset.
 Why does the plot look like there is only one feature?</p>
 
 <p>Let&#39;s adjust the colors used in our plot. If we have 2 features in our vector
@@ -494,7 +527,7 @@ plot(footpath_HARV,
      main=&quot;NEON Harvard Forest Field Site\n Footpaths \n Feature one = blue, Feature two= green&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-unique-colors-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-subset-shapefile-unique-colors-1.png" alt="Foothpaths at NEON Harvard Forest Field Site with color varied by feature type."/></p>
 
 <p>Now, we see that there are in fact two features in our plot! </p>
 
@@ -508,12 +541,12 @@ Subset out all:
 For each plot, color each feature using a unique color.
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-2.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-1.png" alt="Boardwalks at NEON Harvard Forest Field Site with color varied by feature type."/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-feature-subset-2.png" alt="Stone walls at NEON Harvard Forest Field Site with color varied by feature type."/></p>
 
 <h2>Plot Lines by Attribute Value</h2>
 
 <p>To plot vector data with the color determined by a set of attribute values, the 
-attribute values must be class = <code>factor</code>. A <strong>factor</strong> is similar to a category</p>
+attribute values must be class = <code>factor</code>. A <strong>factor</strong> is similar to a category.</p>
 
 <ul>
 <li>you can group vector objects by a particular category value - for example you 
@@ -562,11 +595,11 @@ feature, according to it&#39;s associated attribute value / <code>factor</code> 
 
 <p><code>c(&quot;colorOne&quot;, &quot;colorTwo&quot;,&quot;colorThree&quot;)[object$factor]</code></p>
 
-<p>Note in the above example we have </p>
+<p>Note in the above example we have: </p>
 
 <ol>
 <li>a vector of colors - one for each factor value (unique attribute value)</li>
-<li>the attribute itself (<code>[object$factor]</code>) of class <code>factor</code>.</li>
+<li>the attribute itself (<code>[object$factor]</code>) of class <code>factor</code></li>
 </ol>
 
 <p>Let&#39;s give this a try.</p>
@@ -598,8 +631,8 @@ roadPalette
 roadColors &lt;- c(&quot;blue&quot;,&quot;green&quot;,&quot;grey&quot;,&quot;purple&quot;)[lines_HARV$TYPE]
 roadColors
 
-##  [1] &quot;purple&quot; &quot;green&quot;  &quot;green&quot;  &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;  
-## [10] &quot;blue&quot;   &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [1] &quot;purple&quot; &quot;green&quot;  &quot;green&quot;  &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;  
+##  [8] &quot;grey&quot;   &quot;grey&quot;   &quot;blue&quot;   &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
 
 # plot the lines data, apply a diff color to each factor level)
 plot(lines_HARV, 
@@ -608,7 +641,7 @@ plot(lines_HARV,
      main=&quot;NEON Harvard Forest Field Site\n Roads &amp; Trails&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/palette-and-plot-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/palette-and-plot-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor level."/></p>
 
 <h3>Adjust Line Width</h3>
 
@@ -622,12 +655,12 @@ plot(lines_HARV,
      lwd=6)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/adjust-line-width-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/adjust-line-width-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and uniformly thick line width."/></p>
 
 <h3>Adjust Line Width by Attribute</h3>
 
 <p>If we want a unique line width for each factor level or attribute category
-in our spatial object, we can use the same syntax that we used for colors, above.</p>
+in our spatial object, we can use the same syntax that we used for colors, above:</p>
 
 <p><code>lwd=c(&quot;widthOne&quot;, &quot;widthTwo&quot;,&quot;widthThree&quot;)[object$factor]</code></p>
 
@@ -652,7 +685,7 @@ plot(lines_HARV,
      lwd=lineWidths)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/line-width-unique-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/line-width-unique-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by attribute factor value."/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Line Width by Attribute 
@@ -670,7 +703,7 @@ Create a plot of roads using the following line thicknesses:
  
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by specific attribute value."/></p>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
@@ -711,7 +744,7 @@ legend(&quot;bottomright&quot;,   # location of legend
       fill=roadPalette) # color palette to use to fill objects in legend.
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/add-legend-to-plot-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/add-legend-to-plot-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a default legend."/></p>
 
 <p>We can tweak the appearance of our legend too.</p>
 
@@ -733,10 +766,10 @@ legend(&quot;bottomright&quot;,
        cex=.8) # decrease the font / legend size
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/modify-legend-plot-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/modify-legend-plot-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a modified legend."/></p>
 
-<p>We can modify the colors used to plot our lines by creating a new color vector,
-directly in the plot code too rather than creating a separate object.</p>
+<p>We can modify the colors used to plot our lines by creating a new color vector
+directly in the plot code rather than creating a separate object.</p>
 
 <p><code>col=(newColors)[lines_HARV$TYPE]</code></p>
 
@@ -760,10 +793,10 @@ legend(&quot;bottomright&quot;,
        bty=&quot;n&quot;, cex=.8)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-different-colors-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/plot-different-colors-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with manually set colors and with a modified legend."/></p>
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** You can modify the defaul R color palette 
+<i class="fa fa-star"></i> **Data Tip:** You can modify the default R color palette 
 using the palette method. For example palette(rainbow(6)) or
 palette(terrain.colors(6)). You can reset the palette colors using
 palette(&ldquo;default&rdquo;)!
@@ -783,7 +816,7 @@ other lines can be grey.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-2-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/bicycle-map-2-1.png" alt="Roads where Bikes and Horses are Allowed on NEON Harvard Forest Field Site with lines varied by attribute factor and with a modified legend. "/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Polygon by Attribute
@@ -805,7 +838,7 @@ use google to find a list of pch symbols that you can use in R.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-2.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-3.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-1.png" alt="Contiguous U.S. State Boundaries with color varied by region and with a modified legend."/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-2.png" alt="Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and one symbol for all types and with a modified legend."/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/01-shapefile-attributes/rfigs/challenge-code-plot-color-3.png" alt="Soil Study Plots by Soil Type at NEON Harvard Forest Field Site with color varied by type and unique symbols for each type and with a modified legend."/></p>
 
 </body>
 

@@ -121,10 +121,10 @@ you are using this function within a script or batch process you
 will want to set this to F.
 * `token`: this allows you to input your NEON API token to obtain faster 
 downloads. 
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
+Learn more about NEON API tokens in the <a href="https://www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
 
 There are additional inputs you can learn about in the 
-<a href="https//:www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
 
 The `dpID` is the data product identifier of the data you want to 
 download. The DPID can be found on the 
@@ -440,7 +440,8 @@ dissolved oxygen data:
     ## [115] "fDOMBetaQF"                      "fDOMTempQF"                     
     ## [117] "fDOMAbsQF"                       "fDOMFinalQF"                    
     ## [119] "fDOMFinalQFSciRvw"               "buoyNAFlag"                     
-    ## [121] "spectrumCount"                   "publicationDate"
+    ## [121] "spectrumCount"                   "publicationDate"                
+    ## [123] "release"
 
     # Alternatively, view the variables object corresponding to the data product for more information
     View(variables_20288)
@@ -978,7 +979,7 @@ The following code chunk merges the data:
     ## [57] "validCalPassQM"                  "validCalNAQM"                   
     ## [59] "sWatElevAlphaQM"                 "sWatElevBetaQM"                 
     ## [61] "sWatElevFinalQF"                 "sWatElevFinalQFSciRvw"          
-    ## [63] "publicationDate"
+    ## [63] "publicationDate"                 "release"
 We now have matching time stamps for water quality and any other 30-minute  
 averaged data product, such as elevation of surface water. The merged data 
 frame facilitates direct comparison across different sensors.
@@ -995,7 +996,7 @@ elevation:
 
     ## Warning: Removed 5 rows containing missing values (geom_point).
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-eos-waq, Scatter plot of specific conductance (uS/cm) and elevation (m) from Pringle Creek. Specific conductance (uS/cm) is on the Y-axis and elevation (m) on the X-axis. A new data set of 30 minute aggregated water quality data was generated to match the measurement interval of surface water elevation."-1.png)
+![Scatter plot of specific conductance (uS/cm) and elevation (m) from Pringle Creek. Specific conductance (uS/cm) is on the Y-axis and elevation (m) on the X-axis. A new data set of 30 minute aggregated water quality data was generated to match the measurement interval of surface water elevation.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-eos-waq-1.png)
 
 Aggregating high frequency time series data is a useful tool for understanding 
 relationships between variables collected at different time intervals, and may

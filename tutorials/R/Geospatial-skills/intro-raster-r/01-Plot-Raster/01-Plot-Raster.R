@@ -1,4 +1,4 @@
-## ----load-libraries-----------------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------
 # if they are not already loaded
 library(rgdal)
 library(raster)
@@ -66,7 +66,7 @@ plot(DSM_HARV,
 
 
 
-## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE--------------------------
+## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE----
 # Find min & max
 DSM_HARV@data
 

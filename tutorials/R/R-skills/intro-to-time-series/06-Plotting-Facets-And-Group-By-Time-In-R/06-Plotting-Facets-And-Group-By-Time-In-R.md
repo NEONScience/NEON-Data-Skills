@@ -4,8 +4,8 @@ title: "Time Series 06: Create Plots with Multiple Panels, Grouped by Time Using
 description: "This tutorial covers how to plot subsetted time series data (e.g., plot by season) using facets() and ggplot2. It also covers how to plot multiple metrics in one display panel."
 dateCreated: 2015-10-22
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah Wasser
-contributors:
-estimatedTime:
+contributors: Collin J. Storlie
+estimatedTime: 30 minutes
 packagesLibraries: ggplot2, scales, gridExtra, grid, dplyr, reshape2
 topics: time-series, phenology
 languagesTool: R
@@ -104,14 +104,20 @@ load them and convert date-time columns to a `date-time class` now.
     library(dplyr)  # for subsetting by season
     
     # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    wd <- "~/Documents/"
     
     # daily HARV met data, 2009-2011
     harMetDaily.09.11 <- read.csv(
-      file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv",
+      file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv"),
       stringsAsFactors = FALSE
       )
-    
+
+    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/
+    ## Documents/NEON-DS-Met-Time-Series/HARV/FisherTower-Met/
+    ## Met_HARV_Daily_2009_2011.csv': No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
     # covert date to Date  class
     harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
@@ -136,7 +142,7 @@ object `AirTempDaily`.
     
     AirTempDaily
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-1.png)
+![A scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. Plot title, font, axis scale and axis labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-1.png)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** If you are working with a date & time
@@ -176,10 +182,6 @@ labelled panel.
     # run this code to plot the same plot as before but with one plot per season
     AirTempDaily + facet_grid(. ~ year)
 
-    ## Error: At least one layer must contain all faceting variables: `year`.
-    ## * Plot is missing `year`
-    ## * Layer 1 is missing `year`
-
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-1.png)
 
 Oops - what happened? The plot did not render because we added the `year` column
@@ -199,7 +201,7 @@ to ensure our newly added column is recognized.
     # facet plot by year
     AirTempDaily + facet_grid(. ~ year)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-2-1.png)
+![A three-panel scatterplot showing the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011. Left Panel: 2009. Center Panel: 2010. Right Panel: 2011. Notice each subplot has the time axis scale, covering the whole period 2009 - 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-2-1.png)
 
 The faceted plot is interesting, however the x-axis on each plot is formatted
 as: month-day-year starting in 2009 and ending in 2011. This means that the data
@@ -228,7 +230,7 @@ year day, see the
     # create faceted panel
     AirTempDaily_jd + facet_grid(. ~ year)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-precip-jd-1.png)
+![A three-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Left Panel: 2009. Center Panel: 2010. Right Panel: 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-precip-jd-1.png)
 
 Using Julian day, our plots are easier to visually compare. Arranging our plots 
 this way, side by side, allows us to quickly scan for differences along the
@@ -243,7 +245,7 @@ We can rearrange the facets in different ways, too.
     # move labels to the RIGHT and stack all plots
     AirTempDaily_jd + facet_grid(year ~ .)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-1.png)
+![A three-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Top Panel: 2009. Middle Panel: 2010. Bottom Panel: 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-1.png)
 
 If we use `facet_wrap` we can specify the number of columns.
 
@@ -251,7 +253,7 @@ If we use `facet_wrap` we can specify the number of columns.
     # display in two columns
     AirTempDaily_jd + facet_wrap(~year, ncol = 2)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-columns-1.png)
+![A multi-panel scatterplot showing the relationship between julian-date and daily air temperature at Harvard Forest between 2009 and 2011. Top Left Panel: 2009. Top Right Panel: 2010. Bottom Left Panel: 2011. Bottom Right Panel: Blank. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/rearrange-facets-columns-1.png)
 
 ## Graph Two Variables on One Plot
 Next, let's explore the relationship between two variables - air temperature
@@ -272,7 +274,7 @@ the ground).
     
     airSoilTemp_Plot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-soilt-1.png)
+![A scatterplot showing the relationship between daily air temperature and daily soil temperature at Harvard Forest between 2009 and 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-airt-soilt-1.png)
 
 The plot above suggests a relationship between the air and soil temperature as
 we might expect. However, it clumps all three years worth of data into one plot.
@@ -286,7 +288,7 @@ plot we created above.
     # create faceted panel
     airSoilTemp_Plot + facet_grid(year ~ .)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/faceted-temp-plots-1.png)
+![A three-panel scatterplot showing the relationship between daily air temperature and daily soil temperature at Harvard Forest between 2009 and 2011. Top Panel: 2009. Middle Panel: 2010. Bottom Panel: 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/faceted-temp-plots-1.png)
 
 Have a close look at the data. Are there any noticeable min/max temperature 
 differences between the three years?
@@ -303,7 +305,7 @@ a year column.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-answer-temp-month-1.png)
+![A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to month at Harvard Forest between 2009 and 2011. Panels run left-to-right, top-to-bottom, starting with January in top-left position. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-answer-temp-month-1.png)
 
 ## Faceted Plots & Categorical Groups
 
@@ -345,7 +347,7 @@ which tells R to extract the month name (`%B`) from the date field.
     # create faceted panel
     airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/extract-month-name-1.png)
+![A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to month at Harvard Forest between 2009 and 2011. Notice panels are now placed in alphabetical order by month. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/extract-month-name-1.png)
 
 Great! We've created a nice set of plots by month. However, how are the plots 
 ordered? It looks like R is ordering things alphabetically, yet we know
@@ -385,7 +387,7 @@ need to rerun our `ggplot` code.
     # create faceted panel
     airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-month-levels-1.png)
+![A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to month at Harvard Forest between 2009 and 2011. Panels run left-to-right, top-to-bottom, starting with January in top-left position. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-month-levels-1.png)
 
 ## Subset by Season - *Advanced Topic*
 Sometimes we want to group data by custom time periods. For example, we might
@@ -482,7 +484,7 @@ Now that we have a season column, we can plot our data by season!
     # run this code to plot the same plot as before but with one plot per season
     airSoilTemp_Plot + facet_grid(. ~ season)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season-1.png)
+![A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season at Harvard Forest between 2009 and 2011. Panels run left-to-right: fall, spring, summer and winter.. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season-1.png)
 
 Note, that once again, we re-ran our `ggplot` code to make sure our new column
 is recognized by R. We can experiment with various facet layouts next.
@@ -492,7 +494,7 @@ is recognized by R. We can experiment with various facet layouts next.
     # facet_grid():
     airSoilTemp_Plot + facet_grid(season ~ .)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season2-1.png)
+![A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season at Harvard Forest between 2009 and 2011. Panels run top-to-bottom: fall, spring, summer and winter.. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-by-season2-1.png)
 
 Once again, R is arranging the plots in an alphabetical order not an order
 relevant to the data. 
@@ -514,7 +516,7 @@ neatly plot multiple variables using facets as follows:
 3. Create a plot of air vs soil temperature grouped by year and season.
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-1.png)![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-2.png)
+![A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season at Harvard Forest between 2009 and 2011. Top-left: winter.  Top-right: spring. Bottom-left: summer. Bottom-right: fall. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-1.png)![A multi-panel scatterplot showing the relationship between daily air temperature and daily soil temperature according to user specified season and year at Harvard Forest between 2009 and 2011. Columns are left-to-right: winter, spring, summer and fall.  Rows are top-to-bottom: 2009, 2010 and 2011. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/assigning-level-to-season-2.png)
 
 ## Work with Year-Month Data: base R and zoo Package 
 Some data will have month formatted in `Year-Month` 
@@ -522,7 +524,13 @@ Some data will have month formatted in `Year-Month`
 
 (Note: You will load this file in the Challenge below)
 
-    ## [1] "2001-03" "2001-04" "2001-05" "2001-06" "2001-07" "2001-08"
+    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
+    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv': No
+    ## such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
 
 For many analyses, we might want to summarize this data into a yearly total. 
 Base R does NOT have a distinct year-month date class. Instead to work with a 
@@ -562,6 +570,29 @@ HINT: be sure to load the `zoo` package, if you have not already.
 </div>
 
 
+    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
+    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv': No
+    ## such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
+    ## Error in paste(met_monthly_HARV$date, "-01", sep = ""): object 'met_monthly_HARV' not found
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
+
+    ## Error in eval(expr, envir, enclos): object 'met_monthly_HARV' not found
+
+    ## Error in as.yearmon(met_monthly_HARV$date): object 'met_monthly_HARV' not found
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
+
+    ## Error in eval(expr, envir, enclos): object 'met_monthly_HARV' not found
+
+    ## Error in as.Date(met_monthly_HARV$ymon_zoo): object 'met_monthly_HARV' not found
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
+
+    ## Error in eval(expr, envir, enclos): object 'met_monthly_HARV' not found
 
 Do you prefer to use base R or `zoo` to convert these data to a date/time
 class?
@@ -583,4 +614,11 @@ site.
 
 </div>
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-code-plot-yearmonth-data-1.png)
+
+    ## Error in year(met_monthly_HARV$date_base): object 'met_monthly_HARV' not found
+
+    ## Error in month(met_monthly_HARV$date_base): object 'met_monthly_HARV' not found
+
+    ## Error in ggplot(met_monthly_HARV, aes(month, airt)): object 'met_monthly_HARV' not found
+
+    ## Error in eval(expr, envir, enclos): object 'long_term_temp' not found

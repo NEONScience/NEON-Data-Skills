@@ -1,4 +1,4 @@
-## ----install-rhdf5------------------------------------------------------------------------
+## ----install-rhdf5---------------------------------------------------------------------
 
 # Install rhdf5 package (only need to run if not already installed)
 #install.packages("BiocManager")
@@ -9,10 +9,11 @@ library("rhdf5")
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files
-#setwd("working-dir-path-here")
+wd <- "~/Documents/data/" #This will depend on your local environment 
+setwd(wd) 
 
 
-## ----create-hdf5--------------------------------------------------------------------------
+## ----create-hdf5-----------------------------------------------------------------------
 
 # create hdf5 file
 h5createFile("sensorData.h5")
@@ -21,7 +22,7 @@ h5createGroup("sensorData.h5", "location1")
 
 
 
-## ----loop-groups--------------------------------------------------------------------------
+## ----loop-groups-----------------------------------------------------------------------
 # Create loops that will populate 2 additional location "groups" in our HDF5 file
 	l1 <- c("location2","location3")
 	for(i in 1:length(l1)){
@@ -29,13 +30,13 @@ h5createGroup("sensorData.h5", "location1")
 	}
 
 
-## ----view-structure-----------------------------------------------------------------------
+## ----view-structure--------------------------------------------------------------------
 # View HDF5 File Structure
 h5ls("sensorData.h5")
 
 
 
-## ----create-loop--------------------------------------------------------------------------
+## ----create-loop-----------------------------------------------------------------------
 # Add datasets to each group
 for(i in 1:3){
       g <- paste("location",i,sep="")
@@ -57,7 +58,7 @@ for(i in 1:3){
 	}
 
 
-## ----test---------------------------------------------------------------------------------
+## ----test------------------------------------------------------------------------------
 # 1
 paste(g, "precip", sep="/")
 # 2
@@ -68,12 +69,12 @@ g
 help(norm)
 
 
-## ----file-str-----------------------------------------------------------------------------
+## ----file-str--------------------------------------------------------------------------
 	# List file structure
 	h5ls("sensorData.h5")
 
 
-## ----metadata-----------------------------------------------------------------------------
+## ----metadata--------------------------------------------------------------------------
 
 # Create matrix of "dummy" data
 p1 <- matrix(rnorm(300,2,1),ncol=3,nrow=100)
@@ -88,7 +89,7 @@ H5close()
 
 
 
-## ----read-hdf5----------------------------------------------------------------------------
+## ----read-hdf5-------------------------------------------------------------------------
 # Read in all data contained in the precipitation dataset 
 l1p1 <- h5read("sensorData.h5","location1/precip",
 							 read.attributes=T)

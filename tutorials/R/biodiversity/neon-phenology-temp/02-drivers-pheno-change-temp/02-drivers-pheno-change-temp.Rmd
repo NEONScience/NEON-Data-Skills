@@ -5,7 +5,7 @@ description: "This tutorial demonstrates how to work with NEON single-aspirated 
 dateCreated: 2017-08-01
 authors: Lee Stanish, Megan A. Jones, Natalie Robinson
 contributors: Katie Jones, Cody Flagg, Josh Roberti, Felipe Sanchez
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries: dplyr, ggplot2, lubridate
 topics: time-series, meteorology
 languagesTool: R

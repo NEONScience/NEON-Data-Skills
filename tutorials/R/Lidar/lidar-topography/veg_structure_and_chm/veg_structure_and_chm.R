@@ -1,4 +1,4 @@
-## ----load_packages------------------------------------------------------------------------
+## ----load_packages-----------------------------------------------------
 
 options(stringsAsFactors=F)
 
@@ -15,7 +15,7 @@ library(geoNEON)
 
 
 
-## ----veglist------------------------------------------------------------------------------
+## ----veglist-----------------------------------------------------------
 
 veglist <- loadByProduct(dpID="DP1.10098.001", 
                          site="WREF", 
@@ -24,14 +24,14 @@ veglist <- loadByProduct(dpID="DP1.10098.001",
 
 
 
-## ----vegmap-------------------------------------------------------------------------------
+## ----vegmap------------------------------------------------------------
 
 vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
                           "vst_mappingandtagging")
 
 
 
-## ----veg_merge----------------------------------------------------------------------------
+## ----veg_merge---------------------------------------------------------
 
 veg <- merge(veglist$vst_apparentindividual, vegmap, 
              by=c("individualID","namedLocation",
@@ -39,7 +39,7 @@ veg <- merge(veglist$vst_apparentindividual, vegmap,
 
 
 
-## ----plot-1-------------------------------------------------------------------------------
+## ----plot-1------------------------------------------------------------
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
@@ -48,7 +48,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 
 
 
-## ----plot-2-------------------------------------------------------------------------------
+## ----plot-2------------------------------------------------------------
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
@@ -61,7 +61,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 
 
 
-## ----get-chm------------------------------------------------------------------------------
+## ----get-chm-----------------------------------------------------------
 
 byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
           easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
@@ -71,13 +71,13 @@ chm <- raster("/Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF
 
 
 
-## ----plot-chm-----------------------------------------------------------------------------
+## ----plot-chm----------------------------------------------------------
 
 plot(chm, col=topo.colors(5))
 
 
 
-## ----vegsub-------------------------------------------------------------------------------
+## ----vegsub------------------------------------------------------------
 
 vegsub <- veg[which(veg$adjEasting >= extent(chm)[1] &
                       veg$adjEasting <= extent(chm)[2] &
@@ -86,7 +86,7 @@ vegsub <- veg[which(veg$adjEasting >= extent(chm)[1] &
 
 
 
-## ----buffer-chm---------------------------------------------------------------------------
+## ----buffer-chm--------------------------------------------------------
 
 bufferCHM <- extract(chm, 
                      cbind(vegsub$adjEasting,
@@ -99,13 +99,13 @@ lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----corr-buffer--------------------------------------------------------------------------
+## ----corr-buffer-------------------------------------------------------
 
 cor(bufferCHM,vegsub$height, use="complete")
 
 
 
-## ----round-x-y----------------------------------------------------------------------------
+## ----round-x-y---------------------------------------------------------
 
 easting10 <- 10*floor(vegsub$adjEasting/10)
 northing10 <- 10*floor(vegsub$adjNorthing/10)
@@ -113,20 +113,20 @@ vegsub <- cbind(vegsub, easting10, northing10)
 
 
 
-## ----vegbin-------------------------------------------------------------------------------
+## ----vegbin------------------------------------------------------------
 
 vegbin <- stats::aggregate(vegsub, by=list(vegsub$easting10, vegsub$northing10), FUN=max)
 
 
 
-## ----CHM-10-------------------------------------------------------------------------------
+## ----CHM-10------------------------------------------------------------
 
 CHM10 <- raster::aggregate(chm, fact=10, fun=max)
 plot(CHM10, col=topo.colors(5))
 
 
 
-## ----adj-tree-coord-----------------------------------------------------------------------
+## ----adj-tree-coord----------------------------------------------------
 
 vegbin$easting10 <- vegbin$easting10+5
 vegbin$northing10 <- vegbin$northing10+5
@@ -138,19 +138,19 @@ lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----cor-2--------------------------------------------------------------------------------
+## ----cor-2-------------------------------------------------------------
 
 cor(binCHM, vegbin$height, use="complete")
 
 
 
-## ----vegsub-2-----------------------------------------------------------------------------
+## ----vegsub-2----------------------------------------------------------
 
 vegsub <- vegsub[order(vegsub$height, decreasing=T),]
 
 
 
-## ----vegfil-------------------------------------------------------------------------------
+## ----vegfil------------------------------------------------------------
 
 vegfil <- vegsub
 for(i in 1:nrow(vegsub)) {
@@ -166,7 +166,7 @@ vegfil <- vegfil[which(!is.na(vegfil$height)),]
 
 
 
-## ----filter-chm---------------------------------------------------------------------------
+## ----filter-chm--------------------------------------------------------
 
 filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
                          buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
@@ -176,13 +176,13 @@ lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----cor-3--------------------------------------------------------------------------------
+## ----cor-3-------------------------------------------------------------
 
 cor(filterCHM,vegfil$height)
 
 
 
-## ----live-trees---------------------------------------------------------------------------
+## ----live-trees--------------------------------------------------------
 
 vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
 filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
@@ -193,7 +193,7 @@ lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----cor-4--------------------------------------------------------------------------------
+## ----cor-4-------------------------------------------------------------
 
 cor(filterCHM,vegfil$height)
 

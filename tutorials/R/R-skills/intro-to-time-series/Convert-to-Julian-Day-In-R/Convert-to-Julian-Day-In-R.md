@@ -4,8 +4,8 @@ title: "Convert to Julian Day"
 description: "This tutorial explains why Julian days are useful and teaches how to create a Julian day variable from a Date or Data/Time class variable."
 dateCreated: 2015-10-18
 authors: Megan A. Jones, Marisa Guarinello, Courtney Soderberg, Leah A. Wasser
-contributors: 
-estimatedTime:
+contributors: Collin J. Storlie
+estimatedTime: 20 minutes
 packagesLibraries: lubridate
 topics: time-series
 languagesTool: R
@@ -97,22 +97,30 @@ class.
     library(lubridate)  #work with dates
     
     # set working directory to ensure R can find the file we wish to import
-    # setwd("working-dir-path-here")
+    wd <- "~/Documents/"
     
     # Load csv file of daily meteorological data from Harvard Forest
     # Factors=FALSE so strings, series of letters/ words/ numerals, remain characters
     harMet_DailyNoJD <- read.csv(
-      file="NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv",
+      file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv"),
       stringsAsFactors = FALSE
       )
-    
+
+    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
+    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv':
+    ## No such file or directory
+
+    ## Error in file(file, "rt"): cannot open the connection
+
     # what data class is the date column? 
     str(harMet_DailyNoJD$date)
 
-    ##  chr [1:5345] "2/11/01" "2/12/01" "2/13/01" "2/14/01" "2/15/01" "2/16/01" "2/17/01" ...
+    ## Error in str(harMet_DailyNoJD$date): object 'harMet_DailyNoJD' not found
 
     # convert "date" from chr to a Date class and specify current date format
     harMet_DailyNoJD$date<- as.Date(harMet_DailyNoJD$date, "%m/%d/%y")
+
+    ## Error in as.Date(harMet_DailyNoJD$date, "%m/%d/%y"): object 'harMet_DailyNoJD' not found
 
 ## Convert with yday()
 To quickly convert from from Date to Julian days, can we use `yday()`, a 
@@ -128,15 +136,17 @@ contains the Julian day data.
 
     # convert with yday into a new column "julian"
     harMet_DailyNoJD$julian <- yday(harMet_DailyNoJD$date)  
-    
+
+    ## Error in yday(harMet_DailyNoJD$date): object 'harMet_DailyNoJD' not found
+
     # make sure it worked all the way through. 
     head(harMet_DailyNoJD$julian) 
 
-    ## [1] 42 43 44 45 46 47
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harMet_DailyNoJD' not found
 
     tail(harMet_DailyNoJD$julian)
 
-    ## [1] 268 269 270 271 272 273
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'tail': object 'harMet_DailyNoJD' not found
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:**  In this tutorial we converted from

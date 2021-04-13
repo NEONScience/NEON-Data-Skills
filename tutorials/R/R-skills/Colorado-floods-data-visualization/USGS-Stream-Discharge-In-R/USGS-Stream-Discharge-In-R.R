@@ -1,4 +1,4 @@
-## ----load-libraries--------------------------
+## ----load-libraries----------------------------------------------------
 # load packages
 library(ggplot2) # create efficient, professional plots
 library(plotly) # create cool interactive plots
@@ -9,7 +9,7 @@ setwd(wd)
 
 
 
-## ----import-discharge-2----------------------
+## ----import-discharge-2------------------------------------------------
 
 #import data
 discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), sep= "\t",skip=24, header=TRUE,stringsAsFactors = FALSE)
@@ -19,7 +19,7 @@ head(discharge)
 
 
 
-## ----remove-second-header--------------------
+## ----remove-second-header----------------------------------------------
 # nrow: how many rows are in the R object
 nrow(discharge)
 
@@ -29,7 +29,7 @@ nrow(discharge)
 discharge <- discharge[2:nrow(discharge),]
 
 
-## ----rename-headers--------------------------
+## ----rename-headers----------------------------------------------------
 #view names
 names(discharge)
 
@@ -42,13 +42,13 @@ names(discharge)
 
 
 
-## ----view-data-structure---------------------
+## ----view-data-structure-----------------------------------------------
 #view structure of data
 str(discharge)
 
 
 
-## ----adjust-data-structure-------------------
+## ----adjust-data-structure---------------------------------------------
 # view class of the disValue column
 class(discharge$disValue)
 
@@ -59,12 +59,12 @@ str(discharge)
 
 
 
-## ----convert-time----------------------------
+## ----convert-time------------------------------------------------------
 #view class
 class(discharge$datetime)
 
 #convert to date/time class - POSIX
-discharge$datetime <- as.POSIXct(discharge$datetime, tz ="us/mountain")
+discharge$datetime <- as.POSIXct(discharge$datetime, tz ="America/Denver")
 
 #recheck data structure
 str(discharge)
@@ -94,7 +94,6 @@ ggplot(discharge, aes(datetime, disValue)) +
 # Define Start and end times for the subset as R objects that are the time class
 start.end <- as.POSIXct(c("2013-08-15 00:00:00","2013-10-15 00:00:00"),tz= "America/Denver")
 
-
 # plot the data - Aug 15-October 15
 ggplot(discharge,
       aes(datetime,disValue)) +
@@ -110,9 +109,9 @@ ggplot(discharge,
 # subset out some of the data - Aug 15 - October 15
 discharge.aug.oct2013 <- subset(discharge, 
                         datetime >= as.POSIXct('2013-08-15 00:00',
-                                              tz = "us/mountain") & 
+                                              tz = "America/Denver") & 
                         datetime <= as.POSIXct('2013-10-15 23:59', 
-                                              tz = "us/mountain"))
+                                              tz = "America/Denver"))
 
 # plot the data
 disPlot.plotly <- ggplot(data=discharge.aug.oct2013,
@@ -130,12 +129,12 @@ disPlot.plotly <- disPlot.plotly +
 disPlot.plotly
 
 
-## ----view-plotly, eval=F, comment=NA---------
+## ----view-plotly, eval=F, comment=NA-----------------------------------
 # view plotly plot in R
 ggplotly(disPlot.plotly)
 
 
-## ----pub-plotly, eval=FALSE, comment=NA------
+## ----pub-plotly, eval=FALSE, comment=NA--------------------------------
 # set username
 Sys.setenv("plotly_username"="yourUserNameHere")
 # set user key

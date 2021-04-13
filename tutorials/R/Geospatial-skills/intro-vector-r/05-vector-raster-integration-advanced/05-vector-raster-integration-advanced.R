@@ -1,4 +1,4 @@
-## ----view-extents, echo=FALSE, results='hide'---------------------------------------------
+## ----view-extents, echo=FALSE, results='hide', fig.cap="Comparison of extents of Roads, Plot Locations, Fisher Tower location, and Canopy Height Model at NEON Harvard Forest Field Site."----
 ## Load Packages
 library(rgdal)  # for vector work; sp package should always load with rgdal. 
 library (raster)
@@ -60,12 +60,12 @@ legend("topright",
 
 
 
-## ----reset-par, results="hide", echo=FALSE------------------------------------------------
+## ----reset-par, results="hide", echo=FALSE-----------------------------
 # reset par
 dev.off()
 
 
-## ----load-libraries-data, results="hide", warning=FALSE-----------------------------------
+## ----load-libraries-data, results="hide", warning=FALSE----------------
 # load necessary packages
 library(rgdal)  # for vector work; sp package should always load with rgdal. 
 library (raster)
@@ -91,7 +91,7 @@ chm_HARV <-
 
 
 
-## ----Crop-by-vector-extent----------------------------------------------------------------
+## ----Crop-by-vector-extent, fig.cap=c("NEON Harvard Forest Field Site with a Canopy Height Model overlay.", "Comparison of original Canopy Height Model extent compared to cropped Canopy Height Model extent.")----
 # plot full CHM
 plot(chm_HARV,
      main="LiDAR CHM - Not Cropped\nNEON Harvard Forest Field Site")
@@ -110,7 +110,7 @@ plot(chm_HARV_Crop,
 
 
 
-## ----view-crop-extent, echo=FALSE---------------------------------------------------------
+## ----view-crop-extent, echo=FALSE, fig.cap="NEON Harvard Forest Field Site with a Canopy Height Model overlay cropped to the same extent."----
 # view the data in a plot
 plot(aoiBoundary_HARV, lwd=8, border="blue",
      main = "Cropped LiDAR Canopy Height Model \n NEON Harvard Forest Field Site")
@@ -118,7 +118,7 @@ plot(aoiBoundary_HARV, lwd=8, border="blue",
 plot(chm_HARV_Crop, add = TRUE)
 
 
-## ----view-extent--------------------------------------------------------------------------
+## ----view-extent-------------------------------------------------------
 # lets look at the extent of all of our objects
 extent(chm_HARV)
 extent(chm_HARV_Crop)
@@ -126,7 +126,7 @@ extent(aoiBoundary_HARV)
 
 
 
-## ----challenge-code-crop-raster-points, include=TRUE, results="hide", echo=FALSE----------
+## ----challenge-code-crop-raster-points, include=TRUE, results="hide", echo=FALSE, fig.cap="Vegetation plots at NEON Harvard Forest Field Site with a Canopy Height Model overlay; note that one vegetation plot appears outside of the overlay."----
 
 # Created/imported in L02: .csv to Shapefile in R
 plot.locationSp_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",
@@ -145,7 +145,7 @@ plot(plot.locationSp_HARV,
 
 
 
-## ----raster-extents-cropped, echo=FALSE---------------------------------------------------
+## ----raster-extents-cropped, echo=FALSE, fig.cap="Comparison of extents of Roads, Plot Locations, and both the full-sized and cropped Canopy Height Models at NEON Harvard Forest Field Site."----
 plot(extent(lines_HARV),
      col="purple", lwd="3",
      xlab="Easting", ylab="Northing",
@@ -174,13 +174,13 @@ legend("bottomright",
 
 
 
-## ----hidden-extent-chunk------------------------------------------------------------------
+## ----hidden-extent-chunk-----------------------------------------------
 # extent format (xmin,xmax,ymin,ymax)
 new.extent <- extent(732161.2, 732238.7, 4713249, 4713333)
 class(new.extent)
 
 
-## ----crop-using-drawn-extent--------------------------------------------------------------
+## ----crop-using-drawn-extent, fig.cap="NEON Harvard Forest Field Site with a manually cropped Canopy Height Model overlay."----
 
 # crop raster
 CHM_HARV_manualCrop <- crop(x = chm_HARV, y = new.extent)
@@ -197,7 +197,7 @@ plot(CHM_HARV_manualCrop,
 
 
 
-## ----extract-from-raster------------------------------------------------------------------
+## ----extract-from-raster-----------------------------------------------
 
 # extract tree height for AOI
 # set df=TRUE to return a data.frame rather than a list of values
@@ -211,7 +211,7 @@ head(tree_height)
 nrow(tree_height)
 
 
-## ----view-extract-histogram---------------------------------------------------------------
+## ----view-extract-histogram, fig.cap="Distribution of Canopy Height Model values at NEON Harvard Forest Field Site."----
 # view histogram of tree heights in study area
 hist(tree_height$HARV_chmCrop, 
      main="Histogram of CHM Height Values (m) \nNEON Harvard Forest Field Site",
@@ -223,7 +223,7 @@ summary(tree_height$HARV_chmCrop)
 
 
 
-## ----summarize-extract--------------------------------------------------------------------
+## ----summarize-extract-------------------------------------------------
 # extract the average tree height (calculated using the raster pixels)
 # located within the AOI polygon
 av_tree_height_AOI <- raster::extract(x = chm_HARV, 
@@ -236,7 +236,7 @@ av_tree_height_AOI
 
 
 
-## ----extract-point-to-buffer--------------------------------------------------------------
+## ----extract-point-to-buffer-------------------------------------------
 # what are the units of our buffer
 crs(point_HARV)
 
@@ -257,7 +257,7 @@ nrow(av_tree_height_tower)
 
 
 
-## ----challenge-code-extract-plot-tHeight, include=TRUE, results="hide", echo=FALSE--------
+## ----challenge-code-extract-plot-tHeight, include=TRUE, results="hide", echo=FALSE, fig.cap="Average tree height value for the area within 20m of each vegetation plot location at the NEON Harvard Forest Field Site."----
 
 # first import the plot location file.
 plot.locationsSp_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV/",

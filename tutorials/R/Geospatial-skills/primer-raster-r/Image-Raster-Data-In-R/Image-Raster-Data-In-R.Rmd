@@ -5,7 +5,7 @@ description: "This tutorial explains the fundamental principles, functions and m
 dateCreated:  2015-05-18
 authors: Leah A. Wasser, Megan A. Jones
 contributors:
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries: raster, sp, rgdal
 topics: hyperspectral, spatial-data-gis, remote-sensing, raster
 languagesTool: R

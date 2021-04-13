@@ -8,9 +8,9 @@ individually can be a bit difficult, so we recommend using an all-in-one
 installer, like Anaconda.
 
 Regardless of how you choose to install it, **please make sure your environment 
-is set up with Python version 3.5 (at the time of writing, the `gdal` package did not work 
+is set up with Python version 3.7 (at the time of writing, the `gdal` package did not work 
 with the newest Python version 3.6). Python 2.x is quite different from Python 3.x
-so you do need to install 3.x and set up with the 3.5 environment. 
+so you do need to install 3.x and set up with the 3.7 environment. 
 
 We will teach using Python in the 
 <a href="http://jupyter.org" target="_blank">Jupyter Notebook environment</a>, 
@@ -26,33 +26,31 @@ recommend you download and install the library so that you can explore this tool
 <h4 id="Python-windows"> Windows </h4>
 
 Download and install 
-<a href="https://www.continuum.io/downloads" target="_blank" >Anaconda</a>.
-Download the default Python 3 installer (3.6 -- and yes you can later set up the 
-3.5 environment from this). Use all of the defaults for 
+<a href="https://www.anaconda.com/products/individual" target="_blank" >Anaconda</a>.
+Download the default Python 3 installer (3.7). Use all of the defaults for 
 installation *except* make sure to check **Make Anaconda the default Python**.
 
 
 <h4 id="Python-mac">Mac OS X </h4>
 
 Download and install 
-<a href="https://www.continuum.io/downloads" target="_blank">Anaconda</a> from Continuum.
+<a href="https://www.anaconda.com/products/individual" target="_blank">Anaconda</a>.
 Download the Python 3.x installer, choosing either the graphical installer or the 
-command-line installer (3.6 -- and yes you can later set up the 
-3.5 environment from this). For the graphical installer, use all of the defaults for 
+command-line installer (3.7). For the graphical installer, use all of the defaults for 
 installation. For the command-line installer open Terminal, navigate to the
 directory with the download then enter: 
 
-`bash Anaconda3-4.3.1-MacOSX-x86_64.sh` 
+`bash Anaconda3-2020.11-MacOSX-x86_64.sh` (or whatever you file name is)
 
 <h4 id="Python-linux">Linux </h4>
-We recommend the all-in-one scientific Python installer
-<a href="http://continuum.io/downloads.html" target="_blank">Anaconda</a>.
+Download and install 
+<a href="https://www.anaconda.com/products/individual" target="_blank">Anaconda</a>.
 Download the installer that matches your operating system and save it in your 
 home folder. Download the default Python 3 installer.
 
-Open a terminal window. Type 
+Open a terminal window and navigate to your downloads folder. Type 
 
-`bash Anaconda-`
+`bash Anaconda3-2020.11-Linux-ppc64le.sh`
 
 and then press tab. The name of the file you just downloaded should appear.
 
@@ -77,15 +75,15 @@ completing these package installation instructions.
 
 <h4 id="package-windows">Windows</h4>
 
-Create a new Python 3.5 environment by opening Windows Command Prompt and typing 
+Create a new Python 3.7 environment by opening Windows Command Prompt and typing 
 
-`conda create –n p35 python=3.5 anaconda`
+`conda create –n py37 python=3.7 anaconda`
 
-When prompted, activate the p35 environment in Command Prompt by typing 
+When prompted, activate the py37 environment in Command Prompt by typing 
 
-`activate p35`
+`activate py37`
 
-You should see (p35) at the beginning of the command line. You can also test 
+You should see (py37) at the beginning of the command line. You can also test 
 that you are using the correct version by typing `python --version`.
 
 Install Python package(s): 
@@ -98,17 +96,17 @@ default.
 
 <h4 id="package-mac">Mac OS X</h4>
 
-Create a new Python 3.5 environment by opening Terminal and typing 
+Create a new Python 3.7 environment by opening Terminal and typing 
 
-`conda create –n p35 python=3.5 anaconda`
+`conda create –n py37 python=3.7 anaconda`
 
 This may take a minute or two. 
 
-When prompted, activate the p35 environment in Command Prompt by typing 
+When prompted, activate the py37 environment in Command Prompt by typing 
 
-`source activate p35`
+`source activate py37`
 
-You should see (p35) at the beginning of the command line. You can also test 
+You should see (py37) at the beginning of the command line. You can also test 
 that you are using the correct version by typing `python --version`.
 
 Install Python package(s): 

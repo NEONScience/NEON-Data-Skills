@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Load the Data</title>
+<title><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -179,7 +179,7 @@ After completing this tutorial, you will be able to:
  * Customize a baseplot legend in R.
  
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of R and, preferably, RStudio loaded
+You will need the most current version of R and preferably RStudio loaded
 on your computer to complete this tutorial.
 
 ### Install R Packages
@@ -191,11 +191,36 @@ on your computer to complete this tutorial.
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 ## Download Data
-{% include/dataSubsets/_data_Site-Layout-Files.html %}
+<h3><a href="https://ndownloader.figshare.com/files/3708751" > NEON Teaching Data Subset: Site Layout Shapefiles</a></h3>
+
+These vector data provide information on the site characterization and 
+infrastructure at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank"> Harvard Forest</a> 
+field site.
+The Harvard Forest shapefiles are from the 
+ <a href="http://harvardforest.fas.harvard.edu/gis-maps/" target="_blank">Harvard Forest GIS & Map</a> 
+archives. US Country and State Boundary layers are from the 
+<a href="https://www.census.gov/geo/maps-data/data/tiger-cart-boundary.html" target="_blank">US Census Bureau</a>.
+
+<a href="https://ndownloader.figshare.com/files/3708751" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 </div>
 
@@ -282,8 +307,8 @@ roadPalette
 roadColors &lt;- c(&quot;blue&quot;,&quot;green&quot;,&quot;grey&quot;,&quot;purple&quot;)[lines_HARV$TYPE]
 roadColors
 
-##  [1] &quot;purple&quot; &quot;green&quot;  &quot;green&quot;  &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;  
-## [10] &quot;blue&quot;   &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
+##  [1] &quot;purple&quot; &quot;green&quot;  &quot;green&quot;  &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;   &quot;grey&quot;  
+##  [8] &quot;grey&quot;   &quot;grey&quot;   &quot;blue&quot;   &quot;purple&quot; &quot;purple&quot; &quot;purple&quot;
 
 # create vector of line width values
 lineWidth &lt;- c(2,4,3,8)[lines_HARV$TYPE]
@@ -299,7 +324,7 @@ plot(lines_HARV,
      lwd=lineWidth)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-unique-lines-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-unique-lines-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by attribute factor value."/></p>
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Given we have a factor with 4 levels, 
@@ -342,7 +367,7 @@ legend(&quot;bottomright&quot;,
        cex=.8) # decrease the font / legend size
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-legend-to-plot-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-legend-to-plot-1.png" alt="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a default legend."/></p>
 
 <p>However, what if we want to create a more complex plot with many shapefiles
 and unique symbols that need to be represented clearly in a legend?</p>
@@ -372,7 +397,7 @@ plot(point_HARV,
      col = &quot;purple&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-many-shapefiles-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/plot-many-shapefiles-1.png" alt="Roads and tower location at NEON Harvard Forest Field Site with color varied by attribute type."/></p>
 
 <pre><code># assign plot to an object for easy modification!
 plot_HARV&lt;- recordPlot()
@@ -399,7 +424,8 @@ them. We will start with the labels.</p>
 labels &lt;- c(&quot;Tower&quot;, &quot;AOI&quot;, levels(lines_HARV$TYPE))
 labels
 
-## [1] &quot;Tower&quot;      &quot;AOI&quot;        &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot; &quot;woods road&quot;
+## [1] &quot;Tower&quot;      &quot;AOI&quot;        &quot;boardwalk&quot;  &quot;footpath&quot;   &quot;stone wall&quot;
+## [6] &quot;woods road&quot;
 
 # render plot
 plot_HARV
@@ -411,7 +437,7 @@ legend(&quot;bottomright&quot;,
        cex=.8) # decrease the font / legend size
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/create-custom-labels-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/create-custom-labels-1.png" alt="Roads and tower location at NEON Harvard Forest Field Site with color varied by attribute type and with a modified legend."/></p>
 
 <p>Now we have a legend with the labels identified. Let&#39;s add colors to each legend
 element next. We can use the vectors of colors that we created earlier to do this.</p>
@@ -438,11 +464,11 @@ legend(&quot;bottomright&quot;,
        cex=.8) # decrease the font / legend size
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-colors-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/add-colors-1.png" alt="Roads and tower location at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type."/></p>
 
-<p>Great - now we have a legend however this legend uses boxes to symbolize each 
+<p>Great, now we have a legend! However, this legend uses boxes to symbolize each 
 element in the plot. It might be better if the lines were symbolized as a line 
-and the points, symbolized as a symbol. We can customize this using
+and the points were symbolized as a point symbol. We can customize this using
 <code>pch=</code> in our legend: <strong>16</strong> is a point symbol, <strong>15</strong> is a box. </p>
 
 <div id="ds-dataTip" markdown="1">
@@ -470,7 +496,7 @@ legend(&quot;bottomright&quot;,
        cex=.8)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/custom-symbols-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/custom-symbols-1.png" alt="Roads and tower location at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type (i.e., tower = point)."/></p>
 
 <p>Now we&#39;ve added a point symbol to represent our point element in the plot. However
 it might be more useful to use line symbols in our legend
@@ -485,10 +511,10 @@ using <code>lty = ()</code>. We have a total of 6 elements in our legend:</p>
 
 <p>The <code>lty</code> list designates, in order, which of those elements should be
 designated as a line (<code>1</code>) and which should be designated as a symbol (<code>NA</code>).
-Our object will thus look like <code>lty = c(NA,NA,1,1,1,1)</code>. This tells R to use a
-line element forthe 3-6 elements in our legend only. </p>
+Our object will thus look like <code>lty = c(NA,NA,1,1,1,1)</code>. This tells R to only use a
+line element for the 3-6 elements in our legend.</p>
 
-<p>Once we do this, we need to <strong>modify</strong> our <code>pch</code> element. Each <strong>line</strong> element
+<p>Once we do this, we still need to <strong>modify</strong> our <code>pch</code> element. Each <strong>line</strong> element
 (3-6) should be represented by a <code>NA</code> value - this tells R to not use a
 symbol, but to instead use a line.</p>
 
@@ -516,7 +542,7 @@ legend(&quot;bottomright&quot;,
        cex=.8)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/refine-legend-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/refine-legend-1.png" alt="Roads and tower location at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., tower = point, roads = lines]."/></p>
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Plot Polygon by Attribute
@@ -535,7 +561,7 @@ Create a custom legend.
 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-2.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-1.png" alt="Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines]."/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-vector-r/02-plot-multiple-shapefiles-custom-legend/rfigs/challenge-code-plot-color-2.png" alt="Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines], and study plots symbols vary by soil type."/></p>
 
 </body>
 

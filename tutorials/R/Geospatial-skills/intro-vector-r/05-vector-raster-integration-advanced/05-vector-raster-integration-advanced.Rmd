@@ -5,7 +5,7 @@ description: "This tutorial covers how to modify (crop) a raster extent using th
 dateCreated:  2015-10-23
 authors: Joseph Stachelek, Leah A. Wasser, Megan A. Jones
 contributors: Sarah Newman, Maya R. Stahl
-estimatedTime:
+estimatedTime: 1 hour
 packagesLibraries: rgdal, raster
 topics: vector-data, spatial-data-gis
 languagesTool: R

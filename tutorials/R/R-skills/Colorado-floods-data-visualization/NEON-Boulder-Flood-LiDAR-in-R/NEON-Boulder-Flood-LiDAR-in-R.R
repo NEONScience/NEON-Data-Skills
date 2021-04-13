@@ -1,4 +1,4 @@
-## ----load-libraries--------------------------
+## ----load-libraries----------------------------------------------------
 # load libraries
 library(raster)   # work with raster files
 library(rgdal)    # work with raster files
@@ -8,7 +8,7 @@ wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local envir
 setwd(wd)
 
 
-## ----open-DTMs-------------------------------
+## ----open-DTMs---------------------------------------------------------
 # Load DTMs into R
 DTM_pre <- raster(paste0(wd,"disturb-events-co13/lidar/pre-flood/preDTM3.tif"))
 DTM_post <- raster(paste0(wd,"disturb-events-co13/lidar/post-flood/postDTM3.tif"))
@@ -19,7 +19,7 @@ DTM_post
 
 
 
-## ----open-hillshade--------------------------
+## ----open-hillshade----------------------------------------------------
 
 # Creating hillshade for DTM_pre & DTM_post
 # In order to generate the hillshde, we need both the slope and the aspect of
@@ -125,13 +125,13 @@ cropbox1 <- drawExtent()
 
 
 
-## ----crop-raster-man-view--------------------
+## ----crop-raster-man-view----------------------------------------------
 # view the extent of the cropbox1
 cropbox1
 
 
 
-## ----crop-raster-coords----------------------
+## ----crop-raster-coords------------------------------------------------
 # desired coordinates of the box
 cropbox2<-c(473792.6,474999,4434526,4435453)
 

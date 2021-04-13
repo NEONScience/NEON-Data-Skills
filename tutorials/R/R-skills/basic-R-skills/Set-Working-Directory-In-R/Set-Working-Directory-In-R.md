@@ -5,7 +5,7 @@ description: "This tutorial explains how to set a working directory in R. The wo
 dateCreated:  2015-12-07
 authors: Megan A. Jones, Donal O'Leary
 contributors: Leah A. Wasser, Garrett M. Williams
-estimatedTime:
+estimatedTime: 30 minutes
 packagesLibraries:
 topics: data-management
 languagesTool: R

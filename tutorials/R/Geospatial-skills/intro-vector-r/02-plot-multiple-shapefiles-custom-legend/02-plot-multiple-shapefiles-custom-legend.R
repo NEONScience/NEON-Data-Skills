@@ -1,4 +1,4 @@
-## ----load-packages-data-------------------------------------------------------------------
+## ----load-packages-data------------------------------------------------
 
 # load packages
 # rgdal: for vector work; sp package should always load with rgdal. 
@@ -22,7 +22,7 @@ point_HARV <- readOGR("NEON-DS-Site-Layout-Files/HARV",
 
 
 
-## ----plot-unique-lines--------------------------------------------------------------------
+## ----plot-unique-lines, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color and line width varied by attribute factor value."----
 
 # view the factor levels
 levels(lines_HARV$TYPE)
@@ -52,7 +52,7 @@ plot(lines_HARV,
 
 
 
-## ----add-legend-to-plot-------------------------------------------------------------------
+## ----add-legend-to-plot, fig.cap="Roads and trails at NEON Harvard Forest Field Site with color varied by attribute factor value and with a default legend."----
 plot(lines_HARV, 
      col=roadColors,
      main="NEON Harvard Forest Field Site\n Roads & Trails\n Default Legend")
@@ -69,7 +69,7 @@ legend("bottomright",
 
 
 
-## ----plot-many-shapefiles-----------------------------------------------------------------
+## ----plot-many-shapefiles, fig.cap="Roads and tower location at NEON Harvard Forest Field Site with color varied by attribute type."----
 
 # Plot multiple shapefiles
 plot(aoiBoundary_HARV, 
@@ -91,7 +91,7 @@ plot_HARV<- recordPlot()
 
 
 
-## ----create-custom-labels-----------------------------------------------------------------
+## ----create-custom-labels, fig.cap="Roads and tower location at NEON Harvard Forest Field Site with color varied by attribute type and with a modified legend."----
 
 # create a list of all labels
 labels <- c("Tower", "AOI", levels(lines_HARV$TYPE))
@@ -107,7 +107,7 @@ legend("bottomright",
        cex=.8) # decrease the font / legend size
 
 
-## ----add-colors---------------------------------------------------------------------------
+## ----add-colors, fig.cap="Roads and tower location at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type."----
 
 # we have a list of colors that we used above - we can use it in the legend
 roadPalette
@@ -128,7 +128,7 @@ legend("bottomright",
 
 
 
-## ----custom-symbols-----------------------------------------------------------------------
+## ----custom-symbols, fig.cap="Roads and tower location at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type (i.e., tower = point)."----
 
 # create a list of pch values
 # these are the symbols that will be used for each legend value
@@ -149,7 +149,7 @@ legend("bottomright",
 
 
 
-## ----refine-legend------------------------------------------------------------------------
+## ----refine-legend, fig.cap="Roads and tower location at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., tower = point, roads = lines]."----
 # create line object
 lineLegend = c(NA,NA,1,1,1,1)
 lineLegend
@@ -170,7 +170,7 @@ legend("bottomright",
 
 
 
-## ----challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE----------------
+## ----challenge-code-plot-color, results="hide", warning= FALSE, echo=FALSE, fig.cap= c("Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines].", "Roads and study plots at NEON Harvard Forest Field Site with color and a modified legend varied by attribute type; each symbol on the legend corresponds to the shapefile type [i.e., soil plots = points, roads = lines], and study plots symbols vary by soil type.")----
 ## 1
 # open plot locations
 plotLocations <- readOGR("NEON-DS-Site-Layout-Files/HARV",

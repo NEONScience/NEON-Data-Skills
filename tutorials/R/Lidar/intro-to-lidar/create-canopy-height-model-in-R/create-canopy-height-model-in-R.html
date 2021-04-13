@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Create a lidar-derived Canopy Height Model (CHM)</title>
+<title> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -190,14 +190,37 @@ on your computer to complete this tutorial.
 <a href="https://www.neonscience.org/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a>
 
 ## Download Data
-{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></h3>
+
+These remote sensing data files provide information on the vegetation at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a> 
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SOAP" target="_blank"> Soaproot Saddle</a> 
+field sites. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7907590" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
 
 This tutorial is designed for you to set your working directory to the directory
 created by unzipping this file.
 
 ****
 
-{% include/_greyBox-wd-rscript.html %}
+**Set Working Directory:** This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
+learned skills. If available, the code for challenge solutions is found in the
+downloadable R script of the entire lesson, available in the footer of each lesson page.
+
 
 ***
 
@@ -230,12 +253,12 @@ library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
-wd=&quot;~/Documents/data/&quot; #This will depend on your local environment
+wd=&quot;~/Git/data/&quot; #This will depend on your local environment
 setwd(wd)
 </code></pre>
 
 <p>First, we will import the Digital Surface Model (DSM). The 
-<a href="{{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
 represents the elevation of the top of the objects on the ground (trees, 
 buildings, etc).</p>
 
@@ -249,15 +272,15 @@ dsm
 ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
 ## resolution : 1, 1  (x, y)
 ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : /Users/olearyd/Documents/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif 
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
+## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif 
 ## names      : SJER2013_DSM
 
 # plot the DSM
 plot(dsm, main=&quot;Lidar Digital Surface Model \n SJER, California&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/import-dsm-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/import-dsm-1.png" alt=" "/></p>
 
 <p>Note the resolution, extent, and coordinate reference system (CRS) of the raster. 
 To do later steps, our DTM will need to be the same. </p>
@@ -272,7 +295,7 @@ dtm &lt;- raster(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTer
 plot(dtm, main=&quot;Lidar Digital Terrain Model \n SJER, California&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/plot-DTM-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/plot-DTM-1.png" alt=" "/></p>
 
 <p>With both of these rasters now loaded, we can create the Canopy Height Model 
 (CHM). The 
@@ -297,7 +320,7 @@ chm
 ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
 ## resolution : 1, 1  (x, y)
 ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
 ## source     : memory
 ## names      : layer 
 ## values     : -1.399994, 40.29001  (min, max)
@@ -305,7 +328,7 @@ chm
 plot(chm, main=&quot;Lidar Canopy Height Model \n SJER, California&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/calculate-plot-CHM-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/calculate-plot-CHM-1.png" alt=" "/></p>
 
 <p>We&#39;ve now created a CHM from our DSM and DTM. What do you notice about the 
 canopy cover at this location in the San Joaquin Experimental Range? </p>
@@ -316,7 +339,7 @@ canopy cover at this location in the San Joaquin Experimental Range? </p>
 Convert the CHM from meters to feet. Plot it. 
 </div>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/challenge-code-raster-math-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/intro-to-lidar/create-canopy-height-model-in-R/rfigs/challenge-code-raster-math-1.png" alt=" "/></p>
 
 <p>If, in your work you need to create lots of CHMs from different rasters, an 
 efficient way to do this would be to create a function to create your CHMs. </p>
@@ -335,7 +358,7 @@ chm2
 ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
 ## resolution : 1, 1  (x, y)
 ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
 ## source     : memory
 ## names      : layer 
 ## values     : -40.29001, 1.399994  (min, max)
@@ -348,7 +371,7 @@ chm3
 ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
 ## resolution : 1, 1  (x, y)
 ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
 ## source     : memory
 ## names      : layer 
 ## values     : -40.29001, 1.399994  (min, max)

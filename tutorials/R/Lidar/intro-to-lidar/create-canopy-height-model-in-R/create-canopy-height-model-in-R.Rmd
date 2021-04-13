@@ -108,12 +108,12 @@ library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
-wd="C:/Users/mccahill/Documents/GitHub/" #This will depend on your local environment
+wd="~/Git/data/" #This will depend on your local environment
 setwd(wd)
 ```
 
 First, we will import the Digital Surface Model (DSM). The 
-<a href="{{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/chm-dsm-dtm-gridded-lidar-data" target="_blank">DSM</a>
 represents the elevation of the top of the objects on the ground (trees, 
 buildings, etc).
 

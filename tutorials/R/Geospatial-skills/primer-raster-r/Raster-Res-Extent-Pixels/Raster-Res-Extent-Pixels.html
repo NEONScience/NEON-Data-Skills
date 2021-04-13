@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Spatial Resolution</title>
+<title> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -185,7 +185,21 @@ on your computer to complete this tutorial.
 
 ### Data to Download
 
-{% include/dataSubsets/_data_Field-Site-Spatial-Data.html %}
+<h3> <a href="https://ndownloader.figshare.com/files/7907590"> NEON Teaching Data Subset: Field Site Spatial Data</a></h3>
+
+These remote sensing data files provide information on the vegetation at the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network&rsquo;s</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank"> San Joaquin Experimental Range</a> 
+and 
+<a href="https://www.neonscience.org/field-sites/field-sites-map/SOAP" target="_blank"> Soaproot Saddle</a> 
+field sites. The entire dataset can be accessed by request from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+
+<a href="https://ndownloader.figshare.com/files/7907590" class="link--button link--arrow">
+Download Dataset</a>
+
+
+
 
 <p>The LiDAR and imagery data used to create the rasters in this dataset were 
 collected over the San Joaquin field site located in California (NEON Domain 17) 
@@ -250,23 +264,25 @@ Range in California. </p>
 library(raster)  
 library(rgdal)
 
-# Load raster in an R object called &#39;DEM&#39;
-DEM &lt;- raster(&quot;NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif&quot;)  
-
 # set working directory to data folder
 #setwd(&quot;pathToDirHere&quot;)
+wd &lt;- (&quot;C:/Users/mccahill/Documents/GitHub/&quot;)
+setwd(wd)
+
+## Error in setwd(wd): cannot change working directory
+
+# Load raster in an R object called &#39;DEM&#39;
+DEM &lt;- raster(paste0(wd, &quot;NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif&quot;))  
+
+## Error in .local(.Object, ...) :
+
+## Error in .rasterObjectFromFile(x, band = band, objecttype = &quot;RasterLayer&quot;, : Cannot create a RasterLayer object from this file. (file does not exist)
 
 
 # View raster attributes 
 DEM
 
-## class      : RasterLayer 
-## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
-## resolution : 1, 1  (x, y)
-## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
-## names      : SJER2013_DTM
+## Error in eval(expr, envir, enclos): object &#39;DEM&#39; not found
 </code></pre>
 
 <p>Note that this raster (in GeoTIFF format) already has an extent, resolution, and 
@@ -285,11 +301,7 @@ extent of a new raster. </p>
 <pre><code># View the extent of the raster
 DEM@extent
 
-## class      : Extent 
-## xmin       : 254570 
-## xmax       : 258869 
-## ymin       : 4107302 
-## ymax       : 4112362
+## Error in eval(expr, envir, enclos): object &#39;DEM&#39; not found
 </code></pre>
 
 <figure>
@@ -334,7 +346,7 @@ myRaster1
 ## dimensions : 4, 4, 16  (nrow, ncol, ncell)
 ## resolution : 90, 45  (x, y)
 ## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
 ## source     : memory
 ## names      : layer 
 ## values     : 1, 16  (min, max)
@@ -342,8 +354,7 @@ myRaster1
 # is the CRS defined?
 myRaster1@crs
 
-## CRS arguments:
-##  +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0
+## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 </code></pre>
 
 <p>Wait, why is the CRS defined on this new raster? This is the default values
@@ -364,7 +375,7 @@ myRaster1@extent
 plot(myRaster1, main=&quot;Raster with 16 pixels&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/create-raster-cont-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/create-raster-cont-1.png" alt=" "/></p>
 
 <p>Here we see our raster with the value of 1 to 16 in each pixel. </p>
 
@@ -393,7 +404,7 @@ myRaster2
 ## dimensions : 8, 8, 64  (nrow, ncol, ncell)
 ## resolution : 45, 22.5  (x, y)
 ## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
 ## source     : memory
 ## names      : layer 
 ## values     : -0.25, 17.25  (min, max)
@@ -402,7 +413,7 @@ myRaster2
 plot(myRaster2, main=&quot;Raster with 32 pixels&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-1.png" alt=" "/></p>
 
 <pre><code>## LOWER RESOLUTION
 myRaster3 &lt;- raster(nrow=2, ncol=2)
@@ -413,7 +424,7 @@ myRaster3
 ## dimensions : 2, 2, 4  (nrow, ncol, ncell)
 ## resolution : 180, 90  (x, y)
 ## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
 ## source     : memory
 ## names      : layer 
 ## values     : 3.5, 13.5  (min, max)
@@ -421,7 +432,7 @@ myRaster3
 plot(myRaster3, main=&quot;Raster with 4 pixels&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-2.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-2.png" alt=" "/></p>
 
 <pre><code>## SINGLE PIXEL RASTER
 myRaster4 &lt;- raster(nrow=1, ncol=1)
@@ -432,7 +443,7 @@ myRaster4
 ## dimensions : 1, 1, 1  (nrow, ncol, ncell)
 ## resolution : 360, 180  (x, y)
 ## extent     : -180, 180, -90, 90  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0 
+## crs        : +proj=longlat +datum=WGS84 +no_defs 
 ## source     : memory
 ## names      : layer 
 ## values     : 7.666667, 7.666667  (min, max)
@@ -440,7 +451,7 @@ myRaster4
 plot(myRaster4, main=&quot;Raster with 1 pixel&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-3.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/resample-raster-3.png" alt=" "/></p>
 
 <p>To more easily compare them, let&#39;s create a graphic layout with 4 rasters in it. 
 Notice that each raster has the same extent but each a different resolution 
@@ -456,7 +467,7 @@ plot(myRaster3, main=&quot;Raster with 4 pixels&quot;)
 plot(myRaster4, main=&quot;Raster with 2 pixels&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/quad-layout-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/quad-layout-1.png" alt=" "/></p>
 
 <pre><code># change graphical parameter back to 1x1 
 par(mfrow=c(1,1))
@@ -542,18 +553,18 @@ epsg = make_EPSG()
 # View top 5 entries
 head(epsg, 5)
 
-##   code       note
-## 1 3819   # HD1909
-## 2 3821    # TWD67
-## 3 3824    # TWD97
-## 4 3889     # IGRS
-## 5 3906 # MGI 1901
-##                                                                                            prj4
-## 1 +proj=longlat +ellps=bessel +towgs84=595.48,121.69,515.35,4.115,-2.9383,0.853,-3.408 +no_defs
-## 2                                                         +proj=longlat +ellps=aust_SA +no_defs
-## 3                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-## 4                                    +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
-## 5                            +proj=longlat +ellps=bessel +towgs84=682,-203,480,0,0,0,0 +no_defs
+##   code   note                                                   prj4
+## 1 3819 HD1909         +proj=longlat +ellps=bessel +no_defs +type=crs
+## 2 3821  TWD67        +proj=longlat +ellps=aust_SA +no_defs +type=crs
+## 3 3822  TWD97 +proj=geocent +ellps=GRS80 +units=m +no_defs +type=crs
+## 4 3823  TWD97          +proj=longlat +ellps=GRS80 +no_defs +type=crs
+## 5 3824  TWD97          +proj=longlat +ellps=GRS80 +no_defs +type=crs
+##   prj_method
+## 1     (null)
+## 2     (null)
+## 3     (null)
+## 4     (null)
+## 5     (null)
 </code></pre>
 
 <h3>Define the extent</h3>
@@ -658,7 +669,7 @@ rasterNoProj@extent
 plot(rasterNoProj, main=&quot;Raster in UTM coordinates, 1 m resolution&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/plot-raster-our-extent-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Raster-Res-Extent-Pixels/rfigs/plot-raster-our-extent-1.png" alt=" "/></p>
 
 <p>Notice that the coordinates show up on our plot now. </p>
 
@@ -696,11 +707,12 @@ rasterNoProj@crs
 # view the CRS of our DEM object.
 DEM@crs
 
-## CRS arguments:
-##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+## Error in eval(expr, envir, enclos): object &#39;DEM&#39; not found
 
 # define the CRS using a CRS of another raster
 rasterNoProj@crs &lt;- DEM@crs
+
+## Error in eval(expr, envir, enclos): object &#39;DEM&#39; not found
 
 # look at the attributes
 rasterNoProj
@@ -709,7 +721,7 @@ rasterNoProj
 ## dimensions : 10, 20, 200  (nrow, ncol, ncell)
 ## resolution : 1, 1  (x, y)
 ## extent     : 254570, 254590, 4107302, 4107312  (xmin, xmax, ymin, ymax)
-## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
+## crs        : NA 
 ## source     : memory
 ## names      : layer 
 ## values     : 1, 8  (min, max)
@@ -717,8 +729,7 @@ rasterNoProj
 # view just the crs
 rasterNoProj@crs
 
-## CRS arguments:
-##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0
+## CRS arguments: NA
 </code></pre>
 
 <p>IMPORTANT: the above code <strong>does not reproject</strong> the raster. It simply defines the
@@ -771,7 +782,7 @@ r
 ## crs        : NA 
 ## source     : memory
 ## names      : layer 
-## values     : 1, 48  (min, max)
+## values     : 6, 48  (min, max)
 </code></pre>
 
 <h2>Reprojecting Data</h2>
@@ -784,49 +795,33 @@ and R both have reprojection tools that perform this task.</p>
 reprojectedData1 &lt;- projectRaster(rasterNoProj, 
                                  crs=&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;)
 
+## Error in projectRaster(rasterNoProj, crs = &quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;): input projection is NA
+
 # note that the extent has been adjusted to account for the NEW crs
 reprojectedData1@crs
 
-## CRS arguments:
-##  +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0
+## Error in eval(expr, envir, enclos): object &#39;reprojectedData1&#39; not found
 
 reprojectedData1@extent
 
-## class      : Extent 
-## xmin       : -119.761 
-## xmax       : -119.7607 
-## ymin       : 37.07988 
-## ymax       : 37.08
+## Error in eval(expr, envir, enclos): object &#39;reprojectedData1&#39; not found
 
 # note the range of values in the output data
 reprojectedData1
 
-## class      : RasterLayer 
-## dimensions : 13, 22, 286  (nrow, ncol, ncell)
-## resolution : 1.12e-05, 9e-06  (x, y)
-## extent     : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
-## source     : memory
-## names      : layer 
-## values     : 0.64765, 8.641957  (min, max)
+## Error in eval(expr, envir, enclos): object &#39;reprojectedData1&#39; not found
 
 # use nearest neighbor interpolation method to ensure that the values stay the same
 reprojectedData2 &lt;- projectRaster(rasterNoProj, 
                                  crs=&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;, 
                                  method = &quot;ngb&quot;)
 
+## Error in projectRaster(rasterNoProj, crs = &quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs &quot;, : input projection is NA
 
 # note that the min and max values have now been forced to stay within the same range.
 reprojectedData2
 
-## class      : RasterLayer 
-## dimensions : 13, 22, 286  (nrow, ncol, ncell)
-## resolution : 1.12e-05, 9e-06  (x, y)
-## extent     : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
-## crs        : +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs +towgs84=0,0,0 
-## source     : memory
-## names      : layer 
-## values     : 1, 8  (min, max)
+## Error in eval(expr, envir, enclos): object &#39;reprojectedData2&#39; not found
 </code></pre>
 
 </body>
