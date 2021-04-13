@@ -10,7 +10,7 @@ packagesLibraries: sp, rgdal
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: 
-code1: 
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/neon-maps/neon-maps.R
 tutorialSeries:
 urlTitle: neon-maps
 
