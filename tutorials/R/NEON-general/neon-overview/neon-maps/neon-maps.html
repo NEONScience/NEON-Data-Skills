@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Setup R Environment</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>This tutorial explores NEON domain- and site-level spatial data, using 
+shapefiles and tabular data provided by the NEON project. The intent of 
+this tutorial is to provide guidance in navigating the data and files 
+provided by NEON, and in creating maps of the domain and site locations. 
+We hope these data and methods will assist users in generating images and 
+figures for publications or presentations related to NEON.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Access NEON spatial data from the NEON website
+* Create a simple map with NEON domains and field site locations
+
+## Things You’ll Need To Complete This Tutorial
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+</div>
+
+<h2>Setup R Environment</h2>
+
+<p>We&#39;ll need several R packages in this tutorial. Install the packages, if not 
+already installed, and load the libraries for each. </p>
+
+<pre><code># run once to get the package, and re-run if you need to get updates
+install.packages(&quot;sp&quot;)  # work with spatial data
+install.packages(&quot;rgdal&quot;)  # work with spatial data
+
+
+
+# run every time you start a script
+library(sp)
+library(rgdal)
+
+options(stringsAsFactors=F)
+
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. 
+
+wd &lt;- &quot;~/data/&quot; # This will depend on your local environment
+setwd(wd)
+</code></pre>
+
+<h2>NEON spatial data files</h2>
+
+<p>NEON spatial data are available in a number of different files depending on which 
+spatial data you are interested in. This section covers a variety of spatial 
+data files that can be directly downloaded from the 
+<a href="https://www.neonscience.org" target="_blank">NEONScience.org</a> website 
+instead of being delivered with a downloaded data product.</p>
+
+<p>The goal of this section is to create a map of the entire Observatory that includes 
+the NEON domain boundaries and differentiates between aquatic and terrestrial field 
+sites. </p>
+
+<h3>Site locations &amp; domain boundaries</h3>
+
+<p>Most NEON spatial data files that are not part of the data downloads 
+are available on the 
+<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a> 
+as both shapefiles and kmz files. </p>
+
+<p>In addition, latitude, longitude, elevation, and some other basic metadata for each site 
+are available for download from the 
+<a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">Field Sites page</a> 
+on the NEON website (linked above the image). In this summary of each field site, 
+the geographic coordinates for each site correspond to the tower 
+location for terrestrial sites and the center of the permitted reach 
+for aquatic sites.</p>
+
+<p>To continue, please download these files from the NEON website: </p>
+
+<ul>
+<li><strong>NEON Domain Polygons:</strong> A polygon shapefile defining NEON&#39;s domain 
+boundaries. Like all NEON data the Coordinate Reference system is Geographic 
+WGS 84. Available on the <a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a>.</li>
+<li><strong>Field Site csv:</strong> generic locations data for each NEON field site. Available on the <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">Field Sites page</a>. </li>
+</ul>
+
+<p>The Field Site location data is also available as a shapefile and KMZ on the 
+Spatial Data and Maps page. We use the file from the site list to demonstrate 
+alternative ways to work with spatial data. </p>
+
+<h2>Map NEON domains</h2>
+
+<p>Using the domain shapefile and the field sites list, let&#39;s make a map of NEON 
+site locations.</p>
+
+<p>We&#39;ll read in the spatial data using the <code>rgdal</code> and <code>sp</code> packages and plot it 
+using base R. First, read in the domain shapefile. </p>
+
+<p>Be sure to move the downloaded and unzipped data files into the working directory 
+you set earlier!</p>
+
+<pre><code># upload data
+neonDomains &lt;- readOGR(paste0(wd,&quot;NEONDomains_0&quot;), layer=&quot;NEON_Domains&quot;)
+</code></pre>
+
+<p>The data come as a Large SpatialPolygonsDataFrame. Base R has methods 
+for working with this data type, and will recognize it automatically 
+with the generic <code>plot()</code> function. Let&#39;s first plot the domains without 
+the sites.</p>
+
+<pre><code>plot(neonDomains)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/plot-domains-1.png" alt="Map of the United States with each NEON domain outlined"/></p>
+
+<p>The data are currently in a Lat-Long projection. The map will look a little 
+more familiar if we convert it to a Mercator projection. There are many, 
+many map projections possible, and Mercator is distorted in very 
+well-documented ways! Here, we&#39;ll use it as a demonstration, but you may 
+want to use a different projection in your own work.</p>
+
+<p>The <code>spTransform()</code> and <code>CRS()</code> functions in the <code>sp</code> package can be used 
+to convert the projection:</p>
+
+<pre><code>neonMercator &lt;- spTransform(neonDomains,
+                            CRS(&quot;+proj=merc&quot;))
+plot(neonMercator)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/mercator-1.png" alt=" "/></p>
+
+<h2>Map NEON field sites</h2>
+
+<p>Now that we have a map of all the NEON domains, let&#39;s plot the NEON field site 
+locations on it. To do this, we need to load and explore the field sites data. </p>
+
+<pre><code># read in the data
+neonSites &lt;- read.delim(paste0(wd,&quot;field-sites.csv&quot;), sep=&quot;,&quot;, header=T)
+
+# view data structure for each variable
+str(neonSites)
+
+## &#39;data.frame&#39;:    81 obs. of  26 variables:
+##  $ Site.Name                 : chr  &quot;Little Rock Lake&quot; &quot;West St Louis Creek&quot; &quot;Pu&#39;u Maka&#39;ala Natural Area Reserve&quot; &quot;Flint River&quot; ...
+##  $ Site.ID                   : chr  &quot;LIRO&quot; &quot;WLOU&quot; &quot;PUUM&quot; &quot;FLNT&quot; ...
+##  $ Domain.Name               : chr  &quot;Great Lakes&quot; &quot;Southern Rockies &amp; Colorado Plateau&quot; &quot;Pacific Tropical&quot; &quot;Southeast&quot; ...
+##  $ Domain.Number             : chr  &quot;D05&quot; &quot;D13&quot; &quot;D20&quot; &quot;D03&quot; ...
+##  $ State                     : chr  &quot;WI&quot; &quot;CO&quot; &quot;HI&quot; &quot;GA&quot; ...
+##  $ Nearest.Town              : logi  NA NA NA NA NA NA ...
+##  $ Latitude                  : num  46 39.9 19.6 31.2 38.9 ...
+##  $ Longitude                 : num  -89.7 -105.9 -155.3 -84.4 -96.4 ...
+##  $ Site.Type                 : chr  &quot;Relocatable Aquatic&quot; &quot;Relocatable Aquatic&quot; &quot;Core Terrestrial&quot; &quot;Relocatable Aquatic&quot; ...
+##  $ Site.Subtype              : chr  &quot;Lake&quot; &quot;Wadeable Stream&quot; &quot;&quot; &quot;Non-wadeable River&quot; ...
+##  $ Site.Host                 : chr  &quot;Wisconsin Department of Natural Resources&quot; &quot;U.S. Forest Service&quot; &quot;Hawaii State Forest Reserve System Department of Land and Natural Resources, Division of Forestry and Wildlife&quot; &quot;Private Owner&quot; ...
+##  $ Overview                  : chr  &quot;LIRO is a seepage lake located in Wisconsin and is representative of the Great Lakes ecosystems.\nTotal data pr&quot;| __truncated__ &quot;Total data products planned for this site: 79\n&quot; &quot;NEON&#39;s PUUM field site is located in the Pu&#39;u Maka&#39;ala Natural Area Reserve (NAR) on the eastern side of Hawaii&quot;| __truncated__ &quot;Total data products planned for this site: 75\n&quot; ...
+##  $ Site.Access               : chr  &quot;Yes&quot; &quot;Yes&quot; &quot;TBD&quot; &quot;No&quot; ...
+##  $ Mean.Annual.Temperature   : chr  &quot;4.4C/39.92F&quot; &quot;-0.3C/31.46F&quot; &quot;13C/55.4F&quot; &quot;19.5C/67.1F&quot; ...
+##  $ Mean.Annual.Precipitation : chr  &quot;793 mm&quot; &quot;758 mm&quot; &quot;2685 mm&quot; &quot;1307 mm&quot; ...
+##  $ Dominant.NLCD.Classes     : chr  &quot;Deciduous Forest, Mixed Forest&quot; &quot;Evergreen Forest&quot; &quot;Evergreen Forest&quot; &quot;Mixed Forest&quot; ...
+##  $ Elevation                 : chr  &quot;502 m&quot; &quot;3103 m&quot; &quot;1685 m&quot; &quot;45 m&quot; ...
+##  $ Site.Characteristics      : chr  &quot;&quot; &quot;Watershed Size\n5.19 km2\nUSGS HUC: h14010001\nGeology\nSchist, migmatite, and biotitic gneiss.  Paleoproterozoic.\n&quot; &quot;Geology: \nPahoehoe and aa of the Kau Basalt, deposited between 200-750 years ago.\nUSGS HUC: h20010000\nWind D&quot;| __truncated__ &quot;Watershed Size\n29,100 km2\nUSGS HUC: h03130008\nGeology\nUndifferentiated clay, mud, and beach sand. Pleistoce&quot;| __truncated__ ...
+##  $ Data.Collection.Types     : chr  &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this site collect lidar, spectrometer and high resol&quot;| __truncated__ &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this site collect lidar, spectrometer and high resol&quot;| __truncated__ &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this field site collect lidar, spectrometer and high&quot;| __truncated__ &quot;Airborne Remote Sensing Surveys\nRemote sensing surveys of this site collect lidar, spectrometer and high resol&quot;| __truncated__ ...
+##  $ Adjacent.Research.Networks: chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;Jones Ecological Research Center\n&quot; ...
+##  $ Field.Office              : chr  &quot;Domain 05\n7647 Notre Dame LaneLand O Lakes, WI 54540\nTelephone: 906.842.2119\nContact us\n&quot; &quot;Domain 10/13\n1685 38th Street, Suite 100Boulder, CO 80301\n​Telephone: 720.836.2439\nContact us\n&quot; &quot;Domain 20\n60 Nowelo StreetHilo, Hawaii  96720\nContact us\n&quot; &quot;Domain 03\n4579 NW 6th Street, Unit B-2Gainesville, FL 32609\nTelephone: 352.505.2019\nContact us\n&quot; ...
+##  $ Gallery                   : chr  &quot;LIRO D05 Bathymetry Map, LIRO D05 Habitat Map&quot; &quot;WLOU-D13-Stream-Morpology-Map&quot; &quot;PUUM plot establishment, Field ecologists venture out to do field sampling at PUUM Hawaii&quot; &quot;FLNT D03 Bathymetry Map, FLNT D03 Habitat Map&quot; ...
+##  $ Thumbnail                 : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+##  $ Overview.Image            : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+##  $ Google.Maps.Embed.Code    : logi  NA NA NA NA NA NA ...
+##  $ Related.Content           : logi  NA NA NA NA NA NA ...
+</code></pre>
+
+<p>Here there is a lot of associated data about the field sites that may be of 
+interest, such as site descriptions and dominant vegetation types. For mapping 
+purposes, we can see that there are both <strong>Latitude</strong> and <strong>Longitude</strong>
+data, so we can plot this data onto our previous map. </p>
+
+<pre><code>plot(neonDomains)
+points(neonSites$Latitude~neonSites$Longitude,
+       pch=20)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/plot-sites-1.png" alt="NEON domain map with site dots added"/></p>
+
+<p>Now we can see all the sites across the Observatory. Note that we&#39;ve switched 
+back to the Lat-Long projection, which makes it simple to plot the site 
+locations onto the map using their latitude and longitude. To plot them on 
+the Mercator projection, we would need to convert the site latitude and 
+longitude values into a SpatialPoints object, and then perform the same 
+conversion. See <code>sp</code> package documentation if you are interested in doing 
+this.</p>
+
+<p>NEON has both aquatic and terrestrial sites, with important differences 
+between the two. Looking back at the variables in this data set, we can 
+see that <code>Site.Type</code> designates the aquatic and terrestrial sites. </p>
+
+<p>Let&#39;s differentiate the site types by adding color to our plot, with 
+terrestrial sites in green and aquatic sites in blue.</p>
+
+<pre><code># create empty variable
+siteCol &lt;- character(nrow(neonSites))
+
+# populate new variable with colors, according to Site.Type
+siteCol[grep(&quot;Aquatic&quot;, neonSites$Site.Type)] &lt;- &quot;blue&quot;
+siteCol[grep(&quot;Terrestrial&quot;, neonSites$Site.Type)] &lt;- &quot;green&quot;
+
+# add color to points on map
+plot(neonDomains)
+points(neonSites$Latitude~neonSites$Longitude,
+       pch=20, col=siteCol)
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/sites-color-1.png" alt="NEON domain map with site dots color-coded for aquatic and terrestrial sites"/></p>
+
+<p>Now we can see where NEON sites are located within the domains. Note that 
+a significant number of terrestrial and aquatic sites are co-located; in 
+those cases both sites are plotted here, but one color may be 
+superimposed over the other.</p>
+
+<h2>Map locations at a specific site</h2>
+
+<p>Also available on the
+<a href="https://www.neonscience.org/data-samples/data/spatial-data-maps" target="_blank"> Spatial Data and Maps page</a> are shapefiles containing location data at the 
+within-site level.</p>
+
+<p>If you are interested in maps of NEON sampling locations and regions, 
+explore the downloads available for Terrestrial Observation Sampling 
+Locations, Flight Boundaries, and Aquatic Sites Watersheds. These 
+downloads contain shapefiles of these locations, and the terrestrial 
+sampling file also contains spatial data in tabular form.</p>
+
+<p>If you are interested in learning how to work with sampling location 
+data that are provided along with downloads of NEON sensor and 
+observational data, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-spatial-data-basics" target="_blank">Geolocation Data</a> tutorial.</p>
+
+</body>
+
+</html>

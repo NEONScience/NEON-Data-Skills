@@ -5,11 +5,11 @@ description: "Use files available on the NEON data portal, NEON API, and  neonUt
 dateCreated: 2019-09-13
 authors: Claire K. Lunch
 contributors: Megan Jones, Alison Dernbach, Donal O'Leary
-estimatedTime: 40 minutes
-packagesLibraries: sp, rgdal, maptools, broom, ggplot2, neonUtilities
+estimatedTime: 30 minutes
+packagesLibraries: ggplot2, neonUtilities, geoNEON
 topics: data-management, rep-sci
 languageTool: R
-dataProduct: DP1.10072.001, DP1.00024.001
+dataProduct: DP1.10098.001, DP1.00041.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/spatialData.R
 tutorialSeries:
 urlTitle: neon-spatial-data-basics
@@ -17,20 +17,32 @@ urlTitle: neon-spatial-data-basics
 ---
 
 This tutorial explores NEON geolocation data. The focus is on the locations 
-of NEON observational sampling and sensors; NEON remote sensing data are 
+of NEON observational sampling and sensor data; NEON remote sensing data are 
 inherently spatial and have dedicated tutorials. If you are interested in 
 connecting remote sensing with ground-based measurements, the methods in 
-the <a href="https://www.neonscience.org/tree-heights-veg-structure-chm" target="_blank">canopy height model tutorial</a> 
-can be generalized to other data products.
+the <a href="https://www.neonscience.org/tree-heights-veg-structure-chm" target="_blank">vegetation structure and canopy height model</a> 
+tutorial can be generalized to other data products.
+
+In planning your analyses, consider what level of spatial resolution is 
+required. There is no reason to carefully map each measurement if precise 
+spatial locations aren't required to address your hypothesis! For example, 
+if you want to use the Woody vegetation structure 
+data product to calculate a site-scale estimate of biomass and production, 
+the spatial coordinates of each tree are probably not needed. If 
+you want to explore relationships between vegetation and beetle communities, 
+you will need to identify the sampling plots where NEON measures both beetles 
+and vegetation, but finer-scale coordinates may not be needed. Finally, if 
+you want to relate vegetation measurements to airborne remote sensing data, 
+you will need very accurate coordinates for each measurement on the ground.
+
 
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
 
-* access NEON spatial data from the website and through data downloaded with the 
-neonUtilities package. 
-* create a simple map with NEON domains and field site locations. 
+* access NEON spatial data through data downloaded with the 
+neonUtilities package.
 * access and plot specific sampling locations for TOS data products. 
 * access and use sensor location data. 
 
@@ -48,13 +60,9 @@ the RStudio IDE to work with R.
 We'll need several R packages in this tutorial. Install the packages, if not 
 already installed, and load the libraries for each. 
 
-```{r install, eval=F}
+```{r install, eval=FALSE}
 
 # run once to get the package, and re-run if you need to get updates
-install.packages("sp")  # work with spatial data
-install.packages("rgdal")  # work with spatial data
-install.packages("maptools")  # work with spatial objects
-install.packages("broom")  # tidy up data
 install.packages("ggplot2")  # plotting
 install.packages("neonUtilities")  # work with NEON data
 install.packages("devtools")  # to use the install_github() function
@@ -66,295 +74,133 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NE
 ```{r libraries, results="hide"}
 
 # run every time you start a script
-library(sp)
-library(rgdal)
-library(maptools)
-library(broom)
 library(ggplot2)
 library(neonUtilities)
 library(geoNEON)
 
 options(stringsAsFactors=F)
 
-# set working directory to ensure R can find the file we wish to import and where
-# we want to save our files. 
-
-wd <- "~/Documents/data/" # This will depend on your local environment
-setwd(wd)
-
 ```
-
-## Source 1: NEON spatial data files
-
-NEON spatial data are available in a number of different files depending on what 
-spatial data you are interested in. This section covers a variety of spatial 
-data files that can be directly downloaded from the 
-<a href="https://www.neonscience.org" target="_blank">NEONScience.org</a> website 
-instead of being delivered with a downloaded data product. Later in the tutorial 
-we'll work with spatial data available with the downloaded data products.
-
-The goal of this section is to create a map of the entire Observatory that includes 
-the NEON domain boundaries and differentiates between aquatic and terrestrial field 
-sites. 
-
-### Site locations & domain boundaries
-
-Most NEON spatial data files that are not part of the data downloads 
-are available on the 
-<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a> 
-as both shapefiles and kmz files. 
-
-In addition, latitude, longitude, elevation, and some other basic metadata for each site 
-are available for download from the 
-<a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a> 
-on the NEON website (linked below the table). In this summary of each field site, 
-the geographic coordinates for each site correspond to the tower 
-location for terrestrial sites and the center of the permitted reach 
-for aquatic sites.
-
-To continue, please download these files from the NEON website: 
-
-* **NEON Domains - Shapefile:** A polygon shapefile defining NEON's domain 
-boundaries. Like all NEON data the Coordinate Reference system is Geographic 
-WGS 84. Available on the <a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank">Spatial Data and Maps page</a>.
-* **Field Site csv:** generic locations data for each NEON field site. Available on the <a href="https://www.neonscience.org/field-sites/field-sites-map/list" target="_blank">Field Sites List page</a> (bottom of table). 
-
-The Field Site location data is also available as a shapefile and KMZ on the 
-Spatial Data and Maps page. We use the file from the site list to demonstrate 
-alternative ways to work with spatial data. 
-
-## Map NEON domains 
-
-Using the domain shapefile and the field sites list, let's make a map of NEON 
-site locations.
-
-We'll read in the spatial data using the `rgdal` and `sp` packages and plot it 
-using the `ggplot2` package. First, read in the domain shapefile. 
-
-Be sure to move the downloaded and unzipped data files into the working directory 
-you set earlier!
-
-```{r load-domains, results="hide"}
-
-# upload data
-neonDomains <- readOGR(paste0(wd,"NEONDomains_0"), layer="NEON_Domains")
-
-```
-
-The data come as a Large SpatialPolygonsDataFrame, which unfortunately `ggplot`
-can't use. Therefore, we'll need to make a few changes to the data structure to 
-convert it to a dataframe that `ggplot` can use. 
-
-```{r create-df, warning=FALSE}
-
-# first, add a new column termed "id" composed of the row names of the data
-neonDomains@data$id <- rownames(neonDomains@data)
-
-# now, use tidy() to convert to a dataframe
-# if you previously used fortify(), this does the same thing 
-neonDomains_points <- tidy(neonDomains, region="id")
-
-# finally, merge the new data with the data from our spatial object
-neonDomainsDF <- merge(neonDomains_points, neonDomains@data, by = "id")
-
-```
-
-Now that the data are in a dataframe, let's check out what data are available 
-for us to plot.
-
-```{r explore-domains}
-
-# view data structure for each variable
-str(neonDomainsDF)
-
-```
-
-We have **long**itude and **lat**itude data, as well as names of the domains. 
-With this information, and now that we have the data in a dataframe, we can plot 
-it in ggplot. Let's first plot the domains without the sites. Since we are plotting 
-a map, this means our longitude is plotted on the x axis and latitude is on our 
-y axis. 
-
-```{r plot-domains, fig.width=8, fig.height=6, fig.cap="Map of the United States with each NEON domain outlined"}
-
-# plot domains
-domainMap <- ggplot(neonDomainsDF, aes(x=long, y=lat)) + 
-        geom_map(map = neonDomainsDF,
-                aes(map_id = id),
-                 fill="white", color="black", size=0.3)
-
-domainMap
-
-```
-
-
-## Map NEON field sites
-Now that we have a map of all the NEON domains, let's plot the NEON field site 
-locations on it. To do this, we need to load and explore the field sites data. 
-
-```{r load-explore-sites}
-
-# read in the data
-neonSites <- read.delim(paste0(wd,"field-sites.csv"), sep=",", header=T)
-
-# view data structure for each variable
-str(neonSites)
-
-```
-
-Here there is a lot of associated data about the field sites that may be of 
-interest. For now, we can see that there are both **Latitude** and **Longitude**
-data so we can plot this data onto our previous map. 
-
-```{r plot-sites, fig.width=8, fig.height=6, fig.cap="Same map as above but with dots for the field site locations across the country"}
-
-# plot the sites
-neonMap <- domainMap + 
-        geom_point(data=neonSites, 
-                   aes(x=Longitude, y=Latitude))
-
-neonMap 
-
-```
-
-Now we can see all the sites across the Observatory. However, NEON has both 
-aquatic and terrestrial sites with important differences between the two. Looking 
-back at the variables in this data set, we can see that `Site.Type` designates 
-the aquatic and terrestrial sites. However, it goes further and includes whether 
-or not they are core or relocatable sites. Let's plot that distinction as well. 
-
-We can do this by adding color to our plot, with terrestrial sites in green and 
-aquatic sites in blue. We can choose darker shades for core sites and lighter 
-ones for relocatable sites. 
-
-```{r sites-color, fig.width=8, fig.height=6, fig.cap="Same as maps above but the field site dots are now four different colors"}
-
-# color is determined by the order that the unique values show up
-# check order
-unique(neonSites$Site.Type)
-
-# add color
-sitesMap <- neonMap + 
-        geom_point(data=neonSites, 
-                      aes(x=Longitude, y=Latitude, color=Site.Type)) + 
-           scale_color_manual(values=c("lightskyblue", "forest green", 
-                                       "blue4", "light green"),
-                              name="",
-                              breaks=unique(neonSites$Site.Type))
-sitesMap
-
-```
-
-
-## Map terrestrial observation plots
-
-The **NEON Terrestrial Observation System (TOS) sampling locations** shapefile 
-is available for download from the
-<a href="https://www.neonscience.org/data/spatial-data-maps" target="_blank"> Spatial Data and Maps page</a> or from the portal in the
-<a href="http://data.neonscience.org/documents" target="_blank"> document library</a>. 
-The download will be a zip file containing tabular files of plot centroids and 
-point locations, and shapefiles of plot centroids, point locations, and polygons.
-
-The readme file contains descriptions for each variable in the tabular files. 
-
-```{r TOS-readme}
-
-# load TOS plot readme
-rdme <- read.delim(paste0(wd,'All_NEON_TOS_Plots_V8/readme.csv'),
-                   sep=',', header=T)
-
-# view the variables
-rdme[,1]
-
-```
-
-You can use these files to plot the spatial layout of sampling for TOS (mosquitoes, 
-beetles, plants, birds, etc.). However, instead of using these files, for this 
-tutorial we'll be using the location data provided with the data downloads below, 
-as well as methods in the `geoNEON` package, to explore TOS spatial data.
-
-You can, however, modify the code above from mapping the domains and field sites to 
-plot the location data if you'd like to do so. 
-
-## Source 2: Spatial data in data downloads
-
-The second source of data is spatial data in and accompanying data directly 
-downloaded from the NEON data portal. How the data are handled are a bit different 
-for the Observational Sampling data and the Instrumented Systems data, so we'll 
-go through working with both types. 
 
 ## Locations for observational data
 
 ### Plot level locations
 Both aquatic and terrestrial observational data downloads include spatial 
-data in the downloaded files. While the specific layout varies from data type to 
-data type the method for working with the data are similar. Therefore, we'll work 
-with NEON Small Mammal Box Trapping data. Our end product for this section is to 
-create a map of all the traps within a small mammal grid that captured a mouse in a given 
-sampling bout.  
+data in the downloaded files. The spatial data in the aquatic data files 
+are the most precise locations available for the sampling events. The 
+spatial data in the terrestrial data downloads represent the locations of 
+the sampling plots. In some cases, the plot is the most precise location 
+available, but for many terrestrial data products, more precise locations 
+can be calculated for specific sampling events.
 
-First, let's download the small mammal data from one site, Onaqui (ONAQ), in 
-August 2018 to investigate. 
+Here, we'll download the Woody vegetation structure (DP1.10098.001) data 
+product, examine the plot location data in the download, then calculate 
+the locations of individual trees. These steps can be extrapolated to other 
+terrestrial observational data products; the specific sampling layout 
+varies from data product to data product, but the methods for working with 
+the data are similar. 
 
-If downloading data using the `neonUtilities` package is new to you, check out the 
-<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
+First, let's download the vegetation structure data from one site, Wind 
+River Experimental Forest (WREF).
 
-```{r get-mam-data, results="hide"}
+If downloading data using the `neonUtilities` package is new to you, check out 
+the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial.
 
-# load mammal data
-mam <- loadByProduct(dpID="DP1.10072.001", site="ONAQ",
-                     startdate="2018-08", enddate="2018-08",
+```{r get-vst-data, results="hide"}
+
+# load veg structure data
+vst <- loadByProduct(dpID="DP1.10098.001", site="WREF",
                      check.size=F)
 
 ```
 
 Data downloaded this way are stored in R as a large list. For this tutorial, 
-we'll work with the individual dataframes within this large list. Alternatively, 
-each dataframe can be assigned as its own object. 
+we'll work with the individual dataframes within this large list. 
+Alternatively, each dataframe can be assigned as its own object. 
 
-To find the spatial data for any given data product, view the variables files to
-figure out which data table the spatial data are contained in. 
+To find the spatial data for any given data product, view the variables files 
+to figure out which data table the spatial data are contained in. 
 
 ```{r find-sp-data}
 
-View(mam$variables_10072)
+View(vst$variables_10098)
 
 ```
 
-Looking through the variables, we can see that the spatial data (`decimalLatitude` 
-and `decimalLongitude`) are in the `pertrapnight` table. We can look at the first few
-entries of the table. 
+Looking through the variables, we can see that the spatial data 
+(`decimalLatitude` and `decimalLongitude`, etc) are in the 
+`vst_perplotperyear` table. Let's take a look at the first few entries of 
+the table. 
 
-```{r print-mam}
+```{r print-vst-pppy}
 
-head(mam$mam_pertrapnight[,1:18])
-
-```
-
-Did you notice that traps in plot ONAQ_020 have the same location data?
-Let's check the coordinates for all traps within a single plot. 
-
-```{r print-ONAQ020}
-
-# view all trap locations in one plot
-mam$mam_pertrapnight[which(mam$mam_pertrapnight$plotID=="ONAQ_020"),
-                     c("trapCoordinate","decimalLatitude",
-                       "decimalLongitude")]
+head(vst$vst_perplotperyear)
 
 ```
 
-The latitude and longitude are the same for every record! This is because the 
-latitudes and longitudes provided are for the plots, not for the traps. Other 
-TOS data has the same pattern: the data download contains the plot-level 
-coordinates. This important information is in the **Data Product User Guide** and 
-can be downloaded from the 
-<a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a> on a 
-data product's page. Understanding nuances like this is one reason it is 
-important to read the Data Product User Guide.
+As noted above, the spatial data here are at the plot level; the 
+latitude and longitude represent the centroid of the sampling plot. 
+We can map these plots on the landscape using the `easting` and 
+`northing` variables; these are the UTM coordinates. At this site, 
+tower plots are 40 m x 40 m, and distributed plots are 20 m x 20 m; 
+we can use the `symbols()` function to draw boxes of the correct 
+size.
 
-For many analyses, this level of spatial data is sufficient. But for other 
-types of analyses, you may need more precise locations. The `geoNEON` package 
-can get these data for you.
+We'll also use the `treesPresent` variable to subset to only 
+those plots where trees were found and measured.
+
+```{r plot-plots, fig.cap="All vegetation structure plots at WREF"}
+
+# start by subsetting data to plots with trees
+vst.trees <- vst$vst_perplotperyear[which(
+        vst$vst_perplotperyear$treesPresent=="Y"),]
+
+# make variable for plot sizes
+plot.size <- numeric(nrow(vst.trees))
+
+# populate plot sizes in new variable
+plot.size[which(vst.trees$plotType=="tower")] <- 40
+plot.size[which(vst.trees$plotType=="distributed")] <- 20
+
+# create map of plots
+symbols(vst.trees$easting,
+        vst.trees$northing,
+        squares=plot.size, inches=F,
+        xlab="Easting", ylab="Northing")
+
+```
+
+We can see where the plots are located across the landscape, and 
+we can see the denser cluster of plots in the area near the 
+micrometeorology tower.
+
+For many analyses, this level of spatial data may be sufficient. 
+Calculating the precise location of each tree is only required for 
+certain hypotheses; consider whether you need these data when 
+working with a data product with plot-level spatial data.
+
+Looking back at the `variables_10098` table, notice that there is 
+a table in this data product called `vst_mappingandtagging`, 
+suggesting we can find mapping data there. Let's take a look.
+
+```{r print-vst-mat}
+
+head(vst$vst_mappingandtagging)
+
+```
+
+Here we see data fields for `stemDistance` and `stemAzimuth`. Looking 
+back at the `variables_10098` file, we see these fields contain the 
+distance and azimuth from a `pointID` to a specific stem. To calculate 
+the precise coordinates of each tree, we would need to get the locations 
+of the `pointID`s, and then adjust the coordinates based on distance and 
+azimuth. The **Data Product User Guide** describes how to carry out these 
+steps, and can be downloaded from the 
+<a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">Data Product Details page</a>.
+
+However, carrying out these calculations yourself is not the only option! 
+The `geoNEON` package contains a function that can do this for you, for 
+the TOS data products with location data more precise than the plot level.
 
 ### Sampling locations 
 
@@ -370,102 +216,134 @@ For more information about the NEON API, see the
 and the 
 <a href="https://data.neonscience.org/data-api" target="_blank">API web page</a>. 
 For more information about the location calculations used in each data product, 
-see the Data Product User Guide for each product.
+see the **Data Product User Guide** for each product.
 
 The `getLocTOS()` function requires two inputs:
 
 * A data table that contains spatial data from a NEON TOS data product
 * The NEON table name of that data table
 
-For small mammal box trap locations, the function call looks like this. This 
-function may take a while to download all the location data. 
+For vegetation structure locations, the function call looks like this. This 
+function may take a while to download all the location data. For faster 
+downloads, use an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API token</a>.
 
-```{r mam-getLocTOS, results="hide"}
+```{r vst-getLocTOS, results="hide"}
 
-# download small mam locationso
-mam.loc <- getLocTOS(data=mam$mam_pertrapnight,
-                           dataProd="mam_pertrapnight")
+# calculate individual tree locations
+vst.loc <- getLocTOS(data=vst$vst_mappingandtagging,
+                           dataProd="vst_mappingandtagging")
 
 ```
 
 What additional data are now available in the data obtained by `getLocTOS()`?
 
-```{r mam-diff}
+```{r vst-diff}
 
 # print variable names that are new
-names(mam.loc)[which(!names(mam.loc) %in% names(mam$mam_pertrapnight))]
+names(vst.loc)[which(!names(vst.loc) %in% 
+                             names(vst$vst_mappingandtagging))]
 
 ```
 
 Now we have adjusted latitude, longitude, and elevation, and the 
-corresponding easting and northing UTM data. We also have coordinate uncertainty 
-data for these coordinates. 
+corresponding easting and northing UTM data. We also have coordinate 
+uncertainty data for these coordinates. 
 
-We can use the easting and northing data to plot the locations of the mammal traps. 
+As we did with the plots above, we can use the easting and northing 
+data to plot the locations of the individual trees.
 
-```{r mam-grids, fig.cap="Six square points on a plot each made up of smaller dots that form either a complete square point or a partially filled in square point"}
+```{r vst-all-trees, fig.cap="All mapped tree locations at WREF"}
 
 # plot all trap locations at site
-plot(mam.loc$adjEasting, mam.loc$adjNorthing, pch=".",
+plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
      xlab="Easting", ylab="Northing")
 
 ```
 
-Each trap grid has 100 points (individual trap locations), so even with each 
-trap plotted as a dot (.) we can only see a square for each grid. 
+We can see the mapped trees in the same plots we mapped above. 
+We've plotted each individual tree as a `.`, so all we can see at 
+this scale is the cluster of dots that make up each plot.
 
 Let's zoom in on a single plot:
 
-```{r plot-ONAQ003, fig.width=6, fig.height=6, fig.cap="dots on a plot equally spaced in 10 rows and 10 columns"}
+```{r plot-WREF_085, fig.width=6, fig.height=6, fig.cap="Tree locations in plot WREF_085"}
 
 # plot all trap locations in one grid (plot)
-plot(mam.loc$adjEasting[which(mam.loc$plotID=="ONAQ_003")], 
-     mam.loc$adjNorthing[which(mam.loc$plotID=="ONAQ_003")], 
-     pch=".", xlab="Easting", ylab="Northing", cex=3)
+plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
+     vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
+     pch=20, xlab="Easting", ylab="Northing")
 
 ```
 
-This isn't the most interesting plot given that that each small mammal box 
-trapping grid is a 10 x 10 plot of traps. 
+Now we can see the location of each tree within the sampling plot WREF_085. 
+This is interesting, but it would be more interesting if we could see more 
+information about each tree. How are species distributed across the plot, 
+for instance?
 
-Now, let's add a layer of data to see which of these traps caught a mammal during 
-the August 2018 sampling bout. To do this we need to look at our variables file 
-again and see what variable gives us information about captures. We can see that 
-`trapStatus` provides the information on what happened to each trap. It has 
-categorical data on the status: 
+We can plot the tree species at each location using the `text()` function 
+and the `vst.loc$taxonID` field.
 
-* 0 - no data
-* 1 - trap not set
-* 2 - trap disturbed/door closed but empty
-* 3 - trap door open or closed w/ spoor left
-* 4 - >1 capture in one trap
-* 5 - capture
-* 6 - trap set and empty
+```{r plot-WREF_085-species, fig.width=6, fig.height=6, fig.cap="Tree species and their locations in plot WREF_085"}
 
-Therefore, we need to plot all trap locations in this plot (ONAQ_003) for which 
-`trapStatus` is "5 - capture" (technically, we should add in a capture status of 
-4 but for demonstration purposes, we'll keep it simple).
-
-```{r plot-captures, fig.width=6, fig.height=6, fig.cap="Same plot as above with 100 equally spaced dots but 22 dots are now blue"}
-
-# plot all captures 
-plot(mam.loc$adjEasting[which(mam.loc$plotID == "ONAQ_003")], 
-     mam.loc$adjNorthing[which(mam.loc$plotID == "ONAQ_003")], 
-     pch=".", xlab="Easting", ylab="Northing")
-
-points(mam.loc$adjEasting[which(mam.loc$plotID == "ONAQ_003" & 
-                               mam.loc$trapStatus == "5 - capture")], 
-     mam.loc$adjNorthing[which(mam.loc$plotID =="ONAQ_003" &
-                              mam.loc$trapStatus == "5 - capture")],
-     pch=19, col="blue")
+plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
+     vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
+     type="n", xlab="Easting", ylab="Northing")
+text(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
+     vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")],
+     labels=vst.loc$taxonID[which(vst.loc$plotID=="WREF_085")],
+     cex=0.5)
 
 ```
 
-In the month of data we're viewing small mammals were caught at 22 of the 100 
-trap locations in this plot.
+Almost all of the mapped trees in this plot are either *Pseudotsuga menziesii* 
+or *Tsuga heterophylla* (Douglas fir and Western hemlock), not too 
+surprising at Wind River.
 
-The basic techniques for working with this data can be adapted to other TOS 
-location data for other data products.  
+But suppose we want to map the diameter of each tree? This is a very common 
+way to present a stem map, it gives a visual as if we were looking down on 
+the plot from overhead and had cut off each tree at its measurement height.
+
+Other than taxon, the attributes of the trees, such as diameter, height, 
+growth form, and canopy position, are found in the `vst_apparentindividual` 
+table, not in the `vst_mappingandtagging` table. We'll need to join the 
+two tables to get the tree attributes together with their mapped locations.
+
+The joining variable is `individualID`, the identifier for each tree, which 
+is found in both tables. We'll also include the plot, site, and domain 
+identifiers, to avoid creating duplicates of those columns.
+
+```{r join-vst}
+
+veg <- merge(vst.loc, vst$vst_apparentindividual,
+             by=c("individualID","namedLocation",
+                  "domainID","siteID","plotID"))
+
+```
+
+Now we can use the `symbols()` function to plot the diameter of each tree, 
+at its spatial coordinates, to create a correctly scaled map of boles in 
+the plot. Note that `stemDiameter` is in centimeters, while easting and 
+northing UTMs are in meters, so we divide by 100 to scale correctly.
+
+```{r plot-WREF_085-diameter, fig.width=6, fig.height=6, fig.cap="Tree bole diameters in plot WREF_085"}
+
+symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
+        veg$adjNorthing[which(veg$plotID=="WREF_085")], 
+        circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
+        inches=F, xlab="Easting", ylab="Northing")
+
+```
+
+If you are interested in taking the vegetation structure data a step 
+further, and connecting measurements of trees on the ground to remotely 
+sensed Lidar data, check out the 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/tree-heights-veg-structure-chm" target="_blank">Vegetation Structure and Canopy Height Model</a> tutorial.
+
+If you are interested in working with other terrestrial observational (TOS) 
+data products, the basic techniques used here to find precise sampling 
+locations and join data tables can be adapted to other TOS data products. 
+Consult the **Data Product User Guide** for each data product to find 
+details specific to that data product.
 
 ## Locations for sensor data
 
@@ -487,6 +365,7 @@ This function will download about 7 MB of data as written so we have `check.size
 for ease of running the code. 
 
 ```{r soilT-load, results="hide"}
+
 # load soil temperature data of interest 
 soilT <- loadByProduct(dpID="DP1.00041.001", site="TREE",
                     startdate="2018-07", enddate="2018-07",
@@ -502,7 +381,7 @@ Now we can specifically look at the sensor positions file.
 # create object for sensor positions file
 pos <- soilT$sensor_positions_00041
 
-# view names
+# view column names
 names(pos)
 
 # view table
@@ -518,7 +397,6 @@ Using `unique()` we can view all the location indexes in this file.
 
 ```{r pos-levs}
 
-# view names
 unique(pos$HOR.VER)
 
 ```
@@ -541,11 +419,17 @@ You can read about it in the issue log, both in the readme file and on
 the <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page.
 
 Since we're working with data from July 2018, and the change in 
-sensor locations is dated Nov 2018, we'll use the original locations.
+sensor locations is dated Nov 2018, we'll use the original locations. 
+There are a number of ways to drop the later locations from the 
+table; here, we find the rows in which the `end` field is empty, 
+indicating no end date, and the rows corresponding to soil plot 001, 
+and drop all the rows that meet both criteria.
 
 ```{r pos-rem}
+
 pos <- pos[-intersect(grep("001.", pos$HOR.VER),
                       which(pos$end=="")),]
+
 ```
 
 Our goal is to plot a time series of temperature, stratified by 
@@ -554,8 +438,9 @@ file, to bring the depth measurements into the same data frame with
 the data.
 
 ``` {r pos-join}
+
 # paste horizontalPosition and verticalPosition together
-# to match HOR.VER
+# to match HOR.VER in the sensor positions file
 soilT$ST_30_minute$HOR.VER <- paste(soilT$ST_30_minute$horizontalPosition,
                                     soilT$ST_30_minute$verticalPosition,
                                     sep=".")
@@ -563,13 +448,15 @@ soilT$ST_30_minute$HOR.VER <- paste(soilT$ST_30_minute$horizontalPosition,
 # left join to keep all temperature records
 soilTHV <- merge(soilT$ST_30_minute, pos, 
                  by="HOR.VER", all.x=T)
+
 ```
 
 And now we can plot soil temperature over time for each depth. 
 We'll use `ggplot` since it's well suited to this kind of 
-stratification. Each soil plot is its own panel:
+stratification. Each soil plot is its own panel, and each depth 
+is its own line:
 
-```{r soilT-plot, fig.cap="---UPDATE---HERE---"}
+```{r soilT-plot, fig.cap="Tiled figure of temperature by depth in each plot"}
 
 gg <- ggplot(soilTHV, 
              aes(endDateTime, soilTempMean, 
@@ -587,11 +474,13 @@ something has gone wrong with one of the sensors in plot
 002. To remove those data, use only values where the final 
 quality flag passed, i.e. `finalQF` = 0
 
-```{r soilT-plot-noQF}
+```{r soilT-plot-noQF, fig.cap="Tiled figure of temperature by depth in each plot with only passing quality flags"}
+
 gg <- ggplot(subset(soilTHV, finalQF==0), 
              aes(endDateTime, soilTempMean, 
                  group=zOffset, color=zOffset)) +
              geom_line() + 
         facet_wrap(~horizontalPosition)
 gg
+
 ```

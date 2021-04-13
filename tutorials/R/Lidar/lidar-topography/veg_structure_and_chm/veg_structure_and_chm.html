@@ -188,23 +188,34 @@ You will need the most current version of R loaded on your computer to complete 
 
 <h2>1. Setup</h2>
 
-<p>Start by installing and loading packages (if necessary) and setting options. One of the 
-packages we&#39;ll be using, <code>geoNEON</code>, is only available via GitHub, so it&#39;s 
-installed using the <code>devtools</code> package. The other packages can be 
-installed directly from CRAN.</p>
+<p>Start by installing and loading packages (if necessary) and setting 
+options. One of the packages we&#39;ll be using, <code>geoNEON</code>, is only 
+available via GitHub, so it&#39;s installed using the <code>devtools</code> package. 
+The other packages can be installed directly from CRAN.</p>
 
-<pre><code>options(stringsAsFactors=F)
+<p>Installation can be run once, then periodically to get package updates.</p>
 
-# install.packages(&quot;neonUtilities&quot;)
-# install.packages(&quot;sp&quot;)
-# install.packages(&quot;raster&quot;)
-# install.packages(&quot;devtools&quot;)
-# devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
+<pre><code>install.packages(&quot;neonUtilities&quot;)
+install.packages(&quot;sp&quot;)
+install.packages(&quot;raster&quot;)
+install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
+</code></pre>
 
-library(sp)
+<p>Now load packages. This needs to be done every time you run code. 
+We&#39;ll also set a working directory for data downloads.</p>
+
+<pre><code>library(sp)
 library(raster)
 library(neonUtilities)
 library(geoNEON)
+
+options(stringsAsFactors=F)
+
+# set working directory
+# adapt directory path for your system
+wd &lt;- &quot;~/data&quot;
+setwd(wd)
 </code></pre>
 
 <h2>2. Vegetation structure data</h2>
@@ -226,52 +237,7 @@ for the <code>neonUtilities</code> package for more details if desired.</p>
                          site=&quot;WREF&quot;, 
                          package=&quot;basic&quot;, 
                          check.size = FALSE)
-
-## Finding available files
-## 
 </code></pre>
-
-<p>|<br/>
-  |                                                               |   0%
-  |<br/>
-  |==========                                                     |  17%
-  |<br/>
-  |=====================                                          |  33%
-  |<br/>
-  |================================                               |  50%
-  |<br/>
-  |==========================================                     |  67%
-  |<br/>
-  |====================================================           |  83%
-  |<br/>
-  |===============================================================| 100%
-    ## 
-    ## Downloading files totaling approximately 0.479249 MB
-    ## Downloading 6 files
-    ## 
-  |<br/>
-  |                                                               |   0%
-  |<br/>
-  |=============                                                  |  20%
-  |<br/>
-  |=========================                                      |  40%
-  |<br/>
-  |======================================                         |  60%
-  |<br/>
-  |==================================================             |  80%
-  |<br/>
-  |===============================================================| 100%
-    ## 
-    ## Unpacking zip files using 1 cores.
-    ## Stacking operation across a single core.
-    ## Stacking table vst_apparentindividual
-    ## Stacking table vst_mappingandtagging
-    ## Stacking table vst_perplotperyear
-    ## Copied the most recent publication of validation file to /stackedFiles
-    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
-    ## Copied the most recent publication of variable definition file to /stackedFiles
-    ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 0.1410871 secs</p>
 
 <p>Use the <code>getLocTOS()</code> function in the <code>geoNEON</code> package to get 
 precise locations for the tagged plants. Refer to the package 
@@ -279,264 +245,7 @@ documentation for more details.</p>
 
 <pre><code>vegmap &lt;- getLocTOS(veglist$vst_mappingandtagging, 
                           &quot;vst_mappingandtagging&quot;)
-
-## 
 </code></pre>
-
-<p>|<br/>
-  |                                                               |   0%
-  |<br/>
-  |                                                               |   1%
-  |<br/>
-  |=                                                              |   1%
-  |<br/>
-  |=                                                              |   2%
-  |<br/>
-  |==                                                             |   3%
-  |<br/>
-  |==                                                             |   4%
-  |<br/>
-  |===                                                            |   4%
-  |<br/>
-  |===                                                            |   5%
-  |<br/>
-  |====                                                           |   6%
-  |<br/>
-  |====                                                           |   7%
-  |<br/>
-  |=====                                                          |   7%
-  |<br/>
-  |=====                                                          |   8%
-  |<br/>
-  |======                                                         |   9%
-  |<br/>
-  |======                                                         |  10%
-  |<br/>
-  |=======                                                        |  11%
-  |<br/>
-  |=======                                                        |  12%
-  |<br/>
-  |========                                                       |  12%
-  |<br/>
-  |========                                                       |  13%
-  |<br/>
-  |=========                                                      |  14%
-  |<br/>
-  |=========                                                      |  15%
-  |<br/>
-  |==========                                                     |  15%
-  |<br/>
-  |==========                                                     |  16%
-  |<br/>
-  |===========                                                    |  17%
-  |<br/>
-  |===========                                                    |  18%
-  |<br/>
-  |============                                                   |  19%
-  |<br/>
-  |============                                                   |  20%
-  |<br/>
-  |=============                                                  |  20%
-  |<br/>
-  |=============                                                  |  21%
-  |<br/>
-  |==============                                                 |  22%
-  |<br/>
-  |===============                                                |  23%
-  |<br/>
-  |===============                                                |  24%
-  |<br/>
-  |================                                               |  25%
-  |<br/>
-  |================                                               |  26%
-  |<br/>
-  |=================                                              |  26%
-  |<br/>
-  |=================                                              |  27%
-  |<br/>
-  |=================                                              |  28%
-  |<br/>
-  |==================                                             |  28%
-  |<br/>
-  |==================                                             |  29%
-  |<br/>
-  |===================                                            |  30%
-  |<br/>
-  |===================                                            |  31%
-  |<br/>
-  |====================                                           |  31%
-  |<br/>
-  |====================                                           |  32%
-  |<br/>
-  |=====================                                          |  33%
-  |<br/>
-  |=====================                                          |  34%
-  |<br/>
-  |======================                                         |  34%
-  |<br/>
-  |======================                                         |  35%
-  |<br/>
-  |=======================                                        |  36%
-  |<br/>
-  |=======================                                        |  37%
-  |<br/>
-  |========================                                       |  38%
-  |<br/>
-  |========================                                       |  39%
-  |<br/>
-  |=========================                                      |  39%
-  |<br/>
-  |=========================                                      |  40%
-  |<br/>
-  |==========================                                     |  41%
-  |<br/>
-  |==========================                                     |  42%
-  |<br/>
-  |===========================                                    |  42%
-  |<br/>
-  |===========================                                    |  43%
-  |<br/>
-  |============================                                   |  44%
-  |<br/>
-  |============================                                   |  45%
-  |<br/>
-  |=============================                                  |  46%
-  |<br/>
-  |=============================                                  |  47%
-  |<br/>
-  |==============================                                 |  47%
-  |<br/>
-  |==============================                                 |  48%
-  |<br/>
-  |===============================                                |  49%
-  |<br/>
-  |================================                               |  50%
-  |<br/>
-  |================================                               |  51%
-  |<br/>
-  |=================================                              |  52%
-  |<br/>
-  |=================================                              |  53%
-  |<br/>
-  |==================================                             |  53%
-  |<br/>
-  |==================================                             |  54%
-  |<br/>
-  |===================================                            |  55%
-  |<br/>
-  |===================================                            |  56%
-  |<br/>
-  |====================================                           |  57%
-  |<br/>
-  |====================================                           |  58%
-  |<br/>
-  |=====================================                          |  58%
-  |<br/>
-  |=====================================                          |  59%
-  |<br/>
-  |======================================                         |  60%
-  |<br/>
-  |======================================                         |  61%
-  |<br/>
-  |=======================================                        |  61%
-  |<br/>
-  |=======================================                        |  62%
-  |<br/>
-  |========================================                       |  63%
-  |<br/>
-  |========================================                       |  64%
-  |<br/>
-  |=========================================                      |  65%
-  |<br/>
-  |=========================================                      |  66%
-  |<br/>
-  |==========================================                     |  66%
-  |<br/>
-  |==========================================                     |  67%
-  |<br/>
-  |===========================================                    |  68%
-  |<br/>
-  |===========================================                    |  69%
-  |<br/>
-  |============================================                   |  69%
-  |<br/>
-  |============================================                   |  70%
-  |<br/>
-  |=============================================                  |  71%
-  |<br/>
-  |=============================================                  |  72%
-  |<br/>
-  |==============================================                 |  72%
-  |<br/>
-  |==============================================                 |  73%
-  |<br/>
-  |==============================================                 |  74%
-  |<br/>
-  |===============================================                |  74%
-  |<br/>
-  |===============================================                |  75%
-  |<br/>
-  |================================================               |  76%
-  |<br/>
-  |================================================               |  77%
-  |<br/>
-  |=================================================              |  78%
-  |<br/>
-  |==================================================             |  79%
-  |<br/>
-  |==================================================             |  80%
-  |<br/>
-  |===================================================            |  80%
-  |<br/>
-  |===================================================            |  81%
-  |<br/>
-  |====================================================           |  82%
-  |<br/>
-  |====================================================           |  83%
-  |<br/>
-  |=====================================================          |  84%
-  |<br/>
-  |=====================================================          |  85%
-  |<br/>
-  |======================================================         |  85%
-  |<br/>
-  |======================================================         |  86%
-  |<br/>
-  |=======================================================        |  87%
-  |<br/>
-  |=======================================================        |  88%
-  |<br/>
-  |========================================================       |  88%
-  |<br/>
-  |========================================================       |  89%
-  |<br/>
-  |=========================================================      |  90%
-  |<br/>
-  |=========================================================      |  91%
-  |<br/>
-  |==========================================================     |  92%
-  |<br/>
-  |==========================================================     |  93%
-  |<br/>
-  |===========================================================    |  93%
-  |<br/>
-  |===========================================================    |  94%
-  |<br/>
-  |============================================================   |  95%
-  |<br/>
-  |============================================================   |  96%
-  |<br/>
-  |=============================================================  |  96%
-  |<br/>
-  |=============================================================  |  97%
-  |<br/>
-  |============================================================== |  98%
-  |<br/>
-  |============================================================== |  99%
-  |<br/>
-  |===============================================================|  99%
-  |<br/>
-  |===============================================================| 100%</p>
 
 <p>Merge the mapped locations of individuals (the <code>vst_mappingandtagging</code> table) 
 with the annual measurements of height, diameter, etc (the 
@@ -555,9 +264,9 @@ information about the contents of each data table.</p>
 
 <p>Let&#39;s see what the data look like! Make a stem map of the plants in 
 plot WREF_075. Note that the <code>circles</code> argument of the <code>symbols()</code> function expects a radius, but 
-stemDiameter is just that, a diameter, so we will need to divide by two. 
-stemDiameter is also in centimeters, but the mapping scale is in meters, 
-so we need to divide by 100 also to get the scale right.</p>
+<code>stemDiameter</code> is just that, a diameter, so we will need to divide by two. 
+And <code>stemDiameter</code> is in centimeters, but the mapping scale is in meters, 
+so we also need to divide by 100 to get the scale right.</p>
 
 <pre><code>symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
         veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)], 
@@ -600,34 +309,9 @@ tile. Load the data tile into the environment using the <code>raster</code> pack
 <pre><code>byTileAOP(dpID=&quot;DP3.30015.001&quot;, site=&quot;WREF&quot;, year=&quot;2017&quot;, 
           easting=veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
           northing=veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)],
-          check.size = FALSE, savepath=&quot;/Users/olearyd/Git/data&quot;)
+          check.size = FALSE, savepath=wd)
 
-## Downloading files totaling approximately 4.035953 MB 
-## Downloading 6 files
-## 
-</code></pre>
-
-<p>|<br/>
-  |                                                               |   0%
-  |<br/>
-  |=============                                                  |  20%
-  |<br/>
-  |=========================                                      |  40%
-  |<br/>
-  |======================================                         |  60%
-  |<br/>
-  |==================================================             |  80%
-  |<br/>
-  |===============================================================| 100%
-    ## Successfully downloaded  6  files.
-    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shx downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
-    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.shp downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
-    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.kml downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/kmls
-    ## NEON_D16_WREF_DP3_580000_5075000_CHM.tif downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif
-    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.dbf downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps
-    ## NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud.prj downloaded to /Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/Metadata/DiscreteLidar/TileBoundary/shps</p>
-
-<pre><code>chm &lt;- raster(&quot;/Users/olearyd/Git/data/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif&quot;)
+chm &lt;- raster(paste0(wd, &quot;/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif&quot;))
 </code></pre>
 
 <p>Let&#39;s view the tile.</p>
@@ -667,6 +351,7 @@ location.</p>
                            vegsub$adjNorthing),
                      buffer=vegsub$adjCoordinateUncertainty, 
                      fun=max)
+
 plot(bufferCHM~vegsub$height, pch=20, xlab=&quot;Height&quot;, 
      ylab=&quot;Canopy height model&quot;)
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
@@ -674,7 +359,10 @@ lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-1.png" alt=" "/></p>
 
-<pre><code>cor(bufferCHM,vegsub$height, use=&quot;complete&quot;)
+<p>How strong is the correlation between the ground and lidar 
+measurements?</p>
+
+<pre><code>cor(bufferCHM, vegsub$height, use=&quot;complete&quot;)
 
 ## [1] 0.3650552
 </code></pre>
@@ -759,20 +447,23 @@ its canopy, and discard those points. To do this:</p>
 within that radius. The radius I used is 0.3 times the height, based on 
 some rudimentary googling about Douglas fir allometry. It could definitely 
 be improved on!</li>
-<li><p>Iterate over all trees.</p>
+<li>Iterate over all trees.</li>
+</ol>
 
-<p>vegfil &lt;- vegsub
+<p>We&#39;ll use a simple <code>for</code> loop to do this:</p>
+
+<pre><code>vegfil &lt;- vegsub
 for(i in 1:nrow(vegsub)) {
     if(is.na(vegfil$height[i]))
         next
-    dist &lt;- sqrt((vegsub$adjEasting[i]-vegsub$adjEasting)<sup>2</sup> + 
-                (vegsub$adjNorthing[i]-vegsub$adjNorthing)<sup>2)</sup>
+    dist &lt;- sqrt((vegsub$adjEasting[i]-vegsub$adjEasting)^2 + 
+                (vegsub$adjNorthing[i]-vegsub$adjNorthing)^2)
     vegfil$height[which(dist&lt;0.3*vegsub$height[i] &amp; 
                         vegsub$height&lt;vegsub$height[i])] &lt;- NA
-}</p>
+}
 
-<p>vegfil &lt;- vegfil[which(!is.na(vegfil$height)),]</p></li>
-</ol>
+vegfil &lt;- vegfil[which(!is.na(vegfil$height)),]
+</code></pre>
 
 <p>Now extract the raster values, as above. Let&#39;s also increase the buffer size 
 a bit, to better account for the uncertainty in the Lidar data as well as 

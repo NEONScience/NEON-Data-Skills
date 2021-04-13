@@ -13,26 +13,25 @@ require(markdown)
 # You can choose a high-level directory and this script will search
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
-dirs <- c("R/eddy-covariance/intro-to-eddy4R/eddy_intro",
-          "R/NEON-general/neon-code-packages/neonstore",
-          #"~/Git/main/NEON-Data-Skills/tutorials/R/R-skills/Colorado-floods-data-visualization"
-          "R/R-skills/using-r-markdown")
+dirs <- c("R/NEON-general/NEON-overview/neon-maps",
+          "R/NEON-general/neon-code-packages/spatialData",
+          "R/Lidar/lidar-topography/veg_structure_and_chm")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[3] 
+subDir <- dirs[3]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/Git/main/NEON-Data-Skills"
+gitRepoPath <-"~/GitHub/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
 # set working dir - this is where the data are located
 # this is also where a temporary dir is created by this
 # processing_code to generate documents and figures
-wd_processing_doc <- "/Users/olearyd/Git/data"
+wd_processing_doc <- "/Users/clunch/data/"
 
 # set the base url for images and links in the md file
 base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/"
