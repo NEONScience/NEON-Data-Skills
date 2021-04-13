@@ -273,7 +273,7 @@ the sites.</p>
 <pre><code>plot(neonDomains)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/plot-domains-1.png" alt="Map of the United States with each NEON domain outlined"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/neon-maps/rfigs/plot-domains-1.png" alt="Map of the United States with each NEON domain outlined"/></p>
 
 <p>The data are currently in a Lat-Long projection. The map will look a little 
 more familiar if we convert it to a Mercator projection. There are many, 
@@ -289,7 +289,7 @@ to convert the projection:</p>
 plot(neonMercator)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/mercator-1.png" alt=" "/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/neon-maps/rfigs/mercator-1.png" alt=" "/></p>
 
 <h2>Map NEON field sites</h2>
 
@@ -341,7 +341,7 @@ points(neonSites$Latitude~neonSites$Longitude,
        pch=20)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/plot-sites-1.png" alt="NEON domain map with site dots added"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/neon-maps/rfigs/plot-sites-1.png" alt="NEON domain map with site dots added"/></p>
 
 <p>Now we can see all the sites across the Observatory. Note that we&#39;ve switched 
 back to the Lat-Long projection, which makes it simple to plot the site 
@@ -371,7 +371,7 @@ points(neonSites$Latitude~neonSites$Longitude,
        pch=20, col=siteCol)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/NEON-overview/neon-maps/rfigs/sites-color-1.png" alt="NEON domain map with site dots color-coded for aquatic and terrestrial sites"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/neon-maps/rfigs/sites-color-1.png" alt="NEON domain map with site dots color-coded for aquatic and terrestrial sites"/></p>
 
 <p>Now we can see where NEON sites are located within the domains. Note that 
 a significant number of terrestrial and aquatic sites are co-located; in 
