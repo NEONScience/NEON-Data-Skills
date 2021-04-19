@@ -6,30 +6,11 @@ library(sf)
 library(rgl)
 library(neonUtilities)
 
-## sort tree height disagreement by difference
 
-# vegfil$diff <- vegfil$height-filterCHM
-# 
-# vegfil <- vegfil[order(vegfil$diff, decreasing = T),]
-# 
-# ## Top 5 'undermeasures' where LIDAR misses tree crown
-# top5 <- vegfil[1:5,]
-# 
-# ## Good matches where CHM and Veg Structure agree within .5m
-# good_matches <- vegfil[abs(vegfil$diff)<.5,]
+WREF_LAS=readLAS("~/Downloads/NEON_lidar-point-cloud-line_SOAP/NEON.D17.SOAP.DP1.30003.001.2019-06.basic.20210418T025921Z.RELEASE-2021/NEON_D17_SOAP_DP1_299000_4100000_classified_point_cloud_colorized.laz",
+                 filter = "-drop_z_below 1000 -drop_z_above 1300")
+x = plot(WREF_LAS, color="RGB") 
 
-## Download and import lidar pointcloud for this tile
-# byTileAOP(dpID="DP1.30003.001", easting = 580000, northing=5075000,
-#           check.size=F, site = "WREF",year = 2017,
-#           savepath = "~/Downloads/")
-
-
-WREF_LAS=readLAS("~/Downloads/DP1.30003.001/2019/FullSite/D16/2019_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz")
-x = plot(WREF_LAS)
-
-WREF_LAS=readLAS("~/Downloads/NEON_lidar-point-cloud-line/NEON.D16.WREF.DP1.30003.001.2019-07.basic.20210415T204338Z.RELEASE-2021/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz",
-                 filter = "-drop_z_below 345 -drop_z_above 551")
-x = plot(WREF_LAS, color="RGB")
 #plot(WREF_LAS)
 # 
 # WREF_top5=lasclipCircle(WREF_LAS, 
@@ -49,7 +30,7 @@ x = plot(WREF_LAS, color="RGB")
 
 
 ### Add base plots?
-SITECODE = 'WREF'
+SITECODE = 'SOAP'
 
 setwd("~/Downloads/")
 NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
@@ -61,6 +42,8 @@ rm(NEON_all_plots)
 #plot(base_plots_SPDF$geometry, border = 'blue')
 
 base_plots_SPDF <- st_transform(base_plots_SPDF, as.character(WREF_LAS@proj4string))
+
+#plot(base_plots_SPDF$geometry)
 
 base_crop=st_crop(base_plots_SPDF, extent(WREF_LAS))
 plot(base_crop$geometry, border = 'blue')
@@ -74,22 +57,16 @@ coords$Y=coords$Y-x[2]
 coords$Z=rep(base_crop$elevation, each=5)
 c=1:nrow(coords)
 coords=coords[!c%%5==0,]
-#coords$L1=NULL; coords$L2=NULL
-#coords$Z=NULL
-#quads3d(coords[26:29,], add=T, col="red") # WORKS @ z=0
+
 
 for(i in 1:(nrow(coords)/4)){
   print(i)
   r=((i-1)*4)+1
-  quads3d(x=coords$X[r:(r+3)], y=coords$Y[r:(r+3)], z=coords$Z[r:(r+3)]+50,
+  quads3d(x=coords$X[r:(r+3)], y=coords$Y[r:(r+3)], z=coords$Z[r:(r+3)]+25,
           add=T, col="red", lwd=2, lit=F)
 }
-#quads3d(x=coords$X[11:14], y=coords$Y[11:14], z=coords$Z[11:14], add=T, col="red")
-
-#add_dtm3d(x, base_plots_SPDF)
 
 ## clip out individual plots
-
 top_left=as.data.frame(st_coordinates(base_crop))
 c=1:nrow(top_left)
 top_left=top_left[c%%5==1,]
@@ -100,15 +77,10 @@ plots_LAS <-
                    xright = (top_left$X + 40), ytop = (top_left$Y))
 
 
-plot(plots_LAS[[1]], color="RGB")
-
-#PSMEM_boxes=tree_boxes[tree_boxes$taxonID=="PSMEM",]
+plot(plots_LAS[[4]], color="RGB")
+plot(plots_LAS[[4]], color="Classification")
 
 ## make tree plots
-
-#x = plot(WREF_LAS)
-
-
 ## First we add the Veg Str dataset
 
 library(sp)
@@ -117,16 +89,8 @@ library(neonUtilities)
 library(geoNEON)
 options(stringsAsFactors=F)
 
-veglist <- loadByProduct(dpID="DP1.10098.001", site="WREF", check.size = T, package="basic")
+veglist <- loadByProduct(dpID="DP1.10098.001", site="SOAP", check.size = F, package="basic")
 
-# ## temporary fix from data portal
-# veglist <- stackByTable("~/Downloads/NEON_struct-woody-plant.zip", folder = TRUE, saveUnzippedFiles = T)
-# # stackByTable(filepath = paste(temppath, "/filesToStack", 
-# #                               substr(dpID, 5, 9), sep = ""), savepath = "envt", folder = TRUE, 
-# #              nCores = nCores, saveUnzippedFiles = FALSE)
-# 
-# veglist <- readTableNEON(dataFile = "~/Downloads/NEON_struct-woody-plant/stackedFiles/vst_mappingandtagging.csv",
-#                         varFile = "~/Downloads/NEON_struct-woody-plant/stackedFiles/variables_10098.csv")
 
 vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
                     "vst_mappingandtagging")
@@ -206,43 +170,32 @@ for(i in 1:(nrow(Thuja_boxes))){
 }
 
 }
-## Download DEM
-# 
-# byTileAOP(dpID="DP3.30024.001", site="WREF", year="2017", 
-#           easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
-#           northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
-#           token=NEON_TOKEN,check.size = F,
-#           savepath="~/Downloads/")
-# 
-# DEM=raster("~/Downloads/DP3.30024.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/DTMGtif/NEON_D16_WREF_DP3_580000_5075000_DTM.tif")
-# 
-# x = plot(WREF_LAS, color="RGB")
-# add_dtm3d(x, DEM, color=terrain.colors(25))
-# 
-# plot_dtm3d(DEM, color=col)
-# 
-# zlen <- 505 - 341
-# 
-# colorlut <- terrain.colors(zlen) # height color lookup table
-# 
-# col <- colorlut[ DEM_m - 341 ] # assign colors to heights for each point
-# 
-
 
 ## Let's segment the individual trees, then assign colors according to species
-seg_4 <- segment_trees(plots_LAS[[4]], li2012())
+# Let's try to first remove ground and unclassified points
+just_trees=plots_LAS[[4]]
+dj=just_trees@data
+dj=dj[!dj$Classification %in% c(1,2),]
+just_trees@data=dj
+
+
+
+seg_4 <- segment_trees(just_trees, li2012())
 col <- random.colors(200)
-plot(seg_4, color = "treeID", colorPalette = col)
+x=plot(seg_4, color = "treeID", colorPalette = col)
 
 d=seg_4@data
 
-d=d[d$treeID==3]
+d=d[d$treeID==4]
+d=d[!d$Classification %in% c(1,2),]
 
 indiv_tree = seg_4
 indiv_tree@data = d
 plot(indiv_tree, color="RGB")
 
 length(unique(seg_4@data$treeID))
+
+tree_boxes=veg[veg$plotID==base_crop$plotID[4],]
 
 tree_boxes$taxonID_fact = as.factor(tree_boxes$taxonID)
 
@@ -255,7 +208,9 @@ as.numeric(tree_boxes$taxonID_fact)
 # Use extract function like CHM vs VST tutorial (hmm, but that requires a rasternot LAS object)
 # Let's use the lidR cropping function within the dbh of the tree
 
-boles = lasclipCircle(seg_4, tree_boxes$adjEasting+x[1], tree_boxes$adjNorthing+x[2], tree_boxes$stemDiameter/100+.25)
+tree_boxes=tree_boxes[!is.na(tree_boxes$adjEasting),]
+
+boles = lasclipCircle(seg_4, tree_boxes$adjEasting, tree_boxes$adjNorthing, tree_boxes$stemDiameter/100+.25)
 
 length(boles)
 
