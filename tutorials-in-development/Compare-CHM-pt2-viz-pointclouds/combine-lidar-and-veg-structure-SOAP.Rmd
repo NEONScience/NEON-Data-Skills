@@ -15,20 +15,14 @@ tutorialSeries:
 urlTitle: 
 ---
 
-This template should be used to start new tutorials. If your tutorial is in R 
-or Jupyter Notebooks, or another format that will be converted to markdown. 
-Please include the header above but create the tutorial in the appropriate 
-application. 
-
-All tutorials then have an Info Box with the information necessary for a new user
-to NEON tutorials to complete the tutorial.  
-
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
 
-* Create a new NEON Data Skills teaching module. 
+* Read in a NEON LiDAR point cloud dataset
+* Visualize the LiDAR data
+* Highlight individual trees from NEON Vegetation Structure data
 
 ## Things You’ll Need To Complete This Tutorial
 
@@ -46,29 +40,12 @@ Prior to starting the tutorial ensure that the following packages are installed.
 
 ### Example Data Set
 
-This tutorial will teach you how to download data directly from the NEON data 
-portal.  This example data set is provided as an optional download and a backup. 
-
-#### NEON Teaching Data Subset: Plant Phenology & Single Aspirated Air Temperature
-
-The data used in this tutorial were collected at the 
-<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="/field-sites/field-sites-map" target="_blank"> Domain 02 field sites</a>.  
-
-* National Ecological Observatory Network. 2020. Data Product DP1.10055.001, Plant phenology observations. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
-* National Ecological Observatory Network. 2020. Data Product DP1.00002.001, Single aspirated air temperature. Provisional data downloaded from http://data.neonscience.org on February 5, 2020. Battelle, Boulder, CO, USA NEON. 2020.
-
-<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
-Download Dataset</a>
+* must add download link for TOS shapefile
+* Upload lidar tile of interest
 
 ### Working Directory
 [Donal to add text]
 
-## Additional Resources
-You can list any additional resources you'd like to link to if needed. 
-
-* <a href="URL Here" target="_blank"> Resource Name/a>,
- 
 </div>
 
 ```{r load-packages, warning=FALSE, message=FALSE}
@@ -93,7 +70,7 @@ SITE="WREF"
 
 ```
 
-First load veg structure dataset. For a detailed explanation of these steps, please see download-explore tutorial **LINK HERE**
+First, load veg structure dataset. We won't be using these data until the end of this tutorial, so you can ignore these for now. For a detailed explanation of these steps, please see the <a href = "https://www.neonscience.org/resources/learning-hub/tutorials/tree-heights-veg-structure-chm">Compare tree height measured from the ground to a Lidar-based Canopy Height Model tutorial here</a>.
 
 ```{r load-veg-str}
 
@@ -118,12 +95,21 @@ veg <- base::merge(veglist$vst_apparentindividual, vegmap,
 ```{r load-LiDAR}
 
 
-SITE_LAS=readLAS("~/Downloads/DP1.30003.001/2019/FullSite/D16/2019_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz")
+SITE_LAS=readLAS("~/Downloads/NEON_lidar-point-cloud-line/NEON.D16.WREF.DP1.30003.001.2019-07.basic.20210415T204338Z.RELEASE-2021/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz")
+
+```
+
+Next, we will visualize these 3D data in a separate window (not within the Rstudio plot frame). It may take up to a minute to plot because there are millions of points to render.
+
+Note that, in order to plot in 3D, R uses a package called 'rgl' (see documentation <a href="https://cran.r-project.org/web/packages/rgl/vignettes/rgl.html">here</a>). In order to display properly, you may need to update or install supporting software on your computer. To quote the `rgl` package documentation: "There are two ways in which rgl scenes are normally displayed within R. The older one is in a dedicated window. In Unix-alikes this is an X11 window; it is a native window in Microsoft Windows. On MacOS, the XQuartz system (see <a href="http://xquartz.org">http://xquartz.org</a>) needs to be installed to support this." It may take a bit of time to set things up properly on your machine, but it will be well worth it to have cool interactive 3D plots! Try the line below first to see if it works automatically.
+
+```{r initial-plot}
+
 plot(SITE_LAS)
 
 ```
 
-Oof, there are a LOT of extreneous points above and below the forest. Fortunately, there is an easy way to filter out points above and below specified elevations (on the Z-axis). Let's take a look at a histogram of point elevations to see where to filter out the extreneous points.
+The default color scheme for these points is to use a rainbow pallate according to the point's Z coordinate, with the lowest elevation points being dark blue, and the highest elevation points being red. However, there are a LOT of extreneous points above and below the forest. Fortunately, there is an easy way to filter out points above and below specified elevations (on the Z-axis). Let's take a look at a histogram of point elevations to see where to filter out the extreneous points.
 
 ```{r make-LiDAR-histogram}
 
@@ -131,7 +117,7 @@ hist(SITE_LAS@data$Z)
 
 ```
 
-We can see here that most points fall between approximately 1000 and 1300 meters. Therefore, we will use the `filter` argument of the `lidR::readLAS()` function to filter out the points above and below the 'bulk' of the points.
+We can see here that most points fall between approximately 350 and 550 meters. Therefore, we will use the `filter` argument of the `lidR::readLAS()` function to filter out the points above and below the 'bulk' of the points.
 
 There are also many unneeded attributes assigned to each XYZ point in the LAS object. A LAS object stores the point cloud data in a table, so you can see all of the attributes using the `names()` functions:
 
@@ -141,57 +127,139 @@ names(SITE_LAS@data)
 
 ```
 
-For this tutorial, we only need the "X" "Y" "Z" "R" "G" and "B" attributes (so that we can use "RGB" colors when visualizing later). We can also specify this subset using the `select` attribute in the `readLAS()` function. see `?readLAS()` for more details.
+For this tutorial, we only need the "X" "Y" "Z" "Classification" "R" "G" and "B" attributes. We can also specify this subset using the `select` attribute in the `readLAS()` function. see `?readLAS()` for more details.
 
 ```{r load-LiDAR-with-filter}
 
-SITE_LAS=readLAS("~/Downloads/DP1.30003.001/2019/FullSite/D16/2019_WREF_1/L1/DiscreteLidar/ClassifiedPointCloud/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz",
+SITE_LAS=readLAS("~/Downloads/NEON_lidar-point-cloud-line/NEON.D16.WREF.DP1.30003.001.2019-07.basic.20210415T204338Z.RELEASE-2021/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz",
                  filter = "-drop_z_below 350 -drop_z_above 550",
-                 select = "xyzRGB")
+                 select = "xyzClassificationRGB")
 
 ```
 
 **DATA TIP**
-Finding the best elevations for the upper and lower filter limits can be a challenge, especially in mountainous terrain. If you filter too aggressively in the valleys, the trees on the hillsides might get chopped off! You may need to try a few different options to find your best result. In this case, we could remove many more extreneous points by first clipping the LAS object (SITE_LAS) to a smaller area, and then filtering specifically on that data subset.
+Finding the best elevations for the upper and lower filter limits can be a challenge, especially in mountainous terrain. If you filter too aggressively in the valleys, the trees on the hillsides might get chopped off! You may need to try a few different options to find your best result. In this case, we could remove many more extreneous points by first clipping the LAS object (SITE_LAS) to a smaller area, and then filtering by elevation specifically on that data subset.
 
 Now that we have the LiDAR data subset loaded into a LAS object, let's plot the pointcloud while taking advantage of the "RGB" colorization:
 
 ```{r plot-LiDAR-subset}
 
-x=plot(SITE_LAS, color="RGB", size=2)
+plot(SITE_LAS, color="RGB", size=2)
 
 ```
 
-So why did we assign the `plot(SITE_LAS)` function to a new variable, `x`? Because when you `plot()` a LAS object, this function returns the lower left corner cooridnates for the plot. This will become important when we start plotting other objects into this three-dimensional space.
+Ok, that looks a bit better, but we still have many extraneous points above and below the forest. Fortunately, these LiDAR data are already classified by the NEON science team. That means that every point is assigned a value corresponding to its most likely physical attribute. Classification values include things like "ground", different classes of "vegetation", "buildings", and "noise" among other values. See <a href="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm" target="_blank">this helpful guide by ESRI</a> to learn more about LiDAR point classifications.
+
+There are many ways to classify points, including the `lasclassify()` function in the `lidR` package. However, classification methods can be error-prone, difficult to calibrate, and extremely computationally intensive. For now, let's just be happy that the NEON team has already classified these points for us :) 
+
+Unfortunately, at this time there is no single function that can be used to remove points that are classified as noise. So we will suggest this workflow:
+
+First, we access the data table in the `@data` position on the `LAS` object. This data table is actually really intuitive and contains a single row for every point, with its X,Y,Z position and other attributes (such as RBG color, and various QA/QC metrics in the original file).
+
+Next, we remove the rows that have points classified as 'noise.'
+
+Finally, we re-assign the new data table to the original `LAS` object, then plot the results.
+
+```{r remove-noise-points}
+
+dt = SITE_LAS@data
+# take a look at this table if you like:
+# View(dt)
+
+# Remove the noise points
+dt = dt[!dt$Classification==7,]
+
+# re-assign the data table to the LAS object
+SITE_LAS@data = dt
+
+# Make a plot, this time saving the plot as an object
+# called rgl_plot
+rgl_plot=plot(SITE_LAS, color="RGB", size=2)
+
+```
+
+So why did we assign the return value of the `plot(SITE_LAS)` function to a new variable, `rgl_plot`? Because when you `plot()` a LAS object, this function returns the lower left corner cooridnates for the plot. This will become important when we start plotting other objects into this three-dimensional space.
 
 from lasR::plot() documentation:
 "clear_artifacts	[argument]
 logical. It is a known and documented issue that the 3D visualisation with rgl displays artifacts. The points look aligned and/or regularly spaced in some view angles. This is because rgl computes with single precision float. To fix that the point cloud is shifted to (0,0) to reduce the number of digits needed to represent its coordinates. The drawback is that the point cloud is not plotted at its actual coordinates."
+
+Let's take a quick look at what the `rgl_plot` object now contains:
+
+```{r see-rgl_plot}
+
+rgl_plot
+
+```
+
+Those are the x and y coordinates for the lower left corner of the mosaic tile - the local UTM zone's easting and northing in meters.
+
+If you were only going to plot a single point cloud, this would not be a problem because all of the points will be in the correct position relative to eachother. However, when we want to add additional information (such as the VST data), we will need to offset these coordinates by the position of the lower left corner of the lidar pointcloud as shown in the `x` object. Let's look at an example for more clarity. Here, we will NEON TOS (terrestrial observation system) field plot polygons to highlight the existing field plots on the LiDAR point cloud that we just plotted. First, we will open the file and then select only the plots that are contained within this one LiDAR mosaic tile.
 ```{r add-base-plots-to-LiDAR}
-x=plot(SITE_LAS, color="RGB", size=2)
+# First, we plot the pointcloud again in case this was previously closed.
+rgl_plot=plot(SITE_LAS, color="RGB", size=2)
+
+# Next, set the working directory to the location where you saved the 
+# TOS field plot shapefile
 setwd("~/Downloads/")
 NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
+
+# Select only base plots from the site of interest
 base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITE)&(NEON_all_plots$subtype == 'basePlot'),]
 
+# remove the object that contains all of the plots because it is no longer needed
 rm(NEON_all_plots)
 
-#Plot base plots
-#plot(base_plots_SPDF$geometry, border = 'blue')
-
+# re-project these polygons to match the local UTM projection of the LiDAR pointcloud
 base_plots_SPDF <- st_transform(base_plots_SPDF, as.character(SITE_LAS@proj4string))
 
+# Finally, crop out all of the plots that are outside of this one mosaic tile
 base_crop=st_crop(base_plots_SPDF, extent(SITE_LAS))
 
+```
 
-###
+Ok, now that we have plotted the LiDAR pointcloud and prepared our base plot polygons, we can add those polygons to the 3D pointcloud. In order to do this, we will first need to offset those points by the (x,y) pair contained in the `rgl_plot` object. If you do not perform this offset, you will end up with what appears to be a blank plot, when really the lidar pointcloud and the objects that you are adding to the plot are extremely far away from eachother (that distance being the easdting and northing values of the lower left corner of the LiDAR pointcloud). This can be very confusing and frustrating - so don't forget to offset by the (x,y) pair contained in `rgl_plot`!
 
+In order to add rgl objects to an existing plot, we will use the `quads3d()` function. the `rgl` package has a number of useful functions to add objects to an existing plot, such as `lines3d()`, `points3d()`, etc. Please see the help file for any of these functions (i.e., `?quads3d`) for more information.
+
+The `quads3d()` function needs x, y, and z coordinates as inputs. We can get the (x,y) pairs for each corner of each TOS plot polygon using the `st_coordinates()` function. However, this function actually returns 5 pairs of points, one for each corner, plus an additional point that is the same as the first point in order to complete the square. We can simply remove that fifth point using a trick shown below, where the double division symbol `%%` means to return the _remainder_. When you divide by five and the remainder == 0, that means that is the fifth point! We then negate this by preceding this remainder division with an exclamation point `!` to indicate that we do not want to keep the rows that divide evenly by 5.
+
+Next, we still need to adjust the `X` and `Y` positions by the (x,y) pair saved in the `rgl_plot` object.
+
+Finally, we will add a `Z` dimension by using the `base_crop$elevation` value, and repeat that value 4 times so that each corner of the plot has the same `Z` value. 
+
+```{r add-base-plots}
+# retrieve coordinates from polygon object
 coords=as.data.frame(st_coordinates(base_crop))
-coords$X=coords$X-x[1]
-coords$Y=coords$Y-x[2]
-coords$Z=rep(base_crop$elevation, each=5)
+
+# make object 'c' to indicate each row of the coords data_frame
 c=1:nrow(coords)
+# and use that row number to remove every fifth row
 coords=coords[!c%%5==0,]
 
+# Now, offset the X and Y coordinates by the lower left corner of the
+# LiDAR pointcloud as saved in the 'rgl_plot' object
+coords$X=coords$X-rgl_plot[1]
+coords$Y=coords$Y-rgl_plot[2]
+
+# And add a Z dimension according to the reported elevation in the
+# TOS plots shapefile
+coords$Z=rep(base_crop$elevation, each=4)
+
+# Let's take a look at the resulting table
+head(coords, 10)
+
+```
+
+Great! We now have a 40x40m box with `X`, `Y`, and `Z` coordinates for each point.
+
+We can now use this `coords` table to add the boxes to the existing rgl_plot window. As mentioned above, the `quads3d()` function needs 4 points as inputs with ther `X`, `Y`, and `Z` coordinates. Therefore, we will plot each of these quads one at a time, by feeding the `quads3d()` function 4 rows of our `coords` object at once. To do this, we will use another little trick inside of a `for` loop. 
+
+In this `for` loop, the iterator `i` will represent each quad that we want to add. For each quad, we will need to pass a vector of length 4 to each of the x, y, and z arguments of the `quads3d()` function. In order to do that, we will make a new variable `r` that represents the first row of each of the quads. You will see how we constructed this below, and feel free to try the math out on your own to confirm that for the first quad, the first row is 1, for the second quad, the first row is 5, etc.
+
+We then select the 4 `X` coordinates by subsetting as such: `x=coords$X[r:(r+3)]`, and same for the `Y` and `Z` coordinates. Since the `Z` coordinates are reported as the ground level of the plot, this quad might be hard to see along the forest floor in the 3D pointcloud. Therefore, we add 50 meters to the `Z` coordinates. We choose 50 meters for this example because WREF has VERY tall trees. A smaller value may be better for a shorter canopy height. Feel free to play around with this value to see how it changes the plots! You may need to close the existing plot and re-run the `rgl_plot=plot(SITE_LAS, color="RGB", size=2)` line above to give yourself a fresh canvas to work with.
+
+```{r plot-rgl-boxes}
 
 for(i in 1:(nrow(coords)/4)){
   r=((i-1)*4)+1
@@ -199,14 +267,22 @@ for(i in 1:(nrow(coords)/4)){
           add=T, col="red", lwd=2, lit=F)
 }
 
+```
+
+Let's also draw the names (`plotID`) of each of these plots so that we can easily see which is which. This is pretty much the same as plotting the quads above, but we will use the `rgl.texts` function and pass the `plotID` to the `text =` argument.
+
+```{r add-plot-names}
+
 for(i in 1:(nrow(coords)/4)){
   r=((i-1)*4)+1
   rgl.texts(x=coords$X[r], y=coords$Y[r], z=coords$Z[r]+50,
             text = base_crop$plotID[i],
           add=T, col="red", cex=1, lit=F)
 }
+
 ```
 
+Nice! For the next steps, we will isolate two different plots and look at the trees that they contain. Here, we select plots 3 and 4, but you can experiment with different values! To highlight these plots, let's add some blue quads, but this time, we will make them transparent using the `alpha=` argument in the `quads3d()` function.
 
 ```{r highlight-focus-plots}
 
@@ -216,32 +292,156 @@ for(i in c(3,4)){
           add=T, col="blue", lwd=2, lit=F, alpha=.3)
 }
 
-# for(i in c(3,4)){
-#   r=((i-1)*4)+1
-#   rgl.texts(x=coords$X[r], y=coords$Y[r], z=coords$Z[r]+51,
-#             text = base_crop$plotID[i],
-#           add=T, col="blue", cex=1, lit=F)
-# }
-
 ```
 
+Wow, we can see that at plot 4 (WREF_079) one of the trees poked through the blue quad, which is 50 meters above the ground. That's a big tree!
+
+## Clip out TOS Plots from LiDAR Pointcloud
+
+In this next section, we will isolate individual TOS plots and visualize them, along with some of the trees that they contain. 
+
+The `lidR` package has many helpful functions for clipping LiDAR pointcloud data. For this exercise, we will use the `lasclipRectangle()` function and pass in the coordinates for the plot corners. This is similar to what we did before to create the `coords` data_frame, however, we know the dimensions of the plots (40m square) so it is a bit easier to just identify one corner of the plot and offset the other corners according to that point. Here, we will pull out just the top left corner of the plot, and then add or subtract 40m as needed in the clipping function arguments. This clipping function will create a list, where each list item is a separate LAS object containing the points within that plot. To show this, we will finish by plotting the first of the TOS plots clipped from the SITE_LAS object.
+
 ```{r clip-LAS-to-plots}
-
-
+# Make another data_frame containing the coordinates of the TOS plot corners
 top_left=as.data.frame(st_coordinates(base_crop))
+
+# This time, only select the first point (top left corner) of each plot
 c=1:nrow(top_left)
 top_left=top_left[c%%5==1,]
 
+# Clip out the plots from the fill 1km LiDAR mosaic tile
 plots_LAS <- 
   lasclipRectangle(SITE_LAS,
                    xleft = (top_left$X), ybottom = (top_left$Y - 40),
                    xright = (top_left$X + 40), ytop = (top_left$Y))
 
-
+# Plot an example 
 plot(plots_LAS[[1]], color="RGB")
 
 
 ```
+
+You may notice that these clipped LiDAR pointclouds plot _much_ faster - that's because they are _much_ smaller than the full 1km mosaic tile!
+
+## Identifying Individual Trees in 3D
+
+Now that we have clipped out just the TOS plots, we can combine the LiDAR pointcloud data with the Vegetation Structure (VST) data that we pulled using the `loadByProduct()` function at the beginning of this tutorial.
+
+One way to visualize this information is to plot a circle around the top of each tree that was measured in the VST dataset. Even better, let's embed some useful information, such as the tree's `height` and `stemDiameter` into that circle. These attributes are particularly useful because they can be used to estimate the amount of biomass that is contained within that tree.
+
+Much like the `quads3d()` function that we used above, we can use another function from the `rgl` package called `arc3d()` to draw four arcs to complete a circle. Hopefully, the `rgl` package developers can add a `circles3d()` function in the near future! But for now, this will work well.
+
+In order to use the `arc3d()` function, we need to input the arc's start and end points (in (x,y,z) space) and the 'center' of the arc (if we want it to be circular). For more information and a simple vignette, please see the <a href="https://rdrr.io/rforge/rgl/man/arc3d.html" target="_blank">`arc3d` function documentation here</a>.
+
+In this step, we will draw circles for every measured tree in each plot. First, we will need to collect the tree measurements for just this plot, and offset the `X` and `Y` coordinates according to the lower left corner of the LiDAR pointcloud, mch like we did before to overlay the plots on the full 1km LiDAR mosaic tile. We will use plot #3 for this first example:
+
+```{r subset_tree_boxes}
+# plot just the TOS plot of interest (#3)
+rgl_plot=plot(plots_LAS[[3]], color="RGB", size=2)
+
+# Subset the VST data for just plot #3
+tree_boxes=veg[veg$plotID==base_crop$plotID[3],]
+
+# remove any rows that don't have an adjElevation
+# This may or may not be needed for your data, but can't hurt
+tree_boxes=tree_boxes[!is.na(tree_boxes$adjElevation),]
+
+# offset the X and Y coordinates by the LL corner of the plot
+tree_boxes$adjEasting=tree_boxes$adjEasting-rgl_plot[1]
+tree_boxes$adjNorthing=tree_boxes$adjNorthing-rgl_plot[2]
+
+head(tree_boxes)
+
+```
+
+Next, we will add some circles around the top of each tree showing the height and stemDiameter for each measured tree. We will loop through each tree (rows in tree_boxes) and make a set of coordinates (center, and the cardinal directions around the tree) then plot arcs between each of the cardinal directions. For this example, we will plot each arc as a different color to clearly show how each arc is constructed. In our experimentation, we couldn't find a simple way to plot the entire circle with a single `arc3d()` call, so if you figure out how, please let us know!
+
+```{r plot-tree-circles}
+
+# loop through each tree in this plot
+for(j in 1:(nrow(tree_boxes))){
+  
+  # make a new data_frame 'd' for the individual tree
+  d=as.data.frame(tree_boxes[j,c("adjNorthing","adjEasting",
+                                 "adjElevation","height","stemDiameter")])
+  
+  # convert adjElevation from character to numeric
+  d[,3]=as.numeric(d[,3]) 
+  
+  # Must generate 4 arc segments to complete the circle
+  # Note that we add the tree height to the adjElevation
+  # so that we can plot the circle at the top of the tree
+  center=c(d[[2]],d[[1]], d[[3]]+d[[4]])
+  
+  # Define the radius of the circle from the stemDiameter
+  # Divide by 200 because stemDiameter is in cm,
+  # and is a diameter not a radius!
+  # Multiply by 10 to make it easier to see
+  radius = d[[5]]/200*10 
+  
+  # define circle cardinal direction points by
+  # offsetting by length `rdius` from the center of the tree
+  circle_N = center
+  circle_N[2] = circle_N[2]+radius
+  
+  circle_E = center
+  circle_E[1] = circle_E[1]+radius
+  
+  circle_S = center
+  circle_S[2] = circle_E[2]-radius
+  
+  circle_W = center
+  circle_W[1] = circle_W[1]-radius
+  
+  # plot arcs
+  # N to E
+  arc3d(
+  from = circle_N, 
+  to = circle_E, 
+  center = center,
+  col="green", lwd=2)
+  
+  # E to S
+  arc3d(
+  from = circle_E, 
+  to = circle_S, 
+  center = center,
+  col="red", lwd=2)
+ 
+  # S to W
+  arc3d(
+  from = circle_S, 
+  to = circle_W, 
+  center = center,
+  col="orange", lwd=2) 
+  
+  # W to N
+  arc3d(
+  from = circle_W, 
+  to = circle_N, 
+  center = center,
+  col="blue", lwd=2)
+
+}
+
+```
+
+Very cool! Now we have a good indication of the height and stemDiameter for each tree that was measured. However, only half of the plot has measured trees! This is because of the design of the VST protocol. Measuring trees is very time consuming, so NEON field scientists focus on only two of the four subplots for each TOS plot at a time. Those other trees may be measured in the future. 
+
+You may also notice that the tree height as indicated by the circle doesn't match the LiDAR pointcloud exactly. This could be for many reasons, including the fact that measuring tree heights precisely is _very difficult_ especially in a thick forest with huge trees (like WREF). The LiDAR instrument may also be missing the very top of the tree, leading to an underestimate of tree height according to the LiDAR. However, for visualization purposes, this is looking pretty good.
+
+## Identifying Tree Species
+Now that we have a good understanding of how to plot these circles around the tree tops, let's go one step further to make the color of each circle correspond to the tree species. To do this, let's first identify the top five most prevalent tree species in WREF according to the VST data. Then, we will modify our code a bit.
+
+To identify the top five most prevalent tree species in the WREF VST dataset, we can use the `table()` function as so:
+
+```{r tree_sp_table}
+
+sort(table(veg$scientificName), decreasing = T)[1:5]
+
+```
+
 
 
 ```{r plot-level-trees-generic}
@@ -250,35 +450,12 @@ plot(plots_LAS[[1]], color="RGB")
 ## Loop through plots and add color boxes for each tree
 #for(i in 1:length(plots_LAS)){
 for(i in c(3,4)){
-x=plot(plots_LAS[[i]], color="RGB", size=2)
+rgl_plot=plot(plots_LAS[[i]], color="RGB", size=2)
 
 tree_boxes=veg[veg$plotID==base_crop$plotID[i],]
 tree_boxes=tree_boxes[!is.na(tree_boxes$adjElevation),]
-tree_boxes$adjEasting=tree_boxes$adjEasting-x[1]
-tree_boxes$adjNorthing=tree_boxes$adjNorthing-x[2]
-
-# for(j in 1:(nrow(tree_boxes))){
-#   print(j)
-#   d=as.data.frame(tree_boxes[j,c("adjNorthing","adjEasting","adjElevation")])
-#   d[,3]=as.numeric(d[,3])
-#   d[2:4,]=d[1,]
-#   d[1,1]=d[1,1]+2
-#   d[1,2]=d[1,2]-2
-#   
-#   d[2,1]=d[2,1]+2
-#   d[2,2]=d[2,2]+2
-#   
-#   d[3,1]=d[3,1]-2
-#   d[3,2]=d[3,2]+2
-#   
-#   d[4,1]=d[4,1]-2
-#   d[4,2]=d[4,2]-2
-#   
-#   d[,3]=d[,3]+tree_boxes[j,"height"]
-#   
-#   quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation, 
-#           add=T, col="orange", lwd=2, lit=F)
-# }
+tree_boxes$adjEasting=tree_boxes$adjEasting-rgl_plot[1]
+tree_boxes$adjNorthing=tree_boxes$adjNorthing-rgl_plot[2]
 
 Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
 
@@ -344,35 +521,13 @@ for(k in 1:(nrow(Thuja_boxes))){
 ## Loop through plots and add color boxes for each tree
 #for(i in 1:length(plots_LAS)){
 for(i in c(3,4)){
-x=plot(plots_LAS[[i]], color="RGB", size=2)
+rgl_plot=plot(plots_LAS[[i]], color="RGB", size=2)
 
 tree_boxes=veg[veg$plotID==base_crop$plotID[i],]
 tree_boxes=tree_boxes[!is.na(tree_boxes$adjElevation),]
-tree_boxes$adjEasting=tree_boxes$adjEasting-x[1]
-tree_boxes$adjNorthing=tree_boxes$adjNorthing-x[2]
+tree_boxes$adjEasting=tree_boxes$adjEasting-rgl_plot[1]
+tree_boxes$adjNorthing=tree_boxes$adjNorthing-rgl_plot[2]
 
-# for(j in 1:(nrow(tree_boxes))){
-#   print(j)
-#   d=as.data.frame(tree_boxes[j,c("adjNorthing","adjEasting","adjElevation")])
-#   d[,3]=as.numeric(d[,3])
-#   d[2:4,]=d[1,]
-#   d[1,1]=d[1,1]+2
-#   d[1,2]=d[1,2]-2
-#   
-#   d[2,1]=d[2,1]+2
-#   d[2,2]=d[2,2]+2
-#   
-#   d[3,1]=d[3,1]-2
-#   d[3,2]=d[3,2]+2
-#   
-#   d[4,1]=d[4,1]-2
-#   d[4,2]=d[4,2]-2
-#   
-#   d[,3]=d[,3]+tree_boxes[j,"height"]
-#   
-#   quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation, 
-#           add=T, col="orange", lwd=2, lit=F)
-# }
 
 Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
 
