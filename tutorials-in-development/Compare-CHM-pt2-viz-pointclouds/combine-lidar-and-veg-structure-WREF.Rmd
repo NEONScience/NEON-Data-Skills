@@ -449,106 +449,8 @@ names(top_five)
 
 ```
 
-
-```{r top_five_trees_1}
-
-# make a new chr vector of colors for the circles
-col_tree=c("green","red","blue","orange","white")
-
-# plot just the TOS plot of interest (#3)
-rgl_plot=plot(plots_LAS[[3]], color="RGB", size=2)
-
-for(sp in 1:length(names(top_five))){
-
-# Subset the VST data for just plot #3
-tree_boxes=veg[veg$plotID==base_crop$plotID[3],]
-
-# remove any rows that don't have an adjElevation
-# This may or may not be needed for your data, but can't hurt
-tree_boxes=tree_boxes[!is.na(tree_boxes$adjElevation),]
-
-# offset the X and Y coordinates by the LL corner of the plot
-tree_boxes$adjEasting=tree_boxes$adjEasting-rgl_plot[1]
-tree_boxes$adjNorthing=tree_boxes$adjNorthing-rgl_plot[2]
-
-# subset for just the species of interest
-tree_boxes=tree_boxes[tree_boxes$scientificName == names(top_five)[sp],]
-
-# first, test to see if there are any of that species in this plot
-if(nrow(tree_boxes)>0){
-# loop through each tree in this plot
-for(j in 1:(nrow(tree_boxes))){
-  
-  # make a new data_frame 'd' for the individual tree
-  d=as.data.frame(tree_boxes[j,c("adjNorthing","adjEasting",
-                                 "adjElevation","height","stemDiameter")])
-  
-  # convert adjElevation from character to numeric
-  d[,3]=as.numeric(d[,3]) 
-  
-  # Must generate 4 arc segments to complete the circle
-  # Note that we add the tree height to the adjElevation
-  # so that we can plot the circle at the top of the tree
-  center=c(d[[2]],d[[1]], d[[3]]+d[[4]])
-  
-  # Define the radius of the circle from the stemDiameter
-  # Divide by 200 because stemDiameter is in cm,
-  # and is a diameter not a radius!
-  # Multiply by 10 to make it easier to see
-  radius = d[[5]]/200*10 
-  
-  # define circle cardinal direction points by
-  # offsetting by length `rdius` from the center of the tree
-  circle_N = center
-  circle_N[2] = circle_N[2]+radius
-  
-  circle_E = center
-  circle_E[1] = circle_E[1]+radius
-  
-  circle_S = center
-  circle_S[2] = circle_E[2]-radius
-  
-  circle_W = center
-  circle_W[1] = circle_W[1]-radius
-  
-  # plot arcs
-  # N to E
-  arc3d(
-  from = circle_N, 
-  to = circle_E, 
-  center = center,
-  col=col_tree[sp], lwd=2)
-  
-  # E to S
-  arc3d(
-  from = circle_E, 
-  to = circle_S, 
-  center = center,
-  col=col_tree[sp], lwd=2)
- 
-  # S to W
-  arc3d(
-  from = circle_S, 
-  to = circle_W, 
-  center = center,
-  col=col_tree[sp], lwd=2) 
-  
-  # W to N
-  arc3d(
-  from = circle_W, 
-  to = circle_N, 
-  center = center,
-  col=col_tree[sp], lwd=2)
-
-} # end tree_boxes
-} # end if statement
-
-} # end for top_five sp
-```
-
-
-```{r top_five_02}
-
+Let's assign colors to each of these top 5 species, and print out the combinations:
+```{r sp_colors}
 
 # make a new chr vector of colors for the circles
 col_tree=c("green","red","blue","orange","white")
@@ -559,9 +461,22 @@ for(color in 1:length(col_tree)){
   print(paste(col_tree[color], "is for", names(top_five)[color]))
 }
 
-for(i in 1:length(plots_LAS)){
+```
 
-# plot just the TOS plot of interest (#3)
+Now, we can combine all of these steps together to loop through:
+
+* Multiple plots within plots_LAS
+* The top five tree species
+* Individual trees within that species to make the circles
+* And include a few checks along the way
+
+```{r top_five_w_circles}
+
+# Loop through the plots of interest
+# Use this commented line to view ALL plots
+#for(i in 1:length(plots_LAS)){
+for(i in c(3,4)){
+
 rgl_plot=plot(plots_LAS[[i]], color="RGB", size=2)
 
 for(sp in 1:length(names(top_five))){
@@ -657,145 +572,4 @@ for(j in 1:(nrow(tree_boxes))){
 } # end for top_five sp
 
 } # end TOS plot
-```
-
-```{r plot-level-trees-generic}
-
-
-## Loop through plots and add color boxes for each tree
-#for(i in 1:length(plots_LAS)){
-for(i in c(3,4)){
-rgl_plot=plot(plots_LAS[[i]], color="RGB", size=2)
-
-tree_boxes=veg[veg$plotID==base_crop$plotID[i],]
-tree_boxes=tree_boxes[!is.na(tree_boxes$adjElevation),]
-tree_boxes$adjEasting=tree_boxes$adjEasting-rgl_plot[1]
-tree_boxes$adjNorthing=tree_boxes$adjNorthing-rgl_plot[2]
-
-Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
-
-PSMEM_boxes=tree_boxes[tree_boxes$taxonID=="PSMEM",]
-
-
-for(j in 1:(nrow(PSMEM_boxes))){
-  print(j)
-  d=as.data.frame(PSMEM_boxes[j,c("adjNorthing","adjEasting","adjElevation")])
-  d[,3]=as.numeric(d[,3])
-  d[2:4,]=d[1,]
-  d[1,1]=d[1,1]+2
-  d[1,2]=d[1,2]-2
-
-  d[2,1]=d[2,1]+2
-  d[2,2]=d[2,2]+2
-
-  d[3,1]=d[3,1]-2
-  d[3,2]=d[3,2]+2
-
-  d[4,1]=d[4,1]-2
-  d[4,2]=d[4,2]-2
-
-  d[,3]=d[,3]+PSMEM_boxes[j,"height"]
-
-  quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation,
-          add=T, col="green", lwd=2, lit=F)
-}
-
-
-for(k in 1:(nrow(Thuja_boxes))){
-  print(k)
-  d=as.data.frame(Thuja_boxes[k,c("adjNorthing","adjEasting","adjElevation")])
-  d[,3]=as.numeric(d[,3])
-  d[2:4,]=d[1,]
-  d[1,1]=d[1,1]+2
-  d[1,2]=d[1,2]-2
-
-  d[2,1]=d[2,1]+2
-  d[2,2]=d[2,2]+2
-
-  d[3,1]=d[3,1]-2
-  d[3,2]=d[3,2]+2
-
-  d[4,1]=d[4,1]-2
-  d[4,2]=d[4,2]-2
-
-  d[,3]=d[,3]+Thuja_boxes[k,"height"]
-
-  quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation,
-          add=T, col="red", lwd=2, lit=F)
-}
-
-}
-
-```
-
-
-
-```{r plot-level-trees}
-
-
-## Loop through plots and add color boxes for each tree
-#for(i in 1:length(plots_LAS)){
-for(i in c(3,4)){
-rgl_plot=plot(plots_LAS[[i]], color="RGB", size=2)
-
-tree_boxes=veg[veg$plotID==base_crop$plotID[i],]
-tree_boxes=tree_boxes[!is.na(tree_boxes$adjElevation),]
-tree_boxes$adjEasting=tree_boxes$adjEasting-rgl_plot[1]
-tree_boxes$adjNorthing=tree_boxes$adjNorthing-rgl_plot[2]
-
-
-Thuja_boxes=tree_boxes[tree_boxes$taxonID=="TSHE",]
-
-PSMEM_boxes=tree_boxes[tree_boxes$taxonID=="PSMEM",]
-
-
-for(j in 1:(nrow(PSMEM_boxes))){
-  print(j)
-  d=as.data.frame(PSMEM_boxes[j,c("adjNorthing","adjEasting","adjElevation")])
-  d[,3]=as.numeric(d[,3])
-  d[2:4,]=d[1,]
-  d[1,1]=d[1,1]+2
-  d[1,2]=d[1,2]-2
-
-  d[2,1]=d[2,1]+2
-  d[2,2]=d[2,2]+2
-
-  d[3,1]=d[3,1]-2
-  d[3,2]=d[3,2]+2
-
-  d[4,1]=d[4,1]-2
-  d[4,2]=d[4,2]-2
-
-  d[,3]=d[,3]+PSMEM_boxes[j,"height"]
-
-  quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation,
-          add=T, col="green", lwd=2, lit=F)
-}
-
-
-for(k in 1:(nrow(Thuja_boxes))){
-  print(k)
-  d=as.data.frame(Thuja_boxes[k,c("adjNorthing","adjEasting","adjElevation")])
-  d[,3]=as.numeric(d[,3])
-  d[2:4,]=d[1,]
-  d[1,1]=d[1,1]+2
-  d[1,2]=d[1,2]-2
-
-  d[2,1]=d[2,1]+2
-  d[2,2]=d[2,2]+2
-
-  d[3,1]=d[3,1]-2
-  d[3,2]=d[3,2]+2
-
-  d[4,1]=d[4,1]-2
-  d[4,2]=d[4,2]-2
-
-  d[,3]=d[,3]+Thuja_boxes[k,"height"]
-
-  quads3d(x=d$adjEasting, y=d$adjNorthing, z=d$adjElevation,
-          add=T, col="red", lwd=2, lit=F)
-}
-
-}
-
 ```
