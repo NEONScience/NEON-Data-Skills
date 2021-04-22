@@ -154,7 +154,7 @@ There are many ways to classify points, including the `lasclassify()` function i
 
 Unfortunately, at this time there is no single function that can be used to remove points that are classified as noise. So we will suggest this workflow:
 
-First, we access the data table in the `@data` position on the `LAS` object. This data table is actually really intuitive and contains a single row for every point, with its X,Y,Z position and other attributes (such as RBG color, and various QA/QC metrics in the original file).
+First, we access the data table in the `@data` position on the `LAS` object. This data table is actually quite intuitive and contains a single row for every point, with its X,Y,Z position and other attributes (such as RBG color, and various QA/QC metrics in the original file).
 
 Next, we remove the rows that have points classified as 'noise.'
 
