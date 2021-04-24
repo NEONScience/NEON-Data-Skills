@@ -63,7 +63,11 @@ The data used in this tutorial were collected at the
 Download Dataset</a>
 
 ### Working Directory
-[Donal to add text]
+This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
 
 ## Additional Resources
 You can list any additional resources you'd like to link to if needed. 
