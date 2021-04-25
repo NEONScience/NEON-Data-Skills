@@ -40,8 +40,11 @@ Prior to starting the tutorial ensure that the following packages are installed.
 
 ### Example Data Set
 
-* must add download link for TOS shapefile
-* Upload lidar tile of interest
+<h3><a href="https://ndownloader.figshare.com/files/27723168">
+Download NEON Teaching Dataset: Colorized LiDAR from WREF</a></h3>
+
+<h3><a href="https://www.neonscience.org/sites/default/files/All_NEON_TOS_Plots_V8.zip">
+Download NEON TOS Plot Shapefile</a></h3>
 
 ### Working Directory
 This lesson assumes that you have set your working 
@@ -64,7 +67,12 @@ library(raster)
 
 options(stringsAsFactors=F) #This line may be redundant for R version 4.0.0+
 
+wd <- "~/Git/data/" # This will depend on your local environment
+setwd(wd)
+
 ```
+
+
 
 Choose your site of interest:
 
@@ -94,12 +102,12 @@ veg <- base::merge(veglist$vst_apparentindividual, vegmap,
 
 ## Download LiDAR and load into R
 
-**ADD HERE** link to download this directly using the API
+First, we will load the WREF LiDAR data into R. You may need to adjust the filepath below depending on the file's location on your machine.
 
 ```{r load-LiDAR}
 
 
-SITE_LAS=readLAS("~/Downloads/NEON_lidar-point-cloud-line/NEON.D16.WREF.DP1.30003.001.2019-07.basic.20210415T204338Z.RELEASE-2021/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz")
+SITE_LAS=readLAS(paste0(wd,"NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz"))
 
 ```
 
@@ -135,7 +143,7 @@ For this tutorial, we only need the "X" "Y" "Z" "Classification" "R" "G" and "B"
 
 ```{r load-LiDAR-with-filter}
 
-SITE_LAS=readLAS("~/Downloads/NEON_lidar-point-cloud-line/NEON.D16.WREF.DP1.30003.001.2019-07.basic.20210415T204338Z.RELEASE-2021/NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz",
+SITE_LAS=readLAS(paste0(wd,"NEON_D16_WREF_DP1_580000_5075000_classified_point_cloud_colorized.laz"),
                  filter = "-drop_z_below 350 -drop_z_above 550",
                  select = "xyzClassificationRGB")
 
@@ -206,8 +214,7 @@ rgl_plot=plot(SITE_LAS, color="RGB", size=2)
 
 # Next, set the working directory to the location where you saved the 
 # TOS field plot shapefile
-setwd("~/Downloads/")
-NEON_all_plots <- st_read('All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp')
+NEON_all_plots <- st_read(paste0(wd,'All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp'))
 
 # Select only base plots from the site of interest
 base_plots_SPDF <- NEON_all_plots[(NEON_all_plots$siteID == SITE)&(NEON_all_plots$subtype == 'basePlot'),]

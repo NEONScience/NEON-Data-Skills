@@ -88,7 +88,7 @@ library(neonUtilities)
 library(viridis)
 library(maptools)
 
-wd <- "~/Downloads/" # This will depend on your local environment
+wd <- "~/Git/data/" # This will depend on your local environment
 setwd(wd)
 
 ```
