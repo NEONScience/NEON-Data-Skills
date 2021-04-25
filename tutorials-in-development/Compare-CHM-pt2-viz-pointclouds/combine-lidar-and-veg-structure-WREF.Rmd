@@ -113,7 +113,7 @@ plot(SITE_LAS)
 
 ```
 
-The default color scheme for these points is to use a rainbow pallate according to the point's Z coordinate, with the lowest elevation points being dark blue, and the highest elevation points being red. However, there are a LOT of extreneous points above and below the forest. Fortunately, there is an easy way to filter out points above and below specified elevations (on the Z-axis). Let's take a look at a histogram of point elevations to see where to filter out the extreneous points.
+The default color scheme for these points is to use a rainbow pallate according to the point's Z coordinate, with the lowest elevation points being dark blue, and the highest elevation points being red. However, there are a LOT of extreneous (noise) points above and below the forest. Fortunately, there is an easy way to filter out points above and below specified elevations (on the Z-axis). Let's take a look at a histogram of point elevations to see where to filter out the extreneous points.
 
 ```{r make-LiDAR-histogram}
 
@@ -160,7 +160,7 @@ Unfortunately, at this time there is no single function that can be used to remo
 
 First, we access the data table in the `@data` position on the `LAS` object. This data table is actually quite intuitive and contains a single row for every point, with its X,Y,Z position and other attributes (such as RBG color, and various QA/QC metrics in the original file).
 
-Next, we remove the rows that have points classified as 'noise.'
+Next, we remove the rows that have points classified as 'noise' (value == 7).
 
 Finally, we re-assign the new data table to the original `LAS` object, then plot the results.
 
@@ -198,7 +198,8 @@ rgl_plot
 
 Those are the x and y coordinates for the lower left corner of the mosaic tile - the local UTM zone's easting and northing in meters.
 
-If you were only going to plot a single point cloud, this would not be a problem because all of the points will be in the correct position relative to eachother. However, when we want to add additional information (such as the VST data), we will need to offset these coordinates by the position of the lower left corner of the lidar pointcloud as shown in the `x` object. Let's look at an example for more clarity. Here, we will NEON TOS (terrestrial observation system) field plot polygons to highlight the existing field plots on the LiDAR point cloud that we just plotted. First, we will open the file and then select only the plots that are contained within this one LiDAR mosaic tile.
+If you were only going to plot a single point cloud, this would not be a problem because all of the points will be in the correct position relative to eachother. However, when we want to add additional information (such as the VST data), we will need to offset these coordinates by the position of the lower left corner of the lidar pointcloud as shown in the `x` object. Let's look at an example for more clarity. Here, we will use the NEON TOS (terrestrial observation system) field plot polygons to highlight the existing field plots on the LiDAR point cloud that we just plotted. First, we will open the file and then select only the plots that are contained within this one LiDAR mosaic tile.
+
 ```{r add-base-plots-to-LiDAR}
 # First, we plot the pointcloud again in case this was previously closed.
 rgl_plot=plot(SITE_LAS, color="RGB", size=2)
@@ -222,7 +223,7 @@ base_crop=st_crop(base_plots_SPDF, extent(SITE_LAS))
 
 ```
 
-Ok, now that we have plotted the LiDAR pointcloud and prepared our base plot polygons, we can add those polygons to the 3D pointcloud. In order to do this, we will first need to offset those points by the (x,y) pair contained in the `rgl_plot` object. If you do not perform this offset, you will end up with what appears to be a blank plot, when really the lidar pointcloud and the objects that you are adding to the plot are extremely far away from eachother (that distance being the easdting and northing values of the lower left corner of the LiDAR pointcloud). This can be very confusing and frustrating - so don't forget to offset by the (x,y) pair contained in `rgl_plot`!
+Ok, now that we have plotted the LiDAR pointcloud and prepared our base plot polygons, we can add those polygons to the 3D pointcloud. In order to do this, we will first need to offset those points by the (x,y) pair contained in the `rgl_plot` object. If you do not perform this offset, you will end up with what appears to be a blank plot, when really the lidar pointcloud and the objects that you are adding to the plot are extremely far away from eachother (that distance being the easting and northing values of the lower left corner of the LiDAR pointcloud). This can be very confusing and frustrating - so don't forget to offset by the (x,y) pair contained in `rgl_plot`!
 
 In order to add rgl objects to an existing plot, we will use the `quads3d()` function. the `rgl` package has a number of useful functions to add objects to an existing plot, such as `lines3d()`, `points3d()`, etc. Please see the help file for any of these functions (i.e., `?quads3d`) for more information.
 
@@ -265,9 +266,14 @@ We then select the 4 `X` coordinates by subsetting as such: `x=coords$X[r:(r+3)]
 
 ```{r plot-rgl-boxes}
 
+# re-make the rgl_plot if you already closed it
+# rgl_plot=plot(SITE_LAS, color="RGB", size=2)
+
+# Loop through the base plot polygons and add them to the 3D scene
 for(i in 1:(nrow(coords)/4)){
   r=((i-1)*4)+1
-  quads3d(x=coords$X[r:(r+3)], y=coords$Y[r:(r+3)], z=coords$Z[r:(r+3)]+50,
+  quads3d(x=coords$X[r:(r+3)], y=coords$Y[r:(r+3)], 
+          z=coords$Z[r:(r+3)]+50, # adding 50m to Z dimension
           add=T, col="red", lwd=2, lit=F)
 }
 
@@ -286,7 +292,7 @@ for(i in 1:(nrow(coords)/4)){
 
 ```
 
-Nice! For the next steps, we will isolate two different plots and look at the trees that they contain. Here, we select plots 3 and 4, but you can experiment with different values! To highlight these plots, let's add some blue quads, but this time, we will make them transparent using the `alpha=` argument in the `quads3d()` function.
+Nice! For the next steps, we will isolate two different plots and look at the trees that they contain. Here, we select plots 3 and 4, but you can experiment with different plot, too. To highlight these plots, let's add some blue quads, but this time, we will make them transparent using the `alpha=` argument in the `quads3d()` function.
 
 ```{r highlight-focus-plots}
 
@@ -304,7 +310,7 @@ Wow, we can see that at plot 4 (WREF_079) one of the trees poked through the blu
 
 In this next section, we will isolate individual TOS plots and visualize them, along with some of the trees that they contain. 
 
-The `lidR` package has many helpful functions for clipping LiDAR pointcloud data. For this exercise, we will use the `lasclipRectangle()` function and pass in the coordinates for the plot corners. This is similar to what we did before to create the `coords` data_frame, however, we know the dimensions of the plots (40m square) so it is a bit easier to just identify one corner of the plot and offset the other corners according to that point. Here, we will pull out just the top left corner of the plot, and then add or subtract 40m as needed in the clipping function arguments. This clipping function will create a list, where each list item is a separate LAS object containing the points within that plot. To show this, we will finish by plotting the first of the TOS plots clipped from the SITE_LAS object.
+The `lidR` package has many helpful functions for clipping LiDAR pointcloud data. For this exercise, we will use the `lasclipRectangle()` function and pass in the coordinates for the plot corners. This is similar to what we did before to create the `coords` data_frame, however, we know the dimensions of the plots (40m square) so it is a bit easier to just identify one corner of the plot and offset the other corners by 40m from that point. Here, we will pull out just the top left corner of the plot, and then add or subtract 40m as needed in the clipping function arguments. This clipping function will create a list, where each list item is a separate LAS object containing the pointcloud from within that plot. To show this, we will finish by plotting the first of the TOS plots clipped from the SITE_LAS object.
 
 ```{r clip-LAS-to-plots}
 # Make another data_frame containing the coordinates of the TOS plot corners
@@ -379,10 +385,10 @@ for(j in 1:(nrow(tree_boxes))){
   center=c(d[[2]],d[[1]], d[[3]]+d[[4]])
   
   # Define the radius of the circle from the stemDiameter
-  # Divide by 200 because stemDiameter is in cm,
-  # and is a diameter not a radius!
+  # Divide by 100 because stemDiameter is in cm,
+  # and divide by 2 because it is a diameter not a radius!
   # Multiply by 10 to make it easier to see
-  radius = d[[5]]/200*10 
+  radius = d[[5]]/100/2*10 
   
   # define circle cardinal direction points by
   # offsetting by length `rdius` from the center of the tree
@@ -577,3 +583,5 @@ for(j in 1:(nrow(tree_boxes))){
 
 } # end TOS plot
 ```
+
+Cool! Now that you have completed this tutorial, we encourage you to go back through it and experiment with various different aspects of this code to ensure that you _really_ understand what is going on. If you want to explore another tile within WREF, or another site altogether, you can search for the Discrete return LiDAR point cloud data (DP1.30003.001) on the <a href="https://data.neonscience.org/data-products/explore" target="_blank">NEON Explore Data Products Page</a>. We also have a great <a href="https://www.youtube.com/watch?v=gaA_duzWnvk" target="_blank">YouTube video here</a> to help walk you through how to use the Data Portal (the steps will be similar but a little different for the AOP products like the LiDAR data). Note that the LiDAR point clouds are not colorized (RGB) by defailt, so you will need to search for 'colorized' in the filename of the "#2 Files" window when downloading data.
