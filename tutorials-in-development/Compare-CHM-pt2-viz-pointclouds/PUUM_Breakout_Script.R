@@ -58,6 +58,10 @@ SITE_LAS@data = dt
 # called rgl_plot
 rgl_plot=plot(SITE_LAS, color="RGB", size=2)
 
+
+# Link to download TOS plots shapefile:
+# https://www.neonscience.org/sites/default/files/All_NEON_TOS_Plots_V8.zip
+
 NEON_all_plots <- st_read(paste0(wd,'All_NEON_TOS_Plots_V8/All_NEON_TOS_Plot_Polygons_V8.shp'))
 
 # Select only base plots from the site of interest
