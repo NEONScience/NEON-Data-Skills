@@ -1,4 +1,4 @@
-## ----setup-env-------------------------------------------------------------------------
+## ----setup-env-----------------------------------------------------------------
 # Install needed package (only uncomment & run if not already installed)
 #install.packages("dplyr")
 #install.packages("ggplot2")
@@ -18,7 +18,7 @@ wd <- "~/Documents/data/" # Change this to match your local environment
 setwd(wd)
 
 
-## ----load-data-------------------------------------------------------------------------
+## ----load-data-----------------------------------------------------------------
 # Read in data -> if in series this is unnecessary
 temp_day <- read.csv(paste0(wd,'NEON-pheno-temp-timeseries/NEONsaat_daily_SCBI_2018.csv'))
 
@@ -88,8 +88,8 @@ grid.arrange(phenoPlot_setX, tempPlot_dayMax_setX)
 
 ## ----align-datasets-replot, fig.cap="Graphic of the arranged plots created in the previous steps with only the data that overlap. This was achieved by filtering the daily max temperature data by the observation date in the total individuals in Leaf dataset. The top plot shows a bar plot of the counts of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. The bottom plot shows a scatter plot of daily maximum temperatures(of 30 minute interval means) for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI)."----
 # filter to only having overlapping data
-temp_day_filt <- filter(temp_day, Date >= min(phe_1sp_2018$date) & 
-                         Date <= max(phe_1sp_2018$date))
+temp_day_filt <- filter(temp_day, Date >= min(phe_1sp_2018$dateStat) & 
+                         Date <= max(phe_1sp_2018$dateStat))
 
 # Check 
 range(phe_1sp_2018$date)
@@ -107,7 +107,7 @@ grid.arrange(phenoPlot, tempPlot_dayMaxFiltered)
 
 
 
-## ----two-y-axes-ggplot-----------------------------------------------------------------
+## ----two-y-axes-ggplot---------------------------------------------------------
 
 # Source: http://heareresearch.blogspot.com/2014/10/10-30-2014-dual-y-axis-graph-ggplot2_30.html
 

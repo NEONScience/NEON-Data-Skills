@@ -214,7 +214,27 @@ previous tutorial in this series, you&#39;ll only need to load the new packages.
 # Load required libraries
 library(ggplot2)
 library(dplyr)
+
+## 
+## Attaching package: &#39;dplyr&#39;
+
+## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag
+
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union
+
 library(gridExtra)
+
+## 
+## Attaching package: &#39;gridExtra&#39;
+
+## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine
+
 library(scales)
 
 options(stringsAsFactors=F) #keep strings as character type not factors
@@ -362,8 +382,8 @@ distinguish between the two). </p>
 the we only plot the data from the overlapping dates. </p>
 
 <pre><code># filter to only having overlapping data
-temp_day_filt &lt;- filter(temp_day, Date &gt;= min(phe_1sp_2018$date) &amp; 
-                         Date &lt;= max(phe_1sp_2018$date))
+temp_day_filt &lt;- filter(temp_day, Date &gt;= min(phe_1sp_2018$dateStat) &amp; 
+                         Date &lt;= max(phe_1sp_2018$dateStat))
 
 # Check 
 range(phe_1sp_2018$date)
