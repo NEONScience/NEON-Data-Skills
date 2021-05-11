@@ -97,9 +97,6 @@ downloaded from the NEON Data Portal.
 
     ############### Packages ################### 
     library(lidR)
-
-    ## lidR 3.0.3 using 1 threads. Help on <gis.stackexchange.com>. Bug report on <github.com/Jean-Romain/lidR>.
-
     library(gstat)
     
     ############### Set working directory ######
@@ -184,8 +181,8 @@ clip out an area of 200 x 200 m, normalize it, and then clip out our smaller are
     #by adjusting the 'drop_z_' arguments when reading in the .laz files.
     dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-    ## Warning: There were 7 degenerated ground points. Some X Y coordinates
-    ## were repeated but with different Z coordinates. min Z were retained.
+    ## Warning: There were 7 degenerated ground points. Some X Y coordinates were
+    ## repeated but with different Z coordinates. min Z were retained.
 
     data.200m <- lasnormalize(data.200m, dtm)
     
@@ -272,10 +269,8 @@ our structural diversity metrics.
     #HEIGHT SD
     #height SD, the standard deviation of height values for all points
     #in the plot point cloud
-    vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
-
-    ## Error in lasmetrics(data.40m, sd(Z, na.rm = TRUE)): could not find function "lasmetrics"
-
+    vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
+    
     #SD of VERTICAL SD of HEIGHT
     #rasterize plot point cloud and calculate the standard deviation 
     #of height values at a resolution of 1 m^2
@@ -339,9 +334,7 @@ We now have 13 metrics of structural diversity, which we can arrange into a sing
                            cover.fraction,top.rugosity, vert.sd, 
                            sd.sd, entro,GFP.AOP, VAI.AOP, VCI.AOP),
                          ncol = 15)) 
-
-    ## Error in matrix(c(x, y, mean.max.canopy.ht, max.canopy.ht, rumple, deepgaps, : object 'vert.sd' not found
-
+    
     #provide descriptive names for the calculated metrics
     colnames(HARV_structural_diversity) <- 
        c("easting", "northing", "mean.max.canopy.ht.aop",
@@ -349,13 +342,16 @@ We now have 13 metrics of structural diversity, which we can arrange into a sing
          "deepgap.fraction.aop","cover.fraction.aop", 
          "top.rugosity.aop", "vert.sd.aop", "sd.sd.aop", 
          "entropy.aop", "GFP.AOP.aop", "VAI.AOP.aop", "VCI.AOP.aop") 
-
-    ## Error in colnames(HARV_structural_diversity) <- c("easting", "northing", : object 'HARV_structural_diversity' not found
-
+    
     #View the results
     HARV_structural_diversity 
 
-    ## Error in eval(expr, envir, enclos): object 'HARV_structural_diversity' not found
+    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
+    ## 1  727500  4702500               17.47636           24.1664   2.807299
+    ##   deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
+    ## 1            7             0.004375           0.995625         4.323543
+    ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
+    ## 1    5.941824  2.272381   0.9147319    0.863887     6.65967   0.6393701
 
 ## Combining Everything Into One Function
 Now that we have run through how to measure each structural diversity metric, let's create a 
@@ -373,11 +369,11 @@ diversity with HARV.
     
     dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
 
-    ## Warning: There were 4 degenerated ground points. Some X Y Z coordinates
-    ## were repeated. They were removed.
+    ## Warning: There were 4 degenerated ground points. Some X Y Z coordinates were
+    ## repeated. They were removed.
 
-    ## Warning: There were 41 degenerated ground points. Some X Y coordinates
-    ## were repeated but with different Z coordinates. min Z were retained.
+    ## Warning: There were 41 degenerated ground points. Some X Y coordinates were
+    ## repeated but with different Z coordinates. min Z were retained.
 
     data.200m <- lasnormalize(data.200m, dtm)
     
@@ -410,7 +406,7 @@ diversity with HARV.
        deepgaps <- length(zeros) 
        deepgap.fraction <- deepgaps/cells 
        cover.fraction <- 1 - deepgap.fraction 
-       vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
+       vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
        sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
        sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
        Zs <- data.40m@data$Z
@@ -439,7 +435,12 @@ diversity with HARV.
     
     TEAK_structural_diversity <- structural_diversity_metrics(data.40m)
 
-    ## Error in lasmetrics(data.40m, sd(Z, na.rm = TRUE)): could not find function "lasmetrics"
+    ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
+    ## 1  316400  4091700               18.26802          40.60467   5.060158
+    ##   deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
+    ## 1           76               0.0475             0.9525         10.18562
+    ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
+    ## 1    11.56424  4.320685   0.8390816   0.9683643    2.455946   0.6766286
 
 ## Comparing Metrics Between Forests
 How does the structural diversity of the evergreen TEAK forest compare to the mixed deciduous/evergreen forest from HARV? Let's combine the result data.frames for a direct comparison:
@@ -447,15 +448,19 @@ How does the structural diversity of the evergreen TEAK forest compare to the mi
 
     combined_results=rbind(HARV_structural_diversity, 
                            TEAK_structural_diversity)
-
-    ## Error in rbind(HARV_structural_diversity, TEAK_structural_diversity): object 'HARV_structural_diversity' not found
-
+    
     # Add row names for clarity
     row.names(combined_results)=c("HARV","TEAK")
-
-    ## Error in row.names(combined_results) = c("HARV", "TEAK"): object 'combined_results' not found
-
+    
     # Take a look to compare
     combined_results
 
-    ## Error in eval(expr, envir, enclos): object 'combined_results' not found
+    ##      easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
+    ## HARV  727500  4702500               17.47636          24.16640   2.807299
+    ## TEAK  316400  4091700               18.26802          40.60467   5.060158
+    ##      deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
+    ## HARV            7             0.004375           0.995625         4.323543
+    ## TEAK           76             0.047500           0.952500        10.185618
+    ##      vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
+    ## HARV    5.941824  2.272381   0.9147319   0.8638870    6.659670   0.6393701
+    ## TEAK   11.564239  4.320685   0.8390816   0.9683643    2.455946   0.6766286

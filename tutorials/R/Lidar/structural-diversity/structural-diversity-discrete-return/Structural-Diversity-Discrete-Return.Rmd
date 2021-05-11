@@ -275,7 +275,7 @@ cover.fraction <- 1 - deepgap.fraction
 #HEIGHT SD
 #height SD, the standard deviation of height values for all points
 #in the plot point cloud
-vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
+vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
 
 #SD of VERTICAL SD of HEIGHT
 #rasterize plot point cloud and calculate the standard deviation 
@@ -403,7 +403,7 @@ structural_diversity_metrics <- function(data.40m) {
    deepgaps <- length(zeros) 
    deepgap.fraction <- deepgaps/cells 
    cover.fraction <- 1 - deepgap.fraction 
-   vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
+   vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
    sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
    sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
    Zs <- data.40m@data$Z

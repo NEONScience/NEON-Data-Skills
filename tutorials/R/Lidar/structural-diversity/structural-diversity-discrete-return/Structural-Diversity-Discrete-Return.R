@@ -1,4 +1,4 @@
-## ----call-libraries, results="hide"------------------------------------
+## ----call-libraries, results="hide"--------------------------------------------
 
 ############### Packages ################### 
 library(lidR)
@@ -11,7 +11,7 @@ setwd(wd)
 
 
 
-## ----read-in-lidar-data------------------------------------------------
+## ----read-in-lidar-data--------------------------------------------------------
 
 ############ Read in LiDAR data ###########
 #2017 1 km2 tile .laz file type for HARV and TEAK
@@ -30,7 +30,7 @@ TEAK <- readLAS(paste0(wd,"NEON_D17_TEAK_DP1_316000_4091000_classified_point_clo
 
 
 
-## ----plot-and-summarize-laz-file, eval=F, comment=NA-------------------
+## ----plot-and-summarize-laz-file, eval=F, comment=NA---------------------------
 ############## Look at data specs ######
 #Let's check out the extent, coordinate system, and a 3D plot of each 
 #.laz file. Note that on Mac computers you may need to install 
@@ -39,12 +39,12 @@ summary(HARV)
 plot(HARV)
 
 
-## ----plot-teak-1km2-point-cloud, eval=F, comment=NA--------------------
+## ----plot-teak-1km2-point-cloud, eval=F, comment=NA----------------------------
 summary(TEAK)
 plot(TEAK)
 
 
-## ----correct-for-elevation---------------------------------------------
+## ----correct-for-elevation-----------------------------------------------------
 
 ############## Correct for elevation #####
 #We're going to choose a 40 x 40 m spatial extent, which is the
@@ -141,7 +141,7 @@ cover.fraction <- 1 - deepgap.fraction
 #HEIGHT SD
 #height SD, the standard deviation of height values for all points
 #in the plot point cloud
-vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
+vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
 
 #SD of VERTICAL SD of HEIGHT
 #rasterize plot point cloud and calculate the standard deviation 
@@ -195,7 +195,7 @@ VAI.AOP <- sum(LADen$lad, na.rm=TRUE)
 VCI.AOP <- VCI(Zs, by = 1, zmax=100) 
 
 
-## ----output-HARV-metrics-----------------------------------------------
+## ----output-HARV-metrics-------------------------------------------------------
 #OUTPUT CALCULATED METRICS INTO A TABLE
 #creates a dataframe row, out.plot, containing plot descriptors 
 #and calculated metrics
@@ -219,7 +219,7 @@ HARV_structural_diversity
 
 
 
-## ----calculate-structural-diversity-metrics-TEAK-----------------------
+## ----calculate-structural-diversity-metrics-TEAK-------------------------------
 #Let's correct for elevation and measure structural diversity for TEAK
 x <- 316400 
 y <- 4091700
@@ -238,7 +238,7 @@ data.40m@data$Z[data.40m@data$Z <= .5] <- 0
 plot(data.40m)
 
 
-## ----structural-diversity-function-------------------------------------
+## ----structural-diversity-function---------------------------------------------
 
 #Zip up all the code we previously used and write function to 
 #run all 13 metrics in a single function. 
@@ -255,7 +255,7 @@ structural_diversity_metrics <- function(data.40m) {
    deepgaps <- length(zeros) 
    deepgap.fraction <- deepgaps/cells 
    cover.fraction <- 1 - deepgap.fraction 
-   vert.sd <- lasmetrics(data.40m, sd(Z, na.rm = TRUE)) 
+   vert.sd <- cloud_metrics(data.40m, sd(Z, na.rm = TRUE)) 
    sd.1m2 <- grid_metrics(data.40m, sd(Z), 1) 
    sd.sd <- sd(sd.1m2[,3], na.rm = TRUE) 
    Zs <- data.40m@data$Z
@@ -286,7 +286,7 @@ TEAK_structural_diversity <- structural_diversity_metrics(data.40m)
 
 
 
-## ----combine results---------------------------------------------------
+## ----combine results-----------------------------------------------------------
 
 combined_results=rbind(HARV_structural_diversity, 
                        TEAK_structural_diversity)
