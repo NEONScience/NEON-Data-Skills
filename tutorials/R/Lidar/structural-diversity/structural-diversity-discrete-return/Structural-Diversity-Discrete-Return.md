@@ -171,7 +171,7 @@ clip out an area of 200 x 200 m, normalize it, and then clip out our smaller are
     #Cut out a 200 x 200 m buffer by adding 100 m to easting and 
     #northing coordinates (x,y).
     data.200m <- 
-       lasclipRectangle(HARV,
+       clip_rectangle(HARV,
                         xleft = (x - 100), ybottom = (y - 100),
                         xright = (x + 100), ytop = (y + 100))
     
@@ -184,7 +184,7 @@ clip out an area of 200 x 200 m, normalize it, and then clip out our smaller are
     ## Warning: There were 7 degenerated ground points. Some X Y coordinates were
     ## repeated but with different Z coordinates. min Z were retained.
 
-    data.200m <- lasnormalize(data.200m, dtm)
+    data.200m <- normalize_height(data.200m, dtm)
     
     #Will often give a warning if not all points could be corrected, 
     #but visually check to see if it corrected for ground height. 
@@ -195,7 +195,7 @@ clip out an area of 200 x 200 m, normalize it, and then clip out our smaller are
     #Clip 20 m out from each side of the easting and northing 
     #coordinates (x,y).
     data.40m <- 
-       lasclipRectangle(data.200m, 
+       clip_rectangle(data.200m, 
                         xleft = (x - 20), ybottom = (y - 20),
                         xright = (x + 20), ytop = (y + 20))
     
@@ -347,9 +347,9 @@ We now have 13 metrics of structural diversity, which we can arrange into a sing
     HARV_structural_diversity 
 
     ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
-    ## 1  727500  4702500               17.47636           24.1664   2.807299
+    ## 1  727500  4702500               17.47635            24.166   2.807288
     ##   deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
-    ## 1            7             0.004375           0.995625         4.323543
+    ## 1            7             0.004375           0.995625         4.323529
     ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
     ## 1    5.941824  2.272381   0.9147319    0.863887     6.65967   0.6393701
 
@@ -363,7 +363,7 @@ diversity with HARV.
     x <- 316400 
     y <- 4091700
     
-    data.200m <- lasclipRectangle(TEAK, 
+    data.200m <- clip_rectangle(TEAK, 
                                   xleft = (x - 100), ybottom = (y - 100),
                                   xright = (x + 100), ytop = (y + 100))
     
@@ -375,9 +375,9 @@ diversity with HARV.
     ## Warning: There were 41 degenerated ground points. Some X Y coordinates were
     ## repeated but with different Z coordinates. min Z were retained.
 
-    data.200m <- lasnormalize(data.200m, dtm)
+    data.200m <- normalize_height(data.200m, dtm)
     
-    data.40m <- lasclipRectangle(data.200m, 
+    data.40m <- clip_rectangle(data.200m, 
                                  xleft = (x - 20), ybottom = (y - 20),
                                  xright = (x + 20), ytop = (y + 20))
     data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
@@ -436,7 +436,7 @@ diversity with HARV.
     TEAK_structural_diversity <- structural_diversity_metrics(data.40m)
 
     ##   easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
-    ## 1  316400  4091700               18.26802          40.60467   5.060158
+    ## 1  316400  4091700               18.26803            40.605   5.060172
     ##   deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
     ## 1           76               0.0475             0.9525         10.18562
     ##   vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
@@ -456,11 +456,11 @@ How does the structural diversity of the evergreen TEAK forest compare to the mi
     combined_results
 
     ##      easting northing mean.max.canopy.ht.aop max.canopy.ht.aop rumple.aop
-    ## HARV  727500  4702500               17.47636          24.16640   2.807299
-    ## TEAK  316400  4091700               18.26802          40.60467   5.060158
+    ## HARV  727500  4702500               17.47635            24.166   2.807288
+    ## TEAK  316400  4091700               18.26803            40.605   5.060172
     ##      deepgaps.aop deepgap.fraction.aop cover.fraction.aop top.rugosity.aop
-    ## HARV            7             0.004375           0.995625         4.323543
-    ## TEAK           76             0.047500           0.952500        10.185618
+    ## HARV            7             0.004375           0.995625         4.323529
+    ## TEAK           76             0.047500           0.952500        10.185625
     ##      vert.sd.aop sd.sd.aop entropy.aop GFP.AOP.aop VAI.AOP.aop VCI.AOP.aop
     ## HARV    5.941824  2.272381   0.9147319   0.8638870    6.659670   0.6393701
     ## TEAK   11.564239  4.320685   0.8390816   0.9683643    2.455946   0.6766286

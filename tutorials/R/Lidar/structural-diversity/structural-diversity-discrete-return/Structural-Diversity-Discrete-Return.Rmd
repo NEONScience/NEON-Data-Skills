@@ -181,7 +181,7 @@ y <- 4702500 #northing
 #Cut out a 200 x 200 m buffer by adding 100 m to easting and 
 #northing coordinates (x,y).
 data.200m <- 
-   lasclipRectangle(HARV,
+   clip_rectangle(HARV,
                     xleft = (x - 100), ybottom = (y - 100),
                     xright = (x + 100), ytop = (y + 100))
 
@@ -190,7 +190,7 @@ data.200m <-
 #If the function will not run, then you may need to checkfor outliers
 #by adjusting the 'drop_z_' arguments when reading in the .laz files.
 dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
-data.200m <- lasnormalize(data.200m, dtm)
+data.200m <- normalize_height(data.200m, dtm)
 
 #Will often give a warning if not all points could be corrected, 
 #but visually check to see if it corrected for ground height. 
@@ -201,7 +201,7 @@ plot(data.200m)
 #Clip 20 m out from each side of the easting and northing 
 #coordinates (x,y).
 data.40m <- 
-   lasclipRectangle(data.200m, 
+   clip_rectangle(data.200m, 
                     xleft = (x - 20), ybottom = (y - 20),
                     xright = (x + 20), ytop = (y + 20))
 
@@ -365,14 +365,14 @@ diversity with HARV.
 x <- 316400 
 y <- 4091700
 
-data.200m <- lasclipRectangle(TEAK, 
+data.200m <- clip_rectangle(TEAK, 
                               xleft = (x - 100), ybottom = (y - 100),
                               xright = (x + 100), ytop = (y + 100))
 
 dtm <- grid_terrain(data.200m, 1, kriging(k = 10L))
-data.200m <- lasnormalize(data.200m, dtm)
+data.200m <- normalize_height(data.200m, dtm)
 
-data.40m <- lasclipRectangle(data.200m, 
+data.40m <- clip_rectangle(data.200m, 
                              xleft = (x - 20), ybottom = (y - 20),
                              xright = (x + 20), ytop = (y + 20))
 data.40m@data$Z[data.40m@data$Z <= .5] <- 0  
