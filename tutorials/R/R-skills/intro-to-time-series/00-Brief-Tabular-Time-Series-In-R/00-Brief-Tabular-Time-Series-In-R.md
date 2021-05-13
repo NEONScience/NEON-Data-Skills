@@ -115,7 +115,7 @@ to import a `.csv` file. We will use the `ggplot2` package to plot our data.
     
     # set working directory to ensure R can find the file we wish to import
     # provide the location for where you've unzipped the lesson data
-    wd <- "~/Documents/"
+    wd <- "~/Git/data/"
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** Good coding practice -- install and 
@@ -133,12 +133,6 @@ Once our working directory is set, we can import the file using `read.csv()`.
           file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv"),
           stringsAsFactors = FALSE
           )
-
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
-    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv': No
-    ## such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
 
 ### stringsAsFactors=FALSE
 When reading in files we most often use `stringsAsFactors = FALSE`. This
@@ -176,7 +170,7 @@ are ideal for working with tabular data - they are similar to a spreadsheet.
     # what type of R object is our imported data?
     class(harMet.daily)
 
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
+    ## [1] "data.frame"
 
 ## Data Structure
 Once the data are imported, we can explore their structure. There are several
@@ -192,12 +186,92 @@ Let's use both to explore our data.
     # view first 6 rows of the dataframe 
     head(harMet.daily)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harMet.daily' not found
+    ##         date jd  airt f.airt airtmax f.airtmax airtmin f.airtmin rh
+    ## 1 2001-02-11 42 -10.7           -6.9             -15.1           40
+    ## 2 2001-02-12 43  -9.8           -2.4             -17.4           45
+    ## 3 2001-02-13 44  -2.0            5.7              -7.3           70
+    ## 4 2001-02-14 45  -0.5            1.9              -5.7           78
+    ## 5 2001-02-15 46  -0.4            2.4              -5.7           69
+    ## 6 2001-02-16 47  -3.0            1.3              -9.0           82
+    ##   f.rh rhmax f.rhmax rhmin f.rhmin  dewp f.dewp dewpmax f.dewpmax
+    ## 1         58            22         -22.2          -16.8          
+    ## 2         85            14         -20.7           -9.2          
+    ## 3        100            34          -7.6           -4.6          
+    ## 4        100            59          -4.1            1.9          
+    ## 5        100            37          -6.0            2.0          
+    ## 6        100            46          -5.9           -0.4          
+    ##   dewpmin f.dewpmin prec f.prec slrt f.slrt part f.part netr f.netr
+    ## 1   -25.7            0.0        14.9          NA      M   NA      M
+    ## 2   -27.9            0.0        14.8          NA      M   NA      M
+    ## 3   -10.2            0.0        14.8          NA      M   NA      M
+    ## 4   -10.2            6.9         2.6          NA      M   NA      M
+    ## 5   -12.1            0.0        10.5          NA      M   NA      M
+    ## 6   -10.6            2.3         6.4          NA      M   NA      M
+    ##    bar f.bar wspd f.wspd wres f.wres wdir f.wdir wdev f.wdev gspd
+    ## 1 1025        3.3         2.9         287          27        15.4
+    ## 2 1033        1.7         0.9         245          55         7.2
+    ## 3 1024        1.7         0.9         278          53         9.6
+    ## 4 1016        2.5         1.9         197          38        11.2
+    ## 5 1010        1.6         1.2         300          40        12.7
+    ## 6 1016        1.1         0.5         182          56         5.8
+    ##   f.gspd s10t f.s10t s10tmax f.s10tmax s10tmin f.s10tmin
+    ## 1          NA      M      NA         M      NA         M
+    ## 2          NA      M      NA         M      NA         M
+    ## 3          NA      M      NA         M      NA         M
+    ## 4          NA      M      NA         M      NA         M
+    ## 5          NA      M      NA         M      NA         M
+    ## 6          NA      M      NA         M      NA         M
 
     # View the structure (str) of the data 
     str(harMet.daily)
 
-    ## Error in str(harMet.daily): object 'harMet.daily' not found
+    ## 'data.frame':	5345 obs. of  46 variables:
+    ##  $ date     : chr  "2001-02-11" "2001-02-12" "2001-02-13" "2001-02-14" ...
+    ##  $ jd       : int  42 43 44 45 46 47 48 49 50 51 ...
+    ##  $ airt     : num  -10.7 -9.8 -2 -0.5 -0.4 -3 -4.5 -9.9 -4.5 3.2 ...
+    ##  $ f.airt   : chr  "" "" "" "" ...
+    ##  $ airtmax  : num  -6.9 -2.4 5.7 1.9 2.4 1.3 -0.7 -3.3 0.7 8.9 ...
+    ##  $ f.airtmax: chr  "" "" "" "" ...
+    ##  $ airtmin  : num  -15.1 -17.4 -7.3 -5.7 -5.7 -9 -12.7 -17.1 -11.7 -1.3 ...
+    ##  $ f.airtmin: chr  "" "" "" "" ...
+    ##  $ rh       : int  40 45 70 78 69 82 66 51 57 62 ...
+    ##  $ f.rh     : chr  "" "" "" "" ...
+    ##  $ rhmax    : int  58 85 100 100 100 100 100 71 81 78 ...
+    ##  $ f.rhmax  : chr  "" "" "" "" ...
+    ##  $ rhmin    : int  22 14 34 59 37 46 30 34 37 42 ...
+    ##  $ f.rhmin  : chr  "" "" "" "" ...
+    ##  $ dewp     : num  -22.2 -20.7 -7.6 -4.1 -6 -5.9 -10.8 -18.5 -12 -3.5 ...
+    ##  $ f.dewp   : chr  "" "" "" "" ...
+    ##  $ dewpmax  : num  -16.8 -9.2 -4.6 1.9 2 -0.4 -0.7 -14.4 -4 0.6 ...
+    ##  $ f.dewpmax: chr  "" "" "" "" ...
+    ##  $ dewpmin  : num  -25.7 -27.9 -10.2 -10.2 -12.1 -10.6 -25.4 -25 -16.5 -5.7 ...
+    ##  $ f.dewpmin: chr  "" "" "" "" ...
+    ##  $ prec     : num  0 0 0 6.9 0 2.3 0 0 0 0 ...
+    ##  $ f.prec   : chr  "" "" "" "" ...
+    ##  $ slrt     : num  14.9 14.8 14.8 2.6 10.5 6.4 10.3 15.5 15 7.7 ...
+    ##  $ f.slrt   : chr  "" "" "" "" ...
+    ##  $ part     : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ f.part   : chr  "M" "M" "M" "M" ...
+    ##  $ netr     : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ f.netr   : chr  "M" "M" "M" "M" ...
+    ##  $ bar      : int  1025 1033 1024 1016 1010 1016 1008 1022 1022 1017 ...
+    ##  $ f.bar    : chr  "" "" "" "" ...
+    ##  $ wspd     : num  3.3 1.7 1.7 2.5 1.6 1.1 3.3 2 2.5 2 ...
+    ##  $ f.wspd   : chr  "" "" "" "" ...
+    ##  $ wres     : num  2.9 0.9 0.9 1.9 1.2 0.5 3 1.9 2.1 1.8 ...
+    ##  $ f.wres   : chr  "" "" "" "" ...
+    ##  $ wdir     : int  287 245 278 197 300 182 281 272 217 218 ...
+    ##  $ f.wdir   : chr  "" "" "" "" ...
+    ##  $ wdev     : int  27 55 53 38 40 56 24 24 31 27 ...
+    ##  $ f.wdev   : chr  "" "" "" "" ...
+    ##  $ gspd     : num  15.4 7.2 9.6 11.2 12.7 5.8 16.9 10.3 11.1 10.9 ...
+    ##  $ f.gspd   : chr  "" "" "" "" ...
+    ##  $ s10t     : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ f.s10t   : chr  "M" "M" "M" "M" ...
+    ##  $ s10tmax  : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ f.s10tmax: chr  "M" "M" "M" "M" ...
+    ##  $ s10tmin  : num  NA NA NA NA NA NA NA NA NA NA ...
+    ##  $ f.s10tmin: chr  "M" "M" "M" "M" ...
 
 
 <div id="ds-dataTip" markdown="1">
@@ -326,7 +400,7 @@ object that the variables are stored in.
           data=harMet.daily,
           main="Daily Air Temperature\nNEON Harvard Forest Field Site")
 
-    ## Error in ggplot(data, mapping, environment = caller_env): object 'harMet.daily' not found
+![Relationship Between Daily Air Temperature and Time at Harvard Forest Research Site](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/plot-data-1.png)
 
 We have successfully plotted some data. However, what is happening on the 
 x-axis?
@@ -338,11 +412,11 @@ hard to read. Why? Let's have a look at the class of the x-axis variable - date.
     # View data class for each column that we wish to plot
     class(harMet.daily$date)
 
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
+    ## [1] "character"
 
     class(harMet.daily$airt)
 
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
+    ## [1] "numeric"
 
 In this case, the `date` column is stored in our `data.frame` as a character
 class. Because it is a character, R does not know how to plot the dates as a
@@ -359,18 +433,17 @@ using `as.Date()`.
 
     # convert column to date class
     harMet.daily$date <- as.Date(harMet.daily$date)
-
-    ## Error in as.Date(harMet.daily$date): object 'harMet.daily' not found
-
+    
     # view R class of data
     class(harMet.daily$date)
 
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
+    ## [1] "Date"
 
     # view results
     head(harMet.daily$date)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harMet.daily' not found
+    ## [1] "2001-02-11" "2001-02-12" "2001-02-13" "2001-02-14" "2001-02-15"
+    ## [6] "2001-02-16"
 
 Now that we have adjusted the date, let's plot again. Notice that it plots
 much more quickly now that R recognizes `date` as a date class. R can 
@@ -383,7 +456,7 @@ aggregate ticks on the x-axis by year instead of trying to plot every day!
           data=harMet.daily,
           main="Daily Air Temperature w/ Date Assigned\nNEON Harvard Forest Field Site")  
 
-    ## Error in ggplot(data, mapping, environment = caller_env): object 'harMet.daily' not found
+![Relationship Between Daily Air Temperature and Time at Harvard Forest Research Site](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/qplot-data-1.png)
 
 
 <div id="ds-challenge" markdown="1">
@@ -399,8 +472,5 @@ Hint: you can modify the X and Y axis labels using `xlab="label text"` and
 
 </div>
 
-
-    ## Error in ggplot(data, mapping, environment = caller_env): object 'harMet.daily' not found
-
-    ## Error in ggplot(data, mapping, environment = caller_env): object 'harMet.daily' not found
+![Relationship Between Daily Precipitation and Time at Harvard Forest Research Site](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/challenge-code-plotting-1.png)![Relationship Between Daily Precipitation and Daily Air Temperature at Harvard Forest Research Site](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/00-Brief-Tabular-Time-Series-In-R/rfigs/challenge-code-plotting-2.png)
 

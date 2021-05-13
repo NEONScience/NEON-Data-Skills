@@ -104,20 +104,14 @@ load them and convert date-time columns to a `date-time class` now.
     library(dplyr)  # for subsetting by season
     
     # set working directory to ensure R can find the file we wish to import
-    wd <- "~/Documents/"
+    wd <- "~/Git/data/"
     
     # daily HARV met data, 2009-2011
     harMetDaily.09.11 <- read.csv(
       file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv"),
       stringsAsFactors = FALSE
       )
-
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/
-    ## Documents/NEON-DS-Met-Time-Series/HARV/FisherTower-Met/
-    ## Met_HARV_Daily_2009_2011.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
+    
     # covert date to Date  class
     harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
 
@@ -181,6 +175,10 @@ labelled panel.
 
     # run this code to plot the same plot as before but with one plot per season
     AirTempDaily + facet_grid(. ~ year)
+
+    ## Error: At least one layer must contain all faceting variables: `year`.
+    ## * Plot is missing `year`
+    ## * Layer 1 is missing `year`
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/plot-facet-year-1.png)
 
@@ -524,13 +522,7 @@ Some data will have month formatted in `Year-Month`
 
 (Note: You will load this file in the Challenge below)
 
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
-    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv': No
-    ## such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
+    ## [1] "2001-03" "2001-04" "2001-05" "2001-06" "2001-07" "2001-08"
 
 For many analyses, we might want to summarize this data into a yearly total. 
 Base R does NOT have a distinct year-month date class. Instead to work with a 
@@ -570,29 +562,6 @@ HINT: be sure to load the `zoo` package, if you have not already.
 </div>
 
 
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
-    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv': No
-    ## such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
-    ## Error in paste(met_monthly_HARV$date, "-01", sep = ""): object 'met_monthly_HARV' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
-
-    ## Error in eval(expr, envir, enclos): object 'met_monthly_HARV' not found
-
-    ## Error in as.yearmon(met_monthly_HARV$date): object 'met_monthly_HARV' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
-
-    ## Error in eval(expr, envir, enclos): object 'met_monthly_HARV' not found
-
-    ## Error in as.Date(met_monthly_HARV$ymon_zoo): object 'met_monthly_HARV' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'met_monthly_HARV' not found
-
-    ## Error in eval(expr, envir, enclos): object 'met_monthly_HARV' not found
 
 Do you prefer to use base R or `zoo` to convert these data to a date/time
 class?
@@ -614,11 +583,4 @@ site.
 
 </div>
 
-
-    ## Error in year(met_monthly_HARV$date_base): object 'met_monthly_HARV' not found
-
-    ## Error in month(met_monthly_HARV$date_base): object 'met_monthly_HARV' not found
-
-    ## Error in ggplot(met_monthly_HARV, aes(month, airt)): object 'met_monthly_HARV' not found
-
-    ## Error in eval(expr, envir, enclos): object 'long_term_temp' not found
+![A multi-panel scatterplot showing the relationship between time and monthly average air temperature according to year at Harvard Forest between 2001 and 2015. Top-left: winter.  Panels run left-to-right, top-to-bottom, starting with 2001 in the top-left corner. Plot titles, fonts, axis scales and axes labels have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/06-Plotting-Facets-And-Group-By-Time-In-R/rfigs/challenge-code-plot-yearmonth-data-1.png)

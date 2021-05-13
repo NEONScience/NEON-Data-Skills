@@ -95,7 +95,7 @@ with date-time data classes.
 library(lubridate)  #work with dates
 
 #Set the working directory and place your downloaded data there
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 ```
 
 ## Import CSV File
@@ -109,10 +109,12 @@ aggregated at 15-minute intervals. Download the dataset for these exercises <a h
 
 ```{r read-data-csv }
 # Load csv file of 15 min meteorological data from Harvard Forest
+# contained within the downloaded directory, or available for download
+# directly from:
 # https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
 # Factors=FALSE so strings, series of letters/words/numerals, remain characters
 harMet_15Min <- read.csv(
-  file=paste0(wd,"hf001-10-15min-m.csv"),
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv"),
   stringsAsFactors = FALSE)
 ```
 

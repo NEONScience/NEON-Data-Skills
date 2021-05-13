@@ -1,15 +1,15 @@
-## ----load-packages-----------------------------------------------------
+## ----load-packages---------------------------------------------------
 # Load packages required for entire script. 
 # library(PackageName)  # purpose of package
 library(ggplot2)   # efficient, pretty plotting - required for qplot function
 
 # set working directory to ensure R can find the file we wish to import
 # provide the location for where you've unzipped the lesson data
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 
 
-## ----import-csv--------------------------------------------------------
+## ----import-csv------------------------------------------------------
 
 # Load csv file of daily meteorological data from Harvard Forest
 harMet.daily <- read.csv(
@@ -18,13 +18,13 @@ harMet.daily <- read.csv(
       )
 
 
-## ----dataframe---------------------------------------------------------
+## ----dataframe-------------------------------------------------------
 # what type of R object is our imported data?
 class(harMet.daily)
 
 
 
-## ----view-data-structure-----------------------------------------------
+## ----view-data-structure---------------------------------------------
 
 # view first 6 rows of the dataframe 
 head(harMet.daily)
@@ -33,7 +33,7 @@ head(harMet.daily)
 str(harMet.daily)
 
 
-## ----data-class-examples, message=TRUE, warning=FALSE------------------
+## ----data-class-examples, message=TRUE, warning=FALSE----------------
 
 a <- "mouse"
 b <- "sparrow"
@@ -45,7 +45,7 @@ a-b
 
 
 
-## ----data-class-num----------------------------------------------------
+## ----data-class-num--------------------------------------------------
 
 c <- 2
 d <- 1
@@ -56,7 +56,7 @@ c-d
 
 
 
-## ----data-class-example-2----------------------------------------------
+## ----data-class-example-2--------------------------------------------
 
 # create a new object
 speciesObserved <- c("speciesb","speciesc","speciesa")
@@ -84,7 +84,7 @@ qplot(x=date, y=airt,
       main="Daily Air Temperature\nNEON Harvard Forest Field Site")
 
 
-## ----view-class--------------------------------------------------------
+## ----view-class------------------------------------------------------
 # View data class for each column that we wish to plot
 class(harMet.daily$date)
 
@@ -92,7 +92,7 @@ class(harMet.daily$airt)
 
 
 
-## ----convert-date-time-------------------------------------------------
+## ----convert-date-time-----------------------------------------------
 
 # convert column to date class
 harMet.daily$date <- as.Date(harMet.daily$date)

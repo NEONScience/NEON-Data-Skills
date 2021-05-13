@@ -1,4 +1,4 @@
-## ----load-data---------------------------------------------------------
+## ----load-data-------------------------------------------------------
 # Remember it is good coding technique to add additional packages to the top of
 # your script 
 library(lubridate) # for working with dates
@@ -7,7 +7,7 @@ library(scales)   # to access breaks/formatting functions
 library(gridExtra) # for arranging plots
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # daily HARV met data, 2009-2011
 harMetDaily.09.11 <- read.csv(

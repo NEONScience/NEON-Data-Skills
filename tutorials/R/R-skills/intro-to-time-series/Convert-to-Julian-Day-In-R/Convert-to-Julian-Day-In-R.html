@@ -246,7 +246,7 @@ class.</p>
 library(lubridate)  #work with dates
 
 # set working directory to ensure R can find the file we wish to import
-wd &lt;- &quot;~/Documents/&quot;
+wd &lt;- &quot;~/Git/data/&quot;
 
 # Load csv file of daily meteorological data from Harvard Forest
 # Factors=FALSE so strings, series of letters/ words/ numerals, remain characters
@@ -255,21 +255,13 @@ harMet_DailyNoJD &lt;- read.csv(
   stringsAsFactors = FALSE
   )
 
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;/Users/olearyd/Documents/
-## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m-NoJD.csv&#39;:
-## No such file or directory
-
-## Error in file(file, &quot;rt&quot;): cannot open the connection
-
 # what data class is the date column? 
 str(harMet_DailyNoJD$date)
 
-## Error in str(harMet_DailyNoJD$date): object &#39;harMet_DailyNoJD&#39; not found
+##  chr [1:5345] &quot;2/11/01&quot; &quot;2/12/01&quot; &quot;2/13/01&quot; &quot;2/14/01&quot; &quot;2/15/01&quot; ...
 
 # convert &quot;date&quot; from chr to a Date class and specify current date format
 harMet_DailyNoJD$date&lt;- as.Date(harMet_DailyNoJD$date, &quot;%m/%d/%y&quot;)
-
-## Error in as.Date(harMet_DailyNoJD$date, &quot;%m/%d/%y&quot;): object &#39;harMet_DailyNoJD&#39; not found
 </code></pre>
 
 <h2>Convert with yday()</h2>
@@ -287,16 +279,14 @@ contains the Julian day data.  </p>
 <pre><code># convert with yday into a new column &quot;julian&quot;
 harMet_DailyNoJD$julian &lt;- yday(harMet_DailyNoJD$date)  
 
-## Error in yday(harMet_DailyNoJD$date): object &#39;harMet_DailyNoJD&#39; not found
-
 # make sure it worked all the way through. 
 head(harMet_DailyNoJD$julian) 
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;harMet_DailyNoJD&#39; not found
+## [1] 42 43 44 45 46 47
 
 tail(harMet_DailyNoJD$julian)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;tail&#39;: object &#39;harMet_DailyNoJD&#39; not found
+## [1] 268 269 270 271 272 273
 </code></pre>
 
 <div id="ds-dataTip" markdown="1">

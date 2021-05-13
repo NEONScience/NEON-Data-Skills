@@ -114,19 +114,13 @@ If this subset is not already loaded, please load it now.
     library(gridExtra) # for arranging plots
     
     # set working directory to ensure R can find the file we wish to import
-    wd <- "~/Documents/"
+    wd <- "~/Git/data/"
     
     # daily HARV met data, 2009-2011
     harMetDaily.09.11 <- read.csv(
       file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_Daily_2009_2011.csv"),
       stringsAsFactors = FALSE)
-
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/
-    ## Documents/NEON-DS-Met-Time-Series/HARV/FisherTower-Met/
-    ## Met_HARV_Daily_2009_2011.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
+    
     # covert date to Date class
     harMetDaily.09.11$date <- as.Date(harMetDaily.09.11$date)
     
@@ -135,20 +129,12 @@ If this subset is not already loaded, please load it now.
       file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Temp_HARV_Monthly_09_11.csv"),
       stringsAsFactors=FALSE
       )
-
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/
-    ## Documents/NEON-DS-Met-Time-Series/HARV/FisherTower-Met/
-    ## Temp_HARV_Monthly_09_11.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
+    
     # datetime field is actually just a date 
     #str(harTemp.monthly.09.11) 
     
     # convert datetime from chr to date class & rename date for clarification
     harTemp.monthly.09.11$date <- as.Date(harTemp.monthly.09.11$datetime)
-
-    ## Error in as.Date(harTemp.monthly.09.11$datetime): object 'harTemp.monthly.09.11' not found
 
 ## Plot with qplot
 We can use the `qplot()` function in the `ggplot2` package to quickly plot a
@@ -596,10 +582,7 @@ label axes and adjust the plot ticks as you see fit.
 
 </div>
 
-
-    ## Error in ggplot(harTemp.monthly.09.11, aes(date, mean_airt)): object 'harTemp.monthly.09.11' not found
-
-    ## Error in eval(expr, envir, enclos): object 'AirTempMonthly' not found
+![A neatly formatted scatterplot showing the relationship between time and monthly average air temperature at Harvard Forest Between 2009 and 2011. Plot title, axis labels, text size and axis scale have been specified by the user.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/plot-airtemp-Monthly-1.png)
 
 ## Display Multiple Figures in Same Panel
 It is often useful to arrange plots in a panel rather than displaying them 
@@ -622,7 +605,7 @@ we'll specify one column.
     # stack plots in one column 
     grid.arrange(AirTempDaily, AirTempMonthly, ncol=1)
 
-    ## Error in arrangeGrob(...): object 'AirTempMonthly' not found
+![Two scatterplots combined in a single image.  Above: the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011.  Below: the relationship between time and monthly average air temperature at Harvard Forest between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/compare-precip-1.png)
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Create Panel of Plots
@@ -632,8 +615,7 @@ on top of each other.
 
 </div>
 
-
-    ## Error in arrangeGrob(...): object 'AirTempMonthly' not found
+![Two scatterplots combined in a single image.  Left: the relationship between time and daily air temperature at Harvard Forest between 2009 and 2011.  Right: the relationship between time and monthly average air temperature at Harvard Forest between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/05-Plotting-Time-Series-ggplot-In-R/rfigs/challenge-code-grid-arrange-1.png)
 
 ## Additional ggplot2 Resources
 In this tutorial, we've covered the basics of `ggplot`. There are many great 

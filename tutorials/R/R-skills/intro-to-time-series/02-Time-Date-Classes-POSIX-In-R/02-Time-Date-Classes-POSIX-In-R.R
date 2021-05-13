@@ -1,22 +1,24 @@
-## ----load-libraries----------------------------------------------------
+## ----load-libraries--------------------------------------------------
 
 # Load packages required for entire script
 library(lubridate)  #work with dates
 
 #Set the working directory and place your downloaded data there
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 
-## ----read-data-csv-----------------------------------------------------
+## ----read-data-csv---------------------------------------------------
 # Load csv file of 15 min meteorological data from Harvard Forest
+# contained within the downloaded directory, or available for download
+# directly from:
 # https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
 # Factors=FALSE so strings, series of letters/words/numerals, remain characters
 harMet_15Min <- read.csv(
-  file=paste0(wd,"hf001-10-15min-m.csv"),
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv"),
   stringsAsFactors = FALSE)
 
 
-## ----view-date-structure-----------------------------------------------
+## ----view-date-structure---------------------------------------------
 # view column data class
 class(harMet_15Min$datetime)
 
@@ -25,7 +27,7 @@ head(harMet_15Min$datetime)
 
 
 
-## ----as-date-only------------------------------------------------------
+## ----as-date-only----------------------------------------------------
 
 # convert column to date class
 dateOnly_HARV <- as.Date(harMet_15Min$datetime)
@@ -35,7 +37,7 @@ head(dateOnly_HARV)
 
 
 
-## ----explore-as_date---------------------------------------------------
+## ----explore-as_date-------------------------------------------------
 # Convert character data to date (no time) 
 myDate <- as.Date("2015-10-19 10:15")   
 str(myDate)
@@ -46,7 +48,7 @@ str(myDate2)
 
 
 
-## ----explore-POSIXct---------------------------------------------------
+## ----explore-POSIXct-------------------------------------------------
 # Convert character data to date and time.
 timeDate <- as.POSIXct("2015-10-19 10:15")   
 str(timeDate)
@@ -54,14 +56,14 @@ timeDate
 
 
 
-## ----explore-POSIXct2--------------------------------------------------
+## ----explore-POSIXct2------------------------------------------------
 # to see the data in this 'raw' format, i.e., not formatted according to the 
 # class type to show us a date we recognize, use the `unclass()` function.
 unclass(timeDate)
 
 
 
-## ----explore-POSIXlt---------------------------------------------------
+## ----explore-POSIXlt-------------------------------------------------
 # Convert character data to POSIXlt date and time
 timeDatelt<- as.POSIXlt("2015-10-19 10:15")  
 str(timeDatelt)
@@ -70,12 +72,12 @@ timeDatelt
 unclass(timeDatelt)
 
 
-## ----view-date---------------------------------------------------------
+## ----view-date-------------------------------------------------------
 # view one date-time field
 harMet_15Min$datetime[1]
 
 
-## ----format-date-------------------------------------------------------
+## ----format-date-----------------------------------------------------
 # convert single instance of date/time in format year-month-day hour:min:sec
 as.POSIXct(harMet_15Min$datetime[1],format="%Y-%m-%dT%H:%M")
 
@@ -87,7 +89,7 @@ as.POSIXct(harMet_15Min$datetime[1],format="%Y-%m-%d%H:%M")
 
 
 
-## ----convert-column----------------------------------------------------
+## ----convert-column--------------------------------------------------
 new.date.time <- as.POSIXct(harMet_15Min$datetime,
                             format="%Y-%m-%dT%H:%M" #format time
                             )
@@ -100,14 +102,14 @@ class(new.date.time)
 
 
 
-## ----assign-time-zone--------------------------------------------------
+## ----assign-time-zone------------------------------------------------
 # assign time zone to just the first entry
 as.POSIXct(harMet_15Min$datetime[1],
             format = "%Y-%m-%dT%H:%M",
             tz = "America/New_York")
 
 
-## ----POSIX-convert-best-practice-code----------------------------------
+## ----POSIX-convert-best-practice-code--------------------------------
 # convert to POSIXct date-time class
 harMet_15Min$datetime <- as.POSIXct(harMet_15Min$datetime,
                                 format = "%Y-%m-%dT%H:%M",

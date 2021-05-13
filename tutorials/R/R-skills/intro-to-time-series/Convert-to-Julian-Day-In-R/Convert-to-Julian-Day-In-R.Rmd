@@ -98,7 +98,7 @@ class.
 library(lubridate)  #work with dates
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # Load csv file of daily meteorological data from Harvard Forest
 # Factors=FALSE so strings, series of letters/ words/ numerals, remain characters

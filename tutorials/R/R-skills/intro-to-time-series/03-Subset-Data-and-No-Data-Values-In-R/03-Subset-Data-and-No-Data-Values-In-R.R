@@ -1,10 +1,10 @@
-## ----load-libraries----------------------------------------------------
+## ----load-libraries--------------------------------------------------
 # Load packages required for entire script
 library(lubridate)  # work with dates
 library(ggplot2)  # plotting
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # Load csv file containing 15 minute averaged atmospheric data 
 # for the NEON Harvard Forest Field Site
@@ -21,7 +21,7 @@ harMet_15Min$datetime <- as.POSIXct(harMet_15Min$datetime,
 
 
 
-## ----subset-by-time----------------------------------------------------
+## ----subset-by-time--------------------------------------------------
 # subset data - 2009-2011
 harMet15.09.11 <- subset(harMet_15Min,
                          datetime >= as.POSIXct('2009-01-01 00:00',
@@ -35,7 +35,7 @@ tail(harMet15.09.11[1])
 
 
 
-## ----write-csv---------------------------------------------------------
+## ----write-csv-------------------------------------------------------
 # write harMet15 subset data to .csv
 write.csv(harMet15.09.11, 
           file=paste0(wd,"Met_HARV_15min_2009_2011.csv"))
@@ -91,7 +91,7 @@ qplot (datetime, dewp,
 
 
 
-## ----missing values----------------------------------------------------
+## ----missing values--------------------------------------------------
 
 # Check for NA values
 sum(is.na(harMet15.09.11$datetime))
@@ -101,14 +101,14 @@ sum(is.na(harMet15.09.11$airt))
 harMet15.09.11[is.na(harMet15.09.11$airt),]
 
 
-## ----no-data-value-challenge, echo=FALSE, results="hide"---------------
+## ----no-data-value-challenge, echo=FALSE, results="hide"-------------
 # check for no data values
 sum(is.na(harMet15.09.11$prec))
 sum(is.na(harMet15.09.11$parr))
 
 
 
-## ----na-in-calculations------------------------------------------------
+## ----na-in-calculations----------------------------------------------
 
 # calculate mean of air temperature
 mean(harMet15.09.11$airt)
@@ -118,7 +118,7 @@ sum(is.na(harMet15.09.11$airt))
 
 
 
-## ----na-rm-------------------------------------------------------------
+## ----na-rm-----------------------------------------------------------
 # calculate mean of air temperature, ignore NA values
 mean(harMet15.09.11$airt, 
      na.rm=TRUE)

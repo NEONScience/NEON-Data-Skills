@@ -1,4 +1,4 @@
-## ----load-data---------------------------------------------------------
+## ----load-data-------------------------------------------------------
 
 # it's good coding practice to load packages at the top of a script
 
@@ -9,11 +9,11 @@ library(gridExtra) # tile several plots next to each other
 library(scales)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # 15-min Harvard Forest met data, 2009-2011
 harMet15.09.11<- read.csv(
-  file=paste0(wd,"Met_HARV_15min_2009_2011.csv"),
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv"),
   stringsAsFactors = FALSE)
 
 # convert datetime to POSIXct
@@ -49,19 +49,19 @@ grid.arrange(a,b,c, ncol=2)
 
 
 
-## ----dplyr-lubridate-2-------------------------------------------------
+## ----dplyr-lubridate-2-----------------------------------------------
 # create a year column
 harMet15.09.11$year <- year(harMet15.09.11$datetime)
 
 
-## ----dplyr-lubridate-3-------------------------------------------------
+## ----dplyr-lubridate-3-----------------------------------------------
 
 # check to make sure it worked
 names(harMet15.09.11)
 str(harMet15.09.11$year)
 
 
-## ----group-by-dplyr----------------------------------------------------
+## ----group-by-dplyr--------------------------------------------------
 
 # Create a group_by object using the year column 
 HARV.grp.year <- group_by(harMet15.09.11, # data_frame object
@@ -71,7 +71,7 @@ HARV.grp.year <- group_by(harMet15.09.11, # data_frame object
 class(HARV.grp.year)
 
 
-## ----tally-by-year-----------------------------------------------------
+## ----tally-by-year---------------------------------------------------
 # how many measurements were made each year?
 tally(HARV.grp.year)
 
@@ -82,7 +82,7 @@ dplyr::summarize(HARV.grp.year,
 
 
 
-## ----check-data--------------------------------------------------------
+## ----check-data------------------------------------------------------
 # are there NoData values?
 sum(is.na(HARV.grp.year$airt))
 
@@ -92,7 +92,7 @@ HARV.grp.year[is.na(HARV.grp.year$airt),1:6]
 
 
 
-## ----calculate-mean-value----------------------------------------------
+## ----calculate-mean-value--------------------------------------------
 # calculate mean but remove NA values
 dplyr::summarize(HARV.grp.year, 
           mean(airt, na.rm = TRUE)
@@ -100,7 +100,7 @@ dplyr::summarize(HARV.grp.year,
 
 
 
-## ----using-pipes-------------------------------------------------------
+## ----using-pipes-----------------------------------------------------
 
 # how many measurements were made a year?
 harMet15.09.11 %>% 
@@ -109,7 +109,7 @@ harMet15.09.11 %>%
 
 
 
-## ----summ-data---------------------------------------------------------
+## ----summ-data-------------------------------------------------------
 # what was the annual air temperature average 
 year.sum <- harMet15.09.11 %>% 
   group_by(year) %>%  # group by year
@@ -136,17 +136,17 @@ qplot(jday.avg$jday, jday.avg$meanAirTemp,
 
 
 
-## ----dplyr-group-------------------------------------------------------
+## ----dplyr-group-----------------------------------------------------
 harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
   group_by(year, jd) %>%   # group data by Year & Julian day
   tally()                  # tally (count) observations per jd / year
 
 
-## ----simple-math-------------------------------------------------------
+## ----simple-math-----------------------------------------------------
 24*4  # 24 hours/day * 4 15-min data points/hour
 
 
-## ----dplyr-summarize---------------------------------------------------
+## ----dplyr-summarize-------------------------------------------------
 harMet15.09.11 %>%         # use the harMet15.09.11 data_frame
   group_by(year, jd) %>%   # group data by Year & Julian day
   dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
@@ -166,7 +166,7 @@ qplot(total.prec$jd, total.prec$sum_prec,
 
 
 
-## ----dplyr-mutate------------------------------------------------------
+## ----dplyr-mutate----------------------------------------------------
 
 harMet15.09.11 %>%
   mutate(year2 = year(datetime)) %>%
@@ -175,7 +175,7 @@ harMet15.09.11 %>%
 
 
 
-## ----dplyr-create-data-frame-------------------------------------------
+## ----dplyr-create-data-frame-----------------------------------------
 
 harTemp.daily.09.11<-harMet15.09.11 %>%
                     mutate(year2 = year(datetime)) %>%
@@ -185,7 +185,7 @@ harTemp.daily.09.11<-harMet15.09.11 %>%
 head(harTemp.daily.09.11)
 
 
-## ----dplyr-dataframe---------------------------------------------------
+## ----dplyr-dataframe-------------------------------------------------
 # add in a datatime column
 harTemp.daily.09.11 <- harMet15.09.11 %>%
   mutate(year3 = year(datetime)) %>%

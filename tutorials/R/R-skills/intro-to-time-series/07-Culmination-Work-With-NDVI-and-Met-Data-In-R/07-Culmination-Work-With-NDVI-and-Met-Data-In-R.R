@@ -1,4 +1,4 @@
-## ----read-in-files-----------------------------------------------------
+## ----read-in-files---------------------------------------------------
 # Remember it is good coding technique to add additional libraries to the top of
 # your script 
 

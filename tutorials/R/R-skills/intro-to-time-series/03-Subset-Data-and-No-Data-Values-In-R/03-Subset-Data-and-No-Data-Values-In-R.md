@@ -100,7 +100,7 @@ to a `POSIXct` class as covered in the tutorial:
     library(ggplot2)  # plotting
     
     # set working directory to ensure R can find the file we wish to import
-    wd <- "~/Documents/"
+    wd <- "~/Git/data/"
     
     # Load csv file containing 15 minute averaged atmospheric data 
     # for the NEON Harvard Forest Field Site
@@ -109,19 +109,11 @@ to a `POSIXct` class as covered in the tutorial:
     harMet_15Min <- read.csv(
       file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv"),
       stringsAsFactors = FALSE)
-
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
-    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv': No
-    ## such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
+    
     # convert to POSIX date time class - US Eastern Time Zone
     harMet_15Min$datetime <- as.POSIXct(harMet_15Min$datetime,
                                     format = "%Y-%m-%dT%H:%M",
                                     tz = "America/New_York")
-
-    ## Error in as.POSIXct(harMet_15Min$datetime, format = "%Y-%m-%dT%H:%M", : object 'harMet_15Min' not found
 
 ## Subset by Date
 Our `.csv` file contains nearly a decade's worth of data which makes for a large
@@ -150,17 +142,27 @@ leap year.
                                                     tz = "America/New_York") &
                              datetime <= as.POSIXct('2011-12-31 23:59',
                                                    tz = "America/New_York"))
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'subset': object 'harMet_15Min' not found
-
+    
     # View first and last records in the object 
     head(harMet15.09.11[1])
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harMet15.09.11' not found
+    ##                   datetime
+    ## 140255 2009-01-01 00:00:00
+    ## 140256 2009-01-01 00:15:00
+    ## 140257 2009-01-01 00:30:00
+    ## 140258 2009-01-01 00:45:00
+    ## 140259 2009-01-01 01:00:00
+    ## 140260 2009-01-01 01:15:00
 
     tail(harMet15.09.11[1])
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'tail': object 'harMet15.09.11' not found
+    ##                   datetime
+    ## 245369 2011-12-31 22:30:00
+    ## 245370 2011-12-31 22:45:00
+    ## 245371 2011-12-31 23:00:00
+    ## 245372 2011-12-31 23:15:00
+    ## 245373 2011-12-31 23:30:00
+    ## 245374 2011-12-31 23:45:00
 
 It worked! The first entry is 1 January 2009 at 00:00 and the last entry is 31
 December 2011 at 23:45.
@@ -181,8 +183,6 @@ future. By default, the `.csv` file will be written to your working directory.
     write.csv(harMet15.09.11, 
               file=paste0(wd,"Met_HARV_15min_2009_2011.csv"))
 
-    ## Error in is.data.frame(x): object 'harMet15.09.11' not found
-
 <div id="ds-challenge" markdown="1">
 ### Challenge: Subset & Plot Data
 
@@ -196,22 +196,7 @@ instead of the 15-minute data. What will need to change in your subsetting code?
 
 </div>
 
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'subset': object 'harMet15.09.11' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harMet15_July2010' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'tail': object 'harMet15_July2010' not found
-
-    ## Error in ggplot(data, mapping, environment = caller_env): object 'harMet15_July2010' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'subset': object 'harMet15.09.11' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harMet15_2011' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'tail': object 'harMet15_2011' not found
-
-    ## Error in ggplot(data, mapping, environment = caller_env): object 'harMet15_2011' not found
+![Daily Rainfall at Harvard Forest for the month of July, 2010](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-1.png)![Daily Dewpoint at Harvard Forest for the month of July, 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/challenge-code-subsetting-2.png)
 
 ## Managing Missing Data: NoData values
 
@@ -264,16 +249,27 @@ values we have.
     # Check for NA values
     sum(is.na(harMet15.09.11$datetime))
 
-    ## Error in eval(expr, envir, enclos): object 'harMet15.09.11' not found
+    ## [1] 0
 
     sum(is.na(harMet15.09.11$airt))
 
-    ## Error in eval(expr, envir, enclos): object 'harMet15.09.11' not found
+    ## [1] 2
 
     # view rows where the air temperature is NA 
     harMet15.09.11[is.na(harMet15.09.11$airt),]
 
-    ## Error in eval(expr, envir, enclos): object 'harMet15.09.11' not found
+    ##                   datetime  jd airt f.airt rh f.rh dewp f.dewp prec
+    ## 158360 2009-07-08 14:15:00 189   NA      M NA    M   NA      M    0
+    ## 203173 2010-10-18 09:30:00 291   NA      M NA    M   NA      M    0
+    ##        f.prec slrr f.slrr parr f.parr netr f.netr bar f.bar wspd
+    ## 158360         290         485         139         NA     M  2.1
+    ## 203173          NA      M   NA      M   NA      M  NA     M   NA
+    ##        f.wspd wres f.wres wdir f.wdir wdev f.wdev gspd f.gspd s10t
+    ## 158360         1.8          86          29         5.2        20.7
+    ## 203173      M   NA      M   NA      M   NA      M   NA      M 10.9
+    ##        f.s10t
+    ## 158360       
+    ## 203173
 
 The results above tell us there are `NoData` values in the `airt` column.
 However, there are `NoData` values in other variables.  
@@ -287,9 +283,6 @@ columns of our data?
 </div>
 
 
-    ## Error in eval(expr, envir, enclos): object 'harMet15.09.11' not found
-
-    ## Error in eval(expr, envir, enclos): object 'harMet15.09.11' not found
 
 ### Deal with NoData Values
 When we encounter `NoData` values (blank, NaN, -9999, etc.) in our data we
@@ -343,12 +336,12 @@ are `NA` values in the data, unless we explicitly tell it to ignore them.
     # calculate mean of air temperature
     mean(harMet15.09.11$airt)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mean': object 'harMet15.09.11' not found
+    ## [1] NA
 
     # are there NA values in our data?
     sum(is.na(harMet15.09.11$airt))
 
-    ## Error in eval(expr, envir, enclos): object 'harMet15.09.11' not found
+    ## [1] 2
 
 R will not return a value for the mean as there `NA` values in the air 
 temperature column. Because there are only 2 missing values (out of 105,108) for 
@@ -361,7 +354,7 @@ R to ignore noData values in the mean calculations using `na.rm=`
     mean(harMet15.09.11$airt, 
          na.rm=TRUE)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'mean': object 'harMet15.09.11' not found
+    ## [1] 8.467904
 
 We now see that the 3-year average air temperature is 8.5°C.  
 
@@ -385,28 +378,5 @@ interest (precipitation, air temperature, PAR, day and time ).
 and y-axes. Also give the plot a title! 
 
 </div>
-
-
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
-    ## NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-06-daily-m.csv': No
-    ## such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
-    ## Error in str(harMet.daily): object 'harMet.daily' not found
-
-    ## Error in as.Date(harMet.daily$date, format = "%Y-%m-%d"): object 'harMet.daily' not found
-
-    ## Error in str(harMet.daily[1]): object 'harMet.daily' not found
-
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
-
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
-
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
-
-    ## Error in eval(expr, envir, enclos): object 'harMet.daily' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'subset': object 'harMet.daily' not found
 
 ![Relationship between Date and Daily Average Temperature at Harvard Forest between 2009 and 2012](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/03-Subset-Data-and-No-Data-Values-In-R/rfigs/Challenge-code-harMet.daily-1.png)

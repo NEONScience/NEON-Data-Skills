@@ -1,4 +1,4 @@
-## ----load-data---------------------------------------------------------
+## ----load-data-------------------------------------------------------
 
 # Remember it is good coding technique to add additional libraries to the top of
 # your script 
@@ -10,7 +10,7 @@ library(grid)   # for arranging plots
 library(dplyr)  # for subsetting by season
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # daily HARV met data, 2009-2011
 harMetDaily.09.11 <- read.csv(
@@ -37,7 +37,7 @@ AirTempDaily <- ggplot(harMetDaily.09.11, aes(date, airt)) +
 AirTempDaily
 
 
-## ----plot-by-year------------------------------------------------------
+## ----plot-by-year----------------------------------------------------
 
 # add year column to daily values
 harMetDaily.09.11$year <- year(harMetDaily.09.11$date)
@@ -48,7 +48,7 @@ tail(harMetDaily.09.11$year)
 
 
 
-## ----plot-facet-year---------------------------------------------------
+## ----plot-facet-year-------------------------------------------------
 # run this code to plot the same plot as before but with one plot per season
 AirTempDaily + facet_grid(. ~ year)
 
@@ -157,7 +157,7 @@ airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
 
 
-## ----factor------------------------------------------------------------
+## ----factor----------------------------------------------------------
 # order the factors
 harMetDaily.09.11$month_name = factor(harMetDaily.09.11$month_name, 
                                       levels=c('January','February','March',
@@ -182,7 +182,7 @@ airSoilTemp_Plot + facet_wrap(~month_name, nc=3)
 
 
 
-## ----subsetting-by-season-1--------------------------------------------
+## ----subsetting-by-season-1------------------------------------------
 
 # add month to data_frame - note we already performed this step above.
 harMetDaily.09.11$month  <- month(harMetDaily.09.11$date)
@@ -192,7 +192,7 @@ head(harMetDaily.09.11$month)
 tail(harMetDaily.09.11$month)
 
 
-## ----subsetting-by-season-2--------------------------------------------
+## ----subsetting-by-season-2------------------------------------------
 
 harMetDaily.09.11 <- harMetDaily.09.11 %>% 
   mutate(season = 
@@ -260,7 +260,7 @@ airSoilTemp_Plot_season + facet_wrap(~ season, nc=2)
 airSoilTemp_Plot_season + facet_grid(year ~ season)
 
 
-## ----view-year-month-data, echo=FALSE----------------------------------
+## ----view-year-month-data, echo=FALSE--------------------------------
 
 met_monthly_HARV <- read.csv(
   paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-04-monthly-m.csv"),

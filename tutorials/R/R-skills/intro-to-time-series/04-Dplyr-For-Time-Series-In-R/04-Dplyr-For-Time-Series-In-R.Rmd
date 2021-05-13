@@ -112,11 +112,11 @@ library(gridExtra) # tile several plots next to each other
 library(scales)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # 15-min Harvard Forest met data, 2009-2011
 harMet15.09.11<- read.csv(
-  file=paste0(wd,"Met_HARV_15min_2009_2011.csv"),
+  file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv"),
   stringsAsFactors = FALSE)
 
 # convert datetime to POSIXct

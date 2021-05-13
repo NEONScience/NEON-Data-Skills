@@ -111,24 +111,17 @@ loaded.
     library(scales)
     
     # set working directory to ensure R can find the file we wish to import
-    wd <- "~/Documents/"
+    wd <- "~/Git/data/"
     
     # 15-min Harvard Forest met data, 2009-2011
     harMet15.09.11<- read.csv(
-      file=paste0(wd,"Met_HARV_15min_2009_2011.csv"),
+      file=paste0(wd,"NEON-DS-Met-Time-Series/HARV/FisherTower-Met/Met_HARV_15min_2009_2011.csv"),
       stringsAsFactors = FALSE)
-
-    ## Warning in file(file, "rt"): cannot open file '/Users/olearyd/Documents/
-    ## Met_HARV_15min_2009_2011.csv': No such file or directory
-
-    ## Error in file(file, "rt"): cannot open the connection
-
+    
     # convert datetime to POSIXct
     harMet15.09.11$datetime<-as.POSIXct(harMet15.09.11$datetime,
                         format = "%Y-%m-%d %H:%M",
                         tz = "America/New_York")
-
-    ## Error in as.POSIXct(harMet15.09.11$datetime, format = "%Y-%m-%d %H:%M", : object 'harMet15.09.11' not found
 
 ## Explore The Data
 Remember that we are interested in the drivers of phenology including - 
@@ -136,20 +129,7 @@ air temperature, precipitation, and PAR (photosynthetic active radiation - or
 the amount of visible light). Using the 15-minute averaged data, we could easily
 plot each of these variables.  
 
-
-    ## Error in ggplot(harMet15.09.11, aes(x = datetime, y = airt)): object 'harMet15.09.11' not found
-
-    ## Error in ggplot(harMet15.09.11, aes(x = datetime, y = prec)): object 'harMet15.09.11' not found
-
-    ## Error in ggplot(harMet15.09.11, aes(x = datetime, y = parr)): object 'harMet15.09.11' not found
-
-    ## Warning in grob$wrapvp <- vp: Coercing LHS to a list
-
-    ## Warning in grob$wrapvp <- vp: Coercing LHS to a list
-
-    ## Warning in grob$wrapvp <- vp: Coercing LHS to a list
-
-    ## Error in gList(structure(list("mouse", wrapvp = structure(list(x = structure(0.5, unit = 0L, class = c("simpleUnit", : only 'grobs' allowed in "gList"
+![Daily Meteorological Conditions at Harvard Forest Between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/15-min-plots-1.png)
 
 However, summarizing the data at a coarser scale (e.g., daily, weekly, by
 season, or by year) may be easier to visually interpret during initial stages of
@@ -164,19 +144,22 @@ the year only from a `date-time` class R column.
     # create a year column
     harMet15.09.11$year <- year(harMet15.09.11$datetime)
 
-    ## Error in year(harMet15.09.11$datetime): object 'harMet15.09.11' not found
-
 Using `names()` we see that we now have a `year` column in our `data_frame`.
 
 
     # check to make sure it worked
     names(harMet15.09.11)
 
-    ## Error in eval(expr, envir, enclos): object 'harMet15.09.11' not found
+    ##  [1] "X"        "datetime" "jd"       "airt"     "f.airt"   "rh"      
+    ##  [7] "f.rh"     "dewp"     "f.dewp"   "prec"     "f.prec"   "slrr"    
+    ## [13] "f.slrr"   "parr"     "f.parr"   "netr"     "f.netr"   "bar"     
+    ## [19] "f.bar"    "wspd"     "f.wspd"   "wres"     "f.wres"   "wdir"    
+    ## [25] "f.wdir"   "wdev"     "f.wdev"   "gspd"     "f.gspd"   "s10t"    
+    ## [31] "f.s10t"   "year"
 
     str(harMet15.09.11$year)
 
-    ## Error in str(harMet15.09.11$year): object 'harMet15.09.11' not found
+    ##  num [1:105108] 2009 2009 2009 2009 2009 ...
 
 Now that we have added a year column to our `data_frame`, we can use `dplyr` to 
 summarize our data.
@@ -194,13 +177,11 @@ We will use `dplyr` functions `group_by` and `summarize` to perform these steps.
     # Create a group_by object using the year column 
     HARV.grp.year <- group_by(harMet15.09.11, # data_frame object
                               year) # column name to group by
-
-    ## Error in group_by(harMet15.09.11, year): object 'harMet15.09.11' not found
-
+    
     # view class of the grouped object
     class(HARV.grp.year)
 
-    ## Error in eval(expr, envir, enclos): object 'HARV.grp.year' not found
+    ## [1] "grouped_df" "tbl_df"     "tbl"        "data.frame"
 
 The `group_by` function creates a "grouped" object. We can then use this
 grouped object to quickly calculate summary statistics by group - in this case,
@@ -217,14 +198,24 @@ specifying which package it comes from using the double colon notation
     # how many measurements were made each year?
     tally(HARV.grp.year)
 
-    ## Error in group_vars(x): object 'HARV.grp.year' not found
+    ## # A tibble: 3 x 2
+    ##    year     n
+    ##   <dbl> <int>
+    ## 1  2009 35036
+    ## 2  2010 35036
+    ## 3  2011 35036
 
     # what is the mean airt value per year?
     dplyr::summarize(HARV.grp.year, 
               mean(airt)   # calculate the annual mean of airt
               ) 
 
-    ## Error in dplyr::summarize(HARV.grp.year, mean(airt)): object 'HARV.grp.year' not found
+    ## # A tibble: 3 x 2
+    ##    year `mean(airt)`
+    ##   <dbl>        <dbl>
+    ## 1  2009        NA   
+    ## 2  2010        NA   
+    ## 3  2011         8.75
 
 Why did this return a `NA` value for years 2009 and 2010? We know there are some
 values for both years. Let's check our data for `NoData` values.
@@ -233,13 +224,17 @@ values for both years. Let's check our data for `NoData` values.
     # are there NoData values?
     sum(is.na(HARV.grp.year$airt))
 
-    ## Error in eval(expr, envir, enclos): object 'HARV.grp.year' not found
+    ## [1] 2
 
     # where are the no data values
     # just view the first 6 columns of data
     HARV.grp.year[is.na(HARV.grp.year$airt),1:6]
 
-    ## Error in eval(expr, envir, enclos): object 'HARV.grp.year' not found
+    ## # A tibble: 2 x 6
+    ##        X datetime               jd  airt f.airt    rh
+    ##    <int> <dttm>              <int> <dbl> <chr>  <int>
+    ## 1 158360 2009-07-08 14:15:00   189    NA M         NA
+    ## 2 203173 2010-10-18 09:30:00   291    NA M         NA
 
 It appears as if there are two `NoData` values (in 2009 and 2010) that are
 causing R to return a `NA` for the mean for those years. As we learned
@@ -252,7 +247,12 @@ the final mean value.
               mean(airt, na.rm = TRUE)
               )
 
-    ## Error in dplyr::summarize(HARV.grp.year, mean(airt, na.rm = TRUE)): object 'HARV.grp.year' not found
+    ## # A tibble: 3 x 2
+    ##    year `mean(airt, na.rm = TRUE)`
+    ##   <dbl>                      <dbl>
+    ## 1  2009                       7.63
+    ## 2  2010                       9.03
+    ## 3  2011                       8.75
 
 Great! We've now used the `group_by` function to create groups for each year 
 of our data. We then calculated a summary mean value per year using `summarize`.
@@ -292,7 +292,12 @@ Let's try it!
       group_by(year) %>%  # group by year
       tally() # count measurements per year
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
+    ## # A tibble: 3 x 2
+    ##    year     n
+    ##   <dbl> <int>
+    ## 1  2009 35036
+    ## 2  2010 35036
+    ## 3  2011 35036
 
 Piping allows us to efficiently perform operations on our `data_frame` in that:
 
@@ -306,18 +311,23 @@ We can use pipes to summarize data by year too:
     year.sum <- harMet15.09.11 %>% 
       group_by(year) %>%  # group by year
       dplyr::summarize(mean(airt, na.rm=TRUE))
-
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
-
+    
     # what is the class of the output?
     year.sum
 
-    ## Error in eval(expr, envir, enclos): object 'year.sum' not found
+    ## # A tibble: 3 x 2
+    ##    year `mean(airt, na.rm = TRUE)`
+    ##   <dbl>                      <dbl>
+    ## 1  2009                       7.63
+    ## 2  2010                       9.03
+    ## 3  2011                       8.75
 
     # view structure of output
     str(year.sum)
 
-    ## Error in str(year.sum): object 'year.sum' not found
+    ## tibble [3 × 2] (S3: tbl_df/tbl/data.frame)
+    ##  $ year                    : num [1:3] 2009 2010 2011
+    ##  $ mean(airt, na.rm = TRUE): num [1:3] 7.63 9.03 8.75
 
 
 <div id="ds-challenge" markdown="1">
@@ -326,13 +336,6 @@ Use piping to create a `data_frame` called `jday.avg` that contains the average
 `airt` per Julian day (`harMet15.09.11$jd`). Plot the output using `qplot`.
 
 </div>
-
-
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
-
-    ## Error in names(jday.avg) <- c("jday", "meanAirTemp"): object 'jday.avg' not found
-
-    ## Error in FUN(X[[i]], ...): object 'jday.avg' not found
 
 ![Average Temperature by Julian Date at Harvard Forest Between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/pipe-demo-1.png)
 
@@ -381,7 +384,21 @@ year day) using the `group_by()` function and pipes.
       group_by(year, jd) %>%   # group data by Year & Julian day
       tally()                  # tally (count) observations per jd / year
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
+    ## # A tibble: 1,096 x 3
+    ## # Groups:   year [3]
+    ##     year    jd     n
+    ##    <dbl> <int> <int>
+    ##  1  2009     1    96
+    ##  2  2009     2    96
+    ##  3  2009     3    96
+    ##  4  2009     4    96
+    ##  5  2009     5    96
+    ##  6  2009     6    96
+    ##  7  2009     7    96
+    ##  8  2009     8    96
+    ##  9  2009     9    96
+    ## 10  2009    10    96
+    ## # … with 1,086 more rows
 
 The output shows we have 96 values for each day. Is that what we expect? 
 
@@ -409,7 +426,23 @@ temperature for each Julian day per year. Note that we are still using
       group_by(year, jd) %>%   # group data by Year & Julian day
       dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))  # mean airtemp per jd / year
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
+    ## `summarise()` has grouped output by 'year'. You can override using the `.groups` argument.
+
+    ## # A tibble: 1,096 x 3
+    ## # Groups:   year [3]
+    ##     year    jd mean_airt
+    ##    <dbl> <int>     <dbl>
+    ##  1  2009     1    -15.1 
+    ##  2  2009     2     -9.14
+    ##  3  2009     3     -5.54
+    ##  4  2009     4     -6.35
+    ##  5  2009     5     -2.41
+    ##  6  2009     6     -4.92
+    ##  7  2009     7     -2.59
+    ##  8  2009     8     -3.23
+    ##  9  2009     9     -9.92
+    ## 10  2009    10    -11.1 
+    ## # … with 1,086 more rows
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Summarization & Calculations with dplyr
@@ -426,9 +459,7 @@ data_frame `total.prec`.
 </div>
 
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
-
-    ## Error in FUN(X[[i]], ...): object 'total.prec' not found
+    ## `summarise()` has grouped output by 'year'. You can override using the `.groups` argument.
 
 ![Average Daily Precipitation (mm) at Harvard Forest by Julian Date for the time period 2009 - 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-answer-1.png)
 
@@ -450,7 +481,23 @@ data_frame.
       group_by(year2, jd) %>%
       dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
+    ## `summarise()` has grouped output by 'year2'. You can override using the `.groups` argument.
+
+    ## # A tibble: 1,096 x 3
+    ## # Groups:   year2 [3]
+    ##    year2    jd mean_airt
+    ##    <dbl> <int>     <dbl>
+    ##  1  2009     1    -15.1 
+    ##  2  2009     2     -9.14
+    ##  3  2009     3     -5.54
+    ##  4  2009     4     -6.35
+    ##  5  2009     5     -2.41
+    ##  6  2009     6     -4.92
+    ##  7  2009     7     -2.59
+    ##  8  2009     8     -3.23
+    ##  9  2009     9     -9.92
+    ## 10  2009    10    -11.1 
+    ## # … with 1,086 more rows
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** The `mutate` function is similar to
@@ -468,11 +515,20 @@ plotting.
                         group_by(year2, jd) %>%
                         dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE))
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
+    ## `summarise()` has grouped output by 'year2'. You can override using the `.groups` argument.
 
     head(harTemp.daily.09.11)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harTemp.daily.09.11' not found
+    ## # A tibble: 6 x 3
+    ## # Groups:   year2 [1]
+    ##   year2    jd mean_airt
+    ##   <dbl> <int>     <dbl>
+    ## 1  2009     1    -15.1 
+    ## 2  2009     2     -9.14
+    ## 3  2009     3     -5.54
+    ## 4  2009     4     -6.35
+    ## 5  2009     5     -2.41
+    ## 6  2009     6     -4.92
 
 ### Add Date-Time To dplyr Output
 In the challenge above, we created a plot of daily precipitation data using
@@ -501,16 +557,37 @@ Let's try it!
       group_by(year3, jd) %>%
       dplyr::summarize(mean_airt = mean(airt, na.rm = TRUE), datetime = first(datetime))
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
+    ## `summarise()` has grouped output by 'year3'. You can override using the `.groups` argument.
 
     # view str and head of data
     str(harTemp.daily.09.11)
 
-    ## Error in str(harTemp.daily.09.11): object 'harTemp.daily.09.11' not found
+    ## tibble [1,096 × 4] (S3: grouped_df/tbl_df/tbl/data.frame)
+    ##  $ year3    : num [1:1096] 2009 2009 2009 2009 2009 ...
+    ##  $ jd       : int [1:1096] 1 2 3 4 5 6 7 8 9 10 ...
+    ##  $ mean_airt: num [1:1096] -15.13 -9.14 -5.54 -6.35 -2.41 ...
+    ##  $ datetime : POSIXct[1:1096], format: "2009-01-01 00:15:00" ...
+    ##  - attr(*, "groups")= tibble [3 × 2] (S3: tbl_df/tbl/data.frame)
+    ##   ..$ year3: num [1:3] 2009 2010 2011
+    ##   ..$ .rows: list<int> [1:3] 
+    ##   .. ..$ : int [1:366] 1 2 3 4 5 6 7 8 9 10 ...
+    ##   .. ..$ : int [1:365] 367 368 369 370 371 372 373 374 375 376 ...
+    ##   .. ..$ : int [1:365] 732 733 734 735 736 737 738 739 740 741 ...
+    ##   .. ..@ ptype: int(0) 
+    ##   ..- attr(*, ".drop")= logi TRUE
 
     head(harTemp.daily.09.11)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'harTemp.daily.09.11' not found
+    ## # A tibble: 6 x 4
+    ## # Groups:   year3 [1]
+    ##   year3    jd mean_airt datetime           
+    ##   <dbl> <int>     <dbl> <dttm>             
+    ## 1  2009     1    -15.1  2009-01-01 00:15:00
+    ## 2  2009     2     -9.14 2009-01-02 00:15:00
+    ## 3  2009     3     -5.54 2009-01-03 00:15:00
+    ## 4  2009     4     -6.35 2009-01-04 00:15:00
+    ## 5  2009     5     -2.41 2009-01-05 00:15:00
+    ## 6  2009     6     -4.92 2009-01-06 00:15:00
 
 <div id="ds-challenge" markdown="1">
 ### Challenge: Combined dplyr Skills
@@ -524,15 +601,11 @@ Name the new data frame `harTemp.monthly.09.11`. Plot your output.
 </div>
 
 
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
-
-    ## Error in FUN(X[[i]], ...): object 'total.prec2' not found
-
-    ## Error in eval(lhs, parent, parent): object 'harMet15.09.11' not found
-
-    ## Error in FUN(X[[i]], ...): object 'harTemp.monthly.09.11' not found
+    ## `summarise()` has grouped output by 'year'. You can override using the `.groups` argument.
 
 ![Daily Precipitation at Harvard Forest Between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-1.png)
 
-    ## Error in str(harTemp.monthly.09.11): object 'harTemp.monthly.09.11' not found
+    ## `summarise()` has grouped output by 'month'. You can override using the `.groups` argument.
+
+![Monthly Mean Temperature at Harvard Forest Between 2009 and 2011](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/intro-to-time-series/04-Dplyr-For-Time-Series-In-R/rfigs/challenge-code-dplyr-2.png)
 

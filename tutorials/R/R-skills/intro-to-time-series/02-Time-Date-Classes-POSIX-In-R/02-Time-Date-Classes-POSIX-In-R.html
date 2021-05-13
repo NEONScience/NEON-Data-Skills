@@ -237,7 +237,7 @@ with date-time data classes.</p>
 library(lubridate)  #work with dates
 
 #Set the working directory and place your downloaded data there
-wd &lt;- &quot;~/Documents/&quot;
+wd &lt;- &quot;~/Git/data/&quot;
 </code></pre>
 
 <h2>Import CSV File</h2>
@@ -250,16 +250,13 @@ that contains atmospheric data for the NEON Harvard Forest field site,
 aggregated at 15-minute intervals. Download the dataset for these exercises <a href ="https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv" target="_blank">here</a>.</p>
 
 <pre><code># Load csv file of 15 min meteorological data from Harvard Forest
+# contained within the downloaded directory, or available for download
+# directly from:
 # https://harvardforest.fas.harvard.edu/data/p00/hf001/hf001-10-15min-m.csv
 # Factors=FALSE so strings, series of letters/words/numerals, remain characters
 harMet_15Min &lt;- read.csv(
-  file=paste0(wd,&quot;hf001-10-15min-m.csv&quot;),
+  file=paste0(wd,&quot;NEON-DS-Met-Time-Series/HARV/FisherTower-Met/hf001-10-15min-m.csv&quot;),
   stringsAsFactors = FALSE)
-
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;/Users/olearyd/Documents/
-## hf001-10-15min-m.csv&#39;: No such file or directory
-
-## Error in file(file, &quot;rt&quot;): cannot open the connection
 </code></pre>
 
 <h2>Date and Time Data</h2>
@@ -270,12 +267,13 @@ of the <code>date-time</code> column?</p>
 <pre><code># view column data class
 class(harMet_15Min$datetime)
 
-## Error in eval(expr, envir, enclos): object &#39;harMet_15Min&#39; not found
+## [1] &quot;character&quot;
 
 # view sample data
 head(harMet_15Min$datetime)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;harMet_15Min&#39; not found
+## [1] &quot;2005-01-01T00:15&quot; &quot;2005-01-01T00:30&quot; &quot;2005-01-01T00:45&quot;
+## [4] &quot;2005-01-01T01:00&quot; &quot;2005-01-01T01:15&quot; &quot;2005-01-01T01:30&quot;
 </code></pre>
 
 <p>Our <code>datetime</code> column is stored as a <code>character</code> class. We need to convert it to 
@@ -286,12 +284,11 @@ about in the
 <pre><code># convert column to date class
 dateOnly_HARV &lt;- as.Date(harMet_15Min$datetime)
 
-## Error in as.Date(harMet_15Min$datetime): object &#39;harMet_15Min&#39; not found
-
 # view data
 head(dateOnly_HARV)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;dateOnly_HARV&#39; not found
+## [1] &quot;2005-01-01&quot; &quot;2005-01-01&quot; &quot;2005-01-01&quot; &quot;2005-01-01&quot; &quot;2005-01-01&quot;
+## [6] &quot;2005-01-01&quot;
 </code></pre>
 
 <p>When we use <code>as.Date</code>, we lose the time stamp. </p>
@@ -470,7 +467,7 @@ format.</p>
 <pre><code># view one date-time field
 harMet_15Min$datetime[1]
 
-## Error in eval(expr, envir, enclos): object &#39;harMet_15Min&#39; not found
+## [1] &quot;2005-01-01T00:15&quot;
 </code></pre>
 
 <p>Looking at the results above, we see that our data are stored in the format:
@@ -498,18 +495,18 @@ it and interpret the correct date and time as follows:
 <pre><code># convert single instance of date/time in format year-month-day hour:min:sec
 as.POSIXct(harMet_15Min$datetime[1],format=&quot;%Y-%m-%dT%H:%M&quot;)
 
-## Error in as.POSIXct(harMet_15Min$datetime[1], format = &quot;%Y-%m-%dT%H:%M&quot;): object &#39;harMet_15Min&#39; not found
+## [1] &quot;2005-01-01 00:15:00 MST&quot;
 
 ## The format of date-time MUST match the specified format or the data will not
 # convert; see what happens when you try it a different way or without the &quot;T&quot;
 # specified
 as.POSIXct(harMet_15Min$datetime[1],format=&quot;%d-%m-%Y%H:%M&quot;)
 
-## Error in as.POSIXct(harMet_15Min$datetime[1], format = &quot;%d-%m-%Y%H:%M&quot;): object &#39;harMet_15Min&#39; not found
+## [1] NA
 
 as.POSIXct(harMet_15Min$datetime[1],format=&quot;%Y-%m-%d%H:%M&quot;)
 
-## Error in as.POSIXct(harMet_15Min$datetime[1], format = &quot;%Y-%m-%d%H:%M&quot;): object &#39;harMet_15Min&#39; not found
+## [1] NA
 </code></pre>
 
 <p>Using the syntax we&#39;ve learned, we can convert the entire <code>datetime</code> column into 
@@ -519,17 +516,17 @@ as.POSIXct(harMet_15Min$datetime[1],format=&quot;%Y-%m-%d%H:%M&quot;)
                             format=&quot;%Y-%m-%dT%H:%M&quot; #format time
                             )
 
-## Error in as.POSIXct(harMet_15Min$datetime, format = &quot;%Y-%m-%dT%H:%M&quot;): object &#39;harMet_15Min&#39; not found
-
 # view output
 head(new.date.time)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;new.date.time&#39; not found
+## [1] &quot;2005-01-01 00:15:00 MST&quot; &quot;2005-01-01 00:30:00 MST&quot;
+## [3] &quot;2005-01-01 00:45:00 MST&quot; &quot;2005-01-01 01:00:00 MST&quot;
+## [5] &quot;2005-01-01 01:15:00 MST&quot; &quot;2005-01-01 01:30:00 MST&quot;
 
 # what class is the output
 class(new.date.time)
 
-## Error in eval(expr, envir, enclos): object &#39;new.date.time&#39; not found
+## [1] &quot;POSIXct&quot; &quot;POSIXt&quot;
 </code></pre>
 
 <h3>About Time Zones</h3>
@@ -567,7 +564,7 @@ as.POSIXct(harMet_15Min$datetime[1],
             format = &quot;%Y-%m-%dT%H:%M&quot;,
             tz = &quot;America/New_York&quot;)
 
-## Error in as.POSIXct(harMet_15Min$datetime[1], format = &quot;%Y-%m-%dT%H:%M&quot;, : object &#39;harMet_15Min&#39; not found
+## [1] &quot;2005-01-01 00:15:00 EST&quot;
 </code></pre>
 
 <p>The output above, shows us that the time zone is now correctly set as EST.  </p>
@@ -582,16 +579,14 @@ harMet_15Min$datetime &lt;- as.POSIXct(harMet_15Min$datetime,
                                 format = &quot;%Y-%m-%dT%H:%M&quot;,
                                 tz = &quot;America/New_York&quot;)
 
-## Error in as.POSIXct(harMet_15Min$datetime, format = &quot;%Y-%m-%dT%H:%M&quot;, : object &#39;harMet_15Min&#39; not found
-
 # view structure and time zone of the newly defined datetime column
 str(harMet_15Min$datetime)
 
-## Error in str(harMet_15Min$datetime): object &#39;harMet_15Min&#39; not found
+##  POSIXct[1:376800], format: &quot;2005-01-01 00:15:00&quot; &quot;2005-01-01 00:30:00&quot; ...
 
 tz(harMet_15Min$datetime)
 
-## Error in tz(harMet_15Min$datetime): object &#39;harMet_15Min&#39; not found
+## [1] &quot;America/New_York&quot;
 </code></pre>
 
 <p>Now that our <code>datetime</code> data are properly identified as a <code>POSIXct</code> date-time

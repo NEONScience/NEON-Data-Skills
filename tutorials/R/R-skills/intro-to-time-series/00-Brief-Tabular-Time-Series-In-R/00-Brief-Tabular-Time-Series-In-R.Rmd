@@ -115,7 +115,7 @@ library(ggplot2)   # efficient, pretty plotting - required for qplot function
 
 # set working directory to ensure R can find the file we wish to import
 # provide the location for where you've unzipped the lesson data
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 ```
 

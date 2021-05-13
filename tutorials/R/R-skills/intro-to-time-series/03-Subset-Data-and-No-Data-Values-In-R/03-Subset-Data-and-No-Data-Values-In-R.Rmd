@@ -100,7 +100,7 @@ library(lubridate)  # work with dates
 library(ggplot2)  # plotting
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Documents/"
+wd <- "~/Git/data/"
 
 # Load csv file containing 15 minute averaged atmospheric data 
 # for the NEON Harvard Forest Field Site
