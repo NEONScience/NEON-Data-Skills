@@ -279,7 +279,7 @@ in addition to working with the raster package.</p>
 
 ## 
 ## The downloaded binary packages are in
-##  /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmplXtXZh/downloaded_packages
+##  /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//Rtmp6ITj5Y/downloaded_packages
 
 # Load needed packages
 library(raster)
@@ -293,10 +293,8 @@ library(maptools)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
-wd &lt;- &quot;C:/Users/mccahill/Documents/GitHub/&quot; #This will depend on your local environment
+wd &lt;- &quot;~/Git/data/&quot; #This will depend on your local environment
 setwd(wd)
-
-## Error in setwd(wd): cannot change working directory
 </code></pre>
 
 <p>Let&#39;s get started with the <em>insitu</em> vegetation data!</p>
@@ -307,38 +305,46 @@ options(stringsAsFactors=FALSE)
 
 # read in plot centroids
 centroids &lt;- read.csv(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv&quot;))
-
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;C:/Users/mccahill/
-## Documents/GitHub/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/
-## SJERPlotCentroids.csv&#39;: No such file or directory
-
-## Error in file(file, &quot;rt&quot;): cannot open the connection
-
 str(centroids)
 
-## Formal class &#39;standardGeneric&#39; [package &quot;methods&quot;] with 8 slots
-##   ..@ .Data     :function (x, ...)  
-##   ..@ generic   : chr &quot;centroids&quot;
-##   .. ..- attr(*, &quot;package&quot;)= chr &quot;terra&quot;
-##   ..@ package   : chr &quot;terra&quot;
-##   ..@ group     : list()
-##   ..@ valueClass: chr(0) 
-##   ..@ signature : chr &quot;x&quot;
-##   ..@ default   : NULL
-##   ..@ skeleton  : language (function (x, ...)  stop(&quot;invalid call in method dispatch to &#39;centroids&#39; (no default method)&quot;,  ...
+## &#39;data.frame&#39;:    18 obs. of  5 variables:
+##  $ Plot_ID : chr  &quot;SJER1068&quot; &quot;SJER112&quot; &quot;SJER116&quot; &quot;SJER117&quot; ...
+##  $ Point   : chr  &quot;center&quot; &quot;center&quot; &quot;center&quot; &quot;center&quot; ...
+##  $ northing: num  4111568 4111299 4110820 4108752 4110476 ...
+##  $ easting : num  255852 257407 256839 256177 255968 ...
+##  $ Remarks : logi  NA NA NA NA NA NA ...
 
 # read in vegetation heights
 vegStr &lt;- read.csv(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/D17_2013_vegStr.csv&quot;))
-
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;C:/Users/mccahill/
-## Documents/GitHub/NEON-DS-Field-Site-Spatial-Data/SJER/VegetationData/
-## D17_2013_vegStr.csv&#39;: No such file or directory
-
-## Error in file(file, &quot;rt&quot;): cannot open the connection
-
 str(vegStr)
 
-## Error in str(vegStr): object &#39;vegStr&#39; not found
+## &#39;data.frame&#39;:    362 obs. of  26 variables:
+##  $ siteid               : chr  &quot;SJER&quot; &quot;SJER&quot; &quot;SJER&quot; &quot;SJER&quot; ...
+##  $ sitename             : chr  &quot;San Joaquin&quot; &quot;San Joaquin&quot; &quot;San Joaquin&quot; &quot;San Joaquin&quot; ...
+##  $ plotid               : chr  &quot;SJER128&quot; &quot;SJER2796&quot; &quot;SJER272&quot; &quot;SJER112&quot; ...
+##  $ easting              : num  257086 256048 256723 257421 256720 ...
+##  $ northing             : num  4111382 4111548 4112170 4111308 4112177 ...
+##  $ taxonid              : chr  &quot;PISA2&quot; &quot;ARVI4&quot; &quot;ARVI4&quot; &quot;ARVI4&quot; ...
+##  $ scientificname       : chr  &quot;Pinus sabiniana&quot; &quot;Arctostaphylos viscida&quot; &quot;Arctostaphylos viscida&quot; &quot;Arctostaphylos viscida&quot; ...
+##  $ indvidualid          : int  1485 1622 1427 1511 1431 1507 1433 1620 1425 1506 ...
+##  $ pointid              : chr  &quot;center&quot; &quot;NE&quot; &quot;center&quot; &quot;center&quot; ...
+##  $ individualdistance   : num  9.7 5.8 6 17.2 9.9 15.1 6.8 10.5 2.6 15.9 ...
+##  $ individualazimuth    : num  135.6 31.4 65.9 57.1 17.7 ...
+##  $ dbh                  : num  67.4 NA NA NA 17.1 NA NA 18.6 NA NA ...
+##  $ dbhheight            : num  130 130 130 130 10 130 130 1 130 130 ...
+##  $ basalcanopydiam      : int  0 43 23 22 0 105 107 0 73 495 ...
+##  $ basalcanopydiam_90deg: num  0 31 14 12 0 43 66 0 66 126 ...
+##  $ maxcanopydiam        : num  15.1 5.7 5.9 2.5 5.2 8.5 3.3 6.5 3.3 7.5 ...
+##  $ canopydiam_90deg     : num  12.4 4.8 4.3 2.1 4.6 6.1 2.5 5.2 2.1 6.9 ...
+##  $ stemheight           : num  18.2 3.3 1.7 2.1 3 3.1 1.7 3.8 1.4 3.1 ...
+##  $ stemremarks          : chr  &quot;&quot; &quot;3 stems&quot; &quot;2 stems&quot; &quot;6 stems&quot; ...
+##  $ stemstatus           : chr  &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...
+##  $ canopyform           : chr  &quot;&quot; &quot;Hemisphere&quot; &quot;Hemisphere&quot; &quot;Sphere&quot; ...
+##  $ livingcanopy         : int  100 70 35 70 80 85 0 85 85 55 ...
+##  $ inplotcanopy         : int  100 100 100 100 100 100 100 100 100 100 ...
+##  $ materialsampleid     : chr  &quot;&quot; &quot;f095&quot; &quot;&quot; &quot;f035&quot; ...
+##  $ dbhqf                : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ stemmapqf            : int  0 0 0 0 0 0 0 0 0 0 ...
 </code></pre>
 
 <p>Now let&#39;s load the Canopy Height Model raster. Note, if you completed the
@@ -349,15 +355,11 @@ the data. </p>
 <pre><code># import the digital terrain model
 chm &lt;- raster(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/CHM_SJER.tif&quot;))
 
-## Error in .local(.Object, ...) :
-
-## Error in .rasterObjectFromFile(x, band = band, objecttype = &quot;RasterLayer&quot;, : Cannot create a RasterLayer object from this file. (file does not exist)
-
 # plot raster
 plot(chm, main=&quot;Lidar Canopy Height Model \n SJER, California&quot;)
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;chm&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-CHM-1.png" alt=" "/></p>
 
 <p>Since both files have eastings and northings we can use this data to plot onto 
 our existing raster. </p>
@@ -367,19 +369,14 @@ our existing raster. </p>
 myCol &lt;- terrain.colors(6)
 plot(chm,col=myCol, main=&quot;Plot &amp; Tree Locations&quot;, breaks=c(-2,0,2,10,40))
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;chm&#39; not found
-
 ## plotting details: cex = point size, pch 0 = square
 # plot square around the centroid
 points(centroids$easting,centroids$northing, pch=0, cex = 2 )
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;points&#39;: object of type &#39;closure&#39; is not subsettable
-
 # plot location of each tree measured
 points(vegStr$easting,vegStr$northing, pch=19, cex=.5, col = 2)
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;points&#39;: object &#39;vegStr&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-veg-1.png" alt=" "/></p>
 
 <p>Now we have a plot of our CHM showing trees of different (categorical) heights. 
 Why might we have chosen these breaks? </p>
@@ -410,7 +407,8 @@ quickly figure out what projection an object is in, using <code>object@crs</code
 <pre><code># check CHM CRS
 chm@crs
 
-## Error in eval(expr, envir, enclos): object &#39;chm&#39; not found
+## CRS arguments:
+##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs
 </code></pre>
 
 <p>So our data are in UTM Zone 11 which is correct for California. We can use this 
@@ -424,13 +422,18 @@ the points to be treated as spatial objects. </p>
 centroid_spdf &lt;- SpatialPointsDataFrame(
   centroids[,4:3], proj4string=chm@crs, centroids)
 
-## Error in centroids[, 4:3]: object of type &#39;closure&#39; is not subsettable
-
 # check centroid CRS
 # note SPDFs don&#39;t have a crs slot so `object@crs` won&#39;t work
 centroid_spdf
 
-## Error in eval(expr, envir, enclos): object &#39;centroid_spdf&#39; not found
+## class       : SpatialPointsDataFrame 
+## features    : 18 
+## extent      : 254738.6, 258497.1, 4107527, 4112168  (xmin, xmax, ymin, ymax)
+## crs         : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
+## variables   : 5
+## names       :  Plot_ID,  Point,    northing,    easting, Remarks 
+## min values  : SJER1068, center, 4107527.074, 254738.618,      NA 
+## max values  :  SJER952, center, 4112167.778, 258497.102,      NA
 </code></pre>
 
 <p>We now have our centroid data as a spatial points data frame. This will allow us
@@ -479,12 +482,28 @@ cent_max &lt;- raster::extract(chm,             # raster layer
     fun=max,         # what to value to extract
     df=TRUE)         # return a dataframe? 
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;extract&#39;: object &#39;chm&#39; not found
-
 # view
 cent_max
 
-## Error in eval(expr, envir, enclos): object &#39;cent_max&#39; not found
+##    ID  CHM_SJER
+## 1   1 18.940002
+## 2   2 24.189972
+## 3   3 13.299988
+## 4   4 10.989990
+## 5   5  5.690002
+## 6   6 19.079987
+## 7   7 16.299988
+## 8   8 11.959991
+## 9   9 19.120026
+## 10 10 11.149994
+## 11 11  9.290009
+## 12 12 18.329987
+## 13 13 11.080017
+## 14 14  9.140015
+## 15 15  2.619995
+## 16 16 24.250000
+## 17 17 18.250000
+## 18 18  6.019989
 </code></pre>
 
 <p>Ack! We&#39;ve lost our PlotIDs, how will we match them up?</p>
@@ -492,33 +511,45 @@ cent_max
 <pre><code># grab the names of the plots from the centroid_spdf
 cent_max$plot_id &lt;- centroid_spdf$Plot_ID
 
-## Error in eval(expr, envir, enclos): object &#39;centroid_spdf&#39; not found
-
 #fix the column names
 names(cent_max) &lt;- c(&#39;ID&#39;,&#39;chmMaxHeight&#39;,&#39;plot_id&#39;)
-
-## Error in names(cent_max) &lt;- c(&quot;ID&quot;, &quot;chmMaxHeight&quot;, &quot;plot_id&quot;): object &#39;cent_max&#39; not found
 
 # view again - we have plot_ids
 cent_max
 
-## Error in eval(expr, envir, enclos): object &#39;cent_max&#39; not found
+##    ID chmMaxHeight  plot_id
+## 1   1    18.940002 SJER1068
+## 2   2    24.189972  SJER112
+## 3   3    13.299988  SJER116
+## 4   4    10.989990  SJER117
+## 5   5     5.690002  SJER120
+## 6   6    19.079987  SJER128
+## 7   7    16.299988  SJER192
+## 8   8    11.959991  SJER272
+## 9   9    19.120026 SJER2796
+## 10 10    11.149994 SJER3239
+## 11 11     9.290009   SJER36
+## 12 12    18.329987  SJER361
+## 13 13    11.080017   SJER37
+## 14 14     9.140015    SJER4
+## 15 15     2.619995    SJER8
+## 16 16    24.250000  SJER824
+## 17 17    18.250000  SJER916
+## 18 18     6.019989  SJER952
 
 # merge the chm data into the centroids data.frame
 centroids &lt;- merge(centroids, cent_max, by.x = &#39;Plot_ID&#39;, by.y = &#39;plot_id&#39;)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;y&#39; in selecting a method for function &#39;merge&#39;: object &#39;cent_max&#39; not found
-
 # have a look at the centroids dataFrame
 head(centroids)
 
-##                                                                                      
-## 1 new(&quot;standardGeneric&quot;, .Data = function (x, ...)                                   
-## 2 standardGeneric(&quot;centroids&quot;), generic = structure(&quot;centroids&quot;, package = &quot;terra&quot;), 
-## 3     package = &quot;terra&quot;, group = list(), valueClass = character(0),                  
-## 4     signature = &quot;x&quot;, default = NULL, skeleton = (function (x,                      
-## 5         ...)                                                                       
-## 6     stop(&quot;invalid call in method dispatch to &#39;centroids&#39; (no default method)&quot;,
+##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight
+## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002
+## 2  SJER112 center  4111299 257407.0      NA  2    24.189972
+## 3  SJER116 center  4110820 256838.8      NA  3    13.299988
+## 4  SJER117 center  4108752 256176.9      NA  4    10.989990
+## 5  SJER120 center  4110476 255968.4      NA  5     5.690002
+## 6  SJER128 center  4111389 257078.9      NA  6    19.079987
 </code></pre>
 
 <p>Excellent. We now have the maximum &ldquo;tree&rdquo; height for each plot based on the CHM. </p>
@@ -535,17 +566,15 @@ through several plots and create histograms using a <code>for loop</code>.</p>
 <pre><code># extract all
 cent_heightList &lt;- raster::extract(chm,centroid_spdf,buffer = 20)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;extract&#39;: object &#39;chm&#39; not found
-
 # create histograms for the first 5 plots of data
 # using a for loop
 
 for (i in 1:5) {
   hist(cent_heightList[[i]], main=(paste(&quot;plot&quot;,i)))
   }
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;hist&#39;: object &#39;cent_heightList&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-1.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-2.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-3.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-4.png" alt=" "/><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/explore-data-distribution-5.png" alt=" "/></p>
 
 <p>Looking at these distributions, the area has some pretty short trees &ndash; plot 5 
 (really, SJER120 since we didn&#39;t match up the plotIDs) looks almost bare!</p>
@@ -600,12 +629,15 @@ requires the <code>rgeos</code> package, installed.</p>
 <pre><code># load shapefile data
 centShape &lt;- readOGR(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp&quot;))
 
-## Error in ogrListLayers(dsn = dsn): Cannot open data source
+## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids_Buffer.shp&quot;, layer: &quot;SJERPlotCentroids_Buffer&quot;
+## with 18 features
+## It has 6 fields
 
 plot(centShape)
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;centShape&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/read-shapefile-1.png" alt=" "/></p>
 
 <p>Then we can simply use the extract function again. Here we specify not weighting
 the values returned and we directly add the data to our centroids file instead
@@ -614,18 +646,23 @@ of having it be a separate data frame that we later have to match up. </p>
 <pre><code># extract max from chm for shapefile buffers
 centroids$chmMaxShape &lt;- raster::extract(chm, centShape, weights=FALSE, fun=max)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;extract&#39;: object &#39;chm&#39; not found
-
 # view
 head(centroids)
 
-##                                                                                      
-## 1 new(&quot;standardGeneric&quot;, .Data = function (x, ...)                                   
-## 2 standardGeneric(&quot;centroids&quot;), generic = structure(&quot;centroids&quot;, package = &quot;terra&quot;), 
-## 3     package = &quot;terra&quot;, group = list(), valueClass = character(0),                  
-## 4     signature = &quot;x&quot;, default = NULL, skeleton = (function (x,                      
-## 5         ...)                                                                       
-## 6     stop(&quot;invalid call in method dispatch to &#39;centroids&#39; (no default method)&quot;,
+##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight
+## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002
+## 2  SJER112 center  4111299 257407.0      NA  2    24.189972
+## 3  SJER116 center  4110820 256838.8      NA  3    13.299988
+## 4  SJER117 center  4108752 256176.9      NA  4    10.989990
+## 5  SJER120 center  4110476 255968.4      NA  5     5.690002
+## 6  SJER128 center  4111389 257078.9      NA  6    19.079987
+##   chmMaxShape
+## 1   18.940002
+## 2   24.189972
+## 3   13.299988
+## 4   10.989990
+## 5    5.690002
+## 6   19.079987
 </code></pre>
 
 <p>Which was faster, extracting from a SpatialPolgygon object (<code>polys</code>) or extracting 
@@ -639,15 +676,6 @@ Compare the values from cent_max and square_max. Are they the same? Why
 might they differ? 
 
 </div>
-
-<pre><code>## Error in ogrListLayers(dsn = dsn): Cannot open data source
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;squareShape&#39; not found
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;extract&#39;: object &#39;chm&#39; not found
-
-## Error in centroids$chmMaxSquareShape: object of type &#39;closure&#39; is not subsettable
-</code></pre>
 
 <h2>Extract Summary Data from Ground Measures</h2>
 
@@ -674,22 +702,30 @@ The arguments of which are: </p>
 maxStemHeight &lt;- aggregate( vegStr$stemheight ~ vegStr$plotid, 
                                                         FUN = max )  
 
-## Error in eval(predvars, data, env): object &#39;vegStr&#39; not found
-
 # view
 head(maxStemHeight)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;maxStemHeight&#39; not found
+##   vegStr$plotid vegStr$stemheight
+## 1      SJER1068              19.3
+## 2       SJER112              23.9
+## 3       SJER116              16.0
+## 4       SJER117              11.0
+## 5       SJER120               8.8
+## 6       SJER128              18.2
 
 #Assign cleaner names to the columns
 names(maxStemHeight) &lt;- c(&#39;plotid&#39;,&#39;insituMaxHeight&#39;)
 
-## Error in names(maxStemHeight) &lt;- c(&quot;plotid&quot;, &quot;insituMaxHeight&quot;): object &#39;maxStemHeight&#39; not found
-
 # view
 head(maxStemHeight)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;maxStemHeight&#39; not found
+##     plotid insituMaxHeight
+## 1 SJER1068            19.3
+## 2  SJER112            23.9
+## 3  SJER116            16.0
+## 4  SJER117            11.0
+## 5  SJER120             8.8
+## 6  SJER128            18.2
 </code></pre>
 
 <p>Bonus: Add in 95% height, while combining the above steps into one line of code.</p>
@@ -698,12 +734,16 @@ head(maxStemHeight)
 insitu &lt;- cbind(maxStemHeight,&#39;quant&#39;=tapply(vegStr$stemheight, 
     vegStr$plotid, quantile, prob = 0.95))
 
-## Error in cbind(maxStemHeight, quant = tapply(vegStr$stemheight, vegStr$plotid, : object &#39;maxStemHeight&#39; not found
-
 # view
 head(insitu)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;insitu&#39; not found
+##            plotid insituMaxHeight  quant
+## SJER1068 SJER1068            19.3  8.600
+## SJER112   SJER112            23.9 19.545
+## SJER116   SJER116            16.0 13.300
+## SJER117   SJER117            11.0 10.930
+## SJER120   SJER120             8.8  8.680
+## SJER128   SJER128            18.2 12.360
 </code></pre>
 
 <h3>Method 2: Extract using dplyr</h3>
@@ -720,21 +760,32 @@ maxStemHeight_d &lt;- vegStr %&gt;%
   group_by(plotid) %&gt;% 
   summarise(max = max(stemheight))
 
-## Error in eval(lhs, parent, parent): object &#39;vegStr&#39; not found
-
 # view
 head(maxStemHeight_d)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;maxStemHeight_d&#39; not found
+## # A tibble: 6 x 2
+##   plotid     max
+##   &lt;chr&gt;    &lt;dbl&gt;
+## 1 SJER1068  19.3
+## 2 SJER112   23.9
+## 3 SJER116   16  
+## 4 SJER117   11  
+## 5 SJER120    8.8
+## 6 SJER128   18.2
 
 # fix names
 names(maxStemHeight_d) &lt;- c(&quot;plotid&quot;,&quot;insituMaxHeight&quot;)
-
-## Error in names(maxStemHeight_d) &lt;- c(&quot;plotid&quot;, &quot;insituMaxHeight&quot;): object &#39;maxStemHeight_d&#39; not found
-
 head(maxStemHeight_d)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;maxStemHeight_d&#39; not found
+## # A tibble: 6 x 2
+##   plotid   insituMaxHeight
+##   &lt;chr&gt;              &lt;dbl&gt;
+## 1 SJER1068            19.3
+## 2 SJER112             23.9
+## 3 SJER116             16  
+## 4 SJER117             11  
+## 5 SJER120              8.8
+## 6 SJER128             18.2
 </code></pre>
 
 <p>And the bonus code with dplyr. </p>
@@ -745,12 +796,18 @@ insitu_d &lt;- vegStr %&gt;%
     group_by(plotid) %&gt;% 
     summarise(max = max(stemheight), quant = quantile(stemheight,.95))
 
-## Error in eval(lhs, parent, parent): object &#39;vegStr&#39; not found
-
 # view
 head(insitu_d)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;head&#39;: object &#39;insitu_d&#39; not found
+## # A tibble: 6 x 3
+##   plotid     max quant
+##   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
+## 1 SJER1068  19.3  8.6 
+## 2 SJER112   23.9 19.5 
+## 3 SJER116   16   13.3 
+## 4 SJER117   11   10.9 
+## 5 SJER120    8.8  8.68
+## 6 SJER128   18.2 12.4
 </code></pre>
 
 <h2>Combine Ground &amp; Remote Sensed Data</h2>
@@ -768,18 +825,23 @@ standardize your names to avoid potential confusion like this!</p>
 <pre><code># merge the insitu data into the centroids data.frame
 centroids &lt;- merge(centroids, maxStemHeight, by.x = &#39;Plot_ID&#39;, by.y = &#39;plotid&#39;)
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;y&#39; in selecting a method for function &#39;merge&#39;: object &#39;maxStemHeight&#39; not found
-
 # view
 head(centroids)
 
-##                                                                                      
-## 1 new(&quot;standardGeneric&quot;, .Data = function (x, ...)                                   
-## 2 standardGeneric(&quot;centroids&quot;), generic = structure(&quot;centroids&quot;, package = &quot;terra&quot;), 
-## 3     package = &quot;terra&quot;, group = list(), valueClass = character(0),                  
-## 4     signature = &quot;x&quot;, default = NULL, skeleton = (function (x,                      
-## 5         ...)                                                                       
-## 6     stop(&quot;invalid call in method dispatch to &#39;centroids&#39; (no default method)&quot;,
+##    Plot_ID  Point northing  easting Remarks ID chmMaxHeight
+## 1 SJER1068 center  4111568 255852.4      NA  1    18.940002
+## 2  SJER112 center  4111299 257407.0      NA  2    24.189972
+## 3  SJER116 center  4110820 256838.8      NA  3    13.299988
+## 4  SJER117 center  4108752 256176.9      NA  4    10.989990
+## 5  SJER120 center  4110476 255968.4      NA  5     5.690002
+## 6  SJER128 center  4111389 257078.9      NA  6    19.079987
+##   chmMaxShape chmMaxSquareShape     diff insituMaxHeight
+## 1   18.940002         18.940002 0.000000            19.3
+## 2   24.189972         24.189972 0.000000            23.9
+## 3   13.299988         13.299988 0.000000            16.0
+## 4   10.989990         10.989990 0.000000            11.0
+## 5    5.690002          7.380005 1.690002             8.8
+## 6   19.079987         19.079987 0.000000            18.2
 </code></pre>
 
 <h2>Plot Remote Sensed vs Ground Data</h2>
@@ -791,9 +853,9 @@ measured tree height values and lidar-derived max canopy height values.</p>
 
 <pre><code>#create basic plot
 plot(x = centroids$chmMaxShape, y=centroids$insituMaxHeight)
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object of type &#39;closure&#39; is not subsettable
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-data-1.png" alt=" "/></p>
 
 <p>Or we can use the <code>ggplot()</code> function from the <strong>ggplot2</strong> package. For more on 
 using the <strong>ggplot2</strong> package see our tutorial, 
@@ -809,10 +871,9 @@ ggplot(centroids,aes(x=chmMaxShape, y =insituMaxHeight )) +
   theme_bw() + 
   ylab(&quot;Maximum measured height&quot;) + 
   xlab(&quot;Maximum lidar pixel&quot;)
-
-## Error:   You&#39;re passing a function as global data.
-##   Have you misspelled the `data` argument in `ggplot()`
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/plot-w-ggplot-1.png" alt=" "/></p>
 
 <p>We can also add a regression fit to our plot. Explore the <code>ggplot()</code> options and 
 customize your plot.</p>
@@ -831,9 +892,10 @@ ggplot(centroids, aes(x=chmMaxShape, y=insituMaxHeight)) +
         axis.title.x = element_text(family=&quot;sans&quot;, face=&quot;bold&quot;, size=14, angle=00, hjust=0.54, vjust=-.2),
         axis.title.y = element_text(family=&quot;sans&quot;, face=&quot;bold&quot;, size=14, angle=90, hjust=0.54, vjust=1))
 
-## Error:   You&#39;re passing a function as global data.
-##   Have you misspelled the `data` argument in `ggplot()`
+## `geom_smooth()` using formula &#39;y ~ x&#39;
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/extract-raster-data-R/rfigs/ggplot-data-full-1.png" alt=" "/></p>
 
 <p>You have now successfully compared lidar derived vegetation height, within plots, 
 to actual measured tree height data! By comparing the regression line against the 1:1 line, it appears as though lidar underestimates tree height for shorter trees, and overestimates tree height for taller trees.. Or could it be that human observers underestimate the height of very tall trees because it&#39;s hard to see the crown from the ground? Or perhaps the lidar-based method mis-judges the elevation of the ground, which would throw off the accuracy of the CHM? As you can see, there are many potential factors leading to this disagreement in height between observation methods, which the savvy researcher would be sure to investigate if tree height is important for their particular pursuits.</p>
@@ -853,9 +915,7 @@ use for your analysis? Why?
 
 </div>
 
-<pre><code>## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;y&#39; in selecting a method for function &#39;merge&#39;: object &#39;insitu&#39; not found
-
-## Error in ggplot(centroids_c, aes(x = quant, y = insituMaxHeight.x)): object &#39;centroids_c&#39; not found
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 </code></pre>
 
 </body>

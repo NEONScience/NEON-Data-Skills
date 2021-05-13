@@ -117,7 +117,7 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
-wd <- ("C:/Users/mccahill/Documents/GitHub/")
+wd <- ("~/Git/data/")
 setwd(wd)
 
 # Load raster in an R object called 'DEM'

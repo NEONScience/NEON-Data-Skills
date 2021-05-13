@@ -1,4 +1,4 @@
-## ----load-data---------------------------------------------------------
+## ----load-data-------------------------------------------------------
 
 # load packages 
 library(raster)  
@@ -6,7 +6,7 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
-wd <- ("C:/Users/mccahill/Documents/GitHub/")
+wd <- ("~/Git/data/")
 setwd(wd)
 
 # Load raster in an R object called 'DEM'
@@ -14,20 +14,20 @@ DEM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainMod
 
 
 
-## ----view-raster-attributes--------------------------------------------
+## ----view-raster-attributes------------------------------------------
 # View raster attributes 
 DEM
 
 
 
-## ----set-raster-extent-------------------------------------------------
+## ----set-raster-extent-----------------------------------------------
 
 # View the extent of the raster
 DEM@extent
 
 
 
-## ----create-raster-----------------------------------------------------
+## ----create-raster---------------------------------------------------
 
 # create a raster from the matrix - a "blank" raster of 4x4
 myRaster1 <- raster(nrow=4, ncol=4)
@@ -43,7 +43,7 @@ myRaster1@crs
 
 
 
-## ----create-raster-cont------------------------------------------------
+## ----create-raster-cont----------------------------------------------
 
 # what is the raster extent?
 myRaster1@extent
@@ -53,7 +53,7 @@ plot(myRaster1, main="Raster with 16 pixels")
 
 
 
-## ----resample-raster---------------------------------------------------
+## ----resample-raster-------------------------------------------------
 ## HIGHER RESOLUTION
 # Create 32 pixel raster
 myRaster2 <- raster(nrow=8, ncol=8)
@@ -82,7 +82,7 @@ plot(myRaster4, main="Raster with 1 pixel")
 
 
 
-## ----quad-layout-------------------------------------------------------
+## ----quad-layout-----------------------------------------------------
 # change graphical parameter to 2x2 grid
 par(mfrow=c(2,2))
 
@@ -97,7 +97,7 @@ par(mfrow=c(1,1))
 
 
 
-## ----view-CRS-strings--------------------------------------------------
+## ----view-CRS-strings------------------------------------------------
 
 # make sure you loaded rgdal package at the top of your script
 
@@ -112,7 +112,7 @@ head(epsg, 5)
 
 
 
-## ----create-raster-extent----------------------------------------------
+## ----create-raster-extent--------------------------------------------
 # create 10x20 matrix with values 1-8. 
 newMatrix  <- (matrix(1:8, nrow = 10, ncol = 20))
 
@@ -122,7 +122,7 @@ rasterNoProj
 
 
 
-## ----define-extent-----------------------------------------------------
+## ----define-extent---------------------------------------------------
 ## Define the xmin and ymin (the lower left hand corner of the raster)
 
 # 1. define xMin & yMin objects.
@@ -155,13 +155,13 @@ rasterNoProj@extent
 
 
 
-## ----plot-raster-our-extent--------------------------------------------
+## ----plot-raster-our-extent------------------------------------------
 # plot new raster
 plot(rasterNoProj, main="Raster in UTM coordinates, 1 m resolution")
 
 
 
-## ----define-raster-projection------------------------------------------
+## ----define-raster-projection----------------------------------------
 
 # view CRS from raster of interest
 rasterNoProj@crs
@@ -180,7 +180,7 @@ rasterNoProj@crs
 
 
 
-## ----challenge-example-code--------------------------------------------
+## ----challenge-example-code------------------------------------------
 ## Challenge Example Code 
 
 # set latLong
@@ -197,7 +197,7 @@ r[]  <- sample(0:50,25)
 r
 
 
-## ----reproject-data----------------------------------------------------
+## ----reproject-data--------------------------------------------------
 
 # reproject raster data from UTM to CRS of Lat/Long WGS84
 reprojectedData1 <- projectRaster(rasterNoProj, 

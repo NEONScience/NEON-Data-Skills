@@ -140,7 +140,7 @@ library(maptools)
 library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
-wd <- "C:/Users/mccahill/Documents/GitHub/" #This will depend on your local environment
+wd <- "~/Git/data/" #This will depend on your local environment
 setwd(wd)
 ```
 

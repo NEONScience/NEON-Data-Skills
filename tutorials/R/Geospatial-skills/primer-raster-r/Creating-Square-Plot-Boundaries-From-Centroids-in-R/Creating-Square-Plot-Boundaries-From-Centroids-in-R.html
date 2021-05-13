@@ -253,20 +253,12 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd(&quot;pathToDirHere&quot;)
-wd &lt;- (&quot;C:/Users/mccahill/Documents/GitHub/&quot;)
+wd &lt;- (&quot;~/Git/data/&quot;)
 setwd(wd)
-
-## Error in setwd(wd): cannot change working directory
 
 # read in the NEON plot centroid data 
 # `stringsAsFactors=F` ensures character strings don&#39;t import as factors
-centroids &lt;- read.csv(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv&quot;, stringsAsFactors=FALSE))
-
-## Warning in file(file, &quot;rt&quot;): cannot open file &#39;C:/Users/mccahill/
-## Documents/GitHub/NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/
-## SJERPlotCentroids.csvFALSE&#39;: No such file or directory
-
-## Error in file(file, &quot;rt&quot;): cannot open the connection
+centroids &lt;- read.csv(paste0(wd,&quot;NEON-DS-Field-Site-Spatial-Data/SJER/PlotCentroids/SJERPlotCentroids.csv&quot;), stringsAsFactors=FALSE)
 </code></pre>
 
 <p>Let&#39;s look at our data. This can be done several ways but one way is to view 
@@ -275,16 +267,12 @@ the structure (<code>str()</code>) of the data. </p>
 <pre><code># view data structure
 str(centroids)
 
-## Formal class &#39;standardGeneric&#39; [package &quot;methods&quot;] with 8 slots
-##   ..@ .Data     :function (x, ...)  
-##   ..@ generic   : chr &quot;centroids&quot;
-##   .. ..- attr(*, &quot;package&quot;)= chr &quot;terra&quot;
-##   ..@ package   : chr &quot;terra&quot;
-##   ..@ group     : list()
-##   ..@ valueClass: chr(0) 
-##   ..@ signature : chr &quot;x&quot;
-##   ..@ default   : NULL
-##   ..@ skeleton  : language (function (x, ...)  stop(&quot;invalid call in method dispatch to &#39;centroids&#39; (no default method)&quot;,  ...
+## &#39;data.frame&#39;:    18 obs. of  5 variables:
+##  $ Plot_ID : chr  &quot;SJER1068&quot; &quot;SJER112&quot; &quot;SJER116&quot; &quot;SJER117&quot; ...
+##  $ Point   : chr  &quot;center&quot; &quot;center&quot; &quot;center&quot; &quot;center&quot; ...
+##  $ northing: num  4111568 4111299 4110820 4108752 4110476 ...
+##  $ easting : num  255852 257407 256839 256177 255968 ...
+##  $ Remarks : logi  NA NA NA NA NA NA ...
 </code></pre>
 
 <p>We can see that our data consists of five distinct types of data:</p>
@@ -327,20 +315,9 @@ radius &lt;- 20 # radius in meters
 # define the plot edges based upon the plot radius. 
 
 yPlus &lt;- centroids$northing+radius
-
-## Error in centroids$northing: object of type &#39;closure&#39; is not subsettable
-
 xPlus &lt;- centroids$easting+radius
-
-## Error in centroids$easting: object of type &#39;closure&#39; is not subsettable
-
 yMinus &lt;- centroids$northing-radius
-
-## Error in centroids$northing: object of type &#39;closure&#39; is not subsettable
-
 xMinus &lt;- centroids$easting-radius
-
-## Error in centroids$easting: object of type &#39;closure&#39; is not subsettable
 </code></pre>
 
 <p>When combining the coordinates for the vertices, it is important to close the 
@@ -358,8 +335,6 @@ square=cbind(xMinus,yPlus,  # NW corner
     xPlus,yMinus,  # SE corner
     xMinus,yMinus, # SW corner
     xMinus,yPlus)  # NW corner again - close ploygon
-
-## Error in cbind(xMinus, yPlus, xPlus, yPlus, xPlus, yMinus, xMinus, yMinus, : object &#39;xMinus&#39; not found
 </code></pre>
 
 <p>Next, we will associate the centroid plot ID, from the .csv file, with the plot 
@@ -371,8 +346,6 @@ come in as factors and we&#39;d thus have to use the code
 
 <pre><code># Extract the plot ID information
 ID=centroids$Plot_ID
-
-## Error in centroids$Plot_ID: object of type &#39;closure&#39; is not subsettable
 </code></pre>
 
 <p>We are now left with two key &quot;groups&rdquo; of data:</p>
@@ -427,17 +400,15 @@ polys &lt;- SpatialPolygons(mapply(function(poly, id)
       }, 
     split(square, row(square)), ID),
     proj4string=CRS(as.character(&quot;+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;)))
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;split&#39;: object &#39;square&#39; not found
 </code></pre>
 
 <p>Let&#39;s create a simple plot to see our new SpatialPolygon data. </p>
 
 <pre><code># plot the new polygons
 plot(polys)
-
-## Error in (function (classes, fdef, mtable) : unable to find an inherited method for function &#39;polys&#39; for signature &#39;&quot;numeric&quot;&#39;
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polys-plot-1.png" alt=" "/></p>
 
 <p>Yay! We created polygons for all of our plots! </p>
 
@@ -459,21 +430,17 @@ for (i in 1:nrow(centroids)) {  # for each for in object centroids
       # make it an Polygon object with the Plot_ID from object ID
     }
 
-## Error in 1:nrow(centroids): argument of length 0
-
 # convert a to SpatialPolygon and assign CRS
 polysB&lt;-SpatialPolygons(a,proj4string=CRS(as.character(&quot;+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;)))
-
-## Error in SpatialPolygons(a, proj4string = CRS(as.character(&quot;+proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0&quot;))): cannot get a slot (&quot;area&quot;) from an object of type &quot;NULL&quot;
 </code></pre>
 
 <p>Let&#39;s see if it worked with another simple plot. </p>
 
 <pre><code># plot the new polygons
 plot(polysB)
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;polysB&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysB-plot-1.png" alt=" "/></p>
 
 <p>Good. The two methods return the same plots. We now have our new plots saved as 
 a SpatialPolygon but how do we share that with our colleagues? One way is to turn
@@ -488,16 +455,14 @@ attribute data if you wanted to! </p>
 
 <pre><code># Create SpatialPolygonDataFrame -- this step is required to output multiple polygons.
 polys.df &lt;- SpatialPolygonsDataFrame(polys, data.frame(id=ID, row.names=ID))
-
-## Error in SpatialPolygonsDataFrame(polys, data.frame(id = ID, row.names = ID)): no slot of name &quot;polygons&quot; for this object of class &quot;standardGeneric&quot;
 </code></pre>
 
 <p>Let&#39;s check out the results before we export. And we can add color this time. </p>
 
 <pre><code>plot(polys.df, col=rainbow(50, alpha=0.5))
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument &#39;x&#39; in selecting a method for function &#39;plot&#39;: object &#39;polys.df&#39; not found
 </code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Creating-Square-Plot-Boundaries-From-Centroids-in-R/rfigs/polysdf-plot-1.png" alt=" "/></p>
 
 <p>When we want to export a spatial object from R as a shapefile, <code>writeOGR()</code> is a 
 nice function. It writes not only the shapefile, but also the associated 
@@ -519,8 +484,6 @@ to save our shapefile. If we want it in our current directory we can simply use 
 
 <pre><code># write the shapefiles 
 writeOGR(polys.df, &#39;.&#39;, &#39;2014Plots_SJER&#39;, &#39;ESRI Shapefile&#39;)
-
-## Error in stopifnot(inherits(obj, &quot;Spatial&quot;)): object &#39;polys.df&#39; not found
 </code></pre>
 
 <p>And there you have it &ndash; a shapefile with a square plot boundary around your

@@ -106,7 +106,7 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
-wd <- ("C:/Users/mccahill/Documents/Github/")
+wd <- ("~/Git/data/")
 setwd(wd)
 
 ```	

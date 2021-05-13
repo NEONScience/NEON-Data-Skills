@@ -1,4 +1,4 @@
-## ----load-libraries----------------------------------------------------
+## ----load-libraries--------------------------------------------------
 
 # load the raster, sp, and rgdal packages
 library(raster)
@@ -7,12 +7,12 @@ library(rgdal)
 
 # set working directory to data folder
 #setwd("pathToDirHere")
-wd <- ("C:/Users/mccahill/Documents/Github/")
+wd <- ("~/Git/data/")
 setwd(wd)
 
 
 
-## ----load-raster-------------------------------------------------------
+## ----load-raster-----------------------------------------------------
 # load raster in an R object called 'DEM'
 DEM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
 
@@ -21,7 +21,7 @@ DEM
 
 
 
-## ----set-min-max-------------------------------------------------------
+## ----set-min-max-----------------------------------------------------
 
 # calculate and save the min and max values of the raster to the raster object
 DEM <- setMinMax(DEM)
@@ -31,7 +31,7 @@ DEM
 
 
 
-## ----get-min-max-------------------------------------------------------
+## ----get-min-max-----------------------------------------------------
 
 #Get min and max cell values from raster
 #NOTE: this code may fail if the raster is too large
@@ -41,18 +41,18 @@ cellStats(DEM, range)
 
 
 
-## ----crs---------------------------------------------------------------
+## ----crs-------------------------------------------------------------
 #view coordinate reference system
 DEM@crs
 
 
-## ----view-extent-------------------------------------------------------
+## ----view-extent-----------------------------------------------------
 # view raster extent
 DEM@extent
 
 
 
-## ----histogram---------------------------------------------------------
+## ----histogram-------------------------------------------------------
 
 # the distribution of values in the raster
 hist(DEM, main="Distribution of elevation values", 
@@ -61,7 +61,7 @@ hist(DEM, main="Distribution of elevation values",
 
 
 
-## ----plot-raster-------------------------------------------------------
+## ----plot-raster-----------------------------------------------------
 
 # plot the raster
 # note that this raster represents a small region of the NEON SJER field site
@@ -69,7 +69,7 @@ plot(DEM,
 		 main="Digital Elevation Model, SJER") # add title with main
 
 
-## ----PlotRaster--------------------------------------------------------
+## ----PlotRaster------------------------------------------------------
 
 # create a plot of our raster
 image(DEM)
@@ -84,7 +84,7 @@ image(DEM, zlim=c(250,375), main="Digital Elevation Model (DEM)", col=col)
 
 
 
-## ----plot-with-breaks--------------------------------------------------
+## ----plot-with-breaks------------------------------------------------
 
 # add a color map with 5 colors
 col=terrain.colors(5)
@@ -95,7 +95,7 @@ brk <- c(250, 300, 350, 400, 450, 500)
 plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
 
-## ----legend-play-------------------------------------------------------
+## ----legend-play-----------------------------------------------------
 # First, expand right side of clipping rectangle to make room for the legend
 # turn xpd off
 par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.5))
@@ -113,7 +113,7 @@ legend(par()$usr[2], 4110600,
 
 
 
-## ----flip-legend-------------------------------------------------------
+## ----flip-legend-----------------------------------------------------
 # Expand right side of clipping rect to make room for the legend
 par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
 #DEM with a custom legend
@@ -127,7 +127,7 @@ legend( par()$usr[2], 4110600,
         fill = rev(col))
 
 
-## ----add-color-map-----------------------------------------------------
+## ----add-color-map---------------------------------------------------
 
 #add a color map with 4 colors
 col=terrain.colors(4)
@@ -137,7 +137,7 @@ plot(DEM, col=col, breaks=brk, main="DEM with fewer breaks")
 
 
 
-## ----raster-math-------------------------------------------------------
+## ----raster-math-----------------------------------------------------
 
 #multiple each pixel in the raster by 2
 DEM2 <- DEM * 2
@@ -148,7 +148,7 @@ plot(DEM2, main="DEM with all values doubled")
 
 
 
-## ----cropDEM, eval=FALSE, comment=NA-----------------------------------
+## ----cropDEM, eval=FALSE, comment=NA---------------------------------
 
 #plot the DEM
 plot(DEM)
@@ -164,7 +164,7 @@ plot(DEMcrop1)
 
 
 
-## ----cropDEMManual-----------------------------------------------------
+## ----cropDEMManual---------------------------------------------------
 
 #define the crop extent
 cropbox2 <-c(255077.3,257158.6,4109614,4110934)
@@ -175,7 +175,7 @@ plot(DEMcrop2)
 
 
 
-## ----challenge-code-name, include=TRUE, results="hide", echo=FALSE-----
+## ----challenge-code-name, include=TRUE, results="hide", echo=FALSE----
 
 # load raster in an R object called 'DEM'
 DSM <- rasterDSM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif"))

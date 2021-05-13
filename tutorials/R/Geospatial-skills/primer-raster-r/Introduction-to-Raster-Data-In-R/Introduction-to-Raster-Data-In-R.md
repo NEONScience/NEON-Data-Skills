@@ -105,10 +105,8 @@ Once installed we can load the packages and start working with raster data.
     
     # set working directory to data folder
     #setwd("pathToDirHere")
-    wd <- ("C:/Users/mccahill/Documents/Github/")
+    wd <- ("~/Git/data/")
     setwd(wd)
-
-    ## Error in setwd(wd): cannot change working directory
 
 Next, let's load a raster containing elevation data into our environment. And
 look at the attributes. 
@@ -116,15 +114,17 @@ look at the attributes.
 
     # load raster in an R object called 'DEM'
     DEM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
-
-    ## Error in .local(.Object, ...) :
-
-    ## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-
+    
     # look at the raster attributes. 
     DEM
 
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
+    ## class      : RasterLayer 
+    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
+    ## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## names      : SJER2013_DTM
 
 Notice a few things about this raster. 
 
@@ -151,13 +151,18 @@ Let's change that by using the `setMinMax()` function.
 
     # calculate and save the min and max values of the raster to the raster object
     DEM <- setMinMax(DEM)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'setMinMax': object 'DEM' not found
-
+    
     # view raster attributes
     DEM
 
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
+    ## class      : RasterLayer 
+    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
+    ## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## names      : SJER2013_DTM 
+    ## values     : 228.1, 518.66  (min, max)
 
 Notice the `values` is now part of the attributes and shows the min and max values
 for the pixels in the raster. What these min and max values represent depends on
@@ -171,15 +176,15 @@ within the pixels.
     #NOTE: this code may fail if the raster is too large
     cellStats(DEM, min)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'cellStats': object 'DEM' not found
+    ## [1] 228.1
 
     cellStats(DEM, max)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'cellStats': object 'DEM' not found
+    ## [1] 518.66
 
     cellStats(DEM, range)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'cellStats': object 'DEM' not found
+    ## [1] 228.10 518.66
 
 ### View CRS
 First, let's consider the Coordinate Reference System (CRS). 
@@ -188,7 +193,8 @@ First, let's consider the Coordinate Reference System (CRS).
     #view coordinate reference system
     DEM@crs
 
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
+    ## CRS arguments:
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs
 
 This raster is located in UTM Zone 11. 
 
@@ -207,7 +213,11 @@ slot.
     # view raster extent
     DEM@extent
 
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
+    ## class      : Extent 
+    ## xmin       : 254570 
+    ## xmax       : 258869 
+    ## ymin       : 4107302 
+    ## ymax       : 4112362
 
 ### Raster Pixel Values
 
@@ -227,7 +237,7 @@ This is an easy and quick data checking tool. Are there any totally weird values
          col= "purple", 
          maxpixels=22000000)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'hist': object 'DEM' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/histogram-1.png)
 
 It looks like we have a lot of land around 325m and 425m. 
 
@@ -242,7 +252,7 @@ a simple plot with the `plot()` function.
     plot(DEM, 
     		 main="Digital Elevation Model, SJER") # add title with main
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DEM' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-raster-1.png)
 
 R has an `image()` function that allows you to control the way a raster is
 rendered on the screen. The `plot()` function in R has a base setting for the number
@@ -253,19 +263,19 @@ better for rendering larger rasters.
     # create a plot of our raster
     image(DEM)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'DEM' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-1.png)
 
     # specify the range of values that you want to plot in the DEM
     # just plot pixels between 250 and 300 m in elevation
     image(DEM, zlim=c(250,300))
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'DEM' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-2.png)
 
     # we can specify the colors too
     col <- terrain.colors(5)
     image(DEM, zlim=c(250,375), main="Digital Elevation Model (DEM)", col=col)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'DEM' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/PlotRaster-3.png)
 
 ### Plotting with Colors
 
@@ -310,7 +320,7 @@ the colors change if we want too.
     
     plot(DEM, col=col, breaks=brk, main="DEM with more breaks")
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DEM' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/plot-with-breaks-1.png)
 
 We can also customize the legend appearance. 
 
@@ -321,9 +331,7 @@ We can also customize the legend appearance.
     
     # Second, plot w/ no legend
     plot(DEM, col=col, breaks=brk, main="DEM with a Custom (but flipped) Legend", legend = FALSE)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DEM' not found
-
+    
     # Third, turn xpd back on to force the legend to fit next to the plot.
     par(xpd = TRUE)
     
@@ -332,7 +340,7 @@ We can also customize the legend appearance.
             legend = c("lowest", "a bit higher", "middle ground", "higher yet", "highest"), 
             fill = col)
 
-    ## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/legend-play-1.png)
 
 Notice that the legend is in reverse order in the previous plot. Let’s fix that.
 We need to both reverse the order we have the legend laid out and reverse the 
@@ -343,9 +351,6 @@ the color fill with the `rev()` colors.
     par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
     #DEM with a custom legend
     plot(DEM, col=col, breaks=brk, main="DEM with a Custom Legend",legend = FALSE)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DEM' not found
-
     #turn xpd back on to force the legend to fit next to the plot.
     par(xpd = TRUE)
     
@@ -354,7 +359,7 @@ the color fill with the `rev()` colors.
             legend = c("Highest", "Higher yet", "Middle","A bit higher", "Lowest"), 
             fill = rev(col))
 
-    ## Error in strwidth(legend, units = "user", cex = cex, font = text.font): plot.new has not been called yet
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/flip-legend-1.png)
 
 Try the code again but only make one of the changes -- reverse order or reverse
 colors-- what happens? 
@@ -372,7 +377,7 @@ We can add a custom color map with fewer breaks as well.
     brk <- c(200, 300, 350, 400,500)
     plot(DEM, col=col, breaks=brk, main="DEM with fewer breaks")
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DEM' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/add-color-map-1.png)
 
 A discrete dataset has a set of unique categories or classes. One example could 
 be land use classes. The example below shows elevation zones generated using the 
@@ -392,17 +397,22 @@ all values within the raster by 2.
 
     #multiple each pixel in the raster by 2
     DEM2 <- DEM * 2
-
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
-
+    
     DEM2
 
-    ## Error in eval(expr, envir, enclos): object 'DEM2' not found
+    ## class      : RasterLayer 
+    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
+    ## source     : memory
+    ## names      : SJER2013_DTM 
+    ## values     : 456.2, 1037.32  (min, max)
 
     #plot the new DEM
     plot(DEM2, main="DEM with all values doubled")
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DEM2' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/raster-math-1.png)
 
 
 ## Cropping Rasters in R
@@ -440,13 +450,10 @@ This is how we'd crop using a GIS shapefile (with a rectangular shape)
     cropbox2 <-c(255077.3,257158.6,4109614,4110934)
     #crop the raster
     DEMcrop2 <- crop(DEM, cropbox2)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'crop': object 'DEM' not found
-
     #plot cropped DEM
     plot(DEMcrop2)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DEMcrop2' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/cropDEMManual-1.png)
  
 
 
@@ -463,14 +470,7 @@ Hint, your breaks might represent `high elevation`, `medium elevation`,
 `low elevation`. 
 </div>
 
-
-    ## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-
-    ## Error in eval(expr, envir, enclos): object 'DSM' not found
-
-    ## Error in eval(expr, envir, enclos): object 'DSM2' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DSM2' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/primer-raster-r/Introduction-to-Raster-Data-In-R/rfigs/challenge-code-name-1.png)
 
 
 ## Image (RGB) Data in R

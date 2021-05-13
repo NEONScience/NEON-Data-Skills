@@ -116,23 +116,23 @@ Range in California.
     
     # set working directory to data folder
     #setwd("pathToDirHere")
-    wd <- ("C:/Users/mccahill/Documents/GitHub/")
+    wd <- ("~/Git/data/")
     setwd(wd)
-
-    ## Error in setwd(wd): cannot change working directory
-
+    
     # Load raster in an R object called 'DEM'
     DEM <- raster(paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))  
-
-    ## Error in .local(.Object, ...) :
-
-    ## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
 
 
     # View raster attributes 
     DEM
 
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
+    ## class      : RasterLayer 
+    ## dimensions : 5060, 4299, 21752940  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 254570, 258869, 4107302, 4112362  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
+    ## source     : /Users/olearyd/Git/data/NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif 
+    ## names      : SJER2013_DTM
 
 Note that this raster (in GeoTIFF format) already has an extent, resolution, and 
 CRS defined. The resolution in both x and y directions is 1. The CRS tells us 
@@ -150,7 +150,11 @@ extent of a new raster.
     # View the extent of the raster
     DEM@extent
 
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
+    ## class      : Extent 
+    ## xmin       : 254570 
+    ## xmax       : 258869 
+    ## ymin       : 4107302 
+    ## ymax       : 4112362
 
 
 <figure>
@@ -548,13 +552,12 @@ to the data.
     # view the CRS of our DEM object.
     DEM@crs
 
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
+    ## CRS arguments:
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs
 
     # define the CRS using a CRS of another raster
     rasterNoProj@crs <- DEM@crs
-
-    ## Error in eval(expr, envir, enclos): object 'DEM' not found
-
+    
     # look at the attributes
     rasterNoProj
 
@@ -562,7 +565,7 @@ to the data.
     ## dimensions : 10, 20, 200  (nrow, ncol, ncell)
     ## resolution : 1, 1  (x, y)
     ## extent     : 254570, 254590, 4107302, 4107312  (xmin, xmax, ymin, ymax)
-    ## crs        : NA 
+    ## crs        : +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs 
     ## source     : memory
     ## names      : layer 
     ## values     : 1, 8  (min, max)
@@ -570,7 +573,8 @@ to the data.
     # view just the crs
     rasterNoProj@crs
 
-    ## CRS arguments: NA
+    ## CRS arguments:
+    ##  +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs
 
 IMPORTANT: the above code **does not reproject** the raster. It simply defines the
 Coordinate Reference System based upon the CRS of another raster. If you want to
@@ -624,7 +628,7 @@ of lat and long values to 5 instead of 10? Try 20, 50 and 100?
     ## crs        : NA 
     ## source     : memory
     ## names      : layer 
-    ## values     : 6, 48  (min, max)
+    ## values     : 3, 50  (min, max)
 
 
 ## Reprojecting Data
@@ -636,32 +640,47 @@ and R both have reprojection tools that perform this task.
     # reproject raster data from UTM to CRS of Lat/Long WGS84
     reprojectedData1 <- projectRaster(rasterNoProj, 
                                      crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
-
-    ## Error in projectRaster(rasterNoProj, crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "): input projection is NA
-
+    
     # note that the extent has been adjusted to account for the NEW crs
     reprojectedData1@crs
 
-    ## Error in eval(expr, envir, enclos): object 'reprojectedData1' not found
+    ## CRS arguments: +proj=longlat +datum=WGS84 +no_defs
 
     reprojectedData1@extent
 
-    ## Error in eval(expr, envir, enclos): object 'reprojectedData1' not found
+    ## class      : Extent 
+    ## xmin       : -119.761 
+    ## xmax       : -119.7607 
+    ## ymin       : 37.07988 
+    ## ymax       : 37.08
 
     # note the range of values in the output data
     reprojectedData1
 
-    ## Error in eval(expr, envir, enclos): object 'reprojectedData1' not found
+    ## class      : RasterLayer 
+    ## dimensions : 13, 22, 286  (nrow, ncol, ncell)
+    ## resolution : 1.12e-05, 9e-06  (x, y)
+    ## extent     : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## source     : memory
+    ## names      : layer 
+    ## values     : 0.64765, 8.641957  (min, max)
 
     # use nearest neighbor interpolation method to ensure that the values stay the same
     reprojectedData2 <- projectRaster(rasterNoProj, 
                                      crs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", 
                                      method = "ngb")
-
-    ## Error in projectRaster(rasterNoProj, crs = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ", : input projection is NA
-
+    
+    
     # note that the min and max values have now been forced to stay within the same range.
     reprojectedData2
 
-    ## Error in eval(expr, envir, enclos): object 'reprojectedData2' not found
+    ## class      : RasterLayer 
+    ## dimensions : 13, 22, 286  (nrow, ncol, ncell)
+    ## resolution : 1.12e-05, 9e-06  (x, y)
+    ## extent     : -119.761, -119.7607, 37.07988, 37.08  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=longlat +datum=WGS84 +no_defs 
+    ## source     : memory
+    ## names      : layer 
+    ## values     : 1, 8  (min, max)
 

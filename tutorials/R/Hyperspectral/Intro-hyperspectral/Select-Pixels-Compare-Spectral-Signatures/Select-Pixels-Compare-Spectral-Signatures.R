@@ -1,4 +1,4 @@
-## ----load-libraries, message=FALSE, warning=FALSE-----------------------------------------
+## ----load-libraries, message=FALSE, warning=FALSE--------------------
 
 # Load required packages
 library(rhdf5)
@@ -13,19 +13,19 @@ wd <- "~/Documents/data/" #This will depend on your local environment
 setwd(wd)
 
 # define filepath to the hyperspectral dataset
-f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+fhs <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
 # read in the wavelength information from the HDF5 file
-wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+wavelengths <- h5read(fhs,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 
 # grab scale factor from the Reflectance attributes
-reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+reflInfo <- h5readAttributes(fhs,"/SJER/Reflectance/Reflectance_Data" )
 
 scaleFact <- reflInfo$Scale_Factor
 
 
 
-## ----read-in-RGB-and-plot-----------------------------------------------------------------
+## ----read-in-RGB-and-plot, fig.cap="RGB image of a portion of the SJER field site using 3 bands from the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image. At the top right of the image, there is dark, brakish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot."----
 
 # Read in RGB image as a 'stack' rather than a plain 'raster'
 rgbStack <- stack(paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"))
@@ -37,7 +37,7 @@ plotRGB(rgbStack,
 
 
 
-## ----click-to-select, eval=FALSE, comment=NA----------------------------------------------
+## ----click-to-select, eval=FALSE, comment=NA-------------------------
 
 # change plotting parameters to better see the points and numbers generated from clicking
 par(col="red", cex=3)
@@ -49,13 +49,13 @@ c <- click(rgbStack, id=T, xy=T, cell=T, type="p", pch=16, col="magenta", col.la
 
 
 
-## ----convert-cell-to-row-column-----------------------------------------------------------
+## ----convert-cell-to-row-column--------------------------------------
 # convert raster cell number into row and column (used to extract spectral signature below)
 c$row <- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
 c$col <- c$cell%%ncol(rgbStack)
 
 
-## ----extract-spectral-signaures-----------------------------------------------------------
+## ----extract-spectral-signaures--------------------------------------
 
 # create a new dataframe from the band wavelengths so that we can add
 # the reflectance values for each cover type
@@ -64,7 +64,7 @@ Pixel_df <- as.data.frame(wavelengths)
 # loop through each of the cells that we selected
 for(i in 1:length(c$cell)){
 # extract Spectra from a single pixel
-aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",
+aPixel <- h5read(fhs,"/SJER/Reflectance/Reflectance_Data",
                  index=list(NULL,c$col[i],c$row[i]))
 
 # scale reflectance values from 0-1
@@ -82,9 +82,9 @@ Pixel_df <- cbind(Pixel_df,b[2])
 
 
 
-## ----plot-spectral-signatures, fig.width=9, fig.height=6----------------------------------
-# Use the melt() funciton to reshape the dataframe into a format that ggplot prefers
-Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
+## ----plot-spectral-signatures, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."----
+# Use the melt() function to reshape the dataframe into a format that ggplot prefers
+Pixel.melt <- reshape2::melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
 # Now, let's plot some spectral signatures!
 ggplot()+
@@ -97,10 +97,10 @@ ggplot()+
   xlab("Wavelength")
 
 
-## ----mask-atmospheric-absorbtion-bands, fig.width=9, fig.height=6-------------------------
+## ----mask-atmospheric-absorbtion-bands, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. Added to the plot are two rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."----
 
 # grab Reflectance metadata (which contains absorption band limits)
-reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
+reflMetadata <- h5readAttributes(fhs,"/SJER/Reflectance" )
 
 ab1 <- reflMetadata$Band_Window_1_Nanometers
 ab2 <- reflMetadata$Band_Window_2_Nanometers
@@ -118,7 +118,7 @@ ggplot()+
   xlab("Wavelength")
 
 
-## ----remove-absorbtion-band-reflectances, fig.width=9, fig.height=6-----------------------
+## ----remove-absorbtion-band-reflectances, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. Values falling within the two rectangles from the previous image have been set to NA and ommited from the plot. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."----
 
 # Duplicate the spectral signatures into a new data.frame
 Pixel.melt.masked <- Pixel.melt
@@ -139,7 +139,7 @@ ggplot()+
 
 
 
-## ----challenge-answer, echo=FALSE, eval=FALSE---------------------------------------------
+## ----challenge-answer, echo=FALSE, eval=FALSE------------------------
 ## 
 ## # Challenge Answers - These challenge problems will depend on the specific
 ## # pixels that you select, but here we can answer these questions in general.

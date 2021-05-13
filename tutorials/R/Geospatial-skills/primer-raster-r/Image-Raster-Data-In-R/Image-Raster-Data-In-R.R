@@ -1,4 +1,4 @@
-## ----set-up------------------------------------------------------------
+## ----set-up----------------------------------------------------------
 
 # load the raster, sp, and rgdal packages
 library(raster)
@@ -7,12 +7,12 @@ library(rgdal)
 
 # set the working directory to the data
 #setwd("pathToDirHere")
-wd <- ("C:/Users/mccahill/Documents/Github/")
+wd <- ("~/Git/data/")
 setwd(wd)
 
 
 
-## ----import-tiffs------------------------------------------------------
+## ----import-tiffs----------------------------------------------------
 
 # import tiffs
 band19 <- paste0(wd, "NEON-DS-Field-Site-Spatial-Data/SJER/RGB/band19.tif")
@@ -25,7 +25,7 @@ band34
 band58
 
 
-## ----list-files--------------------------------------------------------
+## ----list-files------------------------------------------------------
 # create list of files to make raster stack
 rasterlist1 <- list.files(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB", full.names=TRUE))
 
@@ -33,14 +33,14 @@ rasterlist1
 
 
 
-## ----list-files-tif----------------------------------------------------
+## ----list-files-tif--------------------------------------------------
 rasterlist2 <-  list.files(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB", full.names=TRUE, pattern="tif"))
 
 rasterlist2
 
 
 
-## ----r-stack-----------------------------------------------------------
+## ----r-stack---------------------------------------------------------
 # create raster stack
 rgbRaster <- stack(band19,band34,band58)
 
@@ -48,7 +48,7 @@ rgbRaster <- stack(band19,band34,band58)
 #rstack1 <- stack(rasterlist1)
 
 
-## ----view-stack--------------------------------------------------------
+## ----view-stack------------------------------------------------------
 # check attributes
 rgbRaster
 
@@ -57,18 +57,18 @@ plot(rgbRaster)
 
 
 
-## ----plot-rgb----------------------------------------------------------
+## ----plot-rgb--------------------------------------------------------
 # plot an RGB version of the stack
 plotRGB(rgbRaster,r=3,g=2,b=1, stretch = "lin")
 
 
 
-## ----hist--------------------------------------------------------------
+## ----hist------------------------------------------------------------
 # view histogram of reflectance values for all rasters
 hist(rgbRaster)
 
 
-## ----stack-crop--------------------------------------------------------
+## ----stack-crop------------------------------------------------------
 
 # determine the desired extent
 rgbCrop <- c(256770.7,256959,4112140,4112284)
@@ -81,13 +81,13 @@ plot(rgbRaster_crop)
 
 
 
-## ----challenge-code-plot-crop-rgb, echo=FALSE--------------------------
+## ----challenge-code-plot-crop-rgb, echo=FALSE------------------------
 # plot an RGB version of the cropped stack
 plotRGB(rgbRaster_crop,r=3,g=2,b=1, stretch = "lin")
 
 
 
-## ----create-r-brick----------------------------------------------------
+## ----create-r-brick--------------------------------------------------
 # create raster brick
 rgbBrick <- brick(rgbRaster)
 
@@ -96,7 +96,7 @@ rgbBrick
 
 
 
-## ----rBrick-size-------------------------------------------------------
+## ----rBrick-size-----------------------------------------------------
 # view object size
 object.size(rgbBrick)
 object.size(rgbRaster)
@@ -105,7 +105,7 @@ object.size(rgbRaster)
 plotRGB(rgbBrick,r=3,g=2,b=1, stretch = "Lin")
 
 
-## ----rgb-order-stack---------------------------------------------------
+## ----rgb-order-stack-------------------------------------------------
 # Make a new stack in the order we want the data in 
 orderRGBstack <- stack(rgbRaster$band58,rgbRaster$band34,rgbRaster$band19)
 
@@ -115,7 +115,7 @@ writeRaster(orderRGBstack,paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rg
                            
 
 
-## ----import-multi-raster-----------------------------------------------
+## ----import-multi-raster---------------------------------------------
 
 # import multi-band raster as stack
 multiRasterS <- stack(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/RGB/rgbRaster.tif")) 

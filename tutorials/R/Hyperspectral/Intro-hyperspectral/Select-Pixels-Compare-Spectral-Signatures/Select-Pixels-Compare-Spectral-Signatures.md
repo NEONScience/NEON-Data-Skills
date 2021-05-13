@@ -2,7 +2,7 @@
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/Select-Pixels-Compare-Spectral-Signatures.R
-contributors: Megan Jones
+contributors: Megan Jones, Felipe Sanchez
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
 estimatedTime: 0.5 Hours
@@ -136,13 +136,13 @@ information (band wavelengths and scaling factor) while we're at it.
     setwd(wd)
     
     # define filepath to the hyperspectral dataset
-    f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+    fhs <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
     
     # read in the wavelength information from the HDF5 file
-    wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+    wavelengths <- h5read(fhs,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
     
     # grab scale factor from the Reflectance attributes
-    reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+    reflInfo <- h5readAttributes(fhs,"/SJER/Reflectance/Reflectance_Data" )
     
     scaleFact <- reflInfo$Scale_Factor
 
@@ -159,7 +159,7 @@ of this page.
             r=1,g=2,b=3, scale=300, 
             stretch = "lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/read-in-RGB-and-plot-1.png)
+![RGB image of a portion of the SJER field site using 3 bands from the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image. At the top right of the image, there is dark, brakish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/read-in-RGB-and-plot-1.png)
 
 ## Interactive `click` Function from `raster` Package
 
@@ -175,7 +175,9 @@ suggest the following five cover types (exact location shown below).
 
 As shown here:
 <figure >
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/Click_points.png"
+    alt="RGB image of a portion of the SJER field site using 3 bands fom the raster stack. Also displayed are points labeled with numbers one through five, representing five cover types selected using the interactive click function from the raster package. At the top right of the image, the dark, brakish water has been selected as point 5. The tops of a cluster of trees on the top left of the image has been selected as point 2. At the center of the image, the baseball field with low grass has been selected as point 1. At the bottom left of the image the top of a building has been selected as point 3, and the adjacent gravel lot has been selected as point 4. Plotting parameters have been changed to enhance visibility.">
+    </a>
 <figcaption> Five different land cover types chosen for this study (magenta dots) in the order listed above (red numbers).</figcaption>
 </figure>
 
@@ -214,7 +216,7 @@ column.
     # loop through each of the cells that we selected
     for(i in 1:length(c$cell)){
     # extract Spectra from a single pixel
-    aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",
+    aPixel <- h5read(fhs,"/SJER/Reflectance/Reflectance_Data",
                      index=list(NULL,c$col[i],c$row[i]))
     
     # scale reflectance values from 0-1
@@ -238,15 +240,8 @@ plot the spectral signatures.
 
 
     # Use the melt() function to reshape the dataframe into a format that ggplot prefers
-    Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
-
-    ## Warning in melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance"): The melt
-    ## generic in data.table has been passed a data.frame and will attempt to redirect to the
-    ## relevant reshape2 method; please note that reshape2 is deprecated, and this redirection is
-    ## now deprecated as well. To continue using melt methods from reshape2 while both libraries
-    ## are attached, e.g. melt.list, you can prepend the namespace like reshape2::melt(Pixel_df).
-    ## In the next version, this warning will become an error.
-
+    Pixel.melt <- reshape2::melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
+    
     # Now, let's plot some spectral signatures!
     ggplot()+
       geom_line(data = Pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
@@ -257,7 +252,7 @@ plot the spectral signatures.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/plot-spectral-signatures-1.png)
+![Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/plot-spectral-signatures-1.png)
 
 Nice! However, there seems to be something weird going on in the wavelengths 
 near 1400nm and 1850 nm...
@@ -273,7 +268,7 @@ reflectance measurements are obscured by atmospheric absorbtion.
 
 
     # grab Reflectance metadata (which contains absorption band limits)
-    reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
+    reflMetadata <- h5readAttributes(fhs,"/SJER/Reflectance" )
     
     ab1 <- reflMetadata$Band_Window_1_Nanometers
     ab2 <- reflMetadata$Band_Window_2_Nanometers
@@ -290,7 +285,7 @@ reflectance measurements are obscured by atmospheric absorbtion.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorbtion-bands-1.png)
+![Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. Added to the plot are two rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorbtion-bands-1.png)
 
 Now we can clearly see that the noisy sections of each spectral signature are 
 within the atmospheric absorbtion bands. For our final step, let's take all 
@@ -315,7 +310,7 @@ remove the noisy sections from the plot.
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/remove-absorbtion-band-reflectances-1.png)
+![Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. Values falling within the two rectangles from the previous image have been set to NA and ommited from the plot. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/remove-absorbtion-band-reflectances-1.png)
 
 There you have it, spectral signatures for five different land cover types, 
 with the readings from the atmospheric absorbtion bands removed.

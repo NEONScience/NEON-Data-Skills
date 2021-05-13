@@ -137,13 +137,13 @@ wd <- "~/Documents/data/" #This will depend on your local environment
 setwd(wd)
 
 # define filepath to the hyperspectral dataset
-f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+fhs <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
 # read in the wavelength information from the HDF5 file
-wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+wavelengths <- h5read(fhs,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 
 # grab scale factor from the Reflectance attributes
-reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+reflInfo <- h5readAttributes(fhs,"/SJER/Reflectance/Reflectance_Data" )
 
 scaleFact <- reflInfo$Scale_Factor
 
@@ -228,7 +228,7 @@ Pixel_df <- as.data.frame(wavelengths)
 # loop through each of the cells that we selected
 for(i in 1:length(c$cell)){
 # extract Spectra from a single pixel
-aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",
+aPixel <- h5read(fhs,"/SJER/Reflectance/Reflectance_Data",
                  index=list(NULL,c$col[i],c$row[i]))
 
 # scale reflectance values from 0-1
@@ -254,7 +254,7 @@ plot the spectral signatures.
 
 ```{r plot-spectral-signatures, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."}
 # Use the melt() function to reshape the dataframe into a format that ggplot prefers
-Pixel.melt <- melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
+Pixel.melt <- reshape2::melt(Pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
 # Now, let's plot some spectral signatures!
 ggplot()+
@@ -282,7 +282,7 @@ reflectance measurements are obscured by atmospheric absorbtion.
 ```{r mask-atmospheric-absorbtion-bands, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the five different land cover types: Field, Tree, Roof, Soil, and Water. Added to the plot are two rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. On the x-axis is wavelength in nanometers and on the y-axis is reflectance values."}
 
 # grab Reflectance metadata (which contains absorption band limits)
-reflMetadata <- h5readAttributes(f,"/SJER/Reflectance" )
+reflMetadata <- h5readAttributes(fhs,"/SJER/Reflectance" )
 
 ab1 <- reflMetadata$Band_Window_1_Nanometers
 ab2 <- reflMetadata$Band_Window_2_Nanometers
