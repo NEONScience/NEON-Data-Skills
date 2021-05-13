@@ -124,38 +124,11 @@ set our working directory to the location of our data.
 
     # load libraries
     library(raster)   # work with raster files
-
-    ## Loading required package: sp
-
-    ## 
-    ## Attaching package: 'raster'
-
-    ## The following object is masked from 'package:plotly':
-    ## 
-    ##     select
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     select
-
     library(rgdal)    # work with raster files
-
-    ## rgdal: version: 1.5-18, (SVN revision 1082)
-    ## Geospatial Data Abstraction Library extensions to R successfully loaded
-    ## Loaded GDAL runtime: GDAL 3.1.1, released 2020/06/22
-    ## Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rgdal/gdal
-    ## GDAL binary built with GEOS: TRUE 
-    ## Loaded PROJ runtime: Rel. 6.3.1, February 10th, 2020, [PJ_VERSION: 631]
-    ## Path to PROJ shared files: /Library/Frameworks/R.framework/Versions/4.0/Resources/library/rgdal/proj
-    ## Linking to sp version:1.4-4
-    ## To mute warnings of possible GDAL/OSR exportToProj4() degradation,
-    ## use options("rgdal_show_exportToProj4_warnings"="none") before loading rgdal.
-
+    
     ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
-    wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+    wd <- "~/Git/data/" # This will depend on your local environment
     setwd(wd)
-
-    ## Error in setwd(wd): cannot change working directory
 
 Then we can read in two DTMs. The first DTM `preDTM3.tif` is a model from data
 collected 26-27 June 2013 and the `postDTM3.tif` is a model from data collected
@@ -164,25 +137,28 @@ on 8 October 2013.
 
     # Load DTMs into R
     DTM_pre <- raster(paste0(wd,"disturb-events-co13/lidar/pre-flood/preDTM3.tif"))
-
-    ## Error in .local(.Object, ...) :
-
-    ## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-
     DTM_post <- raster(paste0(wd,"disturb-events-co13/lidar/post-flood/postDTM3.tif"))
-
-    ## Error in .local(.Object, ...) :
-
-    ## Error in .rasterObjectFromFile(x, band = band, objecttype = "RasterLayer", : Cannot create a RasterLayer object from this file. (file does not exist)
-
+    
     # View raster structure
     DTM_pre
 
-    ## Error in eval(expr, envir, enclos): object 'DTM_pre' not found
+    ## class      : RasterLayer 
+    ## dimensions : 2000, 2000, 4e+06  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 473000, 475000, 4434000, 4436000  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=13 +datum=WGS84 +units=m +no_defs 
+    ## source     : /Users/olearyd/Git/data/disturb-events-co13/lidar/pre-flood/preDTM3.tif 
+    ## names      : preDTM3
 
     DTM_post
 
-    ## Error in eval(expr, envir, enclos): object 'DTM_post' not found
+    ## class      : RasterLayer 
+    ## dimensions : 2000, 2000, 4e+06  (nrow, ncol, ncell)
+    ## resolution : 1, 1  (x, y)
+    ## extent     : 473000, 475000, 4434000, 4436000  (xmin, xmax, ymin, ymax)
+    ## crs        : +proj=utm +zone=13 +datum=WGS84 +units=m +no_defs 
+    ## source     : /Users/olearyd/Git/data/disturb-events-co13/lidar/post-flood/postDTM3.tif 
+    ## names      : postDTM3
 
 Among the information we now about our data from looking at the raster structure, 
 is that the units are in **meters** for both rasters.  
@@ -197,28 +173,12 @@ The default azimuth for many hillshades is 315 degrees -- to the NW.
     # the extent we are working on. 
     
     DTM_pre_slope <- terrain(DTM_pre, opt="slope",units = "radians")
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'terrain': object 'DTM_pre' not found
-
     DTM_pre_aspect <- terrain(DTM_pre, opt ="aspect", units = "radians")
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'terrain': object 'DTM_pre' not found
-
     DTM_pre_hillshade <- hillShade(DTM_pre_slope, DTM_pre_aspect)
-
-    ## Error in compareRaster(slope, aspect): object 'DTM_pre_slope' not found
-
+    
     DTM_post_slope <- terrain(DTM_post, opt="slope",units = "radians")
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'terrain': object 'DTM_post' not found
-
     DTM_post_aspect <- terrain(DTM_post, opt ="aspect", units = "radians")
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'terrain': object 'DTM_post' not found
-
     DTM_post_hillshade <- hillShade(DTM_post_slope, DTM_post_aspect)
-
-    ## Error in compareRaster(slope, aspect): object 'DTM_post_slope' not found
 
 Now we can plot the raster objects (DTM & hillshade) together by using `add=TRUE`
 when plotting the second plot. To be able to see the first (hillshade) plot,
@@ -232,15 +192,13 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
             legend=FALSE,         # no legend, we don't care about the grey of the hillshade
             main="Four Mile Canyon Creek, Boulder County\nPre-Flood",
             axes=FALSE)           # makes for a cleaner plot, if the coordinates aren't necessary
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTM_pre_hillshade' not found
-
+    
     plot(DTM_pre, 
             axes=FALSE,
             alpha=0.3,   # sets how transparent the object will be (0=transparent, 1=not transparent)
             add=TRUE)  # add=TRUE (or T), add plot to the previous plotting frame
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTM_pre' not found
+![Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-1.png)
 
     # plot Post-flood w/ hillshade
     # note, no add=T in this code, so new plotting frame. 
@@ -249,15 +207,13 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
             legend=FALSE,
             main="Four Mile Canyon Creek, Boulder County\nPost-Flood",
             axes=FALSE)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTM_post_hillshade' not found
-
+    
     plot(DTM_post, 
             axes=FALSE,
             alpha=0.3,
             add=T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTM_post' not found
+![Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-2.png)
 
 #### Questions? 
 
@@ -275,14 +231,12 @@ DTMs.
 
     # DoD: erosion to be neg, deposition to be positive, therefore post - pre
     DoD <- DTM_post-DTM_pre
-
-    ## Error in eval(expr, envir, enclos): object 'DTM_post' not found
-
+    
     plot(DoD,
             main="Digital Elevation Model of Difference (DoD)",
             axes=FALSE)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DoD' not found
+![Digital Elevation Model of Difference showing the difference between digital elevation models (DTM).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/create-difference-model-1.png)
 
 Here we have our DoD, but it is a bit hard to read. What does the scale bar tell
 us?  
@@ -298,7 +252,7 @@ the values in the `DoD` raster object.
     # histogram of values in DoD
     hist(DoD)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'hist': object 'DoD' not found
+![Histogram of values showing the distribution of values in the Digital Elevation Model of Difference. The values are plotted on the X-axis and the frquency on the Y-axis.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/hist-DoD-1.png)
 
 Most of the areas have a very small elevation change. To make the map easier to
 read, we can do two things. 
@@ -335,9 +289,7 @@ Let's now implement these two changes in our code.
             legend=FALSE,
             main="Elevation Change Post Flood\nFour Mile Canyon Creek, Boulder County",
             axes=FALSE)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTM_post_hillshade' not found
-
+    
     # add the DoD to it with specified breaks & colors
     plot(DoD,
             breaks = c(-5,-1,-0.5,0.5,1,10),
@@ -346,7 +298,7 @@ Let's now implement these two changes in our code.
             alpha=0.3,
             add =T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DoD' not found
+![Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/pretty-diff-model-1.png)
 
 #### Question
 Do you think this is the best color scheme or set point for the breaks? Create
@@ -422,25 +374,11 @@ then crop the desired layer to the crop box.
 
     # crop desired layers to this cropbox
     DTM_pre_crop <- crop(DTM_pre, cropbox2)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'crop': object 'DTM_pre' not found
-
     DTM_post_crop <- crop(DTM_post, cropbox2)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'crop': object 'DTM_post' not found
-
-    DTMpre_hill_crop <- crop(DTMpre_hill,cropbox2)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'crop': object 'DTMpre_hill' not found
-
-    DTMpost_hill_crop <- crop(DTMpost_hill,cropbox2)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'crop': object 'DTMpost_hill' not found
-
+    DTMpre_hill_crop <- crop(DTM_pre_hillshade,cropbox2)
+    DTMpost_hill_crop <- crop(DTM_post_hillshade,cropbox2)
     DoD_crop <- crop(DoD, cropbox2)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'crop': object 'DoD' not found
-
+    
     # plot all again using the cropped layers
     
     # PRE
@@ -449,16 +387,13 @@ then crop the desired layer to the crop box.
             legend=FALSE,
             main="Four Mile Canyon Creek, Boulder County\nPre-Flood",
             axes=FALSE)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTMpre_hill_crop' not found
-
     # note \n in the title forces a line break in the title
     plot(DTM_pre_crop, 
             axes=FALSE,
             alpha=0.3,
             add=T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTM_pre_crop' not found
+![Raster Plot of the cropped section of Four Mile Creek, Boulder County.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-1.png)
 
     # POST
     # plot Post-flood w/ hillshade
@@ -467,15 +402,13 @@ then crop the desired layer to the crop box.
             legend=FALSE,
             main="Four Mile Canyon Creek, Boulder County\nPost-Flood",
             axes=FALSE)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTMpost_hill_crop' not found
-
+    
     plot(DTM_post_crop, 
             axes=FALSE,
             alpha=0.3,
             add=T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTM_post_crop' not found
+![Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-2.png)
 
     # CHANGE - DoD
     plot(DTMpost_hill_crop,
@@ -483,9 +416,7 @@ then crop the desired layer to the crop box.
             legend=FALSE,
             main="Elevation Change Post Flood\nFour Mile Canyon Creek, Boulder County",
             axes=FALSE)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DTMpost_hill_crop' not found
-
+    
     plot(DoD_crop,
             breaks = c(-5,-1,-0.5,0.5,1,10),
             col= difCol5,
@@ -493,7 +424,7 @@ then crop the desired layer to the crop box.
             alpha=0.3,
             add =T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DoD_crop' not found
+![Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-3.png)
 
 Now you have a graphic of your particular area of interest. 
 

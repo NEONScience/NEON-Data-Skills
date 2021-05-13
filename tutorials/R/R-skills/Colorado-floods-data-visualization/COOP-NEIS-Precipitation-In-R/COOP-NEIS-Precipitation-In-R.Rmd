@@ -204,7 +204,7 @@ library(plotly) # create cool interactive plots
 # set your working directory to ensure R can find the file we wish to import 
 # and where we want to save our files. Be sure to move the download into 
 # your working direectory!
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+wd <- "~/Git/data/" # This will depend on your local environment
 setwd(wd)
 
 ```

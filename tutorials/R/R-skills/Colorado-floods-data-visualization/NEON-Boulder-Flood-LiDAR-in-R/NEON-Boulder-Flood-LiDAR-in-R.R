@@ -1,14 +1,14 @@
-## ----load-libraries----------------------------------------------------
+## ----load-libraries--------------------------------------------------
 # load libraries
 library(raster)   # work with raster files
 library(rgdal)    # work with raster files
 
 ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+wd <- "~/Git/data/" # This will depend on your local environment
 setwd(wd)
 
 
-## ----open-DTMs---------------------------------------------------------
+## ----open-DTMs-------------------------------------------------------
 # Load DTMs into R
 DTM_pre <- raster(paste0(wd,"disturb-events-co13/lidar/pre-flood/preDTM3.tif"))
 DTM_post <- raster(paste0(wd,"disturb-events-co13/lidar/post-flood/postDTM3.tif"))
@@ -19,7 +19,7 @@ DTM_post
 
 
 
-## ----open-hillshade----------------------------------------------------
+## ----open-hillshade--------------------------------------------------
 
 # Creating hillshade for DTM_pre & DTM_post
 # In order to generate the hillshde, we need both the slope and the aspect of
@@ -125,13 +125,13 @@ cropbox1 <- drawExtent()
 
 
 
-## ----crop-raster-man-view----------------------------------------------
+## ----crop-raster-man-view--------------------------------------------
 # view the extent of the cropbox1
 cropbox1
 
 
 
-## ----crop-raster-coords------------------------------------------------
+## ----crop-raster-coords----------------------------------------------
 # desired coordinates of the box
 cropbox2<-c(473792.6,474999,4434526,4435453)
 
@@ -140,8 +140,8 @@ cropbox2<-c(473792.6,474999,4434526,4435453)
 # crop desired layers to this cropbox
 DTM_pre_crop <- crop(DTM_pre, cropbox2)
 DTM_post_crop <- crop(DTM_post, cropbox2)
-DTMpre_hill_crop <- crop(DTMpre_hill,cropbox2)
-DTMpost_hill_crop <- crop(DTMpost_hill,cropbox2)
+DTMpre_hill_crop <- crop(DTM_pre_hillshade,cropbox2)
+DTMpost_hill_crop <- crop(DTM_post_hillshade,cropbox2)
 DoD_crop <- crop(DoD, cropbox2)
 
 # plot all again using the cropped layers
