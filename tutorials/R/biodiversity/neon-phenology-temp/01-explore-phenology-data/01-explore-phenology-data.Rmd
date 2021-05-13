@@ -193,7 +193,7 @@ options(stringsAsFactors=F) #keep strings as character type not factors
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
-wd <- "~/Documents/data/" # Change this to match your local environment
+wd <- "~/Git/data/" # Change this to match your local environment
 setwd(wd)
 
 ```
