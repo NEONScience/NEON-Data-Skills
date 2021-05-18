@@ -64,12 +64,26 @@ View(categoricalCodes_20120)
 
 ## ----munging-and-organizing-------------------------------
 
+# known problem with dupes published in the inv_fieldData table as of 2021-02-18
+# this anticipated to be fixed in data release next year (Jan 2022)
+# use sampleID as primary key, keep the first uid associated with any sampleID that has multiple uids
+de_duped_uids <- inv_fieldData %>% 
+  group_by(sampleID) %>%
+  summarise(n_recs = length(uid),
+                   n_unique_uids = length(unique(uid)),
+                   uid_to_keep = dplyr::first(uid)) 
+
+# filter using de-duped uids
+inv_fieldData <- inv_fieldData %>%
+  dplyr::filter(uid %in% de_duped_uids$uid_to_keep)
+
 # extract year from date, add it as a new column
 inv_fieldData <- inv_fieldData %>%
   mutate(
     year = collectDate %>% 
       lubridate::as_date() %>% 
       lubridate::year())
+
 
 
 # extract location data into a separate table
@@ -114,23 +128,33 @@ table_taxon <- inv_taxonomyProcessed %>%
 
 # Make the observation table.
 # start with inv_taxonomyProcessed
-table_observation <- inv_taxonomyProcessed %>% 
-  
-  # select a subset of columns from
-  # inv_taxonomyProcessed
-  select(uid,
-         sampleID,
-         domainID,
-         siteID,
-         namedLocation,
-         collectDate,
-         subsamplePercent,
-         individualCount,
-         estimatedTotalCount,
+
+# check for repeated taxa within a sampleID that need to be added together
+inv_taxonomyProcessed_summed <- inv_taxonomyProcessed %>% 
+  select(sampleID,
          acceptedTaxonID,
-         order, family, genus, 
-         scientificName,
-         taxonRank) %>%
+         individualCount,
+         estimatedTotalCount) %>%
+  group_by(sampleID, acceptedTaxonID) %>%
+  summarize(
+    across(c(individualCount, estimatedTotalCount), ~sum(.x, na.rm = TRUE)))
+  
+
+# join summed taxon counts back with sample and field data
+table_observation <- inv_taxonomyProcessed_summed %>%
+  
+  # Join relevant sample info back in by sampleID
+  left_join(inv_taxonomyProcessed %>% 
+              select(sampleID,
+                     domainID,
+                     siteID,
+                     namedLocation,
+                     collectDate,
+                     acceptedTaxonID,
+                     order, family, genus, 
+                     scientificName,
+                     taxonRank) %>%
+              distinct()) %>%
   
   # Join the columns selected above with two 
   # columns from inv_fieldData (the two columns 
@@ -148,6 +172,11 @@ table_observation <- inv_taxonomyProcessed %>%
   mutate(inv_dens = estimatedTotalCount / benthicArea,
          inv_dens_unit = 'count per square meter')
 
+# check for duplicate records, should return a table with 0 rows
+table_observation %>% 
+  group_by(sampleID, acceptedTaxonID) %>% 
+  summarize(n_obs = length(sampleID)) %>%
+  filter(n_obs > 1)
 
 
 # extract sample info
