@@ -10,8 +10,10 @@ library(tidyverse)
 library(neonUtilities)
 
 
-# source .r file with my NEON_TOKEN
-# source("my_neon_token.R") # OPTIONAL - load NEON token
+# OPTIONAL - save NEON token as a persisten environmental 
+# variable in .Renviron.
+# If you do this, you can retrieve the NEON_TOKEN using 
+# Sys.getenv("NEON_TOKEN")
 # See: https://www.neonscience.org/neon-api-tokens-tutorial
 
 
@@ -28,7 +30,7 @@ my_site_list <- c('ARIK', 'POSE', 'MAYF')
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = my_dpid,
   site = my_site_list,
-  #token = NEON_TOKEN, #Uncomment to use your token
+  # token = Sys.getenv("NEON_TOKEN"), #Uncomment to use your token
   check.size = F)
 
 
