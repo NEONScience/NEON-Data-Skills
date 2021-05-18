@@ -206,6 +206,7 @@ table_observation_cleaned <- table_observation %>%
   filter(acceptedTaxonID %in%
              taxa_list_cleaned$acceptedTaxonID,
          !sampleID %in% c("MAYF.20190729.CORE.1",
+                          "MAYF.20200713.CORE.1",
                           "POSE.20160718.HESS.1")) 
                       #this is an outlier sampleID
 
@@ -309,7 +310,7 @@ table_sample_by_taxon_density_wide <- table_sample_by_taxon_density_long %>%
                      values_fn = list(inv_dens = sum)) %>%
   column_to_rownames(var = "sampleID") 
 
-# checl col and row sums
+# check col and row sums -- mins should all be > 0
 colSums(table_sample_by_taxon_density_wide) %>% min()
 rowSums(table_sample_by_taxon_density_wide) %>% min()
 
