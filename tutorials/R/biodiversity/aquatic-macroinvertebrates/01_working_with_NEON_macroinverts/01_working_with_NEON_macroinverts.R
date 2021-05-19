@@ -8,7 +8,7 @@
 # load libraries 
 library(tidyverse)
 library(neonUtilities)
-
+library(vegan)
 
 # OPTIONAL - save NEON token as a persisten environmental 
 # variable in .Renviron.
@@ -319,51 +319,35 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 ## ----calc-alpha-------------------------------------------
 
 table_sample_by_taxon_density_wide %>%
-  vegetarian::d(lev = 'alpha', q = 0)
+  vegan::renyi(scales = 0, hill = TRUE) %>%
+  mean()
 
 
 
 ## ----simulated-abg----------------------------------------
 
-# even distribution, order q = 0 diversity = 10 
-vegetarian::d(
-  data.frame(spp.a = 10, spp.b = 10, spp.c = 10, 
-             spp.d = 10, spp.e = 10, spp.f = 10, 
-             spp.g = 10, spp.h = 10, spp.i = 10, 
-             spp.j = 10),
-  q = 0, 
-  lev = "alpha")
+# even distribution, orders q = 0 and q = 1 for 10 taxa
+vegan::renyi(
+  c(spp.a = 10, spp.b = 10, spp.c = 10, 
+    spp.d = 10, spp.e = 10, spp.f = 10, 
+    spp.g = 10, spp.h = 10, spp.i = 10, 
+    spp.j = 10),
+  hill = TRUE,
+  scales = c(0, 1))
 
-# even distribution, order q = 1 diversity = 10
-vegetarian::d(
-  data.frame(spp.a = 10, spp.b = 10, spp.c = 10, 
-             spp.d = 10, spp.e = 10, spp.f = 10, 
-             spp.g = 10, spp.h = 10, spp.i = 10, 
-             spp.j = 10),
-  q = 1, 
-  lev = "alpha")
-
-# un-even distribution, order q = 0 diversity = 10
-vegetarian::d(
-  data.frame(spp.a = 90, spp.b = 2, spp.c = 1, 
-             spp.d = 1, spp.e = 1, spp.f = 1, 
-             spp.g = 1, spp.h = 1, spp.i = 1, 
-             spp.j = 1),
-  q = 0, 
-  lev = "alpha")
-
-# un-even distribution, order q = 1 diversity = 1.72
-vegetarian::d(
-  data.frame(spp.a = 90, spp.b = 2, spp.c = 1, 
-             spp.d = 1, spp.e = 1, spp.f = 1, 
-             spp.g = 1, spp.h = 1, spp.i = 1, 
-             spp.j = 1),
-  q = 1, 
-  lev = "alpha")
+# uneven distribution, orders q = 0 and q = 1 for 10 taxa
+vegan::renyi(
+  c(spp.a = 90, spp.b = 2, spp.c = 1, 
+    spp.d = 1, spp.e = 1, spp.f = 1, 
+    spp.g = 1, spp.h = 1, spp.i = 1, 
+    spp.j = 1),
+  hill = TRUE,
+  scales = c(0, 1)) 
 
 
 
 ## ----compare-q-NEON---------------------------------------
+
 
 # Nest data by siteID
 data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
@@ -373,39 +357,63 @@ data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
   tibble::column_to_rownames("sampleID") %>%
   nest(data = -siteID)
 
-# apply the calculation by site  
+data_nested_by_siteID$data[[1]] %>%
+  vegan::renyi(scales = 0, hill = TRUE) %>%
+  mean()
+
+# apply the calculation by site for alpha diversity  
 data_nested_by_siteID %>% mutate(
   alpha_q0 = purrr::map_dbl(
     .x = data,
-    .f = ~ vegetarian::d(abundances = .,
-    lev = 'alpha', 
-    q = 0)))
+    .f = ~ vegan::renyi(x = .,
+                        hill = TRUE, 
+                        scales = 0) %>% mean()
+  ))
+
+# apply to colMeans for gamma diversity
+data_nested_by_siteID %>% mutate(
+  alpha_q0 = purrr::map_dbl(
+    .x = data,
+    .f = ~ vegan::renyi(x = colMeans(.),
+                        hill = TRUE, 
+                        scales = 0)
+  ))
 
 # Note that POSE has the highest mean diversity
 
 
 
 # Now calculate alpha, beta, and gamma using orders 0 and 1,
-# Note that I don't make all the argument assignments as explicitly here
 diversity_partitioning_results <- 
-    data_nested_by_siteID %>% 
-    mutate(
-        n_samples = purrr::map_int(data, ~ nrow(.)),
-        alpha_q0 = purrr::map_dbl(data, ~vegetarian::d(
-            abundances = ., lev = 'alpha', q = 0)),
-        alpha_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'alpha', q = 1)),
-        beta_q0 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'beta', q = 0)),
-        beta_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'beta', q = 1)),
-        gamma_q0 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'gamma', q = 0)),
-        gamma_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-            abundances = ., lev = 'gamma', q = 1)))
+  data_nested_by_siteID %>% 
+  mutate(
+    n_samples = purrr::map_int(data, ~ nrow(.)),
+    alpha_q0 = purrr::map_dbl(
+      .x = data,
+      .f = ~ vegan::renyi(x = .,
+                          hill = TRUE, 
+                          scales = 0) %>% mean()),
+    alpha_q1 = purrr::map_dbl(
+      .x = data,
+      .f = ~ vegan::renyi(x = .,
+                          hill = TRUE, 
+                          scales = 1) %>% mean()),
+    gamma_q0 = purrr::map_dbl(
+      .x = data,
+      .f = ~ vegan::renyi(x = colMeans(.),
+                          hill = TRUE, 
+                          scales = 0)),
+    gamma_q1 = purrr::map_dbl(
+      .x = data,
+      .f = ~ vegan::renyi(x = colMeans(.),
+                          hill = TRUE, 
+                          scales = 1)),
+    beta_q0 = gamma_q0 / alpha_q0,
+    beta_q1 = gamma_q1 / alpha_q1)
 
 
-diversity_partitioning_results %>% select(-data) %>% print()
+diversity_partitioning_results %>% 
+  select(-data) %>% as.data.frame() %>% print()
 
 # Note that POSE has the highest mean diversity
 

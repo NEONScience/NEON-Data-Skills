@@ -10,8 +10,10 @@ library(tidyverse)
 library(neonUtilities)
 library(devtools)
 
-# install neon_demo branch of ecocomDP
-# devtools::install_github("EDIorg/ecocomDP@development")
+# # install ecocomDP
+# # here is the tag (pre-release version) of the package
+# # used in this workshop
+# devtools::install_github("EDIorg/ecocomDP@v0.0.0.9000")
 library(ecocomDP)
 
 # OPTIONAL - save NEON token as a persisten environmental 
