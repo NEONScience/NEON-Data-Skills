@@ -10,7 +10,7 @@ library(tidyverse)
 library(neonUtilities)
 library(vegan)
 
-# OPTIONAL - save NEON token as a persisten environmental 
+# OPTIONAL - save NEON token as a persistent environmental 
 # variable in .Renviron.
 # If you do this, you can retrieve the NEON_TOKEN using 
 # Sys.getenv("NEON_TOKEN")
@@ -318,6 +318,15 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 ## ----calc-alpha-------------------------------------------
 
+# Here we use vegan::renyi to calculate Hill numbers
+# If hill = FALSE, the function returns an entropy
+# If hill = TRUE, the function returns the exponentiated
+# entropy. In other words:
+# exp(renyi entropy) = Hill number = "species equivalent"
+
+# Note that for this function, the "scales" argument 
+# determines the order of q used in the calculation
+
 table_sample_by_taxon_density_wide %>%
   vegan::renyi(scales = 0, hill = TRUE) %>%
   mean()
@@ -367,23 +376,42 @@ data_nested_by_siteID %>% mutate(
     .x = data,
     .f = ~ vegan::renyi(x = .,
                         hill = TRUE, 
-                        scales = 0) %>% mean()
-  ))
+                        scales = 0) %>% mean()),
+  alpha_q1 = purrr::map_dbl(
+    .x = data,
+    .f = ~ vegan::renyi(x = .,
+                        hill = TRUE, 
+                        scales = 1) %>% mean()),
+  alpha_q2 = purrr::map_dbl(
+    .x = data,
+    .f = ~ vegan::renyi(x = .,
+                        hill = TRUE, 
+                        scales = 2) %>% mean())
+  )
 
-# apply to colMeans for gamma diversity
+# Note that POSE has the highest mean alpha diversity
+
+
+
+
+# To calculate gamma diversity at the site scale,
+# calculate the column means and then calculate 
+# the renyi entropy and Hill number
+# Here we are only calcuating order 
+# q = 0 gamma diversity
 data_nested_by_siteID %>% mutate(
-  alpha_q0 = purrr::map_dbl(
+  gamma_q0 = purrr::map_dbl(
     .x = data,
     .f = ~ vegan::renyi(x = colMeans(.),
                         hill = TRUE, 
-                        scales = 0)
-  ))
+                        scales = 0)))
 
-# Note that POSE has the highest mean diversity
-
+# Note that POSE has the highest gamma diversity
 
 
-# Now calculate alpha, beta, and gamma using orders 0 and 1,
+
+# Now calculate alpha, beta, and gamma using orders 0 and 1 
+# for each siteID
 diversity_partitioning_results <- 
   data_nested_by_siteID %>% 
   mutate(
@@ -415,7 +443,6 @@ diversity_partitioning_results <-
 diversity_partitioning_results %>% 
   select(-data) %>% as.data.frame() %>% print()
 
-# Note that POSE has the highest mean diversity
 
 
 
