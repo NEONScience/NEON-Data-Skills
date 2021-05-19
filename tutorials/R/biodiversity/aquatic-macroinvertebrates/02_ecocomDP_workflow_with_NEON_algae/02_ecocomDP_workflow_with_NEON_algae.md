@@ -36,7 +36,6 @@ Prior to starting the tutorial ensure that the following packages are installed.
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **devtools:** `install.packages("devtools")`
 * **vegan:** `install.packages("vegan")`
-* **vegetarian:** `install.packages("vegetarian")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -61,10 +60,10 @@ See the ecocomDP github repo here:
 
 The motivation is for both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research Network and Macrosystems Biology projects, to be discoverable through a single data search tool, and to be delivered in a standard format. Our objective here is to demonstrate how the workflow will work with NEON biodiversity data packages. 
 
-This tutorial was prepared for the <a href="https://freshwater-science.org/sfs-summer-science"> Society for Freshwater Science 2020 "Summer of Science" </a> program.
+This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
 
 ## Load Libraries and Prepare Workspace
-First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above. We load the `devtools` package here so that we can install the latest development version of the ecocomDP package from Dr. Sokol's GitHub repository. The ecocomDP package is not yet available through CRAN, and therefore, we must install the package in this manner.
+First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above. We load the `devtools` package here so that we can install the latest development version of the ecocomDP package from the GitHub repository. The ecocomDP package is not yet available through CRAN, and therefore, we must install the package in this manner.
 
 There are also two optional sections in this code chunk: clearing your environment, and loading your NEON API token. Clearing out your environment will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! Secondly, your NEON API token will allow you increased download speeds, and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>.
 
@@ -78,10 +77,15 @@ There are also two optional sections in this code chunk: clearing your environme
     library(tidyverse)
     library(neonUtilities)
     library(devtools)
+    library(vegan)
     
-    # install neon_demo branch of ecocomDP
-    devtools::install_github("sokole/ecocomDP@neon_demo")
-    
+    # install ecocomDP
+    # Here, we're using a tagged (pre-release) version of the 
+    # package that's available on GitHub. Using this tag 
+    # (@v.0.0.0.9000) will always install the same version 
+    # of the package. We plan to release v1.0 of this package
+    # on CRAN later this year. 
+    devtools::install_github("EDIorg/ecocomDP@v0.0.0.9000")
     library(ecocomDP)
     
     # source .r file with my NEON_TOKEN
@@ -96,261 +100,102 @@ In this first step, we show how to search the ecocomDP database for macroinverti
     # search for invertebrate data products
     my_search_result <- 
         ecocomDP::search_data(text = "invertebrate")
-
-    ## Searching data ...
-
     View(my_search_result)
     
     # pull data for the NEON aquatic "Macroinvertebrate
-    # collection" data product
-    # function not yet compatible with "token" argument 
-    # in updated neonUtilities
-    my_search_result_data <- 
-        ecocomDP::read_data(id = "DP1.20120.001",
-                            site = c("ARIK", "POSE"))
-
-    ## Finding available files
-    ## 
-  |                                                        
-  |                                                  |   0%
-  |                                                        
-  |=                                                 |   3%
-  |                                                        
-  |===                                               |   5%
-  |                                                        
-  |====                                              |   8%
-  |                                                        
-  |=====                                             |  10%
-  |                                                        
-  |======                                            |  13%
-  |                                                        
-  |========                                          |  15%
-  |                                                        
-  |=========                                         |  18%
-  |                                                        
-  |==========                                        |  21%
-  |                                                        
-  |============                                      |  23%
-  |                                                        
-  |=============                                     |  26%
-  |                                                        
-  |==============                                    |  28%
-  |                                                        
-  |===============                                   |  31%
-  |                                                        
-  |=================                                 |  33%
-  |                                                        
-  |==================                                |  36%
-  |                                                        
-  |===================                               |  38%
-  |                                                        
-  |=====================                             |  41%
-  |                                                        
-  |======================                            |  44%
-  |                                                        
-  |=======================                           |  46%
-  |                                                        
-  |========================                          |  49%
-  |                                                        
-  |==========================                        |  51%
-  |                                                        
-  |===========================                       |  54%
-  |                                                        
-  |============================                      |  56%
-  |                                                        
-  |=============================                     |  59%
-  |                                                        
-  |===============================                   |  62%
-  |                                                        
-  |================================                  |  64%
-  |                                                        
-  |=================================                 |  67%
-  |                                                        
-  |===================================               |  69%
-  |                                                        
-  |====================================              |  72%
-  |                                                        
-  |=====================================             |  74%
-  |                                                        
-  |======================================            |  77%
-  |                                                        
-  |========================================          |  79%
-  |                                                        
-  |=========================================         |  82%
-  |                                                        
-  |==========================================        |  85%
-  |                                                        
-  |============================================      |  87%
-  |                                                        
-  |=============================================     |  90%
-  |                                                        
-  |==============================================    |  92%
-  |                                                        
-  |===============================================   |  95%
-  |                                                        
-  |================================================= |  97%
-  |                                                        
-  |==================================================| 100%
-    ## 
-    ## Downloading files totaling approximately 1.74008 MB
-    ## Downloading 39 files
-    ## 
-  |                                                        
-  |                                                  |   0%
-  |                                                        
-  |=                                                 |   3%
-  |                                                        
-  |===                                               |   5%
-  |                                                        
-  |====                                              |   8%
-  |                                                        
-  |=====                                             |  11%
-  |                                                        
-  |=======                                           |  13%
-  |                                                        
-  |========                                          |  16%
-  |                                                        
-  |=========                                         |  18%
-  |                                                        
-  |===========                                       |  21%
-  |                                                        
-  |============                                      |  24%
-  |                                                        
-  |=============                                     |  26%
-  |                                                        
-  |==============                                    |  29%
-  |                                                        
-  |================                                  |  32%
-  |                                                        
-  |=================                                 |  34%
-  |                                                        
-  |==================                                |  37%
-  |                                                        
-  |====================                              |  39%
-  |                                                        
-  |=====================                             |  42%
-  |                                                        
-  |======================                            |  45%
-  |                                                        
-  |========================                          |  47%
-  |                                                        
-  |=========================                         |  50%
-  |                                                        
-  |==========================                        |  53%
-  |                                                        
-  |============================                      |  55%
-  |                                                        
-  |=============================                     |  58%
-  |                                                        
-  |==============================                    |  61%
-  |                                                        
-  |================================                  |  63%
-  |                                                        
-  |=================================                 |  66%
-  |                                                        
-  |==================================                |  68%
-  |                                                        
-  |====================================              |  71%
-  |                                                        
-  |=====================================             |  74%
-  |                                                        
-  |======================================            |  76%
-  |                                                        
-  |=======================================           |  79%
-  |                                                        
-  |=========================================         |  82%
-  |                                                        
-  |==========================================        |  84%
-  |                                                        
-  |===========================================       |  87%
-  |                                                        
-  |=============================================     |  89%
-  |                                                        
-  |==============================================    |  92%
-  |                                                        
-  |===============================================   |  95%
-  |                                                        
-  |================================================= |  97%
-  |                                                        
-  |==================================================| 100%
-    ## 
-    ## Unpacking zip files using 1 cores.
-    ## Stacking operation across a single core.
-    ## Stacking table inv_fieldData
-    ## Stacking table inv_persample
-    ## Stacking table inv_taxonomyProcessed
-    ## Copied the most recent publication of validation file to /stackedFiles
-    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
-    ## Copied the most recent publication of variable definition file to /stackedFiles
-    ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 1.028011 secs
-    ## All unzipped monthly data folders have been removed.
-
-    ## Joining, by = "sampleID"
+    # collection"
+    my_data <- ecocomDP::read_data(
+      id = "neon.ecocomdp.20120.001.001",
+      site = c('ARIK','MAYF'),
+      startdate = "2017-06",
+      enddate = "2020-03",
+      # token = NEON_TOKEN, #Uncomment to use your token
+      check.size = FALSE)
 
 Now that we have downloaded the data, let's take a look at tht `ecocomDP` data object structure:
 
 
     # examine the structure of the data object that is returned
-    my_search_result_data %>% names()
+    my_data %>% names()
 
+    ## [1] "neon.ecocomdp.20120.001.001"
+
+    my_data$neon.ecocomdp.20120.001.001 %>% names()
+
+    ## [1] "metadata"          "tables"            "validation_issues"
+
+    # short list of package summary data
+    my_data$neon.ecocomdp.20120.001.001$metadata$data_package_info
+
+    ## $data_package_id
+    ## [1] "neon.ecocomdp.20120.001.001.20210519130241"
+    ## 
+    ## $taxonomic_group
+    ## [1] "MACROINVERTEBRATES"
+    ## 
+    ## $orig_NEON_data_product_id
     ## [1] "DP1.20120.001"
+    ## 
+    ## $NEON_to_ecocomDP_mapping_method
+    ## [1] "neon.ecocomdp.20120.001.001"
+    ## 
+    ## $data_access_method
+    ## [1] "original NEON data accessed using neonUtilities v2.0.1"
+    ## 
+    ## $data_access_date_time
+    ## [1] "2021-05-19 13:02:44 MDT"
 
-    my_search_result_data$DP1.20120.001 %>% names()
+    # validation issues? None if returns an empty list
+    my_data$neon.ecocomdp.20120.001.001$validation_issues
 
-    ## [1] "metadata" "tables"
+    ## list()
 
-    my_search_result_data$DP1.20120.001$tables %>% names()
+    # examine the tables
+    my_data$neon.ecocomdp.20120.001.001$tables %>% names()
 
-    ## [1] "location"    "taxon"       "observation"
+    ## [1] "location"              "location_ancillary"    "taxon"                 "observation"          
+    ## [5] "observation_ancillary" "dataset_summary"
 
-    my_search_result_data$DP1.20120.001$tables$taxon %>% head()
+    my_data$neon.ecocomdp.20120.001.001$tables$taxon %>% head()
 
-    ##   taxon_id taxon_rank          taxon_name  authority_system
-    ## 1   STEFEM    species Stenonema femoratum NEON_external_lab
-    ## 2    BAESP     family        Baetidae sp. NEON_external_lab
-    ## 3   PERSP1     family        Perlidae sp. NEON_external_lab
-    ## 4   CHESP5      genus  Cheumatopsyche sp. NEON_external_lab
-    ## 5   LEUSP8      genus         Leuctra sp. NEON_external_lab
-    ## 6    OPTSP      genus     Optioservus sp. NEON_external_lab
-    ##                            authority_taxon_id
-    ## 1                         Merritt et al. 2008
-    ## 2                         Merritt et al. 2008
-    ## 3 Merritt et al. 2008; Stewart and Stark 2002
-    ## 4           Merritt et al. 2008; Wiggins 1996
-    ## 5 Merritt et al. 2008; Stewart and Stark 2002
-    ## 6                         Merritt et al. 2008
+    ##   taxon_id taxon_rank           taxon_name
+    ## 1   ABLMAL    species Ablabesmyia mallochi
+    ## 2    ABLSP      genus      Ablabesmyia sp.
+    ## 3   ACASP1   subclass            Acari sp.
+    ## 4   ACEPYG    species    Acerpenna pygmaea
+    ## 5   ACESP1      genus        Acerpenna sp.
+    ## 6   ACRABN    species  Acroneuria abnormis
+    ##                                                                                                                        authority_system
+    ## 1                                                                                               Epler 2001, and Maschwitz and Cook 2000
+    ## 2 Roback 1985 and Epler 2001; Weiderholm, 1983; Weiderholm, 1986; Epler 2001; Ferrington et al. 2019; Andersen, Cranston and Epler 2013
+    ## 3                                                                                          Thorp and Covich 2001; Thorp and Rogers 2016
+    ## 4                                                                                                          Morihara and McCafferty 1979
+    ## 5                                                                                                                   Merritt et al. 2019
+    ## 6                                                                                                               Stewart and Stark, 2002
+    ##   authority_taxon_id
+    ## 1               <NA>
+    ## 2               <NA>
+    ## 3               <NA>
+    ## 4               <NA>
+    ## 5               <NA>
+    ## 6               <NA>
 
-    my_search_result_data$DP1.20120.001$tables$observation %>% head()
+    my_data$neon.ecocomdp.20120.001.001$tables$observation %>% head()
 
-    ##                         observation_id
-    ## 1 9e013f88-8463-4be2-8475-da816cdfa8f6
-    ## 2 4ab7e7a9-bc7e-451f-9eec-0d25924a4dfd
-    ## 3 9e958d7e-79d1-45fd-bafd-586964d4d26e
-    ## 4 c4deafd4-ed61-4a15-9c06-29a27338d5e9
-    ## 5 a08ab6fd-10e3-4f5f-8bac-b6eb35d21c15
-    ## 6 130571ba-09fe-4b89-a752-361a710265cb
-    ##                 event_id                   package_id
-    ## 1 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
-    ## 2 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
-    ## 3 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
-    ## 4 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
-    ## 5 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
-    ## 6 POSE.20140722.SURBER.1 DP1.20120.001.20201026170748
-    ##      location_id observation_datetime taxon_id
-    ## 1 POSE.AOS.reach  2014-07-22 13:10:00   STEFEM
-    ## 2 POSE.AOS.reach  2014-07-22 13:10:00    BAESP
-    ## 3 POSE.AOS.reach  2014-07-22 13:10:00   PERSP1
-    ## 4 POSE.AOS.reach  2014-07-22 13:10:00   CHESP5
-    ## 5 POSE.AOS.reach  2014-07-22 13:10:00   CHESP5
-    ## 6 POSE.AOS.reach  2014-07-22 13:10:00   LEUSP8
+    ##   observation_id             event_id                                 package_id    location_id   datetime taxon_id
+    ## 1          obs_1 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210519130241 ARIK.AOS.reach 2017-07-12   CAESP5
+    ## 2          obs_2 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210519130241 ARIK.AOS.reach 2017-07-12  CERSP10
+    ## 3          obs_3 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210519130241 ARIK.AOS.reach 2017-07-12   CLASP5
+    ## 4          obs_4 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210519130241 ARIK.AOS.reach 2017-07-12   CLISP3
+    ## 5          obs_5 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210519130241 ARIK.AOS.reach 2017-07-12   CORSP4
+    ## 6          obs_6 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210519130241 ARIK.AOS.reach 2017-07-12   CRYSP2
     ##   variable_name     value                   unit
-    ## 1       density  258.0645 count per square meter
-    ## 2       density  129.0323 count per square meter
-    ## 3       density  129.0323 count per square meter
-    ## 4       density 2075.2688 count per square meter
-    ## 5       density  258.0645 count per square meter
-    ## 6       density  258.0645 count per square meter
+    ## 1       density 1000.0000 count per square meter
+    ## 2       density  333.3333 count per square meter
+    ## 3       density  333.3333 count per square meter
+    ## 4       density  333.3333 count per square meter
+    ## 5       density  166.6667 count per square meter
+    ## 6       density  833.3333 count per square meter
 
 
 ## Search ecocomDP
@@ -371,335 +216,220 @@ Let's download the data for the NEON "Periphyton, seston, and phytoplankton coll
 
     # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
     # data product
-    my_search_result_data <- 
-        ecocomDP::read_data(id = "DP1.20166.001", site = "ARIK")
+    my_data <- 
+        ecocomDP::read_data(
+          id = "neon.ecocomdp.20166.001.001", 
+          site = "ARIK",
+          startdate = "2017-06",
+          enddate = "2020-03",
+          # token = NEON_TOKEN, #Uncomment to use your token
+          check.size = FALSE)
 
-    ## Finding available files
-    ## 
-  |                                                        
-  |                                                  |   0%
-  |                                                        
-  |===                                               |   6%
-  |                                                        
-  |======                                            |  11%
-  |                                                        
-  |========                                          |  17%
-  |                                                        
-  |===========                                       |  22%
-  |                                                        
-  |==============                                    |  28%
-  |                                                        
-  |=================                                 |  33%
-  |                                                        
-  |===================                               |  39%
-  |                                                        
-  |======================                            |  44%
-  |                                                        
-  |=========================                         |  50%
-  |                                                        
-  |============================                      |  56%
-  |                                                        
-  |===============================                   |  61%
-  |                                                        
-  |=================================                 |  67%
-  |                                                        
-  |====================================              |  72%
-  |                                                        
-  |=======================================           |  78%
-  |                                                        
-  |==========================================        |  83%
-  |                                                        
-  |============================================      |  89%
-  |                                                        
-  |===============================================   |  94%
-  |                                                        
-  |==================================================| 100%
-    ## 
-    ## Downloading files totaling approximately 2.04521 MB
-    ## Downloading 18 files
-    ## 
-  |                                                        
-  |                                                  |   0%
-  |                                                        
-  |===                                               |   6%
-  |                                                        
-  |======                                            |  12%
-  |                                                        
-  |=========                                         |  18%
-  |                                                        
-  |============                                      |  24%
-  |                                                        
-  |===============                                   |  29%
-  |                                                        
-  |==================                                |  35%
-  |                                                        
-  |=====================                             |  41%
-  |                                                        
-  |========================                          |  47%
-  |                                                        
-  |==========================                        |  53%
-  |                                                        
-  |=============================                     |  59%
-  |                                                        
-  |================================                  |  65%
-  |                                                        
-  |===================================               |  71%
-  |                                                        
-  |======================================            |  76%
-  |                                                        
-  |=========================================         |  82%
-  |                                                        
-  |============================================      |  88%
-  |                                                        
-  |===============================================   |  94%
-  |                                                        
-  |==================================================| 100%
-    ## 
-    ## Unpacking zip files using 1 cores.
-    ## Stacking operation across a single core.
-    ## Stacking table alg_biomass
-    ## Stacking table alg_fieldData
-    ## Stacking table alg_taxonomyProcessed
-    ## Copied the most recent publication of validation file to /stackedFiles
-    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
-    ## Copied the most recent publication of variable definition file to /stackedFiles
-    ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 0.7521379 secs
-    ## All unzipped monthly data folders have been removed.
 
     # Explore the structure of the returned data object
-    my_search_result_data %>% names()
+    my_data %>% names()
 
+    ## [1] "neon.ecocomdp.20166.001.001"
+
+    my_data[[1]] %>% names()
+
+    ## [1] "metadata"          "tables"            "validation_issues"
+
+    my_data[[1]]$metadata$data_package_info
+
+    ## $data_package_id
+    ## [1] "neon.ecocomdp.20166.001.001.20210519130306"
+    ## 
+    ## $taxonomic_group
+    ## [1] "ALGAE"
+    ## 
+    ## $orig_NEON_data_product_id
     ## [1] "DP1.20166.001"
+    ## 
+    ## $NEON_to_ecocomDP_mapping_method
+    ## [1] "neon.ecocomdp.20166.001.001"
+    ## 
+    ## $data_access_method
+    ## [1] "original NEON data accessed using neonUtilities v2.0.1"
+    ## 
+    ## $data_access_date_time
+    ## [1] "2021-05-19 13:03:07 MDT"
 
-    my_search_result_data[[1]] %>% names()
+    my_data[[1]]$validation_issues
 
-    ## [1] "metadata" "tables"
+    ## list()
 
-    my_search_result_data[[1]]$tables %>% names()
+    my_data[[1]]$tables %>% names()
 
-    ## [1] "location"              "taxon"                
-    ## [3] "observation"           "observation_ancillary"
+    ## [1] "location"              "location_ancillary"    "taxon"                 "observation"          
+    ## [5] "observation_ancillary" "dataset_summary"
 
-    my_search_result_data[[1]]$tables$location
+    my_data[[1]]$tables$location
 
-    ##   location_id  location_name latitude longitude elevation
-    ## 1      lo_1_1            D10       NA        NA        NA
-    ## 2      lo_2_1           ARIK       NA        NA        NA
-    ## 3      lo_3_1 ARIK.AOS.reach 39.75821 -102.4471    1179.5
-    ## 4      lo_3_2    ARIK.AOS.S2 39.75836 -102.4486    1178.7
-    ##   parent_location_id
+    ##      location_id  location_name latitude longitude elevation parent_location_id
+    ## 1            D10 Central Plains       NA        NA        NA               <NA>
+    ## 2           ARIK Arikaree River 39.75825 -102.4471        NA                D10
+    ## 3 ARIK.AOS.reach ARIK.AOS.reach 39.75821 -102.4471    1179.5               ARIK
+    ## 4    ARIK.AOS.S2    ARIK.AOS.S2 39.75836 -102.4486    1178.7               ARIK
+
+    my_data[[1]]$tables$taxon %>% head()
+
+    ##           taxon_id taxon_rank            taxon_name
+    ## 1 ACHNANTHIDIUMSPP      genus    Achnanthidium spp.
+    ## 2       AMPHORASPP      genus          Amphora spp.
+    ## 3      ANABAENASPP      genus         Anabaena spp.
+    ## 4   AULACOSEIRASPP      genus      Aulacoseira spp.
+    ## 5    BACILLARIOCSP      class Bacillariophyceae sp.
+    ## 6      CALONEISSPP      genus         Caloneis spp.
+    ##                                                                                                                                                                                                                                           authority_system
+    ## 1                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 2                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 3                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 4                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 5 Academy of Natural Sciences of Drexel University; Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 6                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ##   authority_taxon_id
     ## 1               <NA>
-    ## 2             lo_1_1
-    ## 3             lo_2_1
-    ## 4             lo_2_1
+    ## 2               <NA>
+    ## 3               <NA>
+    ## 4               <NA>
+    ## 5               <NA>
+    ## 6               <NA>
 
-    my_search_result_data[[1]]$tables$taxon %>% head()
+    my_data[[1]]$tables$observation %>% head()
 
-    ##         taxon_id taxon_rank
-    ## 1 NEONDREX455000      genus
-    ## 2 NEONDREX803001      genus
-    ## 3 NEONDREX170006    species
-    ## 4 NEONDREX467013    variety
-    ## 5 NEONDREX510002    species
-    ## 6  NEONDREX12031    species
-    ##                                            taxon_name
-    ## 1                                      Oedogonium sp.
-    ## 2                                        Anabaena sp.
-    ## 3            Sellaphora pupula (Kützing) Meresckowsky
-    ## 4 Pediastrum duplex var. clathratum (Braun) Lagerheim
-    ## 5                  Scenedesmus ecornis (Ralfs) Chodat
-    ## 6                Caloneis schumanniana (Grunow) Cleve
-    ##    authority_system
-    ## 1 NEON_external_lab
-    ## 2 NEON_external_lab
-    ## 3 NEON_external_lab
-    ## 4 NEON_external_lab
-    ## 5 NEON_external_lab
-    ## 6 NEON_external_lab
-    ##                                                                                                                               authority_taxon_id
-    ## 1            Wehr, J.D. and R.G. Sheath. 2003. Freshwater Algae of North America: Ecology and Classification. Academic Press, Amsterdam. 918 pp.
-    ## 2            Wehr, J.D. and R.G. Sheath. 2003. Freshwater Algae of North America: Ecology and Classification. Academic Press, Amsterdam. 918 pp.
-    ## 3                     Mereschkowsky, C. 1902. On Sellaphora, a new genus of Diatoms. Annals and Magazine of Natural History, 9: 185-195, pl. IV.
-    ## 4                                                 Prescott, G.W. 1962. Algae of the Western Great Lakes Area. Wm C. Brown. Dubuque, Iowa. 977pp.
-    ## 5                                                          Uherkovich, G. 1966. Die Scenedesmus-Arten Ungarns. Akademiai Kiado. Budapest. 173pp.
-    ## 6 Cleve, P.T. 1894. Synopsis of the naviculoid diatoms. Part I. Kongliga svenska Vetenskaps-Akademiens Handlingar, Ny Foljd 26(2): 1-194, 5 pls.
+    ##                         observation_id                  event_id                                 package_id
+    ## 1 2f9cd348-0767-4322-b7b8-19182778a98c ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210519130306
+    ## 2 fcb13e4f-2cf6-4d97-9c70-09a70f51fb7e ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210519130306
+    ## 3 c2a8fcf8-1cf2-42da-868b-077ea1726433 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210519130306
+    ## 4 6c0a36d3-0075-4d17-bc0a-03b35cb5f179 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210519130306
+    ## 5 6493f9e6-d1b6-42fd-9156-bb4fb97b2854 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210519130306
+    ## 6 63ed13f7-f9ee-46b9-aea4-2fc2c3cfdd09 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210519130306
+    ##      location_id   datetime       taxon_id variable_name     value      unit
+    ## 1 ARIK.AOS.reach 2017-07-18  NEONDREX48126  cell density 1180.3455 cells/cm2
+    ## 2 ARIK.AOS.reach 2017-07-18  NEONDREX33185  cell density  295.0864 cells/cm2
+    ## 3 ARIK.AOS.reach 2017-07-18 NEONDREX197003  cell density  147.5409 cells/cm2
+    ## 4 ARIK.AOS.reach 2017-07-18 NEONDREX170133  cell density  590.1727 cells/cm2
+    ## 5 ARIK.AOS.reach 2017-07-18  NEONDREX37156  cell density  295.0864 cells/cm2
+    ## 6 ARIK.AOS.reach 2017-07-18 NEONDREX155017  cell density 2655.7727 cells/cm2
 
-    my_search_result_data[[1]]$tables$observation %>% head()
+## Algae Data Flattening and Cleaning
 
-    ##                         observation_id      event_id
-    ## 1 b0c9b74a-d3cd-4bb5-b44e-a2361814a47f ARIK.20140715
-    ## 2 23e8b755-c7a1-4663-bd52-4e1449a57f41 ARIK.20140715
-    ## 3 969252a8-691d-4f7a-aab5-969f8e8ad166 ARIK.20140715
-    ## 4 b8aa0bab-3e9d-4a53-a049-acb67ea4e4e6 ARIK.20140715
-    ## 5 ebebb1a0-f7db-4b23-86cc-1c37e8728bdb ARIK.20140715
-    ## 6 e1078745-9d0b-421c-8697-88e8deed232a ARIK.20140715
-    ##                     package_id    location_id
-    ## 1 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 2 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 3 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 4 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 5 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 6 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ##   observation_datetime       taxon_id variable_name
-    ## 1  2014-07-15 18:00:00  NEONDREX33185  cell density
-    ## 2  2014-07-15 18:00:00   NEONDREX1024  cell density
-    ## 3  2014-07-15 18:00:00 NEONDREX110005  cell density
-    ## 4  2014-07-15 18:00:00  NEONDREX45002  cell density
-    ## 5  2014-07-15 18:00:00 NEONDREX510001  cell density
-    ## 6  2014-07-15 18:00:00   NEONDREX1010  cell density
-    ##      value     unit
-    ## 1 25936568 cells/m2
-    ## 2  2803955 cells/m2
-    ## 3  4205932 cells/m2
-    ## 4  1401977 cells/m2
-    ## 5 33702795 cells/m2
-    ## 6  6308886 cells/m2
+While the ecocomDP data package takes care of some data cleaning and formatting, it is best to join all the tables and flatten the dataset and do some basic checks before proceeding with plotting and analyses:
 
+
+    # flatten the ecocomDP data tables into one flat table
+    my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
+    
     # This data product has algal densities reported for both
     # lakes and streams, so densities could be standardized
     # either to volume collected or area sampled. 
     
     # Verify that only benthic algae standardized to area 
     # are returned in this data pull:
-    my_search_result_data[[1]]$tables$observation$unit %>%
+    my_data_flat$unit %>%
         unique()
 
-    ## [1] "cells/m2"
+    ## [1] "cells/cm2" "cells/mL"
 
-## Join Observation and Taxon info
+    # filter the data to only records standardized to area
+    # sampled
+    my_data_benthic <- my_data_flat %>%
+      dplyr::filter(
+        !variable_name %in% c("valves","cells"),
+        unit == "cells/cm2")
+    
+    # Note that for this data product
+    # neon_sample_id = event_id
+    # event_id is the grouping variable for the observation 
+    # table in the ecocomDP data model
+    
+    
+    
+    # Check for multiple taxon counts per taxon_id by 
+    # event_id. 
+    my_data_benthic %>% 
+      group_by(event_id, taxon_id) %>%
+      summarize(n_obs = length(event_id)) %>%
+      dplyr::filter(n_obs > 1)
 
-Next, we join the observation and taxon information so that we can see the full taxonomic information, rather than just the taxon_id, for each sampling event:
+    ## # A tibble: 37 x 3
+    ## # Groups:   event_id [2]
+    ##    event_id                  taxon_id       n_obs
+    ##    <chr>                     <chr>          <int>
+    ##  1 ARIK.20170718.EPIPHYTON.2 NEONDREX1010       2
+    ##  2 ARIK.20170718.EPIPHYTON.2 NEONDREX1024       2
+    ##  3 ARIK.20170718.EPIPHYTON.2 NEONDREX110005     2
+    ##  4 ARIK.20170718.EPIPHYTON.2 NEONDREX155017     2
+    ##  5 ARIK.20170718.EPIPHYTON.2 NEONDREX16004      2
+    ##  6 ARIK.20170718.EPIPHYTON.2 NEONDREX16011      2
+    ##  7 ARIK.20170718.EPIPHYTON.2 NEONDREX170133     2
+    ##  8 ARIK.20170718.EPIPHYTON.2 NEONDREX170134     2
+    ##  9 ARIK.20170718.EPIPHYTON.2 NEONDREX172001     2
+    ## 10 ARIK.20170718.EPIPHYTON.2 NEONDREX172006     2
+    ## # ... with 27 more rows
 
+    # Per instructions from the lab, these 
+    # counts should be summed.
+    my_data_summed <- my_data_benthic %>%
+      group_by(event_id,taxon_id) %>%
+      summarize(value = sum(value, na.rm = FALSE))
+    
+    my_data_cleaned <- my_data_benthic %>%
+      dplyr::select(
+        event_id, location_id, datetime,
+        taxon_id, taxon_rank, taxon_name) %>%
+      distinct() %>%
+      right_join(my_data_summed)
+    
+    
+    
+    # check for duplicate records, there should not 
+    # be any at this point.
+    my_data_cleaned %>% 
+      group_by(event_id, taxon_id) %>%
+      summarize(n_obs = length(event_id)) %>%
+      dplyr::filter(n_obs > 1)
 
-    # join observations with taxon info
-    alg_observations_with_taxa <- my_search_result_data[[1]]$tables$observation %>%
-      filter(!is.na(value)) %>%
-      left_join(my_search_result_data[[1]]$tables$taxon) %>%
-      select(-authority_taxon_id) %>%
-      distinct()
-
-    ## Joining, by = "taxon_id"
-
-    alg_observations_with_taxa %>% head()
-
-    ##                         observation_id      event_id
-    ## 1 b0c9b74a-d3cd-4bb5-b44e-a2361814a47f ARIK.20140715
-    ## 2 23e8b755-c7a1-4663-bd52-4e1449a57f41 ARIK.20140715
-    ## 3 969252a8-691d-4f7a-aab5-969f8e8ad166 ARIK.20140715
-    ## 4 b8aa0bab-3e9d-4a53-a049-acb67ea4e4e6 ARIK.20140715
-    ## 5 ebebb1a0-f7db-4b23-86cc-1c37e8728bdb ARIK.20140715
-    ## 6 e1078745-9d0b-421c-8697-88e8deed232a ARIK.20140715
-    ##                     package_id    location_id
-    ## 1 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 2 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 3 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 4 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 5 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ## 6 DP1.20166.001.20201026170802 ARIK.AOS.reach
-    ##   observation_datetime       taxon_id variable_name
-    ## 1  2014-07-15 18:00:00  NEONDREX33185  cell density
-    ## 2  2014-07-15 18:00:00   NEONDREX1024  cell density
-    ## 3  2014-07-15 18:00:00 NEONDREX110005  cell density
-    ## 4  2014-07-15 18:00:00  NEONDREX45002  cell density
-    ## 5  2014-07-15 18:00:00 NEONDREX510001  cell density
-    ## 6  2014-07-15 18:00:00   NEONDREX1010  cell density
-    ##      value     unit taxon_rank
-    ## 1 25936568 cells/m2    species
-    ## 2  2803955 cells/m2    species
-    ## 3  4205932 cells/m2    species
-    ## 4  1401977 cells/m2    variety
-    ## 5 33702795 cells/m2    species
-    ## 6  6308886 cells/m2    species
-    ##                                               taxon_name
-    ## 1                    Eunotia bilunaris (Ehrenberg) Souza
-    ## 2               Achnanthidium exiguum (Grunow) Czarnecki
-    ## 3                    Encyonema silesiacum (Bleisch) Mann
-    ## 4 Meridion circulare var. constrictum (Ralfs) Van Heurck
-    ## 5             Scenedesmus quadricauda (Turpin) Brébisson
-    ## 6         Achnanthidium minutissimum (Kützing) Czarnecki
-    ##    authority_system
-    ## 1 NEON_external_lab
-    ## 2 NEON_external_lab
-    ## 3 NEON_external_lab
-    ## 4 NEON_external_lab
-    ## 5 NEON_external_lab
-    ## 6 NEON_external_lab
+    ## # A tibble: 0 x 3
+    ## # Groups:   event_id [0]
+    ## # ... with 3 variables: event_id <chr>, taxon_id <chr>, n_obs <int>
 
 We can also make a quick plot to see which taxon rank (i.e., what level of taxonomic specificity was achieved by the expert taxonomist) is most common:
 
 
     # which taxon rank is most common
-    alg_observations_with_taxa %>%
+    my_data_cleaned %>%
       ggplot(aes(taxon_rank)) +
       geom_bar()
 
-![Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/plot-taxon-rank-1.png)
+![Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates//02_ecocomDP_workflow_with_NEON_algae/rfigs/plot-taxon-rank-1.png)
 
 ## Species Accumulation Curve
 Next, we will plot the species accumulation curve for these samples. To do so, we will first need to convert the density data from m2 to cm2, and make the data 'wide':
 
 
     # convert densities from per m2 to per cm2
-    alg_dens_long <- alg_observations_with_taxa %>%
-      mutate(dens_cm2 = (value / 10000)) %>%
+    my_data_long <- my_data_cleaned %>%
       filter(taxon_rank == "species") %>%
-      select(event_id, taxon_id, dens_cm2)
+      select(event_id, taxon_id, value)
     
     # make data wide
-    alg_dens_wide <- alg_dens_long %>% 
+    my_data_wide <- my_data_long %>% 
       pivot_wider(names_from = taxon_id, 
-                  values_from = dens_cm2,
-                  values_fill = list(dens_cm2 = 0),
-                  values_fn = list(dens_cm2 = mean)) %>%
+                  values_from = value,
+                  values_fill = list(value = 0)) %>%
       tibble::column_to_rownames("event_id")
       
     # Calculate and plot species accumulcation curve for the 11 sampling events
     # The CIs are based on random permutations of observed samples
-    alg_spec_accum_result <- alg_dens_wide %>% vegan::specaccum(., "random")
+    alg_spec_accum_result <- my_data_wide %>% vegan::specaccum(., "random")
     plot(alg_spec_accum_result)
 
-![Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/SAC-1-1.png)
+![Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates//02_ecocomDP_workflow_with_NEON_algae/rfigs/SAC-1-1.png)
 
 ## Compare Observed and Simulated species accumulation curves
 
-
-    # Load the 'vegan' package to ensue the lines below will work
-    library(vegan)
-
-    ## Loading required package: permute
-
-    ## 
-    ## Attaching package: 'permute'
-
-    ## The following object is masked from 'package:devtools':
-    ## 
-    ##     check
-
-    ## Loading required package: lattice
-
-    ## This is vegan 2.5-6
-
-    library(Hmisc)
-
-    ## Loading required package: survival
-
-    ## Loading required package: Formula
-
-    ## 
-    ## Attaching package: 'Hmisc'
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     src, summarize
-
-    ## The following objects are masked from 'package:raster':
-    ## 
-    ##     mask, zoom
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     format.pval, units
 
     # Extract the resampling data used in the above algorithm
     spec_resamp_data <- data.frame(
@@ -710,7 +440,7 @@ Next, we will plot the species accumulation curve for these samples. To do so, w
     
     
     # Fit species accumulation model
-    spec_accum_mod_1 <- alg_dens_wide %>% vegan::fitspecaccum(model = "arrh")
+    spec_accum_mod_1 <- my_data_wide %>% vegan::fitspecaccum(model = "arrh")
     
     
     # create a "predicted" data set from the model to extrapolate out 
@@ -740,4 +470,4 @@ Next, we will plot the species accumulation curve for these samples. To do so, w
       stat_summary(fun.data = median_hilow, geom = "line", 
                    size = 1) 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/compare-obs-sim-SAC-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates//02_ecocomDP_workflow_with_NEON_algae/rfigs/compare-obs-sim-SAC-1.png)
