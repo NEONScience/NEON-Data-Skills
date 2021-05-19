@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA-------------------
+## ----load libraries, eval=F, comment=NA----------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -12,21 +12,23 @@ library(devtools)
 library(vegan)
 
 # install ecocomDP
-# here is the tag (pre-release version) of the package
-# used in this workshop
+# Here, we're using a tagged (pre-release) version of the 
+# package that's available on GitHub. Using this tag 
+# (@v.0.0.0.9000) will always install the same version 
+# of the package. We plan to release v1.0 of this package
+# on CRAN later this year. 
 devtools::install_github("EDIorg/ecocomDP@v0.0.0.9000")
 library(ecocomDP)
 
-# OPTIONAL - save NEON token as a persisten environmental 
-# variable in .Renviron.
-# If you do this, you can retrieve the NEON_TOKEN using 
-# Sys.getenv("NEON_TOKEN")
+# source .r file with my NEON_TOKEN
+# source("my_neon_token.R") # OPTIONAL - load NEON token
 # See: https://www.neonscience.org/neon-api-tokens-tutorial
 
 
 
 
-## ----download-macroinvert---------------------------------
+
+## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'--------------------------------------------
 
 # search for invertebrate data products
 my_search_result <- 
@@ -40,12 +42,12 @@ my_data <- ecocomDP::read_data(
   site = c('ARIK','MAYF'),
   startdate = "2017-06",
   enddate = "2020-03",
-  # token = Sys.getenv("NEON_TOKEN"), #Uncomment to use your token
+  # token = NEON_TOKEN, #Uncomment to use your token
   check.size = FALSE)
 
 
 
-## ----view-ecocomDP-str------------------------------------
+## ----view-ecocomDP-str---------------------------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
 my_data %>% names()
@@ -64,10 +66,7 @@ my_data$neon.ecocomdp.20120.001.001$tables$observation %>% head()
 
 
 
-## ----search-ecocomDP--------------------------------------
-
-# clean out workspace
-rm(list=ls())
+## ----search-ecocomDP-----------------------------------------------------------------------------------------------
 
 # search for data sets with periphyton or algae
 # regex works!
@@ -76,7 +75,7 @@ View(my_search_result)
 
 
 
-## ----download-plankton------------------------------------
+## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------
 
 # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
 # data product
@@ -86,11 +85,13 @@ my_data <-
       site = "ARIK",
       startdate = "2017-06",
       enddate = "2020-03",
-      # token = Sys.getenv("NEON_TOKEN"), #Uncomment to use your token
+      # token = NEON_TOKEN, #Uncomment to use your token
       check.size = FALSE)
 
 
-# Explore the structure of the returned data objectb
+
+## ----explore-data-structure----------------------------------------------------------------------------------------
+# Explore the structure of the returned data object
 my_data %>% names()
 my_data[[1]] %>% names()
 my_data[[1]]$metadata$data_package_info
@@ -101,6 +102,11 @@ my_data[[1]]$tables$location
 my_data[[1]]$tables$taxon %>% head()
 my_data[[1]]$tables$observation %>% head()
 
+
+
+
+
+## ----flattening-and-cleaning, message=FALSE, warning=FALSE---------------------------------------------------------
 
 # flatten the ecocomDP data tables into one flat table
 my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
@@ -114,15 +120,21 @@ my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
 my_data_flat$unit %>%
     unique()
 
+
+
 # filter the data to only records standardized to area
 # sampled
 my_data_benthic <- my_data_flat %>%
-  dplyr::filter(unit == "cells/cm2")
+  dplyr::filter(
+    !variable_name %in% c("valves","cells"),
+    unit == "cells/cm2")
 
 # Note that for this data product
 # neon_sample_id = event_id
 # event_id is the grouping variable for the observation 
 # table in the ecocomDP data model
+
+
 
 # Check for multiple taxon counts per taxon_id by 
 # event_id. 
@@ -130,6 +142,8 @@ my_data_benthic %>%
   group_by(event_id, taxon_id) %>%
   summarize(n_obs = length(event_id)) %>%
   dplyr::filter(n_obs > 1)
+
+
 
 # Per instructions from the lab, these 
 # counts should be summed.
@@ -144,12 +158,15 @@ my_data_cleaned <- my_data_benthic %>%
   distinct() %>%
   right_join(my_data_summed)
 
+
+
 # check for duplicate records, there should not 
 # be any at this point.
 my_data_cleaned %>% 
   group_by(event_id, taxon_id) %>%
   summarize(n_obs = length(event_id)) %>%
   dplyr::filter(n_obs > 1)
+
 
 
 ## ----plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."----
@@ -182,11 +199,8 @@ plot(alg_spec_accum_result)
 
 
 
-## ----compare-obs-sim-SAC----------------------------------
+## ----compare-obs-sim-SAC-------------------------------------------------------------------------------------------
 
-# Load the 'vegan' package to ensue the lines below will work
-library(vegan)
-library(Hmisc)
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(
   data_set = "observed", 

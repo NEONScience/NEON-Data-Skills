@@ -1,4 +1,4 @@
-## ----load libraries---------------------------------------
+## ----load libraries, warning=FALSE---------------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -10,15 +10,14 @@ library(tidyverse)
 library(neonUtilities)
 library(vegan)
 
-# OPTIONAL - save NEON token as a persistent environmental 
-# variable in .Renviron.
-# If you do this, you can retrieve the NEON_TOKEN using 
-# Sys.getenv("NEON_TOKEN")
+
+# source .r file with my NEON_TOKEN
+# source("my_neon_token.R") # OPTIONAL - load NEON token
 # See: https://www.neonscience.org/neon-api-tokens-tutorial
 
 
 
-## ----download-data----------------------------------------
+## ----download-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------------
 
 # Macroinvert dpid
 my_dpid <- 'DP1.20120.001'
@@ -30,12 +29,12 @@ my_site_list <- c('ARIK', 'POSE', 'MAYF')
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = my_dpid,
   site = my_site_list,
-  # token = Sys.getenv("NEON_TOKEN"), #Uncomment to use your token
+  #token = NEON_TOKEN, #Uncomment to use your token
   check.size = F)
 
 
 
-## ----download-overview------------------------------------
+## ----download-overview, message=FALSE, warning=FALSE---------------------------------------------------------------
 
 
 # what tables do you get with macroinvertebrate 
@@ -62,7 +61,7 @@ View(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing-------------------------------
+## ----munging-and-organizing, message=FALSE, warning=FALSE----------------------------------------------------------
 
 # known problem with dupes published in the inv_fieldData table as of 2021-02-18
 # this anticipated to be fixed in data release next year (Jan 2022)
@@ -73,9 +72,12 @@ de_duped_uids <- inv_fieldData %>%
                    n_unique_uids = length(unique(uid)),
                    uid_to_keep = dplyr::first(uid)) 
 
-# filter using de-duped uids
+# filter data using de-duped uids
 inv_fieldData <- inv_fieldData %>%
   dplyr::filter(uid %in% de_duped_uids$uid_to_keep)
+
+
+
 
 # extract year from date, add it as a new column
 inv_fieldData <- inv_fieldData %>%
@@ -86,9 +88,10 @@ inv_fieldData <- inv_fieldData %>%
 
 
 
+
 # extract location data into a separate table
 table_location <- inv_fieldData %>%
-  
+
   # keep only the columns listed below
   select(siteID, 
          domainID,
@@ -100,6 +103,7 @@ table_location <- inv_fieldData %>%
   # keep rows with unique combinations of values, 
   # i.e., no duplicate records
   distinct()
+
 
 
 
@@ -126,6 +130,7 @@ table_taxon <- inv_taxonomyProcessed %>%
 
 
 
+
 # Make the observation table.
 # start with inv_taxonomyProcessed
 
@@ -139,6 +144,8 @@ inv_taxonomyProcessed_summed <- inv_taxonomyProcessed %>%
   summarize(
     across(c(individualCount, estimatedTotalCount), ~sum(.x, na.rm = TRUE)))
   
+
+
 
 # join summed taxon counts back with sample and field data
 table_observation <- inv_taxonomyProcessed_summed %>%
@@ -172,11 +179,17 @@ table_observation <- inv_taxonomyProcessed_summed %>%
   mutate(inv_dens = estimatedTotalCount / benthicArea,
          inv_dens_unit = 'count per square meter')
 
+
+
+
+
 # check for duplicate records, should return a table with 0 rows
 table_observation %>% 
   group_by(sampleID, acceptedTaxonID) %>% 
   summarize(n_obs = length(sampleID)) %>%
   filter(n_obs > 1)
+
+
 
 
 # extract sample info
@@ -189,6 +202,7 @@ table_sample_info <- table_observation %>%
 
 
 
+
 # remove singletons and doubletons
 # create an occurrence summary table
 taxa_occurrence_summary <- table_observation %>%
@@ -197,9 +211,17 @@ taxa_occurrence_summary <- table_observation %>%
   group_by(acceptedTaxonID) %>%
   summarize(occurrences = n())
 
+
+
+
+
 # filter out taxa that are only observed 1 or 2 times
 taxa_list_cleaned <- taxa_occurrence_summary %>%
   filter(occurrences > 2)
+
+
+
+
 
 # filter observation table based on taxon list above
 table_observation_cleaned <- table_observation %>%
@@ -209,6 +231,10 @@ table_observation_cleaned <- table_observation %>%
                           "MAYF.20200713.CORE.1",
                           "POSE.20160718.HESS.1")) 
                       #this is an outlier sampleID
+
+
+
+
 
 
 # some summary data
@@ -224,11 +250,17 @@ sampling_effort_summary <- table_sample_info %>%
     habitat_count = habitatType %>% 
         unique() %>% length())
 
-View(sampling_effort_summary)
 
 
 
-## ----long-data, fig.cap= "Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."----
+# check out the summary table
+sampling_effort_summary %>% as.data.frame() %>% 
+  head() %>% print()
+
+
+
+
+## ----long-data, fig.cap= "Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.", message=FALSE, warning=FALSE----
 
 # no. taxa by rank by site
 table_observation_cleaned %>% 
@@ -240,7 +272,7 @@ table_observation_cleaned %>%
   facet_wrap(~ domainID + siteID) +
   geom_col()
 
-## ----long-data-2,  fig.cap= "Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right."----
+## ----long-data-2,  fig.cap= "Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right.", message=FALSE, warning=FALSE----
 # library(scales)
 # sum densities by order for each sampleID
 table_observation_by_order <- 
@@ -270,7 +302,7 @@ table_observation_by_order %>%
               element_text(angle = 45, hjust = 1))
 
 
-## ----long-data-3, fig.cap= "Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call."----
+## ----long-data-3, fig.cap= "Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call.", message=FALSE, warning=FALSE----
 # faceted densities plot
 table_observation_by_order %>%
   ggplot(aes(
@@ -287,7 +319,7 @@ table_observation_by_order %>%
 
 
 
-## ----make-wide--------------------------------------------
+## ----make-wide, message=FALSE, warning=FALSE-----------------------------------------------------------------------
 
 
 # select only site by species density info and remove duplicate records
@@ -316,7 +348,7 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----calc-alpha-------------------------------------------
+## ----calc-alpha, message=FALSE, warning=FALSE----------------------------------------------------------------------
 
 # Here we use vegan::renyi to calculate Hill numbers
 # If hill = FALSE, the function returns an entropy
@@ -333,8 +365,7 @@ table_sample_by_taxon_density_wide %>%
 
 
 
-## ----simulated-abg----------------------------------------
-
+## ----simulated-abg, message=FALSE, warning=FALSE-------------------------------------------------------------------
 # even distribution, orders q = 0 and q = 1 for 10 taxa
 vegan::renyi(
   c(spp.a = 10, spp.b = 10, spp.c = 10, 
@@ -355,8 +386,7 @@ vegan::renyi(
 
 
 
-## ----compare-q-NEON---------------------------------------
-
+## ----compare-q-NEON, message=FALSE, warning=FALSE------------------------------------------------------------------
 
 # Nest data by siteID
 data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
@@ -370,7 +400,8 @@ data_nested_by_siteID$data[[1]] %>%
   vegan::renyi(scales = 0, hill = TRUE) %>%
   mean()
 
-# apply the calculation by site for alpha diversity  
+# apply the calculation by site for alpha diversity
+# for each order of q
 data_nested_by_siteID %>% mutate(
   alpha_q0 = purrr::map_dbl(
     .x = data,
@@ -390,7 +421,6 @@ data_nested_by_siteID %>% mutate(
   )
 
 # Note that POSE has the highest mean alpha diversity
-
 
 
 
@@ -445,8 +475,7 @@ diversity_partitioning_results %>%
 
 
 
-
-## ----local-regional-var, echo=F---------------------------
+## ----local-regional-var, echo=F------------------------------------------------------------------------------------
 
 ##########################################################
 # local and regional scale variability
@@ -472,7 +501,7 @@ diversity_partitioning_results %>%
 
 
 
-## ----NMDS, fig.cap=c("Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.","Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).","Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ")----
+## ----NMDS, fig.cap=c("Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.","Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).","Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. "), message=FALSE, warning=FALSE----
 
 
 # create ordination using NMDS
