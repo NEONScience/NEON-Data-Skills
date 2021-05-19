@@ -44,7 +44,7 @@ Prior to starting the tutorial ensure that the following packages are installed.
 ## Introduction
 Biodiversity is a popular topic within ecology, but quantifying and describing biodiversity precisely can be elusive. In this tutorial, we will describe many of the aspects of biodiversity using NEON's <a href="https://data.neonscience.org/data-products/DP1.20120.001">Macroinvertebrate Collection data</a>.
 
-This tutorial was prepared for the <a href="https://freshwater-science.org/sfs-summer-science">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
+This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
 
 ## Load Libraries and Prepare Workspace
 First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above.
