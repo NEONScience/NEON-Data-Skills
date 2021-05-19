@@ -6,7 +6,7 @@ dateCreated: 2020-06-22
 authors: Eric R. Sokol
 contributors: Donal O'Leary, Felipe Sanchez
 estimatedTime: 1 Hour
-packagesLibraries: tidyverse, neonUtilities, vegan, vegetarian
+packagesLibraries: tidyverse, neonUtilities, vegan
 topics: organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
@@ -36,16 +36,15 @@ Prior to starting the tutorial ensure that the following packages are installed.
 * **tidyverse:** `install.packages("tidyverse")`
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **vegan:** `install.packages("vegan")`
-* **vegetarian:** `install.packages("vegetarian")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 </div>
 
 ## Introduction
-Biodiversity is an popular topic within ecology, but quantifying and describing biodiversity precisely can be elusive. In this tutorial, we will describe many of the aspects of biodiversity using NEON's <a href="https://data.neonscience.org/data-products/DP1.20120.001">Macroinvertebrate Collection data</a>.
+Biodiversity is a popular topic within ecology, but quantifying and describing biodiversity precisely can be elusive. In this tutorial, we will describe many of the aspects of biodiversity using NEON's <a href="https://data.neonscience.org/data-products/DP1.20120.001">Macroinvertebrate Collection data</a>.
 
-This tutorial was prepared for the <a href="https://freshwater-science.org/sfs-summer-science"> Society for Freshwater Science 2020 "Summer of Science" </a> program.
+This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
 
 ## Load Libraries and Prepare Workspace
 First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above.
@@ -61,6 +60,7 @@ There are also two optional sections in this code chunk: clearing your environme
     # load libraries 
     library(tidyverse)
     library(neonUtilities)
+    library(vegan)
     
     
     # source .r file with my NEON_TOKEN
@@ -84,263 +84,6 @@ Now that the workspace is prepared, we will download NEON macroinvertebrate data
       #token = NEON_TOKEN, #Uncomment to use your token
       check.size = F)
 
-    ## Finding available files
-    ## 
-  |                                                        
-  |                                                  |   0%
-  |                                                        
-  |=                                                 |   2%
-  |                                                        
-  |==                                                |   3%
-  |                                                        
-  |===                                               |   5%
-  |                                                        
-  |===                                               |   7%
-  |                                                        
-  |====                                              |   8%
-  |                                                        
-  |=====                                             |  10%
-  |                                                        
-  |======                                            |  12%
-  |                                                        
-  |=======                                           |  14%
-  |                                                        
-  |========                                          |  15%
-  |                                                        
-  |========                                          |  17%
-  |                                                        
-  |=========                                         |  19%
-  |                                                        
-  |==========                                        |  20%
-  |                                                        
-  |===========                                       |  22%
-  |                                                        
-  |============                                      |  24%
-  |                                                        
-  |=============                                     |  25%
-  |                                                        
-  |==============                                    |  27%
-  |                                                        
-  |==============                                    |  29%
-  |                                                        
-  |===============                                   |  31%
-  |                                                        
-  |================                                  |  32%
-  |                                                        
-  |=================                                 |  34%
-  |                                                        
-  |==================                                |  36%
-  |                                                        
-  |===================                               |  37%
-  |                                                        
-  |===================                               |  39%
-  |                                                        
-  |====================                              |  41%
-  |                                                        
-  |=====================                             |  42%
-  |                                                        
-  |======================                            |  44%
-  |                                                        
-  |=======================                           |  46%
-  |                                                        
-  |========================                          |  47%
-  |                                                        
-  |=========================                         |  49%
-  |                                                        
-  |=========================                         |  51%
-  |                                                        
-  |==========================                        |  53%
-  |                                                        
-  |===========================                       |  54%
-  |                                                        
-  |============================                      |  56%
-  |                                                        
-  |=============================                     |  58%
-  |                                                        
-  |==============================                    |  59%
-  |                                                        
-  |===============================                   |  61%
-  |                                                        
-  |===============================                   |  63%
-  |                                                        
-  |================================                  |  64%
-  |                                                        
-  |=================================                 |  66%
-  |                                                        
-  |==================================                |  68%
-  |                                                        
-  |===================================               |  69%
-  |                                                        
-  |====================================              |  71%
-  |                                                        
-  |====================================              |  73%
-  |                                                        
-  |=====================================             |  75%
-  |                                                        
-  |======================================            |  76%
-  |                                                        
-  |=======================================           |  78%
-  |                                                        
-  |========================================          |  80%
-  |                                                        
-  |=========================================         |  81%
-  |                                                        
-  |==========================================        |  83%
-  |                                                        
-  |==========================================        |  85%
-  |                                                        
-  |===========================================       |  86%
-  |                                                        
-  |============================================      |  88%
-  |                                                        
-  |=============================================     |  90%
-  |                                                        
-  |==============================================    |  92%
-  |                                                        
-  |===============================================   |  93%
-  |                                                        
-  |===============================================   |  95%
-  |                                                        
-  |================================================  |  97%
-  |                                                        
-  |================================================= |  98%
-  |                                                        
-  |==================================================| 100%
-    ## 
-    ## Downloading files totaling approximately 2.541651 MB
-    ## Downloading 59 files
-    ## 
-  |                                                        
-  |                                                  |   0%
-  |                                                        
-  |=                                                 |   2%
-  |                                                        
-  |==                                                |   3%
-  |                                                        
-  |===                                               |   5%
-  |                                                        
-  |===                                               |   7%
-  |                                                        
-  |====                                              |   9%
-  |                                                        
-  |=====                                             |  10%
-  |                                                        
-  |======                                            |  12%
-  |                                                        
-  |=======                                           |  14%
-  |                                                        
-  |========                                          |  16%
-  |                                                        
-  |=========                                         |  17%
-  |                                                        
-  |=========                                         |  19%
-  |                                                        
-  |==========                                        |  21%
-  |                                                        
-  |===========                                       |  22%
-  |                                                        
-  |============                                      |  24%
-  |                                                        
-  |=============                                     |  26%
-  |                                                        
-  |==============                                    |  28%
-  |                                                        
-  |===============                                   |  29%
-  |                                                        
-  |================                                  |  31%
-  |                                                        
-  |================                                  |  33%
-  |                                                        
-  |=================                                 |  34%
-  |                                                        
-  |==================                                |  36%
-  |                                                        
-  |===================                               |  38%
-  |                                                        
-  |====================                              |  40%
-  |                                                        
-  |=====================                             |  41%
-  |                                                        
-  |======================                            |  43%
-  |                                                        
-  |======================                            |  45%
-  |                                                        
-  |=======================                           |  47%
-  |                                                        
-  |========================                          |  48%
-  |                                                        
-  |=========================                         |  50%
-  |                                                        
-  |==========================                        |  52%
-  |                                                        
-  |===========================                       |  53%
-  |                                                        
-  |============================                      |  55%
-  |                                                        
-  |============================                      |  57%
-  |                                                        
-  |=============================                     |  59%
-  |                                                        
-  |==============================                    |  60%
-  |                                                        
-  |===============================                   |  62%
-  |                                                        
-  |================================                  |  64%
-  |                                                        
-  |=================================                 |  66%
-  |                                                        
-  |==================================                |  67%
-  |                                                        
-  |==================================                |  69%
-  |                                                        
-  |===================================               |  71%
-  |                                                        
-  |====================================              |  72%
-  |                                                        
-  |=====================================             |  74%
-  |                                                        
-  |======================================            |  76%
-  |                                                        
-  |=======================================           |  78%
-  |                                                        
-  |========================================          |  79%
-  |                                                        
-  |=========================================         |  81%
-  |                                                        
-  |=========================================         |  83%
-  |                                                        
-  |==========================================        |  84%
-  |                                                        
-  |===========================================       |  86%
-  |                                                        
-  |============================================      |  88%
-  |                                                        
-  |=============================================     |  90%
-  |                                                        
-  |==============================================    |  91%
-  |                                                        
-  |===============================================   |  93%
-  |                                                        
-  |===============================================   |  95%
-  |                                                        
-  |================================================  |  97%
-  |                                                        
-  |================================================= |  98%
-  |                                                        
-  |==================================================| 100%
-    ## 
-    ## Unpacking zip files using 1 cores.
-    ## Stacking operation across a single core.
-    ## Stacking table inv_fieldData
-    ## Stacking table inv_persample
-    ## Stacking table inv_taxonomyProcessed
-    ## Copied the most recent publication of validation file to /stackedFiles
-    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
-    ## Copied the most recent publication of variable definition file to /stackedFiles
-    ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 1.182314 secs
-    ## All unzipped monthly data folders have been removed.
-
 ## Macroinvertebrate Data Munging
 Now that we have the data downloaded, we will need to do some 'data munging' to reorganize our data into a more useful format for this analysis. First, let's take a look at some of the tables that were generated by `loadByProduct()`:
 
@@ -349,10 +92,8 @@ Now that we have the data downloaded, we will need to do some 'data munging' to 
     # data product
     names(all_tabs_inv)
 
-    ## [1] "categoricalCodes_20120" "inv_fieldData"         
-    ## [3] "inv_persample"          "inv_taxonomyProcessed" 
-    ## [5] "readme_20120"           "validation_20120"      
-    ## [7] "variables_20120"
+    ## [1] "categoricalCodes_20120" "inv_fieldData"          "inv_persample"          "inv_taxonomyProcessed" 
+    ## [5] "readme_20120"           "validation_20120"       "variables_20120"
 
     # extract items from list and put in R env. 
     all_tabs_inv %>% list2env(.GlobalEnv)
@@ -377,6 +118,22 @@ Now that we have the data downloaded, we will need to do some 'data munging' to 
 Next, we will perform several operations in a row to re-organize our data. Each step is described by a code comment.
 
 
+    # known problem with dupes published in the inv_fieldData table as of 2021-02-18
+    # this anticipated to be fixed in data release next year (Jan 2022)
+    # use sampleID as primary key, keep the first uid associated with any sampleID that has multiple uids
+    de_duped_uids <- inv_fieldData %>% 
+      group_by(sampleID) %>%
+      summarise(n_recs = length(uid),
+                       n_unique_uids = length(unique(uid)),
+                       uid_to_keep = dplyr::first(uid)) 
+    
+    # filter data using de-duped uids
+    inv_fieldData <- inv_fieldData %>%
+      dplyr::filter(uid %in% de_duped_uids$uid_to_keep)
+    
+    
+    
+    
     # extract year from date, add it as a new column
     inv_fieldData <- inv_fieldData %>%
       mutate(
@@ -385,9 +142,11 @@ Next, we will perform several operations in a row to re-organize our data. Each 
           lubridate::year())
     
     
+    
+    
     # extract location data into a separate table
     table_location <- inv_fieldData %>%
-      
+    
       # keep only the columns listed below
       select(siteID, 
              domainID,
@@ -399,6 +158,7 @@ Next, we will perform several operations in a row to re-organize our data. Each 
       # keep rows with unique combinations of values, 
       # i.e., no duplicate records
       distinct()
+    
     
     
     
@@ -425,25 +185,38 @@ Next, we will perform several operations in a row to re-organize our data. Each 
     
     
     
+    
     # Make the observation table.
     # start with inv_taxonomyProcessed
-    table_observation <- inv_taxonomyProcessed %>% 
-      
-      # select a subset of columns from
-      # inv_taxonomyProcessed
-      select(uid,
-             sampleID,
-             domainID,
-             siteID,
-             namedLocation,
-             collectDate,
-             subsamplePercent,
-             individualCount,
-             estimatedTotalCount,
+    
+    # check for repeated taxa within a sampleID that need to be added together
+    inv_taxonomyProcessed_summed <- inv_taxonomyProcessed %>% 
+      select(sampleID,
              acceptedTaxonID,
-             order, family, genus, 
-             scientificName,
-             taxonRank) %>%
+             individualCount,
+             estimatedTotalCount) %>%
+      group_by(sampleID, acceptedTaxonID) %>%
+      summarize(
+        across(c(individualCount, estimatedTotalCount), ~sum(.x, na.rm = TRUE)))
+      
+    
+    
+    
+    # join summed taxon counts back with sample and field data
+    table_observation <- inv_taxonomyProcessed_summed %>%
+      
+      # Join relevant sample info back in by sampleID
+      left_join(inv_taxonomyProcessed %>% 
+                  select(sampleID,
+                         domainID,
+                         siteID,
+                         namedLocation,
+                         collectDate,
+                         acceptedTaxonID,
+                         order, family, genus, 
+                         scientificName,
+                         taxonRank) %>%
+                  distinct()) %>%
       
       # Join the columns selected above with two 
       # columns from inv_fieldData (the two columns 
@@ -460,8 +233,20 @@ Next, we will perform several operations in a row to re-organize our data. Each 
       # same text strint for all rows. 
       mutate(inv_dens = estimatedTotalCount / benthicArea,
              inv_dens_unit = 'count per square meter')
+    
+    
+    
+    
+    
+    # check for duplicate records, should return a table with 0 rows
+    table_observation %>% 
+      group_by(sampleID, acceptedTaxonID) %>% 
+      summarize(n_obs = length(sampleID)) %>%
+      filter(n_obs > 1)
 
-    ## Joining, by = "sampleID"
+    ## # A tibble: 0 x 3
+    ## # Groups:   sampleID [0]
+    ## # ... with 3 variables: sampleID <chr>, acceptedTaxonID <chr>, n_obs <int>
 
     # extract sample info
     table_sample_info <- table_observation %>%
@@ -473,6 +258,7 @@ Next, we will perform several operations in a row to re-organize our data. Each 
     
     
     
+    
     # remove singletons and doubletons
     # create an occurrence summary table
     taxa_occurrence_summary <- table_observation %>%
@@ -480,20 +266,31 @@ Next, we will perform several operations in a row to re-organize our data. Each 
       distinct() %>%
       group_by(acceptedTaxonID) %>%
       summarize(occurrences = n())
-
-    ## `summarise()` ungrouping output (override with `.groups` argument)
-
+    
+    
+    
+    
+    
     # filter out taxa that are only observed 1 or 2 times
     taxa_list_cleaned <- taxa_occurrence_summary %>%
       filter(occurrences > 2)
+    
+    
+    
+    
     
     # filter observation table based on taxon list above
     table_observation_cleaned <- table_observation %>%
       filter(acceptedTaxonID %in%
                  taxa_list_cleaned$acceptedTaxonID,
              !sampleID %in% c("MAYF.20190729.CORE.1",
+                              "MAYF.20200713.CORE.1",
                               "POSE.20160718.HESS.1")) 
                           #this is an outlier sampleID
+    
+    
+    
+    
     
     
     # some summary data
@@ -508,10 +305,21 @@ Next, we will perform several operations in a row to re-organize our data. Each 
         sample_count = sampleID %>% unique() %>% length(),
         habitat_count = habitatType %>% 
             unique() %>% length())
+    
+    
+    
+    
+    # check out the summary table
+    sampling_effort_summary %>% as.data.frame() %>% 
+      head() %>% print()
 
-    ## `summarise()` regrouping output by 'siteID', 'year' (override with `.groups` argument)
-
-    View(sampling_effort_summary)
+    ##   siteID year     samplerType event_count sample_count habitat_count
+    ## 1   ARIK 2014            core           2            6             1
+    ## 2   ARIK 2014 modifiedKicknet           2           10             1
+    ## 3   ARIK 2015            core           3           11             2
+    ## 4   ARIK 2015 modifiedKicknet           3           13             2
+    ## 5   ARIK 2016            core           3            9             1
+    ## 6   ARIK 2016 modifiedKicknet           3           15             1
 
 ## Working with 'Long' data
 'Reshaping' your data to use as an input to a particular fuction may require you to consider: do I want 'long' or 'wide' data? Here's a link to <a href="https://www.theanalysisfactor.com/wide-and-long-data/">a great article from 'the analysis factor' that describes the differences</a>.
@@ -529,9 +337,7 @@ For this first step, we will use data in a 'long' table:
       facet_wrap(~ domainID + siteID) +
       geom_col()
 
-    ## `summarise()` regrouping output by 'domainID', 'siteID' (override with `.groups` argument)
-
-![Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-1.png)
+![Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-1.png)
 
     # library(scales)
     # sum densities by order for each sampleID
@@ -541,24 +347,21 @@ For this first step, we will use data in a 'long' table:
         group_by(domainID, siteID, year, 
                  eventID, sampleID, habitatType, order) %>%
         summarize(order_dens = sum(inv_dens, na.rm = TRUE))
-
-    ## `summarise()` regrouping output by 'domainID', 'siteID', 'year', 'eventID', 'sampleID', 'habitatType' (override with `.groups` argument)
-
+      
+      
     # rank occurrence by order
     table_observation_by_order %>% head()
 
     ## # A tibble: 6 x 8
-    ## # Groups:   domainID, siteID, year, eventID, sampleID,
-    ## #   habitatType [2]
-    ##   domainID siteID  year eventID sampleID habitatType order
-    ##   <chr>    <chr>  <dbl> <chr>   <chr>    <chr>       <chr>
-    ## 1 D02      POSE    2014 POSE.2… POSE.20… riffle      Cole…
-    ## 2 D02      POSE    2014 POSE.2… POSE.20… riffle      Ephe…
-    ## 3 D02      POSE    2014 POSE.2… POSE.20… riffle      Odon…
-    ## 4 D02      POSE    2014 POSE.2… POSE.20… riffle      Plec…
-    ## 5 D02      POSE    2014 POSE.2… POSE.20… riffle      Tric…
-    ## 6 D02      POSE    2014 POSE.2… POSE.20… pool        Coll…
-    ## # … with 1 more variable: order_dens <dbl>
+    ## # Groups:   domainID, siteID, year, eventID, sampleID, habitatType [1]
+    ##   domainID siteID  year eventID       sampleID               habitatType order            order_dens
+    ##   <chr>    <chr>  <dbl> <chr>         <chr>                  <chr>       <chr>                 <dbl>
+    ## 1 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Branchiobdellida      516. 
+    ## 2 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Coleoptera            516. 
+    ## 3 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Decapoda               86.0
+    ## 4 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Diptera              5419. 
+    ## 5 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Ephemeroptera        5301. 
+    ## 6 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Megaloptera           387.
 
     # stacked rank occurrence plot
     table_observation_by_order %>%
@@ -574,9 +377,7 @@ For this first step, we will use data in a 'long' table:
         theme(axis.text.x = 
                   element_text(angle = 45, hjust = 1))
 
-    ## `summarise()` regrouping output by 'order' (override with `.groups` argument)
-
-![Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-2-1.png)
+![Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-2-1.png)
 
     # faceted densities plot
     table_observation_by_order %>%
@@ -590,7 +391,7 @@ For this first step, we will use data in a 'long' table:
       theme(axis.text.x = 
                 element_text(angle = 45, hjust = 1))
 
-![Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-3-1.png)
+![Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-3-1.png)
 
 ### Making Data 'wide'
 For the next process, we will need to make our data table in the 'wide' format.
@@ -616,14 +417,14 @@ For the next process, we will need to make our data table in the 'wide' format.
                          values_fn = list(inv_dens = sum)) %>%
       column_to_rownames(var = "sampleID") 
     
-    # checl col and row sums
+    # check col and row sums -- mins should all be > 0
     colSums(table_sample_by_taxon_density_wide) %>% min()
 
-    ## [1] 28
+    ## [1] 12
 
     rowSums(table_sample_by_taxon_density_wide) %>% min()
 
-    ## [1] 18.86792
+    ## [1] 25.55004
 
 ## Multiscale Biodiversity
 
@@ -644,64 +445,58 @@ The relationship among alpha, beta, and gamma diversity is:
 The influence of relative abundances over the calculation of alpha, beta, and gamma diversity metrics is determined by the coefficient q. The coefficient "q" determines the "order" of the diversity metric, where q = 0 provides diversity measures based on richness, and higher orders of q give more weight to taxa that have higher abundances in the data. Order q = 1 is related to Shannon diveristy metrics, and order q = 2 is related to Simpson diversity metrics.
 
 #### Alpha diversity is average local richness.
-Order q = 0 alpha diversity calcuated for our dataset returns a mean local richness (i.e., species counts) of ~27 taxa per sample across the entire data set.
+Order q = 0 alpha diversity calculated for our dataset returns a mean local richness (i.e., species counts) of ~30 taxa per sample across the entire data set.
 
 
+    # Here we use vegan::renyi to calculate Hill numbers
+    # If hill = FALSE, the function returns an entropy
+    # If hill = TRUE, the function returns the exponentiated
+    # entropy. In other words:
+    # exp(renyi entropy) = Hill number = "species equivalent"
+    
+    # Note that for this function, the "scales" argument 
+    # determines the order of q used in the calculation
+    
     table_sample_by_taxon_density_wide %>%
-      vegetarian::d(lev = 'alpha', q = 0)
+      vegan::renyi(scales = 0, hill = TRUE) %>%
+      mean()
 
-    ## [1] 27.74303
+    ## [1] 30.18859
 
 #### Comparing alpha diversity calculated using different orders:
 
-Order q = 1 alpha diversity returns mean number of "species equivalents" per sample in the data set. This approach incoporates evenness because when abundances are more even across taxa, taxa are weighted more equally toward counting as a "species equivalent". For example, if you have a sample with 100 individuals, spread across 10 species, and each species is represented by 10 individuals, the number of order q = 1 species equivalents will equal the richness (10).
+Order q = 1 alpha diversity returns mean number of "species equivalents" per sample in the data set. This approach incorporates evenness because when abundances are more even across taxa, taxa are weighted more equally toward counting as a "species equivalent". For example, if you have a sample with 100 individuals, spread across 10 species, and each species is represented by 10 individuals, the number of order q = 1 species equivalents will equal the richness (10).
 
 Alternatively, if 90 of the 100 individuals in the sample are one species, and the other 10 individuals are spread across the other 9 species, there will only be 1.72 order q = 1 species equivalents, whereas, there are still 10 species in the sample.
 
 
-    # even distribution, order q = 0 diversity = 10 
-    vegetarian::d(
-      data.frame(spp.a = 10, spp.b = 10, spp.c = 10, 
-                 spp.d = 10, spp.e = 10, spp.f = 10, 
-                 spp.g = 10, spp.h = 10, spp.i = 10, 
-                 spp.j = 10),
-      q = 0, 
-      lev = "alpha")
+    # even distribution, orders q = 0 and q = 1 for 10 taxa
+    vegan::renyi(
+      c(spp.a = 10, spp.b = 10, spp.c = 10, 
+        spp.d = 10, spp.e = 10, spp.f = 10, 
+        spp.g = 10, spp.h = 10, spp.i = 10, 
+        spp.j = 10),
+      hill = TRUE,
+      scales = c(0, 1))
 
-    ## [1] 10
+    ##  0  1 
+    ## 10 10 
+    ## attr(,"class")
+    ## [1] "renyi"   "numeric"
 
-    # even distribution, order q = 1 diversity = 10
-    vegetarian::d(
-      data.frame(spp.a = 10, spp.b = 10, spp.c = 10, 
-                 spp.d = 10, spp.e = 10, spp.f = 10, 
-                 spp.g = 10, spp.h = 10, spp.i = 10, 
-                 spp.j = 10),
-      q = 1, 
-      lev = "alpha")
+    # uneven distribution, orders q = 0 and q = 1 for 10 taxa
+    vegan::renyi(
+      c(spp.a = 90, spp.b = 2, spp.c = 1, 
+        spp.d = 1, spp.e = 1, spp.f = 1, 
+        spp.g = 1, spp.h = 1, spp.i = 1, 
+        spp.j = 1),
+      hill = TRUE,
+      scales = c(0, 1)) 
 
-    ## [1] 10
-
-    # un-even distribution, order q = 0 diversity = 10
-    vegetarian::d(
-      data.frame(spp.a = 90, spp.b = 2, spp.c = 1, 
-                 spp.d = 1, spp.e = 1, spp.f = 1, 
-                 spp.g = 1, spp.h = 1, spp.i = 1, 
-                 spp.j = 1),
-      q = 0, 
-      lev = "alpha")
-
-    ## [1] 10
-
-    # un-even distribution, order q = 1 diversity = 1.72
-    vegetarian::d(
-      data.frame(spp.a = 90, spp.b = 2, spp.c = 1, 
-                 spp.d = 1, spp.e = 1, spp.f = 1, 
-                 spp.g = 1, spp.h = 1, spp.i = 1, 
-                 spp.j = 1),
-      q = 1, 
-      lev = "alpha")
-
-    ## [1] 1.718546
+    ##         0         1 
+    ## 10.000000  1.718546 
+    ## attr(,"class")
+    ## [1] "renyi"   "numeric"
 
 ## Comparing orders of q for NEON data
 
@@ -715,59 +510,104 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
                     select(sampleID, siteID)) %>%
       tibble::column_to_rownames("sampleID") %>%
       nest(data = -siteID)
+    
+    data_nested_by_siteID$data[[1]] %>%
+      vegan::renyi(scales = 0, hill = TRUE) %>%
+      mean()
 
-    ## Joining, by = "sampleID"
+    ## [1] 25.22302
 
-    # apply the calculation by site  
+    # apply the calculation by site for alpha diversity
+    # for each order of q
     data_nested_by_siteID %>% mutate(
       alpha_q0 = purrr::map_dbl(
         .x = data,
-        .f = ~ vegetarian::d(abundances = .,
-        lev = 'alpha', 
-        q = 0)))
+        .f = ~ vegan::renyi(x = .,
+                            hill = TRUE, 
+                            scales = 0) %>% mean()),
+      alpha_q1 = purrr::map_dbl(
+        .x = data,
+        .f = ~ vegan::renyi(x = .,
+                            hill = TRUE, 
+                            scales = 1) %>% mean()),
+      alpha_q2 = purrr::map_dbl(
+        .x = data,
+        .f = ~ vegan::renyi(x = .,
+                            hill = TRUE, 
+                            scales = 2) %>% mean())
+      )
+
+    ## # A tibble: 3 x 5
+    ##   siteID data                 alpha_q0 alpha_q1 alpha_q2
+    ##   <chr>  <list>                  <dbl>    <dbl>    <dbl>
+    ## 1 ARIK   <tibble [139 x 450]>     25.2     10.5     6.70
+    ## 2 MAYF   <tibble [126 x 450]>     22.9     12.2     8.30
+    ## 3 POSE   <tibble [138 x 450]>     41.8     20.4    12.8
+
+    # Note that POSE has the highest mean alpha diversity
+    
+    
+    
+    # To calculate gamma diversity at the site scale,
+    # calculate the column means and then calculate 
+    # the renyi entropy and Hill number
+    # Here we are only calcuating order 
+    # q = 0 gamma diversity
+    data_nested_by_siteID %>% mutate(
+      gamma_q0 = purrr::map_dbl(
+        .x = data,
+        .f = ~ vegan::renyi(x = colMeans(.),
+                            hill = TRUE, 
+                            scales = 0)))
 
     ## # A tibble: 3 x 3
-    ##   siteID data                 alpha_q0
+    ##   siteID data                 gamma_q0
     ##   <chr>  <list>                  <dbl>
-    ## 1 POSE   <tibble [101 × 390]>     38.8
-    ## 2 MAYF   <tibble [119 × 390]>     22.2
-    ## 3 ARIK   <tibble [103 × 390]>     23.3
+    ## 1 ARIK   <tibble [139 x 450]>     240.
+    ## 2 MAYF   <tibble [126 x 450]>     237.
+    ## 3 POSE   <tibble [138 x 450]>     326
 
-    # Note that POSE has the highest mean diversity
+    # Note that POSE has the highest gamma diversity
     
     
     
-    # Now calculate alpha, beta, and gamma using orders 0 and 1,
-    # Note that I don't make all the argument assignments as explicitly here
+    # Now calculate alpha, beta, and gamma using orders 0 and 1 
+    # for each siteID
     diversity_partitioning_results <- 
-        data_nested_by_siteID %>% 
-        mutate(
-            n_samples = purrr::map_int(data, ~ nrow(.)),
-            alpha_q0 = purrr::map_dbl(data, ~vegetarian::d(
-                abundances = ., lev = 'alpha', q = 0)),
-            alpha_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-                abundances = ., lev = 'alpha', q = 1)),
-            beta_q0 = purrr::map_dbl(data, ~ vegetarian::d(
-                abundances = ., lev = 'beta', q = 0)),
-            beta_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-                abundances = ., lev = 'beta', q = 1)),
-            gamma_q0 = purrr::map_dbl(data, ~ vegetarian::d(
-                abundances = ., lev = 'gamma', q = 0)),
-            gamma_q1 = purrr::map_dbl(data, ~ vegetarian::d(
-                abundances = ., lev = 'gamma', q = 1)))
+      data_nested_by_siteID %>% 
+      mutate(
+        n_samples = purrr::map_int(data, ~ nrow(.)),
+        alpha_q0 = purrr::map_dbl(
+          .x = data,
+          .f = ~ vegan::renyi(x = .,
+                              hill = TRUE, 
+                              scales = 0) %>% mean()),
+        alpha_q1 = purrr::map_dbl(
+          .x = data,
+          .f = ~ vegan::renyi(x = .,
+                              hill = TRUE, 
+                              scales = 1) %>% mean()),
+        gamma_q0 = purrr::map_dbl(
+          .x = data,
+          .f = ~ vegan::renyi(x = colMeans(.),
+                              hill = TRUE, 
+                              scales = 0)),
+        gamma_q1 = purrr::map_dbl(
+          .x = data,
+          .f = ~ vegan::renyi(x = colMeans(.),
+                              hill = TRUE, 
+                              scales = 1)),
+        beta_q0 = gamma_q0 / alpha_q0,
+        beta_q1 = gamma_q1 / alpha_q1)
     
     
-    diversity_partitioning_results %>% select(-data) %>% print()
+    diversity_partitioning_results %>% 
+      select(-data) %>% as.data.frame() %>% print()
 
-    ## # A tibble: 3 x 8
-    ##   siteID n_samples alpha_q0 alpha_q1 beta_q0 beta_q1
-    ##   <chr>      <int>    <dbl>    <dbl>   <dbl>   <dbl>
-    ## 1 POSE         101     38.8    15.5     7.26    6.43
-    ## 2 MAYF         119     22.2     9.50    9.95    6.86
-    ## 3 ARIK         103     23.3     8.40    8.25    5.86
-    ## # … with 2 more variables: gamma_q0 <dbl>, gamma_q1 <dbl>
-
-    # Note that POSE has the highest mean diversity
+    ##   siteID n_samples alpha_q0 alpha_q1 gamma_q0 gamma_q1   beta_q0  beta_q1
+    ## 1   ARIK       139 25.22302 10.48685      240 35.45153  9.515117 3.380569
+    ## 2   MAYF       126 22.90476 12.24765      237 64.27611 10.347193 5.248036
+    ## 3   POSE       138 41.84058 20.44035      326 98.91670  7.791479 4.839287
 
 
 
@@ -781,112 +621,84 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
 
     ## Square root transformation
     ## Wisconsin double standardization
-    ## Run 0 stress 0.2134463 
-    ## Run 1 stress 0.2362896 
-    ## Run 2 stress 0.242216 
-    ## Run 3 stress 0.2218711 
-    ## Run 4 stress 0.225634 
-    ## Run 5 stress 0.2328296 
-    ## Run 6 stress 0.2235321 
-    ## Run 7 stress 0.2147179 
-    ## Run 8 stress 0.2297795 
-    ## Run 9 stress 0.2137017 
-    ## ... Procrustes: rmse 0.01536283  max resid 0.1347333 
-    ## Run 10 stress 0.2213549 
-    ## Run 11 stress 0.2354528 
-    ## Run 12 stress 0.2319924 
-    ## Run 13 stress 0.2294554 
-    ## Run 14 stress 0.2267465 
-    ## Run 15 stress 0.2312224 
-    ## Run 16 stress 0.22033 
-    ## Run 17 stress 0.2154765 
-    ## Run 18 stress 0.2280886 
-    ## Run 19 stress 0.2293182 
-    ## Run 20 stress 0.2165913 
+    ## Run 0 stress 0.2283171 
+    ## Run 1 stress 0.2299206 
+    ## Run 2 stress 0.2292527 
+    ## Run 3 stress 0.2278548 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.009117727  max resid 0.1234719 
+    ## Run 4 stress 0.2474028 
+    ## Run 5 stress 0.2396525 
+    ## Run 6 stress 0.2298593 
+    ## Run 7 stress 0.2446823 
+    ## Run 8 stress 0.2331876 
+    ## Run 9 stress 0.228698 
+    ## Run 10 stress 0.2466319 
+    ## Run 11 stress 0.2320192 
+    ## Run 12 stress 0.231649 
+    ## Run 13 stress 0.2295275 
+    ## Run 14 stress 0.2304629 
+    ## Run 15 stress 0.2379 
+    ## Run 16 stress 0.2305865 
+    ## Run 17 stress 0.2294722 
+    ## Run 18 stress 0.2313401 
+    ## Run 19 stress 0.2396461 
+    ## Run 20 stress 0.2310793 
     ## *** No convergence -- monoMDS stopping criteria:
-    ##      1: no. of iterations >= maxit
-    ##     19: stress ratio > sratmax
+    ##      3: no. of iterations >= maxit
+    ##     17: stress ratio > sratmax
 
     # plot stress
     my_nmds_result$stress
 
-    ## [1] 0.2134463
+    ## [1] 0.2278548
 
     p1 <- vegan::ordiplot(my_nmds_result)
     vegan::ordilabel(p1, "species")
 
-![Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-1.png)
+![Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-1.png)
 
     # merge NMDS scores with sampleID information for plotting
     nmds_scores <- my_nmds_result %>% vegan::scores() %>%
       as.data.frame() %>%
       tibble::rownames_to_column("sampleID") %>%
       left_join(table_sample_info)
-
-    ## Joining, by = "sampleID"
-
+    
+    
     # # How I determined the outlier(s)
     nmds_scores %>% arrange(desc(NMDS1)) %>% head()
 
-    ##                  sampleID     NMDS1       NMDS2 domainID
-    ## 1  POSE.20150721.SURBER.1 1.5742532 -0.02425078      D02
-    ## 2  POSE.20150330.SURBER.1 1.2299946 -0.75884534      D02
-    ## 3 ARIK.20160919.KICKNET.3 1.0875597 -0.14280868      D10
-    ## 4 ARIK.20150325.KICKNET.4 0.9929619 -0.27960972      D10
-    ## 5 ARIK.20160919.KICKNET.4 0.9905714 -0.53136594      D10
-    ## 6 ARIK.20140714.KICKNET.4 0.9868035 -1.33136322      D10
-    ##   siteID  namedLocation         collectDate       eventID
-    ## 1   POSE POSE.AOS.reach 2015-07-21 14:43:00 POSE.20150721
-    ## 2   POSE POSE.AOS.reach 2015-03-30 14:30:00 POSE.20150330
-    ## 3   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919
-    ## 4   ARIK ARIK.AOS.reach 2015-03-25 17:15:00 ARIK.20150325
-    ## 5   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919
-    ## 6   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714
-    ##   year habitatType     samplerType benthicArea
-    ## 1 2015      riffle          surber       0.093
-    ## 2 2015      riffle          surber       0.093
-    ## 3 2016         run modifiedKicknet       0.250
-    ## 4 2015         run modifiedKicknet       0.250
-    ## 5 2016         run modifiedKicknet       0.250
-    ## 6 2014         run modifiedKicknet       0.250
-    ##            inv_dens_unit
-    ## 1 count per square meter
-    ## 2 count per square meter
-    ## 3 count per square meter
-    ## 4 count per square meter
-    ## 5 count per square meter
-    ## 6 count per square meter
+    ##               sampleID    NMDS1      NMDS2 domainID siteID  namedLocation         collectDate       eventID year
+    ## 1 MAYF.20190311.CORE.2 1.503779  1.1286631      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019
+    ## 2 MAYF.20190311.CORE.1 1.436770  0.8581321      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019
+    ## 3 MAYF.20180726.CORE.2 1.307662  0.5535140      D08   MAYF MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018
+    ## 4 MAYF.20180326.CORE.3 1.212377 -0.5519914      D08   MAYF MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018
+    ## 5 MAYF.20150324.SNAG.3 1.166104 -0.4524077      D08   MAYF MAYF.AOS.reach 2015-03-24 17:15:00 MAYF.20150324 2015
+    ## 6 MAYF.20170314.CORE.1 1.113397  1.7399044      D08   MAYF MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017
+    ##   habitatType samplerType benthicArea          inv_dens_unit
+    ## 1         run        core       0.006 count per square meter
+    ## 2         run        core       0.006 count per square meter
+    ## 3         run        core       0.006 count per square meter
+    ## 4         run        core       0.006 count per square meter
+    ## 5         run        snag       0.076 count per square meter
+    ## 6         run        core       0.006 count per square meter
 
     nmds_scores %>% arrange(desc(NMDS1)) %>% tail()
 
-    ##                 sampleID     NMDS1      NMDS2 domainID
-    ## 318 MAYF.20170314.CORE.1 -1.045603  1.2495550      D08
-    ## 319 MAYF.20160321.CORE.2 -1.087688  0.9935332      D08
-    ## 320 MAYF.20180326.CORE.3 -1.095837 -0.5646813      D08
-    ## 321 MAYF.20180726.CORE.2 -1.231606  0.1671310      D08
-    ## 322 MAYF.20190311.CORE.1 -1.440107  0.6270889      D08
-    ## 323 MAYF.20190311.CORE.2 -1.504627  0.7647755      D08
-    ##     siteID  namedLocation         collectDate       eventID
-    ## 318   MAYF MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314
-    ## 319   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321
-    ## 320   MAYF MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326
-    ## 321   MAYF MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726
-    ## 322   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311
-    ## 323   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311
-    ##     year habitatType samplerType benthicArea
-    ## 318 2017         run        core       0.006
-    ## 319 2016         run        core       0.006
-    ## 320 2018         run        core       0.006
-    ## 321 2018         run        core       0.006
-    ## 322 2019         run        core       0.006
-    ## 323 2019         run        core       0.006
-    ##              inv_dens_unit
-    ## 318 count per square meter
-    ## 319 count per square meter
-    ## 320 count per square meter
-    ## 321 count per square meter
-    ## 322 count per square meter
-    ## 323 count per square meter
+    ##                    sampleID      NMDS1       NMDS2 domainID siteID  namedLocation         collectDate       eventID
+    ## 398 ARIK.20160919.KICKNET.5 -0.8219658 -0.23761785      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919
+    ## 399 ARIK.20160919.KICKNET.1 -0.8298587  0.33390491      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919
+    ## 400    ARIK.20150714.CORE.3 -0.8570582 -0.01066701      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714
+    ## 401    ARIK.20150714.CORE.2 -1.0111357  0.01488167      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714
+    ## 402 ARIK.20160919.KICKNET.4 -1.0625294  0.16996693      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919
+    ## 403    ARIK.20160331.CORE.3 -1.1435166 -0.35538490      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331
+    ##     year habitatType     samplerType benthicArea          inv_dens_unit
+    ## 398 2016         run modifiedKicknet       0.250 count per square meter
+    ## 399 2016         run modifiedKicknet       0.250 count per square meter
+    ## 400 2015        pool            core       0.006 count per square meter
+    ## 401 2015        pool            core       0.006 count per square meter
+    ## 402 2016         run modifiedKicknet       0.250 count per square meter
+    ## 403 2016        pool            core       0.006 count per square meter
 
     # Plot samples in community composition space by year
     nmds_scores %>%
@@ -895,7 +707,7 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
       geom_point() +
       facet_wrap(~ as.factor(year))
 
-![Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-2.png)
+![Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-2.png)
 
     # Plot samples in community composition space
     # facet by siteID and habitat type
@@ -906,4 +718,4 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
       geom_point() +
       facet_grid(habitatType ~ siteID, scales = "free")
 
-![Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-3.png)
+![Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-3.png)

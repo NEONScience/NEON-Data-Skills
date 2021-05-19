@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA-------------------
+## ----load libraries, eval=F, comment=NA----------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -9,10 +9,15 @@
 library(tidyverse)
 library(neonUtilities)
 library(devtools)
+library(vegan)
 
-# install neon_demo branch of ecocomDP
-devtools::install_github("sokole/ecocomDP@neon_demo")
-
+# install ecocomDP
+# Here, we're using a tagged (pre-release) version of the 
+# package that's available on GitHub. Using this tag 
+# (@v.0.0.0.9000) will always install the same version 
+# of the package. We plan to release v1.0 of this package
+# on CRAN later this year. 
+devtools::install_github("EDIorg/ecocomDP@v0.0.0.9000")
 library(ecocomDP)
 
 # source .r file with my NEON_TOKEN
@@ -23,7 +28,7 @@ library(ecocomDP)
 
 
 
-## ----download-macroinvert---------------------------------
+## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'--------------------------------------------
 
 # search for invertebrate data products
 my_search_result <- 
@@ -31,27 +36,37 @@ my_search_result <-
 View(my_search_result)
 
 # pull data for the NEON aquatic "Macroinvertebrate
-# collection" data product
-# function not yet compatible with "token" argument 
-# in updated neonUtilities
-my_search_result_data <- 
-    ecocomDP::read_data(id = "DP1.20120.001",
-                        site = c("ARIK", "POSE"))
+# collection"
+my_data <- ecocomDP::read_data(
+  id = "neon.ecocomdp.20120.001.001",
+  site = c('ARIK','MAYF'),
+  startdate = "2017-06",
+  enddate = "2020-03",
+  # token = NEON_TOKEN, #Uncomment to use your token
+  check.size = FALSE)
 
 
 
-## ----view-ecocomDP-str------------------------------------
+## ----view-ecocomDP-str---------------------------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
-my_search_result_data %>% names()
-my_search_result_data$DP1.20120.001 %>% names()
-my_search_result_data$DP1.20120.001$tables %>% names()
-my_search_result_data$DP1.20120.001$tables$taxon %>% head()
-my_search_result_data$DP1.20120.001$tables$observation %>% head()
+my_data %>% names()
+my_data$neon.ecocomdp.20120.001.001 %>% names()
+
+# short list of package summary data
+my_data$neon.ecocomdp.20120.001.001$metadata$data_package_info
+
+# validation issues? None if returns an empty list
+my_data$neon.ecocomdp.20120.001.001$validation_issues
+
+# examine the tables
+my_data$neon.ecocomdp.20120.001.001$tables %>% names()
+my_data$neon.ecocomdp.20120.001.001$tables$taxon %>% head()
+my_data$neon.ecocomdp.20120.001.001$tables$observation %>% head()
 
 
 
-## ----search-ecocomDP--------------------------------------
+## ----search-ecocomDP-----------------------------------------------------------------------------------------------
 
 # search for data sets with periphyton or algae
 # regex works!
@@ -60,23 +75,41 @@ View(my_search_result)
 
 
 
-## ----download-plankton------------------------------------
+## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------
 
 # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
 # data product
-my_search_result_data <- 
-    ecocomDP::read_data(id = "DP1.20166.001", site = "ARIK")
+my_data <- 
+    ecocomDP::read_data(
+      id = "neon.ecocomdp.20166.001.001", 
+      site = "ARIK",
+      startdate = "2017-06",
+      enddate = "2020-03",
+      # token = NEON_TOKEN, #Uncomment to use your token
+      check.size = FALSE)
 
 
+
+## ----explore-data-structure----------------------------------------------------------------------------------------
 # Explore the structure of the returned data object
-my_search_result_data %>% names()
-my_search_result_data[[1]] %>% names()
-my_search_result_data[[1]]$tables %>% names()
+my_data %>% names()
+my_data[[1]] %>% names()
+my_data[[1]]$metadata$data_package_info
+my_data[[1]]$validation_issues
+my_data[[1]]$tables %>% names()
+
+my_data[[1]]$tables$location
+my_data[[1]]$tables$taxon %>% head()
+my_data[[1]]$tables$observation %>% head()
 
 
-my_search_result_data[[1]]$tables$location
-my_search_result_data[[1]]$tables$taxon %>% head()
-my_search_result_data[[1]]$tables$observation %>% head()
+
+
+
+## ----flattening-and-cleaning, message=FALSE, warning=FALSE---------------------------------------------------------
+
+# flatten the ecocomDP data tables into one flat table
+my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
 
 # This data product has algal densities reported for both
 # lakes and streams, so densities could be standardized
@@ -84,29 +117,62 @@ my_search_result_data[[1]]$tables$observation %>% head()
 
 # Verify that only benthic algae standardized to area 
 # are returned in this data pull:
-my_search_result_data[[1]]$tables$observation$unit %>%
+my_data_flat$unit %>%
     unique()
 
 
 
+# filter the data to only records standardized to area
+# sampled
+my_data_benthic <- my_data_flat %>%
+  dplyr::filter(
+    !variable_name %in% c("valves","cells"),
+    unit == "cells/cm2")
 
-## ----join-obs-taxon---------------------------------------
+# Note that for this data product
+# neon_sample_id = event_id
+# event_id is the grouping variable for the observation 
+# table in the ecocomDP data model
 
-# join observations with taxon info
-alg_observations_with_taxa <- my_search_result_data[[1]]$tables$observation %>%
-  filter(!is.na(value)) %>%
-  left_join(my_search_result_data[[1]]$tables$taxon) %>%
-  select(-authority_taxon_id) %>%
-  distinct()
 
-alg_observations_with_taxa %>% head()
+
+# Check for multiple taxon counts per taxon_id by 
+# event_id. 
+my_data_benthic %>% 
+  group_by(event_id, taxon_id) %>%
+  summarize(n_obs = length(event_id)) %>%
+  dplyr::filter(n_obs > 1)
+
+
+
+# Per instructions from the lab, these 
+# counts should be summed.
+my_data_summed <- my_data_benthic %>%
+  group_by(event_id,taxon_id) %>%
+  summarize(value = sum(value, na.rm = FALSE))
+
+my_data_cleaned <- my_data_benthic %>%
+  dplyr::select(
+    event_id, location_id, datetime,
+    taxon_id, taxon_rank, taxon_name) %>%
+  distinct() %>%
+  right_join(my_data_summed)
+
+
+
+# check for duplicate records, there should not 
+# be any at this point.
+my_data_cleaned %>% 
+  group_by(event_id, taxon_id) %>%
+  summarize(n_obs = length(event_id)) %>%
+  dplyr::filter(n_obs > 1)
 
 
 
 ## ----plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."----
 
 # which taxon rank is most common
-alg_observations_with_taxa %>%
+my_data_cleaned %>%
   ggplot(aes(taxon_rank)) +
   geom_bar()
 
@@ -115,31 +181,26 @@ alg_observations_with_taxa %>%
 ## ----SAC-1, fig.cap= "Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples."----
 
 # convert densities from per m2 to per cm2
-alg_dens_long <- alg_observations_with_taxa %>%
-  mutate(dens_cm2 = (value / 10000)) %>%
+my_data_long <- my_data_cleaned %>%
   filter(taxon_rank == "species") %>%
-  select(event_id, taxon_id, dens_cm2)
+  select(event_id, taxon_id, value)
 
 # make data wide
-alg_dens_wide <- alg_dens_long %>% 
+my_data_wide <- my_data_long %>% 
   pivot_wider(names_from = taxon_id, 
-              values_from = dens_cm2,
-              values_fill = list(dens_cm2 = 0),
-              values_fn = list(dens_cm2 = mean)) %>%
+              values_from = value,
+              values_fill = list(value = 0)) %>%
   tibble::column_to_rownames("event_id")
   
 # Calculate and plot species accumulcation curve for the 11 sampling events
 # The CIs are based on random permutations of observed samples
-alg_spec_accum_result <- alg_dens_wide %>% vegan::specaccum(., "random")
+alg_spec_accum_result <- my_data_wide %>% vegan::specaccum(., "random")
 plot(alg_spec_accum_result)
 
 
 
-## ----compare-obs-sim-SAC----------------------------------
+## ----compare-obs-sim-SAC-------------------------------------------------------------------------------------------
 
-# Load the 'vegan' package to ensue the lines below will work
-library(vegan)
-library(Hmisc)
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(
   data_set = "observed", 
@@ -149,7 +210,7 @@ spec_resamp_data <- data.frame(
 
 
 # Fit species accumulation model
-spec_accum_mod_1 <- alg_dens_wide %>% vegan::fitspecaccum(model = "arrh")
+spec_accum_mod_1 <- my_data_wide %>% vegan::fitspecaccum(model = "arrh")
 
 
 # create a "predicted" data set from the model to extrapolate out 
