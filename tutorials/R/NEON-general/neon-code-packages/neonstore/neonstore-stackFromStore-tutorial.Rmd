@@ -90,7 +90,7 @@ By default, neonstore will choose a directory to save the downloaded
 data. You can see where this is by checking the `neon_dir()` 
 setting:
 
-``` {r check-dir}
+``` {r check-dir, results="hide"}
 
 neon_dir()
 
@@ -100,7 +100,7 @@ Optional: Set the environment variable `NEONSTORE_HOME` to override
 the default directory and specify a file location you want to use 
 to store your NEON data files.
 
-``` {r set-dir}
+```
 
 # set to the file path you want to use
 Sys.setenv(NEONSTORE_HOME = paste(getwd(), 
@@ -111,7 +111,7 @@ Sys.setenv(NEONSTORE_HOME = paste(getwd(),
 
 Note that you can't use `~` for file expansion in the environment variable.
 
-You can also `NEONSTORE_HOME` as a permanent environment variable, to 
+You can also set `NEONSTORE_HOME` as a permanent environment variable, to 
 avoid having to set it each time you use it. For instructions on setting 
 a permanent environment variable, see the final section in the 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API Token Tutorial</a>.
@@ -154,17 +154,20 @@ neon_download(product="DP1.10058.001",
 ```
 
 Let's take a look at the file structure created for these data. 
-Here the folders are expanded to see the Toolik data folders, 
-and the data folder is opened for the eddy covariance data from 
-May 2019.
+The image below shows there is a folder for each data product, 
+and the eddy covariance folder is opened, showing a sub-folder 
+for each site. The Toolik site folder is open, showing 
+sub-folders for each month of data. The data folder for May 
+2019 is open, showing the data files.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/neonstore-folders.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/neonstore-folders.png" alt="Folder structure of neonstore archive."></a>
 </figure>
 
-There is a folder for each data product, with subfolders for each site, 
-and sub-subfolders for each month, which contain the data files.
+Some data and metadata files are stored at the level of the site 
+sub-folder or the data product sub-folder; these files are not 
+specific to a particular month, and are stored accordingly.
 
 We just downloaded the currently available data, which are the most 
 recent. Remember that one of our goals here is to retain traceable files 
@@ -195,8 +198,10 @@ of updated data:
 You can see there are two copies of each file. The final 16-character 
 string in each file name, before the file extension, is a publication 
 time stamp in the form YYYYMMDDTHHMMSSZ. In this example, the first set of 
-files were published on October 19, 2020, and the second set on November 
-30, 2020. `neonstore` retains both.
+files were published on October 20, 2020, and the second set on December 
+23, 2020. `neonstore` retains both. This allows you to work with the 
+latest versions of NEON data, without losing traceability to previous 
+versions.
 
 ## Extract and Stack Data
 
@@ -228,8 +233,8 @@ temp <- stackFromStore(filepaths=neon_dir(),
 ```
 
 Note that the `neonstore` directory is an input to the function, to tell it 
-where to find the data. You can spell it out explicitly, or get it via 
-`neonstore` using the `neon_dir()` function.
+where to find the data. You can spell it out the full file path, or get it 
+via `neonstore` using the `neon_dir()` function.
 
 Important: the basic vs. expanded package specification is repeated here. 
 If you attempt to stack the expanded package from a basic package 
@@ -254,9 +259,10 @@ complete for a batch of files, the entire batch refreshes to the data
 portal and API. So the publication timestamp is generally slightly 
 earlier than the date and time when the data became available.
 
-And of course the availability is limited to files in your local storage; 
-if a given set of files were re-published multiple times in between your 
-downloads, you'll only have the versions you downloaded.
+And of course the availability for stacking from `neonstore` is limited 
+to the files in your local storage; if a given set of files were 
+re-published multiple times in between your downloads, you'll only have 
+the versions you downloaded.
 
 Let's get the Plant presence and percent cover data with a publication 
 date no later than Sept 29, 2020. Start date, end date, and sites are 
