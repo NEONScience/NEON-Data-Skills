@@ -14,7 +14,7 @@ require(markdown)
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/NEON-general/neon-overview/neon-maps",
-          "R/NEON-general/neon-code-packages/spatialData",
+          "R/NEON-general/neon-code-packages/neonstore",
           "R/Lidar/lidar-topography/veg_structure_and_chm")
 
 #################### Set up Input Variables #############################

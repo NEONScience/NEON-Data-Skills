@@ -124,12 +124,13 @@ data products: Bundled eddy covariance (DP4.00200.001), Plant presence
 and percent cover (DP1.10058.001), and Single-aspirated air temperature 
 (DP1.00002.001).
 
-For simplicity, let's assume we're interested in only 2019 data, and only 3 
-sites, spanning a large latitudinal gradient: Toolik Lake (TOOL), Wind River 
-(WREF), and Guanica (GUAN).
+For simplicity, let's assume we're interested in only 3 sites, spanning a 
+large latitudinal gradient: Toolik Lake (TOOL), Wind River (WREF), and 
+Guanica (GUAN).
 
 Download the data for each data product and site using the `neonstore` function 
-`neon_download()`:
+`neon_download()`. We'll download 2019 data for eddy covariance and air 
+temperature, and 2019-2020 for plant presence.
 
 ```{r download, results="hide", message=FALSE}
 
@@ -147,7 +148,7 @@ neon_download(product="DP1.00002.001",
 
 neon_download(product="DP1.10058.001", 
               start_date="2019-01-01",
-              end_date="2020-01-01",
+              end_date="2021-01-01",
               type="expanded",
               site=c("TOOL","WREF","GUAN"))
 
@@ -198,8 +199,8 @@ of updated data:
 You can see there are two copies of each file. The final 16-character 
 string in each file name, before the file extension, is a publication 
 time stamp in the form YYYYMMDDTHHMMSSZ. In this example, the first set of 
-files were published on October 20, 2020, and the second set on December 
-23, 2020. `neonstore` retains both. This allows you to work with the 
+files were published on October 19, 2020, and the second set on November 
+30, 2020. `neonstore` retains both. This allows you to work with the 
 latest versions of NEON data, without losing traceability to previous 
 versions.
 
@@ -233,7 +234,7 @@ temp <- stackFromStore(filepaths=neon_dir(),
 ```
 
 Note that the `neonstore` directory is an input to the function, to tell it 
-where to find the data. You can spell it out the full file path, or get it 
+where to find the data. You can spell out the full file path, or get it 
 via `neonstore` using the `neon_dir()` function.
 
 Important: the basic vs. expanded package specification is repeated here. 
@@ -265,19 +266,31 @@ re-published multiple times in between your downloads, you'll only have
 the versions you downloaded.
 
 Let's get the Plant presence and percent cover data with a publication 
-date no later than Sept 29, 2020. Start date, end date, and sites are 
+date no later than Jan 1, 2021. Start date, end date, and sites are 
 unspecified to include all available.
 
-```{r stack-div, results="hide"}
+```{r stack-div, results="hide", warning=FALSE}
 
 pppc <- stackFromStore(filepaths=neon_dir(),
                        dpID="DP1.10058.001", 
-                       pubdate="2020-09-29",
+                       pubdate="2021-01-01",
                        package="expanded")
 
 ```
 
-And now check which data were included based on these criteria:
+You may encounter a warning message that the `div_morphospecies` table is 
+not included in this dataset. That is fine in this case. The stacking code 
+attempts to find every table described in the variables file. Tables may 
+be missing for valid reasons, such as protocols with components that are 
+not carried out every year. But missing tables can also be a sign 
+of an error in function inputs, such as attempting to stack the expanded 
+package after downloading the basic package. Check your function inputs 
+if you see this message, and consult the Data Product User Guide for 
+information about which data are expected to be available under what 
+conditions.
+
+And now check which data were included based on a publication date of 
+2021-01-01:
 
 ```{r which-div}
 
@@ -287,8 +300,8 @@ max(pppc$div_1m2Data$endDate)
 
 ```
 
-Only the WREF and TOOL data are included in this set; the GUAN data 
-hadn't been published yet on 29-Sept-2020.
+All three sites are included, but only the 2019 data. The 2020 data 
+hadn't been published yet on Jan 1, 2021.
 
 ## Stack Surface-Atmosphere Exchange Data
 
