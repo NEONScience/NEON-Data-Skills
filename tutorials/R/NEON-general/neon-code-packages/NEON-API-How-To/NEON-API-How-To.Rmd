@@ -21,20 +21,6 @@ This is a tutorial in pulling data from the NEON API or Application
 Programming Interface. The tutorial uses R and the R package httr, but the core 
 information about the API is applicable to other languages and approaches.
 
-## NEON data
-There are 3 basic categories of NEON data:
-
-1. Observational - Data collected by a human in the field, or in an analytical 
-laboratory, e.g. beetle identification, foliar isotopes
-1. Instrumentation - Data collected by an automated, streaming sensor, e.g. net 
-radiation, soil carbon dioxide
-1. Remote sensing - Data collected by the airborne observation platform, e.g. 
-LIDAR, surface reflectance
-
-This lesson covers all three types of data, but we recommend proceeding 
-through the lesson in order and not skipping ahead, since the query principles 
-are explained in the first section, on observational data.
-
 
 <div id="ds-objectives" markdown="1">
 
@@ -42,8 +28,8 @@ are explained in the first section, on observational data.
 
 After completing this activity, you will be able to:
 
-* Pull observational, instrumentation, and geolocation data from the NEON API.
-* Transform API-accessed data from JSON to tabular format for analyses.
+* Construct API calls to query the NEON API.
+* Access and understand data and metadata available via the NEON API.
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, 
@@ -53,13 +39,7 @@ preferably, RStudio loaded on your computer.
 
 * **httr:** `install.packages("httr")`
 * **jsonlite:** `install.packages("jsonlite")`
-* **dplyr:** `install.packages("dplyr")`
-* **devtools:** `install.packages("devtools")`
 * **downloader:** `install.packages("downloader")`
-* **neonUtilities:** `install.packages("neonUtilities")`
-* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
-
-Note, you must have devtools installed & loaded, prior to loading geoNEON. 
 
 ### Additional Resources
 
@@ -82,6 +62,14 @@ programmatically pull data into their analyses. (Quoted from the NEON Observator
 Blog story: 
 <a href="https://www.neonscience.org/observatory/observatory-blog/api-data-availability-viewer-now-live-neon-data-portal" target ="_blank"> API and data availability viewer now live on the NEON data portal</a>.)
 
+### What is accessible via the NEON API?
+
+The NEON API includes endpoints for NEON data and metadata, including 
+spatial data, taxonomic data, and samples (see Endpoints below). This 
+tutorial explores these sources of information using a specific data 
+product as a guide. The principles and rule sets described below can 
+be applied to other data products and metadata.
+
 ## Anatomy of an API call
 
 An example API call: http://data.neonscience.org/api/v0/data/DP1.10003.001/WOOD/2015-07
@@ -92,12 +80,12 @@ This includes the base URL, endpoint, and target.
 <span style="color:#A00606;font-weight:bold">http://data.neonscience.org/api/v0</span><span style="color:#A2A4A3">/data/DP1.10003.001/WOOD/2015-07</span>
 
 Specifics are appended to this in order to get the data or metadata you're 
-looking for, but all calls to this API will include the base URL. For the NEON 
+looking for, but all calls to an API will include the base URL. For the NEON 
 API, this is http://data.neonscience.org/api/v0 --
 not clickable, because the base URL by itself will take you nowhere!
 
 ### Endpoints: 
-<span style="color:#A2A4A3">http://data.neonscience.org/api/v0</span><span style="color:#A00606;font-weight:bold">/data</span><span style="color:#A2A4A3">/DP1.10003.001/WOOD/2015-07</span>
+<span style="color:#A2A4A3">http://data.neonscience.org/api/v0</span><span style="color:#A00606;font-weight:bold">/data</span><span style="color:#A2A4A3">/DP1.10098.001/WOOD/2015-07</span>
 
 What type of data or metadata are you looking for?
 
@@ -111,122 +99,153 @@ What type of data or metadata are you looking for?
   Spatial data for the NEON locations specified in the call
 
 * **~/data**
-  Data! By product, site, and date (in monthly chunks).
+  Data! By product, site, and date (in monthly chunks)
+  
+* **~/samples**
+  Information about sample relationships and sample tracking
+  
+* **~/taxonomy**
+  Access to NEON's taxon lists, the approved scientific names for sampled taxa
 
 ### Targets:
-<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/data</span><span style="color:#A00606;font-weight:bold">/DP1.10003.001/WOOD/2015-07</span>
+<span style="color:#A2A4A3">http://data.neonscience.org/api/v0/data</span><span style="color:#A00606;font-weight:bold">/DP1.10098.001/WOOD/2015-07</span>
 
-The specific data product, site, or location you want to get data for.
+The specific data product, location, sample, etc, you want to get data for.
 
-## Observational data (OS)
+
+## Data, by way of Products
+
 Which product do you want to get data for? Consult the <a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>.
 
-We'll pick Breeding landbird point counts, DP1.10003.001
+We'll pick Woody vegetation structure, DP1.10098.001
 
-First query the products endpoint of the API to find out which sites and dates 
-have data available. In the products endpoint, the target is the numbered 
-identifier for the data product:
+Your first thought is probably to use the **/data** endpoint. And we'll get 
+there. But notice above that the API call for the **/data** endpoint includes 
+the site and month of data to download. You don't want to have to guess sites 
+and months at random - first, you need to see which sites and months have 
+available data for the product you're interested in. That can be done either 
+through the **/sites** or the **/products** endpoint; here we'll use 
+**/products**.
+
+**Note:** Checking for data availability can sometimes be skipped for the 
+streaming sensor data products. In general, they are available continuously, 
+and you could theoretically query a site and month of interest and expect 
+there to be data by default. However, there can be interruptions to sensor 
+data, in particular at aquatic sites, so checking availability first is the 
+most reliable approach.
+
+Use the products endpoint to query for Woody vegetation data. The target is 
+the data product identifier, noted above, DP1.10098.001:
 
 ```{r os-avail-query}
 
 # Load the necessary libraries
 library(httr)
 library(jsonlite)
-library(dplyr, quietly=T)
-library(downloader)
 
 # Request data using the GET function & the API call
-req <- GET("http://data.neonscience.org/api/v0/products/DP1.10003.001")
+req <- GET("http://data.neonscience.org/api/v0/products/DP1.10098.001")
 req
+
 ```
 
 The object returned from `GET()` has many layers of information. Entering the 
-name of the object gives you some basic information about what you downloaded. 
+name of the object gives you some basic information about what you accessed. 
+`Status: 200` indicates this was a successful query; the status field can be 
+a useful place to look if something goes wrong.
 
-The `content()` function returns the contents in the form of a highly nested 
-list. This is typical of JSON-formatted data returned by APIs. We can use the
-`names()` function to view the different types of information within this list.
+The `Content-Type` parameter tells us we've accessed a json file. The easiest 
+way to translate this to something more manageable in R is to use the 
+`fromJSON()` function in the `jsonlite` package. It will convert the json into 
+a nested list, flattening the nesting where possible.
 
 ```{r os-query-contents}
 
-# View requested data
-req.content <- content(req, as="parsed")
-names(req.content$data)
+# Make the data readable by jsonlite
+req.text <- content(req, as="text")
+
+# Flatten json into a nested list
+avail <- jsonlite::fromJSON(req.text, 
+                            simplifyDataFrame=T, 
+                            flatten=T)
 
 ```
 
-You can see all of the infoamtion by running the line `print(req.content)`, but
-this will result in a very long printout in your console. Instead, you can view
+A lot of the content here is basic information about the data product. 
+You can see all of it by running the line `print(avail)`, but
+this will result in a very long printout in your console. Instead, try viewing 
 list items individually. Here, we highlight a couple of interesting examples:
 
 ```{r os-query-contents-examples}
 
-# View Abstract
-req.content$data$productAbstract
+# View description of data product
+avail$data$productDescription
 
-# View Available months and associated URLs for Onaqui, Utah - ONAQ
-req.content$data$siteCodes[[27]]
+# View data product abstract
+avail$data$productAbstract
 
 ```
 
-To get a more accessible view of which sites have data for which months, you'll 
-need to extract data from the nested list. There are a variety of ways to do this, 
-in this tutorial we'll explore a couple of them. Here we'll use `fromJSON()`, in 
-the jsonlite package, which doesn't fully flatten the nested list, but gets us 
-the part we need. To use it, we need a text version of the content. The text 
-version is not as human readable but is readable by the `fromJSON()` function. 
+You may notice that some of this information is also accessible on the NEON 
+data portal. The portal uses the same data sources as the API, and in many 
+cases the portal is using the API on the back end, and simply adding a more 
+user-friendly display to the data.
+
+We want to find which sites and months have available data. That is in the 
+`siteCodes` section. Let's look at what information is presented for each 
+site:
 
 ```{r os-query-fromJSON}
-# make this JSON readable -> "text"
-req.text <- content(req, as="text")
 
-# Flatten data frame to see available data. 
-avail <- jsonlite::fromJSON(req.text, simplifyDataFrame=T, flatten=T)
-avail
+# Look at the first list element for siteCode
+avail$data$siteCodes$siteCode[[1]]
+
+# And at the first list element for availableMonths
+avail$data$siteCodes$availableMonths[[1]]
 
 ```
 
-The object contains a lot of information about the data product, including: 
+Here we can see the list of months with data for the site ABBY, which is 
+the Abby Road forest in Washington state.
 
-* keywords under `$data$keywords`, 
-* references for documentation under `$data$specs`, 
-* data availability by site and month under `$data$siteCodes`, and 
-* specific URLs for the API calls for each site and month under 
-`$data$siteCodes$availableDataUrls`.
-
-We need `$data$siteCodes` to tell us what we can download.
-`$data$siteCodes$availableDataUrls` allows us to avoid writing the API 
-calls ourselves in the next steps.
+The section `$data$siteCodes$availableDataUrls` provides the exact API 
+calls we need in order to query the data for each available site and month. 
 
 ```{r os-query-avail-data}
 
-# get data availability list for the product
-bird.urls <- unlist(avail$data$siteCodes$availableDataUrls)
-length(bird.urls) #total number of URLs
-bird.urls[1:10] #show first 10 URLs available
+# Get complete list of available data URLs
+wood.urls <- unlist(avail$data$siteCodes$availableDataUrls)
+
+# Total number of URLs
+length(wood.urls)
+
+# Show first 10 URLs available
+wood.urls[1:10] 
 
 ```
 
-These are the URLs showing us what files are available for each month where 
-there are data. 
+These URLs are the API calls we can use to find out what files are available 
+for each month where there are data.
 
-Let's look at the bird data from Woodworth (WOOD) site from July 2015. We can do 
-this by using the above code but now specifying which site/date we want using 
-the `grep()` function. 
+Let's look at the woody plant data from the Rocky Mountain National Park 
+(RMNP) site from October 2019. We can do this by using the `GET()` function 
+on the relevant URL, which we can find using the `grep()` function. 
 
-Note that if there were only one month of data from a site, you could leave 
-off the date in the function. If you want date from more than one site/month 
-you need to iterate this code, GET fails if you give it more than one URL. 
+Note that if you want data from more than one site/month you need to iterate 
+this code, `GET()` fails if you give it more than one URL at a time. 
 
-```{r os-query-bird-data-urls}
-# get data availability for WOOD July 2015
-brd <- GET(bird.urls[grep("WOOD/2015-07", bird.urls)])
-brd.files <- jsonlite::fromJSON(content(brd, as="text"))
+```{r os-query-woody-data-urls}
 
-# view just the available data files 
-brd.files$data$files
+# Get available data for RMNP Oct 2019
+woody <- GET(wood.urls[grep("RMNP/2019-10", wood.urls)])
+woody.files <- jsonlite::fromJSON(content(woody, as="text"))
+
+# See what files are available for this site and month
+woody.files$data$files$name
 
 ```
+
+STOPPED HERE
 
 In this output, `name` and `url` are key fields. It provides us with the names 
 of the files available for this site and month, and URLs where we can get the 
