@@ -235,23 +235,23 @@ data. You can see where this is by checking the <code>neon_dir()</code>
 setting:</p>
 
 <pre><code>neon_dir()
-
-## [1] &quot;/Users/clunch/data/neonstore&quot;
 </code></pre>
 
 <p>Optional: Set the environment variable <code>NEONSTORE_HOME</code> to override 
 the default directory and specify a file location you want to use 
 to store your NEON data files.</p>
 
-<pre><code># set to the file path you want to use
+<pre><code>
+# set to the file path you want to use
 Sys.setenv(NEONSTORE_HOME = paste(getwd(), 
                                   &quot;/data/neonstore&quot;,
                                   sep=&quot;&quot;))
+
 </code></pre>
 
 <p>Note that you can&#39;t use <code>~</code> for file expansion in the environment variable.</p>
 
-<p>You can also <code>NEONSTORE_HOME</code> as a permanent environment variable, to 
+<p>You can also set <code>NEONSTORE_HOME</code> as a permanent environment variable, to 
 avoid having to set it each time you use it. For instructions on setting 
 a permanent environment variable, see the final section in the 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API Token Tutorial</a>.</p>
@@ -264,12 +264,13 @@ data products: Bundled eddy covariance (DP4.00200.001), Plant presence
 and percent cover (DP1.10058.001), and Single-aspirated air temperature 
 (DP1.00002.001).</p>
 
-<p>For simplicity, let&#39;s assume we&#39;re interested in only 2019 data, and only 3 
-sites, spanning a large latitudinal gradient: Toolik Lake (TOOL), Wind River 
-(WREF), and Guanica (GUAN).</p>
+<p>For simplicity, let&#39;s assume we&#39;re interested in only 3 sites, spanning a 
+large latitudinal gradient: Toolik Lake (TOOL), Wind River (WREF), and 
+Guanica (GUAN).</p>
 
 <p>Download the data for each data product and site using the <code>neonstore</code> function 
-<code>neon_download()</code>:</p>
+<code>neon_download()</code>. We&#39;ll download 2019 data for eddy covariance and air 
+temperature, and 2019-2020 for plant presence.</p>
 
 <pre><code>neon_download(product=&quot;DP4.00200.001&quot;, 
               start_date=&quot;2019-01-01&quot;,
@@ -285,23 +286,26 @@ neon_download(product=&quot;DP1.00002.001&quot;,
 
 neon_download(product=&quot;DP1.10058.001&quot;, 
               start_date=&quot;2019-01-01&quot;,
-              end_date=&quot;2020-01-01&quot;,
+              end_date=&quot;2021-01-01&quot;,
               type=&quot;expanded&quot;,
               site=c(&quot;TOOL&quot;,&quot;WREF&quot;,&quot;GUAN&quot;))
 </code></pre>
 
 <p>Let&#39;s take a look at the file structure created for these data. 
-Here the folders are expanded to see the Toolik data folders, 
-and the data folder is opened for the eddy covariance data from 
-May 2019.</p>
+The image below shows there is a folder for each data product, 
+and the eddy covariance folder is opened, showing a sub-folder 
+for each site. The Toolik site folder is open, showing 
+sub-folders for each month of data. The data folder for May 
+2019 is open, showing the data files.</p>
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/neonstore-folders.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neonstore-stackFromStore/neonstore-folders.png" alt="Folder structure of neonstore archive."></a>
 </figure>
 
-<p>There is a folder for each data product, with subfolders for each site, 
-and sub-subfolders for each month, which contain the data files.</p>
+<p>Some data and metadata files are stored at the level of the site 
+sub-folder or the data product sub-folder; these files are not 
+specific to a particular month, and are stored accordingly.</p>
 
 <p>We just downloaded the currently available data, which are the most 
 recent. Remember that one of our goals here is to retain traceable files 
@@ -330,7 +334,9 @@ of updated data:</p>
 string in each file name, before the file extension, is a publication 
 time stamp in the form YYYYMMDDTHHMMSSZ. In this example, the first set of 
 files were published on October 19, 2020, and the second set on November 
-30, 2020. <code>neonstore</code> retains both.</p>
+30, 2020. <code>neonstore</code> retains both. This allows you to work with the 
+latest versions of NEON data, without losing traceability to previous 
+versions.</p>
 
 <h2>Extract and Stack Data</h2>
 
@@ -359,8 +365,8 @@ Wind River temperature, just from March and April 2019:</p>
 </code></pre>
 
 <p>Note that the <code>neonstore</code> directory is an input to the function, to tell it 
-where to find the data. You can spell it out explicitly, or get it via 
-<code>neonstore</code> using the <code>neon_dir()</code> function.</p>
+where to find the data. You can spell out the full file path, or get it 
+via <code>neonstore</code> using the <code>neon_dir()</code> function.</p>
 
 <p>Important: the basic vs. expanded package specification is repeated here. 
 If you attempt to stack the expanded package from a basic package 
@@ -385,25 +391,38 @@ complete for a batch of files, the entire batch refreshes to the data
 portal and API. So the publication timestamp is generally slightly 
 earlier than the date and time when the data became available.</p>
 
-<p>And of course the availability is limited to files in your local storage; 
-if a given set of files were re-published multiple times in between your 
-downloads, you&#39;ll only have the versions you downloaded.</p>
+<p>And of course the availability for stacking from <code>neonstore</code> is limited 
+to the files in your local storage; if a given set of files were 
+re-published multiple times in between your downloads, you&#39;ll only have 
+the versions you downloaded.</p>
 
 <p>Let&#39;s get the Plant presence and percent cover data with a publication 
-date no later than Sept 29, 2020. Start date, end date, and sites are 
+date no later than Jan 1, 2021. Start date, end date, and sites are 
 unspecified to include all available.</p>
 
 <pre><code>pppc &lt;- stackFromStore(filepaths=neon_dir(),
                        dpID=&quot;DP1.10058.001&quot;, 
-                       pubdate=&quot;2020-09-29&quot;,
+                       pubdate=&quot;2021-01-01&quot;,
                        package=&quot;expanded&quot;)
 </code></pre>
 
-<p>And now check which data were included based on these criteria:</p>
+<p>You may encounter a warning message that the <code>div_morphospecies</code> table is 
+not included in this dataset. That is fine in this case. The stacking code 
+attempts to find every table described in the variables file. Tables may 
+be missing for valid reasons, such as protocols with components that are 
+not carried out every year. But missing tables can also be a sign 
+of an error in function inputs, such as attempting to stack the expanded 
+package after downloading the basic package. Check your function inputs 
+if you see this message, and consult the Data Product User Guide for 
+information about which data are expected to be available under what 
+conditions.</p>
+
+<p>And now check which data were included based on a publication date of 
+2021-01-01:</p>
 
 <pre><code>unique(pppc$div_1m2Data$siteID)
 
-## [1] &quot;WREF&quot; &quot;TOOL&quot;
+## [1] &quot;GUAN&quot; &quot;WREF&quot; &quot;TOOL&quot;
 
 min(pppc$div_1m2Data$endDate)
 
@@ -411,11 +430,11 @@ min(pppc$div_1m2Data$endDate)
 
 max(pppc$div_1m2Data$endDate)
 
-## [1] &quot;2019-08-06 GMT&quot;
+## [1] &quot;2019-10-23 GMT&quot;
 </code></pre>
 
-<p>Only the WREF and TOOL data are included in this set; the GUAN data 
-hadn&#39;t been published yet on 29-Sept-2020.</p>
+<p>All three sites are included, but only the 2019 data. The 2020 data 
+hadn&#39;t been published yet on Jan 1, 2021.</p>
 
 <h2>Stack Surface-Atmosphere Exchange Data</h2>
 
