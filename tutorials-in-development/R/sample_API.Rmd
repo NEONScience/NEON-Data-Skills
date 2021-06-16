@@ -1,0 +1,45 @@
+## Samples
+
+Now, we may be interested in what other data have been collected on 
+some of the trees in the RMNP woody vegetation dataset. The 
+**/samples** endpoint lets you explore the sample relationships and 
+sample histories of samples in the NEON database.
+
+The way NEON samples are defined, each tagged tree is a "sample", even 
+though it never leaves the field. Leaves and other samples taken from 
+a given tree are considered subsamples of the tree, and may have their 
+own subsamples. These hierarchical relationships are accessible via the 
+**/samples** endpoint.
+
+Like the **/taxonomy** endpoint, the **/samples** endpoint has 
+multiple query options.
+
+Going back to the `vst.maptag` data table we downloaded, the data field 
+containing the sample identifiers for the individual trees is 
+`individualID`. Let's look up a specific tree, an aspen, 
+NEON.PLA.D10.RMNP.03861.
+
+In order to query a sample, both a sample tag (= ID) and a sample class are 
+needed. So we will first need to look up the sample tag and see which 
+classes it exists in (this step is necessary because NEON sample IDs 
+may be repeated in different classes, i.e. different types of samples).
+
+```{r get-sample-class}
+
+samp.class.req <- GET("https://data.neonscience.org/api/v0/samples/classes?sampleTag=NEON.PLA.D10.RMNP.03861")
+samp.class.list <- jsonlite::fromJSON(content(samp.class.req, as="text"))
+samp.class.list$data
+
+```
+
+There is only one possible sample class for the sample tag 
+NEON.PLA.D10.RMNP.03861, `taggedPlant`. So we can proceed to query for 
+sample information using the tag and class together.
+
+```{r get-sample-view}
+
+samp.view.req <- GET("https://data.neonscience.org/api/v0/samples/view?sampleTag=NEON.PLA.D10.RMNP.03861&sampleClass=taggedPlant")
+samp.view.list <- jsonlite::fromJSON(content(samp.view.req, as="text"))
+samp.view.list$data
+
+```
