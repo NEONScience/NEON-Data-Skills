@@ -189,8 +189,8 @@ of updated data:
 You can see there are two copies of each file. The final 16-character 
 string in each file name, before the file extension, is a publication 
 time stamp in the form YYYYMMDDTHHMMSSZ. In this example, the first set of 
-files were published on October 19, 2020, and the second set on November 
-30, 2020. `neonstore` retains both. This allows you to work with the 
+files were published on October 20, 2020, and the second set on December 
+23, 2020. `neonstore` retains both. This allows you to work with the 
 latest versions of NEON data, without losing traceability to previous 
 versions.
 
