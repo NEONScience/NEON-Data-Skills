@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA----------------------------------------------------------------------------
+## ----load libraries, eval=F, comment=NA----------------------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -8,16 +8,7 @@
 # load packages
 library(tidyverse)
 library(neonUtilities)
-library(devtools)
 library(vegan)
-
-# install ecocomDP
-# Here, we're using a tagged (pre-release) version of the 
-# package that's available on GitHub. Using this tag 
-# (@v.0.0.0.9000) will always install the same version 
-# of the package. We plan to release v1.0 of this package
-# on CRAN later this year. 
-devtools::install_github("EDIorg/ecocomDP@v0.0.0.9000")
 library(ecocomDP)
 
 # source .r file with my NEON_TOKEN
@@ -28,7 +19,7 @@ library(ecocomDP)
 
 
 
-## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'--------------------------------------------
+## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'--------------------------------------------------------
 
 # search for invertebrate data products
 my_search_result <- 
@@ -47,7 +38,7 @@ my_data <- ecocomDP::read_data(
 
 
 
-## ----view-ecocomDP-str---------------------------------------------------------------------------------------------
+## ----view-ecocomDP-str---------------------------------------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
 my_data %>% names()
@@ -66,7 +57,7 @@ my_data$neon.ecocomdp.20120.001.001$tables$observation %>% head()
 
 
 
-## ----search-ecocomDP-----------------------------------------------------------------------------------------------
+## ----search-ecocomDP-----------------------------------------------------------------------------------------------------------
 
 # search for data sets with periphyton or algae
 # regex works!
@@ -75,7 +66,7 @@ View(my_search_result)
 
 
 
-## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------
+## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------------------
 
 # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
 # data product
@@ -90,7 +81,7 @@ my_data <-
 
 
 
-## ----explore-data-structure----------------------------------------------------------------------------------------
+## ----explore-data-structure----------------------------------------------------------------------------------------------------
 # Explore the structure of the returned data object
 my_data %>% names()
 my_data[[1]] %>% names()
@@ -106,7 +97,7 @@ my_data[[1]]$tables$observation %>% head()
 
 
 
-## ----flattening-and-cleaning, message=FALSE, warning=FALSE---------------------------------------------------------
+## ----flattening-and-cleaning, message=FALSE, warning=FALSE---------------------------------------------------------------------
 
 # flatten the ecocomDP data tables into one flat table
 my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
@@ -199,7 +190,7 @@ plot(alg_spec_accum_result)
 
 
 
-## ----compare-obs-sim-SAC-------------------------------------------------------------------------------------------
+## ----compare-obs-sim-SAC-------------------------------------------------------------------------------------------------------
 
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(
@@ -216,7 +207,7 @@ spec_accum_mod_1 <- my_data_wide %>% vegan::fitspecaccum(model = "arrh")
 # create a "predicted" data set from the model to extrapolate out 
 # beyond the number of samples collected
 sim_spec_data <- data.frame()
-for(i in 1:25){
+for(i in 1:100){
   d_tmp <- data.frame(
     data_set = "predicted",
     sampling_effort = i,

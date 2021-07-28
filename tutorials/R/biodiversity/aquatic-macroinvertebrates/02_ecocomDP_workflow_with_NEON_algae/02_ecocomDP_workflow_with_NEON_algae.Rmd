@@ -1,8 +1,9 @@
 ---
-syncID: a112429a90d14c9d8620b956a2469062
 title: "Explore biodiversity with NEON algae data"
-description: "Download and explore NEON algae data. This includes instruction for using ecocomDP package to analyze biodiversity."
-dateCreated: 2020-06-22
+syncID: a112429a90d14c9d8620b956a2469062
+description: Download and explore NEON algae data. This includes instruction for using
+  ecocomDP package to analyze biodiversity.
+dateCreated: '2020-06-22'
 authors: Eric R. Sokol
 contributors: Donal O'Leary, Felipe Sanchez
 estimatedTime: 1 Hour
@@ -11,7 +12,7 @@ topics: data-analysis, organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
-tutorialSeries: 
+tutorialSeries: null
 urlTitle: aquatic-diversity-algae
 ---
 
@@ -34,8 +35,8 @@ Prior to starting the tutorial ensure that the following packages are installed.
 
 * **tidyverse:** `install.packages("tidyverse")`
 * **neonUtilities:** `install.packages("neonUtilities")`
-* **devtools:** `install.packages("devtools")`
 * **vegan:** `install.packages("vegan")`
+* **ecocomDP:** `install.packages("ecocomDP")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -63,7 +64,7 @@ The motivation is for both NEON biodiversity data products and EDI data packages
 This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
 
 ## Load Libraries and Prepare Workspace
-First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above. We load the `devtools` package here so that we can install the latest development version of the ecocomDP package from the GitHub repository. The ecocomDP package is not yet available through CRAN, and therefore, we must install the package in this manner.
+First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above. 
 
 There are also two optional sections in this code chunk: clearing your environment, and loading your NEON API token. Clearing out your environment will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! Secondly, your NEON API token will allow you increased download speeds, and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>.
 
@@ -77,16 +78,7 @@ There are also two optional sections in this code chunk: clearing your environme
 # load packages
 library(tidyverse)
 library(neonUtilities)
-library(devtools)
 library(vegan)
-
-# install ecocomDP
-# Here, we're using a tagged (pre-release) version of the 
-# package that's available on GitHub. Using this tag 
-# (@v.0.0.0.9000) will always install the same version 
-# of the package. We plan to release v1.0 of this package
-# on CRAN later this year. 
-devtools::install_github("EDIorg/ecocomDP@v0.0.0.9000")
 library(ecocomDP)
 
 # source .r file with my NEON_TOKEN
@@ -103,7 +95,6 @@ library(ecocomDP)
 # load packages
 library(tidyverse)
 library(neonUtilities)
-library(devtools)
 library(vegan)
 library(ecocomDP)
 
@@ -319,7 +310,7 @@ spec_accum_mod_1 <- my_data_wide %>% vegan::fitspecaccum(model = "arrh")
 # create a "predicted" data set from the model to extrapolate out 
 # beyond the number of samples collected
 sim_spec_data <- data.frame()
-for(i in 1:25){
+for(i in 1:100){
   d_tmp <- data.frame(
     data_set = "predicted",
     sampling_effort = i,
