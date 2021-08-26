@@ -64,6 +64,10 @@ the future. To report bugs or request new features, post an issue in the GitHub
 repo 
 <a href="https://github.com/NEONScience/NEON-utilities/issues" target="_blank">issues page</a>.
 
+If you are already familiar with the `neonUtilities` package, and need a 
+quick reference guide to function inputs and notation, see the 
+<a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities cheat sheet</a>.
+
 First, we must install and load the `neonUtilities` package.
 
 
