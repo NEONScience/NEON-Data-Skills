@@ -1,25 +1,23 @@
 # Instructions for using this script:
-# The first time you attempt to use this script, you can simply open it in 
-#    RStudio and click "Source"
-# There are likely to be many lines of output, but if the final output line 
-#    reads: "Hooray, all tests passed!" then you are done! Everything 
-#    installed successfully.
+#
+# The code in seeds_cs_install.R must be run first. This script verifies 
+#    that the installations were successful.
+#
+# Once you've installed the packages using the install script, open this 
+#    script in RStudio and click "Source".
+# If the output line reads: "Hooray, all tests passed!" then you are done! 
+#    Everything installed successfully.
 # If you don't get the message "Hooray, all tests passed!" then something 
 #    has not installed correctly. There should be messages indicating which 
 #    package(s) encountered problems. Try to install them again, using the 
-#    first four lines of code in this script. You may also need to re-install 
+#    code in the seeds_cs_install.R script. You may also need to re-install 
 #    packages they depend on - if this is the problem, there will be error 
 #    messages in the package installation output indicating specific package 
 #    dependencies.
-# Once you believe everything has installed correctly, don't click "Source" 
-#    again; instead, run only the final line of this script (line 82).
+# Once you believe everything has installed correctly, click "Source" again 
+#    on this script, or just run the final line (line 80).
 # If you don't get the "Hooray, all tests passed!" message, repeat the steps 
 #    above, and contact the workshop instructors if you get stuck.
-
-install.packages("neonUtilities")
-install.packages("raster")
-install.packages("devtools")
-devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
 workshop.readiness <- function() {
   
