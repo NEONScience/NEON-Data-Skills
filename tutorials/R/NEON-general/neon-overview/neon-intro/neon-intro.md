@@ -90,14 +90,11 @@ Explore the NEON field site map. Do the following:
 
 * Zoom in on a study area of interest to see if there are any NEON field sites 
 that are nearby.
-* Click the "More" button in the **upper right hand** corner of the map to 
-filter sites by name, site host, domain or state.
+* Use the menu below the map to 
+filter sites by name, type, domain, or state.
 * Select one field site of interest.
   * Click on the marker in the map.
-  * Then click on the name of the field site to jump to the field site landing page.
-
-**NOTE:** During summer/fall 2018 these field site pages are being updated, 
-during this time the amount of information on each site may vary. 
+  * Then click on Site Details to jump to the field site landing page.
 
 <div id="ds-challenge" markdown="1">
 **Data Institute Participant -- Thought Questions:**
@@ -153,7 +150,7 @@ more:
 Watch this 5 minute video to better understand the NEON Airborne Observation
 Platform (AOP).
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/muBZxMMQXK8" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iQZzN12Apuk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 
 <div id="ds-challenge" markdown="1">
