@@ -305,7 +305,7 @@ my_data$id
 my_data$metadata$data_package_info
 
 ## $data_package_id
-## [1] &quot;neon.ecocomdp.20120.001.001.20220121114112&quot;
+## [1] &quot;neon.ecocomdp.20120.001.001.20220121160424&quot;
 ## 
 ## $taxonomic_group
 ## [1] &quot;MACROINVERTEBRATES&quot;
@@ -320,7 +320,7 @@ my_data$metadata$data_package_info
 ## [1] &quot;original NEON data accessed using neonUtilities v2.1.3&quot;
 ## 
 ## $data_access_date_time
-## [1] &quot;2022-01-21 11:41:14 MST&quot;
+## [1] &quot;2022-01-21 16:04:26 MST&quot;
 
 # validation issues? None if returns an empty list
 my_data$validation_issues
@@ -330,42 +330,35 @@ my_data$validation_issues
 # examine the tables
 my_data$tables %&gt;% names()
 
-## [1] &quot;location&quot;              &quot;location_ancillary&quot;    &quot;taxon&quot;                 &quot;observation&quot;          
-## [5] &quot;observation_ancillary&quot; &quot;dataset_summary&quot;
+## [1] &quot;location&quot;              &quot;location_ancillary&quot;    &quot;taxon&quot;                 &quot;observation&quot;           &quot;observation_ancillary&quot;
+## [6] &quot;dataset_summary&quot;
 
 my_data$tables$taxon %&gt;% head()
 
-##   taxon_id taxon_rank       taxon_name                                    authority_system
-## 1    ABLSP      genus  Ablabesmyia sp.                          Roback 1985 and Epler 2001
-## 2   ACASP1   subclass        Acari sp.                               Thorp and Covich 2001
-## 3   ACTSP5      genus Actinobdella sp.                               Thorp and Covich 2001
-## 4    AESSP     family    Aeshnidae sp.                      Needham, Westfall and May 2000
-## 5   AGASP1  subfamily     Agabinae sp.                   Larson, Alarie, and Roughley 2001
-## 6   ANISP1   suborder   Anisoptera sp. Merritt et al. 2008; Needham, Westfall and May 2000
-##   authority_taxon_id
-## 1               &lt;NA&gt;
-## 2               &lt;NA&gt;
-## 3               &lt;NA&gt;
-## 4               &lt;NA&gt;
-## 5               &lt;NA&gt;
-## 6               &lt;NA&gt;
+##   taxon_id taxon_rank       taxon_name                                    authority_system authority_taxon_id
+## 1    ABLSP      genus  Ablabesmyia sp.                          Roback 1985 and Epler 2001               &lt;NA&gt;
+## 2   ACASP1   subclass        Acari sp.                               Thorp and Covich 2001               &lt;NA&gt;
+## 3   ACTSP5      genus Actinobdella sp.                               Thorp and Covich 2001               &lt;NA&gt;
+## 4    AESSP     family    Aeshnidae sp.                      Needham, Westfall and May 2000               &lt;NA&gt;
+## 5   AGASP1  subfamily     Agabinae sp.                   Larson, Alarie, and Roughley 2001               &lt;NA&gt;
+## 6   ANISP1   suborder   Anisoptera sp. Merritt et al. 2008; Needham, Westfall and May 2000               &lt;NA&gt;
 
 my_data$tables$observation %&gt;% head()
 
-##   observation_id             event_id                                 package_id    location_id
-## 1          obs_1 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
-## 2          obs_2 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
-## 3          obs_3 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
-## 4          obs_4 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
-## 5          obs_5 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
-## 6          obs_6 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
-##              datetime taxon_id variable_name     value                   unit
-## 1 2017-03-22 15:30:00   BERSP4       density  166.6667 count per square meter
-## 2 2017-03-22 15:30:00   CAESP5       density  166.6667 count per square meter
-## 3 2017-03-22 15:30:00  CERSP10       density 1333.3333 count per square meter
-## 4 2017-03-22 15:30:00   CHISP2       density  166.6667 count per square meter
-## 5 2017-03-22 15:30:00    CONGR       density  500.0000 count per square meter
-## 6 2017-03-22 15:30:00   DIASP8       density  500.0000 count per square meter
+##   observation_id             event_id                                 package_id    location_id            datetime taxon_id
+## 1          obs_1 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   BERSP4
+## 2          obs_2 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   CAESP5
+## 3          obs_3 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00  CERSP10
+## 4          obs_4 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   CHISP2
+## 5          obs_5 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00    CONGR
+## 6          obs_6 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   DIASP8
+##   variable_name     value                   unit
+## 1       density  166.6667 count per square meter
+## 2       density  166.6667 count per square meter
+## 3       density 1333.3333 count per square meter
+## 4       density  166.6667 count per square meter
+## 5       density  500.0000 count per square meter
+## 6       density  500.0000 count per square meter
 </code></pre>
 
 <h2>Basic Data Visualization</h2>
@@ -423,7 +416,7 @@ my_data$id
 my_data$metadata$data_package_info
 
 ## $data_package_id
-## [1] &quot;neon.ecocomdp.20166.001.001.20220121114208&quot;
+## [1] &quot;neon.ecocomdp.20166.001.001.20220121160527&quot;
 ## 
 ## $taxonomic_group
 ## [1] &quot;ALGAE&quot;
@@ -438,7 +431,7 @@ my_data$metadata$data_package_info
 ## [1] &quot;original NEON data accessed using neonUtilities v2.1.3&quot;
 ## 
 ## $data_access_date_time
-## [1] &quot;2022-01-21 11:42:09 MST&quot;
+## [1] &quot;2022-01-21 16:05:29 MST&quot;
 
 my_data$validation_issues
 
@@ -446,8 +439,8 @@ my_data$validation_issues
 
 my_data$tables %&gt;% names()
 
-## [1] &quot;location&quot;              &quot;location_ancillary&quot;    &quot;taxon&quot;                 &quot;observation&quot;          
-## [5] &quot;observation_ancillary&quot; &quot;dataset_summary&quot;
+## [1] &quot;location&quot;              &quot;location_ancillary&quot;    &quot;taxon&quot;                 &quot;observation&quot;           &quot;observation_ancillary&quot;
+## [6] &quot;dataset_summary&quot;
 
 my_data$tables$location
 
@@ -487,27 +480,20 @@ my_data$tables$taxon %&gt;% head()
 
 my_data$tables$observation %&gt;% head()
 
-##                         observation_id                  event_id
-## 1 f9d3d41d-98a6-4345-a9d5-7dcde0acbab1 ARIK.20170327.EPIPHYTON.5
-## 2 7737766c-c634-40c7-a8b2-cee435f42afe ARIK.20170327.EPIPHYTON.5
-## 3 fef6f9f7-1502-478e-a502-13a582b800cc ARIK.20170327.EPIPHYTON.5
-## 4 23c2c578-364c-4e47-86d3-20b1a6f5c682 ARIK.20170327.EPIPHYTON.5
-## 5 2efea9ce-0d70-4532-a4f1-9561b7442b73 ARIK.20170327.EPIPHYTON.5
-## 6 358c50d0-940e-47ad-b6c1-45166419a548 ARIK.20170327.EPIPHYTON.5
-##                                   package_id    location_id            datetime        taxon_id
-## 1 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00 NEONDREX2509006
-## 2 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX48008
-## 3 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00    NEONDREX7043
-## 4 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX170133
-## 5 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX20007
-## 6 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX58001
-##   variable_name     value      unit
-## 1  cell density  422.3438 cells/cm2
-## 2  cell density  211.1708 cells/cm2
-## 3  cell density  211.1708 cells/cm2
-## 4  cell density 1267.0312 cells/cm2
-## 5  cell density  844.6875 cells/cm2
-## 6  cell density  211.1708 cells/cm2
+##                         observation_id                  event_id                                 package_id    location_id
+## 1 f9d3d41d-98a6-4345-a9d5-7dcde0acbab1 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
+## 2 7737766c-c634-40c7-a8b2-cee435f42afe ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
+## 3 fef6f9f7-1502-478e-a502-13a582b800cc ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
+## 4 23c2c578-364c-4e47-86d3-20b1a6f5c682 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
+## 5 2efea9ce-0d70-4532-a4f1-9561b7442b73 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
+## 6 358c50d0-940e-47ad-b6c1-45166419a548 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
+##              datetime        taxon_id variable_name     value      unit
+## 1 2017-03-27 18:01:00 NEONDREX2509006  cell density  422.3438 cells/cm2
+## 2 2017-03-27 18:01:00   NEONDREX48008  cell density  211.1708 cells/cm2
+## 3 2017-03-27 18:01:00    NEONDREX7043  cell density  211.1708 cells/cm2
+## 4 2017-03-27 18:01:00  NEONDREX170133  cell density 1267.0312 cells/cm2
+## 5 2017-03-27 18:01:00   NEONDREX20007  cell density  844.6875 cells/cm2
+## 6 2017-03-27 18:01:00   NEONDREX58001  cell density  211.1708 cells/cm2
 </code></pre>
 
 <h2>Algae Data Flattening and Cleaning</h2>
