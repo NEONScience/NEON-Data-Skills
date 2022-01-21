@@ -1,11 +1,12 @@
 ---
 title: "Explore NEON biodiversity data using ecocomDP"
 syncID: a112429a90d14c9d8620b956a2469062
-description: Download and explore NEON algae and aquatic macroinvertebrate data. This
-  includes instruction for using ecocomDP package to analyze biodiversity.
+description: Download and explore NEON algae and aquatic macroinvertebrate 
+  data with the ecocomDP package for R 
+  using the CyVerse Discovery Environment
 dateCreated: '2020-06-22'
 authors: Eric R. Sokol
-contributors: Donal O'Leary, Felipe Sanchez
+contributors: Donal O'Leary, Felipe Sanchez, Michael Culshaw-Maurer 
 estimatedTime: 1 Hour
 packagesLibraries: tidyverse, neonUtilities, ecocomDP
 topics: data-analysis, organisms, data-viz
@@ -13,7 +14,7 @@ languagesTool: R
 dataProduct: DP1.20120.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/01_ecocomDP_workflow_with_NEON_and_CyVerse.R
 tutorialSeries: null
-urlTitle: neon-biodiversity-ecocomDP
+urlTitle: neon-biodiversity-ecocomdp-cyverse
 ---
 
 <div id="ds-objectives" markdown="1">
@@ -183,11 +184,11 @@ my_data$tables$observation %>% head()
 ```
 
 
-## Data visualization
+## Basic Data Visualization
 
 The `ecocomDP` package offers some useful data visualization tools.
 
-```{r macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space in time represented in the downloaded data set for benthic macroinvertebrate counts from the Arikaree River site."}
+```{r macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from the Arikaree River site."}
 
 # Explore the spatial and temporal coverage 
 # of the dataset
@@ -207,7 +208,7 @@ my_data %>% ecocomDP::plot_taxa_rank()
 
 
 
-## Search ecocomDP
+## Search `ecocomDP`
 
 Additionally, we can search for terms in the ecocomDP database using regular expressions:
 
@@ -280,7 +281,7 @@ my_data_benthic <- my_data_flat %>%
 ```
 
 
-## Explore benthic algae data with `ecocomDP` plotting functions
+## Explore Benthic Algae Data with `ecocomDP` Plotting Functions
 
 ```{r algae-data-vis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space in time represented in the downloaded data set for algae."}
 
