@@ -1,6 +1,6 @@
 ---
 title: "Explore NEON biodiversity data using ecocomDP"
-syncID: a112429a90d14c9d8620b956a2469062
+syncID: 19fe7b1f052c478c8a7df52e4e03efbf
 description: Download and explore NEON algae and aquatic macroinvertebrate 
   data with the ecocomDP package for R 
   using the CyVerse Discovery Environment
