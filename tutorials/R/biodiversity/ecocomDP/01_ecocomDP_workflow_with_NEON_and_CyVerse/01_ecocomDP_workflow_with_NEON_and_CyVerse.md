@@ -4,7 +4,7 @@ syncID: a112429a90d14c9d8620b956a2469062
 description: Download and explore NEON algae and aquatic macroinvertebrate 
   data with the ecocomDP package for R 
   using the CyVerse Discovery Environment
-dateCreated: '2020-06-22'
+dateCreated: '2022-01-21'
 authors: Eric R. Sokol
 contributors: Donal O'Leary, Felipe Sanchez, Michael Culshaw-Maurer 
 estimatedTime: 1 Hour
@@ -161,7 +161,7 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220121112023"
+    ## [1] "neon.ecocomdp.20120.001.001.20220121114112"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -176,7 +176,7 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-21 11:20:25 MST"
+    ## [1] "2022-01-21 11:41:14 MST"
 
     # validation issues? None if returns an empty list
     my_data$validation_issues
@@ -209,12 +209,12 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     my_data$tables$observation %>% head()
 
     ##   observation_id             event_id                                 package_id    location_id
-    ## 1          obs_1 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121112023 ARIK.AOS.reach
-    ## 2          obs_2 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121112023 ARIK.AOS.reach
-    ## 3          obs_3 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121112023 ARIK.AOS.reach
-    ## 4          obs_4 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121112023 ARIK.AOS.reach
-    ## 5          obs_5 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121112023 ARIK.AOS.reach
-    ## 6          obs_6 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121112023 ARIK.AOS.reach
+    ## 1          obs_1 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
+    ## 2          obs_2 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
+    ## 3          obs_3 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
+    ## 4          obs_4 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
+    ## 5          obs_5 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
+    ## 6          obs_6 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121114112 ARIK.AOS.reach
     ##              datetime taxon_id variable_name     value                   unit
     ## 1 2017-03-22 15:30:00   BERSP4       density  166.6667 count per square meter
     ## 2 2017-03-22 15:30:00   CAESP5       density  166.6667 count per square meter
@@ -284,7 +284,7 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20166.001.001.20220121112111"
+    ## [1] "neon.ecocomdp.20166.001.001.20220121114208"
     ## 
     ## $taxonomic_group
     ## [1] "ALGAE"
@@ -299,7 +299,7 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-21 11:21:13 MST"
+    ## [1] "2022-01-21 11:42:09 MST"
 
     my_data$validation_issues
 
@@ -356,12 +356,12 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     ## 5 2efea9ce-0d70-4532-a4f1-9561b7442b73 ARIK.20170327.EPIPHYTON.5
     ## 6 358c50d0-940e-47ad-b6c1-45166419a548 ARIK.20170327.EPIPHYTON.5
     ##                                   package_id    location_id            datetime        taxon_id
-    ## 1 neon.ecocomdp.20166.001.001.20220121112111 ARIK.AOS.reach 2017-03-27 18:01:00 NEONDREX2509006
-    ## 2 neon.ecocomdp.20166.001.001.20220121112111 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX48008
-    ## 3 neon.ecocomdp.20166.001.001.20220121112111 ARIK.AOS.reach 2017-03-27 18:01:00    NEONDREX7043
-    ## 4 neon.ecocomdp.20166.001.001.20220121112111 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX170133
-    ## 5 neon.ecocomdp.20166.001.001.20220121112111 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX20007
-    ## 6 neon.ecocomdp.20166.001.001.20220121112111 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX58001
+    ## 1 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00 NEONDREX2509006
+    ## 2 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX48008
+    ## 3 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00    NEONDREX7043
+    ## 4 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX170133
+    ## 5 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX20007
+    ## 6 neon.ecocomdp.20166.001.001.20220121114208 ARIK.AOS.reach 2017-03-27 18:01:00   NEONDREX58001
     ##   variable_name     value      unit
     ## 1  cell density  422.3438 cells/cm2
     ## 2  cell density  211.1708 cells/cm2

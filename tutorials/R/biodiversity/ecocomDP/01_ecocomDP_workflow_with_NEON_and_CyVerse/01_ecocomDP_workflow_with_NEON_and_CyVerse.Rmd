@@ -4,7 +4,7 @@ syncID: a112429a90d14c9d8620b956a2469062
 description: Download and explore NEON algae and aquatic macroinvertebrate 
   data with the ecocomDP package for R 
   using the CyVerse Discovery Environment
-dateCreated: '2020-06-22'
+dateCreated: '2022-01-21'
 authors: Eric R. Sokol
 contributors: Donal O'Leary, Felipe Sanchez, Michael Culshaw-Maurer 
 estimatedTime: 1 Hour
