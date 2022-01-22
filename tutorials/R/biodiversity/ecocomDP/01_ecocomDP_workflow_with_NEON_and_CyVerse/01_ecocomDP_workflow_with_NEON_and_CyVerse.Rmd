@@ -1,12 +1,11 @@
 ---
 title: "Explore NEON biodiversity data using ecocomDP"
 syncID: 19fe7b1f052c478c8a7df52e4e03efbf
-description: Download and explore NEON algae and aquatic macroinvertebrate 
-  data with the ecocomDP package for R 
-  using the CyVerse Discovery Environment
+description: Download and explore NEON algae and aquatic macroinvertebrate data with
+  the ecocomDP package for R using the CyVerse Discovery Environment
 dateCreated: '2022-01-21'
 authors: Eric R. Sokol
-contributors: Donal O'Leary, Felipe Sanchez, Michael Culshaw-Maurer 
+contributors: Donal O'Leary, Felipe Sanchez, Michael Culshaw-Maurer
 estimatedTime: 1 Hour
 packagesLibraries: tidyverse, neonUtilities, ecocomDP
 topics: data-analysis, organisms, data-viz
@@ -19,32 +18,19 @@ urlTitle: neon-biodiversity-ecocomdp-cyverse
 
 <div id="ds-objectives" markdown="1">
 
-## Learning Objectives 
+# Learning Objectives 
 After completing this tutorial you will be able to: 
 
 * (Optional) Run an RStudio session with `ecocomDP` pre-installed on the VICE cloud using the CyVerse Discovery Environment.
 * Use the ecocomDP package to download NEON algae and benthic macroinvertebrate biodiversity data.
 * Explore NEON biodiversity datasets with `ecocomDP` plotting functions.
 
-## Things You’ll Need To Complete This Tutorial
 
-### **Option 1: Run R locally on your machine**
-#### The R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
-the RStudio IDE to work with R. 
+# Things You’ll Need To Complete This Tutorial
 
-#### R Packages to Install
-Prior to starting the tutorial, ensure that the following packages are installed. 
+## _Option 1: RStudio on the VICE cloud_
 
-* **tidyverse:** `install.packages("tidyverse")`
-* **neonUtilities:** `install.packages("neonUtilities")`
-* **ecocomDP:** `install.packages("ecocomDP")`
-
-<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
-
-### **Option 2: RStudio on the VICE cloud**
-
-#### Creating a CyVerse Account
+### Creating a CyVerse Account
 
 To create a CyVerse account, navigate to [user.cyverse.org](https://user.cyverse.org/) and click "Sign Up". You will be prompted to fill in your name, a username, and an email. It is **highly recommended** that you use a `.edu`, `.org`, or `.gov` email address if you have one. Cloud computing platforms are a prime target for cryptocurrency miners, and using an institutional email address makes it easier to verify that you *aren't* one.
 
@@ -60,7 +46,7 @@ You can navigate to [user.cyverse.org/services](https://user.cyverse.org/service
 
 Once **DE-VICE** appears under "My Services" in the User Portal, with a "Launch" button, that means you have been approved for VICE access, and you can proceed to the next step.
 
-#### Launching RStudio with the `ecocomDP` package
+### Launching RStudio with the `ecocomDP` package
 
 We will be using an RStudio application running on the VICE cloud. It already has several R packages installed for this tutorial
 
@@ -79,6 +65,21 @@ You will either be brought to a loading page or directly to an RStudio session. 
 Once RStudio is open, you should be able to begin the rest of the tutorial.
 
 **NOTE**: to get more information on using any of the CyVerse platforms, including VICE, you can check out the [CyVerse Learning Center](https://learning.cyverse.org/).
+
+
+## _Option 2: Run R locally on your machine_
+### The R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial, ensure that the following packages are installed. 
+
+* **tidyverse:** `install.packages("tidyverse")`
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **ecocomDP:** `install.packages("ecocomDP")`
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 </div>
 
