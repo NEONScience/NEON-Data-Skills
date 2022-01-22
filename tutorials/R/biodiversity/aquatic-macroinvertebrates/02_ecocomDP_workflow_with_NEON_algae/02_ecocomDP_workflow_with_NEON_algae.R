@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA----------------------------------------------------------------------------------------
+## ----load libraries, eval=F, comment=NA-------------------------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -19,7 +19,7 @@ library(ecocomDP)
 
 
 
-## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'--------------------------------------------------------
+## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'-----------------------------------------------------------
 
 # search for invertebrate data products
 my_search_result <- 
@@ -30,7 +30,7 @@ View(my_search_result)
 # collection"
 my_data <- ecocomDP::read_data(
   id = "neon.ecocomdp.20120.001.001",
-  site = c('ARIK','MAYF'),
+  site = "ARIK",
   startdate = "2017-06",
   enddate = "2020-03",
   # token = NEON_TOKEN, #Uncomment to use your token
@@ -38,26 +38,26 @@ my_data <- ecocomDP::read_data(
 
 
 
-## ----view-ecocomDP-str---------------------------------------------------------------------------------------------------------
+## ----view-ecocomDP-str------------------------------------------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
 my_data %>% names()
-my_data$neon.ecocomdp.20120.001.001 %>% names()
+my_data$id
 
 # short list of package summary data
-my_data$neon.ecocomdp.20120.001.001$metadata$data_package_info
+my_data$metadata$data_package_info
 
 # validation issues? None if returns an empty list
-my_data$neon.ecocomdp.20120.001.001$validation_issues
+my_data$validation_issues
 
 # examine the tables
-my_data$neon.ecocomdp.20120.001.001$tables %>% names()
-my_data$neon.ecocomdp.20120.001.001$tables$taxon %>% head()
-my_data$neon.ecocomdp.20120.001.001$tables$observation %>% head()
+my_data$tables %>% names()
+my_data$tables$taxon %>% head()
+my_data$tables$observation %>% head()
 
 
 
-## ----search-ecocomDP-----------------------------------------------------------------------------------------------------------
+## ----search-ecocomDP--------------------------------------------------------------------------------------------------------------
 
 # search for data sets with periphyton or algae
 # regex works!
@@ -66,7 +66,7 @@ View(my_search_result)
 
 
 
-## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------------------
+## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'------------------------------------------------------------
 
 # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
 # data product
@@ -81,26 +81,26 @@ my_data <-
 
 
 
-## ----explore-data-structure----------------------------------------------------------------------------------------------------
+## ----explore-data-structure-------------------------------------------------------------------------------------------------------
 # Explore the structure of the returned data object
 my_data %>% names()
-my_data[[1]] %>% names()
-my_data[[1]]$metadata$data_package_info
-my_data[[1]]$validation_issues
-my_data[[1]]$tables %>% names()
+my_data %>% names()
+my_data$metadata$data_package_info
+my_data$validation_issues
+my_data$tables %>% names()
 
-my_data[[1]]$tables$location
-my_data[[1]]$tables$taxon %>% head()
-my_data[[1]]$tables$observation %>% head()
-
-
+my_data$tables$location
+my_data$tables$taxon %>% head()
+my_data$tables$observation %>% head()
 
 
 
-## ----flattening-and-cleaning, message=FALSE, warning=FALSE---------------------------------------------------------------------
+
+
+## ----flattening-and-cleaning, message=FALSE, warning=FALSE------------------------------------------------------------------------
 
 # flatten the ecocomDP data tables into one flat table
-my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
+my_data_flat <- my_data$tables %>% ecocomDP::flatten_data()
 
 # This data product has algal densities reported for both
 # lakes and streams, so densities could be standardized
@@ -190,7 +190,7 @@ plot(alg_spec_accum_result)
 
 
 
-## ----compare-obs-sim-SAC-------------------------------------------------------------------------------------------------------
+## ----compare-obs-sim-SAC----------------------------------------------------------------------------------------------------------
 
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(

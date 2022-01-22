@@ -43,7 +43,7 @@ Prior to starting the tutorial ensure that the following packages are installed.
 </div>
 
 ## Introduction
-In this second live coding section of the workshop, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which is under development by the Environmental Data Initiative (EDI).
+In this second live coding section of the workshop, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which is under development by the Environmental Data Initiative (EDI) in collaboration with NEON staff.
 
 #### What is ecocomDP?
 ecocomDP is both the name of an R package and a data model. 
@@ -60,6 +60,8 @@ See the ecocomDP github repo here:
 </figure>
 
 The motivation is for both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research Network and Macrosystems Biology projects, to be discoverable through a single data search tool, and to be delivered in a standard format. Our objective here is to demonstrate how the workflow will work with NEON biodiversity data packages. 
+
+This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
 
 ## Load Libraries and Prepare Workspace
 First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above. 
@@ -85,7 +87,7 @@ There are also two optional sections in this code chunk: clearing your environme
 
 
 ## Download Macroinvertibrate Data
-In this first step, we show how to search the ecocomDP database for macroinvertibrate data including those from LTER and NEON sites (and others).
+In this first step, we show how to search the ecocomDP database for macroinvertebrate data including those from LTER and NEON sites (and others).
 
     # search for invertebrate data products
     my_search_result <- 
@@ -96,7 +98,7 @@ In this first step, we show how to search the ecocomDP database for macroinverti
     # collection"
     my_data <- ecocomDP::read_data(
       id = "neon.ecocomdp.20120.001.001",
-      site = c('ARIK','MAYF'),
+      site = "ARIK",
       startdate = "2017-06",
       enddate = "2020-03",
       # token = NEON_TOKEN, #Uncomment to use your token
@@ -108,17 +110,17 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     # examine the structure of the data object that is returned
     my_data %>% names()
 
+    ## [1] "id"                "metadata"          "tables"            "validation_issues"
+
+    my_data$id
+
     ## [1] "neon.ecocomdp.20120.001.001"
 
-    my_data$neon.ecocomdp.20120.001.001 %>% names()
-
-    ## [1] "metadata"          "tables"            "validation_issues"
-
     # short list of package summary data
-    my_data$neon.ecocomdp.20120.001.001$metadata$data_package_info
+    my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20210728140025"
+    ## [1] "neon.ecocomdp.20120.001.001.20220122083631"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -130,55 +132,41 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     ## [1] "neon.ecocomdp.20120.001.001"
     ## 
     ## $data_access_method
-    ## [1] "original NEON data accessed using neonUtilities v2.1.0"
+    ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2021-07-28 14:00:30 MDT"
+    ## [1] "2022-01-22 08:36:35 MST"
 
     # validation issues? None if returns an empty list
-    my_data$neon.ecocomdp.20120.001.001$validation_issues
+    my_data$validation_issues
 
     ## list()
 
     # examine the tables
-    my_data$neon.ecocomdp.20120.001.001$tables %>% names()
+    my_data$tables %>% names()
 
     ## [1] "location"              "location_ancillary"    "taxon"                 "observation"           "observation_ancillary"
     ## [6] "dataset_summary"
 
-    my_data$neon.ecocomdp.20120.001.001$tables$taxon %>% head()
+    my_data$tables$taxon %>% head()
 
-    ##   taxon_id taxon_rank           taxon_name
-    ## 1   ABLMAL    species Ablabesmyia mallochi
-    ## 2    ABLSP      genus      Ablabesmyia sp.
-    ## 3   ACASP1   subclass            Acari sp.
-    ## 4   ACEPYG    species    Acerpenna pygmaea
-    ## 5   ACESP1      genus        Acerpenna sp.
-    ## 6   ACRABN    species  Acroneuria abnormis
-    ##                                                                                                                        authority_system
-    ## 1                                                                                               Epler 2001, and Maschwitz and Cook 2000
-    ## 2 Roback 1985 and Epler 2001; Weiderholm, 1983; Weiderholm, 1986; Epler 2001; Ferrington et al. 2019; Andersen, Cranston and Epler 2013
-    ## 3                                                                                          Thorp and Covich 2001; Thorp and Rogers 2016
-    ## 4                                                                                                          Morihara and McCafferty 1979
-    ## 5                                                                                                                   Merritt et al. 2019
-    ## 6                                                                                                               Stewart and Stark, 2002
-    ##   authority_taxon_id
-    ## 1               <NA>
-    ## 2               <NA>
-    ## 3               <NA>
-    ## 4               <NA>
-    ## 5               <NA>
-    ## 6               <NA>
+    ##   taxon_id taxon_rank       taxon_name                                         authority_system authority_taxon_id
+    ## 1    ABLSP      genus  Ablabesmyia sp.                               Roback 1985 and Epler 2001               <NA>
+    ## 2   ACASP1   subclass        Acari sp.                                    Thorp and Covich 2001               <NA>
+    ## 3   ACTSP5      genus Actinobdella sp.             Thorp and Covich 2001; Thorp and Rogers 2016               <NA>
+    ## 4    AESSP     family    Aeshnidae sp.                           Needham, Westfall and May 2000               <NA>
+    ## 5   AGASP1  subfamily     Agabinae sp.                        Larson, Alarie, and Roughley 2001               <NA>
+    ## 6   ANISP1   suborder   Anisoptera sp. Needham, Westfall and May 2000; Merritt and Cummins 2008               <NA>
 
-    my_data$neon.ecocomdp.20120.001.001$tables$observation %>% head()
+    my_data$tables$observation %>% head()
 
-    ##   observation_id             event_id                                 package_id    location_id   datetime taxon_id
-    ## 1          obs_1 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210728140025 ARIK.AOS.reach 2017-07-12   CAESP5
-    ## 2          obs_2 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210728140025 ARIK.AOS.reach 2017-07-12  CERSP10
-    ## 3          obs_3 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210728140025 ARIK.AOS.reach 2017-07-12   CLASP5
-    ## 4          obs_4 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210728140025 ARIK.AOS.reach 2017-07-12   CLISP3
-    ## 5          obs_5 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210728140025 ARIK.AOS.reach 2017-07-12   CORSP4
-    ## 6          obs_6 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20210728140025 ARIK.AOS.reach 2017-07-12   CRYSP2
+    ##   observation_id             event_id                                 package_id    location_id            datetime taxon_id
+    ## 1          obs_1 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CAESP5
+    ## 2          obs_2 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00  CERSP10
+    ## 3          obs_3 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CLASP5
+    ## 4          obs_4 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CLISP3
+    ## 5          obs_5 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CORSP4
+    ## 6          obs_6 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CRYSP2
     ##   variable_name     value                   unit
     ## 1       density 1000.0000 count per square meter
     ## 2       density  333.3333 count per square meter
@@ -216,16 +204,16 @@ Let's download the data for the NEON "Periphyton, seston, and phytoplankton coll
     # Explore the structure of the returned data object
     my_data %>% names()
 
-    ## [1] "neon.ecocomdp.20166.001.001"
+    ## [1] "id"                "metadata"          "tables"            "validation_issues"
 
-    my_data[[1]] %>% names()
+    my_data %>% names()
 
-    ## [1] "metadata"          "tables"            "validation_issues"
+    ## [1] "id"                "metadata"          "tables"            "validation_issues"
 
-    my_data[[1]]$metadata$data_package_info
+    my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20166.001.001.20210728140053"
+    ## [1] "neon.ecocomdp.20166.001.001.20220122083655"
     ## 
     ## $taxonomic_group
     ## [1] "ALGAE"
@@ -237,44 +225,44 @@ Let's download the data for the NEON "Periphyton, seston, and phytoplankton coll
     ## [1] "neon.ecocomdp.20166.001.001"
     ## 
     ## $data_access_method
-    ## [1] "original NEON data accessed using neonUtilities v2.1.0"
+    ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2021-07-28 14:00:54 MDT"
+    ## [1] "2022-01-22 08:36:56 MST"
 
-    my_data[[1]]$validation_issues
+    my_data$validation_issues
 
     ## list()
 
-    my_data[[1]]$tables %>% names()
+    my_data$tables %>% names()
 
     ## [1] "location"              "location_ancillary"    "taxon"                 "observation"           "observation_ancillary"
     ## [6] "dataset_summary"
 
-    my_data[[1]]$tables$location
+    my_data$tables$location
 
-    ##      location_id  location_name latitude longitude elevation parent_location_id
-    ## 1            D10 Central Plains       NA        NA        NA               <NA>
-    ## 2           ARIK Arikaree River 39.75825 -102.4471        NA                D10
-    ## 3 ARIK.AOS.reach ARIK.AOS.reach 39.75821 -102.4471    1179.5               ARIK
-    ## 4    ARIK.AOS.S2    ARIK.AOS.S2 39.75836 -102.4486    1178.7               ARIK
+    ##      location_id  location_name parent_location_id latitude longitude elevation
+    ## 1            D10 Central Plains               <NA>       NA        NA        NA
+    ## 2           ARIK Arikaree River                D10 39.75825 -102.4471        NA
+    ## 3 ARIK.AOS.reach ARIK.AOS.reach               ARIK 39.75821 -102.4471    1179.5
+    ## 4    ARIK.AOS.S2    ARIK.AOS.S2               ARIK 39.75836 -102.4486    1178.7
 
-    my_data[[1]]$tables$taxon %>% head()
+    my_data$tables$taxon %>% head()
 
     ##           taxon_id taxon_rank            taxon_name
     ## 1 ACHNANTHIDIUMSPP      genus    Achnanthidium spp.
     ## 2       AMPHORASPP      genus          Amphora spp.
     ## 3      ANABAENASPP      genus         Anabaena spp.
-    ## 4   AULACOSEIRASPP      genus      Aulacoseira spp.
-    ## 5    BACILLARIOCSP      class Bacillariophyceae sp.
-    ## 6      CALONEISSPP      genus         Caloneis spp.
-    ##                                                                                                                                                                                                                                           authority_system
-    ## 1                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
-    ## 2                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
-    ## 3                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
-    ## 4                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
-    ## 5 Academy of Natural Sciences of Drexel University; Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
-    ## 6                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 4   APHANOCAPSASPP      genus      Aphanocapsa spp.
+    ## 5   AULACOSEIRASPP      genus      Aulacoseira spp.
+    ## 6    BACILLARIOCSP      class Bacillariophyceae sp.
+    ##                                                                                                                                                                                                                                                                                                                authority_system
+    ## 1                                                                                                                        Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 2                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.; http://diatom.ansp.org/nawqa/Taxalist.aspx (accessed Jan 11, 2016).
+    ## 3                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.; http://diatom.ansp.org/nawqa/Taxalist.aspx (accessed Jan 11, 2016).
+    ## 4                                                   Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.; http://diatom.ansp.org/nawqa/Taxalist.aspx (accessed Jan 11, 2016).
+    ## 5                                                                                                                        Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.
+    ## 6 Academy of Natural Sciences of Drexel University; Academy of Natural Sciences of Drexel University and collaborators. 2011 - 2016. ANSP/NAWQA/EPA 2011 diatom and non-diatom taxa names, http://diatom.ansp.org/nawqa/Taxalist.aspx, accessed 1/11/2016.; http://diatom.ansp.org/nawqa/Taxalist.aspx (accessed Jan 11, 2016).
     ##   authority_taxon_id
     ## 1               <NA>
     ## 2               <NA>
@@ -283,22 +271,22 @@ Let's download the data for the NEON "Periphyton, seston, and phytoplankton coll
     ## 5               <NA>
     ## 6               <NA>
 
-    my_data[[1]]$tables$observation %>% head()
+    my_data$tables$observation %>% head()
 
     ##                         observation_id                  event_id                                 package_id    location_id
-    ## 1 2f9cd348-0767-4322-b7b8-19182778a98c ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210728140053 ARIK.AOS.reach
-    ## 2 fcb13e4f-2cf6-4d97-9c70-09a70f51fb7e ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210728140053 ARIK.AOS.reach
-    ## 3 c2a8fcf8-1cf2-42da-868b-077ea1726433 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210728140053 ARIK.AOS.reach
-    ## 4 6c0a36d3-0075-4d17-bc0a-03b35cb5f179 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210728140053 ARIK.AOS.reach
-    ## 5 6493f9e6-d1b6-42fd-9156-bb4fb97b2854 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210728140053 ARIK.AOS.reach
-    ## 6 63ed13f7-f9ee-46b9-aea4-2fc2c3cfdd09 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20210728140053 ARIK.AOS.reach
-    ##     datetime       taxon_id variable_name     value      unit
-    ## 1 2017-07-18  NEONDREX48126  cell density 1180.3455 cells/cm2
-    ## 2 2017-07-18  NEONDREX33185  cell density  295.0864 cells/cm2
-    ## 3 2017-07-18 NEONDREX197003  cell density  147.5409 cells/cm2
-    ## 4 2017-07-18 NEONDREX170133  cell density  590.1727 cells/cm2
-    ## 5 2017-07-18  NEONDREX37156  cell density  295.0864 cells/cm2
-    ## 6 2017-07-18 NEONDREX155017  cell density 2655.7727 cells/cm2
+    ## 1 2f9cd348-0767-4322-b7b8-19182778a98c ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
+    ## 2 fcb13e4f-2cf6-4d97-9c70-09a70f51fb7e ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
+    ## 3 c2a8fcf8-1cf2-42da-868b-077ea1726433 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
+    ## 4 6c0a36d3-0075-4d17-bc0a-03b35cb5f179 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
+    ## 5 6493f9e6-d1b6-42fd-9156-bb4fb97b2854 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
+    ## 6 63ed13f7-f9ee-46b9-aea4-2fc2c3cfdd09 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
+    ##              datetime       taxon_id variable_name     value      unit
+    ## 1 2017-07-18 17:09:00  NEONDREX48126  cell density 1180.3455 cells/cm2
+    ## 2 2017-07-18 17:09:00  NEONDREX33185  cell density  295.0864 cells/cm2
+    ## 3 2017-07-18 17:09:00 NEONDREX197003  cell density  147.5409 cells/cm2
+    ## 4 2017-07-18 17:09:00 NEONDREX170133  cell density  590.1727 cells/cm2
+    ## 5 2017-07-18 17:09:00  NEONDREX37156  cell density  295.0864 cells/cm2
+    ## 6 2017-07-18 17:09:00 NEONDREX155017  cell density 2655.7727 cells/cm2
 
 ## Algae Data Flattening and Cleaning
 
@@ -306,7 +294,7 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
 
 
     # flatten the ecocomDP data tables into one flat table
-    my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
+    my_data_flat <- my_data$tables %>% ecocomDP::flatten_data()
     
     # This data product has algal densities reported for both
     # lakes and streams, so densities could be standardized
@@ -340,8 +328,8 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
       summarize(n_obs = length(event_id)) %>%
       dplyr::filter(n_obs > 1)
 
-    ## # A tibble: 91 x 3
-    ## # Groups:   event_id [10]
+    ## # A tibble: 110 x 3
+    ## # Groups:   event_id [20]
     ##    event_id                  taxon_id       n_obs
     ##    <chr>                     <chr>          <int>
     ##  1 ARIK.20170718.EPIPHYTON.2 NEONDREX1010       2
@@ -354,7 +342,7 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
     ##  8 ARIK.20170718.EPIPHYTON.2 NEONDREX170134     2
     ##  9 ARIK.20170718.EPIPHYTON.2 NEONDREX172001     2
     ## 10 ARIK.20170718.EPIPHYTON.2 NEONDREX172006     2
-    ## # ... with 81 more rows
+    ## # ... with 100 more rows
 
     # Per instructions from the lab, these 
     # counts should be summed.

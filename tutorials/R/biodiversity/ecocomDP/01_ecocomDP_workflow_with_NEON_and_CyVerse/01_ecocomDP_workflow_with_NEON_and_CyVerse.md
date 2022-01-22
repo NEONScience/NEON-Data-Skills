@@ -1,12 +1,11 @@
 ---
 title: "Explore NEON biodiversity data using ecocomDP"
 syncID: 19fe7b1f052c478c8a7df52e4e03efbf
-description: Download and explore NEON algae and aquatic macroinvertebrate 
-  data with the ecocomDP package for R 
-  using the CyVerse Discovery Environment
+description: Download and explore NEON algae and aquatic macroinvertebrate data with
+  the ecocomDP package for R using the CyVerse Discovery Environment
 dateCreated: '2022-01-21'
 authors: Eric R. Sokol
-contributors: Donal O'Leary, Felipe Sanchez, Michael Culshaw-Maurer 
+contributors: Donal O'Leary, Felipe Sanchez, Michael Culshaw-Maurer
 estimatedTime: 1 Hour
 packagesLibraries: tidyverse, neonUtilities, ecocomDP
 topics: data-analysis, organisms, data-viz
@@ -19,32 +18,19 @@ urlTitle: neon-biodiversity-ecocomdp-cyverse
 
 <div id="ds-objectives" markdown="1">
 
-## Learning Objectives 
+# Learning Objectives 
 After completing this tutorial you will be able to: 
 
 * (Optional) Run an RStudio session with `ecocomDP` pre-installed on the VICE cloud using the CyVerse Discovery Environment.
 * Use the ecocomDP package to download NEON algae and benthic macroinvertebrate biodiversity data.
 * Explore NEON biodiversity datasets with `ecocomDP` plotting functions.
 
-## Things You’ll Need To Complete This Tutorial
 
-### **Option 1: Run R locally on your machine**
-#### The R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
-the RStudio IDE to work with R. 
+# Things You’ll Need To Complete This Tutorial
 
-#### R Packages to Install
-Prior to starting the tutorial, ensure that the following packages are installed. 
+## _Option 1: RStudio on the VICE cloud_
 
-* **tidyverse:** `install.packages("tidyverse")`
-* **neonUtilities:** `install.packages("neonUtilities")`
-* **ecocomDP:** `install.packages("ecocomDP")`
-
-<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
-
-### **Option 2: RStudio on the VICE cloud**
-
-#### Creating a CyVerse Account
+### Creating a CyVerse Account
 
 To create a CyVerse account, navigate to [user.cyverse.org](https://user.cyverse.org/) and click "Sign Up". You will be prompted to fill in your name, a username, and an email. It is **highly recommended** that you use a `.edu`, `.org`, or `.gov` email address if you have one. Cloud computing platforms are a prime target for cryptocurrency miners, and using an institutional email address makes it easier to verify that you *aren't* one.
 
@@ -60,7 +46,7 @@ You can navigate to [user.cyverse.org/services](https://user.cyverse.org/service
 
 Once **DE-VICE** appears under "My Services" in the User Portal, with a "Launch" button, that means you have been approved for VICE access, and you can proceed to the next step.
 
-#### Launching RStudio with the `ecocomDP` package
+### Launching RStudio with the `ecocomDP` package
 
 We will be using an RStudio application running on the VICE cloud. It already has several R packages installed for this tutorial
 
@@ -79,6 +65,21 @@ You will either be brought to a loading page or directly to an RStudio session. 
 Once RStudio is open, you should be able to begin the rest of the tutorial.
 
 **NOTE**: to get more information on using any of the CyVerse platforms, including VICE, you can check out the [CyVerse Learning Center](https://learning.cyverse.org/).
+
+
+## _Option 2: Run R locally on your machine_
+### The R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial, ensure that the following packages are installed. 
+
+* **tidyverse:** `install.packages("tidyverse")`
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **ecocomDP:** `install.packages("ecocomDP")`
+
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 </div>
 
@@ -150,7 +151,8 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     # examine the structure of the data object that is returned
     my_data %>% names()
 
-    ## [1] "id"                "metadata"          "tables"            "validation_issues"
+    ## [1] "id"                "metadata"          "tables"           
+    ## [4] "validation_issues"
 
     # the data package id
     my_data$id
@@ -161,7 +163,7 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220121160424"
+    ## [1] "neon.ecocomdp.20120.001.001.20220122083024"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -176,7 +178,7 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-21 16:04:26 MST"
+    ## [1] "2022-01-22 08:30:27 MST"
 
     # validation issues? None if returns an empty list
     my_data$validation_issues
@@ -186,35 +188,64 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     # examine the tables
     my_data$tables %>% names()
 
-    ## [1] "location"              "location_ancillary"    "taxon"                 "observation"           "observation_ancillary"
-    ## [6] "dataset_summary"
+    ## [1] "location"              "location_ancillary"   
+    ## [3] "taxon"                 "observation"          
+    ## [5] "observation_ancillary" "dataset_summary"
 
     my_data$tables$taxon %>% head()
 
-    ##   taxon_id taxon_rank       taxon_name                                    authority_system authority_taxon_id
-    ## 1    ABLSP      genus  Ablabesmyia sp.                          Roback 1985 and Epler 2001               <NA>
-    ## 2   ACASP1   subclass        Acari sp.                               Thorp and Covich 2001               <NA>
-    ## 3   ACTSP5      genus Actinobdella sp.                               Thorp and Covich 2001               <NA>
-    ## 4    AESSP     family    Aeshnidae sp.                      Needham, Westfall and May 2000               <NA>
-    ## 5   AGASP1  subfamily     Agabinae sp.                   Larson, Alarie, and Roughley 2001               <NA>
-    ## 6   ANISP1   suborder   Anisoptera sp. Merritt et al. 2008; Needham, Westfall and May 2000               <NA>
+    ##   taxon_id taxon_rank       taxon_name
+    ## 1    ABLSP      genus  Ablabesmyia sp.
+    ## 2   ACASP1   subclass        Acari sp.
+    ## 3   ACTSP5      genus Actinobdella sp.
+    ## 4    AESSP     family    Aeshnidae sp.
+    ## 5   AGASP1  subfamily     Agabinae sp.
+    ## 6   ANISP1   suborder   Anisoptera sp.
+    ##                                      authority_system
+    ## 1                          Roback 1985 and Epler 2001
+    ## 2                               Thorp and Covich 2001
+    ## 3                               Thorp and Covich 2001
+    ## 4                      Needham, Westfall and May 2000
+    ## 5                   Larson, Alarie, and Roughley 2001
+    ## 6 Merritt et al. 2008; Needham, Westfall and May 2000
+    ##   authority_taxon_id
+    ## 1               <NA>
+    ## 2               <NA>
+    ## 3               <NA>
+    ## 4               <NA>
+    ## 5               <NA>
+    ## 6               <NA>
 
     my_data$tables$observation %>% head()
 
-    ##   observation_id             event_id                                 package_id    location_id            datetime taxon_id
-    ## 1          obs_1 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   BERSP4
-    ## 2          obs_2 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   CAESP5
-    ## 3          obs_3 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00  CERSP10
-    ## 4          obs_4 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   CHISP2
-    ## 5          obs_5 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00    CONGR
-    ## 6          obs_6 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220121160424 ARIK.AOS.reach 2017-03-22 15:30:00   DIASP8
-    ##   variable_name     value                   unit
-    ## 1       density  166.6667 count per square meter
-    ## 2       density  166.6667 count per square meter
-    ## 3       density 1333.3333 count per square meter
-    ## 4       density  166.6667 count per square meter
-    ## 5       density  500.0000 count per square meter
-    ## 6       density  500.0000 count per square meter
+    ##   observation_id             event_id
+    ## 1          obs_1 ARIK.20170322.CORE.1
+    ## 2          obs_2 ARIK.20170322.CORE.1
+    ## 3          obs_3 ARIK.20170322.CORE.1
+    ## 4          obs_4 ARIK.20170322.CORE.1
+    ## 5          obs_5 ARIK.20170322.CORE.1
+    ## 6          obs_6 ARIK.20170322.CORE.1
+    ##                                   package_id    location_id
+    ## 1 neon.ecocomdp.20120.001.001.20220122083024 ARIK.AOS.reach
+    ## 2 neon.ecocomdp.20120.001.001.20220122083024 ARIK.AOS.reach
+    ## 3 neon.ecocomdp.20120.001.001.20220122083024 ARIK.AOS.reach
+    ## 4 neon.ecocomdp.20120.001.001.20220122083024 ARIK.AOS.reach
+    ## 5 neon.ecocomdp.20120.001.001.20220122083024 ARIK.AOS.reach
+    ## 6 neon.ecocomdp.20120.001.001.20220122083024 ARIK.AOS.reach
+    ##              datetime taxon_id variable_name     value
+    ## 1 2017-03-22 15:30:00   BERSP4       density  166.6667
+    ## 2 2017-03-22 15:30:00   CAESP5       density  166.6667
+    ## 3 2017-03-22 15:30:00  CERSP10       density 1333.3333
+    ## 4 2017-03-22 15:30:00   CHISP2       density  166.6667
+    ## 5 2017-03-22 15:30:00    CONGR       density  500.0000
+    ## 6 2017-03-22 15:30:00   DIASP8       density  500.0000
+    ##                     unit
+    ## 1 count per square meter
+    ## 2 count per square meter
+    ## 3 count per square meter
+    ## 4 count per square meter
+    ## 5 count per square meter
+    ## 6 count per square meter
 
 
 ## Basic Data Visualization
@@ -268,7 +299,8 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     # Explore the structure of the returned data object
     my_data %>% names()
 
-    ## [1] "id"                "metadata"          "tables"            "validation_issues"
+    ## [1] "id"                "metadata"          "tables"           
+    ## [4] "validation_issues"
 
     my_data$id
 
@@ -277,7 +309,7 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20166.001.001.20220121160527"
+    ## [1] "neon.ecocomdp.20166.001.001.20220122083106"
     ## 
     ## $taxonomic_group
     ## [1] "ALGAE"
@@ -292,7 +324,7 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-21 16:05:29 MST"
+    ## [1] "2022-01-22 08:31:07 MST"
 
     my_data$validation_issues
 
@@ -300,20 +332,30 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
 
     my_data$tables %>% names()
 
-    ## [1] "location"              "location_ancillary"    "taxon"                 "observation"           "observation_ancillary"
-    ## [6] "dataset_summary"
+    ## [1] "location"              "location_ancillary"   
+    ## [3] "taxon"                 "observation"          
+    ## [5] "observation_ancillary" "dataset_summary"
 
     my_data$tables$location
 
-    ##      location_id                       location_name parent_location_id latitude longitude elevation
-    ## 1            D10                      Central Plains               <NA>       NA        NA        NA
-    ## 2            D13 Southern Rockies & Colorado Plateau               <NA>       NA        NA        NA
-    ## 3           ARIK                      Arikaree River                D10 39.75825 -102.4471        NA
-    ## 4           COMO                          Como Creek                D13 40.03496 -105.5449        NA
-    ## 5 ARIK.AOS.reach                      ARIK.AOS.reach               ARIK 39.75821 -102.4471    1179.5
-    ## 6    ARIK.AOS.S2                         ARIK.AOS.S2               ARIK 39.75836 -102.4486    1178.7
-    ## 7 COMO.AOS.reach                      COMO.AOS.reach               COMO 40.03496 -105.5442    3021.6
-    ## 8    COMO.AOS.S2                         COMO.AOS.S2               COMO 40.03494 -105.5444    3023.0
+    ##      location_id                       location_name
+    ## 1            D10                      Central Plains
+    ## 2            D13 Southern Rockies & Colorado Plateau
+    ## 3           ARIK                      Arikaree River
+    ## 4           COMO                          Como Creek
+    ## 5 ARIK.AOS.reach                      ARIK.AOS.reach
+    ## 6    ARIK.AOS.S2                         ARIK.AOS.S2
+    ## 7 COMO.AOS.reach                      COMO.AOS.reach
+    ## 8    COMO.AOS.S2                         COMO.AOS.S2
+    ##   parent_location_id latitude longitude elevation
+    ## 1               <NA>       NA        NA        NA
+    ## 2               <NA>       NA        NA        NA
+    ## 3                D10 39.75825 -102.4471        NA
+    ## 4                D13 40.03496 -105.5449        NA
+    ## 5               ARIK 39.75821 -102.4471    1179.5
+    ## 6               ARIK 39.75836 -102.4486    1178.7
+    ## 7               COMO 40.03496 -105.5442    3021.6
+    ## 8               COMO 40.03494 -105.5444    3023.0
 
     my_data$tables$taxon %>% head()
 
@@ -341,20 +383,41 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
 
     my_data$tables$observation %>% head()
 
-    ##                         observation_id                  event_id                                 package_id    location_id
-    ## 1 f9d3d41d-98a6-4345-a9d5-7dcde0acbab1 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
-    ## 2 7737766c-c634-40c7-a8b2-cee435f42afe ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
-    ## 3 fef6f9f7-1502-478e-a502-13a582b800cc ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
-    ## 4 23c2c578-364c-4e47-86d3-20b1a6f5c682 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
-    ## 5 2efea9ce-0d70-4532-a4f1-9561b7442b73 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
-    ## 6 358c50d0-940e-47ad-b6c1-45166419a548 ARIK.20170327.EPIPHYTON.5 neon.ecocomdp.20166.001.001.20220121160527 ARIK.AOS.reach
-    ##              datetime        taxon_id variable_name     value      unit
-    ## 1 2017-03-27 18:01:00 NEONDREX2509006  cell density  422.3438 cells/cm2
-    ## 2 2017-03-27 18:01:00   NEONDREX48008  cell density  211.1708 cells/cm2
-    ## 3 2017-03-27 18:01:00    NEONDREX7043  cell density  211.1708 cells/cm2
-    ## 4 2017-03-27 18:01:00  NEONDREX170133  cell density 1267.0312 cells/cm2
-    ## 5 2017-03-27 18:01:00   NEONDREX20007  cell density  844.6875 cells/cm2
-    ## 6 2017-03-27 18:01:00   NEONDREX58001  cell density  211.1708 cells/cm2
+    ##                         observation_id
+    ## 1 f9d3d41d-98a6-4345-a9d5-7dcde0acbab1
+    ## 2 7737766c-c634-40c7-a8b2-cee435f42afe
+    ## 3 fef6f9f7-1502-478e-a502-13a582b800cc
+    ## 4 23c2c578-364c-4e47-86d3-20b1a6f5c682
+    ## 5 2efea9ce-0d70-4532-a4f1-9561b7442b73
+    ## 6 358c50d0-940e-47ad-b6c1-45166419a548
+    ##                    event_id
+    ## 1 ARIK.20170327.EPIPHYTON.5
+    ## 2 ARIK.20170327.EPIPHYTON.5
+    ## 3 ARIK.20170327.EPIPHYTON.5
+    ## 4 ARIK.20170327.EPIPHYTON.5
+    ## 5 ARIK.20170327.EPIPHYTON.5
+    ## 6 ARIK.20170327.EPIPHYTON.5
+    ##                                   package_id    location_id
+    ## 1 neon.ecocomdp.20166.001.001.20220122083106 ARIK.AOS.reach
+    ## 2 neon.ecocomdp.20166.001.001.20220122083106 ARIK.AOS.reach
+    ## 3 neon.ecocomdp.20166.001.001.20220122083106 ARIK.AOS.reach
+    ## 4 neon.ecocomdp.20166.001.001.20220122083106 ARIK.AOS.reach
+    ## 5 neon.ecocomdp.20166.001.001.20220122083106 ARIK.AOS.reach
+    ## 6 neon.ecocomdp.20166.001.001.20220122083106 ARIK.AOS.reach
+    ##              datetime        taxon_id variable_name     value
+    ## 1 2017-03-27 18:01:00 NEONDREX2509006  cell density  422.3438
+    ## 2 2017-03-27 18:01:00   NEONDREX48008  cell density  211.1708
+    ## 3 2017-03-27 18:01:00    NEONDREX7043  cell density  211.1708
+    ## 4 2017-03-27 18:01:00  NEONDREX170133  cell density 1267.0312
+    ## 5 2017-03-27 18:01:00   NEONDREX20007  cell density  844.6875
+    ## 6 2017-03-27 18:01:00   NEONDREX58001  cell density  211.1708
+    ##        unit
+    ## 1 cells/cm2
+    ## 2 cells/cm2
+    ## 3 cells/cm2
+    ## 4 cells/cm2
+    ## 5 cells/cm2
+    ## 6 cells/cm2
 
 
 ## Algae Data Flattening and Cleaning

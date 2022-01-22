@@ -59,27 +59,10 @@ There are also two optional sections in this code chunk: clearing your environme
     
     # load libraries 
     library(tidyverse)
-
-    ## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-
-    ## v ggplot2 3.3.5     v purrr   0.3.4
-    ## v tibble  3.0.3     v dplyr   1.0.1
-    ## v tidyr   1.1.1     v stringr 1.4.0
-    ## v readr   1.3.1     v forcats 0.5.0
-
-    ## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
     library(neonUtilities)
     library(vegan)
-
-    ## Loading required package: permute
-
-    ## Loading required package: lattice
-
-    ## This is vegan 2.5-7
-
+    
+    
     # source .r file with my NEON_TOKEN
     # source("my_neon_token.R") # OPTIONAL - load NEON token
     # See: https://www.neonscience.org/neon-api-tokens-tutorial
@@ -109,8 +92,8 @@ Now that we have the data downloaded, we will need to do some 'data munging' to 
     # data product
     names(all_tabs_inv)
 
-    ## [1] "categoricalCodes_20120" "inv_fieldData"          "inv_persample"          "inv_taxonomyProcessed"  "readme_20120"          
-    ## [6] "validation_20120"       "variables_20120"
+    ## [1] "categoricalCodes_20120" "inv_fieldData"          "inv_persample"          "inv_taxonomyProcessed"  "issueLog_20120"        
+    ## [6] "readme_20120"           "validation_20120"       "variables_20120"
 
     # extract items from list and put in R env. 
     all_tabs_inv %>% list2env(.GlobalEnv)
@@ -478,7 +461,7 @@ Order q = 0 alpha diversity calculated for our dataset returns a mean local rich
       vegan::renyi(scales = 0, hill = TRUE) %>%
       mean()
 
-    ## [1] 30.34368
+    ## [1] 30.18059
 
 #### Comparing alpha diversity calculated using different orders:
 
@@ -532,7 +515,7 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
       vegan::renyi(scales = 0, hill = TRUE) %>%
       mean()
 
-    ## [1] 25.22302
+    ## [1] 24.68027
 
     # apply the calculation by site for alpha diversity
     # for each order of q
@@ -557,9 +540,9 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
     ## # A tibble: 3 x 5
     ##   siteID data                 alpha_q0 alpha_q1 alpha_q2
     ##   <chr>  <list>                  <dbl>    <dbl>    <dbl>
-    ## 1 ARIK   <tibble [139 x 452]>     25.2     10.5     6.70
-    ## 2 MAYF   <tibble [134 x 452]>     22.9     12.3     8.37
-    ## 3 POSE   <tibble [146 x 452]>     42.0     20.6    13.0
+    ## 1 ARIK   <tibble [147 x 455]>     24.7     10.2     6.52
+    ## 2 MAYF   <tibble [142 x 455]>     22.6     12.2     8.32
+    ## 3 POSE   <tibble [154 x 455]>     42.4     20.8    13.0
 
     # Note that POSE has the highest mean alpha diversity
     
@@ -580,9 +563,9 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
     ## # A tibble: 3 x 3
     ##   siteID data                 gamma_q0
     ##   <chr>  <list>                  <dbl>
-    ## 1 ARIK   <tibble [139 x 452]>     240.
-    ## 2 MAYF   <tibble [134 x 452]>     238.
-    ## 3 POSE   <tibble [146 x 452]>     327
+    ## 1 ARIK   <tibble [147 x 455]>     242.
+    ## 2 MAYF   <tibble [142 x 455]>     239.
+    ## 3 POSE   <tibble [154 x 455]>     331
 
     # Note that POSE has the highest gamma diversity
     
@@ -622,9 +605,9 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
       select(-data) %>% as.data.frame() %>% print()
 
     ##   siteID n_samples alpha_q0 alpha_q1 gamma_q0 gamma_q1   beta_q0  beta_q1
-    ## 1   ARIK       139 25.22302 10.48685      240 35.45153  9.515117 3.380569
-    ## 2   MAYF       134 22.91045 12.30813      238 65.44523 10.388274 5.317237
-    ## 3   POSE       146 42.04110 20.62482      327 99.23551  7.778104 4.811460
+    ## 1   ARIK       147 24.68027 10.19519      242 35.67884  9.805402 3.499576
+    ## 2   MAYF       142 22.63380 12.21742      239 65.38734 10.559428 5.351976
+    ## 3   POSE       154 42.38961 20.76727      331 98.95279  7.808517 4.764844
 
 
 
@@ -638,37 +621,39 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
 
     ## Square root transformation
     ## Wisconsin double standardization
-    ## Run 0 stress 0.2269445 
-    ## Run 1 stress 0.2283723 
-    ## Run 2 stress 0.2287037 
-    ## Run 3 stress 0.2517612 
-    ## Run 4 stress 0.2439417 
-    ## Run 5 stress 0.227123 
-    ## ... Procrustes: rmse 0.008582626  max resid 0.1245156 
-    ## Run 6 stress 0.2314079 
-    ## Run 7 stress 0.2415677 
-    ## Run 8 stress 0.2382704 
-    ## Run 9 stress 0.2498785 
-    ## Run 10 stress 0.2339645 
-    ## Run 11 stress 0.2288228 
-    ## Run 12 stress 0.2317117 
-    ## Run 13 stress 0.2288172 
-    ## Run 14 stress 0.2438999 
-    ## Run 15 stress 0.2405666 
-    ## Run 16 stress 0.24229 
-    ## Run 17 stress 0.2294278 
-    ## Run 18 stress 0.2270558 
-    ## ... Procrustes: rmse 0.007712247  max resid 0.120126 
-    ## Run 19 stress 0.2320441 
-    ## Run 20 stress 0.2312187 
+    ## Run 0 stress 0.226965 
+    ## Run 1 stress 0.2523946 
+    ## Run 2 stress 0.2328118 
+    ## Run 3 stress 0.2271814 
+    ## ... Procrustes: rmse 0.008191488  max resid 0.1242448 
+    ## Run 4 stress 0.2264365 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.008220018  max resid 0.1245988 
+    ## Run 5 stress 0.2293179 
+    ## Run 6 stress 0.2276699 
+    ## Run 7 stress 0.2293038 
+    ## Run 8 stress 0.2320733 
+    ## Run 9 stress 0.2381287 
+    ## Run 10 stress 0.2285474 
+    ## Run 11 stress 0.2359856 
+    ## Run 12 stress 0.235057 
+    ## Run 13 stress 0.2500257 
+    ## Run 14 stress 0.2277065 
+    ## Run 15 stress 0.2567367 
+    ## Run 16 stress 0.2333816 
+    ## Run 17 stress 0.2341438 
+    ## Run 18 stress 0.2306534 
+    ## Run 19 stress 0.2282562 
+    ## Run 20 stress 0.2270414 
     ## *** No convergence -- monoMDS stopping criteria:
     ##      1: no. of iterations >= maxit
-    ##     19: stress ratio > sratmax
+    ##     18: stress ratio > sratmax
+    ##      1: scale factor of the gradient < sfgrmin
 
     # plot stress
     my_nmds_result$stress
 
-    ## [1] 0.2269445
+    ## [1] 0.2264365
 
     p1 <- vegan::ordiplot(my_nmds_result)
     vegan::ordilabel(p1, "species")
@@ -686,12 +671,12 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     nmds_scores %>% arrange(desc(NMDS1)) %>% head()
 
     ##               sampleID    NMDS1      NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType
-    ## 1 MAYF.20190311.CORE.2 1.432804  1.1593899      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019         run
-    ## 2 MAYF.20201117.CORE.2 1.409523  0.4065979      D08   MAYF MAYF.AOS.reach 2020-11-17 16:33:00 MAYF.20201117 2020         run
-    ## 3 MAYF.20180726.CORE.2 1.272200  0.5233646      D08   MAYF MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018         run
-    ## 4 MAYF.20190311.CORE.1 1.230191  1.0288942      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019         run
-    ## 5 MAYF.20180326.CORE.3 1.167753 -0.6150539      D08   MAYF MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018         run
-    ## 6 MAYF.20150324.SNAG.3 1.135340 -0.5027158      D08   MAYF MAYF.AOS.reach 2015-03-24 17:15:00 MAYF.20150324 2015         run
+    ## 1 MAYF.20190311.CORE.2 1.502812  1.1201236      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019         run
+    ## 2 MAYF.20201117.CORE.2 1.350799  0.5350934      D08   MAYF MAYF.AOS.reach 2020-11-17 16:33:00 MAYF.20201117 2020         run
+    ## 3 MAYF.20180726.CORE.2 1.343114  0.3735278      D08   MAYF MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018         run
+    ## 4 MAYF.20190311.CORE.1 1.215334  1.0424531      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019         run
+    ## 5 MAYF.20180326.CORE.3 1.166255 -0.6486281      D08   MAYF MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018         run
+    ## 6 MAYF.20150324.SNAG.3 1.142783 -0.5105346      D08   MAYF MAYF.AOS.reach 2015-03-24 17:15:00 MAYF.20150324 2015         run
     ##   samplerType benthicArea          inv_dens_unit
     ## 1        core       0.006 count per square meter
     ## 2        core       0.006 count per square meter
@@ -703,19 +688,19 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     nmds_scores %>% arrange(desc(NMDS1)) %>% tail()
 
     ##                    sampleID      NMDS1       NMDS2 domainID siteID  namedLocation         collectDate       eventID year
-    ## 414 ARIK.20160919.KICKNET.1 -0.8344102  0.32848388      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
-    ## 415 ARIK.20160919.KICKNET.5 -0.8402751 -0.19972427      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
-    ## 416    ARIK.20150714.CORE.3 -0.8600195  0.05222220      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714 2015
-    ## 417    ARIK.20150714.CORE.2 -1.0100449  0.08118220      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714 2015
-    ## 418 ARIK.20160919.KICKNET.4 -1.0779966 -0.06190441      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
-    ## 419    ARIK.20160331.CORE.3 -1.1147052 -0.42533966      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331 2016
+    ## 438 ARIK.20160919.KICKNET.5 -0.8324871 -0.27140495      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
+    ## 439 ARIK.20160919.KICKNET.1 -0.8613473  0.27635378      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
+    ## 440    ARIK.20150714.CORE.3 -0.8682729 -0.03140553      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714 2015
+    ## 441    ARIK.20150714.CORE.2 -1.0250210 -0.01868263      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714 2015
+    ## 442 ARIK.20160919.KICKNET.4 -1.0862562 -0.09216448      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016
+    ## 443    ARIK.20160331.CORE.3 -1.1482111 -0.36315556      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331 2016
     ##     habitatType     samplerType benthicArea          inv_dens_unit
-    ## 414         run modifiedKicknet       0.250 count per square meter
-    ## 415         run modifiedKicknet       0.250 count per square meter
-    ## 416        pool            core       0.006 count per square meter
-    ## 417        pool            core       0.006 count per square meter
-    ## 418         run modifiedKicknet       0.250 count per square meter
-    ## 419        pool            core       0.006 count per square meter
+    ## 438         run modifiedKicknet       0.250 count per square meter
+    ## 439         run modifiedKicknet       0.250 count per square meter
+    ## 440        pool            core       0.006 count per square meter
+    ## 441        pool            core       0.006 count per square meter
+    ## 442         run modifiedKicknet       0.250 count per square meter
+    ## 443        pool            core       0.006 count per square meter
 
     # Plot samples in community composition space by year
     nmds_scores %>%
