@@ -43,7 +43,7 @@ Prior to starting the tutorial ensure that the following packages are installed.
 </div>
 
 ## Introduction
-In this second live coding section of the workshop, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which is under development by the Environmental Data Initiative (EDI).
+In this second live coding section of the workshop, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which is under development by the Environmental Data Initiative (EDI) in collaboration with NEON staff.
 
 #### What is ecocomDP?
 ecocomDP is both the name of an R package and a data model. 
@@ -101,7 +101,7 @@ library(ecocomDP)
 ```
 
 ## Download Macroinvertibrate Data
-In this first step, we show how to search the ecocomDP database for macroinvertibrate data including those from LTER and NEON sites (and others).
+In this first step, we show how to search the ecocomDP database for macroinvertebrate data including those from LTER and NEON sites (and others).
 ```{r download-macroinvert, message=FALSE, warning=FALSE, results='hide'}
 
 # search for invertebrate data products
@@ -113,7 +113,7 @@ View(my_search_result)
 # collection"
 my_data <- ecocomDP::read_data(
   id = "neon.ecocomdp.20120.001.001",
-  site = c('ARIK','MAYF'),
+  site = "ARIK",
   startdate = "2017-06",
   enddate = "2020-03",
   # token = NEON_TOKEN, #Uncomment to use your token
@@ -127,18 +127,18 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
 
 # examine the structure of the data object that is returned
 my_data %>% names()
-my_data$neon.ecocomdp.20120.001.001 %>% names()
+my_data$id
 
 # short list of package summary data
-my_data$neon.ecocomdp.20120.001.001$metadata$data_package_info
+my_data$metadata$data_package_info
 
 # validation issues? None if returns an empty list
-my_data$neon.ecocomdp.20120.001.001$validation_issues
+my_data$validation_issues
 
 # examine the tables
-my_data$neon.ecocomdp.20120.001.001$tables %>% names()
-my_data$neon.ecocomdp.20120.001.001$tables$taxon %>% head()
-my_data$neon.ecocomdp.20120.001.001$tables$observation %>% head()
+my_data$tables %>% names()
+my_data$tables$taxon %>% head()
+my_data$tables$observation %>% head()
 
 ```
 
@@ -176,14 +176,14 @@ my_data <-
 ```{r explore-data-structure}
 # Explore the structure of the returned data object
 my_data %>% names()
-my_data[[1]] %>% names()
-my_data[[1]]$metadata$data_package_info
-my_data[[1]]$validation_issues
-my_data[[1]]$tables %>% names()
+my_data %>% names()
+my_data$metadata$data_package_info
+my_data$validation_issues
+my_data$tables %>% names()
 
-my_data[[1]]$tables$location
-my_data[[1]]$tables$taxon %>% head()
-my_data[[1]]$tables$observation %>% head()
+my_data$tables$location
+my_data$tables$taxon %>% head()
+my_data$tables$observation %>% head()
 
 
 
@@ -196,7 +196,7 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
 ```{r flattening-and-cleaning, message=FALSE, warning=FALSE}
 
 # flatten the ecocomDP data tables into one flat table
-my_data_flat <- my_data[[1]]$tables %>% ecocomDP::flatten_data()
+my_data_flat <- my_data$tables %>% ecocomDP::flatten_data()
 
 # This data product has algal densities reported for both
 # lakes and streams, so densities could be standardized
