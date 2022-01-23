@@ -18,7 +18,7 @@ urlTitle: neon-biodiversity-ecocomdp-cyverse
 
 <div id="ds-objectives" markdown="1">
 
-# Learning Objectives 
+## Learning Objectives 
 After completing this tutorial you will be able to: 
 
 * (Optional) Run an RStudio session with `ecocomDP` pre-installed on the VICE cloud using the CyVerse Discovery Environment.
@@ -26,7 +26,7 @@ After completing this tutorial you will be able to:
 * Explore NEON biodiversity datasets with `ecocomDP` plotting functions.
 
 
-# Things You’ll Need To Complete This Tutorial
+## Things You’ll Need To Complete This Tutorial
 
 ## _Option 1: RStudio on the VICE cloud_
 
@@ -36,7 +36,7 @@ To create a CyVerse account, navigate to [user.cyverse.org](https://user.cyverse
 
 You will be prompted to fill out a few more pieces of information about yourself and what you intend to use CyVerse for. Once you have completed the registration process, you will have a CyVerse account and can proceed to the next step.
 
-#### Requesting VICE Access
+### Requesting VICE Access
 
 Next, you will have to request access to the Visual Interactive Computing Environment (VICE), which is a platform for running interactive applications, like RStudio or JupyterLab, on the cloud. VICE access requires a one-time approval, due to the cryptocurrency miner issue mentioned above.
 
