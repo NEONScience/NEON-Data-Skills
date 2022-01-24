@@ -48,10 +48,11 @@ Once **DE-VICE** appears under "My Services" in the User Portal, with a "Launch"
 
 ### Launching RStudio with the `ecocomDP` package
 
-We will be using an RStudio application running on the VICE cloud. It already has several R packages installed for this tutorial
+We will be using an RStudio application running on the VICE cloud. It already has several R packages installed for this tutorial.
 
 Use this URL to access the application: [https://de.cyverse.org/apps/de/61b7335a-52d2-11ec-ba89-008cfa5ae621](https://de.cyverse.org/apps/de/61b7335a-52d2-11ec-ba89-008cfa5ae621).  
 Click on the app name ("Rocker Verse + ecocomDP") to proceed.  
+
 **NOTE**: You may be prompted to log in using your CyVerse credentials.
 
 Next, you will see a screen where you can name your analysis and change other parameters. We will just use the default options, so you can hit the **Next** button to move through each page until you reach the last page. Now you can click **Launch Analysis** to launch the RStudio application.
@@ -160,7 +161,7 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220124132719"
+    ## [1] "neon.ecocomdp.20120.001.001.20220124132950"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -175,7 +176,7 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-24 13:27:21 MST"
+    ## [1] "2022-01-24 13:29:51 MST"
 
     # validation issues? None if returns an empty list
     my_data$validation_issues
@@ -200,12 +201,12 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     my_data$tables$observation %>% head()
 
     ##   observation_id             event_id                                 package_id    location_id            datetime taxon_id variable_name     value                   unit
-    ## 1          obs_1 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132719 ARIK.AOS.reach 2017-03-22 15:30:00   BERSP4       density  166.6667 count per square meter
-    ## 2          obs_2 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132719 ARIK.AOS.reach 2017-03-22 15:30:00   CAESP5       density  166.6667 count per square meter
-    ## 3          obs_3 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132719 ARIK.AOS.reach 2017-03-22 15:30:00  CERSP10       density 1333.3333 count per square meter
-    ## 4          obs_4 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132719 ARIK.AOS.reach 2017-03-22 15:30:00   CHISP2       density  166.6667 count per square meter
-    ## 5          obs_5 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132719 ARIK.AOS.reach 2017-03-22 15:30:00    CONGR       density  500.0000 count per square meter
-    ## 6          obs_6 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132719 ARIK.AOS.reach 2017-03-22 15:30:00   DIASP8       density  500.0000 count per square meter
+    ## 1          obs_1 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132950 ARIK.AOS.reach 2017-03-22 15:30:00   BERSP4       density  166.6667 count per square meter
+    ## 2          obs_2 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132950 ARIK.AOS.reach 2017-03-22 15:30:00   CAESP5       density  166.6667 count per square meter
+    ## 3          obs_3 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132950 ARIK.AOS.reach 2017-03-22 15:30:00  CERSP10       density 1333.3333 count per square meter
+    ## 4          obs_4 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132950 ARIK.AOS.reach 2017-03-22 15:30:00   CHISP2       density  166.6667 count per square meter
+    ## 5          obs_5 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132950 ARIK.AOS.reach 2017-03-22 15:30:00    CONGR       density  500.0000 count per square meter
+    ## 6          obs_6 ARIK.20170322.CORE.1 neon.ecocomdp.20120.001.001.20220124132950 ARIK.AOS.reach 2017-03-22 15:30:00   DIASP8       density  500.0000 count per square meter
 
 
 ## Basic Data Visualization
@@ -268,7 +269,7 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20166.001.001.20220124132748"
+    ## [1] "neon.ecocomdp.20166.001.001.20220124133015"
     ## 
     ## $taxonomic_group
     ## [1] "ALGAE"
@@ -283,7 +284,7 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     ## [1] "original NEON data accessed using neonUtilities v2.1.3"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-24 13:27:50 MST"
+    ## [1] "2022-01-24 13:30:16 MST"
 
     my_data$validation_issues
 
@@ -332,12 +333,12 @@ Let's download data for the NEON "Periphyton, seston, and phytoplankton collecti
     my_data$tables$observation %>% head()
 
     ##                         observation_id                  event_id                                 package_id    location_id            datetime       taxon_id variable_name
-    ## 1 7a8dc4e5-e50d-4d9b-81c3-a0d374281acf ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124132748 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX48165  cell density
-    ## 2 b3b59b2e-f828-4fb7-b140-3b19438ccda4 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124132748 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX16011  cell density
-    ## 3 5b865421-e803-4016-a917-2ef34491e913 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124132748 ARIK.AOS.reach 2017-03-27 18:01:00 NEONDREX245001  cell density
-    ## 4 1eece2f0-8a4b-4f44-aba4-b55415bd4970 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124132748 ARIK.AOS.reach 2017-03-27 18:01:00 NEONDREX543001  cell density
-    ## 5 71502b14-54ed-4142-80e2-c086b40684f7 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124132748 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX48004  cell density
-    ## 6 b0815b73-2b94-4a7b-8dfb-5a68ce866533 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124132748 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX48023  cell density
+    ## 1 7a8dc4e5-e50d-4d9b-81c3-a0d374281acf ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124133015 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX48165  cell density
+    ## 2 b3b59b2e-f828-4fb7-b140-3b19438ccda4 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124133015 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX16011  cell density
+    ## 3 5b865421-e803-4016-a917-2ef34491e913 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124133015 ARIK.AOS.reach 2017-03-27 18:01:00 NEONDREX245001  cell density
+    ## 4 1eece2f0-8a4b-4f44-aba4-b55415bd4970 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124133015 ARIK.AOS.reach 2017-03-27 18:01:00 NEONDREX543001  cell density
+    ## 5 71502b14-54ed-4142-80e2-c086b40684f7 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124133015 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX48004  cell density
+    ## 6 b0815b73-2b94-4a7b-8dfb-5a68ce866533 ARIK.20170327.EPIPHYTON.2 neon.ecocomdp.20166.001.001.20220124133015 ARIK.AOS.reach 2017-03-27 18:01:00  NEONDREX48023  cell density
     ##          value      unit
     ## 1    284.27016 cells/cm2
     ## 2     94.75605 cells/cm2
