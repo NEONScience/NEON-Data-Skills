@@ -52,8 +52,7 @@ ID=centroids$Plot_ID
 
 ## ----mapply----------------------------------------------------------
 # create spatial polygons from coordinates
-polys <- SpatialPolygons(mapply(function(poly, id) 
-		{
+polys <- SpatialPolygons(mapply(function(poly, id) {
 	  xy <- matrix(poly, ncol=2, byrow=TRUE)
 	  Polygons(list(Polygon(xy)), ID=id)
 	  }, 
