@@ -1,0 +1,248 @@
+---
+syncID: FILL IN
+title: "Using the neonOS Package to Check for Duplicates and Join Tables"
+description: "Use the functions in the neonOS package to process NEON observational data: check for duplicate data records, and join data tables."
+dateCreated: 2022-03-25
+authors: [Claire K. Lunch]
+contributors: 
+estimatedTime: 40 minutes
+packagesLibraries: neonOS, neonUtilities
+topics: data-management, rep-sci
+languageTool: R
+dataProduct: 
+code1: FILL IN
+tutorialSeries:
+urlTitle: neonOS-duplicates-joins-tutorial
+
+---
+
+NEON observational data are diverse in both content and in data structure. 
+Generally, data are published in a set of data tables, each of which 
+corresponds to a particular activity: for example, several data 
+products includes a field collection data table, a sample processing 
+data table, and a table of laboratory analytical results.
+
+### Joining data tables
+
+Depending on the analysis you want to carry out, there may be data in 
+multiple tables that you want to bring together. For example, it is 
+very common that species identifications are in a different table from 
+chemical composition or pathogen status. For species-specific analyses, 
+you would need to draw on multiple tables. There are a variety of ways 
+to do this, but the simplest is to join the tables and create a single 
+flat table.
+
+The Quick Start Guides and Data Product User Guides provide information 
+about the relationships between different data tables, and we 
+recommend you consult these documents for the data products you are 
+working with to gain the full picture. For the step of joining related 
+tables, the `neonOS` package provides the `joinTableNEON()` function, 
+which will join tables if their relationship allows this to be done 
+automatically, and will provide an informative message if this is not 
+possible.
+
+### Duplicates
+
+One of the most common data entry errors that occurs in NEON OS data is 
+duplicate entry. NEON data entry applications and ingest validation rules 
+are designed to prevent duplicate entry where possible, but errors can't 
+be avoided completely. Consequently, NEON metadata for each data product 
+(the variables file) includes an indicator of which data fields, taken 
+together, should define a unique record. The `neonOS` function `removeDups()` 
+uses these metadata to identify duplicate records. Depending on the content 
+of the duplicate records, they may be resolved to a single record or 
+marked as unresolvable - see below for details.
+
+In this tutorial, we will de-duplicate and then join two data tables in the 
+Aquatic plant bryophyte chemical properties (DP1.20063.001) data product, 
+using it as an example to demonstrate the operation of these two functions.
+
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+After completing this activity, you will be able to:
+
+ * Identify and resolve duplicate data using the `neonOS` package 
+ * Join NEON data tables using the `neonOS` package 
+
+## Things You’ll Need To Complete This Tutorial
+You will need a version of R (4.0 or higher. This code may work with 
+earlier versions but it hasn't been tested) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **neonOS**: `devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")`
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://www.neonscience.org/resources/code-hub" target="_blank">NEON Code Hub</a>
+
+</div>
+
+
+## Set Up R Environment and Download Data
+
+First install and load the necessary packages.
+
+```{r setup, eval=c(8,9), results="hide"}
+
+# install packages. can skip this step if already installed
+# update neonOS installation after CRAN release
+install.packages("neonUtilities")
+devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")
+
+# load packages
+library(neonUtilities)
+library(neonOS)
+
+```
+
+We'll use aquatic plant chemistry (DP1.20063.001) as the example dataset. Use 
+the `neonUtilities` function `loadByProduct()` to download and read in the 
+data. If you're not familiar with the `neonUtilities` package and how to use 
+it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
+tutorial before proceeding with this one.
+
+Here, we'll use the same subset of aquatic plant chemistry data as in the 
+Download and Explore tutorial. Get the data from the Prairie Lake, Suggs Lake, 
+and Toolik Lake sites, specifying the 2022 data release.
+
+``` {r load-data, results="hide"}
+
+apchem <- loadByProduct(dpID="DP1.20063.001", 
+                        site=c("PRLA","SUGG","TOOK"), 
+                        package="expanded",
+                        release="RELEASE-2022",
+                        check.size=F)
+
+```
+
+Copy each of the downloaded tables into the R environment.
+
+``` {r env, results="hide"}
+
+list2env(apchem, .GlobalEnv)
+
+```
+
+
+## Identify and Resolve Duplicates
+
+As noted above, duplicate data entry is a common error in human 
+data entry. `removeDups()` uses the definitional metadata in the 
+variables file to identify duplicates. It requires two inputs: 
+the data table, and the corresponding variables file.
+
+``` {r remove-dups-biomass}
+
+apl_biomass <- removeDups(data=apl_biomass, 
+                          variables=variables_20063)
+
+```
+
+There were no duplicates found in the `apl_biomass` data table. 
+A `duplicateRecordQF` quality flag has been added to the table, 
+and you can confirm that there were no duplicates by checking 
+the values of the flag.
+
+``` {r remove-dups-biomass}
+
+unique(apl_biomass$duplicateRecordQF)
+
+```
+
+All data have flag value = 0, indicating they are not duplicated. 
+Let's check the `apl_plantExternalLabDataPerSample` table.
+
+``` {r remove-dups-analytes, results="hide"}
+
+apl_plantExternalLabDataPerSample <- removeDups(
+  data=apl_plantExternalLabDataPerSample, 
+  variables=variables_20063)
+
+```
+
+```
+10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
+  |==========================================================================================| 100%
+2 resolveable duplicates merged into matching records
+2 resolved records flagged with duplicateRecordQF=1
+16 unresolveable duplicates flagged with duplicateRecordQF=2
+```
+
+The function output tells you there were 20 duplicates (out of 26108 
+total data records). Four of those duplicates were resolved, leaving two 
+records flagged as resolved duplicates, with `duplicateRecordQF=1`. The 
+remaining 16 couldn't be resolved, and were flagged with 
+`duplicateRecordQF=2`.
+
+What does it mean for duplicates to be resolved? Some duplicates represent 
+identical data that have been entered multiple times, whereas some duplicates 
+have the same key values, but differ in data values. `removeDups()` has a 
+fairly narrow set of criteria for resolving:
+
+1. If one data record has empty fields that are populated in the other record, and the records otherwise match, the non-empty values are retained.
+2. If records are identical except for uid, remarks, and/or personnel (`identifiedBy`, `recordedBy`, etc) fields, unique values are concatenated within the non-matching fields, separated by `|` (pipes).
+
+Records that can be merged to a single record by those criteria are flagged 
+with `duplicateRecordQF=1`. Records with mis-matched data that can't be merged 
+are retained and flagged with `duplicateRecordQF=2`.
+
+Note that even in fully identical duplicates, the uid field will always be 
+unique. Thus the uid field in merged records will always contain the 
+pipe-delimted set of uids of the original records.
+
+What does this look like in practice? Let's look at the two resolved 
+duplicates:
+
+``` {r view-merged}
+
+apl_plantExternalLabDataPerSample[which(
+  apl_plantExternalLabDataPerSample$duplicateRecordQF==1),]
+
+```
+
+You can see that both records have two pipe-delimited uids, and are 
+flagged.
+
+Let's look at the unresolveable duplicates:
+
+``` {r view-merged}
+
+apl_plantExternalLabDataPerSample[which(
+  apl_plantExternalLabDataPerSample$duplicateRecordQF==2),]
+
+```
+
+The key for this data table is the sample identifier and analyte, and 
+here there are multiple records with the same sample identifier, both for 
+carbon and nitrogen values. The most likely scenario is that these are 
+unlabeled replicate analyses.
+
+Now, how should you proceed with your analysis? Of course, that is up to 
+you, and depends on your analysis. Because these appear to be unlabeled 
+analytical replicates, I would probably average the analyte values, but 
+a decision like this can't be made automatically - `removeDups()` can 
+identify the records of concern, but what to do with them is a 
+judgement call.
+
+Of course, NEON scientists also evaluate NEON data to identify 
+duplicates as part of quality assurance and quality control procedures, 
+and to resolve them if possible. In the data download step above, we 
+accessed RELEASE-2022. The data release is stable and reproducible over 
+time, but these duplicates may be resolved in future releases of these 
+data.
+
+## Join Data Tables
+
+If you are using `neonOS` to check for duplicates and also to join data 
+tables, the duplicate step should always come first. Because duplicate 
+identification uses the variables file to determine uniqueness of data, 
+the duplicate check step requires that the data match the variables 
+file exactly, which they won't after being joined.
+
+
