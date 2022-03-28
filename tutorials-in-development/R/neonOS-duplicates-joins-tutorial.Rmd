@@ -199,7 +199,7 @@ pipe-delimted set of uids of the original records.
 What does this look like in practice? Let's look at the two resolved 
 duplicates:
 
-``` {r view-merged}
+``` {r view-resolved}
 
 apl_plantExternalLabDataPerSample[which(
   apl_plantExternalLabDataPerSample$duplicateRecordQF==1),]
@@ -211,7 +211,7 @@ flagged.
 
 Let's look at the unresolveable duplicates:
 
-``` {r view-merged}
+``` {r view-unresolved}
 
 apl_plantExternalLabDataPerSample[which(
   apl_plantExternalLabDataPerSample$duplicateRecordQF==2),]
@@ -244,5 +244,45 @@ tables, the duplicate step should always come first. Because duplicate
 identification uses the variables file to determine uniqueness of data, 
 the duplicate check step requires that the data match the variables 
 file exactly, which they won't after being joined.
+
+To join the `apl_biomass` and `apl_plantExternalLabDataPerSample` tables, 
+we input both tables to the `joinTableNEON()` function. It uses the 
+information provided in NEON quick start guides to determine whether the 
+join is possible, and if it is, which fields to use to perform the join.
+
+```{r join}
+
+aqbc <- joinTableNEON(apl_biomass,
+                      apl_plantExternalLabDataPerSample)
+
+```
+
+SOME KIND OF FIGURE HERE??
+
+## Further Details
+
+After downloading the data above, we ran `list2env()` to make each table 
+an independent object in the R environment, and then provided the tables 
+to the two functions as-is. This worked because the names of the objects 
+were identical to the table names, so the functions were able to figure 
+out which tables they were. If the object names are not equal to the 
+function names, you will need to input the table names separately. If 
+we hadn't used `list2env()`, this is how we would proceed:
+
+```{r with-table-names, results="hide"}
+
+bio.dup <- removeDups(data=apchem$apl_biomass,
+                      variables=apchem$variables_20063,
+                      table="apl_biomass")
+chem.dup <- removeDups(data=apchem$apl_plantExternalLabDataPerSample,
+                      variables=apchem$variables_20063,
+                      table="apl_plantExternalLabDataPerSample")
+aq.join <- joinTableNEON(table1=bio.dup, 
+                         table2=chem.dup,
+                         name1="apl_biomass",
+                         name2="apl_plantExternalLabDataPerSample")
+
+```
+
 
 
