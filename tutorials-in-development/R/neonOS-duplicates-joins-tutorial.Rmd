@@ -149,7 +149,7 @@ A `duplicateRecordQF` quality flag has been added to the table,
 and you can confirm that there were no duplicates by checking 
 the values of the flag.
 
-``` {r remove-dups-biomass}
+``` {r view-flag-values}
 
 unique(apl_biomass$duplicateRecordQF)
 
@@ -250,7 +250,7 @@ we input both tables to the `joinTableNEON()` function. It uses the
 information provided in NEON quick start guides to determine whether the 
 join is possible, and if it is, which fields to use to perform the join.
 
-```{r join}
+```{r join, results="hide"}
 
 aqbc <- joinTableNEON(apl_biomass,
                       apl_plantExternalLabDataPerSample)
