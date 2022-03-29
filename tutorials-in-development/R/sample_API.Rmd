@@ -1,15 +1,41 @@
-## Samples
+---
+syncID: FILL IN
+title: "Using the neonOS Package to Find Samples"
+description: "Use the functions in the neonOS package to explore the relationships between samples in the NEON database."
+dateCreated: 2022-03-29
+authors: [Claire K. Lunch]
+contributors: 
+estimatedTime: 40 minutes
+packagesLibraries: neonOS, neonUtilities
+topics: data-management, rep-sci
+languageTool: R
+dataProduct: 
+code1: FILL IN
+tutorialSeries:
+urlTitle: neonOS-samples-tutorial
 
-Now, we may be interested in what other data have been collected on 
-some of the trees in the RMNP woody vegetation dataset. The 
-**/samples** endpoint lets you explore the sample relationships and 
-sample histories of samples in the NEON database.
+---
 
-The way NEON samples are defined, each tagged tree is a "sample", even 
-though it never leaves the field. Leaves and other samples taken from 
+
+## Background About Samples
+
+The definition of a sample in the NEON data system is very broad. For 
+example, at sites with woody vegetation, each tagged tree is a "sample", 
+even though it never leaves the field. Leaves and other samples taken from 
 a given tree are considered subsamples of the tree, and may have their 
-own subsamples. These hierarchical relationships are accessible via the 
-**/samples** endpoint.
+own subsamples.
+
+The sample system at NEON is hierarchical, meaning that any given sample 
+can have both parent and child samples. These relationships are not one to 
+one, each sample may have multiple parents and/or multiple children. Samples 
+with multiple parents are the rarest type, and are referred to as mixtures.
+
+Samples may be measured repeatedly over time, as in the case of trees, or they 
+may be consumed or destroyed in the process of analysis, such as some water 
+chemistry samples. Often, they are subsampled several times, with different 
+subsamples analyzed for different purposes. A significant portion of NEON 
+samples are completely or partially preserved at the NEON Biorepository, where 
+they are available to the community by request for further analyses.
 
 Like the **/taxonomy** endpoint, the **/samples** endpoint has 
 multiple query options.
