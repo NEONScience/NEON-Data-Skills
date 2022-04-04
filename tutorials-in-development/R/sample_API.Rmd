@@ -1,45 +1,148 @@
-## Samples
+---
+syncID: FILL IN
+title: "Using the neonOS Package to Find Samples"
+description: "Use the functions in the neonOS package to explore the relationships between samples in the NEON database."
+dateCreated: 2022-03-29
+authors: [Claire K. Lunch]
+contributors: 
+estimatedTime: 40 minutes
+packagesLibraries: neonOS, neonUtilities
+topics: data-management, rep-sci
+languageTool: R
+dataProduct: 
+code1: FILL IN
+tutorialSeries:
+urlTitle: neonOS-samples-tutorial
 
-Now, we may be interested in what other data have been collected on 
-some of the trees in the RMNP woody vegetation dataset. The 
-**/samples** endpoint lets you explore the sample relationships and 
-sample histories of samples in the NEON database.
+---
 
-The way NEON samples are defined, each tagged tree is a "sample", even 
-though it never leaves the field. Leaves and other samples taken from 
+
+## Background About Samples
+
+The definition of a sample in the NEON data system is very broad. For 
+example, at sites with woody vegetation, each tagged tree is a "sample", 
+even though it never leaves the field. Leaves and other samples taken from 
 a given tree are considered subsamples of the tree, and may have their 
-own subsamples. These hierarchical relationships are accessible via the 
-**/samples** endpoint.
+own subsamples.
 
-Like the **/taxonomy** endpoint, the **/samples** endpoint has 
-multiple query options.
+The sample system at NEON is hierarchical, meaning that any given sample 
+can have both parent and child samples. These relationships are not one to 
+one, each sample may have multiple parents and/or multiple children. Samples 
+with multiple parents are the rarest type, and are referred to as mixtures.
 
-Going back to the `vst.maptag` data table we downloaded, the data field 
-containing the sample identifiers for the individual trees is 
-`individualID`. Let's look up a specific tree, an aspen, 
-NEON.PLA.D10.RMNP.03861.
+Samples may be measured repeatedly over time, as in the case of trees, or they 
+may be consumed or destroyed in the process of analysis, such as some water 
+chemistry samples. Often, they are subsampled several times, with different 
+subsamples analyzed for different purposes. A significant portion of NEON 
+samples are completely or partially preserved at the NEON Biorepository, where 
+they are available to the community by request for further analyses.
 
-In order to query a sample, both a sample tag (= ID) and a sample class are 
-needed. So we will first need to look up the sample tag and see which 
-classes it exists in (this step is necessary because NEON sample IDs 
-may be repeated in different classes, i.e. different types of samples).
+In this tutorial, we will explore the sample relationships of a tagged tree 
+and a mosquito sampling event, to help us understand the NEON sample system, 
+and how to use the tools available for learning about the samples.
 
-```{r get-sample-class}
+<div id="ds-objectives" markdown="1">
 
-samp.class.req <- GET("https://data.neonscience.org/api/v0/samples/classes?sampleTag=NEON.PLA.D10.RMNP.03861")
-samp.class.list <- jsonlite::fromJSON(content(samp.class.req, as="text"))
-samp.class.list$data
+## Objectives
+After completing this activity, you will be able to:
+
+ * Find all samples related to a particular NEON sample, using the `neonOS` package 
+ * Understand the hierarchical relationships of NEON samples
+ * Find the archived samples associated with a particular sample collection
+
+## Things You’ll Need To Complete This Tutorial
+You will need a version of R (4.0 or higher. This code may work with 
+earlier versions but it hasn't been tested) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **neonOS**: `devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")`
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://www.neonscience.org/resources/code-hub" target="_blank">NEON Code Hub</a>
+* NEON <a href="https://data.neonscience.org/sample-explorer" target="_blank">Sample Explorer</a>
+* NEON <a href="https://biorepo.neonscience.org/portal/" target="_blank">Biorepository Portal</a>
+
+</div>
+
+## Set Up R Environment and Download Data
+
+First install and load the necessary packages.
+
+```{r setup, eval=c(9,10,11), results="hide"}
+
+# install packages. can skip this step if already installed
+# update neonOS installation after CRAN release
+#install.packages("neonUtilities")
+#install.packages("visNetwork")
+#devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")
+
+# load packages
+library(visNetwork)
+library(neonUtilities)
+library(neonOS)
 
 ```
 
-There is only one possible sample class for the sample tag 
-NEON.PLA.D10.RMNP.03861, `taggedPlant`. So we can proceed to query for 
-sample information using the tag and class together.
+We'll download Vegetation structure (DP1.10098.001) data from 
+Rocky Mountain National Park (RMNP), and Mosquitoes sampled from 
+CO2 traps (DP1.10043.001) from Toolik Lake (TOOL).
 
-```{r get-sample-view}
+If you're not familiar with the `neonUtilities` package and how to use 
+it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
+tutorial before proceeding with this one.
 
-samp.view.req <- GET("https://data.neonscience.org/api/v0/samples/view?sampleTag=NEON.PLA.D10.RMNP.03861&sampleClass=taggedPlant")
-samp.view.list <- jsonlite::fromJSON(content(samp.view.req, as="text"))
-samp.view.list$data
+``` {r load-data, results="hide"}
+
+veg <- loadByProduct(dpID="DP1.10098.001", 
+                     site="RMNP", 
+                     release="RELEASE-2022",
+                     check.size=F)
+
+rpt <- loadByProduct(dpID="DP1.10064.002",
+                     release="RELEASE-2022",
+                     check.size=F)
 
 ```
+
+## Find Related Samples
+
+Of course both of these datasets contain many samples. Let's check out 
+the tagged plant with `individualID = NEON.PLA.D10.RMNP.03623`.
+
+``` {r view-vst}
+
+veg$vst_mappingandtagging[which(veg$vst_mappingandtagging$individualID==
+                                  "NEON.PLA.D10.RMNP.03623"),]
+
+```
+
+We see from the data that this is a quaking aspen (Populus tremuloides). 
+Now use the `getSampleTree()` function from the `neonOS` package to find 
+all samples related to this particular sample.
+
+``` {r query-taggedPlant}
+
+potr.samp <- getSampleTree("NEON.PLA.D10.RMNP.03623")
+
+```
+
+SOME STUFF ABOUT HOW TO UNDERSTAND WHAT YOU'RE LOOKING AT?
+
+``` {r plant-network}
+
+potr.samp$id <- potr.samp$sampleUuid
+
+edges <- potr.samp[,c("sampleUuid","parentSampleUuid")]
+colnames(edges) <- c("to", "from")
+
+visNetwork(nodes=potr.samp,
+           edges=edges) %>%
+  visEdges(arrows="to")
+
+```
+
