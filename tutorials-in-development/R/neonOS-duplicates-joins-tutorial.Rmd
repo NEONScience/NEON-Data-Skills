@@ -88,16 +88,18 @@ loaded on your computer to complete this tutorial.
 
 First install and load the necessary packages.
 
-```{r setup, eval=c(8,9), results="hide"}
+```{r setup, eval=c(9,10,11), results="hide"}
 
 # install packages. can skip this step if already installed
 # update neonOS installation after CRAN release
 install.packages("neonUtilities")
+install.packages("ggplot2")
 devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")
 
 # load packages
 library(neonUtilities)
 library(neonOS)
+library(ggplot2)
 
 ```
 
@@ -194,7 +196,7 @@ are retained and flagged with `duplicateRecordQF=2`.
 
 Note that even in fully identical duplicates, the uid field will always be 
 unique. Thus the uid field in merged records will always contain the 
-pipe-delimted set of uids of the original records.
+pipe-delimited set of uids of the original records.
 
 What does this look like in practice? Let's look at the two resolved 
 duplicates:
@@ -259,7 +261,7 @@ aqbc <- joinTableNEON(apl_biomass,
 
 SOME KIND OF FIGURE HERE??
 
-## Further Details
+## Other Input Options
 
 After downloading the data above, we ran `list2env()` to make each table 
 an independent object in the R environment, and then provided the tables 
@@ -283,6 +285,99 @@ aq.join <- joinTableNEON(table1=bio.dup,
                          name2="apl_plantExternalLabDataPerSample")
 
 ```
+
+## More Complicated Table Joins
+
+In the aquatic plant chemistry example, we were able to join two tables 
+in a single step. In some cases, the relationship between tables is 
+more complicated, and joining is more difficult. In these cases, 
+`joinTableNEON()` will provide an error message, and usually direct 
+you to the Quick Start Guide for more information. Let's walk through 
+how you can use this information, using Mosquitoes sampled from CO2 traps 
+(DP1.10043.001) from Toolik Lake as an example.
+
+```{r load-mos, results="hide"}
+
+mos <- loadByProduct(dpID="DP1.10043.001",
+                     site="TOOL", 
+                     release="RELEASE-2022",
+                     check.size=F)
+list2env(mos, .GlobalEnv)
+
+```
+
+Let's say we're interested in evaluating which mosquito species are found in 
+which vegetation types. The species identifications are in the 
+`mos_expertTaxonomistIDProcessed` table, and the trapping conditions are in 
+the `mos_trapping` table. So we'll attempt to join those two tables.
+
+```{r try-join-mos, results="hide"}
+
+mos.sp <- joinTableNEON(mos_trapping,
+                        mos_expertTaxonomistIDProcessed)
+
+```
+
+```
+Error in joinTableNEON(mos_trapping, mos_expertTaxonomistIDProcessed) : 
+  Tables mos_trapping and mos_expertTaxonomistIDProcessed can't be joined directly, but can each be joined to a common table(s). Consult quick start guide for details.
+```
+
+The function returns an error, telling us it can't perform a simple join 
+on the two tables, but there is a table they can each join to, which can be 
+used to join them indirectly. As directed, we refer to the Quick Start Guide 
+for DP1.10043.001, where we learn that `mos_sorting` is the intermediate 
+table required.
+
+First, let's join `mos_trapping` and `mos_sorting`:
+
+```{r join-trap-sort, results="hide"}
+
+mos.trap <- joinTableNEON(mos_trapping,
+                          mos_sorting)
+
+```
+
+Now, this next step is a bit odd. We've created a merged table of 
+`mos_trapping` and `mos_sorting`, but we know 
+`mos_expertTaxonomistIDProcessed` can only join to `mos_sorting`. So 
+we pass the merged table to `joinTableNEON()`, telling the function to 
+use the join instructions for `mos_sorting` and 
+`mos_expertTaxonomistIDProcessed`.
+
+```{r join-sort-tax, results="hide"}
+
+mos.tax <- joinTableNEON(mos.trap,
+                         mos_expertTaxonomistIDProcessed,
+                         name1="mos_sorting")
+
+```
+
+When you join data in this way, check carefully that the resulting 
+table is structured logically and contains the data you expect it to. 
+Looking at the merged table, we now have multiple records for each 
+trapping event, with one record for each species captured in that event, 
+plus a set of records for traps that either caught no mosquitoes or 
+couldn't be deployed, and thus have no species identifications. This 
+is consistent with the table join we performed, so everything appears 
+to be correct.
+
+Let's take a look at species occurrence by habitat, as we set out to 
+do:
+
+```{r mos-fig}
+
+gg <- ggplot(mos.tax, 
+             aes(scientificName, individualCount, 
+                 group=scientificName, 
+                 color=scientificName)) +
+             geom_boxplot() + 
+        facet_wrap(~nlcdClass) +
+        theme(axis.text.x=element_blank())
+gg
+
+```
+
 
 
 
