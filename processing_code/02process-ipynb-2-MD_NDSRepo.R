@@ -41,7 +41,7 @@ for(p in 1:length(ipynb.files)){
   # to convert below
   system(paste0("cd ",dirname(ipynb.files[p]),
   "; jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace ",basename(ipynb.files[p]),
-  "; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=py37 --to notebook --execute --inplace ",basename(ipynb.files[p])))
+  "; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=python3 --to notebook --execute --inplace ",basename(ipynb.files[p])))
   
   # Take the freshly ran .ipynb file (with all code chunk outputs) and 
   # convert to the desired formats
