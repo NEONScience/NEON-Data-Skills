@@ -25,7 +25,8 @@
 # The assumption in this tutorial is that you want to work with NEON data in 
 # Python, but you want to use the handy download and merge functions provided by 
 # the `neonUtilities` R package to access and format the data for analysis. If 
-# you want to do your analyses in R, use one of the R-based tutorials below.
+# you want to do your analyses in R, use one of the R-based tutorials linked 
+# below.
 # 
 # For more information about the `neonUtilities` package, and instructions for 
 # running it in R directly, see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial 
@@ -38,8 +39,8 @@
 # 
 # 1. Python 3 installed. It is probably possible to use this workflow in Python 2, 
 # but these instructions were developed and tested using 3.7.4.
-# 2. R installed. You don't need to have ever used it directly. We tested using 
-# R 3.6.1, but most other recent versions should also work.
+# 2. R installed. You don't need to have ever used it directly. We wrote this 
+# tutorial using R 4.1.1, but most other recent versions should also work.
 # 3. `rpy2` installed. Run the line below from the command line, it won't run within 
 # Jupyter. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
 # `rpy2` often has install problems on Windows, see "Windows Users" section below if 
@@ -49,7 +50,7 @@
 # 
 # From the command line, run:
 
-# In[1]:
+# In[ ]:
 
 
 pip install rpy2
@@ -71,12 +72,21 @@ pip install rpy2
 # 3. Add  an R_HOME Windows environment variable with the path C:\Program Files\R\R-3.4.3 
 # (or whichever version you are running)
 # 4. Add an R_USER Windows environment variable with the path C:\Users\yourUserName\AppData\Local\Continuum\Anaconda3\Lib\site-packages\rpy2
+# 
+# ### Additional troubleshooting
+# 
+# If you're still having trouble getting R to communicate with Python, you can try 
+# pointing Python directly to your R installation path.
+# 
+# 1. Run `R.home()` in R.
+# 2. Run `import os` in Python.
+# 3. Run `os.environ['R_HOME'] = '/Library/Frameworks/R.framework/Resources'` in Python, substituting the file path you found in step 1.
 
 # ## Load packages
 
 # Now import `rpy2` into your session.
 
-# In[2]:
+# In[ ]:
 
 
 import rpy2
@@ -86,7 +96,7 @@ from rpy2.robjects.packages import importr
 
 # Load the base R functionality, using the `rpy2` function `importr()`.
 
-# In[3]:
+# In[ ]:
 
 
 base = importr('base')
@@ -100,7 +110,7 @@ stats = importr('stats')
 # words, it's very similar to running code in R as `package::function(inputs)`. 
 # For example:
 
-# In[4]:
+# In[ ]:
 
 
 stats.rnorm(6, 0, 1)
@@ -109,12 +119,12 @@ stats.rnorm(6, 0, 1)
 # Suppress R warnings. This step can be skipped, but will result in messages 
 # getting passed through from R that Python will interpret as warnings.
 
-# In[5]:
+# In[ ]:
 
 
-from rpy2.rinterface import set_writeconsole_warnerror
+from rpy2.rinterface_lib.callbacks import logger as rpy2_logger
 import logging
-set_writeconsole_warnerror(None)
+rpy2_logger.setLevel(logging.ERROR)
 
 
 # Install the `neonUtilities` R package. Here I've specified the RStudio 
@@ -138,7 +148,7 @@ set_writeconsole_warnerror(None)
 # or modify files on your local drive, but none of the data are read into the 
 # Python or R environments.
 
-# In[6]:
+# In[ ]:
 
 
 utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
@@ -148,7 +158,7 @@ utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
 # you use the code; if you're familiar with R, `importr()` is roughly 
 # equivalent to the `library()` function in R.
 
-# In[7]:
+# In[ ]:
 
 
 neonUtilities = importr('neonUtilities')
@@ -164,19 +174,23 @@ neonUtilities = importr('neonUtilities')
 # file path it's saved to and proceed.
 
 # Run the `stackByTable()` function to stack the data. It requires only one 
-# input, the path to the zip file you downloaded from the NEON Data Portal.
+# input, the path to the zip file you downloaded from the NEON Data Portal. 
+# Modify the file path in the code below to match the path on your machine.
 # 
 # For additional, optional inputs to `stackByTable()`, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
 # for neonUtilities.
 
-# In[8]:
+# In[ ]:
 
 
-neonUtilities.stackByTable(filepath='~/Downloads/NEON_temp-bio.zip');
+neonUtilities.stackByTable(filepath='/Users/Shared/NEON_temp-bio.zip');
 
 
 # Check the folder containing the original zip file from the Data Portal; 
-# you should now have a subfolder containing the unzipped and stacked files called `stackedFiles`.
+# you should now have a subfolder containing the unzipped and stacked files 
+# called `stackedFiles`. To import these data to Python, skip ahead to the 
+# "Read downloaded and stacked files into Python" section; to learn how to 
+# use `neonUtilities` to download data, proceed to the next section.
 
 # ## Download files to be stacked: zipsByProduct()
 # 
@@ -184,10 +198,11 @@ neonUtilities.stackByTable(filepath='~/Downloads/NEON_temp-bio.zip');
 # data files for a given product. The files downloaded by `zipsByProduct()` 
 # can then be fed into `stackByTable()`.
 
-# Run the downloader with these inputs: a DPID, a set of 4-letter site IDs (or 
-# "all" for all sites), a download package (either basic or expanded), the 
-# filepath to download the data to, and an indicator to check the size of 
-# your download before proceeding or not (TRUE/FALSE).
+# Run the downloader with these inputs: a data product ID (DPID), a set of 
+# 4-letter site IDs (or "all" for all sites), a download package (either 
+# basic or expanded), the filepath to download the data to, and an 
+# indicator to check the size of your download before proceeding or not 
+# (TRUE/FALSE).
 # 
 # The DPID is the data product identifier, and can be found in the data product 
 # box on the NEON <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data</a> page. 
@@ -207,12 +222,12 @@ neonUtilities.stackByTable(filepath='~/Downloads/NEON_temp-bio.zip');
 # `check_size='FALSE'` to avoid this problem, but be thoughtful about the size 
 # of your query since it will proceed to download without checking.
 
-# In[9]:
+# In[ ]:
 
 
 neonUtilities.zipsByProduct(dpID='DP1.10003.001', 
                             site=base.c('HARV','BART'), 
-                            savepath='~/Downloads',
+                            savepath='/Users/Shared',
                             package='basic', 
                             check_size='FALSE');
 
@@ -222,31 +237,31 @@ neonUtilities.zipsByProduct(dpID='DP1.10003.001',
 # 
 # Now take that file path and pass it to `stackByTable()`.
 
-# In[10]:
+# In[ ]:
 
 
-neonUtilities.stackByTable(filepath='~/Downloads/filesToStack10003');
+neonUtilities.stackByTable(filepath='/Users/Shared/filesToStack10003');
 
 
 # ## Read downloaded and stacked files into Python
 # 
-# We've now downloaded biological temperature and bird data, and merged 
+# We've downloaded biological temperature and bird data, and merged 
 # the site by month files. Now let's read those data into Python so you 
 # can proceed with analyses.
 # 
 # First let's take a look at what's in the output folders.
 
-# In[11]:
+# In[ ]:
 
 
 import os
-os.listdir('/Users/olearyd/Downloads/filesToStack10003/stackedFiles/')
+os.listdir('/Users/Shared/filesToStack10003/stackedFiles/')
 
 
-# In[12]:
+# In[ ]:
 
 
-os.listdir('/Users/olearyd/Downloads/NEON_temp-bio/stackedFiles/')
+os.listdir('/Users/Shared/NEON_temp-bio/stackedFiles/')
 
 
 # Each data product folder contains a set of data files and metadata files. 
@@ -261,24 +276,24 @@ os.listdir('/Users/olearyd/Downloads/NEON_temp-bio/stackedFiles/')
 # First, let's read in the two data tables in the bird data: 
 # `brd_countdata` and `brd_perpoint`.
 
-# In[13]:
+# In[ ]:
 
 
 import pandas
-brd_perpoint = pandas.read_csv('/Users/olearyd/Downloads/filesToStack10003/stackedFiles/brd_perpoint.csv')
-brd_countdata = pandas.read_csv('/Users/olearyd/Downloads/filesToStack10003/stackedFiles/brd_countdata.csv')
+brd_perpoint = pandas.read_csv('/Users/Shared/filesToStack10003/stackedFiles/brd_perpoint.csv')
+brd_countdata = pandas.read_csv('/Users/Shared/filesToStack10003/stackedFiles/brd_countdata.csv')
 
 
 # And take a look at the contents of each file. For descriptions and unit of each 
 # column, see the `variables_10003` file.
 
-# In[14]:
+# In[ ]:
 
 
 brd_perpoint
 
 
-# In[15]:
+# In[ ]:
 
 
 brd_countdata
@@ -287,10 +302,10 @@ brd_countdata
 # And now let's do the same with the 30-minute data table for biological 
 # temperature.
 
-# In[16]:
+# In[ ]:
 
 
-IRBT30 = pandas.read_csv('/Users/olearyd/Downloads/NEON_temp-bio/stackedFiles/IRBT_30_minute.csv')
+IRBT30 = pandas.read_csv('/Users/Shared/NEON_temp-bio/stackedFiles/IRBT_30_minute.csv')
 IRBT30
 
 
@@ -312,27 +327,26 @@ IRBT30
 # Here, we'll download Ecosystem structure (Canopy Height Model) data from 
 # Hopbrook (HOPB) in 2017.
 
-# In[17]:
+# In[ ]:
 
 
 neonUtilities.byFileAOP(dpID='DP3.30015.001', site='HOPB',
-                        #easting = 718000, northing = 4709000,
                         year='2017', check_size='FALSE',
-                       savepath='~/Downloads');
+                       savepath='/Users/Shared');
 
 
 # Let's read one tile of data into Python and view it. We'll use the 
 # `rasterio` and `matplotlib` modules here, but as with tabular data, 
 # there are other options available.
 
-# In[18]:
+# In[ ]:
 
 
 import rasterio
-CHMtile = rasterio.open('/Users/olearyd/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_HOPB_DP3_718000_4709000_CHM.tif')
+CHMtile = rasterio.open('/Users/Shared/DP3.30015.001/neon-aop-products/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_HOPB_DP3_718000_4709000_CHM.tif')
 
 
-# In[19]:
+# In[ ]:
 
 
 import matplotlib.pyplot as plt
