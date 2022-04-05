@@ -50,7 +50,7 @@
 # 
 # From the command line, run:
 
-# In[ ]:
+# In[1]:
 
 
 pip install rpy2
@@ -86,7 +86,7 @@ pip install rpy2
 
 # Now import `rpy2` into your session.
 
-# In[ ]:
+# In[2]:
 
 
 import rpy2
@@ -96,7 +96,7 @@ from rpy2.robjects.packages import importr
 
 # Load the base R functionality, using the `rpy2` function `importr()`.
 
-# In[ ]:
+# In[3]:
 
 
 base = importr('base')
@@ -110,7 +110,7 @@ stats = importr('stats')
 # words, it's very similar to running code in R as `package::function(inputs)`. 
 # For example:
 
-# In[ ]:
+# In[4]:
 
 
 stats.rnorm(6, 0, 1)
@@ -119,7 +119,7 @@ stats.rnorm(6, 0, 1)
 # Suppress R warnings. This step can be skipped, but will result in messages 
 # getting passed through from R that Python will interpret as warnings.
 
-# In[ ]:
+# In[5]:
 
 
 from rpy2.rinterface_lib.callbacks import logger as rpy2_logger
@@ -148,7 +148,7 @@ rpy2_logger.setLevel(logging.ERROR)
 # or modify files on your local drive, but none of the data are read into the 
 # Python or R environments.
 
-# In[ ]:
+# In[6]:
 
 
 utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
@@ -158,7 +158,7 @@ utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
 # you use the code; if you're familiar with R, `importr()` is roughly 
 # equivalent to the `library()` function in R.
 
-# In[ ]:
+# In[7]:
 
 
 neonUtilities = importr('neonUtilities')
@@ -180,7 +180,7 @@ neonUtilities = importr('neonUtilities')
 # For additional, optional inputs to `stackByTable()`, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
 # for neonUtilities.
 
-# In[ ]:
+# In[8]:
 
 
 neonUtilities.stackByTable(filepath='/Users/Shared/NEON_temp-bio.zip');
@@ -222,7 +222,7 @@ neonUtilities.stackByTable(filepath='/Users/Shared/NEON_temp-bio.zip');
 # `check_size='FALSE'` to avoid this problem, but be thoughtful about the size 
 # of your query since it will proceed to download without checking.
 
-# In[ ]:
+# In[9]:
 
 
 neonUtilities.zipsByProduct(dpID='DP1.10003.001', 
@@ -237,7 +237,7 @@ neonUtilities.zipsByProduct(dpID='DP1.10003.001',
 # 
 # Now take that file path and pass it to `stackByTable()`.
 
-# In[ ]:
+# In[10]:
 
 
 neonUtilities.stackByTable(filepath='/Users/Shared/filesToStack10003');
@@ -251,14 +251,14 @@ neonUtilities.stackByTable(filepath='/Users/Shared/filesToStack10003');
 # 
 # First let's take a look at what's in the output folders.
 
-# In[ ]:
+# In[11]:
 
 
 import os
 os.listdir('/Users/Shared/filesToStack10003/stackedFiles/')
 
 
-# In[ ]:
+# In[12]:
 
 
 os.listdir('/Users/Shared/NEON_temp-bio/stackedFiles/')
@@ -276,7 +276,7 @@ os.listdir('/Users/Shared/NEON_temp-bio/stackedFiles/')
 # First, let's read in the two data tables in the bird data: 
 # `brd_countdata` and `brd_perpoint`.
 
-# In[ ]:
+# In[13]:
 
 
 import pandas
@@ -287,13 +287,13 @@ brd_countdata = pandas.read_csv('/Users/Shared/filesToStack10003/stackedFiles/br
 # And take a look at the contents of each file. For descriptions and unit of each 
 # column, see the `variables_10003` file.
 
-# In[ ]:
+# In[14]:
 
 
 brd_perpoint
 
 
-# In[ ]:
+# In[15]:
 
 
 brd_countdata
@@ -302,7 +302,7 @@ brd_countdata
 # And now let's do the same with the 30-minute data table for biological 
 # temperature.
 
-# In[ ]:
+# In[16]:
 
 
 IRBT30 = pandas.read_csv('/Users/Shared/NEON_temp-bio/stackedFiles/IRBT_30_minute.csv')
@@ -327,7 +327,7 @@ IRBT30
 # Here, we'll download Ecosystem structure (Canopy Height Model) data from 
 # Hopbrook (HOPB) in 2017.
 
-# In[ ]:
+# In[17]:
 
 
 neonUtilities.byFileAOP(dpID='DP3.30015.001', site='HOPB',
@@ -339,20 +339,26 @@ neonUtilities.byFileAOP(dpID='DP3.30015.001', site='HOPB',
 # `rasterio` and `matplotlib` modules here, but as with tabular data, 
 # there are other options available.
 
-# In[ ]:
+# In[18]:
 
 
 import rasterio
 CHMtile = rasterio.open('/Users/Shared/DP3.30015.001/neon-aop-products/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_HOPB_DP3_718000_4709000_CHM.tif')
 
 
-# In[ ]:
+# In[19]:
 
 
 import matplotlib.pyplot as plt
 from rasterio.plot import show
 fig, ax = plt.subplots(figsize = (8,3))
 show(CHMtile)
+
+
+# In[20]:
+
+
+fig
 
 
 # In[ ]:
