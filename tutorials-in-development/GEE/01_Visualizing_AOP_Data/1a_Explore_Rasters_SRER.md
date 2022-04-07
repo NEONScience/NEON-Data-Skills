@@ -6,7 +6,7 @@ Author: Bridget Hass
 
 Contributors: John Musinsky, Tristan Goulden, Lukas Straube
 
-Last Updated: March 31, 2022
+Last Updated: April 7, 2022
 
 Objectives
 ---
@@ -29,7 +29,7 @@ To interactively explore NEON data available on GEE, you can use the [aop-data-v
 
 Data Availability & Access
 ---
-The NEON data products that have been made available on GEE can be accessed through the `projects/neon` folder with an appended prefix of the Data Product ID, matching the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below summarizes the prefixes to use for each data product.
+The NEON data products that have been made available on GEE can be accessed through the `projects/neon` folder with an appended prefix of the Data Product ID, matching the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below summarizes the prefixes to use for each data product. You will see how to access and read in these data products in the first part of this tutorial, so you may come back to this table if you wish to read in a different dataset.
 
 | Acronym | Data Product      | Data Product ID (Prefix) |
 |----------|------------|-------------------------|
@@ -71,7 +71,7 @@ We will work through a basic exercise consisting of the following steps:
 
 We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data in the Interactive Map.
 
-1) Read in the SRER 2021 SDR image, using `ee.Image`. We will assign this image to a variable (`var`) called `SRER_SDR2021`.
+1) Read in the SRER 2021 SDR image, using `ee.Image`. We will assign this image to a variable (`var`) called `SRER_SDR2021`. You can refer to the tables in the Data Access and Availability section, above, to pull in spectral data from a different site.
 
 ```javascript
 var SRER_SDR2021 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2021");
