@@ -77,9 +77,9 @@ We encourage you to follow along with this code chunks in this exercise in your 
 var SRER_SDR2021 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2021");
 ```
 
-2) Set the visualization parameters. 
+2) Set the visualization parameters - this specifies the bands that are displayed and the desired contrast. For more detailed information, refer to the GEE documentation on [image visualization](https://developers.google.com/earth-engine/guides/image_visualization)
 
-To do this we create a new variable (called `visParams`). This variable is applied to the layer and determines how and what is displayed. In this we are setting the RGB bands to display - for this exercise we are setting them to red, green, and blue portions of the spectrum in order to show a True Color Image. You can change these bands to show a False Color Image or any band combination of interest. You can refer to the lessons on [Multi-Band Rasters in R](https://www.neonscience.org/resources/learning-hub/tutorials/dc-multiband-rasters-r) or [RGB and False Color Images in Python](https://www.neonscience.org/resources/learning-hub/tutorials/neon-hsi-aop-functions-tiles-py) for more background on band stacking.
+To do this we create a new variable (called `visParams`). This variable is applied to the layer and determines how and what is displayed. In this we are setting the RGB bands to display - for this exercise we are setting them to red, green, and blue portions of the spectrum in order to show a True Color Image. You can change these bands to show a False Color Image or any band combination of interest. You can refer to NEON's lessons on [Multi-Band Rasters in R](https://www.neonscience.org/resources/learning-hub/tutorials/dc-multiband-rasters-r) or [RGB and False Color Images in Python](https://www.neonscience.org/resources/learning-hub/tutorials/neon-hsi-aop-functions-tiles-py) for more background on band stacking.
 
 ```javascript
 var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band019']};
@@ -87,7 +87,7 @@ var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band
 
 3) Mask layers to only show values > 0
 
-This step is optional, but recommended. AOP sets No Data Values to -9999, so if you don't mask out these No Data Values you will see these No Data Values as black in the image. To show only the data that was collected, we recommend masking these values by creating a mask variable, using the `updateMask` function. Reflectance values range between 0 and 1 (CHECK IF THIS DATA IS SCALED OR UNSCALED).
+This step is optional, but recommended. AOP sets No Data Values to -9999, so if you don't mask out these No Data Values you will see these No Data Values as black in the image. To show only the data that was collected, we recommend masking these values by creating a mask variable, using the `updateMask` function.
 
 ```javascript
 var SRER_SDR2021mask = SRER_SDR2021.updateMask(SRER_SDR2021.gte(0.0000));
