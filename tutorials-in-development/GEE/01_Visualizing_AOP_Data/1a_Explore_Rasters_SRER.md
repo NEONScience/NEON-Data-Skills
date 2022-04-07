@@ -93,7 +93,7 @@ This step is optional, but recommended. AOP sets No Data Values to -9999, so if 
 var SRER_SDR2021mask = SRER_SDR2021.updateMask(SRER_SDR2021.gte(0.0000));
 ```
 
-4) Now that we've defined the data, the visualization parameters, and the mask, we can add this Layer to the Map! To do this, we use the `Map.addLayer` function with our masked data variable, `SRER_SDRmask`, suing the `visParams` and assign this layer a label, which will show up in the Map.
+4) Now that we've defined the data, the visualization parameters, and the mask, we can add this Layer to the Map! To do this, we use the `Map.addLayer` function with our masked data variable, `SRER_SDRmask`, using the `visParams` and assign this layer a label, which will show up in the Map.
 
 ```javascript
 Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
