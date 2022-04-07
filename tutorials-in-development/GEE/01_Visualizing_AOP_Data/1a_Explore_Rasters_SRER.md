@@ -11,7 +11,7 @@ Last Updated: April 7, 2022
 Objectives
 ---
 - Introduce the Google Earth Engine (GEE) code editor 
-- Read in different AOP raster data sets at the NEON site 
+- Read an AOP Hyperspectral Reflectance raster data set at the NEON site SRER
 - Read in multiple years of data and explore inter-annual differences
 - Explore GEE visualization and export options
 
