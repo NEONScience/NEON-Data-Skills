@@ -6,7 +6,7 @@ Author: Bridget Hass
 
 Contributors: John Musinsky, Tristan Goulden, Lukas Straube
 
-Last Updated: April 7, 2022
+Last Updated: April 13, 2022
 
 Objectives
 ---
@@ -91,9 +91,9 @@ Another way to learn more about this asset is to left-click on the blue `project
 
 Click `Esc` to return to the code editor. Note that you can run the code either way, with the variable explicitly specified in the code editor, or imported as a variable, but we encourage you to leave the variable written out in the code, as this way is more reproducible.
 
-2) Set the visualization parameters - this specifies the bands that are displayed and the desired contrast. For more detailed information, refer to the GEE documentation on [image visualization](https://developers.google.com/earth-engine/guides/image_visualization)
+2) Set the visualization parameters - this specifies the band combination that is displayed, and other display options. For more detailed information, refer to the GEE documentation on [image visualization](https://developers.google.com/earth-engine/guides/image_visualization).
 
-To do this we create a new variable (called `visParams`). This variable is applied to the layer and determines how and what is displayed. In this we are setting the RGB bands to display - for this exercise we are setting them to red, green, and blue portions of the spectrum in order to show a True Color Image. You can change these bands to show a False Color Image or any band combination of interest. You can refer to NEON's lessons on [Multi-Band Rasters in R](https://www.neonscience.org/resources/learning-hub/tutorials/dc-multiband-rasters-r) or [RGB and False Color Images in Python](https://www.neonscience.org/resources/learning-hub/tutorials/neon-hsi-aop-functions-tiles-py) for more background on band stacking.
+To set the visualization parameters, we will create a new variable (called `visParams`). This variable is applied to the layer and determines what is displayed. In this we are setting the RGB bands to display - for this exercise we are setting them to red, green, and blue portions of the spectrum in order to show a True Color Image. You can change these bands to show a False Color Image or any band combination of interest. You can refer to NEON's lessons on [Multi-Band Rasters in R](https://www.neonscience.org/resources/learning-hub/tutorials/dc-multiband-rasters-r) or [RGB and False Color Images in Python](https://www.neonscience.org/resources/learning-hub/tutorials/neon-hsi-aop-functions-tiles-py) for more background on band stacking.
 
 ```javascript
 var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band019']};
