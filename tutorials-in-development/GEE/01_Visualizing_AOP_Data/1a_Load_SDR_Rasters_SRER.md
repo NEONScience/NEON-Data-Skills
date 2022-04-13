@@ -104,13 +104,13 @@ var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band
 This step is optional, but recommended. AOP sets No Data Values to -9999, so if you don't mask out these No Data Values you will see these No Data Values as black in the image. To show only the data that was collected, we recommend masking these values by creating a mask variable, using the `updateMask` function.
 
 ```javascript
-var SRER_SDR2021mask = SRER_SDR2021.updateMask(SRER_SDR2021.gte(0.0000));
+var SRER_SDR2018mask = SRER_SDR2018.updateMask(SRER_SDR2021.gte(0.0000));
 ```
 
 4) Now that we've defined the data, the visualization parameters, and the mask, we can add this Layer to the Map! To do this, we use the `Map.addLayer` function with our masked data variable, `SRER_SDRmask`, using the `visParams` and assign this layer a label, which will show up in the Map.
 
 ```javascript
-Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
+Map.addLayer(SRER_SDR2018mask, visParams, 'SRER 2018');
 ```
 
 5) Center the map on our area of interest. GEE by default does not know where we are interested in looking. We can center the map over our new data layer by 
@@ -121,7 +121,7 @@ Map.setCenter(-110.83549, 31.91068, 11);
 
 Putting it All Together
 ---
-The following code chunk runs all the steps we just broke down, and also adds in 2 more years of data (2018 and 2019). You can access this code [here](https://code.earthengine.google.com/9b442fa13116b2ae487ac8a78d45ba69), or copy and paste the code below into your GEE code editor. Click **Run** to add the 3 SDR data layers for each year.
+The following code chunk runs all the steps we just broke down, and also adds in 2 more years of data (2019 and 2021). You can access this code [here](https://code.earthengine.google.com/9b442fa13116b2ae487ac8a78d45ba69), or copy and paste the code below into your GEE code editor. Click **Run** to add the 3 SDR data layers for each year.
 
 ```javascript
 // This script pulls in hyperspectral data over the Santa Rita Experimental Range (SRER)
