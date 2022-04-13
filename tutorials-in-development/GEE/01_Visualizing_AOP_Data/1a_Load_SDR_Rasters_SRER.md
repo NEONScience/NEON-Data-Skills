@@ -83,9 +83,9 @@ Note that when you type this code, it will be underlined in red (the same as you
 
 If you click `Convert`, the line of code will disappear and the variable will be pulled into the top of the code editor, as shown below. Once imported, you can interactively explore this variable - eg. you can expand on the `bands` and `properties` to gain more information about this image, or "asset", as it's called in GEE.
 
-![Imports](Imports.png)
+![Imports](Imports.PNG)
 
-Another way to learn more about this asset is to left-click on the blue projects/neon/D14_SRER/L3_DP3-30006-001-D14_SRER_SDR_2018. This will pop up a box with more detailed information about this asset, as shown below:
+Another way to learn more about this asset is to left-click on the blue `projects/neon/D14_SRER/L3_DP3-30006-001-D14_SRER_SDR_2018`. This will pop up a box with more detailed information about this asset, as shown below:
 
 ![Asset_details](Asset_details.png)
 
