@@ -10,59 +10,20 @@ Last Updated: April 13, 2022
 
 Objectives
 ---
-- Introduce the Google Earth Engine (GEE) code editor 
-- Read an AOP Hyperspectral Reflectance raster data set at the NEON site SRER
-- Become familiar with the SDR asset (properties and description)
+- Read AOP Hyperspectral Reflectance raster data sets at the NEON site SRER
 - Read in multiple years of data and qualitatively explore inter-annual differences
 - Gain an understanding of GEE visualization and export options
 
 Requirements
 ---
--	A gmail (@gmail.com) and Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
--	A basic understanding of the GEE code editor and the GEE JavaScript API. If you have never used GEE before, we recommend starting on the [google developers earth-engine page](https://developers.google.com/earth-engine/guides/getstarted) and working through some of the introductory tutorials.
+- Complete the introductory tutorial [AOP Data in Google Earth Engine (GEE) 101](https://github.com/NEONScience/NEON-Data-Skills/blob/bhass/tutorials-in-development/GEE/01_Intro_AOP_GEE/1a_GEE_AOP_101.md)
 -	An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the [Intro to Working with Hyperspectral Remote Sensing Data](https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r) tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
-
-Background
----
-AOP has published a subset of AOP (L3) data products at 6 NEON sites (as of April 2022) on GEE. This data has been converted to Cloud Optimized Geotif (COG) format. NEON L3 lidar and derived spectral indices are avaialable in geotif raster format, so are relatively easy to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data format), and have been converted to the COG format prior to being added to GEE. 
-
-To interactively explore NEON data available on GEE, you can use the [aop-data-visualization](https://neon-aop.users.earthengine.app/view/aop-data-visualization) app created by AOP Scientist John Musinsky. 
-
-Data Availability & Access
----
-The NEON data products that have been made available on GEE can be accessed through the `projects/neon` folder with an appended prefix of the Data Product ID, matching the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below summarizes the prefixes to use for each data product. You will see how to access and read in these data products in the first part of this tutorial, so you may come back to this table if you wish to read in a different dataset.
-
-| Acronym | Data Product      | Data Product ID (Prefix) |
-|----------|------------|-------------------------|
-| SDR | Surface Directional Reflectance | DP3-30006-001_SDR |
-| RGB | Red Green Blue (Camera Imagery) | DP3-30010-001_RGB |
-| CHM | Canopy Height Model | DP3-30015-001_CHM |
-| DSM | Digital Surface Model | DP3-30024-001_DSM |
-| DTM | Digital Terrain Model | DP3-30024-001_DTM |
-
-The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE. The * indicates partial availability.
-
-| Domain/Site | Years      | Data Products        |
-|----------|------------|-------------------------|
-| D08 TALL | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
-| D11 CLBJ | 2017, 2019 | SDR, RGB, CHM, DSM, DTM |
-| D14 JORN | 2017, 2019 | SDR, RGB*, DSM, DTM|
-| D14 SRER | 2017, 2018, 2019, 2021* | SDR, RGB, CHM*, DSM, DTM|
-| D16 WREF | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
-| D17 TEAK | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
-
-Get Started with Google Earth Engine
----
-
-Once you have set up your Google Earth Engine account you can navigate to the [earth engine code editor](https://code.earthengine.google.com/). The diagram below, from the [earth engine documentation](https://developers.google.com/earth-engine/guides/playground), shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps / Google Earth. This editor is fairly intuitive; we encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
-
-![Earth Engine Code Editor Components](Code_editor_diagram.png)
 
 Read in and Visualize AOP Data
 ---
-Now that you've gotten a sense for the Earth Engine code editor, we can pull in some AOP data! In this exercise, we will look at hyperspectral data over the Santa Rita Experimental Range collected in 3 years between 2018 and 2021.
+In the first tutorial, we showed how to explore the NEON AOP GEE Image Collections. In this tutorial we will pull in and visualize some AOP hyperspectral data. We will look at hyperspectral data over the Santa Rita Experimental Range (SRER) collected in 3 years between 2018 and 2021.
 
-We will work through a basic exercise consisting of the following steps:
+We will work through basic GEE code whcih will carry out the following steps:
 
 1) Pull in an AOP hyperspectral data set
 2) Set the visualization parameters
@@ -70,7 +31,7 @@ We will work through a basic exercise consisting of the following steps:
 4) Add the AOP layer to the GEE Map
 5) Center on the region of interest
 
-We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data in the Interactive Map.
+We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data show up in the Interactive Map.
 
 1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (`var`) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, above, to pull in spectral data from a different site.
 
@@ -78,7 +39,7 @@ We encourage you to follow along with this code chunks in this exercise in your 
 var SRER_SDR2018 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2018");
 ```
 
-Note that when you type this code, it will be underlined in red (the same as you would see with a mis-spelled word). When you hover over this line, you will see an option pop up that says `"SRER_SDR2018" can be converted to an import record. Convert Ignore` 
+As we covered in the previous lesson, when you type this code, it will be underlined in red (the same as you would see with a mis-spelled word). When you hover over this line, you will see an option pop up that says `"SRER_SDR2018" can be converted to an import record. Convert Ignore` 
 
 ![Import_record](Convert_to_import_record.png)
 
@@ -154,7 +115,7 @@ Once you have the three years of data added, you can look at the different years
 
 ![SRER Layers](SRER_layers.png)
 
-If you click anywhere inside the AOP map (where there is data), you will see the 426 spectral bands as a bar chart displayed for each of the layers in the Inspector window (top-right corner of the code editor). You can see the spectral values for different layers by clicking on the arrow to the left of the layer name (eg. SRER 2018). Note that these are just shown as band #s, and you can't tell from the chart what the wavelengths are. We will convert the band numbers to wavelengths in the next lesson!
+If you click anywhere inside the AOP map (where there is data), you will see the 426 spectral bands as a bar chart displayed for each of the layers in the Inspector window (top-right corner of the code editor). You can see the spectral values for different layers by clicking on the arrow to the left of the layer name under Pixels (eg. SRER 2018). Note that these values are just shown as band #s, and you can't tell from the chart what the actual wavelength values are. We will convert the band numbers to wavelengths in the next lesson, so stay tuned!
 
 ![SRER Spectral Values](SRER_inspector.png)
 
