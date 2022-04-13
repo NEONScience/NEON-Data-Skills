@@ -63,7 +63,7 @@ var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band
 
 3) Mask layers to only show values > 0
 
-This step is optional, but recommended. AOP sets No Data Values to -9999, so if you don't mask out these No Data Values you will see these No Data Values as black in the image. To show only the data that was collected, we recommend masking these values by creating a mask variable, using the `updateMask` function.
+This step is optional, but recommended. AOP sets No Data Values to -9999, so if you don't mask these out you will see any missing data as black in the image (this will often result in a black boundary surrounding the site, but if any data is missing inside the site that will show up as black as well). To show only the data that was collected, we recommend masking these values using the `updateMask` function, as shown below:
 
 ```javascript
 var SRER_SDR2018mask = SRER_SDR2018.updateMask(SRER_SDR2021.gte(0.0000));
