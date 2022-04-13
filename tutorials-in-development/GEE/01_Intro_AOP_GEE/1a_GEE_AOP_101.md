@@ -61,7 +61,7 @@ Read AOP Data into GEE using `ee.ImageCollection`
 
 AOP data can be accessed through GEE through the `projects/NEON` folder. In the remainder of this lesson, we will look at the three AOP datasets, or `ImageCollection`s in this folder.
 
-An [ImageCollection](https://developers.google.com/earth-engine/guides/ic_creating) is a stack of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine [data catalog]https://developers.google.com/earth-engine/datasets. NEON's data is not discoverable in that catalog, however, so the next steps will walk you through how you can find available AOP data.
+An [ImageCollection](https://developers.google.com/earth-engine/guides/ic_creating) is a stack of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine [data catalog](https://developers.google.com/earth-engine/datasets). Currently, NEON AOP data in GEE cannot be discovered in the main data catalog, so the next steps will walk you through how you can find available AOP data.
 
 In your code editor, copy and run the following lines of code to create 3 `ImageCollection` variables containing the Surface Directional Reflectance (SDR), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. 
 
