@@ -63,8 +63,8 @@ Now that you've gotten a sense for the Earth Engine code editor, we can pull in 
 
 We will work through a basic exercise consisting of the following steps:
 
-1) Pull in an AOP hyperspetral data set
-2) Set visualization parameters
+1) Pull in an AOP hyperspectral data set
+2) Set the visualization parameters
 3) Mask the no data values
 4) Add the AOP layer to the GEE Map
 5) Center on the region of interest
