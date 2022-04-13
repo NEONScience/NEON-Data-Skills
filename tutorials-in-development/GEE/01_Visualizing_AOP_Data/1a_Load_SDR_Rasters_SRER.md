@@ -12,8 +12,9 @@ Objectives
 ---
 - Introduce the Google Earth Engine (GEE) code editor 
 - Read an AOP Hyperspectral Reflectance raster data set at the NEON site SRER
-- Read in multiple years of data and explore inter-annual differences
-- Explore GEE visualization and export options
+- Become familiar with the SDR asset (properties and description)
+- Read in multiple years of data and qualitatively explore inter-annual differences
+- Gain an understanding of GEE visualization and export options
 
 Requirements
 ---
