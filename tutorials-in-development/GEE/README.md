@@ -8,5 +8,9 @@ Currently split into sections including:
 02_AOP_Hyperspectral_Lessons
  - [2a_Intro_AOP_SDR_Rasters.md](02_AOP_Hyperspectral_Lessons/2a_Intro_AOP_Hyperspectral/2a_Intro_AOP_SDR_Rasters.md) - read in 3 years of SDR raster data at SRER
  - 2b_AOP_Spectral_Signatures
- - 2c_
- - 2d_
+ 
+ 03_AOP_Lidar_Lessons
+ 
+ 04_AOP_Data_Fusion
+ 
+ 05_Scaling_Aerial_Satellite_Data 
