@@ -39,14 +39,14 @@ The NEON data products that have been made available on GEE can be accessed thro
 
 The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE. The * indicates partial availability.
 
-| Domain/Site | Years      | Data Products        |
-|----------|------------|-------------------------|
-| D08 TALL | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
-| D11 CLBJ | 2017, 2019 | SDR, RGB, CHM, DSM, DTM |
-| D14 JORN | 2017, 2019 | SDR, RGB*, DSM, DTM|
-| D14 SRER | 2017, 2018, 2019, 2021* | SDR, RGB, CHM*, DSM, DTM|
-| D16 WREF | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
-| D17 TEAK | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
+| Domain | Site | Years      | Data Products        |
+|--------|------|------------|----------------------|
+| D08 | TALL | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
+| D11 | CLBJ | 2017, 2019 | SDR, RGB, CHM, DSM, DTM |
+| D14 | JORN | 2017, 2019 | SDR, RGB*, DSM, DTM|
+| D14 | SRER | 2017, 2018, 2019, 2021* | SDR, RGB, CHM*, DSM, DTM|
+| D16 | WREF | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
+| D17 | TEAK | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
 
 Get Started with Google Earth Engine
 ---
@@ -74,6 +74,16 @@ var aopRGB = ee.ImageCollection('projects/neon/DP3-30010-001_RGB')
 
 var aopDEM = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
 ```
+
+When you enter that code, you will notice that the lines of code are underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
+
+![import_record_popup](import_record_popup.png)
+
+If you click `Convert`, the line of code will disappear and instead the variable will be pulled into the script directly, and will show up at the top of the code editor. Go ahead and do this for all three lines of code, so you should see the following:
+
+![AOP_ImageCollections_Imported](AOP_ImageCollections_Imported.png)
+
+Note that each of these imported variables can now be expanded, using the arrow to the left of each. They have associated information *type*, *id*, *version*, and *properties*, which if you expand will show a *description*. This information can also be found in a slightly more user-friendly format if you click on the blue `projects/neon/DP3-30006-001_SDR`, as well as RGB and DEM, respectively. 
 
 Familiarize Yourself with the AOP Data Sets
 ---
