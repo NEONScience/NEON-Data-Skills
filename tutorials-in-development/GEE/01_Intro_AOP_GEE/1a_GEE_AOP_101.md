@@ -77,13 +77,26 @@ var aopDEM = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
 
 When you enter that code, you will notice that the lines of code are underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
 
-![import_record_popup](import_record_popup.png)
+![Import_Record_Popup](Import_Record_Popup.png)
 
-If you click `Convert`, the line of code will disappear and instead the variable will be pulled into the script directly, and will show up at the top of the code editor. Go ahead and do this for all three lines of code, so you should see the following:
+If you click `Convert`, the line of code will disappear and instead the variable will be pulled into the script directly, and will show up at the top of the code editor. Go ahead and do this for all three lines of code, so you should see the following. Tip: if you type Ctrl-z, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. It is a good idea to retain the original code that reads in the variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your own code editor, the imported variables will not be saved.
 
 ![AOP_ImageCollections_Imported](AOP_ImageCollections_Imported.png)
 
-Note that each of these imported variables can now be expanded, using the arrow to the left of each. They have associated information *type*, *id*, *version*, and *properties*, which if you expand will show a *description*. This information can also be found in a slightly more user-friendly format if you click on the blue `projects/neon/DP3-30006-001_SDR`, as well as RGB and DEM, respectively. 
+Note that each of these imported variables can now be expanded, using the arrow to the left of each. They have associated information *type*, *id*, *version*, and *properties*, which if you expand, shows a *description*. This provides more detailed information of the GEE data product.
 
-Familiarize Yourself with the AOP Data Sets
----
+Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue `projects/neon/DP3-30006-001_SDR`, as well as `DP3-30010-001_RGB` and`DP3-30024-001_DEM`, respectively. Below we'll show the window that pops-up when you click on `SDR`, but we encourage you to look at all three datasets.
+
+![SDR_AssetDetails_Description](SDR_AssetDetails_Description.png)
+
+This allows you to read the full description in a more user-friendly format. Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. For example, note that the reflectance data in GEE is scaled by 100. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. [DP3.30006.001](https://data.neonscience.org/data-products/DP3.30006.001)) for relevant information about the data products, how they are generated, and other pertinent details.
+
+You can also click on the "IMAGES" to explore all the available images. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. Here you can see the individual sites and years that are available for that data product. 
+
+![SDR_AssetDetails_Images](SDR_AssetDetails_Images.png)
+
+
+
+
+
+
