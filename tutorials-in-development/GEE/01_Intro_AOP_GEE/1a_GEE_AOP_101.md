@@ -1,3 +1,7 @@
+# AOP Data in Google Earth Engine (GEE) 101
+### This lesson is the starting point for working with AOP data in GEE!
+
+---
 
 Author: Bridget Hass
 
@@ -8,8 +12,8 @@ Last Updated: April 13, 2022
 Objectives
 ---
 - Introduce the Google Earth Engine (GEE) code editor 
-- See what NEON AOP datasets are available on GEE
-- Learn how to access the NEON AOP GEE datasets 
+- See which NEON AOP datasets are available in GEE
+- Learn how to access the NEON AOP GEE datasets
 
 Requirements
 ---
@@ -30,9 +34,8 @@ The NEON data products that have been made available on GEE can be accessed thro
 |----------|------------|-------------------------|
 | SDR | Surface Directional Reflectance | DP3-30006-001_SDR |
 | RGB | Red Green Blue (Camera Imagery) | DP3-30010-001_RGB |
-| CHM | Canopy Height Model | DP3-30015-001_CHM |
-| DSM | Digital Surface Model | DP3-30024-001_DSM |
-| DTM | Digital Terrain Model | DP3-30024-001_DTM |
+| DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3-30024-001_DEM |
+| CHM | Canopy Height Model | DP3-30015-001_CHM |*
 
 The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE. The * indicates partial availability.
 
@@ -51,3 +54,10 @@ Get Started with Google Earth Engine
 Once you have set up your Google Earth Engine account you can navigate to the [earth engine code editor](https://code.earthengine.google.com/). The diagram below, from the [earth engine documentation](https://developers.google.com/earth-engine/guides/playground), shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps / Google Earth. This editor is fairly intuitive; we encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
 
 ![Earth Engine Code Editor Components](Code_editor_diagram.png)
+
+
+Read AOP Data in GEE using `ee.ImageCollection`
+---
+
+Familiarize Yourself with the AOP Data Sets
+---
