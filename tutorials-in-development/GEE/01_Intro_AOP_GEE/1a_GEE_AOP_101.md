@@ -83,7 +83,7 @@ If you click `Convert`, the line of code will disappear and instead the variable
 
 ![AOP_ImageCollections_Imported](AOP_ImageCollections_Imported.png)
 
-Note that each of these imported variables can now be expanded, using the arrow to the left of each. They have associated information *type*, *id*, *version*, and *properties*, which if you expand, shows a *description*. This provides more detailed information of the GEE data product.
+Note that each of these imported variables can now be expanded, using the arrow to the left of each. They have associated information *type*, *id*, *version*, and *properties*, which if you expand, shows a *description*. This provides more detailed information about the data product.
 
 Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue `projects/neon/DP3-30006-001_SDR`, as well as `DP3-30010-001_RGB` and`DP3-30024-001_DEM`, respectively. Below we'll show the window that pops-up when you click on `SDR`, but we encourage you to look at all three datasets.
 
@@ -91,7 +91,7 @@ Information about the image collections can also be found in a slightly more use
 
 This allows you to read the full description in a more user-friendly format. Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. For example, note that the reflectance data in GEE is scaled by 100. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. [DP3.30006.001](https://data.neonscience.org/data-products/DP3.30006.001)) for relevant information about the data products, how they are generated, and other pertinent details.
 
-You can also click on the "IMAGES" to explore all the available images. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. Here you can see the individual sites and years that are available for that data product. 
+You can also click on the `IMAGES` tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. We will use these paths in subsequent tutorials.
 
 ![SDR_AssetDetails_Images](SDR_AssetDetails_Images.png)
 
