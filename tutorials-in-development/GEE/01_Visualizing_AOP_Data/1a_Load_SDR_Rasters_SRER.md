@@ -71,11 +71,25 @@ We will work through a basic exercise consisting of the following steps:
 
 We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data in the Interactive Map.
 
-1) Read in the SRER 2021 SDR image, using `ee.Image`. We will assign this image to a variable (`var`) called `SRER_SDR2021`. You can refer to the tables in the Data Access and Availability section, above, to pull in spectral data from a different site.
+1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (`var`) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, above, to pull in spectral data from a different site.
 
 ```javascript
-var SRER_SDR2021 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2021");
+var SRER_SDR2018 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2018");
 ```
+
+Note that when you type this code, it will be underlined in red (the same as you would see with a mis-spelled word). When you hover over this line, you will see an option pop up that says `"SRER_SDR2018" can be converted to an import record. Convert Ignore` 
+
+![Import record](Convert_to_import_record.png)
+
+If you click `Convert`, the line of code will disappear and instead the variable will be pulled into the top of the code editor, as shown below. This allows you to more interactively explore this variable - eg. you can expand on the `bands` and `properties` to gain more information about this image, or "asset", as it's called in GEE.
+
+![Imports](Imports.png)
+
+Another way to learn more about this asset is to left-click on the blue projects/neon/D14_SRER/L3_DP3-30006-001-D14_SRER_SDR_2018. This will pop up a box with more detailed information about this asset, as shown below:
+
+![Asset details](Asset_details.png)
+
+Click `Esc` to return to the code editor. Note that you can run the code either way, with the variable explicitly specified in the code editor, or imported as a variable, but we encourage you to leave the variable written out in the code, as this way is more reproducible.
 
 2) Set the visualization parameters - this specifies the bands that are displayed and the desired contrast. For more detailed information, refer to the GEE documentation on [image visualization](https://developers.google.com/earth-engine/guides/image_visualization)
 
