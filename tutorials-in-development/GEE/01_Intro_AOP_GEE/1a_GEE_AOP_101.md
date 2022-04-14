@@ -110,4 +110,8 @@ As a last step, we will go ahead and use the path specified in the SDR Asset Det
 var TALL_2017_SDR = ee.Image('projects/neon/DP3-30006-001_SDR/DP3-30006-001_D08_TALL_SDR_2017')
 ```
 
+If you import this variable, you will see that it pulls in with (426 bands) at the right, and to the right of that you will see blue eye and target icons. If you hover over the eye it displays "Show on Map", which if you click will place a footprint of this data set in the Map display. If you hover over the target icon, you can see the option "Center Map on Record", which if you click will center your map. You should see the footpring of the data as a layer in the Google Map.
+
+![TALL_SDR_ShowOnMap](TALL_SDR_ShowOnMap.png)
+
 It doesn't look like we've done much so far, but already this is a great achievement! One of the barriers to working with AOP data, and reflectance data in particular, is it's large data volume, which in the past has required high-performance computers for carrying out any analysis. There are also limited open-source tools for working with the data, many of the software suites for working with hyperspectral require licenses which can be expensive. Here we have loaded an entire site of spectral data, and are ready for data exploration and analysis, in this free cloud-computing platform. In the next tutorials we will map the spectral data and carry out some more advanced analysis that is highly simplified by the built in GEE functions. 
