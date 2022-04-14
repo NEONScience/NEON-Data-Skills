@@ -117,6 +117,6 @@ Import this variable, and you can see that it pulls in to the Imports at the top
 A Quick Recap
 ---
 
-You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the `ImageCollection` Asset Details to find the path to an individual `Image`.
+You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the `ImageCollection` **Asset details** to find the path to an individual `Image`.
 
 It doesn't look like we've done much so far, but already this is a great achievement! One of the barriers to working with AOP data, and reflectance data in particular, is it's large data volume, which in the past has required high-performance computers for carrying out any analysis. There are also limited open-source tools for working with the data, many of the software suites for working with hyperspectral require licenses which can be expensive. Here we have loaded an entire site of spectral data, and are ready for data exploration and analysis, in this free cloud-computing platform. In the next tutorials we will map the spectral data and carry out some more advanced analysis that is highly simplified by the built in GEE functions. 
