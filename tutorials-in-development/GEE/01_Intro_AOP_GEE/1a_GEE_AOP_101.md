@@ -63,7 +63,7 @@ AOP data can be accessed through GEE through the `projects/NEON` folder. In the 
 
 An [ImageCollection](https://developers.google.com/earth-engine/guides/ic_creating) is a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine [data catalog](https://developers.google.com/earth-engine/datasets). Currently, NEON AOP data in GEE cannot be discovered in the main data catalog, so the next steps will walk you through how you can find available AOP data.
 
-In your code editor, copy and run the following lines of code to create 3 `ImageCollection` variables containing the Surface Directional Reflectance (SDR), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. Note that in the left panel of the code editor, there is a `**Docs**` tab which includes documentation on ee built in functions and the expected input arguments. We encourage you to refer to this documentation, as well as the [earth engine tutorials](https://developers.google.com/earth-engine/tutorials/tutorial_js_01) to familiarize yourself with GEE and the JavaScript language.
+In your code editor, copy and run the following lines of code to create 3 `ImageCollection` variables containing the Surface Directional Reflectance (SDR), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. 
 
 ```javascript
 //read in the AOP image collections as variables
@@ -75,7 +75,12 @@ var aopRGB = ee.ImageCollection('projects/neon/DP3-30010-001_RGB')
 var aopDEM = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
 ```
 
-When you enter that code, you will notice that the lines of code are underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
+A few notes on using the Code Editor: 
+- In the left panel of the code editor, there is a **Docs** tab which includes API documentation on built in functions, showing the expected input arguments. We encourage you to refer to this documentation, as well as the [earth engine tutorials](https://developers.google.com/earth-engine/tutorials/tutorial_js_01) to familiarize yourself with GEE and the JavaScript language.
+- If you have an error in your code, an error message will show up in red will appear in the Console (in the right panel), this will tell you the line that failed
+- Save your code frequently! If you try to leave your code while it is unsaved, you will be prompted that there are unsaved changes in the editor.
+
+When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code are underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
 
 ![Import_Record_Popup](Import_Record_Popup.png)
 
