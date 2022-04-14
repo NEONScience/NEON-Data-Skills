@@ -1,5 +1,5 @@
 # Plot Spectral Signatures
-## Interactively plot the spectral signature of a pixel on clicking
+## Interactively plot the spectral signature of a pixel
 
 ---
 
@@ -44,3 +44,13 @@ Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
 // Center the map on SRER & zoom to desired level
 Map.setCenter(-110.83549, 31.91068, 11);
 ```
+
+Create the wavelengths variable
+---
+
+```javascript
+// Set wavelength variable for spectral plot
+var wavelengths = ee.List.sequence(381, 2510, 5).getInfo()
+var bands_no =  ee.List.sequence(1, 426).getInfo() 
+```
+
