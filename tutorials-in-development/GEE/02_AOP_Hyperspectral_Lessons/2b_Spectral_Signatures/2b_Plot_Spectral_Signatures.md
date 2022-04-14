@@ -40,9 +40,6 @@ var SRER_SDR2021mask = SRER_SDR2021.updateMask(SRER_SDR2021.gte(0.0000));
 
 // Add the 2021 SRER SDR data as layers to the Map:
 Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
-
-// Center the map on SRER & zoom to desired level
-Map.setCenter(-110.83549, 31.91068, 11);
 ```
 
 Create the wavelengths variable
@@ -54,3 +51,29 @@ var wavelengths = ee.List.sequence(381, 2510, 5).getInfo()
 var bands_no =  ee.List.sequence(1, 426).getInfo() 
 ```
 
+```javascript
+// Create a panel to hold the spectral signature plot
+var panel = ui.Panel();
+panel.style().set({width: '600px',height: '300px',position: 'top-left'});
+Map.add(panel);
+Map.style().set('cursor', 'crosshair');
+```
+
+```javascript
+// Create a function to draw a chart when a user clicks on the map.
+Map.onClick(function(coords) {
+  panel.clear();
+  var point = ee.Geometry.Point(coords.lon, coords.lat);
+  var chart = ui.Chart.image.regions(SRER_SDR2021, point, null, 1, 'λ (nm)', wavelengths);
+    chart.setOptions({title: 'SRER 2021 Reflectance',
+                      hAxis: {title: 'Wavelength (nm)', 
+                      vAxis: {title: 'Reflectance'},
+                      gridlines: { count: 5 }}
+                              });
+    // Create and update the location label 
+  var location = 'Longitude: ' + coords.lon.toFixed(2) + ' ' +
+                 'Latitude: ' + coords.lat.toFixed(2);
+  panel.widgets().set(1, ui.Label(location));
+  panel.add(chart);
+});
+```
