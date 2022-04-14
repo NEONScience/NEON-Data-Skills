@@ -33,7 +33,7 @@ We will work through basic GEE code whcih will carry out the following steps:
 
 We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data show up in the Interactive Map.
 
-1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, above, to pull in spectral data from a different site.
+1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the (GEE_AOP_101 lesson)[../01_Intro_AOP_GEE/1a_GEE_AOP_101.md], to pull in spectral data from a different site.
 
 ```javascript
 var SRER_SDR2018 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2018");
