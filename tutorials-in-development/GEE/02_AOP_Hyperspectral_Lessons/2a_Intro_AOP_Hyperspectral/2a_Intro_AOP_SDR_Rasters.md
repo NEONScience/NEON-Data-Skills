@@ -1,4 +1,5 @@
-# Explore AOP Hyperspectral Data at the Santa Rita Experimental Range ([SRER](https://www.neonscience.org/field-sites/srer))
+# Intro to AOP Hyperspectral Data in GEE
+## Read in and visualize multiple years of Surface Directional Reflectance data at NEON site [SRER](https://www.neonscience.org/field-sites/srer) (Santa Rita Experimental Range)
 
 ---
 
@@ -6,7 +7,7 @@ Author: Bridget Hass
 
 Contributors: John Musinsky, Tristan Goulden, Lukas Straube
 
-Last Updated: April 13, 2022
+Last Updated: April 14, 2022
 
 Objectives
 ---
