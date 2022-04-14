@@ -60,7 +60,7 @@ Once you have set up your Google Earth Engine account you can navigate to the [e
 Read AOP Data Collections into GEE using `ee.ImageCollection`
 ---
 
-AOP data can be accessed through GEE through the `projects/NEON` folder. In the remainder of this lesson, we will look at the three AOP datasets, or `ImageCollection`s in this folder.
+AOP data can be accessed through GEE through the `projects/neon` folder. In the remainder of this lesson, we will look at the three AOP datasets, or `ImageCollection`s in this folder.
 
 An [ImageCollection](https://developers.google.com/earth-engine/guides/ic_creating) is a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine [data catalog](https://developers.google.com/earth-engine/datasets). Currently, NEON AOP data in GEE cannot be discovered in the main data catalog, so the next steps will walk you through how you can find available AOP data.
 
