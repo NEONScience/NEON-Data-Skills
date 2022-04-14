@@ -78,7 +78,7 @@ var aopDEM = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
 
 A few notes on using the Code Editor: 
 - In the left panel of the code editor, there is a **Docs** tab which includes API documentation on built in functions, showing the expected input arguments. We encourage you to refer to this documentation, as well as the [earth engine tutorials](https://developers.google.com/earth-engine/tutorials/tutorial_js_01) to familiarize yourself with GEE and the JavaScript language.
-- If you have an error in your code, an error message will show up in red will appear in the Console (in the right panel), this will tell you the line that failed
+- If you have an error in your code, a red error message will show up in the Console (in the right panel), which tells you the line that failed.
 - Save your code frequently! If you try to leave your code while it is unsaved, you will be prompted that there are unsaved changes in the editor.
 
 When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code are underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
