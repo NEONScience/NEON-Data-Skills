@@ -17,7 +17,8 @@ Objectives
 
 Requirements
 ---
--	A gmail (@gmail.com) and Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+-	A gmail (@gmail.com) account
+-	An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
 -	A basic understanding of the GEE code editor and the GEE JavaScript API. If you have never used GEE before, we recommend starting on the [google developers earth-engine page](https://developers.google.com/earth-engine/guides/getstarted) and working through some of the introductory tutorials.
 
 Background
