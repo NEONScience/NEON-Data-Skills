@@ -7,7 +7,7 @@ Author: Bridget Hass
 
 Contributors: John Musinsky, Tristan Goulden, Lukas Straube
 
-Last Updated: April 13, 2022
+Last Updated: April 14, 2022
 
 Objectives
 ---
@@ -56,14 +56,14 @@ Once you have set up your Google Earth Engine account you can navigate to the [e
 ![Earth Engine Code Editor Components](Code_editor_diagram.png)
 
 
-Read AOP Data into GEE using `ee.ImageCollection`
+Read AOP Data Collections into GEE using `ee.ImageCollection`
 ---
 
 AOP data can be accessed through GEE through the `projects/NEON` folder. In the remainder of this lesson, we will look at the three AOP datasets, or `ImageCollection`s in this folder.
 
-An [ImageCollection](https://developers.google.com/earth-engine/guides/ic_creating) is a stack of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine [data catalog](https://developers.google.com/earth-engine/datasets). Currently, NEON AOP data in GEE cannot be discovered in the main data catalog, so the next steps will walk you through how you can find available AOP data.
+An [ImageCollection](https://developers.google.com/earth-engine/guides/ic_creating) is a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine [data catalog](https://developers.google.com/earth-engine/datasets). Currently, NEON AOP data in GEE cannot be discovered in the main data catalog, so the next steps will walk you through how you can find available AOP data.
 
-In your code editor, copy and run the following lines of code to create 3 `ImageCollection` variables containing the Surface Directional Reflectance (SDR), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. 
+In your code editor, copy and run the following lines of code to create 3 `ImageCollection` variables containing the Surface Directional Reflectance (SDR), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. Note that in the left panel of the code editor, there is a `**Docs**` tab which includes documentation on ee built in functions and the expected input arguments. We encourage you to refer to this documentation, as well as the [earth engine tutorials](https://developers.google.com/earth-engine/tutorials/tutorial_js_01) to familiarize yourself with GEE and the JavaScript language.
 
 ```javascript
 //read in the AOP image collections as variables
@@ -83,7 +83,7 @@ If you click `Convert`, the line of code will disappear and instead the variable
 
 ![AOP_ImageCollections_Imported](AOP_ImageCollections_Imported.png)
 
-Note that each of these imported variables can now be expanded, using the arrow to the left of each. They have associated information *type*, *id*, *version*, and *properties*, which if you expand, shows a *description*. This provides more detailed information about the data product.
+Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *properties*, which if you expand, shows a *description*. This provides more detailed information about the data product.
 
 Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue `projects/neon/DP3-30006-001_SDR`, as well as `DP3-30010-001_RGB` and`DP3-30024-001_DEM`, respectively. Below we'll show the window that pops-up when you click on `SDR`, but we encourage you to look at all three datasets.
 
@@ -91,12 +91,17 @@ Information about the image collections can also be found in a slightly more use
 
 This allows you to read the full description in a more user-friendly format. Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. For example, note that the reflectance data in GEE is scaled by 100. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. [DP3.30006.001](https://data.neonscience.org/data-products/DP3.30006.001)) for relevant information about the data products, how they are generated, and other pertinent details.
 
-You can also click on the `IMAGES` tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. We will use these paths in subsequent tutorials.
+You can also click on the `IMAGES` tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. In the next step, we will show how to use this path to pull in a single file. 
 
 ![SDR_AssetDetails_Images](SDR_AssetDetails_Images.png)
 
+Read AOP Data into GEE using `ee.Image`
+---
 
+As a last step, we will go ahead and use the path specified in the SDR Asset Details Images table to read in a single image. Pulling in a single image uses almost identical syntax as an image collection, see below:
 
+```javascript
+var TALL_2017_SDR = ee.Image('projects/neon/DP3-30006-001_SDR/DP3-30006-001_D08_TALL_SDR_2017')
+```
 
-
-
+It doesn't look like we've done much so far, but already this is a great achievement! One of the barriers to working with AOP data, and reflectance data in particular, is it's large data volume, and limited open-source tools for working with the data in standard computing environments. Here we have loaded an entire site of spectral data, and are ready for data exploration and analysis. In the next tutorials we will map the spectral data and carry out some more advanced analysis that is highly simplified by the built in GEE functions. 
