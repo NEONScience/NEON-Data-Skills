@@ -55,6 +55,8 @@ var bands_no =  ee.List.sequence(1, 426).getInfo()
 [Earth Engine User Interface](https://developers.google.com/earth-engine/guides/ui)
 ---
 
+[ui.Panel](https://developers.google.com/earth-engine/apidocs/ui-panel)
+
 ```javascript
 // Create a panel to hold the spectral signature plot
 var panel = ui.Panel();
