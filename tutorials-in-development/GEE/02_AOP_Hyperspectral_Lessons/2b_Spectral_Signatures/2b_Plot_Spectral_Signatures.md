@@ -7,7 +7,7 @@ Author: Bridget Hass
 
 Contributors: John Musinsky, Tristan Goulden, Lukas Straube
 
-Last Updated: April 14, 2022
+Last Updated: April 15, 2022
 
 Objectives
 ---
@@ -45,6 +45,8 @@ Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
 
 Create the wavelengths variable
 ---
+
+In the last tutorial, we ended by viewing a bar chart of the reflectance values v. band #, but we couldn't see the wavelengths corresponding to those bands. Here we set a wavelengths variable (**var**) that we will apply to generate a spectral plot (wavelengths v. reflectance). To add this wavelength information, we will use the [`ee.List.sequence`](https://developers.google.com/earth-engine/apidocs/ee-list-sequence) function, which is used as follows: `ee.List.sequence(start, end, step, count)` to "generate a sequence of numbers from start to end (inclusive) in increments of step, or in count equally-spaced increments."
 
 ```javascript
 // Set wavelength variable for spectral plot
