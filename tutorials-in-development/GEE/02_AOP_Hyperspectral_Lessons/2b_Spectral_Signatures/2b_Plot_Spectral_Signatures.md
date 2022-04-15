@@ -90,4 +90,15 @@ Map.onClick(function(coords) {
 });
 ```
 
+Finally, we'll add the SRER data layer and center on that layer. Here we use the `Map.centerObject` function to center on our SRER_SDR2021 object.
+
+```javascript
+// Add the 2021 SRER SDR data as a layer to the Map:
+Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
+
+Map.centerObject(SRER_SDR2021,11)
+```
+
+When you run this code, linked [here](https://code.earthengine.google.com/33d1d2b66c81c705c0b48e5d158abc9e), you will see the SRER SDR layer show up in the Map panel, along with a blank figure outline. When you click anywhere in this image, the figure will be populated with the spectral signature of the pixel you clicked on.
+
 ![SRER_Spectral_Plot](SRER_Spectral_Plot.png)
