@@ -13,6 +13,7 @@ Objectives
 ---
 - Read in a single AOP Hyperspectral Reflectance raster data set at the NEON site SRER
 - Link spectral band #s to wavelength values
+- Gain experience with the Earth Engine User Interface (`ui`) API
 - Create an inset plot to display the spectral signature of a given pixel upon clicking
 
 Requirements
@@ -51,6 +52,9 @@ var wavelengths = ee.List.sequence(381, 2510, 5).getInfo()
 var bands_no =  ee.List.sequence(1, 426).getInfo() 
 ```
 
+[Earth Engine User Interface](https://developers.google.com/earth-engine/guides/ui)
+---
+
 ```javascript
 // Create a panel to hold the spectral signature plot
 var panel = ui.Panel();
@@ -58,6 +62,8 @@ panel.style().set({width: '600px',height: '300px',position: 'top-left'});
 Map.add(panel);
 Map.style().set('cursor', 'crosshair');
 ```
+
+[Map.onClick](https://developers.google.com/earth-engine/apidocs/ui-map-onclick)
 
 ```javascript
 // Create a function to draw a chart when a user clicks on the map.
