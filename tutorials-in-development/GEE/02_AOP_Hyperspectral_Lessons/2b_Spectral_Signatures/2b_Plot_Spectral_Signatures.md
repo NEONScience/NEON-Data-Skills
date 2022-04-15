@@ -85,3 +85,5 @@ Map.onClick(function(coords) {
   panel.add(chart);
 });
 ```
+
+![SRER_Spectral_Plot](SRER_Spectral_Plot.png)
