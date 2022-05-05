@@ -149,8 +149,7 @@ my_data_benthic %>% ecocomDP::plot_taxa_rank()
 
 ## ----algae-data-vis-richness-time, message=FALSE, warning=FALSE, fig.cap="Benthic algal richness by year at ARIK and COMO"-----------------------------------------------------------
 
-# Note that you can also send flattened data 
-# to the ecocomDP plotting functions
+# plot richness by year
 my_data_benthic %>% ecocomDP::plot_taxa_diversity(time_window_size = "year")
 
 

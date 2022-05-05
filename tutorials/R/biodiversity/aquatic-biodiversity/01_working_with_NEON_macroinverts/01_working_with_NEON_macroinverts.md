@@ -57,27 +57,10 @@ There are also two optional sections in this code chunk: clearing your environme
     
     # load libraries 
     library(tidyverse)
-
-    ## -- Attaching packages ---------------------------------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.1 --
-
-    ## v ggplot2 3.3.5     v purrr   0.3.4
-    ## v tibble  3.1.6     v dplyr   1.0.7
-    ## v tidyr   1.1.4     v stringr 1.4.0
-    ## v readr   2.1.1     v forcats 0.5.1
-
-    ## -- Conflicts ------------------------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
     library(neonUtilities)
     library(vegan)
-
-    ## Loading required package: permute
-
-    ## Loading required package: lattice
-
-    ## This is vegan 2.6-2
-
+    
+    
     # source .r file with my NEON_TOKEN
     # source("my_neon_token.R") # OPTIONAL - load NEON token
     # See: https://www.neonscience.org/neon-api-tokens-tutorial
@@ -657,53 +640,56 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.1539629 
-    ## Run 1 stress 0.1540372 
-    ## ... Procrustes: rmse 0.001886958  max resid 0.01240209 
-    ## Run 2 stress 0.1539638 
-    ## ... Procrustes: rmse 0.001180849  max resid 0.01082426 
-    ## Run 3 stress 0.1541142 
-    ## ... Procrustes: rmse 0.003689909  max resid 0.0136069 
-    ## Run 4 stress 0.153995 
-    ## ... Procrustes: rmse 0.002502422  max resid 0.01402671 
-    ## Run 5 stress 0.1540284 
-    ## ... Procrustes: rmse 0.001509168  max resid 0.01236722 
-    ## Run 6 stress 0.1540026 
-    ## ... Procrustes: rmse 0.003017376  max resid 0.01443051 
-    ## Run 7 stress 0.1539648 
-    ## ... Procrustes: rmse 0.00183519  max resid 0.0122039 
-    ## Run 8 stress 0.1540656 
-    ## ... Procrustes: rmse 0.003372652  max resid 0.01456058 
-    ## Run 9 stress 0.1540035 
-    ## ... Procrustes: rmse 0.002599948  max resid 0.01390852 
-    ## Run 10 stress 0.1541348 
-    ## ... Procrustes: rmse 0.003108922  max resid 0.01287675 
-    ## Run 11 stress 0.1540136 
-    ## ... Procrustes: rmse 0.001421447  max resid 0.01102933 
-    ## Run 12 stress 0.1539897 
-    ## ... Procrustes: rmse 0.002896696  max resid 0.01444058 
-    ## Run 13 stress 0.1539887 
-    ## ... Procrustes: rmse 0.002052236  max resid 0.01195003 
-    ## Run 14 stress 0.1540159 
-    ## ... Procrustes: rmse 0.002026088  max resid 0.01290174 
-    ## Run 15 stress 0.1539837 
-    ## ... Procrustes: rmse 0.001605014  max resid 0.01302413 
-    ## Run 16 stress 0.1539922 
-    ## ... Procrustes: rmse 0.001595722  max resid 0.01299439 
-    ## Run 17 stress 0.1540162 
-    ## ... Procrustes: rmse 0.003022087  max resid 0.01440841 
-    ## Run 18 stress 0.1540448 
-    ## ... Procrustes: rmse 0.003360774  max resid 0.01417821 
-    ## Run 19 stress 0.1539871 
-    ## ... Procrustes: rmse 0.002915723  max resid 0.01397289 
-    ## Run 20 stress 0.1540863 
-    ## ... Procrustes: rmse 0.002580766  max resid 0.01203597 
+    ## Run 1 stress 0.1540153 
+    ## ... Procrustes: rmse 0.002651856  max resid 0.01303688 
+    ## Run 2 stress 0.1539852 
+    ## ... Procrustes: rmse 0.002740661  max resid 0.01436142 
+    ## Run 3 stress 0.1540099 
+    ## ... Procrustes: rmse 0.002038891  max resid 0.01292298 
+    ## Run 4 stress 0.1540871 
+    ## ... Procrustes: rmse 0.004162578  max resid 0.01475293 
+    ## Run 5 stress 0.1541205 
+    ## ... Procrustes: rmse 0.004097226  max resid 0.01129591 
+    ## Run 6 stress 0.1539877 
+    ## ... Procrustes: rmse 0.001450366  max resid 0.01271247 
+    ## Run 7 stress 0.1540009 
+    ## ... Procrustes: rmse 0.002797444  max resid 0.01414582 
+    ## Run 8 stress 0.1540012 
+    ## ... Procrustes: rmse 0.002285528  max resid 0.01350483 
+    ## Run 9 stress 0.1539886 
+    ## ... Procrustes: rmse 0.001900848  max resid 0.01320321 
+    ## Run 10 stress 0.1541053 
+    ## ... Procrustes: rmse 0.002594632  max resid 0.01222768 
+    ## Run 11 stress 0.1541164 
+    ## ... Procrustes: rmse 0.002114083  max resid 0.01140606 
+    ## Run 12 stress 0.154058 
+    ## ... Procrustes: rmse 0.001987583  max resid 0.01236406 
+    ## Run 13 stress 0.1540057 
+    ## ... Procrustes: rmse 0.001796919  max resid 0.01288192 
+    ## Run 14 stress 0.1539843 
+    ## ... Procrustes: rmse 0.003086053  max resid 0.01465969 
+    ## Run 15 stress 0.1539626 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.002908647  max resid 0.01466117 
+    ## Run 16 stress 0.1540166 
+    ## ... Procrustes: rmse 0.001421987  max resid 0.01211674 
+    ## Run 17 stress 0.1539554 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.002252596  max resid 0.01419733 
+    ## Run 18 stress 0.1541602 
+    ## ... Procrustes: rmse 0.003100343  max resid 0.01356708 
+    ## Run 19 stress 0.1539702 
+    ## ... Procrustes: rmse 0.0011063  max resid 0.01132138 
+    ## Run 20 stress 0.1540357 
+    ## ... Procrustes: rmse 0.001777921  max resid 0.01178786 
     ## *** No convergence -- monoMDS stopping criteria:
-    ##     20: stress ratio > sratmax
+    ##      2: no. of iterations >= maxit
+    ##     18: stress ratio > sratmax
 
     # plot stress
     my_nmds_result$stress
 
-    ## [1] 0.1539629
+    ## [1] 0.1539554
 
     p1 <- vegan::ordiplot(my_nmds_result)
     vegan::ordilabel(p1, "species")
@@ -723,22 +709,22 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     nmds_scores %>% arrange(desc(NMDS1)) %>% head()
 
     ##               sampleID       NMDS1         NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType samplerType benthicArea          inv_dens_unit
-    ## 1 MAYF.20210721.CORE.1 0.471155397 -0.0001254131      D08   MAYF MAYF.AOS.reach 2021-07-21 14:02:00 MAYF.20210721 2021         run        core       0.006 count per square meter
-    ## 2 MAYF.20160321.CORE.2 0.009545017  0.0004978245      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run        core       0.006 count per square meter
-    ## 3 MAYF.20200713.CORE.2 0.005445305  0.0007612160      D08   MAYF MAYF.AOS.reach 2020-07-13 14:48:00 MAYF.20200713 2020         run        core       0.006 count per square meter
-    ## 4 MAYF.20181029.CORE.3 0.004204757  0.0002701243      D08   MAYF MAYF.AOS.reach 2018-10-29 14:45:00 MAYF.20181029 2018         run        core       0.006 count per square meter
-    ## 5 MAYF.20170314.CORE.1 0.003581016  0.0009157454      D08   MAYF MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017         run        core       0.006 count per square meter
-    ## 6 MAYF.20210315.CORE.3 0.003162908 -0.0001154489      D08   MAYF MAYF.AOS.reach 2021-03-15 14:05:00 MAYF.20210315 2021         run        core       0.006 count per square meter
+    ## 1 MAYF.20210721.CORE.1 0.468694789 -0.0001462935      D08   MAYF MAYF.AOS.reach 2021-07-21 14:02:00 MAYF.20210721 2021         run        core       0.006 count per square meter
+    ## 2 MAYF.20160321.CORE.2 0.009574481  0.0001618065      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run        core       0.006 count per square meter
+    ## 3 MAYF.20200713.CORE.2 0.005557342  0.0005689838      D08   MAYF MAYF.AOS.reach 2020-07-13 14:48:00 MAYF.20200713 2020         run        core       0.006 count per square meter
+    ## 4 MAYF.20181029.CORE.3 0.004197690  0.0002513757      D08   MAYF MAYF.AOS.reach 2018-10-29 14:45:00 MAYF.20181029 2018         run        core       0.006 count per square meter
+    ## 5 MAYF.20170314.CORE.1 0.003353127 -0.0012315431      D08   MAYF MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017         run        core       0.006 count per square meter
+    ## 6 MAYF.20160321.CORE.3 0.003204478  0.0007044842      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run        core       0.006 count per square meter
 
     nmds_scores %>% arrange(desc(NMDS1)) %>% tail()
 
     ##                    sampleID        NMDS1         NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType     samplerType benthicArea
-    ## 454 ARIK.20140714.KICKNET.1 -0.003323642 -0.0010929290      D10   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014         run modifiedKicknet       0.250
-    ## 455 ARIK.20140714.KICKNET.3 -0.003368456 -0.0014730421      D10   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014         run modifiedKicknet       0.250
-    ## 456 ARIK.20140929.KICKNET.1 -0.003639185 -0.0010308416      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
-    ## 457 ARIK.20140929.KICKNET.2 -0.003697943 -0.0008966032      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
-    ## 458    ARIK.20160331.CORE.3 -0.004057108 -0.0018836454      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331 2016        pool            core       0.006
-    ## 459    MAYF.20160321.SNAG.3 -0.004210699  0.0014381060      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run            snag       0.152
+    ## 454 ARIK.20140714.KICKNET.3 -0.003572811 -0.0009498487      D10   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014         run modifiedKicknet       0.250
+    ## 455 ARIK.20140929.KICKNET.1 -0.003729984 -0.0004958496      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
+    ## 456    MAYF.20160321.SNAG.3 -0.003752960  0.0020661372      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run            snag       0.152
+    ## 457 ARIK.20140929.KICKNET.2 -0.003760480 -0.0003507315      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
+    ## 458    ARIK.20160331.CORE.3 -0.004317151 -0.0012368735      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331 2016        pool            core       0.006
+    ## 459    MAYF.20210721.CORE.2 -0.004424894  0.0004146486      D08   MAYF MAYF.AOS.reach 2021-07-21 14:02:00 MAYF.20210721 2021         run            core       0.006
     ##              inv_dens_unit
     ## 454 count per square meter
     ## 455 count per square meter
