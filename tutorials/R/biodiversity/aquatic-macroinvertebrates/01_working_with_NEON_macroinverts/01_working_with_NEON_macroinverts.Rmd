@@ -44,12 +44,10 @@ Prior to starting the tutorial ensure that the following packages are installed.
 ## Introduction
 Biodiversity is a popular topic within ecology, but quantifying and describing biodiversity precisely can be elusive. In this tutorial, we will describe many of the aspects of biodiversity using NEON's <a href="https://data.neonscience.org/data-products/DP1.20120.001">Macroinvertebrate Collection data</a>.
 
-This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
-
 ## Load Libraries and Prepare Workspace
 First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above.
 
-There are also two optional sections in this code chunk: clearing your environment, and loading your NEON API token. Clearing out your environment will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! Secondly, your NEON API token will allow you increased download speeds, and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>.
+There are also two optional sections in this code chunk: clearing your environment, and loading your NEON API token. Clearing out your environment will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! Secondly, your NEON API token will allow you increased download speeds, and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>.
 
 ```{r load libraries, warning=FALSE}
 
@@ -124,18 +122,38 @@ Next, we will perform several operations in a row to re-organize our data. Each 
 
 ```{r munging-and-organizing, message=FALSE, warning=FALSE}
 
-# known problem with dupes published in the inv_fieldData table as of 2021-02-18
-# this anticipated to be fixed in data release next year (Jan 2022)
-# use sampleID as primary key, keep the first uid associated with any sampleID that has multiple uids
+# It is good to check for duplicate records. This had occurred in the past in 
+# data published in the inv_fieldData table in 2021. Those duplicates were 
+# fixed in the 2022 data release. 
+# Here we use sampleID as primary key and if we find duplicate records, we
+# keep the first uid associated with any sampleID that has multiple uids
+
 de_duped_uids <- inv_fieldData %>% 
+  
+  # remove records where no sample was collected
+  filter(!is.na(sampleID)) %>%  
   group_by(sampleID) %>%
   summarise(n_recs = length(uid),
                    n_unique_uids = length(unique(uid)),
                    uid_to_keep = dplyr::first(uid)) 
 
-# filter data using de-duped uids
-inv_fieldData <- inv_fieldData %>%
+
+
+
+
+# Are there any records that have more than one unique uid?
+max_dups <- max(de_duped_uids$n_unique_uids %>% unique())
+
+
+
+
+
+# filter data using de-duped uids if they exist
+if(max_dups > 1){
+  inv_fieldData <- inv_fieldData %>%
   dplyr::filter(uid %in% de_duped_uids$uid_to_keep)
+}
+
 
 
 
@@ -617,7 +635,9 @@ p1 <- vegan::ordiplot(my_nmds_result)
 vegan::ordilabel(p1, "species")
 
 # merge NMDS scores with sampleID information for plotting
-nmds_scores <- my_nmds_result %>% vegan::scores() %>%
+nmds_scores <- my_nmds_result %>% 
+  vegan::scores() %>%
+  .[["sites"]] %>%
   as.data.frame() %>%
   tibble::rownames_to_column("sampleID") %>%
   left_join(table_sample_info)

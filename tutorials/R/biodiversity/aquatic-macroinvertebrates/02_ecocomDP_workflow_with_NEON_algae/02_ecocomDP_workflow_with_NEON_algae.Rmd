@@ -7,7 +7,7 @@ dateCreated: '2020-06-22'
 authors: Eric R. Sokol
 contributors: Donal O'Leary, Felipe Sanchez
 estimatedTime: 1 Hour
-packagesLibraries: tidyverse, neonUtilities, devtools
+packagesLibraries: tidyverse, neonUtilities, ecocomDP, vegan
 topics: data-analysis, organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
@@ -43,15 +43,15 @@ Prior to starting the tutorial ensure that the following packages are installed.
 </div>
 
 ## Introduction
-In this second live coding section of the workshop, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which is under development by the Environmental Data Initiative (EDI) in collaboration with NEON staff.
+In this code-along tutorial, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which has been developed by the Environmental Data Initiative (EDI) in collaboration with NEON staff.
 
 #### What is ecocomDP?
-ecocomDP is both the name of an R package and a data model. 
+"ecocomDP" is both the name of an R package and a data model. 
  
 EDI describes the ecocomDP data model as "A dataset design pattern for ecological community data to facilitate synthesis and reuse". 
  
 See the ecocomDP github repo here:
-<a href="https://github.com/EDIorg/ecocomDP ">https://github.com/EDIorg/ecocomDP</a>.
+<a href="https://github.com/EDIorg/ecocomDP">https://github.com/EDIorg/ecocomDP</a>.
 
 <figure>
 <a href="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png">
@@ -60,8 +60,6 @@ See the ecocomDP github repo here:
 </figure>
 
 The motivation is for both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research Network and Macrosystems Biology projects, to be discoverable through a single data search tool, and to be delivered in a standard format. Our objective here is to demonstrate how the workflow will work with NEON biodiversity data packages. 
-
-This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
 
 ## Load Libraries and Prepare Workspace
 First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above. 
@@ -121,7 +119,7 @@ my_data <- ecocomDP::read_data(
 
 ```
 
-Now that we have downloaded the data, let's take a look at tht `ecocomDP` data object structure:
+Now that we have downloaded the data, let's take a look at the `ecocomDP` data object structure:
 
 ```{r view-ecocomDP-str}
 
@@ -143,7 +141,28 @@ my_data$tables$observation %>% head()
 ```
 
 
-## Search ecocomDP
+## Basic Data Visualization
+
+The `ecocomDP` package offers some useful data visualization tools.
+
+```{r macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from the Arikaree River site."}
+
+# Explore the spatial and temporal coverage 
+# of the dataset
+my_data %>% ecocomDP::plot_sample_space_time()
+
+```
+
+```{r macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from the Arikaree River site."}
+
+# Explore the taxonomic resolution in the dataset. 
+# What is the most common taxonomic resolution (rank) 
+# for macroinvertebrate identifications in this dataset?
+my_data %>% ecocomDP::plot_taxa_rank()
+
+```
+
+## Search `ecocomDP`
 
 We can even search for terms in the ecocomDP database using regular expressions:
 
@@ -176,7 +195,6 @@ my_data <-
 ```{r explore-data-structure}
 # Explore the structure of the returned data object
 my_data %>% names()
-my_data %>% names()
 my_data$metadata$data_package_info
 my_data$validation_issues
 my_data$tables %>% names()
@@ -184,9 +202,6 @@ my_data$tables %>% names()
 my_data$tables$location
 my_data$tables$taxon %>% head()
 my_data$tables$observation %>% head()
-
-
-
 ```
 
 ## Algae Data Flattening and Cleaning
@@ -209,16 +224,46 @@ my_data_flat$unit %>%
 
 
 
+
 # filter the data to only records standardized to area
 # sampled
 my_data_benthic <- my_data_flat %>%
-  dplyr::filter(
-    !variable_name %in% c("valves","cells"),
-    unit == "cells/cm2")
+  dplyr::filter(unit == "cells/cm2")
+```
+
+
+## Explore Benthic Algae Data with `ecocomDP` Plotting Functions
+
+```{r algae-data-vis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space in time represented in the downloaded data set for algae."}
+
+# Note that you can send flattened data 
+# to the ecocomDP plotting functions
+my_data_benthic %>% ecocomDP::plot_sample_space_time()
+
+```
+
+```{r plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."}
+
+# Which taxon ranks are most common?
+my_data_benthic %>% ecocomDP::plot_taxa_rank()
+```
+
+```{r algae-data-vis-richness-time, message=FALSE, warning=FALSE, fig.cap="Benthic algal richness by year at ARIK and COMO"}
+
+# Note that you can also send flattened data 
+# to the ecocomDP plotting functions
+my_data_benthic %>% ecocomDP::plot_taxa_diversity(time_window_size = "year")
+
+```
+
+
+## Check for duplicate taxon counts within a sampleID
+
+```{r more-cleaning, message=FALSE, warning=FALSE}
 
 # Note that for this data product
 # neon_sample_id = event_id
-# event_id is the grouping variable for the observation 
+# event_id is a grouping variable for the observation 
 # table in the ecocomDP data model
 
 
@@ -236,7 +281,8 @@ my_data_benthic %>%
 # counts should be summed.
 my_data_summed <- my_data_benthic %>%
   group_by(event_id,taxon_id) %>%
-  summarize(value = sum(value, na.rm = FALSE))
+  summarize(value = sum(value, na.rm = FALSE),
+            observation_id = dplyr::first(observation_id))
 
 my_data_cleaned <- my_data_benthic %>%
   dplyr::select(
@@ -256,16 +302,6 @@ my_data_cleaned %>%
 
 ```
 
-We can also make a quick plot to see which taxon rank (i.e., what level of taxonomic specificity was achieved by the expert taxonomist) is most common:
-
-```{r plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."}
-
-# which taxon rank is most common
-my_data_cleaned %>%
-  ggplot(aes(taxon_rank)) +
-  geom_bar()
-
-```
 
 ## Species Accumulation Curve
 Next, we will plot the species accumulation curve for these samples. To do so, we will first need to convert the density data from m2 to cm2, and make the data 'wide':
