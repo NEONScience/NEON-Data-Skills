@@ -14,8 +14,8 @@ require(markdown)
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
 dirs <- c(
-  "/R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts",
-  "/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae")
+  "R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts",
+  "R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae")
 
 #################### Set up Input Variables #############################
 
