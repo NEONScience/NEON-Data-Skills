@@ -24,7 +24,7 @@ dirs <- c(
 subDir <- dirs[1:2]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"C:/Users/esokol/Documents/GitHub/sokole/NEON-Data-Skills"
+gitRepoPath <-"C:/Users/esokol/Documents/GitHub/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
