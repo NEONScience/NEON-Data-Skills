@@ -241,8 +241,8 @@ all_tabs_inv &lt;- neonUtilities::loadByProduct(
 # data product
 names(all_tabs_inv)
 
-## [1] &quot;categoricalCodes_20120&quot; &quot;inv_fieldData&quot;          &quot;inv_persample&quot;          &quot;inv_taxonomyProcessed&quot;  &quot;issueLog_20120&quot;         &quot;readme_20120&quot;           &quot;validation_20120&quot;      
-## [8] &quot;variables_20120&quot;
+## [1] &quot;categoricalCodes_20120&quot; &quot;inv_fieldData&quot;          &quot;inv_persample&quot;          &quot;inv_taxonomyProcessed&quot;  &quot;issueLog_20120&quot;        
+## [6] &quot;readme_20120&quot;           &quot;validation_20120&quot;       &quot;variables_20120&quot;
 
 # extract items from list and put in R env. 
 all_tabs_inv %&gt;% list2env(.GlobalEnv)
@@ -454,6 +454,7 @@ table_observation_cleaned &lt;- table_observation %&gt;%
              taxa_list_cleaned$acceptedTaxonID,
          !sampleID %in% c(&quot;MAYF.20190729.CORE.1&quot;,
                           &quot;MAYF.20200713.CORE.1&quot;,
+                          &quot;MAYF.20210721.CORE.1&quot;,
                           &quot;POSE.20160718.HESS.1&quot;)) 
                       #this is an outlier sampleID
 
@@ -637,7 +638,7 @@ table_sample_by_taxon_density_wide %&gt;%
   vegan::renyi(scales = 0, hill = TRUE) %&gt;%
   mean()
 
-## [1] 29.99782
+## [1] 30.06114
 </code></pre>
 
 <h4>Comparing alpha diversity calculated using different orders:</h4>
@@ -717,7 +718,7 @@ data_nested_by_siteID %&gt;% mutate(
 ##   siteID data                 alpha_q0 alpha_q1 alpha_q2
 ##   &lt;chr&gt;  &lt;list&gt;                  &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 ARIK   &lt;tibble [147 x 458]&gt;     24.7     10.2     6.52
-## 2 MAYF   &lt;tibble [150 x 458]&gt;     22.1     12.0     8.14
+## 2 MAYF   &lt;tibble [149 x 458]&gt;     22.2     12.0     8.19
 ## 3 POSE   &lt;tibble [162 x 458]&gt;     42.1     20.7    13.0
 
 # Note that POSE has the highest mean alpha diversity
@@ -740,7 +741,7 @@ data_nested_by_siteID %&gt;% mutate(
 ##   siteID data                 gamma_q0
 ##   &lt;chr&gt;  &lt;list&gt;                  &lt;dbl&gt;
 ## 1 ARIK   &lt;tibble [147 x 458]&gt;      243
-## 2 MAYF   &lt;tibble [150 x 458]&gt;      239
+## 2 MAYF   &lt;tibble [149 x 458]&gt;      239
 ## 3 POSE   &lt;tibble [162 x 458]&gt;      337
 
 # Note that POSE has the highest gamma diversity
@@ -782,7 +783,7 @@ diversity_partitioning_results %&gt;%
 
 ##   siteID n_samples alpha_q0 alpha_q1 gamma_q0  gamma_q1   beta_q0  beta_q1
 ## 1   ARIK       147 24.69388 10.19950      243  35.70716  9.840496 3.500873
-## 2   MAYF       150 22.10667 11.95056      239  65.79511 10.811218 5.505610
+## 2   MAYF       149 22.24832 12.02405      239  65.77590 10.742383 5.470360
 ## 3   POSE       162 42.11728 20.70184      337 100.16506  8.001466 4.838462
 </code></pre>
 
@@ -795,57 +796,37 @@ my_nmds_result &lt;- table_sample_by_taxon_density_wide %&gt;% vegan::metaMDS()
 
 ## Square root transformation
 ## Wisconsin double standardization
-## Run 0 stress 0.1539629 
-## Run 1 stress 0.1540153 
-## ... Procrustes: rmse 0.002651856  max resid 0.01303688 
-## Run 2 stress 0.1539852 
-## ... Procrustes: rmse 0.002740661  max resid 0.01436142 
-## Run 3 stress 0.1540099 
-## ... Procrustes: rmse 0.002038891  max resid 0.01292298 
-## Run 4 stress 0.1540871 
-## ... Procrustes: rmse 0.004162578  max resid 0.01475293 
-## Run 5 stress 0.1541205 
-## ... Procrustes: rmse 0.004097226  max resid 0.01129591 
-## Run 6 stress 0.1539877 
-## ... Procrustes: rmse 0.001450366  max resid 0.01271247 
-## Run 7 stress 0.1540009 
-## ... Procrustes: rmse 0.002797444  max resid 0.01414582 
-## Run 8 stress 0.1540012 
-## ... Procrustes: rmse 0.002285528  max resid 0.01350483 
-## Run 9 stress 0.1539886 
-## ... Procrustes: rmse 0.001900848  max resid 0.01320321 
-## Run 10 stress 0.1541053 
-## ... Procrustes: rmse 0.002594632  max resid 0.01222768 
-## Run 11 stress 0.1541164 
-## ... Procrustes: rmse 0.002114083  max resid 0.01140606 
-## Run 12 stress 0.154058 
-## ... Procrustes: rmse 0.001987583  max resid 0.01236406 
-## Run 13 stress 0.1540057 
-## ... Procrustes: rmse 0.001796919  max resid 0.01288192 
-## Run 14 stress 0.1539843 
-## ... Procrustes: rmse 0.003086053  max resid 0.01465969 
-## Run 15 stress 0.1539626 
-## ... New best solution
-## ... Procrustes: rmse 0.002908647  max resid 0.01466117 
-## Run 16 stress 0.1540166 
-## ... Procrustes: rmse 0.001421987  max resid 0.01211674 
-## Run 17 stress 0.1539554 
-## ... New best solution
-## ... Procrustes: rmse 0.002252596  max resid 0.01419733 
-## Run 18 stress 0.1541602 
-## ... Procrustes: rmse 0.003100343  max resid 0.01356708 
-## Run 19 stress 0.1539702 
-## ... Procrustes: rmse 0.0011063  max resid 0.01132138 
-## Run 20 stress 0.1540357 
-## ... Procrustes: rmse 0.001777921  max resid 0.01178786 
+## Run 0 stress 0.2280867 
+## Run 1 stress 0.2501797 
+## Run 2 stress 0.2287714 
+## Run 3 stress 0.2307223 
+## Run 4 stress 0.2367722 
+## Run 5 stress 0.2365272 
+## Run 6 stress 0.2289284 
+## Run 7 stress 0.2313214 
+## Run 8 stress 0.2342815 
+## Run 9 stress 0.2291856 
+## Run 10 stress 0.2303768 
+## Run 11 stress 0.2384508 
+## Run 12 stress 0.2530952 
+## Run 13 stress 0.2540397 
+## Run 14 stress 0.2539873 
+## Run 15 stress 0.2280952 
+## ... Procrustes: rmse 0.005410237  max resid 0.1136794 
+## Run 16 stress 0.2301607 
+## Run 17 stress 0.2300076 
+## Run 18 stress 0.2281334 
+## ... Procrustes: rmse 0.002124235  max resid 0.04102852 
+## Run 19 stress 0.2390638 
+## Run 20 stress 0.2282503 
+## ... Procrustes: rmse 0.01022927  max resid 0.1677217 
 ## *** No convergence -- monoMDS stopping criteria:
-##      2: no. of iterations &gt;= maxit
-##     18: stress ratio &gt; sratmax
+##     20: stress ratio &gt; sratmax
 
 # plot stress
 my_nmds_result$stress
 
-## [1] 0.1539554
+## [1] 0.2280867
 
 p1 &lt;- vegan::ordiplot(my_nmds_result)
 vegan::ordilabel(p1, &quot;species&quot;)
@@ -865,30 +846,37 @@ nmds_scores &lt;- my_nmds_result %&gt;%
 # # How I determined the outlier(s)
 nmds_scores %&gt;% arrange(desc(NMDS1)) %&gt;% head()
 
-##               sampleID       NMDS1         NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType samplerType benthicArea          inv_dens_unit
-## 1 MAYF.20210721.CORE.1 0.468694789 -0.0001462935      D08   MAYF MAYF.AOS.reach 2021-07-21 14:02:00 MAYF.20210721 2021         run        core       0.006 count per square meter
-## 2 MAYF.20160321.CORE.2 0.009574481  0.0001618065      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run        core       0.006 count per square meter
-## 3 MAYF.20200713.CORE.2 0.005557342  0.0005689838      D08   MAYF MAYF.AOS.reach 2020-07-13 14:48:00 MAYF.20200713 2020         run        core       0.006 count per square meter
-## 4 MAYF.20181029.CORE.3 0.004197690  0.0002513757      D08   MAYF MAYF.AOS.reach 2018-10-29 14:45:00 MAYF.20181029 2018         run        core       0.006 count per square meter
-## 5 MAYF.20170314.CORE.1 0.003353127 -0.0012315431      D08   MAYF MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017         run        core       0.006 count per square meter
-## 6 MAYF.20160321.CORE.3 0.003204478  0.0007044842      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run        core       0.006 count per square meter
+##               sampleID    NMDS1      NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType
+## 1 MAYF.20190311.CORE.2 1.590745  1.0833382      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019         run
+## 2 MAYF.20201117.CORE.2 1.395784  0.4986856      D08   MAYF MAYF.AOS.reach 2020-11-17 16:33:00 MAYF.20201117 2020         run
+## 3 MAYF.20180726.CORE.2 1.372494  0.2603682      D08   MAYF MAYF.AOS.reach 2018-07-26 14:17:00 MAYF.20180726 2018         run
+## 4 MAYF.20190311.CORE.1 1.299395  1.0075703      D08   MAYF MAYF.AOS.reach 2019-03-11 15:00:00 MAYF.20190311 2019         run
+## 5 MAYF.20170314.CORE.1 1.132679  1.6469463      D08   MAYF MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017         run
+## 6 MAYF.20180326.CORE.3 1.130687 -0.7139679      D08   MAYF MAYF.AOS.reach 2018-03-26 14:50:00 MAYF.20180326 2018         run
+##   samplerType benthicArea          inv_dens_unit
+## 1        core       0.006 count per square meter
+## 2        core       0.006 count per square meter
+## 3        core       0.006 count per square meter
+## 4        core       0.006 count per square meter
+## 5        core       0.006 count per square meter
+## 6        core       0.006 count per square meter
 
 nmds_scores %&gt;% arrange(desc(NMDS1)) %&gt;% tail()
 
-##                    sampleID        NMDS1         NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType     samplerType benthicArea
-## 454 ARIK.20140714.KICKNET.3 -0.003572811 -0.0009498487      D10   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014         run modifiedKicknet       0.250
-## 455 ARIK.20140929.KICKNET.1 -0.003729984 -0.0004958496      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
-## 456    MAYF.20160321.SNAG.3 -0.003752960  0.0020661372      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run            snag       0.152
-## 457 ARIK.20140929.KICKNET.2 -0.003760480 -0.0003507315      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
-## 458    ARIK.20160331.CORE.3 -0.004317151 -0.0012368735      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331 2016        pool            core       0.006
-## 459    MAYF.20210721.CORE.2 -0.004424894  0.0004146486      D08   MAYF MAYF.AOS.reach 2021-07-21 14:02:00 MAYF.20210721 2021         run            core       0.006
-##              inv_dens_unit
-## 454 count per square meter
-## 455 count per square meter
-## 456 count per square meter
-## 457 count per square meter
-## 458 count per square meter
-## 459 count per square meter
+##                    sampleID      NMDS1        NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType
+## 453 ARIK.20160919.KICKNET.5 -0.8577931 -0.245144245      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016         run
+## 454 ARIK.20160919.KICKNET.1 -0.8694139  0.291753483      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016         run
+## 455    ARIK.20150714.CORE.3 -0.8843672  0.013601377      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714 2015        pool
+## 456    ARIK.20150714.CORE.2 -1.0465497  0.004066437      D10   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714 2015        pool
+## 457 ARIK.20160919.KICKNET.4 -1.0937181 -0.148046639      D10   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919 2016         run
+## 458    ARIK.20160331.CORE.3 -1.1791981 -0.327145374      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331 2016        pool
+##         samplerType benthicArea          inv_dens_unit
+## 453 modifiedKicknet       0.250 count per square meter
+## 454 modifiedKicknet       0.250 count per square meter
+## 455            core       0.006 count per square meter
+## 456            core       0.006 count per square meter
+## 457 modifiedKicknet       0.250 count per square meter
+## 458            core       0.006 count per square meter
 
 # Plot samples in community composition space by year
 nmds_scores %&gt;%

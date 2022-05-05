@@ -308,6 +308,7 @@ table_observation_cleaned <- table_observation %>%
              taxa_list_cleaned$acceptedTaxonID,
          !sampleID %in% c("MAYF.20190729.CORE.1",
                           "MAYF.20200713.CORE.1",
+                          "MAYF.20210721.CORE.1",
                           "POSE.20160718.HESS.1")) 
                       #this is an outlier sampleID
 
