@@ -54,8 +54,8 @@ See the ecocomDP github repo here:
 <a href="https://github.com/EDIorg/ecocomDP">https://github.com/EDIorg/ecocomDP</a>.
 
 <figure>
-<a href="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg">
-<img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
+<a href="https://github.com/EDIorg/ecocomDP/blob/master/model/table_visualization.md">
+<img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
 <figcaption> Data model workflow showing relationships between various tables in ecocomDP model. Source: EDIorg</figcaption>
 </figure>
 
