@@ -14,8 +14,8 @@ require(markdown)
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
 dirs <- c(
-  "/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts",
-  "/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae")
+  "/R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts",
+  "/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae")
 
 #################### Set up Input Variables #############################
 
@@ -24,7 +24,7 @@ dirs <- c(
 subDir <- dirs[1:2]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"C:/Users/esokol/Documents/GitHub/sokole/NEON-Data-Skills"
+gitRepoPath <-"C:/Users/esokol/Documents/GitHub/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
