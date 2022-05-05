@@ -1,4 +1,4 @@
-## ----load libraries, warning=FALSE----------------------------
+## ----load libraries, warning=FALSE---------------------------------------------------------------------------------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -17,7 +17,7 @@ library(vegan)
 
 
 
-## ----download-data, message=FALSE, warning=FALSE, results='hide'----
+## ----download-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------------------------------------------------------------------------------
 
 # Macroinvert dpid
 my_dpid <- 'DP1.20120.001'
@@ -34,7 +34,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 
 
 
-## ----download-overview, message=FALSE, warning=FALSE----------
+## ----download-overview, message=FALSE, warning=FALSE---------------------------------------------------------------------------------------------------------------------------------
 
 
 # what tables do you get with macroinvertebrate 
@@ -61,7 +61,7 @@ View(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing, message=FALSE, warning=FALSE-----
+## ----munging-and-organizing, message=FALSE, warning=FALSE----------------------------------------------------------------------------------------------------------------------------
 
 # It is good to check for duplicate records. This had occurred in the past in 
 # data published in the inv_fieldData table in 2021. Those duplicates were 
@@ -339,7 +339,7 @@ table_observation_by_order %>%
 
 
 
-## ----make-wide, message=FALSE, warning=FALSE------------------
+## ----make-wide, message=FALSE, warning=FALSE-----------------------------------------------------------------------------------------------------------------------------------------
 
 
 # select only site by species density info and remove duplicate records
@@ -368,7 +368,7 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----calc-alpha, message=FALSE, warning=FALSE-----------------
+## ----calc-alpha, message=FALSE, warning=FALSE----------------------------------------------------------------------------------------------------------------------------------------
 
 # Here we use vegan::renyi to calculate Hill numbers
 # If hill = FALSE, the function returns an entropy
@@ -385,7 +385,7 @@ table_sample_by_taxon_density_wide %>%
 
 
 
-## ----simulated-abg, message=FALSE, warning=FALSE--------------
+## ----simulated-abg, message=FALSE, warning=FALSE-------------------------------------------------------------------------------------------------------------------------------------
 # even distribution, orders q = 0 and q = 1 for 10 taxa
 vegan::renyi(
   c(spp.a = 10, spp.b = 10, spp.c = 10, 
@@ -406,7 +406,7 @@ vegan::renyi(
 
 
 
-## ----compare-q-NEON, message=FALSE, warning=FALSE-------------
+## ----compare-q-NEON, message=FALSE, warning=FALSE------------------------------------------------------------------------------------------------------------------------------------
 
 # Nest data by siteID
 data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
@@ -495,7 +495,7 @@ diversity_partitioning_results %>%
 
 
 
-## ----local-regional-var, echo=F-------------------------------
+## ----local-regional-var, echo=F------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ##########################################################
 # local and regional scale variability

@@ -10,7 +10,7 @@ packagesLibraries: tidyverse, neonUtilities, vegan
 topics: organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/01_working_with_NEON_macroinverts.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts/01_working_with_NEON_macroinverts.R
 tutorialSeries: 
 urlTitle: aquatic-diversity-macroinvertebrates
 ---
@@ -58,14 +58,14 @@ There are also two optional sections in this code chunk: clearing your environme
     # load libraries 
     library(tidyverse)
 
-    ## -- Attaching packages ----------------------- tidyverse 1.3.1 --
+    ## -- Attaching packages ---------------------------------------------------------------------------------------------------------------------------------------------- tidyverse 1.3.1 --
 
     ## v ggplot2 3.3.5     v purrr   0.3.4
     ## v tibble  3.1.6     v dplyr   1.0.7
     ## v tidyr   1.1.4     v stringr 1.4.0
     ## v readr   2.1.1     v forcats 0.5.1
 
-    ## -- Conflicts -------------------------- tidyverse_conflicts() --
+    ## -- Conflicts ------------------------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
@@ -107,10 +107,8 @@ Now that we have the data downloaded, we will need to do some 'data munging' to 
     # data product
     names(all_tabs_inv)
 
-    ## [1] "categoricalCodes_20120" "inv_fieldData"         
-    ## [3] "inv_persample"          "inv_taxonomyProcessed" 
-    ## [5] "issueLog_20120"         "readme_20120"          
-    ## [7] "validation_20120"       "variables_20120"
+    ## [1] "categoricalCodes_20120" "inv_fieldData"          "inv_persample"          "inv_taxonomyProcessed"  "issueLog_20120"         "readme_20120"           "validation_20120"      
+    ## [8] "variables_20120"
 
     # extract items from list and put in R env. 
     all_tabs_inv %>% list2env(.GlobalEnv)
@@ -283,8 +281,7 @@ Next, we will perform several operations in a row to re-organize our data. Each 
 
     ## # A tibble: 0 x 3
     ## # Groups:   sampleID [0]
-    ## # ... with 3 variables: sampleID <chr>, acceptedTaxonID <chr>,
-    ## #   n_obs <int>
+    ## # ... with 3 variables: sampleID <chr>, acceptedTaxonID <chr>, n_obs <int>
 
     # extract sample info
     table_sample_info <- table_observation %>%
@@ -351,20 +348,13 @@ Next, we will perform several operations in a row to re-organize our data. Each 
     sampling_effort_summary %>% as.data.frame() %>% 
       head() %>% print()
 
-    ##   siteID year     samplerType event_count sample_count
-    ## 1   ARIK 2014            core           2            6
-    ## 2   ARIK 2014 modifiedKicknet           2           10
-    ## 3   ARIK 2015            core           3           11
-    ## 4   ARIK 2015 modifiedKicknet           3           13
-    ## 5   ARIK 2016            core           3            9
-    ## 6   ARIK 2016 modifiedKicknet           3           15
-    ##   habitat_count
-    ## 1             1
-    ## 2             1
-    ## 3             2
-    ## 4             2
-    ## 5             1
-    ## 6             1
+    ##   siteID year     samplerType event_count sample_count habitat_count
+    ## 1   ARIK 2014            core           2            6             1
+    ## 2   ARIK 2014 modifiedKicknet           2           10             1
+    ## 3   ARIK 2015            core           3           11             2
+    ## 4   ARIK 2015 modifiedKicknet           3           13             2
+    ## 5   ARIK 2016            core           3            9             1
+    ## 6   ARIK 2016 modifiedKicknet           3           15             1
 
 ## Working with 'Long' data
 'Reshaping' your data to use as an input to a particular fuction may require you to consider: do I want 'long' or 'wide' data? Here's a link to <a href="https://www.theanalysisfactor.com/wide-and-long-data/">a great article from 'the analysis factor' that describes the differences</a>.
@@ -382,7 +372,7 @@ For this first step, we will use data in a 'long' table:
       facet_wrap(~ domainID + siteID) +
       geom_col()
 
-![Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-1.png)
+![Horizontal bar graph showing the number of taxa for each taxonomic rank at the D02:POSE, D08:MAYF, and D10:ARIK sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts/rfigs/long-data-1.png)
 
     # library(scales)
     # sum densities by order for each sampleID
@@ -398,17 +388,15 @@ For this first step, we will use data in a 'long' table:
     table_observation_by_order %>% head()
 
     ## # A tibble: 6 x 8
-    ## # Groups:   domainID, siteID, year, eventID, sampleID,
-    ## #   habitatType [1]
-    ##   domainID siteID  year eventID       sampleID habitatType order
-    ##   <chr>    <chr>  <dbl> <chr>         <chr>    <chr>       <chr>
-    ## 1 D02      POSE    2014 POSE.20140722 POSE.20~ riffle      Bran~
-    ## 2 D02      POSE    2014 POSE.20140722 POSE.20~ riffle      Cole~
-    ## 3 D02      POSE    2014 POSE.20140722 POSE.20~ riffle      Deca~
-    ## 4 D02      POSE    2014 POSE.20140722 POSE.20~ riffle      Dipt~
-    ## 5 D02      POSE    2014 POSE.20140722 POSE.20~ riffle      Ephe~
-    ## 6 D02      POSE    2014 POSE.20140722 POSE.20~ riffle      Mega~
-    ## # ... with 1 more variable: order_dens <dbl>
+    ## # Groups:   domainID, siteID, year, eventID, sampleID, habitatType [1]
+    ##   domainID siteID  year eventID       sampleID               habitatType order            order_dens
+    ##   <chr>    <chr>  <dbl> <chr>         <chr>                  <chr>       <chr>                 <dbl>
+    ## 1 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Branchiobdellida      516. 
+    ## 2 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Coleoptera            516. 
+    ## 3 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Decapoda               86.0
+    ## 4 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Diptera              5419. 
+    ## 5 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Ephemeroptera        5301. 
+    ## 6 D02      POSE    2014 POSE.20140722 POSE.20140722.SURBER.1 riffle      Megaloptera           387.
 
     # stacked rank occurrence plot
     table_observation_by_order %>%
@@ -424,7 +412,7 @@ For this first step, we will use data in a 'long' table:
         theme(axis.text.x = 
                   element_text(angle = 45, hjust = 1))
 
-![Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-2-1.png)
+![Bar graph of the occurence of each taxonomic order at the D02:POSE, D08:MAYF, and D10:ARIK sites. Occurence data at each site is depicted as stacked bars for each order, where a red bar represents D10:ARIK, a green bar represents D08:MAYF, and a blue bar represents the D02:POSE site. The data has also been reordered to show the greatest to least occuring taxonomic order from left to right.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts/rfigs/long-data-2-1.png)
 
     # faceted densities plot
     table_observation_by_order %>%
@@ -438,7 +426,7 @@ For this first step, we will use data in a 'long' table:
       theme(axis.text.x = 
                 element_text(angle = 45, hjust = 1))
 
-![Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/long-data-3-1.png)
+![Box plots of the log density of each taxonomic order per site. This graph consists of three box plots, organized vertically in one column, that correspond to log density data for each site. This is achieved through the use of the Facet_grid function in the ggplot call.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts/rfigs/long-data-3-1.png)
 
 ### Making Data 'wide'
 For the next process, we will need to make our data table in the 'wide' format.
@@ -651,14 +639,10 @@ Let's compare the different orders q = 0, 1, and 2 measures of alpha diversity a
     diversity_partitioning_results %>% 
       select(-data) %>% as.data.frame() %>% print()
 
-    ##   siteID n_samples alpha_q0 alpha_q1 gamma_q0  gamma_q1
-    ## 1   ARIK       147 24.69388 10.19950      243  35.70716
-    ## 2   MAYF       150 22.10667 11.95056      239  65.79511
-    ## 3   POSE       162 42.11728 20.70184      337 100.16506
-    ##     beta_q0  beta_q1
-    ## 1  9.840496 3.500873
-    ## 2 10.811218 5.505610
-    ## 3  8.001466 4.838462
+    ##   siteID n_samples alpha_q0 alpha_q1 gamma_q0  gamma_q1   beta_q0  beta_q1
+    ## 1   ARIK       147 24.69388 10.19950      243  35.70716  9.840496 3.500873
+    ## 2   MAYF       150 22.10667 11.95056      239  65.79511 10.811218 5.505610
+    ## 3   POSE       162 42.11728 20.70184      337 100.16506  8.001466 4.838462
 
 
 
@@ -673,60 +657,58 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.1539629 
-    ## Run 1 stress 0.1539993 
-    ## ... Procrustes: rmse 0.002175369  max resid 0.01301153 
-    ## Run 2 stress 0.1540411 
-    ## ... Procrustes: rmse 0.002688114  max resid 0.01323045 
-    ## Run 3 stress 0.1542162 
-    ## ... Procrustes: rmse 0.003773808  max resid 0.01524218 
-    ## Run 4 stress 0.1540329 
-    ## ... Procrustes: rmse 0.002157858  max resid 0.01313514 
-    ## Run 5 stress 0.1540121 
-    ## ... Procrustes: rmse 0.002024279  max resid 0.01303598 
-    ## Run 6 stress 0.1540764 
-    ## ... Procrustes: rmse 0.003337194  max resid 0.01373862 
-    ## Run 7 stress 0.1541191 
-    ## ... Procrustes: rmse 0.003465477  max resid 0.01264175 
-    ## Run 8 stress 0.1540079 
-    ## ... Procrustes: rmse 0.002608722  max resid 0.01399176 
-    ## Run 9 stress 0.154006 
-    ## ... Procrustes: rmse 0.00292766  max resid 0.01423544 
-    ## Run 10 stress 0.153974 
-    ## ... Procrustes: rmse 0.002096332  max resid 0.01345928 
-    ## Run 11 stress 0.1540761 
-    ## ... Procrustes: rmse 0.003676006  max resid 0.01423307 
-    ## Run 12 stress 0.154066 
-    ## ... Procrustes: rmse 0.001528465  max resid 0.01084361 
-    ## Run 13 stress 0.1540723 
-    ## ... Procrustes: rmse 0.001946529  max resid 0.0120672 
-    ## Run 14 stress 0.154063 
-    ## ... Procrustes: rmse 0.003092963  max resid 0.01319845 
-    ## Run 15 stress 0.1539997 
-    ## ... Procrustes: rmse 0.001991329  max resid 0.01308356 
-    ## Run 16 stress 0.1539953 
-    ## ... Procrustes: rmse 0.001301893  max resid 0.01154638 
-    ## Run 17 stress 0.1540851 
-    ## ... Procrustes: rmse 0.003425331  max resid 0.01386348 
-    ## Run 18 stress 0.1540216 
-    ## ... Procrustes: rmse 0.002797255  max resid 0.01397694 
-    ## Run 19 stress 0.1539585 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.002486093  max resid 0.0143493 
-    ## Run 20 stress 0.1541075 
-    ## ... Procrustes: rmse 0.002368381  max resid 0.01316174 
-    ## *** No convergence -- monoMDS stopping criteria:
-    ##     19: stress ratio > sratmax
-    ##      1: scale factor of the gradient < sfgrmin
+    ## Run 1 stress 0.1539767 
+    ## ... Procrustes: rmse 0.001456279  max resid 0.0130088 
+    ## Run 2 stress 0.1540463 
+    ## ... Procrustes: rmse 0.001478538  max resid 0.01100717 
+    ## Run 3 stress 0.1540083 
+    ## ... Procrustes: rmse 0.002752329  max resid 0.01403892 
+    ## Run 4 stress 0.154025 
+    ## ... Procrustes: rmse 0.003109349  max resid 0.01420534 
+    ## Run 5 stress 0.154004 
+    ## ... Procrustes: rmse 0.002339954  max resid 0.01360257 
+    ## Run 6 stress 0.1539845 
+    ## ... Procrustes: rmse 0.0022146  max resid 0.01323376 
+    ## Run 7 stress 0.153983 
+    ## ... Procrustes: rmse 0.002858378  max resid 0.01451854 
+    ## Run 8 stress 0.1540272 
+    ## ... Procrustes: rmse 0.002907291  max resid 0.01431541 
+    ## Run 9 stress 0.1540572 
+    ## ... Procrustes: rmse 0.003313091  max resid 0.01402637 
+    ## Run 10 stress 0.1539723 
+    ## ... Procrustes: rmse 0.0007826332  max resid 0.01296956 
+    ## Run 11 stress 0.1539932 
+    ## ... Procrustes: rmse 0.002064023  max resid 0.01319865 
+    ## Run 12 stress 0.1539868 
+    ## ... Procrustes: rmse 0.001340752  max resid 0.01284933 
+    ## Run 13 stress 0.1539945 
+    ## ... Procrustes: rmse 0.001514821  max resid 0.01298989 
+    ## Run 14 stress 0.1540042 
+    ## ... Procrustes: rmse 0.001461327  max resid 0.01276956 
+    ## Run 15 stress 0.1539799 
+    ## ... Procrustes: rmse 0.001067889  max resid 0.01289404 
+    ## Run 16 stress 0.153979 
+    ## ... Procrustes: rmse 0.003052514  max resid 0.01472061 
+    ## Run 17 stress 0.1541746 
+    ## ... Procrustes: rmse 0.003689278  max resid 0.01102486 
+    ## Run 18 stress 0.1540212 
+    ## ... Procrustes: rmse 0.001938095  max resid 0.01278599 
+    ## Run 19 stress 0.1541279 
+    ## ... Procrustes: rmse 0.003843953  max resid 0.009908174 
+    ## ... Similar to previous best
+    ## Run 20 stress 0.1540085 
+    ## ... Procrustes: rmse 0.002662504  max resid 0.01400464 
+    ## *** Solution reached
 
     # plot stress
     my_nmds_result$stress
 
-    ## [1] 0.1539585
+    ## [1] 0.1539629
 
     p1 <- vegan::ordiplot(my_nmds_result)
     vegan::ordilabel(p1, "species")
 
-![Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-1.png)
+![Two-dimension ordination plot of NMDS results. NMDS procedure resulted in a stress value of 0.21. Plot contains sampleIDs depicted in circles, and species, which have been labeled using the ordilabel function.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts/rfigs/NMDS-1.png)
 
     # merge NMDS scores with sampleID information for plotting
     nmds_scores <- my_nmds_result %>% 
@@ -740,51 +722,23 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
     # # How I determined the outlier(s)
     nmds_scores %>% arrange(desc(NMDS1)) %>% head()
 
-    ##               sampleID       NMDS1         NMDS2 domainID
-    ## 1 MAYF.20210721.CORE.1 0.465567615 -4.765579e-05      D08
-    ## 2 MAYF.20160321.CORE.2 0.009434286 -3.460649e-04      D08
-    ## 3 MAYF.20200713.CORE.2 0.005578730  1.329552e-04      D08
-    ## 4 MAYF.20181029.CORE.3 0.004240693  1.868204e-04      D08
-    ## 5 MAYF.20160321.CORE.3 0.003333275  6.165325e-04      D08
-    ## 6 MAYF.20210315.CORE.3 0.003037638 -3.400219e-04      D08
-    ##   siteID  namedLocation         collectDate       eventID year
-    ## 1   MAYF MAYF.AOS.reach 2021-07-21 14:02:00 MAYF.20210721 2021
-    ## 2   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016
-    ## 3   MAYF MAYF.AOS.reach 2020-07-13 14:48:00 MAYF.20200713 2020
-    ## 4   MAYF MAYF.AOS.reach 2018-10-29 14:45:00 MAYF.20181029 2018
-    ## 5   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016
-    ## 6   MAYF MAYF.AOS.reach 2021-03-15 14:05:00 MAYF.20210315 2021
-    ##   habitatType samplerType benthicArea          inv_dens_unit
-    ## 1         run        core       0.006 count per square meter
-    ## 2         run        core       0.006 count per square meter
-    ## 3         run        core       0.006 count per square meter
-    ## 4         run        core       0.006 count per square meter
-    ## 5         run        core       0.006 count per square meter
-    ## 6         run        core       0.006 count per square meter
+    ##               sampleID       NMDS1         NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType samplerType benthicArea          inv_dens_unit
+    ## 1 MAYF.20210721.CORE.1 0.471155397 -0.0001254131      D08   MAYF MAYF.AOS.reach 2021-07-21 14:02:00 MAYF.20210721 2021         run        core       0.006 count per square meter
+    ## 2 MAYF.20160321.CORE.2 0.009545017  0.0004978245      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run        core       0.006 count per square meter
+    ## 3 MAYF.20200713.CORE.2 0.005445305  0.0007612160      D08   MAYF MAYF.AOS.reach 2020-07-13 14:48:00 MAYF.20200713 2020         run        core       0.006 count per square meter
+    ## 4 MAYF.20181029.CORE.3 0.004204757  0.0002701243      D08   MAYF MAYF.AOS.reach 2018-10-29 14:45:00 MAYF.20181029 2018         run        core       0.006 count per square meter
+    ## 5 MAYF.20170314.CORE.1 0.003581016  0.0009157454      D08   MAYF MAYF.AOS.reach 2017-03-14 14:11:00 MAYF.20170314 2017         run        core       0.006 count per square meter
+    ## 6 MAYF.20210315.CORE.3 0.003162908 -0.0001154489      D08   MAYF MAYF.AOS.reach 2021-03-15 14:05:00 MAYF.20210315 2021         run        core       0.006 count per square meter
 
     nmds_scores %>% arrange(desc(NMDS1)) %>% tail()
 
-    ##                    sampleID        NMDS1         NMDS2 domainID
-    ## 454 ARIK.20140929.KICKNET.1 -0.003636238  5.774169e-04      D10
-    ## 455 ARIK.20140714.KICKNET.3 -0.003661104  1.430282e-04      D10
-    ## 456 ARIK.20140929.KICKNET.3 -0.003670635 -5.184282e-05      D10
-    ## 457    ARIK.20150714.CORE.2 -0.003833162 -1.023877e-03      D10
-    ## 458 ARIK.20160919.KICKNET.4 -0.004088953 -5.527699e-04      D10
-    ## 459    ARIK.20160331.CORE.3 -0.004445283  4.916324e-05      D10
-    ##     siteID  namedLocation         collectDate       eventID
-    ## 454   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929
-    ## 455   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714
-    ## 456   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929
-    ## 457   ARIK ARIK.AOS.reach 2015-07-14 14:55:00 ARIK.20150714
-    ## 458   ARIK ARIK.AOS.reach 2016-09-19 22:06:00 ARIK.20160919
-    ## 459   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331
-    ##     year habitatType     samplerType benthicArea
-    ## 454 2014         run modifiedKicknet       0.250
-    ## 455 2014         run modifiedKicknet       0.250
-    ## 456 2014         run modifiedKicknet       0.250
-    ## 457 2015        pool            core       0.006
-    ## 458 2016         run modifiedKicknet       0.250
-    ## 459 2016        pool            core       0.006
+    ##                    sampleID        NMDS1         NMDS2 domainID siteID  namedLocation         collectDate       eventID year habitatType     samplerType benthicArea
+    ## 454 ARIK.20140714.KICKNET.1 -0.003323642 -0.0010929290      D10   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014         run modifiedKicknet       0.250
+    ## 455 ARIK.20140714.KICKNET.3 -0.003368456 -0.0014730421      D10   ARIK ARIK.AOS.reach 2014-07-14 17:51:00 ARIK.20140714 2014         run modifiedKicknet       0.250
+    ## 456 ARIK.20140929.KICKNET.1 -0.003639185 -0.0010308416      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
+    ## 457 ARIK.20140929.KICKNET.2 -0.003697943 -0.0008966032      D10   ARIK ARIK.AOS.reach 2014-09-29 18:20:00 ARIK.20140929 2014         run modifiedKicknet       0.250
+    ## 458    ARIK.20160331.CORE.3 -0.004057108 -0.0018836454      D10   ARIK ARIK.AOS.reach 2016-03-31 15:41:00 ARIK.20160331 2016        pool            core       0.006
+    ## 459    MAYF.20160321.SNAG.3 -0.004210699  0.0014381060      D08   MAYF MAYF.AOS.reach 2016-03-21 16:09:00 MAYF.20160321 2016         run            snag       0.152
     ##              inv_dens_unit
     ## 454 count per square meter
     ## 455 count per square meter
@@ -800,7 +754,7 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
       geom_point() +
       facet_wrap(~ as.factor(year))
 
-![Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-2.png)
+![Ordination plots of community composition faceted by year. These plots were acheived by merging NMDS scores with sampleID information in order to plot samples by sampler type(shape) and siteID(color).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts/rfigs/NMDS-2.png)
 
     # Plot samples in community composition space
     # facet by siteID and habitat type
@@ -811,4 +765,4 @@ Finally, we will use Nonmetric Multidimensional Scaling (NMDS) to ordinate sampl
       geom_point() +
       facet_grid(habitatType ~ siteID, scales = "free")
 
-![Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/01_working_with_NEON_macroinverts/rfigs/NMDS-3.png)
+![Ordination plots in community composition space faceted by siteID and habitat type. Points are colored to represent different years, as well as different shapes for sampler type. ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-biodiversity/01_working_with_NEON_macroinverts/rfigs/NMDS-3.png)

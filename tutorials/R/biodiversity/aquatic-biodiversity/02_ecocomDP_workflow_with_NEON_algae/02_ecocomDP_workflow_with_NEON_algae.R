@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA-----------------------
+## ----load libraries, eval=F, comment=NA----------------------------------------------------------------------------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -19,7 +19,7 @@ library(ecocomDP)
 
 
 
-## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'----
+## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'--------------------------------------------------------------------------------------------------------------
 
 # search for invertebrate data products
 my_search_result <- 
@@ -38,7 +38,7 @@ my_data <- ecocomDP::read_data(
 
 
 
-## ----view-ecocomDP-str----------------------------------------
+## ----view-ecocomDP-str---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
 my_data %>% names()
@@ -74,7 +74,7 @@ my_data %>% ecocomDP::plot_taxa_rank()
 
 
 
-## ----search-ecocomDP------------------------------------------
+## ----search-ecocomDP-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # search for data sets with periphyton or algae
 # regex works!
@@ -83,7 +83,7 @@ View(my_search_result)
 
 
 
-## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'----
+## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------------------------------------------------------------------------
 
 # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
 # data product
@@ -98,7 +98,7 @@ my_data <-
 
 
 
-## ----explore-data-structure-----------------------------------
+## ----explore-data-structure----------------------------------------------------------------------------------------------------------------------------------------------------------
 # Explore the structure of the returned data object
 my_data %>% names()
 my_data$metadata$data_package_info
@@ -110,7 +110,7 @@ my_data$tables$taxon %>% head()
 my_data$tables$observation %>% head()
 
 
-## ----flattening-and-cleaning, message=FALSE, warning=FALSE----
+## ----flattening-and-cleaning, message=FALSE, warning=FALSE---------------------------------------------------------------------------------------------------------------------------
 
 # flatten the ecocomDP data tables into one flat table
 my_data_flat <- my_data$tables %>% ecocomDP::flatten_data()
@@ -133,7 +133,7 @@ my_data_benthic <- my_data_flat %>%
   dplyr::filter(unit == "cells/cm2")
 
 
-## ----algae-data-vis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space in time represented in the downloaded data set for algae."----
+## ----algae-data-vis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space in time represented in the downloaded data set for algae."---------------------------
 
 # Note that you can send flattened data 
 # to the ecocomDP plotting functions
@@ -141,13 +141,13 @@ my_data_benthic %>% ecocomDP::plot_sample_space_time()
 
 
 
-## ----plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."----
+## ----plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."------------------------------------
 
 # Which taxon ranks are most common?
 my_data_benthic %>% ecocomDP::plot_taxa_rank()
 
 
-## ----algae-data-vis-richness-time, message=FALSE, warning=FALSE, fig.cap="Benthic algal richness by year at ARIK and COMO"----
+## ----algae-data-vis-richness-time, message=FALSE, warning=FALSE, fig.cap="Benthic algal richness by year at ARIK and COMO"-----------------------------------------------------------
 
 # Note that you can also send flattened data 
 # to the ecocomDP plotting functions
@@ -155,7 +155,7 @@ my_data_benthic %>% ecocomDP::plot_taxa_diversity(time_window_size = "year")
 
 
 
-## ----more-cleaning, message=FALSE, warning=FALSE--------------
+## ----more-cleaning, message=FALSE, warning=FALSE-------------------------------------------------------------------------------------------------------------------------------------
 
 # Note that for this data product
 # neon_sample_id = event_id
@@ -198,7 +198,7 @@ my_data_cleaned %>%
 
 
 
-## ----SAC-1, fig.cap= "Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples."----
+## ----SAC-1, fig.cap= "Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples."----------------------------------
 
 # convert densities from per m2 to per cm2
 my_data_long <- my_data_cleaned %>%
@@ -219,7 +219,7 @@ plot(alg_spec_accum_result)
 
 
 
-## ----compare-obs-sim-SAC--------------------------------------
+## ----compare-obs-sim-SAC-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(

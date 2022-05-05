@@ -11,7 +11,7 @@ packagesLibraries: tidyverse, neonUtilities, ecocomDP, vegan
 topics: data-analysis, organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
 tutorialSeries: null
 urlTitle: aquatic-diversity-algae
 ---
@@ -54,7 +54,7 @@ See the ecocomDP github repo here:
 <a href="https://github.com/EDIorg/ecocomDP">https://github.com/EDIorg/ecocomDP</a>.
 
 <figure>
-<a href="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png">
+<a href="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg">
 <img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
 <figcaption> Data model workflow showing relationships between various tables in ecocomDP model. Source: EDIorg</figcaption>
 </figure>
