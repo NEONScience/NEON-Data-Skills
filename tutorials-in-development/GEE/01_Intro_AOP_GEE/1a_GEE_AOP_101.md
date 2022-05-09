@@ -1,24 +1,18 @@
 ---
 syncID: 
-title: "introduction to working with AOP Data in Google Earth Engine (GEE)"
+title: "Introduction to working with AOP Data in Google Earth Engine (GEE)"
 description: "Introductory tutorial on exploring AOP datasets in GEE."
 dateCreated: 2022-04-14
 authors: [Bridget M. Hass]
-contributors: [John Musinsky], [Tristan Goulden], [Lukas Straube]
+contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
 estimatedTime: 40 minutes
 packagesLibraries: 
 topics: 
 languageTool: GEE
 dataProduct: DP3.30006.001, DP3.30010.001, DP3.30024.001, 
 code1: 
-tutorialSeries: 
+tutorialSeries: AOP-GEE
 urlTitle: intro-AOP-GEE-tutorial
-
----
-
-
-# AOP Data in Google Earth Engine (GEE) 101
-### This lesson is the starting point for working with AOP data in GEE!
 
 ---
 
