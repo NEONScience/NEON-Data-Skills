@@ -27,8 +27,8 @@ After completing this activity, you will be able to:
 
 ## Requirements
 
-- Complete the introductory tutorial [AOP Data in Google Earth Engine (GEE) 101](https://github.com/NEONScience/NEON-Data-Skills/blob/bhass/tutorials-in-development/GEE/01_Intro_AOP_GEE/1a_GEE_AOP_101.md)
--	An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the [Intro to Working with Hyperspectral Remote Sensing Data](https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r) tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
+* Complete the introductory tutorial <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/GEE/01_intro_aop_gee_lessons/1a_intro_aop_gee_assets.md" target="_blank">Intro to AOP GEE Assets</a>
+* An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
 ## Read in and Visualize AOP Data
 
@@ -44,7 +44,7 @@ We will work through basic GEE code whcih will carry out the following steps:
 
 We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data show up in the Interactive Map.
 
-1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the [GEE_AOP_101 lesson](../../01_Intro_AOP_GEE/1a_GEE_AOP_101.md), to pull in spectral data from a different site.
+1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/GEE/01_intro_aop_gee_lessons/1a_intro_aop_gee_assets.md" target="_blank">Intro to AOP GEE Assets</a>, to pull in spectral data from a different site.
 
 ```javascript
 var SRER_SDR2018 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2018");
@@ -73,9 +73,9 @@ Another way to learn more about this asset is to left-click on the blue `project
 
 Click `Esc` to return to the code editor. Note that you can run the code either way, with the variable explicitly specified in the code editor, or imported as a variable, but we encourage you to leave the variable written out in the code, as this way is more reproducible.
 
-2) Set the visualization parameters - this specifies the band combination that is displayed, and other display options. For more detailed information, refer to the GEE documentation on [image visualization](https://developers.google.com/earth-engine/guides/image_visualization).
+2) Set the visualization parameters - this specifies the band combination that is displayed, and other display options. For more detailed information, refer to the GEE documentation on <a href="https://developers.google.com/earth-engine/guides/image_visualization" target="_blank">image visualization</a>.
 
-To set the visualization parameters, we will create a new variable (called `visParams`). This variable is applied to the layer and determines what is displayed. In this we are setting the RGB bands to display - for this exercise we are setting them to red, green, and blue portions of the spectrum in order to show a True Color Image. You can change these bands to show a False Color Image or any band combination of interest. You can refer to NEON's lessons on [Multi-Band Rasters in R](https://www.neonscience.org/resources/learning-hub/tutorials/dc-multiband-rasters-r) or [RGB and False Color Images in Python](https://www.neonscience.org/resources/learning-hub/tutorials/neon-hsi-aop-functions-tiles-py) for more background on band stacking.
+To set the visualization parameters, we will create a new variable (called `visParams`). This variable is applied to the layer and determines what is displayed. In this we are setting the RGB bands to display - for this exercise we are setting them to red, green, and blue portions of the spectrum in order to show a True Color Image. You can change these bands to show a False Color Image or any band combination of interest. You can refer to NEON's lessons on <a href="https://www.neonscience.org/resources/learning-hub/tutorials/dc-multiband-rasters-r" target="_blank">Multi-Band Rasters in R</a> or <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-hsi-aop-functions-tiles-py" target="_blank">RGB and False Color Images in Python</a> for more background on band stacking.
 
 ```javascript
 var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band019']};
@@ -103,7 +103,7 @@ Map.setCenter(-110.83549, 31.91068, 11);
 
 Putting it All Together
 ---
-The following code chunk runs all the steps we just broke down, and also adds in 2 more years of data (2019 and 2021). You can access this code [here](https://code.earthengine.google.com/9b442fa13116b2ae487ac8a78d45ba69), or copy and paste the code below into your GEE code editor. Click **Run** to add the 3 SDR data layers for each year.
+The following code chunk runs all the steps we just broke down, and also adds in 2 more years of data (2019 and 2021). You can pull in this code into your code editor by clicking <a href="https://code.earthengine.google.com/9b442fa13116b2ae487ac8a78d45ba69" target="_blank">here</a>, or alternately copy and paste the code below into your GEE code editor. Click **Run** to add the 3 SDR data layers for each year.
 
 ```javascript
 // This script pulls in hyperspectral data over the Santa Rita Experimental Range (SRER)
@@ -144,3 +144,7 @@ If you click anywhere inside the AOP map (where there is data), you will see the
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_inspector.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_inspector.png" alt="SRER Inspector"></a>
 </figure>
+
+## Get Lesson Code
+
+<a href="https://code.earthengine.google.com/9b442fa13116b2ae487ac8a78d45ba69" target="_blank">Importing and Visualizing SRER SDR Data</a>
