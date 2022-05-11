@@ -16,7 +16,7 @@ urlTitle: intro-aop-gee-tutorial
 
 ---
 
-Google Earth Engine (GEE) is a powerful and free cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial we introduce you to the NEON data sets that have been uploaded to GEE and how to find more information about them.
+Google Earth Engine (GEE) is a powerful and free cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial we introduce you to the NEON AOP datasets that have been uploaded to GEE and how to find more information about them.
 
 <div id="ds-objectives" markdown="1">
 
@@ -24,7 +24,7 @@ Google Earth Engine (GEE) is a powerful and free cloud-computing platform for ca
 After completing this activity, you will be able to:
  * Write basic JavaScript code in the Google Earth Engine (GEE) code editor 
  * Discover which NEON AOP datasets are available in GEE
- * Explore the NEON AOP GEE Asset descriptions and contents
+ * Explore the NEON AOP GEE assets
 
 You will gain familiarity with:
  * The GEE Code Editor
@@ -37,7 +37,7 @@ You will gain familiarity with:
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
- * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get started with Earth-Engine  </a>
+ * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine  </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
 
 </div>
