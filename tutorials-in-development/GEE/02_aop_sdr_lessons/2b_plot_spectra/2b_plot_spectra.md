@@ -101,4 +101,7 @@ Map.centerObject(SRER_SDR2021,11)
 
 When you run this code, linked [here](https://code.earthengine.google.com/33d1d2b66c81c705c0b48e5d158abc9e), you will see the SRER SDR layer show up in the Map panel, along with a blank figure outline. When you click anywhere in this image, the figure will be populated with the spectral signature of the pixel you clicked on.
 
-![SRER_Spectral_Plot](SRER_Spectral_Plot.png)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_plot_spectra/srer_spectral_plot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_plot_spectra/srer_spectral_plot.png" alt="SRER Inspector"></a>
+</figure>
