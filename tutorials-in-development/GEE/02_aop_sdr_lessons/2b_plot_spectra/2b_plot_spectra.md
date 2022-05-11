@@ -1,7 +1,7 @@
 ---
 syncID: 
-title: "Plot Spectral Signatures"
-description: "Interactively plot the spectral signature of a pixel"
+title: "Plot spectral signatures of AOP SDR data in GEE"
+description: "Interactively plot the spectral signature of an AOP SDR pixel in GEE"
 dateCreated: 2022-04-15
 authors: [Bridget M. Hass]
 contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
