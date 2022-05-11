@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: b968a912e3ea4557b2a7185cd2340069
 title: "Introduction to working with AOP Data in Google Earth Engine (GEE)"
 description: "Introductory tutorial on exploring AOP datasets in GEE."
 dateCreated: 2022-04-14
