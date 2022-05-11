@@ -5,11 +5,11 @@ description: "Introductory tutorial on exploring AOP datasets in GEE."
 dateCreated: 2022-04-14
 authors: [Bridget M. Hass]
 contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
-estimatedTime: 40 minutes
+estimatedTime: 20 minutes
 packagesLibraries: 
-topics: 
+topics: lidar, hyperspectral, camera, remote-sensing
 languageTool: GEE
-dataProduct: DP3.30006.001, DP3.30010.001, DP3.30024.001, 
+dataProduct: DP3.30006.001, DP3.30010.001, DP3.30024.001
 code1: 
 tutorialSeries: aop-gee
 urlTitle: intro-aop-gee-tutorial
