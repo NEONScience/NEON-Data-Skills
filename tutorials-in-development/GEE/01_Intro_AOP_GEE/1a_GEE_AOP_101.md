@@ -35,14 +35,14 @@ If this is your first time using GEE, we recommend starting on the google develo
 
 </div>
 
-Background
----
-AOP has published a subset of AOP (L3) data products at 6 NEON sites (as of April 2022) on GEE. This data has been converted to Cloud Optimized Geotif (COG) format. NEON L3 lidar and derived spectral indices are avaialable in geotif raster format, so are relatively easy to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data format), and have been converted to the COG format prior to being added to GEE. 
+## Background
+
+AOP has published a subset of AOP Level 3 (mosaicked) data products at 6 NEON sites (as of Spring 2022) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are avaialable in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
 To interactively explore NEON data available on GEE, you can use the [aop-data-visualization](https://neon-aop.users.earthengine.app/view/aop-data-visualization) app created by AOP Scientist John Musinsky. 
 
-Data Availability & Access
----
+## AOP Data Availability & Access
+
 The NEON data products that have been made available on GEE can be accessed through the `projects/neon` folder with an appended prefix of the Data Product ID, matching the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below summarizes the prefixes to use for each data product, and is a useful reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Data Product      | Data Product ID (Prefix) |
@@ -66,7 +66,7 @@ The table below summarizes the sites, products, and years of NEON AOP data that 
 Get Started with Google Earth Engine
 ---
 
-Once you have set up your Google Earth Engine account you can navigate to the [earth engine code editor](https://code.earthengine.google.com/). The diagram below, from the [earth engine documentation](https://developers.google.com/earth-engine/guides/playground), shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps / Google Earth. This editor is fairly intuitive; we encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
+Once you have set up your Google Earth Engine account you can navigate to the <a href="https://code.earthengine.google.com/" target="_blank">Earth Engine Code Editor</a>. The diagram below, from the <a href="https://developers.google.com/earth-engine/guides/playground" target="_blank">earth-engine guides playground</a>, shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps / Google Earth. This editor is fairly intuitive; we encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
 
 ![Earth Engine Code Editor Components](Code_editor_diagram.png)
 
@@ -99,12 +99,17 @@ When you Run the code above (by clicking on the **Run** above the code editor), 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/intro-aop-gee-tutorial/import_record_popup.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/intro-aop-gee-tutorial/import_record_popup.png" alt="Folder structure of neonstore archive."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/intro-aop-gee-tutorial/import_record_popup.png" alt="GEE Import Record Popup."></a>
 </figure>
 
 ![Import_Record_Popup](Import_Record_Popup.png)
 
 If you click `Convert`, the line of code will disappear and the variable will be imported into your session directly, and will show up at the top of the code editor. Go ahead and convert the variables for all three lines of code, so you should see the following. Tip: if you type Ctrl-z, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. It is a good idea to retain the original code that reads in the variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your own code editor, the imported variables will not be saved.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/intro-aop-gee-tutorial/aop_image_collections_imported.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/intro-aop-gee-tutorial/aop_image_collections_imported.png" alt="Imported AOP Image Collections."></a>
+</figure>
 
 ![AOP_ImageCollections_Imported](AOP_ImageCollections_Imported.png)
 
