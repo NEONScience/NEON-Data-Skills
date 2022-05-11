@@ -10,7 +10,7 @@ packagesLibraries:
 topics: lidar, hyperspectral, camera, remote-sensing
 languageTool: GEE
 dataProduct: DP3.30006.001, DP3.30010.001, DP3.30024.001
-code1: 
+code1: https://code.earthengine.google.com/92d8ecf5795746900d6fd5cad9a685ea
 tutorialSeries: aop-gee
 urlTitle: intro-aop-gee-tutorial
 
@@ -156,7 +156,3 @@ You did it! You should now have a basic understanding of the GEE code editor and
 It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you have imported an entire AOP hyperspectral data set, which is not an easy feat. One of the barriers to working with AOP data (and reflectance data in particular) is it's large data volume, which requires high-performance computing environments to carry out analysis. There are also limited open-source tools for working with the data; many of the software suites for working with hyperspectral data require licenses which can be expensive. In this lesson, we have loaded spectral data over an entire site, and are ready for data exploration and analysis, in a free geospatial cloud-computing platform. 
 
 In the next tutorials we will pull in RGB composites spectral data, interactively plot spectral signatures of pixels in the image, and carry out some more advanced analysis that is highly simplified by the built in GEE functions. 
-
-## Get Lesson Code
-
-<a href="https://code.earthengine.google.com/92d8ecf5795746900d6fd5cad9a685ea" target="_blank">Importing AOP Image Collection Variables</a>
