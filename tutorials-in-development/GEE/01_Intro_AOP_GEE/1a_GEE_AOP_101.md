@@ -11,22 +11,29 @@ topics:
 languageTool: GEE
 dataProduct: DP3.30006.001, DP3.30010.001, DP3.30024.001, 
 code1: 
-tutorialSeries: AOP-GEE
-urlTitle: intro-AOP-GEE-tutorial
+tutorialSeries: aop-gee
+urlTitle: intro-aop-gee-tutorial
 
 ---
 
-Objectives
----
-- Introduce the Google Earth Engine (GEE) code editor 
-- Discover which NEON AOP datasets are available in GEE
-- Learn how to access the NEON AOP GEE datasets
+<div id="ds-objectives" markdown="1">
 
-Requirements
----
--	A gmail (@gmail.com) account
--	An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
--	A basic understanding of the GEE code editor and the GEE JavaScript API. If you have never used GEE before, we recommend starting on the [google developers earth-engine page](https://developers.google.com/earth-engine/guides/getstarted) and working through some of the introductory tutorials.
+## Objectives
+After completing this activity, you will be able to:
+ * Write basic code in the Google Earth Engine (GEE) code editor 
+ * Discover which NEON AOP datasets are available in GEE
+ * Access the NEON AOP GEE datasets
+
+## Requirements
+ * A gmail (@gmail.com) account
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * A basic understanding of the GEE code editor and the GEE JavaScript API.
+
+## Additional Resources
+If this is your first time using GEE, we recommend starting on the google developers website, linked below, and working through some of the introductory tutorials.
+* <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Google Developers Earth-Engine </a>
+
+</div>
 
 Background
 ---
@@ -90,9 +97,14 @@ A few notes on using the Code Editor:
 
 When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code are underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/intro-aop-gee-tutorial/import_record_popup.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/intro-aop-gee-tutorial/import_record_popup.png" alt="Folder structure of neonstore archive."></a>
+</figure>
+
 ![Import_Record_Popup](Import_Record_Popup.png)
 
-If you click `Convert`, the line of code will disappear and instead the variable will be pulled into the script directly, and will show up at the top of the code editor. Go ahead and do this for all three lines of code, so you should see the following. Tip: if you type Ctrl-z, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. It is a good idea to retain the original code that reads in the variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your own code editor, the imported variables will not be saved.
+If you click `Convert`, the line of code will disappear and the variable will be imported into your session directly, and will show up at the top of the code editor. Go ahead and convert the variables for all three lines of code, so you should see the following. Tip: if you type Ctrl-z, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. It is a good idea to retain the original code that reads in the variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your own code editor, the imported variables will not be saved.
 
 ![AOP_ImageCollections_Imported](AOP_ImageCollections_Imported.png)
 
