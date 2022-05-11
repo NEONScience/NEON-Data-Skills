@@ -1,4 +1,4 @@
-## ----load libraries, warning=FALSE------------------------------------------------------------------------------------------------
+## ----load libraries, warning=FALSE----------------------------------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -17,7 +17,7 @@ library(vegan)
 
 
 
-## ----download-data, message=FALSE, warning=FALSE, results='hide'------------------------------------------------------------------
+## ----download-data, message=FALSE, warning=FALSE, results='hide'----------------------------------------------------------------------
 
 # Macroinvert dpid
 my_dpid <- 'DP1.20120.001'
@@ -34,7 +34,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 
 
 
-## ----download-overview, message=FALSE, warning=FALSE------------------------------------------------------------------------------
+## ----download-overview, message=FALSE, warning=FALSE----------------------------------------------------------------------------------
 
 
 # what tables do you get with macroinvertebrate 
@@ -61,20 +61,40 @@ View(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing, message=FALSE, warning=FALSE-------------------------------------------------------------------------
+## ----munging-and-organizing, message=FALSE, warning=FALSE-----------------------------------------------------------------------------
 
-# known problem with dupes published in the inv_fieldData table as of 2021-02-18
-# this anticipated to be fixed in data release next year (Jan 2022)
-# use sampleID as primary key, keep the first uid associated with any sampleID that has multiple uids
+# It is good to check for duplicate records. This had occurred in the past in 
+# data published in the inv_fieldData table in 2021. Those duplicates were 
+# fixed in the 2022 data release. 
+# Here we use sampleID as primary key and if we find duplicate records, we
+# keep the first uid associated with any sampleID that has multiple uids
+
 de_duped_uids <- inv_fieldData %>% 
+  
+  # remove records where no sample was collected
+  filter(!is.na(sampleID)) %>%  
   group_by(sampleID) %>%
   summarise(n_recs = length(uid),
                    n_unique_uids = length(unique(uid)),
                    uid_to_keep = dplyr::first(uid)) 
 
-# filter data using de-duped uids
-inv_fieldData <- inv_fieldData %>%
+
+
+
+
+# Are there any records that have more than one unique uid?
+max_dups <- max(de_duped_uids$n_unique_uids %>% unique())
+
+
+
+
+
+# filter data using de-duped uids if they exist
+if(max_dups > 1){
+  inv_fieldData <- inv_fieldData %>%
   dplyr::filter(uid %in% de_duped_uids$uid_to_keep)
+}
+
 
 
 
@@ -229,6 +249,7 @@ table_observation_cleaned <- table_observation %>%
              taxa_list_cleaned$acceptedTaxonID,
          !sampleID %in% c("MAYF.20190729.CORE.1",
                           "MAYF.20200713.CORE.1",
+                          "MAYF.20210721.CORE.1",
                           "POSE.20160718.HESS.1")) 
                       #this is an outlier sampleID
 
@@ -319,7 +340,7 @@ table_observation_by_order %>%
 
 
 
-## ----make-wide, message=FALSE, warning=FALSE--------------------------------------------------------------------------------------
+## ----make-wide, message=FALSE, warning=FALSE------------------------------------------------------------------------------------------
 
 
 # select only site by species density info and remove duplicate records
@@ -348,7 +369,7 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----calc-alpha, message=FALSE, warning=FALSE-------------------------------------------------------------------------------------
+## ----calc-alpha, message=FALSE, warning=FALSE-----------------------------------------------------------------------------------------
 
 # Here we use vegan::renyi to calculate Hill numbers
 # If hill = FALSE, the function returns an entropy
@@ -365,7 +386,7 @@ table_sample_by_taxon_density_wide %>%
 
 
 
-## ----simulated-abg, message=FALSE, warning=FALSE----------------------------------------------------------------------------------
+## ----simulated-abg, message=FALSE, warning=FALSE--------------------------------------------------------------------------------------
 # even distribution, orders q = 0 and q = 1 for 10 taxa
 vegan::renyi(
   c(spp.a = 10, spp.b = 10, spp.c = 10, 
@@ -386,7 +407,7 @@ vegan::renyi(
 
 
 
-## ----compare-q-NEON, message=FALSE, warning=FALSE---------------------------------------------------------------------------------
+## ----compare-q-NEON, message=FALSE, warning=FALSE-------------------------------------------------------------------------------------
 
 # Nest data by siteID
 data_nested_by_siteID <- table_sample_by_taxon_density_wide %>%
@@ -475,7 +496,7 @@ diversity_partitioning_results %>%
 
 
 
-## ----local-regional-var, echo=F---------------------------------------------------------------------------------------------------
+## ----local-regional-var, echo=F-------------------------------------------------------------------------------------------------------
 
 ##########################################################
 # local and regional scale variability
@@ -513,7 +534,9 @@ p1 <- vegan::ordiplot(my_nmds_result)
 vegan::ordilabel(p1, "species")
 
 # merge NMDS scores with sampleID information for plotting
-nmds_scores <- my_nmds_result %>% vegan::scores() %>%
+nmds_scores <- my_nmds_result %>% 
+  vegan::scores() %>%
+  .[["sites"]] %>%
   as.data.frame() %>%
   tibble::rownames_to_column("sampleID") %>%
   left_join(table_sample_info)

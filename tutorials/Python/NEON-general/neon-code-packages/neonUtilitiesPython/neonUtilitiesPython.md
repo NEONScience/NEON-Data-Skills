@@ -22,7 +22,8 @@ with from Python.
 The assumption in this tutorial is that you want to work with NEON data in 
 Python, but you want to use the handy download and merge functions provided by 
 the `neonUtilities` R package to access and format the data for analysis. If 
-you want to do your analyses in R, use one of the R-based tutorials below.
+you want to do your analyses in R, use one of the R-based tutorials linked 
+below.
 
 For more information about the `neonUtilities` package, and instructions for 
 running it in R directly, see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial 
@@ -35,8 +36,8 @@ Before starting, you will need:
 
 1. Python 3 installed. It is probably possible to use this workflow in Python 2, 
 but these instructions were developed and tested using 3.7.4.
-2. R installed. You don't need to have ever used it directly. We tested using 
-R 3.6.1, but most other recent versions should also work.
+2. R installed. You don't need to have ever used it directly. We wrote this 
+tutorial using R 4.1.1, but most other recent versions should also work.
 3. `rpy2` installed. Run the line below from the command line, it won't run within 
 Jupyter. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
 `rpy2` often has install problems on Windows, see "Windows Users" section below if 
@@ -50,12 +51,6 @@ From the command line, run:
 ```python
 pip install rpy2
 ```
-
-    Requirement already satisfied: rpy2 in /opt/anaconda3/envs/py37/lib/python3.7/site-packages (2.9.4)
-    Requirement already satisfied: six in /opt/anaconda3/envs/py37/lib/python3.7/site-packages (from rpy2) (1.15.0)
-    Requirement already satisfied: jinja2 in /opt/anaconda3/envs/py37/lib/python3.7/site-packages (from rpy2) (2.11.3)
-    Requirement already satisfied: MarkupSafe>=0.23 in /opt/anaconda3/envs/py37/lib/python3.7/site-packages (from jinja2->rpy2) (1.1.1)
-    Note: you may need to restart the kernel to use updated packages.
 
 
 ### Windows users
@@ -74,6 +69,15 @@ If you have trouble with the install, try these steps.
 3. Add  an R_HOME Windows environment variable with the path C:\Program Files\R\R-3.4.3 
 (or whichever version you are running)
 4. Add an R_USER Windows environment variable with the path C:\Users\yourUserName\AppData\Local\Continuum\Anaconda3\Lib\site-packages\rpy2
+
+### Additional troubleshooting
+
+If you're still having trouble getting R to communicate with Python, you can try 
+pointing Python directly to your R installation path.
+
+1. Run `R.home()` in R.
+2. Run `import os` in Python.
+3. Run `os.environ['R_HOME'] = '/Library/Frameworks/R.framework/Resources'` in Python, substituting the file path you found in step 1.
 
 ## Load packages
 
@@ -112,35 +116,35 @@ stats.rnorm(6, 0, 1)
 
 <span>FloatVector with 6 elements.</span>
 <table>
-  <tbody>
+<tbody>
   <tr>
 
-  <td>
-    0.235043
-  </td>
+    <td>
+    -0.938409
+    </td>
 
-  <td>
-    0.226146
-  </td>
+    <td>
+    0.189041
+    </td>
 
-  <td>
-    0.285580
-  </td>
+    <td>
+    -0.169062
+    </td>
 
-  <td>
-    1.052145
-  </td>
+    <td>
+    0.976939
+    </td>
 
-  <td>
-    -0.199384
-  </td>
+    <td>
+    -0.862790
+    </td>
 
-  <td>
-    -0.068163
-  </td>
+    <td>
+    0.648383
+    </td>
 
   </tr>
-  </tbody>
+</tbody>
 </table>
 
 
@@ -151,9 +155,9 @@ getting passed through from R that Python will interpret as warnings.
 
 
 ```python
-from rpy2.rinterface import set_writeconsole_warnerror
+from rpy2.rinterface_lib.callbacks import logger as rpy2_logger
 import logging
-set_writeconsole_warnerror(None)
+rpy2_logger.setLevel(logging.ERROR)
 ```
 
 Install the `neonUtilities` R package. Here I've specified the RStudio 
@@ -182,6 +186,11 @@ Python or R environments.
 utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
 ```
 
+    
+    The downloaded binary packages are in
+    	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//Rtmpdy9fY1/downloaded_packages
+
+
 Now load the `neonUtilities` package. This does need to be run every time 
 you use the code; if you're familiar with R, `importr()` is roughly 
 equivalent to the `library()` function in R.
@@ -201,101 +210,32 @@ It will download as a single zip file named `NEON_temp-bio.zip`. Note the
 file path it's saved to and proceed.
 
 Run the `stackByTable()` function to stack the data. It requires only one 
-input, the path to the zip file you downloaded from the NEON Data Portal.
+input, the path to the zip file you downloaded from the NEON Data Portal. 
+Modify the file path in the code below to match the path on your machine.
 
 For additional, optional inputs to `stackByTable()`, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
 for neonUtilities.
 
 
 ```python
-neonUtilities.stackByTable(filepath='~/Downloads/NEON_temp-bio.zip');
+neonUtilities.stackByTable(filepath='/Users/Shared/NEON_temp-bio.zip');
 ```
 
-    
-     
-     |                                                  |
-     
-    0 % ~calculating  
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++++++++++++|
-     
-    100% elapsed=00s  
-    
-    
     Stacking operation across a single core.
-    
     Stacking table IRBT_1_minute
-    
-    
-     
-     |                                                  |
-     
-    0 % ~calculating  
-    
-     
-     |+++++++++++++                                     |
-     
-    25% ~00s          
-    
-     
-     |+++++++++++++++++++++++++                         |
-     
-    50% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++            |
-     
-    75% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++++++++++++|
-     
-    100% elapsed=00s  
-    
-    
     Stacking table IRBT_30_minute
-    
-    
-     
-     |                                                  |
-     
-    0 % ~calculating  
-    
-     
-     |+++++++++++++                                     |
-     
-    25% ~00s          
-    
-     
-     |+++++++++++++++++++++++++                         |
-     
-    50% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++            |
-     
-    75% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++++++++++++|
-     
-    100% elapsed=00s  
-    
-    
     Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
     Copied the most recent publication of variable definition file to /stackedFiles
-    
-    Finished: Stacked 2 data tables and 2 metadata tables!
-    
-    Stacking took 1.229288 secs
-    
+    Finished: Stacked 2 data tables and 3 metadata tables!
+    Stacking took 1.585054 secs
     All unzipped monthly data folders have been removed.
-    
 
 
 Check the folder containing the original zip file from the Data Portal; 
-you should now have a subfolder containing the unzipped and stacked files called `stackedFiles`.
+you should now have a subfolder containing the unzipped and stacked files 
+called `stackedFiles`. To import these data to Python, skip ahead to the 
+"Read downloaded and stacked files into Python" section; to learn how to 
+use `neonUtilities` to download data, proceed to the next section.
 
 ## Download files to be stacked: zipsByProduct()
 
@@ -303,10 +243,11 @@ The function `zipsByProduct()` uses the <a href="http://data.neonscience.org/dat
 data files for a given product. The files downloaded by `zipsByProduct()` 
 can then be fed into `stackByTable()`.
 
-Run the downloader with these inputs: a DPID, a set of 4-letter site IDs (or 
-"all" for all sites), a download package (either basic or expanded), the 
-filepath to download the data to, and an indicator to check the size of 
-your download before proceeding or not (TRUE/FALSE).
+Run the downloader with these inputs: a data product ID (DPID), a set of 
+4-letter site IDs (or "all" for all sites), a download package (either 
+basic or expanded), the filepath to download the data to, and an 
+indicator to check the size of your download before proceeding or not 
+(TRUE/FALSE).
 
 The DPID is the data product identifier, and can be found in the data product 
 box on the NEON <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data</a> page. 
@@ -330,83 +271,18 @@ of your query since it will proceed to download without checking.
 ```python
 neonUtilities.zipsByProduct(dpID='DP1.10003.001', 
                             site=base.c('HARV','BART'), 
-                            savepath='~/Downloads',
+                            savepath='/Users/Shared',
                             package='basic', 
                             check_size='FALSE');
 ```
 
     Finding available files
-    
-      |                                                                            
-      |                                                                      |   0%
-      |                                                                            
-      |=====                                                                 |   7%
-      |                                                                            
-      |==========                                                            |  14%
-      |                                                                            
-      |===============                                                       |  21%
-      |                                                                            
-      |====================                                                  |  29%
-      |                                                                            
-      |=========================                                             |  36%
-      |                                                                            
-      |==============================                                        |  43%
-      |                                                                            
-      |===================================                                   |  50%
-      |                                                                            
-      |========================================                              |  57%
-      |                                                                            
-      |=============================================                         |  64%
-      |                                                                            
-      |==================================================                    |  71%
-      |                                                                            
-      |=======================================================               |  79%
-      |                                                                            
-      |============================================================          |  86%
-      |                                                                            
-      |=================================================================     |  93%
-      |                                                                            
       |======================================================================| 100%
     
-    
-    
-    
-    Downloading files totaling approximately 1.343273 MB
-    
-    Downloading 14 files
-    
-      |                                                                            
-      |                                                                      |   0%
-      |                                                                            
-      |=====                                                                 |   8%
-      |                                                                            
-      |===========                                                           |  15%
-      |                                                                            
-      |================                                                      |  23%
-      |                                                                            
-      |======================                                                |  31%
-      |                                                                            
-      |===========================                                           |  38%
-      |                                                                            
-      |================================                                      |  46%
-      |                                                                            
-      |======================================                                |  54%
-      |                                                                            
-      |===========================================                           |  62%
-      |                                                                            
-      |================================================                      |  69%
-      |                                                                            
-      |======================================================                |  77%
-      |                                                                            
-      |===========================================================           |  85%
-      |                                                                            
-      |=================================================================     |  92%
-      |                                                                            
+    Downloading files totaling approximately 3.718684 MB
+    Downloading 16 files
       |======================================================================| 100%
-    
-    
-    14 files successfully downloaded to ~/Downloads/filesToStack10003
-    
+    16 files successfully downloaded to /Users/Shared/filesToStack10003
 
 
 The message output by `zipsByProduct()` indicates the file path where the 
@@ -416,263 +292,24 @@ Now take that file path and pass it to `stackByTable()`.
 
 
 ```python
-neonUtilities.stackByTable(filepath='~/Downloads/filesToStack10003');
+neonUtilities.stackByTable(filepath='/Users/Shared/filesToStack10003');
 ```
 
     Unpacking zip files using 1 cores.
-    
-    
-     
-     |                                                  |
-     
-    0 % ~calculating  
-    
-     
-     |++++                                              |
-     
-    7 % ~00s          
-    
-     
-     |++++++++                                          |
-     
-    14% ~00s          
-    
-     
-     |+++++++++++                                       |
-     
-    21% ~00s          
-    
-     
-     |+++++++++++++++                                   |
-     
-    29% ~00s          
-    
-     
-     |++++++++++++++++++                                |
-     
-    36% ~00s          
-    
-     
-     |++++++++++++++++++++++                            |
-     
-    43% ~00s          
-    
-     
-     |+++++++++++++++++++++++++                         |
-     
-    50% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++                     |
-     
-    57% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++                 |
-     
-    64% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++              |
-     
-    71% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++          |
-     
-    79% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++++++++++++       |
-     
-    86% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++++++++++++++++   |
-     
-    93% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++++++++++++|
-     
-    100% elapsed=00s  
-    
-    
     Stacking operation across a single core.
-    
     Stacking table brd_countdata
-    
-    
-     
-     |                                                  |
-     
-    0 % ~calculating  
-    
-     
-     |++++                                              |
-     
-    7 % ~00s          
-    
-     
-     |++++++++                                          |
-     
-    14% ~00s          
-    
-     
-     |+++++++++++                                       |
-     
-    21% ~00s          
-    
-     
-     |+++++++++++++++                                   |
-     
-    29% ~00s          
-    
-     
-     |++++++++++++++++++                                |
-     
-    36% ~00s          
-    
-     
-     |++++++++++++++++++++++                            |
-     
-    43% ~00s          
-    
-     
-     |+++++++++++++++++++++++++                         |
-     
-    50% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++                     |
-     
-    57% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++                 |
-     
-    64% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++              |
-     
-    71% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++          |
-     
-    79% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++++++++++++       |
-     
-    86% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++++++++++++++++   |
-     
-    93% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++++++++++++|
-     
-    100% elapsed=00s  
-    
-    
     Stacking table brd_perpoint
-    
-    
-     
-     |                                                  |
-     
-    0 % ~calculating  
-    
-     
-     |++++                                              |
-     
-    7 % ~00s          
-    
-     
-     |++++++++                                          |
-     
-    14% ~00s          
-    
-     
-     |+++++++++++                                       |
-     
-    21% ~00s          
-    
-     
-     |+++++++++++++++                                   |
-     
-    29% ~00s          
-    
-     
-     |++++++++++++++++++                                |
-     
-    36% ~00s          
-    
-     
-     |++++++++++++++++++++++                            |
-     
-    43% ~00s          
-    
-     
-     |+++++++++++++++++++++++++                         |
-     
-    50% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++                     |
-     
-    57% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++                 |
-     
-    64% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++              |
-     
-    71% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++          |
-     
-    79% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++++++++++++       |
-     
-    86% ~00s          
-    
-     
-     |+++++++++++++++++++++++++++++++++++++++++++++++   |
-     
-    93% ~00s          
-    
-     
-     |++++++++++++++++++++++++++++++++++++++++++++++++++|
-     
-    100% elapsed=00s  
-    
-    
     Copied the most recent publication of validation file to /stackedFiles
     Copied the most recent publication of categoricalCodes file to /stackedFiles
     Copied the most recent publication of variable definition file to /stackedFiles
-    
-    Finished: Stacked 2 data tables and 3 metadata tables!
-    
-    Stacking took 0.3607121 secs
-    
+    Finished: Stacked 2 data tables and 4 metadata tables!
+    Stacking took 0.3076231 secs
     All unzipped monthly data folders have been removed.
-    
 
 
 ## Read downloaded and stacked files into Python
 
-We've now downloaded biological temperature and bird data, and merged 
+We've downloaded biological temperature and bird data, and merged 
 the site by month files. Now let's read those data into Python so you 
 can proceed with analyses.
 
@@ -681,13 +318,14 @@ First let's take a look at what's in the output folders.
 
 ```python
 import os
-os.listdir('/Users/olearyd/Downloads/filesToStack10003/stackedFiles/')
+os.listdir('/Users/Shared/filesToStack10003/stackedFiles/')
 ```
 
 
 
 
     ['categoricalCodes_10003.csv',
+     'issueLog_10003.csv',
      'brd_countdata.csv',
      'brd_perpoint.csv',
      'readme_10003.txt',
@@ -698,7 +336,7 @@ os.listdir('/Users/olearyd/Downloads/filesToStack10003/stackedFiles/')
 
 
 ```python
-os.listdir('/Users/olearyd/Downloads/NEON_temp-bio/stackedFiles/')
+os.listdir('/Users/Shared/NEON_temp-bio/stackedFiles/')
 ```
 
 
@@ -706,6 +344,7 @@ os.listdir('/Users/olearyd/Downloads/NEON_temp-bio/stackedFiles/')
 
     ['IRBT_1_minute.csv',
      'sensor_positions_00005.csv',
+     'issueLog_00005.csv',
      'IRBT_30_minute.csv',
      'variables_00005.csv',
      'readme_00005.txt']
@@ -727,8 +366,8 @@ First, let's read in the two data tables in the bird data:
 
 ```python
 import pandas
-brd_perpoint = pandas.read_csv('/Users/olearyd/Downloads/filesToStack10003/stackedFiles/brd_perpoint.csv')
-brd_countdata = pandas.read_csv('/Users/olearyd/Downloads/filesToStack10003/stackedFiles/brd_countdata.csv')
+brd_perpoint = pandas.read_csv('/Users/Shared/filesToStack10003/stackedFiles/brd_perpoint.csv')
+brd_countdata = pandas.read_csv('/Users/Shared/filesToStack10003/stackedFiles/brd_countdata.csv')
 ```
 
 And take a look at the contents of each file. For descriptions and unit of each 
@@ -785,8 +424,8 @@ brd_perpoint
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>806378dd-bc51-4d7e-bfd8-2b6bca459868</td>
+      <td>0</td>
+      <td>32ab1419-b087-47e1-829d-b1a67a223a01</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -805,12 +444,12 @@ brd_perpoint
       <td>NEON.DOC.014041vG</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>a8a8d1ac-e557-472f-a393-e2183c0098ff</td>
+      <td>1</td>
+      <td>f02e2458-caab-44d8-a21a-b3b210b71006</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -829,12 +468,12 @@ brd_perpoint
       <td>NEON.DOC.014041vG</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>8ebbac22-13c3-43da-bfe3-65f1cdfc85ca</td>
+      <td>2</td>
+      <td>58ccefb8-7904-4aa6-8447-d6f6590ccdae</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -853,12 +492,12 @@ brd_perpoint
       <td>NEON.DOC.014041vG</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>19f48260-d875-48e3-a7fb-dc8bbfb1e4b7</td>
+      <td>3</td>
+      <td>1b14ead4-03fc-4d47-bd00-2f6e31cfe971</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -877,12 +516,12 @@ brd_perpoint
       <td>NEON.DOC.014041vG</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>c516ea74-0b05-4770-804a-c70ca65f3d27</td>
+      <td>4</td>
+      <td>3055a0a5-57ae-4e56-9415-eeb7704fab02</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -901,11 +540,11 @@ brd_perpoint
       <td>NEON.DOC.014041vG</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>...</th>
+      <td>...</td>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -929,128 +568,128 @@ brd_perpoint
       <td>...</td>
     </tr>
     <tr>
-      <th>1063</th>
-      <td>df3cb3cd-f2be-4732-9a7c-8727b479b617</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>1234</td>
+      <td>3400dfdf-54f1-4921-a3b0-61f03c6db3e9</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
       <td>A1</td>
-      <td>mixedForest</td>
-      <td>42.471348</td>
-      <td>-72.265421</td>
+      <td>deciduousForest</td>
+      <td>42.401149</td>
+      <td>-72.253238</td>
       <td>...</td>
-      <td>65.0</td>
-      <td>deciduous forest</td>
-      <td>15.0</td>
-      <td>1.0</td>
+      <td>43.0</td>
+      <td>other</td>
+      <td>16.0</td>
+      <td>10.0</td>
       <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vJ</td>
-      <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>The RH would not stay still today, kept swingi...</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>1064</th>
-      <td>c79532ea-c878-4389-a034-fafbabb87b95</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>1235</td>
+      <td>b43b199c-51b6-4222-b575-7564315e47bb</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
       <td>A2</td>
-      <td>mixedForest</td>
-      <td>42.471348</td>
-      <td>-72.265421</td>
+      <td>deciduousForest</td>
+      <td>42.401149</td>
+      <td>-72.253238</td>
       <td>...</td>
-      <td>65.0</td>
+      <td>43.0</td>
       <td>deciduous forest</td>
-      <td>17.0</td>
-      <td>0.0</td>
+      <td>15.0</td>
+      <td>4.0</td>
       <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vJ</td>
-      <td>New small logging road goes right through point 4</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>The RH would not stay still today, kept swingi...</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>1065</th>
-      <td>d52f83b1-2678-479a-bab3-f28bc44cb959</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>1236</td>
+      <td>a7040ad5-d253-47b7-964d-2711dafa42c4</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
-      <td>A3</td>
-      <td>mixedForest</td>
-      <td>42.471348</td>
-      <td>-72.265421</td>
+      <td>B2</td>
+      <td>deciduousForest</td>
+      <td>42.401149</td>
+      <td>-72.253238</td>
       <td>...</td>
-      <td>65.0</td>
-      <td>mixed deciduous/evergreen forest</td>
-      <td>19.0</td>
+      <td>43.0</td>
+      <td>deciduous forest</td>
+      <td>16.0</td>
       <td>1.0</td>
       <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vJ</td>
-      <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>The RH would not stay still today, kept swingi...</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>1066</th>
-      <td>bfffacc8-c05d-471f-b875-c16b94d70614</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>1237</td>
+      <td>97a3c2dc-d8b0-436f-af62-00c88167b60e</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
       <td>B3</td>
-      <td>mixedForest</td>
-      <td>42.471348</td>
-      <td>-72.265421</td>
+      <td>deciduousForest</td>
+      <td>42.401149</td>
+      <td>-72.253238</td>
       <td>...</td>
-      <td>65.0</td>
-      <td>mixed deciduous/evergreen forest</td>
-      <td>19.0</td>
-      <td>0.0</td>
+      <td>43.0</td>
+      <td>deciduous forest</td>
+      <td>17.0</td>
+      <td>1.0</td>
       <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vJ</td>
-      <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>The RH would not stay still today, kept swingi...</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>1067</th>
-      <td>9276572a-772c-4785-9a9f-2f1a71b950bf</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>1238</td>
+      <td>b8a27ff5-3aa3-432a-858e-c8d31324ab2e</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
-      <td>C3</td>
-      <td>mixedForest</td>
-      <td>42.471348</td>
-      <td>-72.265421</td>
+      <td>A3</td>
+      <td>deciduousForest</td>
+      <td>42.401149</td>
+      <td>-72.253238</td>
       <td>...</td>
-      <td>65.0</td>
-      <td>mixed deciduous/evergreen forest</td>
+      <td>43.0</td>
+      <td>deciduous forest</td>
       <td>18.0</td>
       <td>1.0</td>
       <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vJ</td>
-      <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>The RH would not stay still today, kept swingi...</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
   </tbody>
 </table>
-<p>1068 rows × 31 columns</p>
+<p>1239 rows × 31 columns</p>
 </div>
 
 
@@ -1106,8 +745,8 @@ brd_countdata
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>78603d80-3f06-4b56-adbb-a524b1f46da5</td>
+      <td>0</td>
+      <td>4e22256f-5e86-4a2c-99be-dd1c7da7af28</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -1115,55 +754,7 @@ brd_countdata
       <td>distributed</td>
       <td>C1</td>
       <td>2015-06-14T09:23Z</td>
-      <td>BART_025.C1.2015-06-14T05:23-04:00[US/Eastern]</td>
-      <td>2</td>
-      <td>...</td>
-      <td>Black-and-white Warbler</td>
-      <td>17.0</td>
-      <td>singing</td>
-      <td>No</td>
-      <td>Male</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>35009b65-f5cb-4d61-82f1-7048f94e788a</td>
-      <td>BART_025.birdGrid.brd</td>
-      <td>D01</td>
-      <td>BART</td>
-      <td>BART_025</td>
-      <td>distributed</td>
-      <td>C1</td>
-      <td>2015-06-14T09:23Z</td>
-      <td>BART_025.C1.2015-06-14T05:23-04:00[US/Eastern]</td>
-      <td>1</td>
-      <td>...</td>
-      <td>Red-eyed Vireo</td>
-      <td>9.0</td>
-      <td>singing</td>
-      <td>No</td>
-      <td>Male</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>b4c6f95a-5ef3-4d84-8222-0dece7870f29</td>
-      <td>BART_025.birdGrid.brd</td>
-      <td>D01</td>
-      <td>BART</td>
-      <td>BART_025</td>
-      <td>distributed</td>
-      <td>C1</td>
-      <td>2015-06-14T09:23Z</td>
-      <td>BART_025.C1.2015-06-14T05:23-04:00[US/Eastern]</td>
+      <td>BART_025.C1.2015-06-14</td>
       <td>1</td>
       <td>...</td>
       <td>Black-capped Chickadee</td>
@@ -1174,12 +765,12 @@ brd_countdata
       <td>1.0</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>61e3dcf6-48ae-48c5-9fc9-5f387d7edd56</td>
+      <td>1</td>
+      <td>93106c0d-06d8-4816-9892-15c99de03c91</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -1187,7 +778,55 @@ brd_countdata
       <td>distributed</td>
       <td>C1</td>
       <td>2015-06-14T09:23Z</td>
-      <td>BART_025.C1.2015-06-14T05:23-04:00[US/Eastern]</td>
+      <td>BART_025.C1.2015-06-14</td>
+      <td>1</td>
+      <td>...</td>
+      <td>Red-eyed Vireo</td>
+      <td>9.0</td>
+      <td>singing</td>
+      <td>No</td>
+      <td>Male</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>JRUEB</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5eb23904-9ae9-45bf-af27-a4fa1efd4e8a</td>
+      <td>BART_025.birdGrid.brd</td>
+      <td>D01</td>
+      <td>BART</td>
+      <td>BART_025</td>
+      <td>distributed</td>
+      <td>C1</td>
+      <td>2015-06-14T09:23Z</td>
+      <td>BART_025.C1.2015-06-14</td>
+      <td>2</td>
+      <td>...</td>
+      <td>Black-and-white Warbler</td>
+      <td>17.0</td>
+      <td>singing</td>
+      <td>No</td>
+      <td>Male</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>JRUEB</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>99592c6c-4cf7-4de8-9502-b321e925684d</td>
+      <td>BART_025.birdGrid.brd</td>
+      <td>D01</td>
+      <td>BART</td>
+      <td>BART_025</td>
+      <td>distributed</td>
+      <td>C1</td>
+      <td>2015-06-14T09:23Z</td>
+      <td>BART_025.C1.2015-06-14</td>
       <td>2</td>
       <td>...</td>
       <td>Black-throated Green Warbler</td>
@@ -1198,12 +837,12 @@ brd_countdata
       <td>1.0</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>4</th>
-      <td>562a36b4-3b1c-4888-9050-57a36eb67af8</td>
+      <td>4</td>
+      <td>6c07d9fb-8813-452b-8182-3bc5e139d920</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
       <td>BART</td>
@@ -1211,7 +850,7 @@ brd_countdata
       <td>distributed</td>
       <td>C1</td>
       <td>2015-06-14T09:23Z</td>
-      <td>BART_025.C1.2015-06-14T05:23-04:00[US/Eastern]</td>
+      <td>BART_025.C1.2015-06-14</td>
       <td>1</td>
       <td>...</td>
       <td>Black-throated Green Warbler</td>
@@ -1222,11 +861,11 @@ brd_countdata
       <td>1.0</td>
       <td>NaN</td>
       <td>JRUEB</td>
-      <td>20201223T141730Z</td>
-      <td>RELEASE-2021</td>
+      <td>20211222T013942Z</td>
+      <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <th>...</th>
+      <td>...</td>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -1250,128 +889,128 @@ brd_countdata
       <td>...</td>
     </tr>
     <tr>
-      <th>10876</th>
-      <td>6958df8b-a322-4344-9338-4048400394d5</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>13579</td>
+      <td>87c9dae4-ee30-4673-b669-5ca8acdc7bd7</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
-      <td>C3</td>
-      <td>2020-06-14T14:10Z</td>
-      <td>HARV_014.C3.2020-06-14T10:10-04:00[US/Eastern]</td>
-      <td>5</td>
+      <td>A3</td>
+      <td>2021-06-16T13:08Z</td>
+      <td>HARV_006.A3.2021-06-16</td>
+      <td>1</td>
       <td>...</td>
-      <td>Black-throated Green Warbler</td>
-      <td>73.0</td>
-      <td>singing</td>
+      <td>Eastern Towhee</td>
+      <td>13.0</td>
+      <td>calling</td>
       <td>No</td>
       <td>Unknown</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>10877</th>
-      <td>e2aee01d-98b1-4d33-846f-51b0535503b6</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>13580</td>
+      <td>1a65553a-6189-4c74-a1e3-2ada0f1d9f63</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
-      <td>C3</td>
-      <td>2020-06-14T14:10Z</td>
-      <td>HARV_014.C3.2020-06-14T10:10-04:00[US/Eastern]</td>
+      <td>A3</td>
+      <td>2021-06-16T13:08Z</td>
+      <td>HARV_006.A3.2021-06-16</td>
       <td>4</td>
       <td>...</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>10878</th>
-      <td>c7a36a67-49a1-44d2-bfb1-ccfdd3b89009</td>
-      <td>HARV_014.birdGrid.brd</td>
-      <td>D01</td>
-      <td>HARV</td>
-      <td>HARV_014</td>
-      <td>distributed</td>
-      <td>C3</td>
-      <td>2020-06-14T14:10Z</td>
-      <td>HARV_014.C3.2020-06-14T10:10-04:00[US/Eastern]</td>
-      <td>6</td>
-      <td>...</td>
-      <td>Ruffed Grouse</td>
-      <td>140.0</td>
-      <td>drumming</td>
+      <td>20.0</td>
+      <td>visual</td>
       <td>No</td>
       <td>Unknown</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>10879</th>
-      <td>e1f0940b-cf87-435a-b72a-efbb7fbd2274</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>13581</td>
+      <td>e33deb1c-e79d-41dc-8fc1-8e984b9d0450</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
-      <td>C3</td>
-      <td>2020-06-14T14:10Z</td>
-      <td>HARV_014.C3.2020-06-14T10:10-04:00[US/Eastern]</td>
-      <td>6</td>
+      <td>A3</td>
+      <td>2021-06-16T13:08Z</td>
+      <td>HARV_006.A3.2021-06-16</td>
+      <td>1</td>
       <td>...</td>
-      <td>Ovenbird</td>
-      <td>70.0</td>
+      <td>Eastern Towhee</td>
+      <td>48.0</td>
+      <td>calling</td>
+      <td>No</td>
+      <td>Unknown</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>13582</td>
+      <td>070ec577-9aec-4d05-91df-86124d383697</td>
+      <td>HARV_006.birdGrid.brd</td>
+      <td>D01</td>
+      <td>HARV</td>
+      <td>HARV_006</td>
+      <td>distributed</td>
+      <td>A3</td>
+      <td>2021-06-16T13:08Z</td>
+      <td>HARV_006.A3.2021-06-16</td>
+      <td>1</td>
+      <td>...</td>
+      <td>Eastern Towhee</td>
+      <td>61.0</td>
       <td>singing</td>
       <td>No</td>
       <td>Unknown</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>10880</th>
-      <td>78316131-33cb-42e6-b0f9-7d3b0a82f071</td>
-      <td>HARV_014.birdGrid.brd</td>
+      <td>13583</td>
+      <td>7a3be1a1-03c3-49e7-a486-343708c3b271</td>
+      <td>HARV_006.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_014</td>
+      <td>HARV_006</td>
       <td>distributed</td>
-      <td>C3</td>
-      <td>2020-06-14T14:10Z</td>
-      <td>HARV_014.C3.2020-06-14T10:10-04:00[US/Eastern]</td>
+      <td>A3</td>
+      <td>2021-06-16T13:08Z</td>
+      <td>HARV_006.A3.2021-06-16</td>
       <td>2</td>
       <td>...</td>
-      <td>Ovenbird</td>
+      <td>Veery</td>
       <td>64.0</td>
-      <td>singing</td>
+      <td>calling</td>
       <td>No</td>
       <td>Unknown</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>WFREE</td>
-      <td>20201223T141711Z</td>
+      <td>JGLAG</td>
+      <td>20211222T011332Z</td>
       <td>PROVISIONAL</td>
     </tr>
   </tbody>
 </table>
-<p>10881 rows × 24 columns</p>
+<p>13584 rows × 24 columns</p>
 </div>
 
 
@@ -1381,7 +1020,7 @@ temperature.
 
 
 ```python
-IRBT30 = pandas.read_csv('/Users/olearyd/Downloads/NEON_temp-bio/stackedFiles/IRBT_30_minute.csv')
+IRBT30 = pandas.read_csv('/Users/Shared/NEON_temp-bio/stackedFiles/IRBT_30_minute.csv')
 IRBT30
 ```
 
@@ -1426,217 +1065,217 @@ IRBT30
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>D16</td>
-      <td>ABBY</td>
+      <td>0</td>
+      <td>D18</td>
+      <td>BARR</td>
       <td>0</td>
       <td>10</td>
-      <td>2021-03-01T00:00:00Z</td>
-      <td>2021-03-01T00:30:00Z</td>
-      <td>9.29</td>
-      <td>8.47</td>
-      <td>9.76</td>
-      <td>0.15</td>
-      <td>1800.0</td>
-      <td>0.52</td>
-      <td>0.01</td>
-      <td>0</td>
-      <td>20210404T194243Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>0</td>
-      <td>10</td>
-      <td>2021-03-01T00:30:00Z</td>
-      <td>2021-03-01T01:00:00Z</td>
-      <td>7.90</td>
-      <td>7.23</td>
-      <td>8.59</td>
-      <td>0.13</td>
-      <td>1800.0</td>
-      <td>0.52</td>
-      <td>0.01</td>
-      <td>0</td>
-      <td>20210404T194243Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>0</td>
-      <td>10</td>
-      <td>2021-03-01T01:00:00Z</td>
-      <td>2021-03-01T01:30:00Z</td>
-      <td>7.08</td>
-      <td>6.86</td>
-      <td>7.27</td>
-      <td>0.01</td>
-      <td>1800.0</td>
-      <td>0.52</td>
-      <td>0.00</td>
-      <td>0</td>
-      <td>20210404T194243Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>0</td>
-      <td>10</td>
-      <td>2021-03-01T01:30:00Z</td>
-      <td>2021-03-01T02:00:00Z</td>
-      <td>6.50</td>
-      <td>5.95</td>
-      <td>6.89</td>
-      <td>0.07</td>
-      <td>1800.0</td>
-      <td>0.52</td>
-      <td>0.01</td>
-      <td>0</td>
-      <td>20210404T194243Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>0</td>
-      <td>10</td>
-      <td>2021-03-01T02:00:00Z</td>
-      <td>2021-03-01T02:30:00Z</td>
-      <td>5.35</td>
-      <td>4.98</td>
-      <td>5.96</td>
-      <td>0.08</td>
-      <td>1800.0</td>
-      <td>0.52</td>
-      <td>0.01</td>
-      <td>0</td>
-      <td>20210404T194243Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>5947</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>3</td>
-      <td>0</td>
-      <td>2021-03-31T21:30:00Z</td>
-      <td>2021-03-31T22:00:00Z</td>
-      <td>13.93</td>
-      <td>13.45</td>
-      <td>14.27</td>
-      <td>0.02</td>
-      <td>1800.0</td>
-      <td>0.65</td>
-      <td>0.00</td>
-      <td>0</td>
-      <td>20210404T194243Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>5948</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>3</td>
-      <td>0</td>
-      <td>2021-03-31T22:00:00Z</td>
-      <td>2021-03-31T22:30:00Z</td>
-      <td>13.85</td>
-      <td>13.57</td>
-      <td>14.15</td>
-      <td>0.01</td>
-      <td>1800.0</td>
-      <td>0.65</td>
-      <td>0.00</td>
-      <td>0</td>
-      <td>20210404T194243Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <th>5949</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>3</td>
-      <td>0</td>
-      <td>2021-03-31T22:30:00Z</td>
-      <td>2021-03-31T23:00:00Z</td>
-      <td>14.08</td>
-      <td>13.57</td>
-      <td>14.36</td>
+      <td>2021-09-01T00:00:00Z</td>
+      <td>2021-09-01T00:30:00Z</td>
+      <td>7.82</td>
+      <td>7.43</td>
+      <td>8.39</td>
       <td>0.03</td>
       <td>1800.0</td>
-      <td>0.65</td>
+      <td>0.60</td>
       <td>0.00</td>
       <td>0</td>
-      <td>20210404T194243Z</td>
+      <td>20211219T025212Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>5950</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>3</td>
+      <td>1</td>
+      <td>D18</td>
+      <td>BARR</td>
       <td>0</td>
-      <td>2021-03-31T23:00:00Z</td>
-      <td>2021-03-31T23:30:00Z</td>
-      <td>14.01</td>
-      <td>13.67</td>
-      <td>14.22</td>
+      <td>10</td>
+      <td>2021-09-01T00:30:00Z</td>
+      <td>2021-09-01T01:00:00Z</td>
+      <td>7.47</td>
+      <td>7.16</td>
+      <td>7.75</td>
       <td>0.01</td>
       <td>1800.0</td>
-      <td>0.65</td>
+      <td>0.60</td>
       <td>0.00</td>
       <td>0</td>
-      <td>20210404T194243Z</td>
+      <td>20211219T025212Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <th>5951</th>
-      <td>D16</td>
-      <td>ABBY</td>
-      <td>3</td>
+      <td>2</td>
+      <td>D18</td>
+      <td>BARR</td>
       <td>0</td>
-      <td>2021-03-31T23:30:00Z</td>
-      <td>2021-04-01T00:00:00Z</td>
-      <td>13.92</td>
-      <td>13.53</td>
-      <td>14.25</td>
-      <td>0.02</td>
+      <td>10</td>
+      <td>2021-09-01T01:00:00Z</td>
+      <td>2021-09-01T01:30:00Z</td>
+      <td>7.43</td>
+      <td>6.89</td>
+      <td>8.11</td>
+      <td>0.07</td>
       <td>1800.0</td>
-      <td>0.65</td>
+      <td>0.60</td>
+      <td>0.01</td>
+      <td>0</td>
+      <td>20211219T025212Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>D18</td>
+      <td>BARR</td>
+      <td>0</td>
+      <td>10</td>
+      <td>2021-09-01T01:30:00Z</td>
+      <td>2021-09-01T02:00:00Z</td>
+      <td>7.36</td>
+      <td>6.78</td>
+      <td>8.15</td>
+      <td>0.06</td>
+      <td>1800.0</td>
+      <td>0.60</td>
+      <td>0.01</td>
+      <td>0</td>
+      <td>20211219T025212Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>D18</td>
+      <td>BARR</td>
+      <td>0</td>
+      <td>10</td>
+      <td>2021-09-01T02:00:00Z</td>
+      <td>2021-09-01T02:30:00Z</td>
+      <td>6.91</td>
+      <td>6.50</td>
+      <td>7.27</td>
+      <td>0.03</td>
+      <td>1800.0</td>
+      <td>0.60</td>
       <td>0.00</td>
       <td>0</td>
-      <td>20210404T194243Z</td>
+      <td>20211219T025212Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <td>13099</td>
+      <td>D18</td>
+      <td>BARR</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2021-11-30T21:30:00Z</td>
+      <td>2021-11-30T22:00:00Z</td>
+      <td>-14.62</td>
+      <td>-14.78</td>
+      <td>-14.46</td>
+      <td>0.00</td>
+      <td>1800.0</td>
+      <td>0.57</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>20211206T221914Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>13100</td>
+      <td>D18</td>
+      <td>BARR</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2021-11-30T22:00:00Z</td>
+      <td>2021-11-30T22:30:00Z</td>
+      <td>-14.59</td>
+      <td>-14.72</td>
+      <td>-14.50</td>
+      <td>0.00</td>
+      <td>1800.0</td>
+      <td>0.57</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>20211206T221914Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>13101</td>
+      <td>D18</td>
+      <td>BARR</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2021-11-30T22:30:00Z</td>
+      <td>2021-11-30T23:00:00Z</td>
+      <td>-14.56</td>
+      <td>-14.65</td>
+      <td>-14.45</td>
+      <td>0.00</td>
+      <td>1800.0</td>
+      <td>0.57</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>20211206T221914Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>13102</td>
+      <td>D18</td>
+      <td>BARR</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2021-11-30T23:00:00Z</td>
+      <td>2021-11-30T23:30:00Z</td>
+      <td>-14.50</td>
+      <td>-14.60</td>
+      <td>-14.39</td>
+      <td>0.00</td>
+      <td>1800.0</td>
+      <td>0.57</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>20211206T221914Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <td>13103</td>
+      <td>D18</td>
+      <td>BARR</td>
+      <td>3</td>
+      <td>0</td>
+      <td>2021-11-30T23:30:00Z</td>
+      <td>2021-12-01T00:00:00Z</td>
+      <td>-14.45</td>
+      <td>-14.57</td>
+      <td>-14.32</td>
+      <td>0.00</td>
+      <td>1800.0</td>
+      <td>0.57</td>
+      <td>0.00</td>
+      <td>0</td>
+      <td>20211206T221914Z</td>
       <td>PROVISIONAL</td>
     </tr>
   </tbody>
 </table>
-<p>5952 rows × 16 columns</p>
+<p>13104 rows × 16 columns</p>
 </div>
 
 
@@ -1662,503 +1301,14 @@ Hopbrook (HOPB) in 2017.
 
 ```python
 neonUtilities.byFileAOP(dpID='DP3.30015.001', site='HOPB',
-                        #easting = 718000, northing = 4709000,
                         year='2017', check_size='FALSE',
-                       savepath='~/Downloads');
+                       savepath='/Users/Shared');
 ```
 
-    Downloading files totaling approximately 147.800996 MB 
-    
-    Downloading 213 files
-    
-      |                                                                            
-      |                                                                      |   0%
-      |                                                                            
-      |=                                                                     |   1%
-      |                                                                            
-      |=                                                                     |   2%
-      |                                                                            
-      |==                                                                    |   2%
-      |                                                                            
-      |==                                                                    |   3%
-      |                                                                            
-      |===                                                                   |   4%
-      |                                                                            
-      |===                                                                   |   5%
-      |                                                                            
-      |====                                                                  |   5%
-      |                                                                            
-      |====                                                                  |   6%
-      |                                                                            
-      |=====                                                                 |   7%
-      |                                                                            
-      |=====                                                                 |   8%
-      |                                                                            
-      |======                                                                |   8%
-      |                                                                            
-      |======                                                                |   9%
-      |                                                                            
-      |=======                                                               |   9%
-      |                                                                            
-      |=======                                                               |  10%
-      |                                                                            
-      |========                                                              |  11%
-      |                                                                            
-      |========                                                              |  12%
-      |                                                                            
-      |=========                                                             |  12%
-      |                                                                            
-      |=========                                                             |  13%
-      |                                                                            
-      |==========                                                            |  14%
-      |                                                                            
-      |==========                                                            |  15%
-      |                                                                            
-      |===========                                                           |  15%
-      |                                                                            
-      |===========                                                           |  16%
-      |                                                                            
-      |============                                                          |  17%
-      |                                                                            
-      |=============                                                         |  18%
-      |                                                                            
-      |=============                                                         |  19%
-      |                                                                            
-      |==============                                                        |  19%
-      |                                                                            
-      |==============                                                        |  20%
-      |                                                                            
-      |===============                                                       |  21%
-      |                                                                            
-      |===============                                                       |  22%
-      |                                                                            
-      |================                                                      |  22%
-      |                                                                            
-      |================                                                      |  23%
-      |                                                                            
-      |=================                                                     |  24%
-      |                                                                            
-      |=================                                                     |  25%
-      |                                                                            
-      |==================                                                    |  25%
-      |                                                                            
-      |==================                                                    |  26%
-      |                                                                            
-      |===================                                                   |  27%
-      |                                                                            
-      |===================                                                   |  28%
-      |                                                                            
-      |====================                                                  |  28%
-      |                                                                            
-      |====================                                                  |  29%
-      |                                                                            
-      |=====================                                                 |  30%
-      |                                                                            
-      |=====================                                                 |  31%
-      |                                                                            
-      |======================                                                |  31%
-      |                                                                            
-      |======================                                                |  32%
-      |                                                                            
-      |=======================                                               |  33%
-      |                                                                            
-      |========================                                              |  34%
-      |                                                                            
-      |========================                                              |  35%
-      |                                                                            
-      |=========================                                             |  35%
-      |                                                                            
-      |=========================                                             |  36%
-      |                                                                            
-      |==========================                                            |  37%
-      |                                                                            
-      |==========================                                            |  38%
-      |                                                                            
-      |===========================                                           |  38%
-      |                                                                            
-      |===========================                                           |  39%
-      |                                                                            
-      |============================                                          |  40%
-      |                                                                            
-      |============================                                          |  41%
-      |                                                                            
-      |=============================                                         |  41%
-      |                                                                            
-      |=============================                                         |  42%
-      |                                                                            
-      |==============================                                        |  42%
-      |                                                                            
-      |==============================                                        |  43%
-      |                                                                            
-      |===============================                                       |  44%
-      |                                                                            
-      |===============================                                       |  45%
-      |                                                                            
-      |================================                                      |  45%
-      |                                                                            
-      |================================                                      |  46%
-      |                                                                            
-      |=================================                                     |  47%
-      |                                                                            
-      |=================================                                     |  48%
-      |                                                                            
-      |==================================                                    |  48%
-      |                                                                            
-      |==================================                                    |  49%
-      |                                                                            
-      |===================================                                   |  50%
-      |                                                                            
-      |====================================                                  |  51%
-      |                                                                            
-      |====================================                                  |  52%
-      |                                                                            
-      |=====================================                                 |  52%
-      |                                                                            
-      |=====================================                                 |  53%
-      |                                                                            
-      |======================================                                |  54%
-      |                                                                            
-      |======================================                                |  55%
-      |                                                                            
-      |=======================================                               |  55%
-      |                                                                            
-      |=======================================                               |  56%
-      |                                                                            
-      |========================================                              |  57%
-      |                                                                            
-      |========================================                              |  58%
-      |                                                                            
-      |=========================================                             |  58%
-      |                                                                            
-      |=========================================                             |  59%
-      |                                                                            
-      |==========================================                            |  59%
-      |                                                                            
-      |==========================================                            |  60%
-      |                                                                            
-      |===========================================                           |  61%
-      |                                                                            
-      |===========================================                           |  62%
-      |                                                                            
-      |============================================                          |  62%
-      |                                                                            
-      |============================================                          |  63%
-      |                                                                            
-      |=============================================                         |  64%
-      |                                                                            
-      |=============================================                         |  65%
-      |                                                                            
-      |==============================================                        |  65%
-      |                                                                            
-      |==============================================                        |  66%
-      |                                                                            
-      |===============================================                       |  67%
-      |                                                                            
-      |================================================                      |  68%
-      |                                                                            
-      |================================================                      |  69%
-      |                                                                            
-      |=================================================                     |  69%
-      |                                                                            
-      |=================================================                     |  70%
-      |                                                                            
-      |==================================================                    |  71%
-      |                                                                            
-      |==================================================                    |  72%
-      |                                                                            
-      |===================================================                   |  72%
-      |                                                                            
-      |===================================================                   |  73%
-      |                                                                            
-      |====================================================                  |  74%
-      |                                                                            
-      |====================================================                  |  75%
-      |                                                                            
-      |=====================================================                 |  75%
-      |                                                                            
-      |=====================================================                 |  76%
-      |                                                                            
-      |======================================================                |  77%
-      |                                                                            
-      |======================================================                |  78%
-      |                                                                            
-      |=======================================================               |  78%
-      |                                                                            
-      |=======================================================               |  79%
-      |                                                                            
-      |========================================================              |  80%
-      |                                                                            
-      |========================================================              |  81%
-      |                                                                            
-      |=========================================================             |  81%
-      |                                                                            
-      |=========================================================             |  82%
-      |                                                                            
-      |==========================================================            |  83%
-      |                                                                            
-      |===========================================================           |  84%
-      |                                                                            
-      |===========================================================           |  85%
-      |                                                                            
-      |============================================================          |  85%
-      |                                                                            
-      |============================================================          |  86%
-      |                                                                            
-      |=============================================================         |  87%
-      |                                                                            
-      |=============================================================         |  88%
-      |                                                                            
-      |==============================================================        |  88%
-      |                                                                            
-      |==============================================================        |  89%
-      |                                                                            
-      |===============================================================       |  90%
-      |                                                                            
-      |===============================================================       |  91%
-      |                                                                            
-      |================================================================      |  91%
-      |                                                                            
-      |================================================================      |  92%
-      |                                                                            
-      |=================================================================     |  92%
-      |                                                                            
-      |=================================================================     |  93%
-      |                                                                            
-      |==================================================================    |  94%
-      |                                                                            
-      |==================================================================    |  95%
-      |                                                                            
-      |===================================================================   |  95%
-      |                                                                            
-      |===================================================================   |  96%
-      |                                                                            
-      |====================================================================  |  97%
-      |                                                                            
-      |====================================================================  |  98%
-      |                                                                            
-      |===================================================================== |  98%
-      |                                                                            
-      |===================================================================== |  99%
-      |                                                                            
+    Downloading files totaling approximately 147.930656 MB 
+    Downloading 217 files
       |======================================================================| 100%
-    
-    
-    Successfully downloaded  213  files.
-    
-    NEON_D01_HOPB_DP1_720000_4704000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4705000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4706000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4706000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_716000_4705000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_717000_4707000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_717000_4706000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4707000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4705000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4706000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_718000_4705000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4710000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_718000_4706000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_720000_4710000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4704000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_717000_4704000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_717000_4708000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4705000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4709000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_720000_4710000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_719000_4708000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4708000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4705000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP3_717000_4707000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_720000_4707000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4708000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4707000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4704000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_718000_4707000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4704000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4707000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4709000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_716000_4706000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_718000_4709000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4706000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4706000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4706000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4706000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4710000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4708000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4707000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4706000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_717000_4710000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4709000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_716000_4704000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP3_719000_4706000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_716000_4705000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4709000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4705000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4707000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_720000_4709000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4710000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4706000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4710000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4704000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4709000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_720000_4707000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4704000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4710000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_717000_4706000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_720000_4705000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_719000_4707000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_716000_4710000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4710000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4704000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4705000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_717000_4708000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4710000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_718000_4707000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_716000_4708000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4706000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_718000_4705000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4704000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_716000_4709000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_716000_4704000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4706000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4707000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4710000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4710000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4709000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4704000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4705000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4707000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4708000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4705000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4710000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4708000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4708000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4708000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4710000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_716000_4709000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_719000_4704000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4709000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4707000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_720000_4707000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP3_718000_4704000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_718000_4704000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4707000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4704000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_716000_4710000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_719000_4706000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP3_719000_4705000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_719000_4706000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4709000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4704000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP3_717000_4710000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_719000_4709000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_717000_4705000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4709000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4705000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4707000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_716000_4707000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_716000_4706000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4708000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_716000_4708000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_718000_4710000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4704000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4710000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4708000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4708000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4707000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4706000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_718000_4708000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_716000_4710000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON.D01.HOPB.DP3.30015.001.readme.20210123T023002Z.txt downloaded to ~/Downloads/DP3.30015.001/release/tag/RELEASE-2021/NEON.DOM.SITE.DP3.30015.001/HOPB/20170801T000000--20170901T000000/basic
-    NEON_D01_HOPB_DP1_719000_4708000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4707000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_718000_4705000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_716000_4704000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4706000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_717000_4708000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_717000_4710000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_716000_4705000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4708000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4708000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP3_719000_4704000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP3_719000_4708000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_719000_4704000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4706000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4708000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4710000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4709000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4709000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    2017_HOPB_2_L3_discrete_lidar_processing.pdf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/Reports
-    NEON_D01_HOPB_DP1_717000_4710000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4710000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4704000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4705000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4709000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_719000_4709000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_718000_4704000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4705000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_720000_4704000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_716000_4709000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4706000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_718000_4709000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_717000_4708000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP3_718000_4706000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_720000_4706000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_719000_4710000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_717000_4707000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4707000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_718000_4708000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4705000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_720000_4706000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_720000_4705000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4708000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_716000_4707000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4709000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4709000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_717000_4709000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_720000_4708000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_720000_4705000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4707000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_719000_4709000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4707000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4709000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4707000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4708000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_716000_4704000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_717000_4709000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4709000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4704000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_720000_4709000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_719000_4705000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4707000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_717000_4709000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP3_718000_4710000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_717000_4706000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4706000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4706000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4705000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4708000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4705000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4707000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_720000_4704000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4708000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_717000_4710000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4704000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4707000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4704000_classified_point_cloud.kml downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/kmls
-    NEON_D01_HOPB_DP1_718000_4705000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4705000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_720000_4705000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    2017_HOPB_2_V01_LMS_QAQC.pdf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/Reports
-    NEON_D01_HOPB_DP1_716000_4710000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_718000_4706000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4709000_classified_point_cloud.dbf downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP3_717000_4705000_CHM.tif downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif
-    NEON_D01_HOPB_DP1_720000_4704000_classified_point_cloud.shp downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_716000_4710000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_717000_4708000_classified_point_cloud.prj downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    NEON_D01_HOPB_DP1_719000_4710000_classified_point_cloud.shx downloaded to ~/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/Metadata/DiscreteLidar/TileBoundary/shps
-    
+    Successfully downloaded  217  files.
 
 
 Let's read one tile of data into Python and view it. We'll use the 
@@ -2168,7 +1318,7 @@ there are other options available.
 
 ```python
 import rasterio
-CHMtile = rasterio.open('/Users/olearyd/Downloads/DP3.30015.001/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_HOPB_DP3_718000_4709000_CHM.tif')
+CHMtile = rasterio.open('/Users/Shared/DP3.30015.001/neon-aop-products/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_HOPB_DP3_718000_4709000_CHM.tif')
 ```
 
 
@@ -2180,13 +1330,25 @@ show(CHMtile)
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-general/neon-code-packages/neonUtilitiesPython/neonUtilitiesPython_files/neonUtilitiesPython_40_0.png)
+    <Figure size 800x300 with 1 Axes>
 
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff3a3757510>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7fa16298fd50>
+
+
+
+
+```python
+fig
+```
+
+
+
+
+![Canopy Height Model at Hopbrook in 2017](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-general/neon-code-packages/neonUtilitiesPython/neonUtilitiesPython_files/neonUtilitiesPython_41_0.png)
 
 
 

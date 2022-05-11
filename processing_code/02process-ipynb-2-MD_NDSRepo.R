@@ -2,16 +2,20 @@
 ## .md, .py, .html files, make figures, and 
 ## update URLs to figures in the .md file
 
+# Add jupyter path to PATH. This is necessary on Claire's machine, may be
+# unnecessary or different for others, depending on where jupyter is installed
+#Sys.setenv(PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/Library/TeX/texbin:/Applications/RStudio.app/Contents/MacOS/postback:/opt/anaconda3/bin/jupyter")
+
 rm(list=ls())
 
 #### MUST CHANGE FOR LOCAL MACHINE ####
 # This should point to the absolute path to your tutorials dir
 # and must include the (.*) after /tutorials/
-pattern="/Users/olearyd/Git/main/NEON-Data-Skills/tutorials/(.*)"
+pattern="/Users/clunch/GitHub/NEON-Data-Skills/tutorials/(.*)"
 #### MUST CHANGE FOR LOCAL MACHINE ####
 
 # Script will search recursively in this file for all .ipynb files
-input.path="~/Git/main/NEON-Data-Skills/tutorials/Python/Lidar/lidar-biomass"
+input.path="~/GitHub/NEON-Data-Skills/tutorials/Python/NEON-general"
 
 # Find all files to change
 ipynb.files <- list.files(input.path,
@@ -37,7 +41,7 @@ for(p in 1:length(ipynb.files)){
   # to convert below
   system(paste0("cd ",dirname(ipynb.files[p]),
   "; jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace ",basename(ipynb.files[p]),
-  "; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=py37 --to notebook --execute --inplace ",basename(ipynb.files[p])))
+  "; jupyter nbconvert --ExecutePreprocessor.timeout=6000 --ExecutePreprocessor.kernel_name=python3 --to notebook --execute --inplace ",basename(ipynb.files[p])))
   
   # Take the freshly ran .ipynb file (with all code chunk outputs) and 
   # convert to the desired formats

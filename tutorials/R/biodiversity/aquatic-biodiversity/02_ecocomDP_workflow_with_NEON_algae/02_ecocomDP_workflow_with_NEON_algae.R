@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA-------------------------------------------------------------------------------------------
+## ----load libraries, eval=F, comment=NA-----------------------------------------------------------------------------------------------
 
 # clean out workspace
 
@@ -19,7 +19,7 @@ library(ecocomDP)
 
 
 
-## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'-----------------------------------------------------------
+## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'---------------------------------------------------------------
 
 # search for invertebrate data products
 my_search_result <- 
@@ -38,7 +38,7 @@ my_data <- ecocomDP::read_data(
 
 
 
-## ----view-ecocomDP-str------------------------------------------------------------------------------------------------------------
+## ----view-ecocomDP-str----------------------------------------------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
 my_data %>% names()
@@ -57,7 +57,24 @@ my_data$tables$observation %>% head()
 
 
 
-## ----search-ecocomDP--------------------------------------------------------------------------------------------------------------
+## ----macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from the Arikaree River site."----
+
+# Explore the spatial and temporal coverage 
+# of the dataset
+my_data %>% ecocomDP::plot_sample_space_time()
+
+
+
+## ----macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from the Arikaree River site."----
+
+# Explore the taxonomic resolution in the dataset. 
+# What is the most common taxonomic resolution (rank) 
+# for macroinvertebrate identifications in this dataset?
+my_data %>% ecocomDP::plot_taxa_rank()
+
+
+
+## ----search-ecocomDP------------------------------------------------------------------------------------------------------------------
 
 # search for data sets with periphyton or algae
 # regex works!
@@ -66,7 +83,7 @@ View(my_search_result)
 
 
 
-## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'------------------------------------------------------------
+## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'----------------------------------------------------------------
 
 # pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
 # data product
@@ -81,9 +98,8 @@ my_data <-
 
 
 
-## ----explore-data-structure-------------------------------------------------------------------------------------------------------
+## ----explore-data-structure-----------------------------------------------------------------------------------------------------------
 # Explore the structure of the returned data object
-my_data %>% names()
 my_data %>% names()
 my_data$metadata$data_package_info
 my_data$validation_issues
@@ -94,10 +110,7 @@ my_data$tables$taxon %>% head()
 my_data$tables$observation %>% head()
 
 
-
-
-
-## ----flattening-and-cleaning, message=FALSE, warning=FALSE------------------------------------------------------------------------
+## ----flattening-and-cleaning, message=FALSE, warning=FALSE----------------------------------------------------------------------------
 
 # flatten the ecocomDP data tables into one flat table
 my_data_flat <- my_data$tables %>% ecocomDP::flatten_data()
@@ -113,16 +126,39 @@ my_data_flat$unit %>%
 
 
 
+
 # filter the data to only records standardized to area
 # sampled
 my_data_benthic <- my_data_flat %>%
-  dplyr::filter(
-    !variable_name %in% c("valves","cells"),
-    unit == "cells/cm2")
+  dplyr::filter(unit == "cells/cm2")
+
+
+## ----algae-data-vis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space in time represented in the downloaded data set for algae."----
+
+# Note that you can send flattened data 
+# to the ecocomDP plotting functions
+my_data_benthic %>% ecocomDP::plot_sample_space_time()
+
+
+
+## ----plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."----
+
+# Which taxon ranks are most common?
+my_data_benthic %>% ecocomDP::plot_taxa_rank()
+
+
+## ----algae-data-vis-richness-time, message=FALSE, warning=FALSE, fig.cap="Benthic algal richness by year at ARIK and COMO"------------
+
+# plot richness by year
+my_data_benthic %>% ecocomDP::plot_taxa_diversity(time_window_size = "year")
+
+
+
+## ----more-cleaning, message=FALSE, warning=FALSE--------------------------------------------------------------------------------------
 
 # Note that for this data product
 # neon_sample_id = event_id
-# event_id is the grouping variable for the observation 
+# event_id is a grouping variable for the observation 
 # table in the ecocomDP data model
 
 
@@ -140,7 +176,8 @@ my_data_benthic %>%
 # counts should be summed.
 my_data_summed <- my_data_benthic %>%
   group_by(event_id,taxon_id) %>%
-  summarize(value = sum(value, na.rm = FALSE))
+  summarize(value = sum(value, na.rm = FALSE),
+            observation_id = dplyr::first(observation_id))
 
 my_data_cleaned <- my_data_benthic %>%
   dplyr::select(
@@ -157,15 +194,6 @@ my_data_cleaned %>%
   group_by(event_id, taxon_id) %>%
   summarize(n_obs = length(event_id)) %>%
   dplyr::filter(n_obs > 1)
-
-
-
-## ----plot-taxon-rank, fig.cap= "Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site."----
-
-# which taxon rank is most common
-my_data_cleaned %>%
-  ggplot(aes(taxon_rank)) +
-  geom_bar()
 
 
 
@@ -190,7 +218,7 @@ plot(alg_spec_accum_result)
 
 
 
-## ----compare-obs-sim-SAC----------------------------------------------------------------------------------------------------------
+## ----compare-obs-sim-SAC--------------------------------------------------------------------------------------------------------------
 
 # Extract the resampling data used in the above algorithm
 spec_resamp_data <- data.frame(

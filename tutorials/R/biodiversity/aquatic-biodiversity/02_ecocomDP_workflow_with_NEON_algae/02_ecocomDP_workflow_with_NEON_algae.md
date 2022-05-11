@@ -7,11 +7,11 @@ dateCreated: '2020-06-22'
 authors: Eric R. Sokol
 contributors: Donal O'Leary, Felipe Sanchez
 estimatedTime: 1 Hour
-packagesLibraries: tidyverse, neonUtilities, devtools
+packagesLibraries: tidyverse, neonUtilities, ecocomDP, vegan
 topics: data-analysis, organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/02_ecocomDP_workflow_with_NEON_algae.R
 tutorialSeries: null
 urlTitle: aquatic-diversity-algae
 ---
@@ -43,25 +43,23 @@ Prior to starting the tutorial ensure that the following packages are installed.
 </div>
 
 ## Introduction
-In this second live coding section of the workshop, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which is under development by the Environmental Data Initiative (EDI) in collaboration with NEON staff.
+In this code-along tutorial, we will explore how to find and download NEON biodiversity data using the ecocomDP package for R, which has been developed by the Environmental Data Initiative (EDI) in collaboration with NEON staff.
 
 #### What is ecocomDP?
-ecocomDP is both the name of an R package and a data model. 
+"ecocomDP" is both the name of an R package and a data model. 
  
 EDI describes the ecocomDP data model as "A dataset design pattern for ecological community data to facilitate synthesis and reuse". 
  
 See the ecocomDP github repo here:
-<a href="https://github.com/EDIorg/ecocomDP ">https://github.com/EDIorg/ecocomDP</a>.
+<a href="https://github.com/EDIorg/ecocomDP">https://github.com/EDIorg/ecocomDP</a>.
 
 <figure>
-<a href="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png">
-<img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/documentation/model/ecocomDP.png" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
+<a href="https://github.com/EDIorg/ecocomDP/blob/master/model/table_visualization.md">
+<img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
 <figcaption> Data model workflow showing relationships between various tables in ecocomDP model. Source: EDIorg</figcaption>
 </figure>
 
 The motivation is for both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research Network and Macrosystems Biology projects, to be discoverable through a single data search tool, and to be delivered in a standard format. Our objective here is to demonstrate how the workflow will work with NEON biodiversity data packages. 
-
-This tutorial was prepared for the <a href="https://www.neonscience.org/get-involved/events/sfs-2021-neon-aquatic-biodiversity-workshop">Society for Freshwater Science 2021 NEON Aquatic Biodiversity Workshop</a>.
 
 ## Load Libraries and Prepare Workspace
 First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above. 
@@ -104,7 +102,7 @@ In this first step, we show how to search the ecocomDP database for macroinverte
       # token = NEON_TOKEN, #Uncomment to use your token
       check.size = FALSE)
 
-Now that we have downloaded the data, let's take a look at tht `ecocomDP` data object structure:
+Now that we have downloaded the data, let's take a look at the `ecocomDP` data object structure:
 
 
     # examine the structure of the data object that is returned
@@ -120,7 +118,7 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220122083631"
+    ## [1] "neon.ecocomdp.20120.001.001.20220505163555"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -132,10 +130,10 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     ## [1] "neon.ecocomdp.20120.001.001"
     ## 
     ## $data_access_method
-    ## [1] "original NEON data accessed using neonUtilities v2.1.3"
+    ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-22 08:36:35 MST"
+    ## [1] "2022-05-05 16:35:55 MDT"
 
     # validation issues? None if returns an empty list
     my_data$validation_issues
@@ -161,12 +159,12 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     my_data$tables$observation %>% head()
 
     ##   observation_id             event_id                                 package_id    location_id            datetime taxon_id
-    ## 1          obs_1 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CAESP5
-    ## 2          obs_2 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00  CERSP10
-    ## 3          obs_3 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CLASP5
-    ## 4          obs_4 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CLISP3
-    ## 5          obs_5 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CORSP4
-    ## 6          obs_6 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220122083631 ARIK.AOS.reach 2017-07-12 17:27:00   CRYSP2
+    ## 1          obs_1 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220505163555 ARIK.AOS.reach 2017-07-12 17:27:00   CAESP5
+    ## 2          obs_2 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220505163555 ARIK.AOS.reach 2017-07-12 17:27:00  CERSP10
+    ## 3          obs_3 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220505163555 ARIK.AOS.reach 2017-07-12 17:27:00   CLASP5
+    ## 4          obs_4 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220505163555 ARIK.AOS.reach 2017-07-12 17:27:00   CLISP3
+    ## 5          obs_5 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220505163555 ARIK.AOS.reach 2017-07-12 17:27:00   CORSP4
+    ## 6          obs_6 ARIK.20170712.CORE.1 neon.ecocomdp.20120.001.001.20220505163555 ARIK.AOS.reach 2017-07-12 17:27:00   CRYSP2
     ##   variable_name     value                   unit
     ## 1       density 1000.0000 count per square meter
     ## 2       density  333.3333 count per square meter
@@ -176,7 +174,26 @@ Now that we have downloaded the data, let's take a look at tht `ecocomDP` data o
     ## 6       density  833.3333 count per square meter
 
 
-## Search ecocomDP
+## Basic Data Visualization
+
+The `ecocomDP` package offers some useful data visualization tools.
+
+
+    # Explore the spatial and temporal coverage 
+    # of the dataset
+    my_data %>% ecocomDP::plot_sample_space_time()
+
+![Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/rfigs/macroinvert-datavis-space-time-1.png)
+
+
+    # Explore the taxonomic resolution in the dataset. 
+    # What is the most common taxonomic resolution (rank) 
+    # for macroinvertebrate identifications in this dataset?
+    my_data %>% ecocomDP::plot_taxa_rank()
+
+![Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/rfigs/macroinvert-datavis-ranks-1.png)
+
+## Search `ecocomDP`
 
 We can even search for terms in the ecocomDP database using regular expressions:
 
@@ -206,14 +223,10 @@ Let's download the data for the NEON "Periphyton, seston, and phytoplankton coll
 
     ## [1] "id"                "metadata"          "tables"            "validation_issues"
 
-    my_data %>% names()
-
-    ## [1] "id"                "metadata"          "tables"            "validation_issues"
-
     my_data$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20166.001.001.20220122083655"
+    ## [1] "neon.ecocomdp.20166.001.001.20220505163605"
     ## 
     ## $taxonomic_group
     ## [1] "ALGAE"
@@ -225,10 +238,10 @@ Let's download the data for the NEON "Periphyton, seston, and phytoplankton coll
     ## [1] "neon.ecocomdp.20166.001.001"
     ## 
     ## $data_access_method
-    ## [1] "original NEON data accessed using neonUtilities v2.1.3"
+    ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-01-22 08:36:56 MST"
+    ## [1] "2022-05-05 16:36:06 MDT"
 
     my_data$validation_issues
 
@@ -274,19 +287,19 @@ Let's download the data for the NEON "Periphyton, seston, and phytoplankton coll
     my_data$tables$observation %>% head()
 
     ##                         observation_id                  event_id                                 package_id    location_id
-    ## 1 2f9cd348-0767-4322-b7b8-19182778a98c ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
-    ## 2 fcb13e4f-2cf6-4d97-9c70-09a70f51fb7e ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
-    ## 3 c2a8fcf8-1cf2-42da-868b-077ea1726433 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
-    ## 4 6c0a36d3-0075-4d17-bc0a-03b35cb5f179 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
-    ## 5 6493f9e6-d1b6-42fd-9156-bb4fb97b2854 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
-    ## 6 63ed13f7-f9ee-46b9-aea4-2fc2c3cfdd09 ARIK.20170718.EPIPHYTON.3 neon.ecocomdp.20166.001.001.20220122083655 ARIK.AOS.reach
-    ##              datetime       taxon_id variable_name     value      unit
-    ## 1 2017-07-18 17:09:00  NEONDREX48126  cell density 1180.3455 cells/cm2
-    ## 2 2017-07-18 17:09:00  NEONDREX33185  cell density  295.0864 cells/cm2
-    ## 3 2017-07-18 17:09:00 NEONDREX197003  cell density  147.5409 cells/cm2
-    ## 4 2017-07-18 17:09:00 NEONDREX170133  cell density  590.1727 cells/cm2
-    ## 5 2017-07-18 17:09:00  NEONDREX37156  cell density  295.0864 cells/cm2
-    ## 6 2017-07-18 17:09:00 NEONDREX155017  cell density 2655.7727 cells/cm2
+    ## 1 d2b64815-81cb-4613-bd8b-d85e4e267d29 ARIK.20170718.EPIPHYTON.4 neon.ecocomdp.20166.001.001.20220505163605 ARIK.AOS.reach
+    ## 2 74eb781e-5c22-4080-a647-1899f4a13214 ARIK.20170718.EPIPHYTON.4 neon.ecocomdp.20166.001.001.20220505163605 ARIK.AOS.reach
+    ## 3 74ddca53-7d32-4f88-af55-06d0f96a9eae ARIK.20170718.EPIPHYTON.4 neon.ecocomdp.20166.001.001.20220505163605 ARIK.AOS.reach
+    ## 4 7bc60163-153c-434a-8a68-5eeab9110332 ARIK.20170718.EPIPHYTON.4 neon.ecocomdp.20166.001.001.20220505163605 ARIK.AOS.reach
+    ## 5 a7708e90-e4b3-433c-8ea5-ad4fd9e368bd ARIK.20170718.EPIPHYTON.4 neon.ecocomdp.20166.001.001.20220505163605 ARIK.AOS.reach
+    ## 6 634bd35d-3570-429e-a581-cb767bc92663 ARIK.20170718.EPIPHYTON.4 neon.ecocomdp.20166.001.001.20220505163605 ARIK.AOS.reach
+    ##              datetime      taxon_id variable_name     value      unit
+    ## 1 2017-07-18 17:09:00 NEONDREX48122  cell density  939.9871 cells/cm2
+    ## 2 2017-07-18 17:09:00 NEONDREX48284  cell density  939.9871 cells/cm2
+    ## 3 2017-07-18 17:09:00  NEONDREX1010  cell density  469.9914 cells/cm2
+    ## 4 2017-07-18 17:09:00 NEONDREX20007  cell density 6109.9052 cells/cm2
+    ## 5 2017-07-18 17:09:00 NEONDREX46774  cell density  469.9914 cells/cm2
+    ## 6 2017-07-18 17:09:00 NEONDREX37317  cell density 9869.8448 cells/cm2
 
 ## Algae Data Flattening and Cleaning
 
@@ -310,13 +323,37 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
     # filter the data to only records standardized to area
     # sampled
     my_data_benthic <- my_data_flat %>%
-      dplyr::filter(
-        !variable_name %in% c("valves","cells"),
-        unit == "cells/cm2")
-    
+      dplyr::filter(unit == "cells/cm2")
+
+
+## Explore Benthic Algae Data with `ecocomDP` Plotting Functions
+
+
+    # Note that you can send flattened data 
+    # to the ecocomDP plotting functions
+    my_data_benthic %>% ecocomDP::plot_sample_space_time()
+
+![Sampling events in space in time represented in the downloaded data set for algae.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/rfigs/algae-data-vis-space-time-1.png)
+
+
+    # Which taxon ranks are most common?
+    my_data_benthic %>% ecocomDP::plot_taxa_rank()
+
+![Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/rfigs/plot-taxon-rank-1.png)
+
+
+    # plot richness by year
+    my_data_benthic %>% ecocomDP::plot_taxa_diversity(time_window_size = "year")
+
+![Benthic algal richness by year at ARIK and COMO](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/rfigs/algae-data-vis-richness-time-1.png)
+
+
+## Check for duplicate taxon counts within a sampleID
+
+
     # Note that for this data product
     # neon_sample_id = event_id
-    # event_id is the grouping variable for the observation 
+    # event_id is a grouping variable for the observation 
     # table in the ecocomDP data model
     
     
@@ -328,8 +365,8 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
       summarize(n_obs = length(event_id)) %>%
       dplyr::filter(n_obs > 1)
 
-    ## # A tibble: 110 x 3
-    ## # Groups:   event_id [20]
+    ## # A tibble: 129 x 3
+    ## # Groups:   event_id [26]
     ##    event_id                  taxon_id       n_obs
     ##    <chr>                     <chr>          <int>
     ##  1 ARIK.20170718.EPIPHYTON.2 NEONDREX1010       2
@@ -342,13 +379,14 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
     ##  8 ARIK.20170718.EPIPHYTON.2 NEONDREX170134     2
     ##  9 ARIK.20170718.EPIPHYTON.2 NEONDREX172001     2
     ## 10 ARIK.20170718.EPIPHYTON.2 NEONDREX172006     2
-    ## # ... with 100 more rows
+    ## # ... with 119 more rows
 
     # Per instructions from the lab, these 
     # counts should be summed.
     my_data_summed <- my_data_benthic %>%
       group_by(event_id,taxon_id) %>%
-      summarize(value = sum(value, na.rm = FALSE))
+      summarize(value = sum(value, na.rm = FALSE),
+                observation_id = dplyr::first(observation_id))
     
     my_data_cleaned <- my_data_benthic %>%
       dplyr::select(
@@ -370,15 +408,6 @@ While the ecocomDP data package takes care of some data cleaning and formatting,
     ## # Groups:   event_id [0]
     ## # ... with 3 variables: event_id <chr>, taxon_id <chr>, n_obs <int>
 
-We can also make a quick plot to see which taxon rank (i.e., what level of taxonomic specificity was achieved by the expert taxonomist) is most common:
-
-
-    # which taxon rank is most common
-    my_data_cleaned %>%
-      ggplot(aes(taxon_rank)) +
-      geom_bar()
-
-![Bar plot showing the frequency of each taxonomic rank observed in algae count data from the Arikaree River site.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/plot-taxon-rank-1.png)
 
 ## Species Accumulation Curve
 Next, we will plot the species accumulation curve for these samples. To do so, we will first need to convert the density data from m2 to cm2, and make the data 'wide':
@@ -401,7 +430,7 @@ Next, we will plot the species accumulation curve for these samples. To do so, w
     alg_spec_accum_result <- my_data_wide %>% vegan::specaccum(., "random")
     plot(alg_spec_accum_result)
 
-![Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/SAC-1-1.png)
+![Species accumalation plot for 11 sampling events. Confidence intervals are based on random permutations of observed samples.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/rfigs/SAC-1-1.png)
 
 ## Compare Observed and Simulated species accumulation curves
 
@@ -445,4 +474,4 @@ Next, we will plot the species accumulation curve for these samples. To do so, w
       stat_summary(fun.data = median_hilow, geom = "line", 
                    size = 1) 
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/aquatic-macroinvertebrates/02_ecocomDP_workflow_with_NEON_algae/rfigs/compare-obs-sim-SAC-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/aquatic-biodiversity/02_ecocomDP_workflow_with_NEON_algae/rfigs/compare-obs-sim-SAC-1.png)
