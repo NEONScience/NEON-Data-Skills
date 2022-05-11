@@ -18,6 +18,10 @@ urlTitle: intro-aop-gee-tutorial
 
 <div id="ds-objectives" markdown="1">
 
+## Background
+
+AOP has published a subset of AOP Level 3 (mosaicked) data products at 6 NEON sites (as of Spring 2022) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are avaialable in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
+
 ## Objectives
 After completing this activity, you will be able to:
  * Write basic JavaScript code in the Google Earth Engine (GEE) code editor 
@@ -41,11 +45,6 @@ If this is your first time using GEE, we recommend starting on the Google Develo
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
 
 </div>
-
-
-## Background
-
-AOP has published a subset of AOP Level 3 (mosaicked) data products at 6 NEON sites (as of Spring 2022) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are avaialable in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
 ## AOP GEE Data Availability & Access
 
