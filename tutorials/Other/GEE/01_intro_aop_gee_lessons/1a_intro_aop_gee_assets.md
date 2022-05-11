@@ -47,8 +47,6 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 AOP has published a subset of AOP Level 3 (mosaicked) data products at 6 NEON sites (as of Spring 2022) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are avaialable in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
-To interactively explore NEON data available on GEE, you can use the [aop-data-visualization](https://neon-aop.users.earthengine.app/view/aop-data-visualization) app created by AOP Scientist John Musinsky. 
-
 ## AOP GEE Data Availability & Access
 
 The NEON data products that have been made available on GEE can be accessed through the `projects/neon` folder with an appended prefix of the Data Product ID, matching the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below summarizes the prefixes to use for each data product, and is a useful reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
