@@ -30,7 +30,7 @@ After completing this activity, you will be able to:
 * Complete the introductory tutorial <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/GEE/01_intro_aop_gee_lessons/1a_intro_aop_gee_assets.md" target="_blank">Intro to AOP GEE Assets</a>
 * An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
-## Read in and Visualize AOP Data
+## Read in and Visualize AOP SDR Data
 
 In the first tutorial, we showed how to explore the NEON AOP GEE Image Collections. In this tutorial we will pull in and visualize some AOP hyperspectral data. We will look at hyperspectral data over the Santa Rita Experimental Range (SRER) collected in 3 years between 2018 and 2021.
 
