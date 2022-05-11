@@ -20,9 +20,15 @@ urlTitle: intro-aop-gee-tutorial
 
 ## Objectives
 After completing this activity, you will be able to:
- * Write basic code in the Google Earth Engine (GEE) code editor 
+ * Write basic JavaScript code in the Google Earth Engine (GEE) code editor 
  * Discover which NEON AOP datasets are available in GEE
- * Access the NEON AOP GEE datasets
+ * Import Image Collection variables 
+ * Explore the NEON AOP GEE Assets
+
+You will gain familiarity with and an understanding of:
+ * The GEE Code Editor
+ * GEE Image Collections
+ * Asset descriptions and details
 
 ## Requirements
  * A gmail (@gmail.com) account
