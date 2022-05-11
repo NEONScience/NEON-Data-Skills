@@ -30,8 +30,9 @@ After completing this activity, you will be able to:
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
 
 ## Additional Resources
-If this is your first time using GEE, we recommend starting on the google developers website, linked below, and working through some of the introductory tutorials.
-* <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Google Developers Earth-Engine </a>
+If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
+ * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Earth-Engine Get Started </a>
+ * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
 
 </div>
 
@@ -41,7 +42,7 @@ AOP has published a subset of AOP Level 3 (mosaicked) data products at 6 NEON si
 
 To interactively explore NEON data available on GEE, you can use the [aop-data-visualization](https://neon-aop.users.earthengine.app/view/aop-data-visualization) app created by AOP Scientist John Musinsky. 
 
-## AOP Data Availability & Access
+## AOP GEE Data Availability & Access
 
 The NEON data products that have been made available on GEE can be accessed through the `projects/neon` folder with an appended prefix of the Data Product ID, matching the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below summarizes the prefixes to use for each data product, and is a useful reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
 
@@ -66,11 +67,11 @@ The table below summarizes the sites, products, and years of NEON AOP data that 
 Get Started with Google Earth Engine
 ---
 
-Once you have set up your Google Earth Engine account you can navigate to the <a href="https://code.earthengine.google.com/" target="_blank">Earth Engine Code Editor</a>. The diagram below, from the <a href="https://developers.google.com/earth-engine/guides/playground" target="_blank">earth-engine guides playground</a>, shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps / Google Earth. This editor is fairly intuitive; we encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
+Once you have set up your Google Earth Engine account you can navigate to the <a href="https://code.earthengine.google.com/" target="_blank">Earth Engine Code Editor</a>. The diagram below, from the <a href="https://developers.google.com/earth-engine/guides/playground" target="_blank">Earth-Engine Playground</a>, shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps and Google Earth. This editor is fairly intuitive. We encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/gee_code_editor_diagram.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/gee_code_editor_diagram.png" alt="Earth Engine Code Editor Components."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/code_editor_diagram.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/code_editor_diagram.png" alt="Earth Engine Code Editor Components."></a>
 </figure>
 
 ![Earth Engine Code Editor Components](Code_editor_diagram.png)
@@ -81,7 +82,7 @@ Read AOP Data Collections into GEE using `ee.ImageCollection`
 
 AOP data can be accessed through GEE through the `projects/neon` folder. In the remainder of this lesson, we will look at the three AOP datasets, or `ImageCollection`s in this folder.
 
-An [ImageCollection](https://developers.google.com/earth-engine/guides/ic_creating) is a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine [data catalog](https://developers.google.com/earth-engine/datasets). Currently, NEON AOP data in GEE cannot be discovered in the main data catalog, so the next steps will walk you through how you can find available AOP data.
+An <a href="https://developers.google.com/earth-engine/guides/ic_creating" target="_blank">ImageCollection</a> is simply a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Data Catalog</a>. Currently, NEON AOP data cannot be discovered in the main GEE data catalog, so the following steps will walk you through how to find available AOP data.
 
 In your code editor, copy and run the following lines of code to create 3 `ImageCollection` variables containing the Surface Directional Reflectance (SDR), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. 
 
