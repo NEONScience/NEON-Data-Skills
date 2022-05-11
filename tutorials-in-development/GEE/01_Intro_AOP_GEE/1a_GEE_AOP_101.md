@@ -70,12 +70,9 @@ Get Started with Google Earth Engine
 Once you have set up your Google Earth Engine account you can navigate to the <a href="https://code.earthengine.google.com/" target="_blank">Earth Engine Code Editor</a>. The diagram below, from the <a href="https://developers.google.com/earth-engine/guides/playground" target="_blank">Earth-Engine Playground</a>, shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps and Google Earth. This editor is fairly intuitive. We encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/code_editor_diagram.png">
+	<a href="https://developers.google.com/earth-engine/images/Code_editor_diagram.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/code_editor_diagram.png" alt="Earth Engine Code Editor Components."></a>
 </figure>
-
-![Earth Engine Code Editor Components](Code_editor_diagram.png)
-
 
 Read AOP Data Collections into GEE using `ee.ImageCollection`
 ---
@@ -96,40 +93,42 @@ var aopRGB = ee.ImageCollection('projects/neon/DP3-30010-001_RGB')
 var aopDEM = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
 ```
 
-A few notes on using the Code Editor: 
-- In the left panel of the code editor, there is a **Docs** tab which includes API documentation on built in functions, showing the expected input arguments. We encourage you to refer to this documentation, as well as the [earth engine tutorials](https://developers.google.com/earth-engine/tutorials/tutorial_js_01) to familiarize yourself with GEE and the JavaScript language.
+A few tips for the Code Editor: 
+- In the left panel of the code editor, there is a **Docs** tab which includes API documentation on built in functions, showing the expected input arguments. We encourage you to refer to this documentation, as well as the <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial</a> to familiarize yourself with GEE and the JavaScript programming language.
 - If you have an error in your code, a red error message will show up in the Console (in the right panel), which tells you the line that failed.
 - Save your code frequently! If you try to leave your code while it is unsaved, you will be prompted that there are unsaved changes in the editor.
 
-When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code are underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
+When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code become underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/import_record_popup.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/import_record_popup.png" alt="GEE Import Record Popup."></a>
 </figure>
 
-![Import_Record_Popup](Import_Record_Popup.png)
-
 If you click `Convert`, the line of code will disappear and the variable will be imported into your session directly, and will show up at the top of the code editor. Go ahead and convert the variables for all three lines of code, so you should see the following. Tip: if you type Ctrl-z, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. It is a good idea to retain the original code that reads in the variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your own code editor, the imported variables will not be saved.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/aop_image_collections_imported.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/aop_image_collections_imported.png" alt="Imported AOP Image Collections."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/aop_imported_image_collections.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/aop_imported_image_collections.png" alt="Imported AOP Image Collections."></a>
 </figure>
-
-![AOP_ImageCollections_Imported](AOP_ImageCollections_Imported.png)
 
 Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *properties*, which if you expand, shows a *description*. This provides more detailed information about the data product.
 
 Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue `projects/neon/DP3-30006-001_SDR`, as well as `DP3-30010-001_RGB` and`DP3-30024-001_DEM`, respectively. Below we'll show the window that pops-up when you click on `SDR`, but we encourage you to look at all three datasets.
 
-![SDR_AssetDetails_Description](SDR_AssetDetails_Description.png)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_description.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_description.png" alt="SDR Asset Details Description."></a>
+</figure>
 
-This allows you to read the full description in a more user-friendly format. Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. For example, note that the reflectance data in GEE is scaled by 100. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. [DP3.30006.001](https://data.neonscience.org/data-products/DP3.30006.001)) for relevant information about the data products, how they are generated, and other pertinent details.
+This allows you to read the full description in a more user-friendly format. Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. For example, note that the reflectance data in GEE is scaled by 100. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
 
 You can also click on the `IMAGES` tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. In the next step, we will show how to use this path to pull in a single file. 
 
-![SDR_AssetDetails_Images](SDR_AssetDetails_Images.png)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_images.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_images.png" alt="SDR Asset Details Images."></a>
+</figure>
 
 Read AOP Data into GEE using `ee.Image`
 ---
@@ -142,7 +141,10 @@ var TALL_2017_SDR = ee.Image('projects/neon/DP3-30006-001_SDR/DP3-30006-001_D08_
 
 Import this variable, and you can see that it pulls in to the Imports at the top, and shows `(426 bands)` at the right. To the right of that you will see blue eye and target icons. If you hover over the eye it displays "Show on Map". Click this eye icon to place a footprint of this data set in the Map display. If you hover over the target icon, you will see the option "Center Map on Record". Click this to center your map on this TALL SDR dataset. You should now see the footprint of the data as a layer in the Google Map.
 
-![TALL_SDR_ShowOnMap](TALL_SDR_ShowOnMap.png)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/tall_sdr_map.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/tall_sdr_map.png" alt="TALL SDR Show On Map."></a>
+</figure>
 
 A Quick Recap
 ---
