@@ -1,7 +1,7 @@
 ---
 syncID: 
 title: "Introduction to AOP Hyperspectral Data in GEE"
-description: "Read in and visualize multiple years of Surface Directional Reflectance data at NEON site [SRER](https://www.neonscience.org/field-sites/srer) (Santa Rita Experimental Range)"
+description: "Read in and visualize multiple years of Surface Directional Reflectance data at NEON site <a href="https://www.neonscience.org/field-sites/srer" target="_blank">SRER</a> (Santa Rita Experimental Range)"
 dateCreated: 2022-04-14
 authors: [Bridget M. Hass]
 contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
