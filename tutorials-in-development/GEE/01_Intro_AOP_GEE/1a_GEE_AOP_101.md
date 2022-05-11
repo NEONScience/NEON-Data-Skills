@@ -37,7 +37,7 @@ You will gain familiarity with:
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
- * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Earth-Engine Get Started </a>
+ * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get started with Earth-Engine  </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
 
 </div>
