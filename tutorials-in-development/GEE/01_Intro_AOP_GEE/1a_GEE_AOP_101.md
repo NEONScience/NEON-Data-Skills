@@ -25,7 +25,7 @@ After completing this activity, you will be able to:
  * Import Image Collection variables 
  * Explore the NEON AOP GEE Assets
 
-You will gain familiarity with and an understanding of:
+You will gain familiarity with:
  * The GEE Code Editor
  * GEE Image Collections
  * Asset descriptions and details
@@ -70,8 +70,7 @@ The table below summarizes the sites, products, and years of NEON AOP data that 
 | D16 | WREF | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
 | D17 | TEAK | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
 
-Get Started with Google Earth Engine
----
+## Get Started with Google Earth Engine
 
 Once you have set up your Google Earth Engine account you can navigate to the <a href="https://code.earthengine.google.com/" target="_blank">Earth Engine Code Editor</a>. The diagram below, from the <a href="https://developers.google.com/earth-engine/guides/playground" target="_blank">Earth-Engine Playground</a>, shows the main components of the code editor. If you have used other programming languages such as R, Python, or Matlab, this should look fairly similar to other Integrated Development Environments (IDEs) you may have worked with. The main difference is that this has an interactive map at the bottom, similar to Google Maps and Google Earth. This editor is fairly intuitive. We encourage you to play around with the interactive map, or explore the ee documentation, linked above, to gain familiarity with the various features.
 
@@ -80,8 +79,7 @@ Once you have set up your Google Earth Engine account you can navigate to the <a
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/code_editor_diagram.png" alt="Earth Engine Code Editor Components."></a>
 </figure>
 
-Read AOP Data Collections into GEE using `ee.ImageCollection`
----
+## Read AOP Data Collections into GEE using `ee.ImageCollection`
 
 AOP data can be accessed through GEE through the `projects/neon` folder. In the remainder of this lesson, we will look at the three AOP datasets, or `ImageCollection`s in this folder.
 
@@ -136,8 +134,7 @@ You can also click on the `IMAGES` tab to explore all the available NEON images 
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_images.png" alt="SDR Asset Details Images."></a>
 </figure>
 
-Read AOP Data into GEE using `ee.Image`
----
+## Read AOP Data into GEE using `ee.Image`
 
 As a last step, we will go ahead and use the path specified in the SDR Asset Details Images table to read in a single image. Pulling in a single image uses almost identical syntax as an image collection, see below:
 
@@ -152,11 +149,14 @@ Import this variable, and you can see that it pulls in to the Imports at the top
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/tall_sdr_map.png" alt="TALL SDR Show On Map."></a>
 </figure>
 
-A Quick Recap
----
+## A Quick Recap
 
 You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the `ImageCollection` **Asset details** to find the path to an individual `Image`. Lastly, you learned to read in an individual SDR Image, pull the footprint of the data into a Map Layer, and center on that region.
 
 It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you have imported an entire AOP hyperspectral data set, which is not an easy feat. One of the barriers to working with AOP data (and reflectance data in particular) is it's large data volume, which requires high-performance computing environments to carry out analysis. There are also limited open-source tools for working with the data; many of the software suites for working with hyperspectral data require licenses which can be expensive. In this lesson, we have loaded spectral data over an entire site, and are ready for data exploration and analysis, in a free geospatial cloud-computing platform. 
 
 In the next tutorials we will pull in RGB composites spectral data, interactively plot spectral signatures of pixels in the image, and carry out some more advanced analysis that is highly simplified by the built in GEE functions. 
+
+## Get Lesson Code
+
+<a href="https://code.earthengine.google.com/92d8ecf5795746900d6fd5cad9a685ea" target="_blank">Importing AOP Image Collection Variables</a>
