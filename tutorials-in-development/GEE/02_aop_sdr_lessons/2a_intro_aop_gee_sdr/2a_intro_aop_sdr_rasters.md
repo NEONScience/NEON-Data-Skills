@@ -1,27 +1,37 @@
-# Intro to AOP Hyperspectral Data in GEE
-## Read in and visualize multiple years of Surface Directional Reflectance data at NEON site [SRER](https://www.neonscience.org/field-sites/srer) (Santa Rita Experimental Range)
+---
+syncID: 
+title: "Introduction to AOP Hyperspectral Data in GEE"
+description: "Read in and visualize multiple years of Surface Directional Reflectance data at NEON site [SRER](https://www.neonscience.org/field-sites/srer) (Santa Rita Experimental Range)"
+dateCreated: 2022-04-14
+authors: [Bridget M. Hass]
+contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
+estimatedTime: 30 minutes
+packagesLibraries: 
+topics: hyperspectral, remote-sensing
+languageTool: GEE
+dataProduct: DP3.30006.001
+code1: 
+tutorialSeries: aop-gee
+urlTitle: intro-aop-gee-sdr-tutorial
 
 ---
 
-Author: Bridget Hass
+<div id="ds-objectives" markdown="1">
 
-Contributors: John Musinsky, Tristan Goulden, Lukas Straube
-
-Last Updated: April 14, 2022
-
-Objectives
+## Objectives
+After completing this activity, you will be able to:
 ---
-- Read AOP Hyperspectral Reflectance raster data sets at the NEON site SRER
+- Read AOP Hyperspectral Reflectance raster data sets
 - Read in multiple years of data and qualitatively explore inter-annual differences
-- Gain an understanding of GEE visualization and export options
+- Visualize data in GEE and export data from GEE
 
-Requirements
----
+## Requirements
+
 - Complete the introductory tutorial [AOP Data in Google Earth Engine (GEE) 101](https://github.com/NEONScience/NEON-Data-Skills/blob/bhass/tutorials-in-development/GEE/01_Intro_AOP_GEE/1a_GEE_AOP_101.md)
 -	An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the [Intro to Working with Hyperspectral Remote Sensing Data](https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r) tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
-Read in and Visualize AOP Data
----
+## Read in and Visualize AOP Data
+
 In the first tutorial, we showed how to explore the NEON AOP GEE Image Collections. In this tutorial we will pull in and visualize some AOP hyperspectral data. We will look at hyperspectral data over the Santa Rita Experimental Range (SRER) collected in 3 years between 2018 and 2021.
 
 We will work through basic GEE code whcih will carry out the following steps:
@@ -42,15 +52,24 @@ var SRER_SDR2018 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SD
 
 As we covered in the previous lesson, when you type this code, it will be underlined in red (the same as you would see with a mis-spelled word). When you hover over this line, you will see an option pop up that says `"SRER_SDR2018" can be converted to an import record. Convert Ignore` 
 
-![Import_record](Convert_to_import_record.png)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/convert_to_import_record.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/convert_to_import_record.png" alt="Convert Variable to Import Record"></a>
+</figure>
 
 If you click `Convert`, the line of code will disappear and the variable will be pulled into the top of the code editor, as shown below. Once imported, you can interactively explore this variable - eg. you can expand on the `bands` and `properties` to gain more information about this image, or "asset", as it's called in GEE.
 
-![Imports](Imports.PNG)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/imports.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/imports.png" alt="Imported Variables"></a>
+</figure>
 
 Another way to learn more about this asset is to left-click on the blue `projects/neon/D14_SRER/L3_DP3-30006-001-D14_SRER_SDR_2018`. This will pop up a box with more detailed information about this asset, as shown below:
 
-![Asset_details](Asset_details.png)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_sdr_asset_details.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_sdr_asset_details.png" alt="SRER SDR Asset Details"></a>
+</figure>
 
 Click `Esc` to return to the code editor. Note that you can run the code either way, with the variable explicitly specified in the code editor, or imported as a variable, but we encourage you to leave the variable written out in the code, as this way is more reproducible.
 
@@ -114,10 +133,14 @@ Map.setCenter(-110.83549, 31.91068, 11);
 
 Once you have the three years of data added, you can look at the different years one at a time by selecting each layer in the Layers box inside the Map:
 
-![SRER Layers](SRER_layers.png)
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_layers.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_layers.png" alt="SRER Layers"></a>
+</figure>
 
 If you click anywhere inside the AOP map (where there is data), you will see the 426 spectral bands as a bar chart displayed for each of the layers in the Inspector window (top-right corner of the code editor). You can see the spectral values for different layers by clicking on the arrow to the left of the layer name under Pixels (eg. SRER 2018). Note that these values are just shown as band #s, and you can't tell from the chart what the actual wavelength values are. We will convert the band numbers to wavelengths in the next lesson, so stay tuned!
 
-![SRER Spectral Values](SRER_inspector.png)
-
-
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_inspector.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2a_intro_sdr/srer_inspector.png" alt="SRER Inspector"></a>
+</figure>
