@@ -20,7 +20,6 @@ urlTitle: intro-aop-gee-sdr-tutorial
 
 ## Objectives
 After completing this activity, you will be able to:
----
 - Read AOP Hyperspectral Reflectance raster data sets
 - Read in multiple years of data and qualitatively explore inter-annual differences
 - Visualize data in GEE and export data from GEE
