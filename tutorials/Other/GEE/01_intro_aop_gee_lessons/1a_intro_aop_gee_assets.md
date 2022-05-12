@@ -16,7 +16,7 @@ urlTitle: intro-aop-gee-tutorial
 
 ---
 
-Google Earth Engine (GEE) is a powerful and free cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial we introduce you to the NEON AOP datasets that have been uploaded to GEE and how to find more information about them.
+Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets that have been uploaded to GEE and demonstrate how to find more information about them.
 
 <div id="ds-objectives" markdown="1">
 
