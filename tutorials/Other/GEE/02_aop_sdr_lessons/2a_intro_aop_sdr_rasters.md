@@ -40,7 +40,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 </div>
 
-Let's get started! In this tutorial we will work through the steps of generating basic GEE code consisting of the following parts:
+Let's get started! In this tutorial we generate basic GEE (JavaScript) code to visualize hyperspectral data. We will work through the following steps:
 
 1) Pull in an AOP hyperspectral data set
 2) Set the visualization parameters
@@ -48,7 +48,7 @@ Let's get started! In this tutorial we will work through the steps of generating
 4) Add the AOP layer to the GEE Map
 5) Center on the region of interest
 
-We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data show up in the Interactive Map.
+We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until you run the last two steps (adding the data layer to the map), you will not see the AOP data show up in the Interactive Map.
 
 1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE tutorial</a>, to see how to pull in spectral data from a different site.
 
