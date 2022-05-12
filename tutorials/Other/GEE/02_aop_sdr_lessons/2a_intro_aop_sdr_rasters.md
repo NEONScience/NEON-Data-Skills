@@ -17,7 +17,7 @@ urlTitle: intro-aop-gee-sdr-tutorial
 ---
 ## Read in and Visualize AOP SDR Data
 
-In the first <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE</a> tutorial, we showed how to explore the NEON AOP GEE Image Collections. We will build off that tutorial in this lesson, to pull in and visualize some AOP hyperspectral data in GEE. Specifically, we will look at reflectance data collected at the NEON site <a href="https://www.neonscience.org/field-sites/srer" target="_blank">SRER</a> (Santa Rita Experimental Range) for 3 years between 2018 and 2021.
+In the first <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE</a> tutorial, we showed how to explore the NEON AOP GEE Image Collections. We will build off that tutorial in this lesson, to pull in and visualize some AOP hyperspectral data in GEE. Specifically, we will look at surface directional reflectance (SDR) data collected at the NEON site <a href="https://www.neonscience.org/field-sites/srer" target="_blank">SRER</a> (Santa Rita Experimental Range) for 3 years between 2018 and 2021.
 
 <div id="ds-objectives" markdown="1">
 
