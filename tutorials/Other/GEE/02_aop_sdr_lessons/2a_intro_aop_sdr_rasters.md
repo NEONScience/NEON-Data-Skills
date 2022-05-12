@@ -24,9 +24,7 @@ In the first <a href="https://www.neonscience.org/resources/learning-hub/tutoria
 ## Objectives
 After completing this activity, you will be able to:
 - Read AOP hyperspectral reflectance raster data sets into GEE
-- Read in multiple years of data and qualitatively explore inter-annual differences
-- Visualize data in GEE
-- Export data from GEE
+- Visualize multiple years of data and qualitatively explore inter-annual differences
 
 ## Requirements
  * A gmail (@gmail.com) account
