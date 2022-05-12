@@ -17,7 +17,7 @@ urlTitle: intro-aop-gee-sdr-tutorial
 ---
 ## Read in and Visualize AOP SDR Data
 
-In the first <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE tutorial</a>, we showed how to explore the NEON AOP GEE Image Collections. We will build off that tutorial in this lesson, to pull in and visualize some AOP hyperspectral data. Specifically, we will look at reflectance data over the at the NEON site <a href="https://www.neonscience.org/field-sites/srer" target="_blank">SRER</a> (Santa Rita Experimental Range) collected in 3 years between 2018 and 2021.
+In the first <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE</a> tutorial, we showed how to explore the NEON AOP GEE Image Collections. We will build off that tutorial in this lesson, to pull in and visualize some AOP hyperspectral data in GEE. Specifically, we will look at reflectance data collected at the NEON site <a href="https://www.neonscience.org/field-sites/srer" target="_blank">SRER</a> (Santa Rita Experimental Range) for 3 years between 2018 and 2021.
 
 <div id="ds-objectives" markdown="1">
 
@@ -32,8 +32,8 @@ After completing this activity, you will be able to:
  * A gmail (@gmail.com) account
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
- * Complete the introductory AOP GEE tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
- * An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
+ * Optionally, complete the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
+ * A basic understanding of hyperspectral data and the AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in R</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
