@@ -29,11 +29,20 @@ After completing this activity, you will be able to:
 - Export data from GEE
 
 ## Requirements
+ * A gmail (@gmail.com) account
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * A basic understanding of the GEE code editor and the GEE JavaScript API.
+ * Complete the introductory AOP GEE tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
+ * An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
-* Complete the introductory tutorial <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/GEE/01_intro_aop_gee_lessons/1a_intro_aop_gee_assets.md" target="_blank">Intro to AOP GEE Assets</a>
-* An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
+## Additional Resources
+If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
+ * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine  </a>
+ * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
 
-We will work through basic GEE code whcih will carry out the following steps:
+</div>
+
+Let's get started! In this tutorial we will work through the steps of generating basic GEE code consisting of the following parts:
 
 1) Pull in an AOP hyperspectral data set
 2) Set the visualization parameters
