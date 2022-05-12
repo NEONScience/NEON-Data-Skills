@@ -1,7 +1,7 @@
 ---
-syncID: 
+syncID: ea5ebcf71c344bf1b2a7be0067005afd
 title: "Introduction to AOP Hyperspectral Data in GEE"
-description: "Read in and visualize multiple years of Surface Directional Reflectance data at NEON site SRER"
+description: "Read in and visualize Surface Directional Reflectance data at NEON site SRER"
 dateCreated: 2022-04-14
 authors: [Bridget M. Hass]
 contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
@@ -15,23 +15,23 @@ tutorialSeries: aop-gee
 urlTitle: intro-aop-gee-sdr-tutorial
 
 ---
+## Read in and Visualize AOP SDR Data
+
+In the first <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE tutorial</a>, we showed how to explore the NEON AOP GEE Image Collections. We will build off that tutorial in this lesson, to pull in and visualize some AOP hyperspectral data. Specifically, we will look at reflectance data over the at the NEON site <a href="https://www.neonscience.org/field-sites/srer" target="_blank">SRER</a> (Santa Rita Experimental Range) collected in 3 years between 2018 and 2021.
 
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
 After completing this activity, you will be able to:
-- Read AOP Hyperspectral Reflectance raster data sets
+- Read AOP hyperspectral reflectance raster data sets into GEE
 - Read in multiple years of data and qualitatively explore inter-annual differences
-- Visualize data in GEE and export data from GEE
+- Visualize data in GEE
+- Export data from GEE
 
 ## Requirements
 
 * Complete the introductory tutorial <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/GEE/01_intro_aop_gee_lessons/1a_intro_aop_gee_assets.md" target="_blank">Intro to AOP GEE Assets</a>
 * An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
-
-## Read in and Visualize AOP SDR Data
-
-In the first tutorial, we showed how to explore the NEON AOP GEE Image Collections. In this tutorial we will pull in and visualize some AOP hyperspectral data. We will look at hyperspectral data over the at the NEON site <a href="https://www.neonscience.org/field-sites/srer" target="_blank">SRER</a> (Santa Rita Experimental Range) collected in 3 years between 2018 and 2021.
 
 We will work through basic GEE code whcih will carry out the following steps:
 
@@ -43,7 +43,7 @@ We will work through basic GEE code whcih will carry out the following steps:
 
 We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until the last two steps of this, you will not see the AOP data show up in the Interactive Map.
 
-1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/GEE/01_intro_aop_gee_lessons/1a_intro_aop_gee_assets.md" target="_blank">Intro to AOP GEE Assets</a>, to pull in spectral data from a different site.
+1) Read in the SRER 2018 SDR image, using `ee.Image`. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE tutorial</a>, to see how to pull in spectral data from a different site.
 
 ```javascript
 var SRER_SDR2018 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2018");
