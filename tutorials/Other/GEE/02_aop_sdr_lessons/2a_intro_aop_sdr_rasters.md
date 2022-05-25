@@ -3,8 +3,8 @@ syncID: ea5ebcf71c344bf1b2a7be0067005afd
 title: "Introduction to AOP Hyperspectral Data in GEE"
 description: "Read in and visualize Surface Directional Reflectance data at NEON site SRER"
 dateCreated: 2022-04-14
-authors: [Bridget M. Hass]
-contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
+authors: Bridget M. Hass, John Musinsky
+contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 30 minutes
 packagesLibraries: 
 topics: hyperspectral, remote-sensing
