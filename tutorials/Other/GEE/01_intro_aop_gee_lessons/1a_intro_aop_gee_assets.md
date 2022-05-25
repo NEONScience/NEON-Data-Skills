@@ -3,8 +3,8 @@ syncID: b968a912e3ea4557b2a7185cd2340069
 title: "Introduction to AOP Data in Google Earth Engine"
 description: "Introductory tutorial on exploring AOP datasets in GEE."
 dateCreated: 2022-04-14
-authors: [Bridget M. Hass]
-contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
+authors: Bridget M. Hass, John Musinsky
+contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 20 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, camera, remote-sensing
