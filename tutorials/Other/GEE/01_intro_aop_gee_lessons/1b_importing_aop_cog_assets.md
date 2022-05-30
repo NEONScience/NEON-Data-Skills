@@ -32,7 +32,7 @@ After completing this activity, you will be able to:
  * AOP data converted into the COG data format. Refer to the R tutorial to merge and convert data
 
 ## Additional Resources
-For more information on importing assets into your personal workspace, refer to the Google Developers website documentation on asset management below:
+For more information on uploading data into your personal workspace, refer to the Google Developers website documentation on asset management and uploading images below:
  * <a href="https://developers.google.com/earth-engine/guides/asset_manager" target="_blank"> Earth-Engine Managing Assets </a>
  * <a href="https://developers.google.com/earth-engine/guides/image_upload" target="_blank"> Earth-Engine Image Upload </a>
 
@@ -42,4 +42,4 @@ For more information on importing assets into your personal workspace, refer to 
 
 If you are interested in working with AOP data that has not already been uploaded to the `projects/neon` folder (as outlined in the previous lesson, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE</a> Earth-Engine Managing Assets </a>), this tutorial will walk you through importing your own COG datasets. 
 
-To convert AOP L3 data products from geotiff or h5 file formats to COG format, refer to the R tutorials ...
+To convert AOP L3 data products from geotiff or h5 file formats to COG format, refer to the R tutorial "Converting AOP rasters and h5 reflectance files to Cloud Optimized Geotiffs"
