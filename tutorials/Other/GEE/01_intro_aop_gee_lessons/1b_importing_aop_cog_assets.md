@@ -1,7 +1,7 @@
 ---
 syncID: 
 title: "Importing AOP Cloud Optimized Geotiffs into Google Earth Engine"
-description: "Introductory tutorial on importing new AOP COG datasets into GEE."
+description: "Introductory tutorial on importing AOP COG datasets into GEE."
 dateCreated: 2022-05-29
 authors: Bridget M. Hass
 contributors: Tristan Goulden, John Musinsky
@@ -9,7 +9,7 @@ estimatedTime: 30 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, camera, remote-sensing
 languageTool: GEE
-dataProduct: DP3.30006.001, DP3.30010.001, DP3.30024.001
+dataProducts: DP3.30006.001, DP3.30010.001, DP3.30015.001, DP3.30024.001, DP3.30025.001
 code1: 
 tutorialSeries: aop-gee
 urlTitle: importing-aop-cog-gee
