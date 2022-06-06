@@ -1348,7 +1348,7 @@ fig
 
 
 
-![png](neonUtilitiesPython_files/neonUtilitiesPython_41_0.png)
+![Canopy Height Model at Hopbrook in 2017](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-general/neon-code-packages/neonUtilitiesPython/neonUtilitiesPython_files/neonUtilitiesPython_41_0.png)
 
 
 
