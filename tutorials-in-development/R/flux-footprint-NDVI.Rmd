@@ -1,0 +1,148 @@
+---
+syncID: FILL IN
+title: "Using Footprints and Reflectance Indices to Interpret Flux Data"
+description: "Explore the relationship between NDVI in the flux footprint and NEE. This tutorial serves as a guide to bringing together the flux footprints and remote sensing data more generally."
+dateCreated: 2022-06-07
+authors: [Claire K. Lunch, Chris Florian]
+contributors: 
+estimatedTime: 40 minutes
+packagesLibraries: neonUtilities, raster
+topics: 
+languageTool: R
+dataProduct: DP4.00200.001, DP3.30026.001
+code1: FILL IN
+tutorialSeries:
+urlTitle: flux-footprint-NDVI
+
+---
+
+Flux footprints represent an estimate of the region of land surface 
+contributing to the fluxes estimated by eddy covariance. The exact 
+footprint varies from moment to moment, due to changes in wind 
+speed and direction, so footprints are typically presented as 
+proportional estimates of the contribution from each point over the 
+relevant time period. See 
+<a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.922.4124&rep=rep1&type=pdf" target="_blank">Amiro 1998</a> for details and considerations about 
+footprint calculations.
+
+Because they represent regions of land around the flux tower, flux 
+footprints are ideally suited to be used in combination with remotely 
+sensed data. In this tutorial, we attempt to use flux footprints 
+together with NDVI to estimate net ecosystem exchange (NEE), but the 
+general principles used here can be applied to many data types in the 
+remote sensing and eddy covariance suites (for example, canopy water 
+content and latent heat fluxes, canopy height increment and 
+cumulative carbon uptake, etc).
+
+### Background: NDVI in the flux footprint
+
+Let's say we want to use reflectance data to scale up NEE, by 
+extrapolating flux data across a larger landscape. A first step might 
+be to understand how reflectance relates to NEE from year to year in 
+the same location.
+
+NEON remote sensing flights follow a detailed schedule, as described 
+on the <a href="https://www.neonscience.org/data-collection/flight-schedules-coverage" target="_blank">flight schedule page</a>. Although flights are generally 
+carried out at a similar time of year at each site over time, weather 
+conditions can shift the exact date, and local climate and phenology 
+may result in flights capturing slightly different conditions on the 
+ground in different years. And of course, local conditions each year 
+may result in different vegetation and soil conditions even at the same 
+time of year and same phenological stage.
+
+The flux footprints enable us to greatly improve the accuracy of the 
+relationship between reflectance and fluxes - instead of guessing at 
+the appropriate region around the tower to use for the comparison, we 
+can use the region identified by the footprint, and weighted by the 
+relative contribution of each pixel to the footprint.
+
+To begin to bring together these data sources, in this tutorial, we will 
+examine the relationship between NDVI within the flux footprint and NEE 
+on the day the remote sensing flight took place. In order to give 
+ourselves the best odds of detecting differences, we'll focus on sites 
+where there can be large differences in NDVI from year to year, and at 
+different times of year: grasslands and deciduous forests.
+
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+After completing this activity, you will be able to:
+
+ * Create a raster of NEON flux footprint data
+ * Get the NDVI data corresponding to the footprint area
+ * Calculate the weighted average NDVI within the footprint
+
+## Things You’ll Need To Complete This Tutorial
+You will need a version of R (4.0 or higher. This code may work with 
+earlier versions but it hasn't been tested) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **raster**: `install.packages("raster")`
+* **rhdf5**: `install.packages("BiocManager")`, then `BiocManager::install("rhdf5")`
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore tutorial</a>
+* <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Introduction to NEON flux data</a>
+
+</div>
+
+
+## Set Up R Environment and Download Data
+
+First install and load the necessary packages.
+
+```{r setup, eval=c(10,11), results="hide"}
+
+# install packages. can skip this step if already installed
+# update neonOS installation after CRAN release
+install.packages("neonUtilities")
+install.packages("raster")
+install.packages("BiocManager")
+BiocManager::install("rhdf5")
+
+# load packages
+library(neonUtilities)
+library(raster)
+
+```
+
+For this tutorial, we will need three data sets from two NEON 
+data products: NDVI is published in Vegetation indices (DP3.30026.001), 
+and NEE and footprints are published in Eddy covariance (DP4.00200.001). 
+If you're unfamiliar with downloading and wrangling NEON data, start with 
+the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial, and consider the 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">flux data</a> tutorial as well.
+
+INSERT DESCRIPTION OF SITES USED
+BLAN, UKFS deciduous
+CPER, DCFS, NOGP grassland
+KONZ, CLBJ deciduous/grassland
+
+
+``` {r load-data, results="hide"}
+
+apchem <- loadByProduct(dpID="DP1.20063.001", 
+                        site=c("PRLA","SUGG","TOOK"), 
+                        package="expanded",
+                        release="RELEASE-2022",
+                        check.size=F)
+
+```
+
+Copy each of the downloaded tables into the R environment.
+
+``` {r env, results="hide"}
+
+list2env(apchem, .GlobalEnv)
+
+```
+
+
+
+
