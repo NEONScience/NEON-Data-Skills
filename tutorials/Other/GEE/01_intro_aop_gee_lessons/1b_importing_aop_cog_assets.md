@@ -22,19 +22,22 @@ The
 
 ## Objectives
 After completing this activity, you will be able to:
- * Import AOP data converted to cloud-optimized geotiffs as an Asset into Google Earth Engine (GEE)
+ * Import AOP cloud-optimized geotiffs data as an Asset into Google Earth Engine (GEE)
  * Display the datasets in the GEE Interactive Map
 
 ## Requirements
  * A gmail (@gmail.com) account
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
- * AOP data converted into the COG data format. Refer to the R tutorial to merge and convert data
+ * AOP data converted into the COG data format. 
 
 ## Additional Resources
-For more information on uploading data into your personal workspace, refer to the Google Developers website documentation on asset management and uploading images below:
- * <a href="https://developers.google.com/earth-engine/guides/asset_manager" target="_blank"> Earth-Engine Managing Assets </a>
- * <a href="https://developers.google.com/earth-engine/guides/image_upload" target="_blank"> Earth-Engine Image Upload </a>
+
+ * If you need to convert AOP data to COG format, refer to the R tutorial <a href="" target="_blank"> AOP Mosaic Raster to COG </a>. This outlines how to download AOP L3 (tiled) raster data products, mosaic the tiles, and save the full-site rasters to a geotiff and COG.
+
+ * For more information on uploading data into your personal workspace, refer to the Google Developers website documentation on asset management and uploading images below:
+   - <a href="https://developers.google.com/earth-engine/guides/asset_manager" target="_blank"> Earth-Engine Managing Assets </a>
+   - <a href="https://developers.google.com/earth-engine/guides/image_upload" target="_blank"> Earth-Engine Image Upload </a>
 
 </div>
 
