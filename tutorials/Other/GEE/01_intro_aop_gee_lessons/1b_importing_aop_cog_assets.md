@@ -16,7 +16,7 @@ urlTitle: importing-aop-cog-gee
 
 ---
 
-The 
+AOP has a couple of sites uploaded into GEE ... In the GEE Code Editor you can upload your own GeoTIFF image files up to 10 GB in size to your Earth Engine user folder. (For larger files, use the <a href="https://developers.google.com/earth-engine/guides/command_line#upload" target="_blank"> command-line upload option</a>.)
 
 <div id="ds-objectives" markdown="1">
 
