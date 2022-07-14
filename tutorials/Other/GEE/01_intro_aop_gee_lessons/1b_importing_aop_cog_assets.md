@@ -16,7 +16,7 @@ urlTitle: importing-aop-cog-gee
 
 ---
 
-AOP has a small subsets of sites uploaded into GEE to the `projects/neon` folder. We realize this excludes a lot of study areas, so this tutorial shows you how to upload other AOP GeoTIFF image files to your personal folder. GEE allows for up to 10 GB in size to your Earth Engine user folder. For larger files, you can use the <a href="https://developers.google.com/earth-engine/guides/command_line#upload" target="_blank"> command-line upload option</a>.
+AOP has a small subsets of sites uploaded into GEE to the `projects/neon` folder. We realize this excludes a lot of study areas, so this tutorial shows you how to upload other AOP GeoTIFF image files to your personal folder. GEE allows you to upload files up to 10 GB in size to your Earth Engine user folder. For larger files, you can use the <a href="https://developers.google.com/earth-engine/guides/command_line#upload" target="_blank"> command-line upload option</a>.
 
 <div id="ds-objectives" markdown="1">
 
