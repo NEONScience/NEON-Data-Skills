@@ -57,7 +57,7 @@ To upload a GeoTIFF using the Code Editor, click on the **Assets** tab in the up
 
 <figure>
 	<a href="https://developers.google.com/earth-engine/images/Code_editor_diagram.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1b_upload_assets/upload_new_image_asset.png" alt="Upload New Image Asset Window."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1b_upload_assets/upload_new_image_asset.png" width="350" alt="Upload New Image Asset Window."></a>
 </figure>
 
 Give the image an appropriate asset ID (which doesn't already exist) in your user folder. If you'd like to upload the image into an existing folder or collection, prefix the asset ID with the folder or collection ID, for example /users/name/folder-or-collection-id/new-asset.
