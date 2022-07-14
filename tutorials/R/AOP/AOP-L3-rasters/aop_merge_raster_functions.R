@@ -15,7 +15,7 @@ library(docstring)
 
 ##----------------------------------------------------------------------------##
 
-# create a data table linking data product, sensor, and download path
+#create a lookup data table linking data product, sensor, and download path
 lookupTable = data.table(
   dpID = c("DP3.30010.001","DP3.30011.001","DP3.30012.001","DP3.30014.001",
            "DP3.30015.001","DP3.30019.001","DP3.30024.001","DP3.30024.001",
@@ -55,27 +55,30 @@ makeDir <- function(directory) {
   }
 }
 
+#function to check that the dpID is valid (within the lookup table)
 checkdpID <- function(dpID) {
   if (!(dpID %in% lookupTable$dpID)) {
     cat('The dpID is not valid. Please select one of the following dpIDs:\n')
     print(lookupTable[, 1:3][order(sensor,dpID)])
     stop('ERROR! Invalid dpID')
-    # stop(cat(lookupTable$dpID,sep='\n'))
     }
 }
 
+#function to get the data paths given the dpID
 getDataPaths <- function(dpID) {
   match = tolower(lookupTable$dpID) == tolower(dpID)
   dataPaths = lookupTable[match, path]
   return(dataPaths)
 }
 
+#function to get the data abbreviation from the dpID
 getDataAbbr <- function(dpID) {
   match = tolower(lookupTable$dpID) == tolower(dpID)
   dataAbbr = lookupTable[match, dpName]
   return(dataAbbr)
 }
 
+#function to get the data extensions from the dpID
 getDataExts <- function(dpID) {
   match = tolower(lookupTable$dpID) == tolower(dpID)
   hasErrorTifs <- unique(lookupTable[match, errorTifs])
@@ -105,16 +108,16 @@ getDataExts <- function(dpID) {
   return(dataExts)
 }
 
+#function to get a list of the directories with L3 geotiff data
 getDownloadDirs <- function(wd,siteCode,dpID,year) {
-  # get a list of the directories with L3 geotiff data
   downloadDirs <- list.dirs(file.path(wd,dpID,"neon-aop-products",year,"FullSite"),recursive=TRUE)
   return(downloadDirs)
 }
 
+#function to get the unique year-site-visits -- usually there is only one visit per year, 
+#but occasionally there may be more than one visit in the same year.
+#this handles the general case of any # of visits per year
 getYearSiteVisits <- function(downloadDirs,siteCode) {
-  # get unique yearSiteVisit - usually there is only one visit per year, 
-  # but occasionally there may be more than one visit in the same year.
-  # this handles the general case of any # of visits per year
   yearSiteVisits <- c()
   for(i in 1:length(downloadDirs)) {
     dirParts <- unlist(strsplit(downloadDirs[[i]],.Platform$file.sep))
@@ -125,6 +128,7 @@ getYearSiteVisits <- function(downloadDirs,siteCode) {
   return(unique(yearSiteVisits))
 }
 
+#function to get the directories containing data
 getDataDirs <- function(dataRootDir,siteCode,dpID,downloadDirs) {
   dataPaths <- getDataPaths(dpID)
   yearSiteVisits <- getYearSiteVisits(downloadDirs,siteCode)
@@ -139,15 +143,7 @@ getDataDirs <- function(dataRootDir,siteCode,dpID,downloadDirs) {
   return(dataDirs)
 }
 
-getDataTiles <- function(dataDirs) {
-  dataTiles <- list()
-  for(i in 1:length(dataDirs)) {
-    dirParts <- unlist(strsplit(dataDirs[[i]],.Platform$file.sep))
-    dataTiles[[i]] <-list.files(dataDirs[i],pattern='.tif',full.names=TRUE)
-  }
-  return(dataTiles)
-}
-
+#function to get the data tiles by extension
 getDataTilesByExt <- function(dataDirs,dataExts) {
   dataTiles <- list()
   for(i in 1:length(dataDirs)) {
@@ -159,6 +155,7 @@ getDataTilesByExt <- function(dataDirs,dataExts) {
   return(dataTiles)
 }
 
+#function to get all the zipped folders (for water and vegetation indices)
 getZippedFolders <- function(dataDirs) {
   zipFolders <- list()
   for(i in 1:length(dataDirs)) {
@@ -168,10 +165,12 @@ getZippedFolders <- function(dataDirs) {
   return(zipFolders)
 }
 
+#function to unzip folders
 unzipFolders <- function(zippedFolders,outDir) {
   mapply(unzip, zipfile = zippedFolders, exdir = outDir)
 }
 
+#function to merge all data tiles
 mergeDataTiles <- function(dataTiles) {
   rasters <- lapply(dataTiles,FUN=brick)
   sprintf('Merging tiled rasters')
@@ -179,12 +178,14 @@ mergeDataTiles <- function(dataTiles) {
   return(fullMosaic)
 }
 
+#function to write raster to geotiff file
 writeFullMosaicTif <- function(fullMosaic,outFileDir,outFileTif) {
   sprintf('Writing geotiff %s',outFileTif)
   makeDir(outFileDir)
   writeRaster(fullMosaic,file=file.path(outFileDir,outFileTif), format="GTiff", overwrite=TRUE)
 }
 
+#function to convert geotiff to cloud-optimized geotiff
 convertTif2Cog <- function(outFileDir,inFileTif,outFileCog) {
   # sprintf('Converting geotiff %s to COG: %s',inFileTif,outFileCog)
   gdalUtilities::gdal_translate(src_dataset = file.path(outFileDir,inFileTif),
