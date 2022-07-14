@@ -53,7 +53,14 @@ This example will use the site <a href="https://www.neonscience.org/field-sites/
 
 ## Uploading AOP Geotiff Images into GEE
 
-To upload a GeoTIFF using the Code Editor, select the Assets tab in the upper left corner, click the  button, then select Image upload. Earth Engine presents an upload dialog which should look similar to Figure 1. Click the SELECT button and navigate to a GeoTIFF on your local file system.
+To upload a GeoTIFF using the Code Editor, click on the **Assets** tab in the upper left corner, then select "GeoTIFF (.tif, .tiff) or TFRecord (.tfrecord + .json) under **Image upload**. Earth Engine presents an upload dialog which should look similar to the figure below. Click the **SELECT** button and navigate to a GeoTIFF on your local file system, or alternatively you can drag and drop the file.
+
+<figure>
+	<a href="https://developers.google.com/earth-engine/images/Code_editor_diagram.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1b_upload_assets/upload_new_image_asset.png" alt="Upload New Image Asset Window."></a>
+</figure>
 
 Give the image an appropriate asset ID (which doesn't already exist) in your user folder. If you'd like to upload the image into an existing folder or collection, prefix the asset ID with the folder or collection ID, for example /users/name/folder-or-collection-id/new-asset.
+
+
 
