@@ -16,7 +16,7 @@ urlTitle: importing-aop-cog-gee
 
 ---
 
-AOP has a couple of sites uploaded into GEE ... In the GEE Code Editor you can upload your own GeoTIFF image files up to 10 GB in size to your Earth Engine user folder. (For larger files, use the <a href="https://developers.google.com/earth-engine/guides/command_line#upload" target="_blank"> command-line upload option</a>.)
+AOP has a small subsets of sites uploaded into GEE to the `projects/neon` folder. We realize this excludes a lot of study areas, so this tutorial shows you how to upload other AOP GeoTIFF image files to your personal folder. GEE allows for up to 10 GB in size to your Earth Engine user folder. For larger files, you can use the <a href="https://developers.google.com/earth-engine/guides/command_line#upload" target="_blank"> command-line upload option</a>.
 
 <div id="ds-objectives" markdown="1">
 
@@ -43,6 +43,17 @@ After completing this activity, you will be able to:
 
 ## AOP GEE Data Availability & Access
 
-If you are interested in working with AOP data that has not already been uploaded to the `projects/neon` folder (as outlined in the previous lesson, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE</a> Earth-Engine Managing Assets </a>), this tutorial will walk you through importing your own COG datasets. 
+If you would like to work with AOP data that has not already been uploaded to the `projects/neon` folder (as outlined in the previous lesson, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE</a> Earth-Engine Managing Assets </a>), this tutorial will walk you through importing your own COG datasets. 
 
-To convert AOP L3 data products from geotiff or h5 file formats to COG format, refer to the R tutorial "Converting AOP rasters and h5 reflectance files to Cloud Optimized Geotiffs"
+To convert AOP L3 data products from geotiff or h5 file formats to COG format, refer to the following R tutorials:
+* Converting AOP rasters to Cloud Optimized Geotiffs
+* Converting AOP h5 reflectance files to Cloud Optimized Geotiffs
+
+This example will use the site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank">McRae Creek, MCRA</a> in Domain 16 (Pacific Northwest). This is an aquatic site, and one of the smaller AOP flight-boxes, which makes it ideal for demonstration.
+
+## Uploading AOP Geotiff Images into GEE
+
+To upload a GeoTIFF using the Code Editor, select the Assets tab in the upper left corner, click the  button, then select Image upload. Earth Engine presents an upload dialog which should look similar to Figure 1. Click the SELECT button and navigate to a GeoTIFF on your local file system.
+
+Give the image an appropriate asset ID (which doesn't already exist) in your user folder. If you'd like to upload the image into an existing folder or collection, prefix the asset ID with the folder or collection ID, for example /users/name/folder-or-collection-id/new-asset.
+
