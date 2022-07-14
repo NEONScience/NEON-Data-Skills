@@ -1,15 +1,10 @@
-# This script contains a suite of functions that download AOP L3 data, mosaic the
-# tiles into a full-site raster, and write out the mosaicked raster data to a 
-# full-site geotiff and cloud-optimized geotiff (COG)."
+# This script contains a suite of functions that download AOP L3 data, merge the
+# tiles into a full-site raster, and write out theraster data to a geotiff and
+# cloud-optimized geotiff (COG)."
 
 # example execution:
-# makeFullSiteMosaics('DP3.30024.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/')
-# makeFullSiteMosaics("DP3.30015.001",'2019','CHEQ','c:/neon/data','c:/neon/outputs/2019_CHEQ/')
-
-# TO DO: 
-# 1. add in API TOKEN
-# 2. set timeout in neonUtilities to 300 sec so download isn't interrupted
-# 3. set option to plot full-site data (default = True?)
+# makeFullSiteMosaics('DP3.30024.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/DEMs',apiToken="your_api_token")
+# makeFullSiteMosaics("DP3.30015.001",'2019','CHEQ','c:/neon/data','c:/neon/outputs/2019_CHEQ/CHM')
 
 # Load required packages
 library(neonUtilities)
@@ -283,40 +278,3 @@ makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,apiTok
     convertTif2Cog(outFileDir,outFileTif,outFileCog)
   }
 } 
-
-### TEST the function for different cases, including edge cases!
-# apiToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiJ9.eyJhdWQiOiJodHRwczovL2RhdGEubmVvbnNjaWVuY2Uub3JnL2FwaS92MC8iLCJzdWIiOiJiaGFzc0BiYXR0ZWxsZWVjb2xvZ3kub3JnIiwic2NvcGUiOiJyYXRlOnVubGltaXRlZCByZWFkOnJlbGVhc2VzIHJlYWQ6cmVsZWFzZXMtbGF0ZXN0IiwiaXNzIjoiaHR0cHM6Ly9kYXRhLm5lb25zY2llbmNlLm9yZy8iLCJleHAiOjE4MDE1MDcxNDEsImlhdCI6MTY0MzgyNzE0MSwiZW1haWwiOiJiaGFzc0BiYXR0ZWxsZWVjb2xvZ3kub3JnIn0.Takgb6N0IxEKJSJmUMylE-XAwKn4FjPliHAsFV5qbAe-Qw-7J5K_jylFloCjEC1sTpvEFLr2u0diVm7dMS_Nxg'
-#some different tests, in order of complexity, starting with the simplest case
-
-#Single YSV - MCRA 2021
-
-# 1. simplest case: MCRA CHM - one YSV, single product, no error tifs
-# makeFullSiteMosaics('DP3.30015.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/')
-
-# 2. MCRA DTM/DSM - one YSV, two products with same product name, no error tifs
-# makeFullSiteMosaics('DP3.30024.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/')
-
-# 3. MCRA Albedo - one YSV, albedo + error tifs
-# makeFullSiteMosaics('DP3.30011.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/')
-
-# 4. MCRA Veg Indices - one YSV, zipped veg indices, with error tifs
-# makeFullSiteMosaics('DP3.30026.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/')
-
-# Multiple YSVs - CHEQ 2019 (2019_CHEQ_4 + 2019_CHEQ_5) (also includes STEI) << or KONZ 2019??
-# 5. CHEQ_4 + CHEQ_5 CHM
-# makeFullSiteMosaics('DP3.30015.001','2019','CHEQ','c:/neon/data','c:/neon/outputs/2019_CHEQ/')
-
-# 6. CHEQ_4 + CHEQ_5 slope/aspect
-# makeFullSiteMosaics("DP3.30025.001",'2019','CHEQ','c:/neon/data','c:/neon/outputs/2019_CHEQ/')
-
-# 7. CHEQ_4 + CHEQ_5 water indices, with error tifs
-# makeFullSiteMosaics("DP3.30019.001",'2019','CHEQ','c:/neon/data','c:/neon/outputs/2019_CHEQ/',apiToken)
-
-# 8. KONZ 2019 () water indices
-# makeFullSiteMosaics("DP3.30019.001",'2019','KONZ','c:/neon/data','c:/neon/outputs/2019_KONZ/',apiToken)
-
-# 9. WLOU 2020 water indices
-# makeFullSiteMosaics("DP3.30019.001",'2020','WLOU','c:/neon/data','c:/neon/outputs/2020_WLOU/',apiToken)
-
-# 10. Test that function errors out for an invalid dpID
-# makeFullSiteMosaics("DP3.30000.001",'2020','WLOU','c:/neon/data','c:/neon/outputs/2020_WLOU/',apiToken)
