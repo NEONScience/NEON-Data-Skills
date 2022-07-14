@@ -66,10 +66,7 @@ of setting the working directory in R can be found here.</a>
 ### Recommended Skills
 
 For this tutorial you should be familiar with AOP data, and raster geotiff data generally. 
-You should also be familiar with the `neonUtilities` R package, and we highly recommend setting up an API token for downloading.
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
+You should also be familiar with the `neonUtilities` R package for downloading NEON data.
 
 ### AOP Raster Data 
 

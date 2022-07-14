@@ -66,10 +66,7 @@ of setting the working directory in R can be found here.</a>
 ### Recommended Skills
 
 For this tutorial you should be familiar with AOP data, and raster geotiff data generally. 
-You should also be familiar with the `neonUtilities` R package, and we highly recommend setting up an API token for downloading.
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
+You should also be familiar with the `neonUtilities` R package for downloading NEON data.
 
 ### AOP Raster Data 
 
@@ -210,11 +207,13 @@ Let's see the full-site Veg Indices files that were generated using `list.files`
 
     list.files(veg_indices_output_folder)
 
-    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"     "2021_MCRA_2_ARVI_error_COG.tif"
-    ##  [5] "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"        "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif" 
-    ##  [9] "2021_MCRA_2_NDVI.tif"           "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
-    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"      "2021_MCRA_2_PRI_error_COG.tif" 
-    ## [17] "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"       "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
+    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"    
+    ##  [4] "2021_MCRA_2_ARVI_error_COG.tif" "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"       
+    ##  [7] "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif"  "2021_MCRA_2_NDVI.tif"          
+    ## [10] "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
+    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"     
+    ## [16] "2021_MCRA_2_PRI_error_COG.tif"  "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"      
+    ## [19] "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
 
 Now we can read in the NDVI and NDVI error tifs:
 
