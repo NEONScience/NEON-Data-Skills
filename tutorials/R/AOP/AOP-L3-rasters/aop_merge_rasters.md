@@ -14,7 +14,6 @@ code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutor
 code2: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_rasters.Rmd
 tutorialSeries:
 urlTitle: merge-aop-raster-data
-
 ---
 
 In this tutorial, you will import the `aop_mosaic_rasters.R` script and use the function
@@ -56,9 +55,10 @@ You do not need to download any data prior to running this tutorial, as you will
 download AOP data sets using `neonUtilities` as part of this lesson.
 
 **Set Working Directory:** This lesson assumes that you have set your working
-directory to the folder where you have cloned the github repo, or saved the aop_merge_raster_functions.R script.
-You can modify this path if you would like to save to a different drive letter
-or different location.
+directory to the folder where you have cloned the github repo, and/or where you have saved 
+the aop_merge_raster_functions.R script (code can be downloaded at the bottom of this tutorial).
+You will need to modify the working directory path in this tutorial to match your 
+local directory structure.
 
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a>
@@ -67,6 +67,9 @@ of setting the working directory in R can be found here.</a>
 
 For this tutorial you should be familiar with AOP data, and raster geotiff data generally. 
 You should also be familiar with the `neonUtilities` R package, and we highly recommend setting up an API token for downloading.
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
 
 ### AOP Raster Data 
 
@@ -96,19 +99,18 @@ similar to this table.
 
 </div>
 
-This tutorial illustrates using the `makeFullSiteMosaics` function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. Let's get started!
+This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. Let's get started!
 
 First, clone the git repository locally and set the working directory to where you cloned the data skills repository.
 
 
-    # change the wd depending on your local environment and where you cloned the repository
-    wd <- file.path("c:","Users","bhass","Documents","GitHubRepos","NEON-Data-Skills","tutorials","R","AOP","AOP-L3-rasters") 
+    # change the wd depending on your local environment and where you cloned the repository or copied the aop_merge_raster_functions.R script
+    wd <- file.path(path.expand("~"),"GitHubRepos","NEON-Data-Skills","tutorials","R","AOP","AOP-L3-rasters") 
     setwd(wd)
 
-First let's pull in the `aop_mosaic_rasters.R` function, which is saved in the same directory in this repository.
+First let's use `source` to pull in the `aop_merge_raster_functions.R` script, which is located in the working directory. For more details on what `source` does, please refer to the <a href="https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/source-function-in-R/" target="_blank"> CU Earth Lab Tutorial on Source Functions in R</a>
 
 
-    # Load the aop_merge_raster_functions.R function
     source("./aop_merge_raster_functions.R")
 
 Let's take a look a the documentation for the function `makeFullSiteMosaics`
@@ -176,6 +178,8 @@ WARNING: We recommend extending the timeout value when downloading large AOP sit
 
     download_folder<-'c:/neon/data'
     chm_output_folder<-'c:/neon/outputs/2021_MCRA/CHM/'
+
+
     makeFullSiteMosaics('DP3.30015.001','2021','MCRA',download_folder,chm_output_folder,NEON_TOKEN)
 
 Display the output files generated:
@@ -197,6 +201,8 @@ Now let's run the function to generate full-site mosaics for the AOP Veg Indices
 
 
     veg_indices_output_folder<-'c:/neon/outputs/2021_MCRA/VegIndices/'
+
+
     makeFullSiteMosaics('DP3.30026.001','2021','MCRA',download_folder,veg_indices_output_folder,NEON_TOKEN)
 
 Let's see the full-site Veg Indices files that were generated using `list.files`:
@@ -204,13 +210,11 @@ Let's see the full-site Veg Indices files that were generated using `list.files`
 
     list.files(veg_indices_output_folder)
 
-    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"    
-    ##  [4] "2021_MCRA_2_ARVI_error_COG.tif" "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"       
-    ##  [7] "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif"  "2021_MCRA_2_NDVI.tif"          
-    ## [10] "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
-    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"     
-    ## [16] "2021_MCRA_2_PRI_error_COG.tif"  "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"      
-    ## [19] "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
+    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"     "2021_MCRA_2_ARVI_error_COG.tif"
+    ##  [5] "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"        "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif" 
+    ##  [9] "2021_MCRA_2_NDVI.tif"           "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
+    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"      "2021_MCRA_2_PRI_error_COG.tif" 
+    ## [17] "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"       "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
 
 Now we can read in the NDVI and NDVI error tifs:
 

@@ -13,7 +13,7 @@ dataProducts:
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_raster_functions.R
 code2: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_rasters.Rmd
 tutorialSeries:
-urlTitle: mosaic-aop-raster-data
+urlTitle: merge-aop-raster-data
 ---
 
 In this tutorial, you will import the `aop_mosaic_rasters.R` script and use the function
@@ -55,9 +55,10 @@ You do not need to download any data prior to running this tutorial, as you will
 download AOP data sets using `neonUtilities` as part of this lesson.
 
 **Set Working Directory:** This lesson assumes that you have set your working
-directory to the folder where you have cloned the github repo, or saved the aop_merge_raster_functions.R script.
-You can modify this path if you would like to save to a different drive letter
-or different location.
+directory to the folder where you have cloned the github repo, and/or where you have saved 
+the aop_merge_raster_functions.R script (code can be downloaded at the bottom of this tutorial).
+You will need to modify the working directory path in this tutorial to match your 
+local directory structure.
 
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a>
@@ -66,6 +67,9 @@ of setting the working directory in R can be found here.</a>
 
 For this tutorial you should be familiar with AOP data, and raster geotiff data generally. 
 You should also be familiar with the `neonUtilities` R package, and we highly recommend setting up an API token for downloading.
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
 
 ### AOP Raster Data 
 
@@ -93,22 +97,21 @@ similar to this table.
 | Spectrometer | DP3.30019.001   | L3/Spectrometer/WaterIndices           | WaterIndices      |
 | Spectrometer | DP3.30026.001   | L3/Spectrometer/VegIndices             | VegetationIndices |
 
-This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. 
-
 </div>
+
+This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. Let's get started!
 
 First, clone the git repository locally and set the working directory to where you cloned the data skills repository.
 
 ```{r set-working-directory,message=FALSE,warning=FALSE}
-# change the wd depending on your local environment and where you cloned the repository
-wd <- file.path("c:","Users","bhass","Documents","GitHubRepos","NEON-Data-Skills","tutorials","R","AOP","AOP-L3-rasters") 
+# change the wd depending on your local environment and where you cloned the repository or copied the aop_merge_raster_functions.R script
+wd <- file.path(path.expand("~"),"GitHubRepos","NEON-Data-Skills","tutorials","R","AOP","AOP-L3-rasters") 
 setwd(wd)
 ```
 
-First let's pull in the `aop_mosaic_rasters.R` function, which is saved in the same directory in this repository.
+First let's use `source` to pull in the `aop_merge_raster_functions.R` script, which is located in the working directory. For more details on what `source` does, please refer to the <a href="https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/source-function-in-R/" target="_blank"> CU Earth Lab Tutorial on Source Functions in R</a>
 
 ```{r source-aop-mosaic-rasters,message=FALSE,warning=FALSE}
-# Load the aop_merge_raster_functions.R function
 source("./aop_merge_raster_functions.R")
 ```
 
@@ -177,9 +180,12 @@ WARNING: This function is set so that it does not check the file size before dow
 
 WARNING: We recommend extending the timeout value when downloading large AOP sites. HOW TO DO THIS??
 
-```{r run-mcra-2021-chm,results=FALSE,message=FALSE,warning=FALSE}
+```{r set-data-folders,message=FALSE,warning=FALSE}
 download_folder<-'c:/neon/data'
 chm_output_folder<-'c:/neon/outputs/2021_MCRA/CHM/'
+```
+
+```{r run-mcra-2021-chm,eval=F,results=FALSE,message=FALSE,warning=FALSE}
 makeFullSiteMosaics('DP3.30015.001','2021','MCRA',download_folder,chm_output_folder,NEON_TOKEN)
 ```
 
@@ -198,8 +204,11 @@ plot(MCRA_CHM,main="2021_MCRA_2 Canopy Height Model") # add title with main)
 
 Now let's run the function to generate full-site mosaics for the AOP Veg Indices (DP3.30026.001). The function handles unzipping the zipped folders, and plotting each separate index tif and associated error tif. We will use the same download folder as before (note that the files will be downloaded to a different sub-directory), and specify a new output folder.
 
-```{r run-mcra-2021-veg-indices,results=FALSE,message=FALSE,warning=FALSE}
+```{r set-veg-indices-output-folder}
 veg_indices_output_folder<-'c:/neon/outputs/2021_MCRA/VegIndices/'
+```
+
+```{r run-mcra-2021-veg-indices,eval=F,results=FALSE,message=FALSE,warning=FALSE}
 makeFullSiteMosaics('DP3.30026.001','2021','MCRA',download_folder,veg_indices_output_folder,NEON_TOKEN)
 ```
 
