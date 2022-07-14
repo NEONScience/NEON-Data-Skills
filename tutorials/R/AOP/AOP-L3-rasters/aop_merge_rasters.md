@@ -13,7 +13,8 @@ dataProducts:
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_raster_functions.R
 code2: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_rasters.Rmd
 tutorialSeries:
-urlTitle: mosaic-aop-raster-data
+urlTitle: merge-aop-rasters-R
+
 ---
 
 In this tutorial, you will import the `aop_mosaic_rasters.R` script and use the function
