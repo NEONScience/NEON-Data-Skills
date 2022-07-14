@@ -13,7 +13,8 @@ dataProducts:
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_raster_functions.R
 code2: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_rasters.Rmd
 tutorialSeries:
-urlTitle: mosaic-aop-raster-data
+urlTitle: merge-aop-raster-data
+
 ---
 
 In this tutorial, you will import the `aop_mosaic_rasters.R` script and use the function
@@ -93,9 +94,9 @@ similar to this table.
 | Spectrometer | DP3.30019.001   | L3/Spectrometer/WaterIndices           | WaterIndices      |
 | Spectrometer | DP3.30026.001   | L3/Spectrometer/VegIndices             | VegetationIndices |
 
-This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. 
-
 </div>
+
+This tutorial illustrates using the `makeFullSiteMosaics` function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. Let's get started!
 
 First, clone the git repository locally and set the working directory to where you cloned the data skills repository.
 
