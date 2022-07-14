@@ -94,7 +94,7 @@ similar to this table.
 | Spectrometer | DP3.30019.001   | L3/Spectrometer/WaterIndices           | WaterIndices      |
 | Spectrometer | DP3.30026.001   | L3/Spectrometer/VegIndices             | VegetationIndices |
 
-This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" " target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. 
+This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. 
 
 </div>
 
