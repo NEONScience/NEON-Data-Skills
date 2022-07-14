@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 9474dd874e484dc4a45e6a55a1375de7
 title: "Importing AOP Cloud Optimized Geotiffs into Google Earth Engine"
 description: "Introductory tutorial on importing AOP COG datasets into GEE."
 dateCreated: 2022-05-29
