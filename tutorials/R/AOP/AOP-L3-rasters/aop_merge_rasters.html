@@ -180,8 +180,8 @@ site in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth
 
 After completing this activity, you will be able to:
 
-* Run the makeFullSiteMosaics function, imported from the aop_merge_raster_functions.R to download mosaic AOP L3 geotiff rasters
-* Plot the full site mosaics
+* Run the makeFullSiteMosaics function to download and merge AOP L3 geotiff rasters, exporting the full site rasters to a geotiffs and COGs
+* Read in and plot the full-site tiffs
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need 
@@ -240,7 +240,7 @@ similar to this table.
 | Spectrometer | DP3.30019.001   | L3/Spectrometer/WaterIndices           | WaterIndices      |
 | Spectrometer | DP3.30026.001   | L3/Spectrometer/VegIndices             | VegetationIndices |
 
-This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" " target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. 
+This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. 
 
 </div>
 
@@ -345,24 +345,26 @@ plot(MCRA_CHM,main=&quot;2021_MCRA_2 Canopy Height Model&quot;) # add title with
 makeFullSiteMosaics(&#39;DP3.30026.001&#39;,&#39;2021&#39;,&#39;MCRA&#39;,download_folder,veg_indices_output_folder,NEON_TOKEN)
 </code></pre>
 
-<p>Let&#39;s see the full-site Veg Indices files that were generated</p>
+<p>Let&#39;s see the full-site Veg Indices files that were generated using <code>list.files</code>:</p>
 
 <pre><code>list.files(veg_indices_output_folder)
 
-##  [1] &quot;2021_MCRA_2_ARVI.tif&quot;           &quot;2021_MCRA_2_ARVI_COG.tif&quot;       &quot;2021_MCRA_2_ARVI_error.tif&quot;     &quot;2021_MCRA_2_ARVI_error_COG.tif&quot;
-##  [5] &quot;2021_MCRA_2_EVI.tif&quot;            &quot;2021_MCRA_2_EVI_COG.tif&quot;        &quot;2021_MCRA_2_EVI_error.tif&quot;      &quot;2021_MCRA_2_EVI_error_COG.tif&quot; 
-##  [9] &quot;2021_MCRA_2_NDVI.tif&quot;           &quot;2021_MCRA_2_NDVI_COG.tif&quot;       &quot;2021_MCRA_2_NDVI_error.tif&quot;     &quot;2021_MCRA_2_NDVI_error_COG.tif&quot;
-## [13] &quot;2021_MCRA_2_PRI.tif&quot;            &quot;2021_MCRA_2_PRI_COG.tif&quot;        &quot;2021_MCRA_2_PRI_error.tif&quot;      &quot;2021_MCRA_2_PRI_error_COG.tif&quot; 
-## [17] &quot;2021_MCRA_2_SAVI.tif&quot;           &quot;2021_MCRA_2_SAVI_COG.tif&quot;       &quot;2021_MCRA_2_SAVI_error.tif&quot;     &quot;2021_MCRA_2_SAVI_error_COG.tif&quot;
+##  [1] &quot;2021_MCRA_2_ARVI.tif&quot;           &quot;2021_MCRA_2_ARVI_COG.tif&quot;       &quot;2021_MCRA_2_ARVI_error.tif&quot;    
+##  [4] &quot;2021_MCRA_2_ARVI_error_COG.tif&quot; &quot;2021_MCRA_2_EVI.tif&quot;            &quot;2021_MCRA_2_EVI_COG.tif&quot;       
+##  [7] &quot;2021_MCRA_2_EVI_error.tif&quot;      &quot;2021_MCRA_2_EVI_error_COG.tif&quot;  &quot;2021_MCRA_2_NDVI.tif&quot;          
+## [10] &quot;2021_MCRA_2_NDVI_COG.tif&quot;       &quot;2021_MCRA_2_NDVI_error.tif&quot;     &quot;2021_MCRA_2_NDVI_error_COG.tif&quot;
+## [13] &quot;2021_MCRA_2_PRI.tif&quot;            &quot;2021_MCRA_2_PRI_COG.tif&quot;        &quot;2021_MCRA_2_PRI_error.tif&quot;     
+## [16] &quot;2021_MCRA_2_PRI_error_COG.tif&quot;  &quot;2021_MCRA_2_SAVI.tif&quot;           &quot;2021_MCRA_2_SAVI_COG.tif&quot;      
+## [19] &quot;2021_MCRA_2_SAVI_error.tif&quot;     &quot;2021_MCRA_2_SAVI_error_COG.tif&quot;
 </code></pre>
 
-<p>Read in the NDVI and NDVI error tifs</p>
+<p>Now we can read in the NDVI and NDVI error tifs:</p>
 
 <pre><code>MCRA_NDVI &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI.tif&#39;))
 MCRA_NDVI_error &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI_error.tif&#39;))
 </code></pre>
 
-<p>Plot NDVI and NDVI error:</p>
+<p>And, finally, let&#39;s plot NDVI and NDVI error:</p>
 
 <pre><code>plot(MCRA_NDVI,main=&quot;2021_MCRA_2 NDVI&quot;)
 </code></pre>

@@ -13,8 +13,7 @@ dataProducts:
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_raster_functions.R
 code2: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_rasters.Rmd
 tutorialSeries:
-urlTitle: merge-aop-rasters-R
-
+urlTitle: mosaic-aop-raster-data
 ---
 
 In this tutorial, you will import the `aop_mosaic_rasters.R` script and use the function
@@ -34,8 +33,8 @@ site in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth
 
 After completing this activity, you will be able to:
 
-* Run the `makeFullSiteMosaics` function, imported from the `aop_merge_raster_functions.R` to download mosaic AOP L3 geotiff rasters
-* Plot the full site mosaics
+* Run the `makeFullSiteMosaics` function to download and merge AOP L3 geotiff rasters, exporting the full site rasters to a geotiffs and COGs
+* Read in and plot the full-site tiffs
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need 
@@ -199,23 +198,25 @@ Now let's run the function to generate full-site mosaics for the AOP Veg Indices
     veg_indices_output_folder<-'c:/neon/outputs/2021_MCRA/VegIndices/'
     makeFullSiteMosaics('DP3.30026.001','2021','MCRA',download_folder,veg_indices_output_folder,NEON_TOKEN)
 
-Let's see the full-site Veg Indices files that were generated
+Let's see the full-site Veg Indices files that were generated using `list.files`:
 
 
     list.files(veg_indices_output_folder)
 
-    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"     "2021_MCRA_2_ARVI_error_COG.tif"
-    ##  [5] "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"        "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif" 
-    ##  [9] "2021_MCRA_2_NDVI.tif"           "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
-    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"      "2021_MCRA_2_PRI_error_COG.tif" 
-    ## [17] "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"       "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
+    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"    
+    ##  [4] "2021_MCRA_2_ARVI_error_COG.tif" "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"       
+    ##  [7] "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif"  "2021_MCRA_2_NDVI.tif"          
+    ## [10] "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
+    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"     
+    ## [16] "2021_MCRA_2_PRI_error_COG.tif"  "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"      
+    ## [19] "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
 
-Read in the NDVI and NDVI error tifs
+Now we can read in the NDVI and NDVI error tifs:
 
     MCRA_NDVI <- raster(file.path(veg_indices_output_folder,'2021_MCRA_2_NDVI.tif'))
     MCRA_NDVI_error <- raster(file.path(veg_indices_output_folder,'2021_MCRA_2_NDVI_error.tif'))
 
-Plot NDVI and NDVI error:
+And, finally, let's plot NDVI and NDVI error:
 
 
     plot(MCRA_NDVI,main="2021_MCRA_2 NDVI")
