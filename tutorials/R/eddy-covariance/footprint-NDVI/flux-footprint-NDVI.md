@@ -454,7 +454,7 @@ are averaged over all the days when the plane was overhead.
 
 The data product <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic (DP3.30006.001)</a> includes data tiles containing the 
 flight date when each pixel was collected. The expanded package of the 
-flux data product, <a href="https://data.neonscience.org/data-products/DP4.00200.001"_blank">Bundled data products - eddy covariance (DP4.00200.001)</a> 
+flux data product, <a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">Bundled data products - eddy covariance (DP4.00200.001)</a> 
 includes flux footprints for every half-hourly flux calculation interval. 
 Theoretically, you could use these datasets to calculate the contribution 
 to the flux of every NDVI pixel at the time it was observed. However, 
