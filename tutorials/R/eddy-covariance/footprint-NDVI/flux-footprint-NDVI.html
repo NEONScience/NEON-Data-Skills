@@ -251,9 +251,6 @@ After completing this activity, you will be able to:
 ## # needs to be run
 ## install.packages(&quot;raster&quot;)
 library(raster)
-
-## Loading required package: sp
-
 ## 
 </code></pre>
 
@@ -600,21 +597,22 @@ are averaged over all the days when the plane was overhead.</p>
 
 <p>The data product <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic (DP3.30006.001)</a> includes data tiles containing the 
 flight date when each pixel was collected. The expanded package of the 
-flux data product, <a href="https://data.neonscience.org/data-products/DP4.00200.001"_blank">Bundled data products - eddy covariance (DP4.00200.001)</a> 
+flux data product, <a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">Bundled data products - eddy covariance (DP4.00200.001)</a> 
 includes flux footprints for every half-hourly flux calculation interval. 
-Theoretically, you could use these datasets to calculate the contribution 
+It is possible to use these datasets to calculate the contribution 
 to the flux of every NDVI pixel at the time it was observed. However, 
 this would be a very elaborate calculation, and before going down that 
-road, I would recommend a sensitivity analysis. Given what you know about 
-uncertainties in fluxes, uncertainties in NDVI, and the rate of change of 
-both NDVI and NEE over time, would you expect a detailed pixel-by-pixel 
-analysis to substantially improve model fit?</p>
+road, consider the scientific question you&#39;re trying to answer. Given what 
+you know about uncertainties in fluxes, uncertainties in NDVI, and the 
+relative rates of change of NDVI and NEE over time, is your question 
+sensitive to this level of detail?</p>
 
 <p>Considering sensitivity raises another question: How important were the 
 flux footprints to our analysis? How different would the results be if 
 we simply calculated NDVI for, say, a one kilometer radius around the 
 tower? This is an easy question to answer, with only a small 
-modification to the code above. Give it a try.</p>
+modification to the code above. Give it a try, and again, consider the 
+types of analyses that might demand different levels of precision.</p>
 
 <p>Finally, note that in our dataset, we had three pairs of repeat 
 measurements at the same site. In general, we would expect much better 
