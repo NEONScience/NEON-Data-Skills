@@ -1,4 +1,4 @@
-## ----setup, eval=6, results="hide"---------------------------------------------------------------------
+## ----setup, eval=6, results="hide"-----------------------------------------------------------------------
 
 # install and load raster package
 # if raster is already installed, only the library() command 
@@ -8,14 +8,14 @@ library(raster)
 
 
 
-## ----load-data, results="hide"-------------------------------------------------------------------------
+## ----load-data, results="hide"---------------------------------------------------------------------------
 
 flux.all <- read.csv("~/data/flux_allSites.csv")
 flight.dates <- read.csv("~/data/flight_dates.csv")
 
 
 
-## ----load-KONZ, eval=2:3, results="hide"---------------------------------------------------------------
+## ----load-KONZ, eval=2:3, results="hide"-----------------------------------------------------------------
 
 foot.KONZ <- raster("~/data/footKONZ2020-07.grd")
 ndvi.KONZ <- raster("~/data/ndviKONZ2020-07.grd")
@@ -26,19 +26,19 @@ ndviKONZ = rasterio.open("/data/ndviKONZ2020-07.grd")
 
 
 
-## ----plot-KONZ-NDVI------------------------------------------------------------------------------------
+## ----plot-KONZ-NDVI--------------------------------------------------------------------------------------
 
 plot(ndvi.KONZ)
 
 
 
-## ----plot-KONZ-foot------------------------------------------------------------------------------------
+## ----plot-KONZ-foot--------------------------------------------------------------------------------------
 
 filledContour(foot.KONZ, col=topo.colors(20))
 
 
 
-## ----plot-trimmed-foot---------------------------------------------------------------------------------
+## ----plot-trimmed-foot-----------------------------------------------------------------------------------
 
 footAdj <- calc(foot.KONZ, 
                  fun=function(x){ x[x < 0.0005] <- 0; 
@@ -48,7 +48,7 @@ filledContour(footMost, col=topo.colors(20))
 
 
 
-## ----plot-foot-NDVI------------------------------------------------------------------------------------
+## ----plot-foot-NDVI--------------------------------------------------------------------------------------
 
 plot(ndvi.KONZ)
 plot(foot.KONZ, add=T,
@@ -56,20 +56,20 @@ plot(foot.KONZ, add=T,
 
 
 
-## ----mean-NDVI-KONZ------------------------------------------------------------------------------------
+## ----mean-NDVI-KONZ--------------------------------------------------------------------------------------
 
 cellStats(ndvi.KONZ, stat="mean", na.rm=T)
 
 
 
-## ----align-KONZ-rasters--------------------------------------------------------------------------------
+## ----align-KONZ-rasters----------------------------------------------------------------------------------
 
 ndvi.KONZ <- crop(ndvi.KONZ, extent(foot.KONZ))
 foot.KONZ <- resample(foot.KONZ, ndvi.KONZ)
 
 
 
-## ----level-KONZ-pixels---------------------------------------------------------------------------------
+## ----level-KONZ-pixels-----------------------------------------------------------------------------------
 
 foot.KONZ <- foot.KONZ/cellStats(foot.KONZ, 
                                  stat="sum", 
@@ -77,7 +77,7 @@ foot.KONZ <- foot.KONZ/cellStats(foot.KONZ,
 
 
 
-## ----KONZ-weighted-NDVI--------------------------------------------------------------------------------
+## ----KONZ-weighted-NDVI----------------------------------------------------------------------------------
 
 prop.weight <- foot.KONZ*ndvi.KONZ
 cellStats(prop.weight, stat="sum", 
@@ -85,7 +85,7 @@ cellStats(prop.weight, stat="sum",
 
 
 
-## ----plot-KONZ-flux------------------------------------------------------------------------------------
+## ----plot-KONZ-flux--------------------------------------------------------------------------------------
 
 flux.all$timeBgn <- as.POSIXct(flux.all$timeBgn, 
                                format="%Y-%m-%d %H:%M:%S",
@@ -100,7 +100,7 @@ plot(flux.KONZ$data.fluxCo2.nsae.flux~flux.KONZ$timeBgn,
 
 
 
-## ----weighted-NDVI-function----------------------------------------------------------------------------
+## ----weighted-NDVI-function------------------------------------------------------------------------------
 
 foot.weighted <- function(ndvi.raster, foot.raster) {
 
@@ -115,7 +115,7 @@ foot.weighted <- function(ndvi.raster, foot.raster) {
 
 
 
-## ----weighted-NDVI-loop--------------------------------------------------------------------------------
+## ----weighted-NDVI-loop----------------------------------------------------------------------------------
 
 flight.dates$month <- substring(flight.dates$FlightDate, 1, 7)
 ndvi.w <- character()
@@ -154,7 +154,7 @@ ndvi.w
 
 
 
-## ----flux-loop-----------------------------------------------------------------------------------------
+## ----flux-loop-------------------------------------------------------------------------------------------
 
 ndvi.w$flux <- NA
 flight.dates$FlightDate <- as.POSIXct(flight.dates$FlightDate, 
@@ -178,7 +178,7 @@ ndvi.w$flux <- ndvi.w$flux*1e-6*12.011*86400
 
 
 
-## ----plot-flux-NDVI------------------------------------------------------------------------------------
+## ----plot-flux-NDVI--------------------------------------------------------------------------------------
 
 plot(ndvi.w$flux~ndvi.w$ndvi, 
      xlab="NDVI", ylab="NEE",
@@ -186,7 +186,7 @@ plot(ndvi.w$flux~ndvi.w$ndvi,
 
 
 
-## ----plot-flux-NDVI-sites------------------------------------------------------------------------------
+## ----plot-flux-NDVI-sites--------------------------------------------------------------------------------
 
 plot(ndvi.w$flux~ndvi.w$ndvi, 
      xlab="NDVI", ylab="NEE",
@@ -196,7 +196,7 @@ text(ndvi.w$ndvi, ndvi.w$flux,
 
 
 
-## ----dayflux-loop--------------------------------------------------------------------------------------
+## ----dayflux-loop----------------------------------------------------------------------------------------
 
 ndvi.w$dayflux <- NA
 for(i in 1:nrow(flight.dates)) {
@@ -218,7 +218,7 @@ ndvi.w$dayflux <- ndvi.w$dayflux*1e-6*12.011*86400
 
 
 
-## ----plot-dayflux-NDVI-sites---------------------------------------------------------------------------
+## ----plot-dayflux-NDVI-sites-----------------------------------------------------------------------------
 
 plot(ndvi.w$dayflux~ndvi.w$ndvi, 
      xlab="NDVI", ylab="Daytime NEE",
