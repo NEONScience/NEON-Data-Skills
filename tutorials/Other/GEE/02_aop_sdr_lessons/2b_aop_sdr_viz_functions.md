@@ -12,7 +12,7 @@ languageTool: GEE
 dataProduct: DP3.30006.001
 code1: 
 tutorialSeries: aop-gee
-urlTitle: intro-aop-gee-sdr-tutorial
+urlTitle: intro-aop-gee-functions
 
 ---
 ## Read in and Visualize AOP SDR Data
