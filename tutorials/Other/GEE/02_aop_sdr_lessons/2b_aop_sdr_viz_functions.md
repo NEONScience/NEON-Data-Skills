@@ -101,4 +101,6 @@ Note that the first half of this function is just pulling out relevant informati
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png" alt="SRER viz function screenshot"></a>
 </figure>
 
-You could alter this function to include the visualization paramters, to subset by other bands, or to work for a different image collection. We encourage you to do this on your own!
+You can see that the print statements are showing up in the console, displaying the systemID and fileName. The fileName is applied to the name of the layers in the Map window.
+
+You could alter this function to include the visualization paramters, to subset by other bands, or modify it to work for a different image collection. We encourage you to do this on your own!
