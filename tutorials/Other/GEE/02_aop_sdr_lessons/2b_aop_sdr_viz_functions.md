@@ -15,7 +15,7 @@ tutorialSeries: aop-gee
 urlTitle: intro-aop-gee-functions
 
 ---
-## Read in and Visualize AOP SDR Data
+## Writing a Function to Visualize AOP SDR Image Collections
 
 In the previous <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a> tutorial, we showed how to read in SDR data for three individual images. In this tutorial, we will show you a different, more simplified way of doing the same thing, using functions. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code to do a different thing it may be an opportunity to create a function. For example, in the previous tutorial, we repeated lines of code to pull in different years of data at SRER, the only difference was the year and variable names. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and clean. 
 
