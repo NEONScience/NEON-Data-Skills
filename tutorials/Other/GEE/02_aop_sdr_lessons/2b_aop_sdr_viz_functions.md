@@ -1,6 +1,6 @@
 ---
-syncID: 
-title: "Functions for Visualizing AOP Image Collections"
+syncID: cd3d3b09400a4a389a198445c5dbfa48
+title: "Function for Visualizing AOP Image Collections in GEE"
 description: "Load in and visualize SDR data using a function"
 dateCreated: 2022-07-27
 authors: Bridget M. Hass, John Musinsky
@@ -104,3 +104,7 @@ Note that the first half of this function is just pulling out relevant informati
 You can see that the print statements are showing up in the console, displaying the systemID and fileName. The fileName is applied to the name of the layers in the Map window.
 
 You could alter this function to include the visualization paramters, to subset by other bands, or modify it to work for a different image collection. We encourage you to do this on your own!
+
+## Get Lesson Code
+
+<a href="https://code.earthengine.google.com/52e5e783df69ba1ba86b98b209eb4252" target="_blank">Function to display AOP SDR Image Collections in GEE</a>
