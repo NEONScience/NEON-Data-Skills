@@ -76,7 +76,7 @@ function addNISImage(image) {
   // getInfo() converts to string on the server
   var sysID_serverStr = sysID_serverObj.getInfo()
   print("systemID: "+sysID_serverStr)
-  // truncate the string to show only the fileName (4 digit NEON code)
+  // truncate the string to show only the fileName (NEON domain + site code + product code + year)
   var fileName = sysID_serverStr.slice(46,100); 
   print("fileName: "+fileName)
   // mask out no-data values and set visualization parameters to show RGB composite
