@@ -5,7 +5,7 @@ description: "Load in and visualize SDR data using a function"
 dateCreated: 2022-07-27
 authors: Bridget M. Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
-estimatedTime: 30 minutes
+estimatedTime: 20 minutes
 packagesLibraries: 
 topics: hyperspectral, remote-sensing
 languageTool: GEE
