@@ -173,9 +173,21 @@ source(paste0(wd,"/neon_token.R"))
 Now that we have a general idea of how this function works, from the documentation, let's go ahead and run it, using our imported token.
 For this example, I set the download folder to 'c:/neon/data' and the output folder to 'c:/neon/outputs/2021_MCRA/CHM/'. Modify these paths as desired according to your project structure.
 
-WARNING: This function is set so that it does not check the file size before downloading. You can change this if desired by changing the check.size parameter in the `makeFullSiteMosaics` function, setting the value to True (check.size=T).
+Please heed the following warnings before you run the code:
 
-WARNING: We recommend extending the timeout value when downloading large AOP sites. HOW TO DO THIS??
+WARNING: This function is currently set so that it does not check the file size before downloading. You can change this, if desired, by either removing the check.size parameter in the the `makeFullSiteMosaics` function, or changing the value for that setting to True (check.size=T). This will then stop the function and prompt you to type "y" or "n" to continue the download. We recommend changing this if you have limited storage space on your computer, but this will require a manual input to run the full function.
+
+WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn't stall out before the file finishes downloading. To change the timeout, you can use `options`, but be aware that this changes the computer's settings outside of this R environment, so when you do this, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing to 300 seconds (5 minutes).
+
+```{r get-timeout}
+timeout0 <- getOption('timeout')
+print(timeout0)
+```
+
+```{r set-timeout}
+options(timeout=300)
+getOption('timeout')
+```
 
 ```{r set-data-folders,message=FALSE,warning=FALSE}
 download_folder<-'c:/neon/data'
@@ -229,4 +241,13 @@ plot(MCRA_NDVI,main="2021_MCRA_2 NDVI")
 
 ``` {r plot-mcra-ndvi-error}
 plot(MCRA_NDVI_error,main="2021_MCRA_2 NDVI Error") 
+```
+
+Looks good! Go ahead and try some different data products on your own, or a different site. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.
+
+Last but not least, let's change the timeout back to the original value:
+
+``` {r change-timeout-back}
+options(timeout=timeout0)
+getOption('timeout')
 ```
