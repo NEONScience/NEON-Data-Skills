@@ -6,10 +6,10 @@ dateCreated: 2022-07-14
 authors: Bridget Hass
 contributors: 
 estimatedTime: 30 - 45 Minutes
-packagesLibraries: raster, gdal, neonUtilities
+packagesLibraries: neonUtilities, raster, gdalUtilities, data.table, docstring
 topics: AOP, remote-sensing, hyperspectral, lidar, camera, raster, geotiff, gee
 languagesTool: R
-dataProducts: 
+dataProducts: DP3.30010.001, DP3.30011.001, DP3.30012.001, DP3.30014.001, DP3.30015.001, DP3.30019.001, DP3.30024.001, DP3.30025.001, DP3.30026.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_raster_functions.R
 code2: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_rasters.Rmd
 tutorialSeries:
@@ -24,8 +24,8 @@ into a single raster covering the full site (or whatever coverage was obtained t
 Finally, this full-site raster is saved as a geotiff and cloud-optimized geotiff 
 (COG) file in an output folder specified in the function. 
 
-This is useful for visualizing and conducting further analysis of data for a full 
-site in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth Engine.
+Once you have generated full-site geotiffs, it is much simpler to visualize and conduct
+further analysis of the data in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth Engine. 
 
 <div id="ds-objectives" markdown="1">
 
