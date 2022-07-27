@@ -17,7 +17,8 @@ urlTitle: intro-aop-gee-sdr-tutorial
 ---
 ## Read in and Visualize AOP SDR Data
 
-In the previous <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a> tutorial, we showed how to read in SDR data for three individual images. In this tutorial, we will show you a different, more simplified way of doing the same thing, using functions. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code to do a different thing, it may be an opportunity to create a function, so you can call that function with different imput varialbes. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and efficient. 
+In the previous <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a> tutorial, we showed how to read in SDR data for three individual images. In this tutorial, we will show you a different, more simplified way of doing the same thing, using functions. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code to do a different thing (for example, we repeated lines of code in the previous tutorial to pull in different years of data, only changing the year each time), it may be an opportunity to create a function,. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and clean. 
+
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
@@ -93,4 +94,11 @@ NISimages.evaluate(function(NISimages) {
 Map.setCenter(-110.83549, 31.91068, 11);
 ```
 
-Note that the first half of this function is just pulling out relevant information about the site - in order to obtain the correct label for the layer on the map. You should recognize some of the same syntax from the previous tutorial in the last two lines of code in the function, defining the variable imageRGB, and the `Map.addLayer`. Note that this function is subsetting the SDR image to only pull in the red, green, and blue bands, as opposed to the previous tutorial where we read in the full hyperspectral cube, and then displayed only the RGB composite in the visParam variable. You could alter this function to include the visualization paramters, or to subset by other bands. We encourage you to do this on your own!
+Note that the first half of this function is just pulling out relevant information about the site - in order to obtain the correct label for the layer on the map. You should recognize some of the same syntax from the previous tutorial in the last two lines of code in the function, defining the variable imageRGB, and the `Map.addLayer`. Note that this function is subsetting the SDR image to only pull in the red, green, and blue bands, as opposed to the previous tutorial where we read in the full hyperspectral cube, and then displayed only the RGB composite in the visParam variable. 
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png" alt="SRER viz function screenshot"></a>
+</figure>
+
+You could alter this function to include the visualization paramters, to subset by other bands, or to work for a different image collection. We encourage you to do this on your own!
