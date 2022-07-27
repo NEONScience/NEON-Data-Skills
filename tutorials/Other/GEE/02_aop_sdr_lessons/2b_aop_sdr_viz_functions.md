@@ -94,14 +94,14 @@ NISimages.evaluate(function(NISimages) {
 Map.setCenter(-110.83549, 31.91068, 11);
 ```
 
-Note that the first half of this function is just pulling out relevant information about the site - in order to properly label the layer on the map display. You should recognize some of the same syntax from the previous tutorial in the last two lines of code in the function, defining the variable `imageRGB`, using `updateMask`, and finally using `Map.addLayer` to add the layer to the map window. Note that this function is subsetting the SDR image to only pull in the red, green, and blue bands, as opposed to the previous tutorial where we read in the full hyperspectral cube, and then displayed only the RGB composite in the visParam variable. 
+Note that the first half of this function is just pulling out relevant information about the site - in order to properly label the layer on the Map display. You should recognize some of the same syntax from the previous tutorial in the last two lines of code in the function, defining the variable `imageRGB`, using `updateMask`, and finally using `Map.addLayer` to add the layer to the Map window. Note that this function is subsetting the SDR image to only pull in the red, green, and blue bands, as opposed to the previous tutorial where we read in the full hyperspectral cube, and then displayed only the RGB composite in the visParam variable. 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png" alt="SRER viz function screenshot"></a>
 </figure>
 
-You can see that the print statements are showing up in the console, displaying the systemID and fileName. The fileName is applied to the name of the layers in the Map window.
+You can see that the print statements are showing up in the console, displaying the systemID and fileName for each image in the collection. The fileName is applied to the name of the layers in the Map window.
 
 You could alter this function to include the visualization paramters, to subset by other bands, or modify it to work for a different image collection. We encourage you to do this on your own!
 
