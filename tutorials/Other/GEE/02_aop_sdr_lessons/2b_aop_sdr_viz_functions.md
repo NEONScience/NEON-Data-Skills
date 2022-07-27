@@ -58,7 +58,7 @@ To call the function for a full image collection, you can use a <a href="https:/
 var newVariable = collection.map(myFunction);
 ```
 
-For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what you're code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run.
+For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run.
 
 ```javascript
 // Specify center location of SRER
