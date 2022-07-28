@@ -15,9 +15,9 @@ tutorialSeries: aop-gee
 urlTitle: intro-aop-gee-functions
 
 ---
-## Read in and Visualize AOP SDR Data
+## Writing a Function to Visualize AOP SDR Image Collections
 
-In the previous <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a> tutorial, we showed how to read in SDR data for three individual images. In this tutorial, we will show you a different, more simplified way of doing the same thing, using functions. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code to do a different thing (for example, we repeated lines of code in the previous tutorial to pull in different years of data, only changing the year each time), it may be an opportunity to create a function,. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and clean. 
+In the previous <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a> tutorial, we showed how to read in SDR data for images from 3 years. In this tutorial, we will show you a different, more simplified way of doing the same thing, using functions. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code repeatedly, it may be an opportunity to create a function. For example, in the previous tutorial, we repeated lines of code to pull in different years of data at SRER, the only difference being the year and the variable names for each year. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and reproducible. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -30,7 +30,7 @@ After completing this activity, you will be able to:
  * A gmail (@gmail.com) account
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
  * A basic understanding of the GEE code editor and the GEE JavaScript API. These are introduced in the tutorials:
-    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>,
+    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a>
  * A basic understanding of hyperspectral data and the AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in R</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
@@ -58,7 +58,7 @@ To call the function for a full image collection, you can use a <a href="https:/
 var newVariable = collection.map(myFunction);
 ```
 
-For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what you're code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run.
+For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run.
 
 ```javascript
 // Specify center location of SRER
@@ -76,7 +76,7 @@ function addNISImage(image) {
   // getInfo() converts to string on the server
   var sysID_serverStr = sysID_serverObj.getInfo()
   print("systemID: "+sysID_serverStr)
-  // truncate the string to show only the fileName (4 digit NEON code)
+  // truncate the string to show only the fileName (NEON domain + site code + product code + year)
   var fileName = sysID_serverStr.slice(46,100); 
   print("fileName: "+fileName)
   // mask out no-data values and set visualization parameters to show RGB composite
