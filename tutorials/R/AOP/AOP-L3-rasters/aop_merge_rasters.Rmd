@@ -33,8 +33,10 @@ further analysis of the data in your preferred geospatial application, eg. ArcGI
 
 After completing this activity, you will be able to:
 
-* Run the `makeFullSiteMosaics` function to download and merge AOP L3 geotiff rasters, exporting the full site rasters to a geotiffs and COGs
-* Read in and plot the full-site tiffs
+* Run the `makeFullSiteMosaics` function to:
+  * download and merge AOP L3 geotiff rasters
+  * export the full site rasters to geotiffs and cloud-optimized geotiffs (COG)
+* Read in and plot the full site geotiffs
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need 
@@ -194,7 +196,7 @@ download_folder<-'c:/neon/data'
 chm_output_folder<-'c:/neon/outputs/2021_MCRA/CHM/'
 ```
 
-```{r run-mcra-2021-chm,eval=F,results=FALSE,message=FALSE,warning=FALSE}
+```{r run-mcra-2021-chm,eval=T,results=FALSE,message=FALSE,warning=FALSE}
 makeFullSiteMosaics('DP3.30015.001','2021','MCRA',download_folder,chm_output_folder,NEON_TOKEN)
 ```
 
@@ -217,7 +219,7 @@ Now let's run the function to generate full-site mosaics for the AOP Veg Indices
 veg_indices_output_folder<-'c:/neon/outputs/2021_MCRA/VegIndices/'
 ```
 
-```{r run-mcra-2021-veg-indices,eval=F,results=FALSE,message=FALSE,warning=FALSE}
+```{r run-mcra-2021-veg-indices,eval=T,results=FALSE,message=FALSE,warning=FALSE}
 makeFullSiteMosaics('DP3.30026.001','2021','MCRA',download_folder,veg_indices_output_folder,NEON_TOKEN)
 ```
 

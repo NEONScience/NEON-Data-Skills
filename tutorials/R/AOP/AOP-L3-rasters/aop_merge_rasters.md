@@ -6,10 +6,10 @@ dateCreated: 2022-07-14
 authors: Bridget Hass
 contributors: 
 estimatedTime: 30 - 45 Minutes
-packagesLibraries: raster, gdal, neonUtilities
+packagesLibraries: neonUtilities, raster, gdalUtilities, data.table, docstring
 topics: AOP, remote-sensing, hyperspectral, lidar, camera, raster, geotiff, gee
 languagesTool: R
-dataProducts: 
+dataProducts: DP3.30010.001, DP3.30011.001, DP3.30012.001, DP3.30014.001, DP3.30015.001, DP3.30019.001, DP3.30024.001, DP3.30025.001, DP3.30026.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_raster_functions.R
 code2: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/aop_merge_rasters.Rmd
 tutorialSeries:
@@ -24,8 +24,8 @@ into a single raster covering the full site (or whatever coverage was obtained t
 Finally, this full-site raster is saved as a geotiff and cloud-optimized geotiff 
 (COG) file in an output folder specified in the function. 
 
-This is useful for visualizing and conducting further analysis of data for a full 
-site in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth Engine.
+Once you have generated full-site geotiffs, it is much simpler to visualize and conduct
+further analysis of the data in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth Engine. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -33,8 +33,10 @@ site in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth
 
 After completing this activity, you will be able to:
 
-* Run the `makeFullSiteMosaics` function to download and merge AOP L3 geotiff rasters, exporting the full site rasters to a geotiffs and COGs
-* Read in and plot the full-site tiffs
+* Run the `makeFullSiteMosaics` function to:
+  * download and merge AOP L3 geotiff rasters
+  * export the full site rasters to geotiffs and cloud-optimized geotiffs (COG)
+* Read in and plot the full site geotiffs
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need 
@@ -168,9 +170,23 @@ We an read in the token using the source function as follows. This assumes the t
 Now that we have a general idea of how this function works, from the documentation, let's go ahead and run it, using our imported token.
 For this example, I set the download folder to 'c:/neon/data' and the output folder to 'c:/neon/outputs/2021_MCRA/CHM/'. Modify these paths as desired according to your project structure.
 
-WARNING: This function is set so that it does not check the file size before downloading. You can change this if desired by changing the check.size parameter in the `makeFullSiteMosaics` function, setting the value to True (check.size=T).
+Please heed the following warnings before you run the code:
 
-WARNING: We recommend extending the timeout value when downloading large AOP sites. HOW TO DO THIS??
+WARNING: This function is currently set so that it does not check the file size before downloading. You can change this, if desired, by either removing the check.size parameter in the the `makeFullSiteMosaics` function, or changing the value for that setting to True (check.size=T). This will then stop the function and prompt you to type "y" or "n" to continue the download. We recommend changing this if you have limited storage space on your computer, but this will require a manual input to run the full function.
+
+WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn't stall out before the file finishes downloading. To change the timeout, you can use `options`, but be aware that this changes the computer's settings outside of this R environment, so when you do this, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing to 300 seconds (5 minutes).
+
+
+    timeout0 <- getOption('timeout')
+    print(timeout0)
+
+    ## [1] 100
+
+
+    options(timeout=300)
+    getOption('timeout')
+
+    ## [1] 300
 
 
     download_folder<-'c:/neon/data'
@@ -231,3 +247,13 @@ And, finally, let's plot NDVI and NDVI error:
     plot(MCRA_NDVI_error,main="2021_MCRA_2 NDVI Error") 
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-error-1.png)
+
+Looks good! Go ahead and try some different data products on your own, or a different site. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.
+
+Last but not least, let's change the timeout back to the original value:
+
+
+    options(timeout=timeout0)
+    getOption('timeout')
+
+    ## [1] 100
