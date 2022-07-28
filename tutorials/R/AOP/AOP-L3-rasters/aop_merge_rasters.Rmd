@@ -16,13 +16,16 @@ tutorialSeries:
 urlTitle: merge-aop-raster-data
 ---
 
+
+Most AOP L3 data are provided in 1km x 1km tiled geotiff rasters. A single site may contain hundreds of separate raster data files for each data product. This tutorial shows you how to merge these tiles into a single raster, covering the full site, which enables more efficient regional-scale analysis. 
+
 In this tutorial, you will import the `aop_mosaic_rasters.R` script and use the function
 `makeFullSiteMosaics` to download AOP L3 tiled raster (geotiff) data sets for a 
 given data product, site, and year. This function uses the `neonUtilities` R package 
 `byFileAOP` function to download the data. Once downloaded, the tiles are merged 
 into a single raster covering the full site (or whatever coverage was obtained that year). 
 Finally, this full-site raster is saved as a geotiff and cloud-optimized geotiff 
-(COG) file in an output folder specified in the function. 
+(COG) file in an output folder specified in the function.
 
 Once you have generated full-site geotiffs, it is much simpler to visualize and conduct
 further analysis of the data in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth Engine. 
@@ -74,13 +77,17 @@ You should also be familiar with the `neonUtilities` R package for downloading N
 
 The function `makeFullSiteMosaics` is set up for downloading AOP L3 raster data 
 products. The table below shows a full list of these data products, including the 
-sensor, data product ID (dpID), the sub-directory structure they are downloaded to 
-(the neonUtilities function preserves the original folder structure), and the name 
-of the files. 
+sensor, data product ID (dpID), the sub-directory structure where files are downloaded to 
+(the neonUtilities function preserves the original folder structure of the data 
+as it is stored by NEON), and the name of the files. `neonUtilities` prints out 
+the full path where data and metadata are downloaded, but the script 
+`aop_mosaic_rasters.R` used in this tutorial goes a step further, and automatically 
+finds the path where data is downloaded, and handles some additional data wrangling 
+in order to simplify pre-processing.
 
 Refer to this table when using the function. If you select a dpID that is not in 
 this list, the function will error out and display a table with the valid dpIDs, 
-similar to this table.
+(similar to the table).
 
 | Sensor       | Data Product ID | Download Path                          | Short Name        |
 |--------------|-----------------|----------------------------------------|-------------------|
@@ -100,10 +107,10 @@ similar to this table.
 
 This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. Let's get started!
 
-First, clone the git repository locally and set the working directory to where you cloned the data skills repository.
+First, clone the git repository locally and set the working directory to where you cloned the data skills repository. You will need to modify the file path below to reflect where you have cloned the repository, or saved the aop_merge_raster_functions.R script.
 
 ```{r set-working-directory,message=FALSE,warning=FALSE}
-# change the wd depending on your local environment and where you cloned the repository or copied the aop_merge_raster_functions.R script
+# change the wd depending on your local environment
 wd <- file.path(path.expand("~"),"GitHubRepos","NEON-Data-Skills","tutorials","R","AOP","AOP-L3-rasters") 
 setwd(wd)
 ```
@@ -126,41 +133,32 @@ makeFullSiteMosaics {TempPackage}	R Documentation
 
 Download all AOP files for a given site, year, and L3 product, mosaic the files, and save the full site mosaic to a tiff and cloud-optimized geotiff.
 
-Description
-This function 1) Runs the neonUtilities byFileAOP function to download NEON AOP data by site, year, and product (see byFileAOP documention for additional details). 2) mosaics the data product tiles into a full-site mosaic, as well as the associated error tifs, where applicable, and 3) saves the full site mosaics to a tif and cloud-optimized geotiff.
+Description     This function 1) Runs the neonUtilities byFileAOP function to download NEON AOP data by site, year, and product (see byFileAOP documention for additional details). 2) mosaics the data product tiles into a full-site mosaic, as well as the associated error tifs, where applicable, and 3) saves the full site mosaics to a tif and cloud-optimized geotiff.
 
-Usage
-makeFullSiteMosaics(
-  dpID,
-  year,
-  siteCode,
-  dataRootDir,
-  outFileDir,
-  apiToken = NULL
-)
+Usage           makeFullSiteMosaics(
+                  dpID,
+                  year,
+                  siteCode,
+                  dataRootDir,
+                  outFileDir,
+                  apiToken = NULL)   
 
 Arguments
 
-dpID	
-The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3 reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.
+dpID	         The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3                 reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.
 
-year	
-The four-digit year to search for data.
+year	         The four-digit year to search for data.
 
-siteCode	
-The four-letter code of a single NEON site, e.g. 'MCRA'.
+siteCode	     The four-letter code of a single NEON site, e.g. 'MCRA'.
 
-dataRootDir	
-The file path to download data to.
+dataRootDir	   The file path to download data to.
 
-outFileDir	
-The file path where the full-site mosaic geotiffs and cloud-optimized geotiffs are saved.
+outFileDir	   The file path where the full-site mosaic geotiffs and cloud-optimized geotiffs are saved.
 
-apiToken	
-User specific API token (generated within neon.datascience user accounts). If not provided, no API token is used.
+apiToken	     User specific API token (generated within neon.datascience user accounts). If not provided, no API token is used.
 ```
 
-We recommend using an API token when downloading NEON data programmatically. The function will work without a token, if you leave it out (as described in the documentation), but it is best to get in the practice of using the token! Here I source it from a file, where the file consists of a single line of code defining the token (called NEON_TOKEN). Please refer to the R tutorial on generating tokens, linked in the requirements section at the beginning of this lesson if you have not already set up an API token. 
+We recommend using an API token when downloading NEON data programmatically. The function will work without a token, if you leave it out (as described in the documentation), but it is best to get in the practice of using the token! Here I source the token from a file, where the file consists of a single line of code defining the token (called NEON_TOKEN). To set up an API token, please refer to the R tutorial on generating tokens, linked in the requirements section at the beginning of this lesson. 
 
 ```{r display-neon-token-file,eval=F}
 NEON_TOKEN <- "MY TOKEN"
@@ -172,14 +170,14 @@ We an read in the token using the source function as follows. This assumes the t
 source(paste0(wd,"/neon_token.R"))
 ```
 
-Now that we have a general idea of how this function works, from the documentation, let's go ahead and run it, using our imported token.
+Now that we have a general idea of how this function works, from the documentation, let's go ahead and run it, including the imported token.
 For this example, I set the download folder to 'c:/neon/data' and the output folder to 'c:/neon/outputs/2021_MCRA/CHM/'. Modify these paths as desired according to your project structure.
 
 Please heed the following warnings before you run the code:
 
-WARNING: This function is currently set so that it does not check the file size before downloading. You can change this, if desired, by either removing the check.size parameter in the the `makeFullSiteMosaics` function, or changing the value for that setting to True (check.size=T). This will then stop the function and prompt you to type "y" or "n" to continue the download. We recommend changing this if you have limited storage space on your computer, but this will require a manual input to run the full function.
+WARNING: This function is currently set so that it does not check the file size before downloading. You can change this, if desired, by either removing the `check.size` parameter in the the `makeFullSiteMosaics` function, or by changing the value for that setting to True (`check.size=T`). This will pause the function and prompt you to type y/n (yes or no) to continue with the download. We recommend changing this parameter if you have limited storage space on your computer, but note that doing so will require a manual input to complete the execution of the function.
 
-WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn't stall out before the file finishes downloading. To change the timeout, you can use `options`, but be aware that this changes the computer's settings outside of this R environment, so when you do this, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing to 300 seconds (5 minutes).
+WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn't stall out before the files finishe downloading. To change this setting, you can the R `options`, but note that this will change the computer's settings outside of this R environment. When you do set the timeout, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing it to 300 seconds (5 minutes).
 
 ```{r get-timeout}
 timeout0 <- getOption('timeout')
@@ -245,9 +243,9 @@ plot(MCRA_NDVI,main="2021_MCRA_2 NDVI")
 plot(MCRA_NDVI_error,main="2021_MCRA_2 NDVI Error") 
 ```
 
-Looks good! Go ahead and try some different data products on your own, or a different site. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.
+Looks good! Go ahead and test out this function on different data products, years, or sites on your own. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.
 
-Last but not least, let's change the timeout back to the original value:
+Last but not least, change the timeout back to the original value:
 
 ``` {r change-timeout-back}
 options(timeout=timeout0)
