@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title></title>
+<title>makeFullSiteMosaics</title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -272,16 +272,17 @@ setwd(wd)
 
 <p>You should see the function documentation pop up in the <em>RStudio Help</em> window, similar to below:</p>
 
-<p>##makeFullSiteMosaics 
-{TempPackage}   R Documentation</p>
+<h3>makeFullSiteMosaics</h3>
+
+<p>{TempPackage}   R Documentation</p>
 
 <p>Download all AOP files for a given site, year, and L3 product, mosaic the files, and save the full site mosaic to a tiff and cloud-optimized geotiff.</p>
 
-<p>##Description    </p>
+<h4>Description</h4>
 
 <p>This function 1) Runs the neonUtilities byFileAOP function to download NEON AOP data by site, year, and product (see byFileAOP documention for additional details). 2) mosaics the data product tiles into a full-site mosaic, as well as the associated error tifs, where applicable, and 3) saves the full site mosaics to a tif and cloud-optimized geotiff.</p>
 
-<p>##Usage</p>
+<h4>Usage</h4>
 
 <p>makeFullSiteMosaics(
   dpID,
@@ -291,137 +292,136 @@ setwd(wd)
   outFileDir,
   apiToken = NULL)   </p>
 
-<p>##Arguments</p>
+<h4>Arguments</h4>
 
-<p>###dpID</p>
+<h5>dpID</h5>
 
 <p>The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3            reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.</p>
 
-<p>###year</p>
+<h5>year</h5>
 
 <p>The four-digit year to search for data.</p>
 
-<p>###siteCode</p>
+<h5>siteCode</h5>
 
 <p>The four-letter code of a single NEON site, e.g. &#39;MCRA&#39;.</p>
 
-<p>###dataRootDir</p>
+<h5>dataRootDir</h5>
 
 <p>The file path to download data to.</p>
 
-<p>###outFileDir</p>
+<h5>outFileDir</h5>
 
 <p>The file path where the full-site mosaic geotiffs and cloud-optimized geotiffs are saved.</p>
 
-<p>###apiToken</p>
+<h5>apiToken</h5>
 
 <p>User specific API token (generated within neon.datascience user accounts). If not provided, no API token is used.</p>
 
-<pre><code>
-We recommend using an API token when downloading NEON data programmatically. The function will work without a token, if you leave it out (as described in the documentation), but it is best to get in the practice of using the token! Here I source the token from a file, where the file consists of a single line of code defining the token (called NEON_TOKEN). To set up an API token, please refer to the R tutorial on generating tokens, linked in the requirements section at the beginning of this lesson. 
+<p><em>TIP</em>: We recommend using an API token when downloading NEON data programmatically. The function will work without a token, if you leave it out (as described in the documentation), but it is best to get in the practice of using the token! Here I source the token from a file, where the file consists of a single line of code defining the token (called NEON_TOKEN). To set up an API token, please refer to the R tutorial on generating tokens, linked in the requirements section at the beginning of this lesson. </p>
+
+<pre><code>NEON_TOKEN &lt;- &quot;MY TOKEN&quot;
+</code></pre>
+
+<p>We an read in the token using the source function as follows. This assumes the token is saved in the working directory, but you can also set the path to the token explicitly if you&#39;ve saved it elsewhere.</p>
+
+<pre><code>source(paste0(wd,&quot;/neon_token.R&quot;))
+</code></pre>
+
+<p>Now that we have a general idea of how this function works, from the documentation, let&#39;s go ahead and run it, including the imported token.
+For this example, I set the download folder to &#39;c:/neon/data&#39; and the output folder to &#39;c:/neon/outputs/2021_MCRA/CHM/&#39;. Modify these paths as desired according to your project structure.</p>
+
+<p>Please heed the following warnings before you run the code:</p>
+
+<p>WARNING: This function is currently set so that it does not check the file size before downloading. You can change this, if desired, by either removing the <code>check.size</code> parameter in the the <code>makeFullSiteMosaics</code> function, or by changing the value for that setting to True (<code>check.size=T</code>). This will pause the function and prompt you to type y/n (yes or no) to continue with the download. We recommend changing this parameter if you have limited storage space on your computer, but note that doing so will require a manual input to complete the execution of the function.</p>
+
+<p>WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn&#39;t stall out before the files finishe downloading. To change this setting, you can the R <code>options</code>, but note that this will change the computer&#39;s settings outside of this R environment. When you do set the timeout, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing it to 300 seconds (5 minutes).</p>
+
+<pre><code>timeout0 &lt;- getOption(&#39;timeout&#39;)
+print(timeout0)
+
+## [1] 60
+</code></pre>
+
+<p>Set the timeout to 300 seconds (5 minutes):</p>
+
+<pre><code>options(timeout=300)
+getOption(&#39;timeout&#39;)
+
+## [1] 300
+</code></pre>
+
+<p>Set the folder to download the data to, and the output folder to save the final CHM rasters:</p>
+
+<pre><code>download_folder &lt;- &#39;c:/neon/data&#39;
+chm_output_folder &lt;- &#39;c:/neon/outputs/2021_MCRA/CHM/&#39;
 
 
-    NEON_TOKEN &lt;- &quot;MY TOKEN&quot;
+makeFullSiteMosaics(&#39;DP3.30015.001&#39;,&#39;2021&#39;,&#39;MCRA&#39;,download_folder,chm_output_folder,NEON_TOKEN)
+</code></pre>
 
-We an read in the token using the source function as follows. This assumes the token is saved in the working directory, but you can also set the path to the token explicitly if you&#39;ve saved it elsewhere.
+<p>Display the output files generated:</p>
 
+<pre><code>list.files(chm_output_folder)
 
-    source(paste0(wd,&quot;/neon_token.R&quot;))
+## [1] &quot;2021_MCRA_2_CHM.tif&quot;     &quot;2021_MCRA_2_CHM_COG.tif&quot;
+</code></pre>
 
-Now that we have a general idea of how this function works, from the documentation, let&#39;s go ahead and run it, including the imported token.
-For this example, I set the download folder to &#39;c:/neon/data&#39; and the output folder to &#39;c:/neon/outputs/2021_MCRA/CHM/&#39;. Modify these paths as desired according to your project structure.
+<p>Now we can read in and plot the full-site CHM tif that we generated using the raster package:</p>
 
-Please heed the following warnings before you run the code:
+<pre><code>MCRA_CHM &lt;- raster(file.path(chm_output_folder,&#39;2021_MCRA_2_CHM.tif&#39;))
+plot(MCRA_CHM,main=&quot;2021_MCRA_2 Canopy Height Model&quot;) # add title with main)
+</code></pre>
 
-WARNING: This function is currently set so that it does not check the file size before downloading. You can change this, if desired, by either removing the `check.size` parameter in the the `makeFullSiteMosaics` function, or by changing the value for that setting to True (`check.size=T`). This will pause the function and prompt you to type y/n (yes or no) to continue with the download. We recommend changing this parameter if you have limited storage space on your computer, but note that doing so will require a manual input to complete the execution of the function.
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-chm-full-mosaic-1.png" alt=" "/></p>
 
-WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn&#39;t stall out before the files finishe downloading. To change this setting, you can the R `options`, but note that this will change the computer&#39;s settings outside of this R environment. When you do set the timeout, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing it to 300 seconds (5 minutes).
+<p>Now let&#39;s run the function to generate full-site mosaics for the AOP Veg Indices (DP3.30026.001). The function handles unzipping the zipped folders, and plotting each separate index tif and associated error tif. We will use the same download folder as before (note that the files will be downloaded to a different sub-directory), and specify a new output folder.</p>
 
-
-    timeout0 &lt;- getOption(&#39;timeout&#39;)
-    print(timeout0)
-
-    ## [1] 60
-
-Set the timeout to 300 seconds (5 minutes):
+<pre><code>veg_indices_output_folder&lt;-&#39;c:/neon/outputs/2021_MCRA/VegIndices/&#39;
 
 
-    options(timeout=300)
-    getOption(&#39;timeout&#39;)
+makeFullSiteMosaics(&#39;DP3.30026.001&#39;,&#39;2021&#39;,&#39;MCRA&#39;,download_folder,veg_indices_output_folder,NEON_TOKEN)
+</code></pre>
 
-    ## [1] 300
+<p>Let&#39;s see the full-site Veg Indices files that were generated using <code>list.files</code>:</p>
 
-Set the folder to download the data to, and the output folder to save the final CHM rasters:
+<pre><code>list.files(veg_indices_output_folder)
 
+##  [1] &quot;2021_MCRA_2_ARVI.tif&quot;           &quot;2021_MCRA_2_ARVI_COG.tif&quot;       &quot;2021_MCRA_2_ARVI_error.tif&quot;    
+##  [4] &quot;2021_MCRA_2_ARVI_error_COG.tif&quot; &quot;2021_MCRA_2_EVI.tif&quot;            &quot;2021_MCRA_2_EVI_COG.tif&quot;       
+##  [7] &quot;2021_MCRA_2_EVI_error.tif&quot;      &quot;2021_MCRA_2_EVI_error_COG.tif&quot;  &quot;2021_MCRA_2_NDVI.tif&quot;          
+## [10] &quot;2021_MCRA_2_NDVI_COG.tif&quot;       &quot;2021_MCRA_2_NDVI_error.tif&quot;     &quot;2021_MCRA_2_NDVI_error_COG.tif&quot;
+## [13] &quot;2021_MCRA_2_PRI.tif&quot;            &quot;2021_MCRA_2_PRI_COG.tif&quot;        &quot;2021_MCRA_2_PRI_error.tif&quot;     
+## [16] &quot;2021_MCRA_2_PRI_error_COG.tif&quot;  &quot;2021_MCRA_2_SAVI.tif&quot;           &quot;2021_MCRA_2_SAVI_COG.tif&quot;      
+## [19] &quot;2021_MCRA_2_SAVI_error.tif&quot;     &quot;2021_MCRA_2_SAVI_error_COG.tif&quot;
+</code></pre>
 
-    download_folder &lt;- &#39;c:/neon/data&#39;
-    chm_output_folder &lt;- &#39;c:/neon/outputs/2021_MCRA/CHM/&#39;
+<p>Now we can read in the NDVI and NDVI error tifs:</p>
 
+<pre><code>MCRA_NDVI &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI.tif&#39;))
+MCRA_NDVI_error &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI_error.tif&#39;))
+</code></pre>
 
-    makeFullSiteMosaics(&#39;DP3.30015.001&#39;,&#39;2021&#39;,&#39;MCRA&#39;,download_folder,chm_output_folder,NEON_TOKEN)
+<p>And, finally, let&#39;s plot NDVI and NDVI error:</p>
 
-Display the output files generated:
+<pre><code>plot(MCRA_NDVI,main=&quot;2021_MCRA_2 NDVI&quot;)
+</code></pre>
 
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-1.png" alt=" "/></p>
 
-    list.files(chm_output_folder)
+<pre><code>plot(MCRA_NDVI_error,main=&quot;2021_MCRA_2 NDVI Error&quot;) 
+</code></pre>
 
-    ## [1] &quot;2021_MCRA_2_CHM.tif&quot;     &quot;2021_MCRA_2_CHM_COG.tif&quot;
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-error-1.png" alt=" "/></p>
 
-Now we can read in and plot the full-site CHM tif that we generated using the raster package:
+<p>Looks good! Go ahead and test out this function on different data products, years, or sites on your own. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.</p>
 
+<p>Last but not least, change the timeout back to the original value:</p>
 
-    MCRA_CHM &lt;- raster(file.path(chm_output_folder,&#39;2021_MCRA_2_CHM.tif&#39;))
-    plot(MCRA_CHM,main=&quot;2021_MCRA_2 Canopy Height Model&quot;) # add title with main)
+<pre><code>options(timeout=timeout0)
+getOption(&#39;timeout&#39;)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-chm-full-mosaic-1.png)
-
-Now let&#39;s run the function to generate full-site mosaics for the AOP Veg Indices (DP3.30026.001). The function handles unzipping the zipped folders, and plotting each separate index tif and associated error tif. We will use the same download folder as before (note that the files will be downloaded to a different sub-directory), and specify a new output folder.
-
-
-    veg_indices_output_folder&lt;-&#39;c:/neon/outputs/2021_MCRA/VegIndices/&#39;
-
-
-    makeFullSiteMosaics(&#39;DP3.30026.001&#39;,&#39;2021&#39;,&#39;MCRA&#39;,download_folder,veg_indices_output_folder,NEON_TOKEN)
-
-Let&#39;s see the full-site Veg Indices files that were generated using `list.files`:
-
-
-    list.files(veg_indices_output_folder)
-
-    ##  [1] &quot;2021_MCRA_2_ARVI.tif&quot;           &quot;2021_MCRA_2_ARVI_COG.tif&quot;       &quot;2021_MCRA_2_ARVI_error.tif&quot;    
-    ##  [4] &quot;2021_MCRA_2_ARVI_error_COG.tif&quot; &quot;2021_MCRA_2_EVI.tif&quot;            &quot;2021_MCRA_2_EVI_COG.tif&quot;       
-    ##  [7] &quot;2021_MCRA_2_EVI_error.tif&quot;      &quot;2021_MCRA_2_EVI_error_COG.tif&quot;  &quot;2021_MCRA_2_NDVI.tif&quot;          
-    ## [10] &quot;2021_MCRA_2_NDVI_COG.tif&quot;       &quot;2021_MCRA_2_NDVI_error.tif&quot;     &quot;2021_MCRA_2_NDVI_error_COG.tif&quot;
-    ## [13] &quot;2021_MCRA_2_PRI.tif&quot;            &quot;2021_MCRA_2_PRI_COG.tif&quot;        &quot;2021_MCRA_2_PRI_error.tif&quot;     
-    ## [16] &quot;2021_MCRA_2_PRI_error_COG.tif&quot;  &quot;2021_MCRA_2_SAVI.tif&quot;           &quot;2021_MCRA_2_SAVI_COG.tif&quot;      
-    ## [19] &quot;2021_MCRA_2_SAVI_error.tif&quot;     &quot;2021_MCRA_2_SAVI_error_COG.tif&quot;
-
-Now we can read in the NDVI and NDVI error tifs:
-
-    MCRA_NDVI &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI.tif&#39;))
-    MCRA_NDVI_error &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI_error.tif&#39;))
-
-And, finally, let&#39;s plot NDVI and NDVI error:
-
-
-    plot(MCRA_NDVI,main=&quot;2021_MCRA_2 NDVI&quot;)
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-1.png)
-
-
-    plot(MCRA_NDVI_error,main=&quot;2021_MCRA_2 NDVI Error&quot;) 
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-error-1.png)
-
-Looks good! Go ahead and test out this function on different data products, years, or sites on your own. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.
-
-Last but not least, change the timeout back to the original value:
-
-
-    options(timeout=timeout0)
-    getOption(&#39;timeout&#39;)
-
-    ## [1] 60
+## [1] 60
 </code></pre>
 
 </body>
