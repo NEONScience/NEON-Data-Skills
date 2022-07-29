@@ -125,34 +125,51 @@ Let's take a look a the documentation for the function `makeFullSiteMosaics`
     help(makeFullSiteMosaics)
 You should see the function documentation pop up in the *RStudio Help* window, similar to below:
 
-```
-makeFullSiteMosaics {TempPackage}	R Documentation
+
+##makeFullSiteMosaics 
+{TempPackage}	R Documentation
 
 Download all AOP files for a given site, year, and L3 product, mosaic the files, and save the full site mosaic to a tiff and cloud-optimized geotiff.
 
-Description     This function 1) Runs the neonUtilities byFileAOP function to download NEON AOP data by site, year, and product (see byFileAOP documention for additional details). 2) mosaics the data product tiles into a full-site mosaic, as well as the associated error tifs, where applicable, and 3) saves the full site mosaics to a tif and cloud-optimized geotiff.
+##Description    
 
-Usage           makeFullSiteMosaics(
-                  dpID,
-                  year,
-                  siteCode,
-                  dataRootDir,
-                  outFileDir,
-                  apiToken = NULL)   
+This function 1) Runs the neonUtilities byFileAOP function to download NEON AOP data by site, year, and product (see byFileAOP documention for additional details). 2) mosaics the data product tiles into a full-site mosaic, as well as the associated error tifs, where applicable, and 3) saves the full site mosaics to a tif and cloud-optimized geotiff.
 
-Arguments
+##Usage
 
-dpID	         The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3                 reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.
+makeFullSiteMosaics(
+  dpID,
+  year,
+  siteCode,
+  dataRootDir,
+  outFileDir,
+  apiToken = NULL)   
 
-year	         The four-digit year to search for data.
+##Arguments
 
-siteCode	     The four-letter code of a single NEON site, e.g. 'MCRA'.
+###dpID
 
-dataRootDir	   The file path to download data to.
+The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3            reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.
 
-outFileDir	   The file path where the full-site mosaic geotiffs and cloud-optimized geotiffs are saved.
+###year
 
-apiToken	     User specific API token (generated within neon.datascience user accounts). If not provided, no API token is used.
+The four-digit year to search for data.
+
+###siteCode
+
+The four-letter code of a single NEON site, e.g. 'MCRA'.
+
+###dataRootDir
+
+The file path to download data to.
+
+###outFileDir
+
+The file path where the full-site mosaic geotiffs and cloud-optimized geotiffs are saved.
+
+###apiToken
+
+User specific API token (generated within neon.datascience user accounts). If not provided, no API token is used.
 ```
 
 We recommend using an API token when downloading NEON data programmatically. The function will work without a token, if you leave it out (as described in the documentation), but it is best to get in the practice of using the token! Here I source the token from a file, where the file consists of a single line of code defining the token (called NEON_TOKEN). To set up an API token, please refer to the R tutorial on generating tokens, linked in the requirements section at the beginning of this lesson. 
@@ -178,7 +195,9 @@ WARNING: We recommend extending the timeout value when downloading large AOP sit
     timeout0 <- getOption('timeout')
     print(timeout0)
 
-    ## [1] 100
+    ## [1] 60
+
+Set the timeout to 300 seconds (5 minutes):
 
 
     options(timeout=300)
@@ -186,9 +205,11 @@ WARNING: We recommend extending the timeout value when downloading large AOP sit
 
     ## [1] 300
 
+Set the folder to download the data to, and the output folder to save the final CHM rasters:
 
-    download_folder<-'c:/neon/data'
-    chm_output_folder<-'c:/neon/outputs/2021_MCRA/CHM/'
+
+    download_folder <- 'c:/neon/data'
+    chm_output_folder <- 'c:/neon/outputs/2021_MCRA/CHM/'
 
 
     makeFullSiteMosaics('DP3.30015.001','2021','MCRA',download_folder,chm_output_folder,NEON_TOKEN)
@@ -221,11 +242,13 @@ Let's see the full-site Veg Indices files that were generated using `list.files`
 
     list.files(veg_indices_output_folder)
 
-    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"     "2021_MCRA_2_ARVI_error_COG.tif"
-    ##  [5] "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"        "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif" 
-    ##  [9] "2021_MCRA_2_NDVI.tif"           "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
-    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"      "2021_MCRA_2_PRI_error_COG.tif" 
-    ## [17] "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"       "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
+    ##  [1] "2021_MCRA_2_ARVI.tif"           "2021_MCRA_2_ARVI_COG.tif"       "2021_MCRA_2_ARVI_error.tif"    
+    ##  [4] "2021_MCRA_2_ARVI_error_COG.tif" "2021_MCRA_2_EVI.tif"            "2021_MCRA_2_EVI_COG.tif"       
+    ##  [7] "2021_MCRA_2_EVI_error.tif"      "2021_MCRA_2_EVI_error_COG.tif"  "2021_MCRA_2_NDVI.tif"          
+    ## [10] "2021_MCRA_2_NDVI_COG.tif"       "2021_MCRA_2_NDVI_error.tif"     "2021_MCRA_2_NDVI_error_COG.tif"
+    ## [13] "2021_MCRA_2_PRI.tif"            "2021_MCRA_2_PRI_COG.tif"        "2021_MCRA_2_PRI_error.tif"     
+    ## [16] "2021_MCRA_2_PRI_error_COG.tif"  "2021_MCRA_2_SAVI.tif"           "2021_MCRA_2_SAVI_COG.tif"      
+    ## [19] "2021_MCRA_2_SAVI_error.tif"     "2021_MCRA_2_SAVI_error_COG.tif"
 
 Now we can read in the NDVI and NDVI error tifs:
 
@@ -252,4 +275,4 @@ Last but not least, change the timeout back to the original value:
     options(timeout=timeout0)
     getOption('timeout')
 
-    ## [1] 100
+    ## [1] 60
