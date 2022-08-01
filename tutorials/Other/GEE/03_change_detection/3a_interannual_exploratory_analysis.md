@@ -147,6 +147,11 @@ var CHMdiff_2021_2018 = SRER_CHM2021.subtract(SRER_CHM2018);
 Map.addLayer(CHMdiff_2021_2018, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']},'CHM diff 2021-2018')
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018.png" alt="CHM difference map, 2021-2018"></a>
+</figure>
+
 You can see some broad differences, but there also appear to be artifacts. We can smooth out some of this noise by using a spatial filter.
 
 ```
@@ -160,6 +165,10 @@ var boxcar = ee.Kernel.square({
 var smooth = CHMdiff_2021_2018.convolve(boxcar);
 Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}, 'CHM diff, smoothed');
 ```
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.png" alt="CHM differene map, 2021-2018"></a>
+</figure>
 
 Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. Here we can see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
 
@@ -197,6 +206,11 @@ var hist3 =
                     vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
 print(hist3);
 ```
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2019.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2019.png" alt="CHM difference histogram 2021-2019, 2021-2018"></a>
+</figure>
 
 Footnotes
 
