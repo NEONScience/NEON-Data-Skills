@@ -16,21 +16,19 @@ urlTitle: aop-gee-exploratory-change-analysis
 
 ---
 
-GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will 
-show how to pull in AOP Surface Directional Reflectance (SDR) datasets, as well as the Ecosystem Structure data (also called Canopy Height Model, or CHM)
-to look at interannual differences at the site SRER. We will discuss some of the acquisition parameters and other factors that affect data interperatation and data quality.
+GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) datasets, as well as the Ecosystem Structure data (also called Canopy Height Model, or CHM) to look at interannual differences at the site SRER. We will discuss some of the acquisition parameters and other factors that affect data interperatation and data quality.
 
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
 After completing this activity, you will be able to:
- * Write functions to display map images of SDR and CHM data
+ * Write GEE functions to display map images of SDR, NDVI, and CHM data
+ * Create chart images (histogram and line charts) to summarize data over an area.
  * Understand how processing parameters may affect interpretation of data.
  * Understand how weather conditions may affect reflectance data.
- * Create chart images (histogram and line charts) to summarize data over an area.
 
 You will gain familiarity with:
- * User-defined functions
+ * User-defined GEE functions
  * The GEE charting functions `ui.Chart.image`
 
 ## Requirements
