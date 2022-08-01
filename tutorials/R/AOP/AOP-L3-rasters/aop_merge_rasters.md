@@ -177,7 +177,7 @@ User specific API token (generated within neon.datascience user accounts). If no
 
     NEON_TOKEN <- "MY TOKEN"
 
-We an read in the token using the source function as follows. This assumes the token is saved in the working directory, but you can also set the path to the token explicitly if you've saved it elsewhere.
+We can read in the token using the source function as follows. This assumes the token is saved in the working directory, but you can also set the path to the token explicitly if you've saved it elsewhere.
 
 
     source(paste0(wd,"/neon_token.R"))
