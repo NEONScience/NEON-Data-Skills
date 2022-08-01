@@ -87,6 +87,7 @@ NISimages.evaluate(function(NISimages) {
 
 Next we can create a similar function for reading in the CHM dataset over all the years. The main difference between this function and the previous one is that it is set to display a single band image, and instead of hard-coding in the minimum and maximum values to display, we  dynamically determine them from the data itself, so it will scale appropriately. Note that we can use the `.filterMetadata` property to select only the CHM data from the DEM image collection, since CHM is stored in that dataset, along with the DTM and DSM. 
 
+```javascript
 // Read in only the CHM Images (using .filterMetadata by Type)
 var CHMimages =  ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
   .filterBounds(mySite)
@@ -126,3 +127,78 @@ Map.setCenter(-110.83549, 31.91068, 11);
 ```
 
 Now that you've read in these two datasets over all the years, we encourage you to explore the different layers and see if you notice any patterns! 
+
+Next let's difference the CHMs from different years. We will difference 2018 and 2021 because these years were both collected with the Riegl Q780 system and so have a vertical resolution (CHM height cutoff) of 2/3 m. By contrast the Gemini system (which was used in 2017 and 2020) has a 2m cutoff, so some of the smaller shrubs are not resolved with that sensor. It is important to be aware of factors such as these that may affect the interpretation of the data! We encourage all AOP data users to read the associated metadata pdf documents that are provided with the data products (when downloading from the data portal or using the API). 
+
+For more information on the vertical resolution, read the footnotes at the end of this lesson. 
+
+
+```
+var SRER_CHM2018 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+  .filterDate('2018-01-01', '2018-12-31')
+  .filterBounds(mySite).first(); // not sure if this is needed
+
+var SRER_CHM2021 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+  .filterDate('2021-01-01', '2021-12-31')
+  .filterBounds(mySite).first();
+
+var CHMdiff_2021_2018 = SRER_CHM2021.subtract(SRER_CHM2018);
+// print(CHMdiff_2021_2018)
+Map.addLayer(CHMdiff_2021_2018, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']},'CHM diff 2021-2018')
+```
+
+You can see some broad differences, but there also appear to be artifacts. We can smooth out some of this noise by using a spatial filter.
+
+```
+// Smooth out the difference raster (filter out high-frequency patterns)
+// Define a boxcar or low-pass kernel.
+var boxcar = ee.Kernel.square({
+  radius: 1.5, units: 'pixels', normalize: true
+});
+
+// Smooth the image by convolving with the boxcar kernel.
+var smooth = CHMdiff_2021_2018.convolve(boxcar);
+Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}, 'CHM diff, smoothed');
+```
+
+Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. Here we can see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
+
+```javascript
+var SRER_CHM2019 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+  .filterDate('2019-01-01', '2019-12-31')
+  .filterBounds(mySite).first();
+
+var SRER_CHM2017 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+  .filterDate('2017-01-01', '2017-12-31')
+  .filterBounds(mySite).first();
+
+var CHMdiff_2021_2019 = SRER_CHM2021.subtract(SRER_CHM2019);
+var CHMdiff_2019_2018 = SRER_CHM2019.subtract(SRER_CHM2018);
+
+// Define the histogram charts for each CHM difference image, print to the console.
+var hist1 =
+    ui.Chart.image.histogram({image: CHMdiff_2021_2019, region: geometry, scale: 50})
+        .setOptions({title: 'CHM Difference Histogram, 2021-2019',
+                    hAxis: {title: 'CHM Difference (m)',titleTextStyle: {italic: false, bold: true},},
+                    vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
+print(hist1);
+
+var hist2 =
+    ui.Chart.image.histogram({image: CHMdiff_2019_2018, region: geometry, scale: 50})
+        .setOptions({title: 'CHM Difference Histogram, 2019-2018',
+                    hAxis: {title: 'CHM Difference (m)',titleTextStyle: {italic: false, bold: true},},
+                    vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
+print(hist2);
+
+var hist3 =
+    ui.Chart.image.histogram({image: CHMdiff_2021_2018, region: geometry, scale: 50})
+        .setOptions({title: 'CHM Difference Histogram, 2021-2018',
+                    hAxis: {title: 'CHM Difference (m)',titleTextStyle: {italic: false, bold: true},},
+                    vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
+print(hist3);
+```
+
+Footnotes
+
+- To download the metadata documentation without downloading all the data products, you can go through the process of downloading the data product, and when you get to the files, select only ".pdf" extension.
+- From 2021 onward all lidar collections have the improved vertical resolution of .67m, as NEON started operating the Optech Galaxy Prime, which replaced one of the Optech Gemini sensors. This has a 3ns outgoing pulse width, matching the Riegl Q780 system.
