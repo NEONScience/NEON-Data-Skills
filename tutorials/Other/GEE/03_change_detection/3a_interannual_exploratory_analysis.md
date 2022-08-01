@@ -128,7 +128,7 @@ Map.setCenter(-110.83549, 31.91068, 11);
 
 Now that you've read in these two datasets over all the years, we encourage you to explore the different layers and see if you notice any patterns! 
 
-Next let's difference the CHMs from different years. We will difference 2018 and 2021 because these years were both collected with the Riegl Q780 system and so have a vertical resolution (CHM height cutoff) of 2/3 m. By contrast the Gemini system (which was used in 2017 and 2020) has a 2m cutoff, so some of the smaller shrubs are not resolved with that sensor. It is important to be aware of factors such as these that may affect the interpretation of the data! We encourage all AOP data users to read the associated metadata pdf documents that are provided with the data products (when downloading from the data portal or using the API). 
+Next let's calculate the difference between the CHMs from different years. We will difference the CHMs from 2018 and 2021 because these years were both collected with the Riegl Q780 system and so have a vertical resolution (CHM height cutoff) of 2/3 m. By contrast the Gemini system (which was used in 2017 and 2020) has a 2m cutoff, so some of the smaller shrubs are not resolved with that sensor. It is important to be aware of factors such as these that may affect the interpretation of the data! We encourage all AOP data users to read the associated metadata pdf documents that are provided with the data products (when downloading from the data portal or using the API). 
 
 For more information on the vertical resolution, read the footnotes at the end of this lesson. 
 
@@ -171,6 +171,8 @@ Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}
 </figure>
 
 Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. Here we can see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
+
+Before running this chunk of code, you'll need to create a polygon of a region of interest. For this example, I selected a region in the center of the map, shown below. To create the polygon, just select the rectangle in the upper right corner of the map window (if you hover over it it should say "Draw a rectangle".
 
 ```javascript
 var SRER_CHM2019 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
