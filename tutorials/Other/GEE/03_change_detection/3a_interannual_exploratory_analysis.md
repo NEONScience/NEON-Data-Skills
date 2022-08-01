@@ -225,5 +225,6 @@ print(hist3);
 
 Footnotes
 
-- To download the metadata documentation without downloading all the data products, you can go through the process of downloading the data product, and when you get to the files, select only ".pdf" extension.
-- From 2021 onward all lidar collections have the improved vertical resolution of .67m, as NEON started operating the Optech Galaxy Prime, which replaced one of the Optech Gemini sensors. This has a 3ns outgoing pulse width, matching the Riegl Q780 system.
+- To download the metadata documentation without downloading all the data products, you can go through the process of downloading the data product, and when you get to the files, select only the ".pdf" extension. The Algorithm Theoretical Basis Documents (ATBDs), which can be downloaded either from the data product information page or from the data portal, also discuss the uncertainty and important information pertaining to the data.
+- The vertical resolution is related to the outgoing pulse width of the lidar system. Optech Gemini has a 10ns outgoing pulse, while the Riegl Q780 and Optech Galaxy Prime sensors have a 3ns outgoing pulse width. At the nominal flying altitude of 1000m AGL, 10ns translates to a range resolution of ~2m, while 3ns corresponds to 2/3m. 
+- From 2021 onward, all NEON lidar collections have the improved vertical resolution of .67m, as NEON started operating the Optech Galaxy Prime, which replaced one of the Optech Gemini sensors. This has a 3ns outgoing pulse width, matching the Riegl Q780 system.
