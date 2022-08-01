@@ -166,8 +166,8 @@ var smooth = CHMdiff_2021_2018.convolve(boxcar);
 Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}, 'CHM diff, smoothed');
 ```
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.png" alt="CHM differene map, 2021-2018"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.PNG" alt="CHM difference map, 2021-2018 smoothed"></a>
 </figure>
 
 Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. Here we can see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
@@ -209,8 +209,19 @@ print(hist3);
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2019.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2019.png" alt="CHM difference histogram 2021-2019, 2021-2018"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2019.png" alt="CHM difference histogram 2021-2019"></a>
 </figure>
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2019_2018.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2019_2018.png" alt="CHM difference histogram 2019-2018"></a>
+</figure>
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2018.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2018.png" alt="CHM difference histogram 2021-2018"></a>
+</figure>
+
 
 Footnotes
 
