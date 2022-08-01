@@ -72,13 +72,13 @@ function addNISImage(image) {
   var imageMasked = imageId.updateMask(imageId.gte(0.0000)) // mask out no-data values
   var imageRGB = imageMasked.select(['band053', 'band035', 'band019']);  // select only RGB bands for display
   
-  Map.addLayer(imageRGB, {min:2, max:20}, fileName, 0)   // add RGB composite to the map
+  Map.addLayer(imageRGB, {min:2, max:20}, fileName, 0)   // add RGB composite to the map, 0 means it is deselected initially
   
   // uncomment the lines below to calculate NDVI from the SDR and display NDVI
   // var nisNDVI =imageMasked.normalizedDifference(["band097", "band055"]).rename("ndvi") // band097 = NIR , band055 = red
   // var ndviViz= {min:0.05, max:.95,palette:['brown','white','green']}
   
-  // Map.addLayer(nisNDVI, ndviViz, "NDVI "+fileName,0) // optionally add NDVI to the map
+  // Map.addLayer(nisNDVI, ndviViz, "NDVI "+fileName, 0) // optionally add NDVI to the map
 }
 
 // call the addNISimages function to add SDR and NDVI layers to map
@@ -86,3 +86,45 @@ NISimages.evaluate(function(NISimages) {
   NISimages.features.map(addNISImage);
 })
 ```
+
+Next we can create a similar function for reading in the CHM dataset over all the years. The main difference between this function and the previous one is that it is set to display a single band image, and instead of hard-coding in the minimum and maximum values to display, we  dynamically determine them from the data itself, so it will scale appropriately. Note that we can use the `.filterMetadata` property to select only the CHM data from the DEM image collection, since CHM is stored in that dataset, along with the DTM and DSM. 
+
+// Read in only the CHM Images (using .filterMetadata by Type)
+var CHMimages =  ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+  .filterBounds(mySite)
+  .filterMetadata('Type','equals','CHM')
+
+// Function to display Single Band Images setting display range to linear 2%
+function addSingleBandImage(image) { // display each image in collection
+  var imageId = ee.Image(image.id); // get the system:id and convert to string
+  var sysID = ee.String(imageId.get("system:id")).getInfo(); 
+  var fileName = sysID.slice(46,100); // extract the fileName (NEON domain + site code + product code + year)
+  // print(fileName) // optionally print the filename, this will be the name of the layer
+  
+  // dynamically determine the range of data to display
+  // sets color scale to show all but lowest/highest 2% of data
+  var pctClip = imageId.reduceRegion({
+    reducer: ee.Reducer.percentile([2, 98]),
+    scale: 10,
+    maxPixels: 3e7});
+
+  var keys = pctClip.keys();
+  var pct02 = ee.Number(pctClip.get(keys.get(0))).round().getInfo()
+  var pct98 = ee.Number(pctClip.get(keys.get(1))).round().getInfo()
+    
+  var imageDisplay = imageId.updateMask(imageId.gte(0.0000));
+  Map.addLayer(imageDisplay, {min:pct02, max:pct98}, fileName, 0)
+// print(image)
+}
+
+// call the addSingleBandImage function to add CHM layers to map 
+// you could also add all DEM images (DSM/DTM/CHM) but for now let's just add CHM
+CHMimages.evaluate(function(CHMimages) {
+  CHMimages.features.map(addSingleBandImage);
+})
+
+// Center the map on SRER and set zoom level
+Map.setCenter(-110.83549, 31.91068, 11);
+```
+
+Now that you've read in these two datasets over all the years, we encourage you to explore the different layers and see if you notice any patterns! 
