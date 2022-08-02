@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: a3c5b877eb1541cc9ed099e18735f87d
 title: "Exploratory Analysis of AOP Interannual Differences in GEE"
 description: "Exploring interannual differences using AOP lidar and hyperspectral data"
 dateCreated: 2022-08-01
@@ -12,7 +12,7 @@ languageTool: GEE
 dataProduct: DP3.30006.001, DP3.30015.001
 code1: 
 tutorialSeries: aop-gee
-urlTitle: aop-gee-exploratory-change-analysis
+urlTitle: aop-gee-interannual-change-exploratory-analysis
 
 ---
 
@@ -44,6 +44,8 @@ You will gain familiarity with:
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
  * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine  </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
+ * <a href="https://developers.google.com/earth-engine/guides/charts_image_collection" target="_blank"> GEE Charts Image Collection </a>
+ * <a href="https://developers.google.com/earth-engine/guides/reducers_intro" target="_blank"> GEE Reducers </a>
 
 </div>
 
@@ -128,10 +130,11 @@ Map.setCenter(-110.83549, 31.91068, 11);
 
 Now that you've read in these two datasets over all the years, we encourage you to explore the different layers and see if you notice any patterns! 
 
+## Creating CHM Difference Layers
+
 Next let's create a new raster layer of the difference between the CHMs from 2 different years. We will difference the CHMs from 2018 and 2021 because these years were both collected with the Riegl Q780 system and so have a vertical resolution (CHM height cutoff) of 2/3 m. By contrast the Gemini system (which was used in 2017 and 2020) has a 2m cutoff, so some of the smaller shrubs are not resolved with that sensor. It is important to be aware of factors such as these that may affect the interpretation of the data! We encourage all AOP data users to read the associated metadata pdf documents that are provided with the data products (when downloading from the data portal or using the API). 
 
 For more information on the vertical resolution, read the footnotes at the end of this lesson. 
-
 
 ```
 var SRER_CHM2018 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
@@ -169,6 +172,8 @@ Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.PNG">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.PNG" alt="CHM difference map, 2021-2018 smoothed"></a>
 </figure>
+
+## CHM Difference Histograms
 
 Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. For this example, we'll just look at the values over a small area of the site. Looking at these 3 sets of years, we will see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
 
@@ -229,6 +234,8 @@ print(hist3);
 
 Let's take a minute to understand what's going on here. In each case, we subtracted the earlier year from the later year. So from 2019 to 2021, it looks like the vegetation grew on average by ~0.6m, but from 2018 to 2019 it shrunk by the same amount. This is because in 2021 there was a lower vertical cutoff, so shrubs of at least 0.67m were resolved, where before anything below 2m was obscured. These low shrubs are likely the dominant source of the change we're seeing. We can see the same pattern, but in reverse between 2018 and 2019. The difference histogram from 2021 to 2018 more accurately represents the change, which is centered around 0, and the map we displayed shows local changes in certain areas, related to actual vegetation growth and ecological drivers. 2021 was a particularly wet year, and AOP's flight was in optimal peak greenness, as you can see when comparing the SDR imagery to earlier years.
 
+## NDVI Time Series
+
 Last but not least, we can take a quick look at NDVI changes over the four years of data. A quick way to plot the interannual changes are to make a line plot, which we'll do shortly. First let's take a step back and see the weather conditions during the collections. In every mission, the AOP flight operators assess the cloud conditions and note whether the cloud clover is <10% (green), 10-50% (yellow), or >50% (red). This has implications for data quality, and while we strive to collect data in "green" weather conditions, it is not always possible.
 
 The figure below shows the weather conditions at SRER for each of the 4 collections. In 2017 and 2021, the full site was collected in <10% cloud conditions, while in 2018 and 2019 there were mixed weather conditions. However, for all four years, the center of the site was collected in optimal cloud conditions.
@@ -270,7 +277,12 @@ print(plotNDVI);
 
 We can see how much NDVI has increased in 2021 relative to the earlier years. While this doesn't show us a lot of information now, as the AOP data set builds up in years to come, this may be a more interesting plot. 
 
-On your own, we encourage you to look at the charting functions, and modify if you wish. For example, try out a different reducer, repeat the plots for different parts of the site, and see if there are any areas in the site that you'd like to dig into in more detail.
+On your own, we encourage you to dig into the code from this tutorial and modify according to your scientific interests. Think of some questions you have about this dataset, and modify these functions or try writing your own function to answer your question. For example, try out a different reducer, repeat the plots for different areas of the site, and see if there are any other datasets that you could bring in to help you with your analysis. You can also pull in satellite data and see how the NEON data compares. This is just the starting point!
+
+## Get Lesson Code
+
+<a href="https://code.earthengine.google.com/326d3a190f17845eda163a9eaf45e82f" target="_blank">AOP GEE Internannual Change Exploratory Analysis</a>
+
 
 Footnotes
 
