@@ -172,7 +172,7 @@ Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}
 
 Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. For this example, we'll just look at the values over a small area of the site. Looking at these 3 sets of years, we will see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
 
-Before running this chunk of code, you'll need to create a polygon of a region of interest. For this example, I selected a region in the center of the map, shown below, although you can select any region within the site. To create the polygon, just select the rectangle in the upper left corner of the map window (if you hover over it it should say "Draw a rectangle". Then drag the cursor over the area you wish to cover.
+Before running this chunk of code, you'll need to create a polygon of a region of interest. For this example, I selected a region in the center of the map, shown below, although you can select any region within the site. To create the polygon, select the rectangle out of the shapes in the upper left corner of the map window (hovering over it should say "Draw a rectangle"). Then drag the cursor over the area you wish to cover.
 
 ```javascript
 
