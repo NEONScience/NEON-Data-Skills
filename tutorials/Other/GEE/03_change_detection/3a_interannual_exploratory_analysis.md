@@ -227,6 +227,42 @@ print(hist3);
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2018.png" alt="CHM difference histogram 2021-2018"></a>
 </figure>
 
+Let's take a minute to understand what's going on here. In each case, we subtracted the earlier year from the later year. So from 2019 to 2021, it looks like the vegetation grew on average by ~0.6m, but from 2018 to 2019 it shrunk by the same amount. This is because in 2021 there was a lower vertical cutoff, so shrubs of at least 0.67m were resolved, where before anything below 2m was obscured. These low shrubs are likely the dominant source of the change we're seeing. We can see the same pattern, but in reverse between 2018 and 2019. The difference histogram from 2021 to 2018 more accurately represents the change, which is centered around 0, and the map we displayed shows local changes in certain areas, related to actual vegetation growth and ecological drivers. 2021 was a particularly wet year, and AOP's flight was in optimal peak greenness, as you can see when comparing the SDR imagery to earlier years.
+
+Last but not least, we can take a quick look at NDVI changes over the four years of data. A quick way to plot the interannual changes are to make a line plot, which we'll do shortly. First let's take a step back and see the weather conditions during the collections. In every mission, the AOP flight operators assess the cloud conditions and note whether the cloud clover is <10% (green), 10-50% (yellow), or >50% (red). This has implications for data quality, and while we strive to collect data in "green" weather conditions, it is not always possible.
+
+The figure below shows the weather conditions at SRER for each of the 4 collections. In 2017 and 2021, the full site was collected in <10% cloud conditions, while in 2018 and 2019 there were mixed weather conditions. However, for all four years, the center of the site was collected in optimal cloud conditions.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/srer_weather_conditions_2017-2021.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/srer_weather_conditions_2017-2021.PNG" alt="SRER weather conditions 2017-2021"></a>
+</figure>
+
+With this in mind, let's use the same geometry we used before to look at the mean NDVI over the four years in a small part of the site. Here's the GEE code for doing this:
+
+```javascript
+// calculate NDVI for the geometry
+var ndvi = NISimages.map(function(image) {
+    var ndviClip = image.clip(geometry)
+    return ndviClip.addBands(ndviClip.normalizedDifference(["band097", "band055"]).rename('NDVI'))
+});
+
+// Create a time series chart, with image, geometry & median reducer
+var plotNDVI = ui.Chart.image.seriesByRegion(ndvi, geometry, ee.Reducer.median(), 
+              'NDVI', 100, 'system:time_start') // band, scale, x-axis property
+              .setChartType('LineChart').setOptions({
+                title: 'NDVI time series',
+                hAxis: {title: 'Date'},
+                vAxis: {title: 'NDVI'},
+                legend: {position: "none"},
+                lineWidth: 1,
+                pointSize: 3
+});
+
+// Display the chart
+print(plotNDVI);
+```
+
 
 Footnotes
 
