@@ -1,6 +1,6 @@
 ---
 syncID: a3c5b877eb1541cc9ed099e18735f87d
-title: "Exploratory Analysis of AOP Interannual Differences in GEE"
+title: "Exploratory Analysis of Interannual AOP Data in GEE"
 description: "Exploring interannual differences using AOP lidar and hyperspectral data"
 dateCreated: 2022-08-01
 authors: Bridget M. Hass, John Musinsky
@@ -16,7 +16,7 @@ urlTitle: aop-gee-interannual-change-exploratory-analysis
 
 ---
 
-GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) datasets, as well as the Ecosystem Structure data (also called Canopy Height Model, or CHM) to look at interannual differences at the site SRER. We will discuss some of the acquisition parameters and other factors that affect data interperatation and data quality.
+GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) datasets, as well as the Ecosystem Structure (CHM) data to look at interannual differences at the site SRER. We will discuss some of the acquisition parameters and other factors that affect data quality and interperatation.
 
 <div id="ds-objectives" markdown="1">
 
@@ -24,7 +24,7 @@ GEE is a great place to conduct exploratory analysis to better understand the da
 After completing this activity, you will be able to:
  * Write GEE functions to display map images of SDR, NDVI, and CHM data
  * Create chart images (histogram and line charts) to summarize data over an area.
- * Understand how processing parameters may affect interpretation of data.
+ * Understand how acquisition parameters may affect interpretation of data.
  * Understand how weather conditions may affect reflectance data.
 
 You will gain familiarity with:
@@ -38,7 +38,7 @@ You will gain familiarity with:
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a>
-	* <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-functions" target="_blank">Intro to GEE Functions</a>
+    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-functions" target="_blank">Intro to GEE Functions</a>
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
