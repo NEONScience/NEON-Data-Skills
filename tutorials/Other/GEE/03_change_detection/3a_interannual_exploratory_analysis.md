@@ -179,6 +179,21 @@ Next let's plot histograms of the CHM differences, between 2021-2018 as well as 
 
 Before running this chunk of code, you'll need to create a polygon of a region of interest. For this example, I selected a region in the center of the map, shown below, although you can select any region within the site. To create the polygon, select the rectangle out of the shapes in the upper left corner of the map window (hovering over it should say "Draw a rectangle"). Then drag the cursor over the area you wish to cover.
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_map.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_map.png" alt="Geometry map"></a>
+</figure>
+
+When you load in this geometry, you should see the `geometry` variable imported at the top of the code editor window, under Imports. It should look something like this:
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_import.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_import.PNG" alt="Geometry imported variable"></a>
+</figure>
+
+Once you have this geometry polygon variable set, you can run the following code to generate histograms of the CHM differences over this area.
+
+
 ```javascript
 
 // read in CHMs from 2019 and 2017
@@ -236,7 +251,7 @@ Let's take a minute to understand what's going on here. In each case, we subtrac
 
 ## NDVI Time Series
 
-Last but not least, we can take a quick look at NDVI changes over the four years of data. A quick way to plot the interannual changes are to make a line plot, which we'll do shortly. First let's take a step back and see the weather conditions during the collections. In every mission, the AOP flight operators assess the cloud conditions and note whether the cloud clover is <10% (green), 10-50% (yellow), or >50% (red). This has implications for data quality, and while we strive to collect data in "green" weather conditions, it is not always possible.
+Last but not least, we can take a quick look at NDVI changes over the four years of data. A quick way to look at the interannual changes are to make a line plot, which we'll do shortly. First let's take a step back and see the weather conditions during the collections. For every mission, the AOP flight operators assess the cloud conditions and note whether the cloud clover is <10% (green), 10-50% (yellow), or >50% (red). This information gets passed through to the reflectance hdf5 data, and is also available in the summary metadata documents, delivered with all the spectrometer data products. The weather conditions have direct implications for data quality, and while we strive to collect data in "green" weather conditions, it is not always possible, so the user must take this into consideration when working with the data.
 
 The figure below shows the weather conditions at SRER for each of the 4 collections. In 2017 and 2021, the full site was collected in <10% cloud conditions, while in 2018 and 2019 there were mixed weather conditions. However, for all four years, the center of the site was collected in optimal cloud conditions.
 
@@ -245,7 +260,7 @@ The figure below shows the weather conditions at SRER for each of the 4 collecti
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/srer_weather_conditions_2017-2021.PNG" alt="SRER weather conditions 2017-2021"></a>
 </figure>
 
-With this in mind, let's use the same geometry we used before to look at the mean NDVI over the four years in a small part of the site. Here's the GEE code for doing this:
+With this in mind, let's use the same geometry we used before, centered in the middle of the plot, to look at the mean NDVI over the four years in a small part of the site. Here's the GEE code for doing this:
 
 ```javascript
 // calculate NDVI for the geometry
