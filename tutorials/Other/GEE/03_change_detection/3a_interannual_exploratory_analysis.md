@@ -35,7 +35,7 @@ You will gain familiarity with:
  * A gmail (@gmail.com) account
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
- * We recommend you 
+ * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a>
 	* <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-functions" target="_blank">Intro to GEE Functions</a>
@@ -128,7 +128,7 @@ Map.setCenter(-110.83549, 31.91068, 11);
 
 Now that you've read in these two datasets over all the years, we encourage you to explore the different layers and see if you notice any patterns! 
 
-Next let's calculate the difference between the CHMs from different years. We will difference the CHMs from 2018 and 2021 because these years were both collected with the Riegl Q780 system and so have a vertical resolution (CHM height cutoff) of 2/3 m. By contrast the Gemini system (which was used in 2017 and 2020) has a 2m cutoff, so some of the smaller shrubs are not resolved with that sensor. It is important to be aware of factors such as these that may affect the interpretation of the data! We encourage all AOP data users to read the associated metadata pdf documents that are provided with the data products (when downloading from the data portal or using the API). 
+Next let's create a new raster layer of the difference between the CHMs from 2 different years. We will difference the CHMs from 2018 and 2021 because these years were both collected with the Riegl Q780 system and so have a vertical resolution (CHM height cutoff) of 2/3 m. By contrast the Gemini system (which was used in 2017 and 2020) has a 2m cutoff, so some of the smaller shrubs are not resolved with that sensor. It is important to be aware of factors such as these that may affect the interpretation of the data! We encourage all AOP data users to read the associated metadata pdf documents that are provided with the data products (when downloading from the data portal or using the API). 
 
 For more information on the vertical resolution, read the footnotes at the end of this lesson. 
 
@@ -170,11 +170,13 @@ Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.PNG" alt="CHM difference map, 2021-2018 smoothed"></a>
 </figure>
 
-Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. Here we can see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
+Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. For this example, we'll just look at the values over a small area of the site. Looking at these 3 sets of years, we will see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
 
-Before running this chunk of code, you'll need to create a polygon of a region of interest. For this example, I selected a region in the center of the map, shown below. To create the polygon, just select the rectangle in the upper right corner of the map window (if you hover over it it should say "Draw a rectangle".
+Before running this chunk of code, you'll need to create a polygon of a region of interest. For this example, I selected a region in the center of the map, shown below, although you can select any region within the site. To create the polygon, just select the rectangle in the upper left corner of the map window (if you hover over it it should say "Draw a rectangle". Then drag the cursor over the area you wish to cover.
 
 ```javascript
+
+// read in CHMs from 2019 and 2017
 var SRER_CHM2019 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
   .filterDate('2019-01-01', '2019-12-31')
   .filterBounds(mySite).first();
@@ -183,6 +185,7 @@ var SRER_CHM2017 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
   .filterDate('2017-01-01', '2017-12-31')
   .filterBounds(mySite).first();
 
+// calculate the CHM difference histograms (2021-2019 & 2019-2018)
 var CHMdiff_2021_2019 = SRER_CHM2021.subtract(SRER_CHM2019);
 var CHMdiff_2019_2018 = SRER_CHM2019.subtract(SRER_CHM2018);
 
