@@ -299,7 +299,7 @@ On your own, we encourage you to dig into the code from this tutorial and modify
 <a href="https://code.earthengine.google.com/326d3a190f17845eda163a9eaf45e82f" target="_blank">AOP GEE Internannual Change Exploratory Analysis</a>
 
 
-Footnotes
+### Footnotes
 
 - To download the metadata documentation without downloading all the data products, you can go through the process of downloading the data product, and when you get to the files, select only the ".pdf" extension. The Algorithm Theoretical Basis Documents (ATBDs), which can be downloaded either from the data product information page or from the data portal, also discuss the uncertainty and important information pertaining to the data.
 - The vertical resolution is related to the outgoing pulse width of the lidar system. Optech Gemini has a 10ns outgoing pulse, while the Riegl Q780 and Optech Galaxy Prime sensors have a 3ns outgoing pulse width. At the nominal flying altitude of 1000m AGL, 10ns translates to a range resolution of ~2m, while 3ns corresponds to 2/3m. 
