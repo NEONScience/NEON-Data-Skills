@@ -251,7 +251,7 @@ var ndvi = NISimages.map(function(image) {
 var plotNDVI = ui.Chart.image.seriesByRegion(ndvi, geometry, ee.Reducer.median(), 
               'NDVI', 100, 'system:time_start') // band, scale, x-axis property
               .setChartType('LineChart').setOptions({
-                title: 'NDVI time series',
+                title: 'Median NDVI for Selected Geometry',
                 hAxis: {title: 'Date'},
                 vAxis: {title: 'NDVI'},
                 legend: {position: "none"},
@@ -263,6 +263,14 @@ var plotNDVI = ui.Chart.image.seriesByRegion(ndvi, geometry, ee.Reducer.median()
 print(plotNDVI);
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/ndvi_time_series.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/ndvi_time_series.PNG" alt="NDVI time series"></a>
+</figure>
+
+We can see how much NDVI has increased in 2021 relative to the earlier years. While this doesn't show us a lot of information now, as the AOP data set builds up in years to come, this may be a more interesting plot. 
+
+On your own, we encourage you to look at the charting functions, and modify if you wish. For example, try out a different reducer, repeat the plots for different parts of the site, and see if there are any areas in the site that you'd like to dig into in more detail.
 
 Footnotes
 
