@@ -29,7 +29,7 @@ After completing this activity, you will be able to:
 
 You will gain familiarity with:
  * User-defined GEE functions
- * The GEE charting functions `ui.Chart.image`
+ * The GEE charting functions (<a href="https://developers.google.com/earth-engine/guides/charts_image" target="_blank">ui.Chart.image</a>)
 
 ## Requirements
  * A gmail (@gmail.com) account
