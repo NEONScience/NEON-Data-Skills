@@ -85,7 +85,7 @@ NISimages.evaluate(function(NISimages) {
 })
 ```
 
-Next we can create a similar function for reading in the CHM dataset over all the years. The main difference between this function and the previous one is that it is set to display a single band image, and instead of hard-coding in the minimum and maximum values to display, we  dynamically determine them from the data itself, so it will scale appropriately. Note that we can use the `.filterMetadata` property to select only the CHM data from the DEM image collection, since CHM is stored in that dataset, along with the DTM and DSM. 
+Next we can create a similar function for reading in the CHM dataset over all the years. The main differences between this function and the previous one are that 1) it is set to display a single band image, and 2) instead of hard-coding in the minimum and maximum values to display, we dynamically determine them from the data itself, so it will scale appropriately. Note that we can use the `.filterMetadata` property to select only the CHM data from the DEM image collection, since the CHM is stored in that collection, along with the DTM and DSM. 
 
 ```javascript
 // Read in only the CHM Images (using .filterMetadata by Type)
@@ -152,7 +152,7 @@ Map.addLayer(CHMdiff_2021_2018, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF',
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018.png" alt="CHM difference map, 2021-2018"></a>
 </figure>
 
-You can see some broad differences, but there also appear to be artifacts. We can smooth out some of this noise by using a spatial filter.
+You can see some broad differences, but there also appear to be some noisy artifacts. We can smooth out some of this noise by using a spatial filter.
 
 ```
 // Smooth out the difference raster (filter out high-frequency patterns)
