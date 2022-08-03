@@ -243,6 +243,7 @@ print('Features with spectral signatures:', Features)
 
 Now that we've assembled the training and test data, and generated predictor data for all of the training data, we can train our random forest model to creat the `trainedClassifier` variable, and apply it to the reflectance-CHM composite data covering the airshed using `.classify(trainedClassifier)`. Generating the random forest model is pretty simple, once everything is set up!
 
+```javascript
 // Train a 100-tree random forest classifier based on spectral signatures from the training sample for each species 
 var trainedClassifier = ee.Classifier.smileRandomForest(100)
 .train({
@@ -253,6 +254,43 @@ var trainedClassifier = ee.Classifier.smileRandomForest(100)
 
 // Classify the reflectance/CHM image from the trained classifier
 var classified = CLBJ_SDR2017_airshed.classify(trainedClassifier);
+```
+
+Next we can assess the performance of this classificiation, by looking at some different metrics. The train accuracy should be very high, as it is testing the performance on the data used to generate the model - however, it is not an accurate representation of the actual accuracy. Instead, the test accuracy tends to be a little more reliable, as it is an independent assessment on the separate (test) data set.
+
+```javascript
+// Calulate a confusion matrix and overall accuracy for the training sample
+// Note that this overestimates the accuracy of the model since it does not consider the test sample
+var trainAccuracy = trainedClassifier.confusionMatrix().accuracy();
+print('Train Accuracy', trainAccuracy);
+
+// Test the classification accuracy (more reliable estimation of accuracy)
+// Extract spectral signatures from airshed reflectance image for test sample
+var test = CLBJ_SDR2017_airshed.sampleRegions({
+  collection: test,
+  properties: ['taxonIDnum'],
+  scale: 1,
+  tileScale: 16
+});
+```
+
+We can also look at some other accuracy metrics, including the Confusion Matrix, Kappa Coefficient, Producer's Accuracy, and User's Accuracy. 
+
+```javascript
+// Calculate different accuracy estimates
+var Test = test.classify(trainedClassifier);
+print('Confusion Matrix', Test.errorMatrix('taxonIDnum', 'classification'));
+print('Overall Accuracy', Test.errorMatrix('taxonIDnum', 'classification').accuracy());
+
+// Kappa Coefficient: evaluates how well a classification performs as compared to randomly assigning values
+print('Kappa Coefficient', Test.errorMatrix('taxonIDnum', 'classification').kappa());
+
+// Producer's Accuracy: frequency with which a real feature on the ground is correctly shown in the classified map (corresponds to error of omission)
+print('Producers Accuracy', Test.errorMatrix('taxonIDnum', 'classification').producersAccuracy());
+
+// User's Accuracy: frequency with which a feature in the classified map will actually be present on the ground (corresponds to error of commission)
+print('Users Accuracy', Test.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
+```
 
 ## Get Lesson Code
 
