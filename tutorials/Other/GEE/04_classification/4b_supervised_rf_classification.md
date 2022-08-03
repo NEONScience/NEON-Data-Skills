@@ -1,15 +1,15 @@
 ---
-syncID: 
-title: "Supervised Classification - Random Forest"
-description: "Classifying species using AOP and field data at CLBJ"
+syncID: b968a912e3ea4557b2a7185cd2340069
+title: "Random Forest Species Classification using AOP and TOS data in GEE"
+description: "Classifying species using AOP and observational field data at CLBJ"
 dateCreated: 2022-08-02
 authors: John Musinsky, Bridget Hass
 contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 1 hour
 packagesLibraries: 
-topics: lidar, hyperspectral, canopy height, remote-sensing
+topics: lidar, hyperspectral, canopy height, remote-sensing, woody vegetation
 languageTool: GEE
-dataProduct: DP3.30006.001, DP3.30015.001
+dataProduct: DP1.10098.001, DP3.30006.001, DP3.30015.001
 code1: 
 tutorialSeries: aop-gee
 urlTitle: aop-gee-random-forest-classification
