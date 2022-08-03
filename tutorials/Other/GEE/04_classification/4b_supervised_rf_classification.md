@@ -292,6 +292,32 @@ print('Producers Accuracy', Test.errorMatrix('taxonIDnum', 'classification').pro
 print('Users Accuracy', Test.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
 ```
 
+Lastly, we can write a function to display the image classification
+```
+// Function used to display training data and image classification
+function showTrainingData(){
+  var colours = ee.List(["yellow", "white", "green", "orange", "darkgreen", "cyan", "purple","lightgreen","blue","black"]);
+  var lc_type = ee.List(["CELA", "JUVI", "PRME","QUMA3","QUST","ULAL","ULCR","GRSS","WATR","SHADE"]);
+  var lc_label = ee.List([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+  var lc_points = ee.FeatureCollection(
+    lc_type.map(function(lc){
+      var colour = colours.get(lc_type.indexOf(lc));
+      return points.filterMetadata("taxonIDnum", "equals", lc_type.indexOf(lc))
+                  .map(function(point){
+                    return point.set('style', {color: colour, pointShape: "diamond", pointSize: 3, width: 2, fillColor: "00000000"});
+                  });
+        })).flatten();
+
+  Map.addLayer(classified, {min: 1, max: 10, palette: ["yellow","white", "green", "orange", "darkgreen", "cyan", "purple", "lightgreen", "blue", "black"]}, 'Classified image', false);
+  Map.addLayer(lc_points.style({styleProperty: "style"}), {}, 'All training sample points', false);
+  Map.centerObject(geo, 16)
+}
+
+// Display the training data and image classification using the showTrainingData function
+showTrainingData();
+```
+
 ## Get Lesson Code
 
 <a href="https://code.earthengine.google.com/318a84edf5bdc816d4eb05c9fc2092d4" target="_blank">AOP GEE Random Forest Classification</a>
