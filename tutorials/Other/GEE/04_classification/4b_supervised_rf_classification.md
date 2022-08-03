@@ -95,7 +95,7 @@ var CLBJ_CHM2017mask = CLBJ_CHM2017.updateMask(CLBJ_CHM2017.gte(0.0000));
 Map.addLayer(CLBJ_CHM2017mask, {min:0, max:33}, 'CLBJ CHM 2017',0);
 ```
 
-We also want to pull in the Surface Directional Reflectance (SDR) data. When we do this, we want to remove the water vapor bands. This code looks a little messy, but using the `.select` filter, we are pulling out all the "valid" bands. For more information on the water vapor bands, refer to the lesson ...
+We also want to pull in the Surface Directional Reflectance (SDR) data. When we do this, we want to keep only the valid bands. Water vapor absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm, and the atmospheric correction that converts radiance to reflectance subsequently results in spikes in reflectance in these two band windows. For more information on the water vapor bands, refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/plot-spec-sig-tiles-python" target="_blank">Plot Spectral Signatures in Python</a>. This code below looks a little long, but it just using the `.select` filter to keep only the valid bands, and remove bands with a lot of noise. Note we are including as much spectral information as possible for this tutorial, but you could select a smaller subset of bands and likely obtain similar results. When running the classification on a larger area, it may be a valuable trade-off to keep a smaller number of bands so the code runs faster (or deosn't run out of memory).  
 
 ```javascript
 // Display SDR image for CLBJ. First, filter the image collection by year, type and geographic location
