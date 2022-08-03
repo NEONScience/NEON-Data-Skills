@@ -175,6 +175,8 @@ var CLBJ_SHADE = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['SHADE']));
 Map.addLayer(CLBJ_SHADE, {color: 'black'}, 'Shade', 0);
 ```
 
+Next let's split the data for each species into training and test data, using an 80/20 split.
+
 ```javascript
 // Create training and test subsets for each class (i.e., species types) using stratified random sampling (80/20%)
 
@@ -218,6 +220,39 @@ var new_table = CLBJ_SHADE.randomColumn({seed: 1});
 var SHADEtraining = new_table.filter(ee.Filter.lt('random', 0.80));
 var SHADEtest = new_table.filter(ee.Filter.gte('random', 0.80));
 ```
+
+Now we can merge all the training data for each species together to create the `training` data (variable), and similarly merge the test data to create the full `test` data. From thsose data we'll create a `Features` variable containing the predictor data (from the spectral and CHM composite) for the training data.
+
+```javascript
+// Combine species-type reference points for training partition
+
+var training = (CELAtraining).merge(JUVItraining).merge(PRMEtraining).merge(QUMA3training).merge(QUSTtraining).merge(ULALtraining).merge(ULCRtraining).merge(GRSStraining).merge(WATRtraining).merge(SHADEtraining).aside(print, 'Training partition');
+
+var test = (CELAtest).merge(JUVItest).merge(PRMEtest).merge(QUMA3test).merge(QUSTtest).merge(ULALtest).merge(ULCRtest).merge(GRSStest).merge(WATRtest).merge(SHADEtest).aside(print, 'Test partition');
+var points = training.merge(test).aside(print,'All points');
+
+// Extract spectral signatures from airshed reflectance/CHM image for training sample based on species ID 
+var Features = CLBJ_SDR2017_airshed.sampleRegions({
+  collection: training,
+  properties: ['taxonIDnum'],
+  scale: 1,
+  tileScale:16
+});
+print('Features with spectral signatures:', Features)
+```
+
+Now that we've assembled the training and test data, and generated predictor data for all of the training data, we can train our random forest model to creat the `trainedClassifier` variable, and apply it to the reflectance-CHM composite data covering the airshed using `.classify(trainedClassifier)`. Generating the random forest model is pretty simple, once everything is set up!
+
+// Train a 100-tree random forest classifier based on spectral signatures from the training sample for each species 
+var trainedClassifier = ee.Classifier.smileRandomForest(100)
+.train({
+  features: Features,
+  classProperty: 'taxonIDnum',
+  inputProperties: CLBJ_SDR2017_airshed.bandNames()
+});
+
+// Classify the reflectance/CHM image from the trained classifier
+var classified = CLBJ_SDR2017_airshed.classify(trainedClassifier);
 
 ## Get Lesson Code
 
