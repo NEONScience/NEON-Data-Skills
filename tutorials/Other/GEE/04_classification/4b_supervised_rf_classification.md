@@ -318,6 +318,13 @@ function showTrainingData(){
 showTrainingData();
 ```
 
+Here is our final classified image:
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/classified_airshed_map.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/classified_airshed_map.png" alt="Classified airshet map"></a>
+</figure>
+
 ## Get Lesson Code
 
 <a href="https://code.earthengine.google.com/318a84edf5bdc816d4eb05c9fc2092d4" target="_blank">AOP GEE Random Forest Classification</a>
