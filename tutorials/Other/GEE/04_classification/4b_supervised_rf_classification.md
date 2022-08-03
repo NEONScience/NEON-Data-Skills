@@ -150,6 +150,75 @@ Map.addLayer(CLBJ_Airshed.style({width: 3, color: "white", fillColor: "#00000000
 print(CLBJ_veg, 'All woody plant samples')
 ```
 
+This next chunk of code pulls out the variables for each species (by their taxon ID), and adds a layer for each of the species training data variables.
+
+```javascript
+var CLBJ_QUMA3 = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['QUMA3']))
+Map.addLayer(CLBJ_QUMA3, {color: 'orange'}, 'Blackjack oak', 0);
+
+var CLBJ_QUST = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['QUST']))
+Map.addLayer(CLBJ_QUST, {color: 'darkgreen'}, 'Post oak', 0);
+
+var CLBJ_ULAL = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['ULAL']))
+Map.addLayer(CLBJ_ULAL, {color: 'cyan'}, 'Winged elm', 0);
+
+var CLBJ_ULCR = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['ULCR']))
+Map.addLayer(CLBJ_ULCR, {color: 'purple'}, 'Cedar elm', 0);
+
+var CLBJ_GRSS = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['GRSS']))
+Map.addLayer(CLBJ_GRSS, {color: 'lightgreen'}, 'Grassland', 0);
+
+var CLBJ_WATR = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['WATR']))
+Map.addLayer(CLBJ_WATR, {color: 'blue'}, 'Water', 0);
+
+var CLBJ_SHADE = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['SHADE']));
+Map.addLayer(CLBJ_SHADE, {color: 'black'}, 'Shade', 0);
+```
+
+```javascript
+// Create training and test subsets for each class (i.e., species types) using stratified random sampling (80/20%)
+
+var new_table = CLBJ_CELA.randomColumn({seed: 1});
+var CELAtraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var CELAtest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_JUVI.randomColumn({seed: 1});
+var JUVItraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var JUVItest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_PRME.randomColumn({seed: 1});
+var PRMEtraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var PRMEtest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_QUMA3.randomColumn({seed: 1});
+var QUMA3training = new_table.filter(ee.Filter.lt('random', 0.80));
+var QUMA3test = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_QUST.randomColumn({seed: 1});
+var QUSTtraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var QUSTtest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_ULAL.randomColumn({seed: 1});
+var ULALtraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var ULALtest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_ULCR.randomColumn({seed: 1});
+var ULCRtraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var ULCRtest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_GRSS.randomColumn({seed: 1});
+var GRSStraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var GRSStest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_WATR.randomColumn({seed: 1});
+var WATRtraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var WATRtest = new_table.filter(ee.Filter.gte('random', 0.80));
+
+var new_table = CLBJ_SHADE.randomColumn({seed: 1});
+var SHADEtraining = new_table.filter(ee.Filter.lt('random', 0.80));
+var SHADEtest = new_table.filter(ee.Filter.gte('random', 0.80));
+```
+
 ## Get Lesson Code
 
 <a href="https://code.earthengine.google.com/318a84edf5bdc816d4eb05c9fc2092d4" target="_blank">AOP GEE Random Forest Classification</a>
