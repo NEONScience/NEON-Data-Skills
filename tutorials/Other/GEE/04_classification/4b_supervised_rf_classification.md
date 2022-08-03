@@ -16,7 +16,7 @@ urlTitle: aop-gee-random-forest-classification
 
 ---
 
-Google Earth Engine has a number of built in machine learning tools that are designed to work with multi-band raster data. This simplifies more complex analyses like classification. In this example, we will show an example of using TOS (Terrestrial Observational Data) woody vegetation data, which includes information about the plant species in the terrestrial sampling plots, to train a random forest machine learning model, over a larger area, using the AOP reflectance and ecosystem structure (CHM) data. We will demonstrate this at the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">CLBJ</a>) (Lyndon B. Johnson National Grassland in north-central Texas).
+Google Earth Engine has a number of built in machine learning tools that are designed to work with multi-band raster data. This simplifies more complex analyses like classification. In this example, we will show an example of using TOS (Terrestrial Observational Data) woody vegetation data, which includes information about the plant species in the terrestrial sampling plots, to train a random forest machine learning model over a larger area, using the AOP reflectance and ecosystem structure (CHM) data. We will demonstrate this at the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">CLBJ</a>) (Lyndon B. Johnson National Grassland in north-central Texas).
 
 <div id="ds-objectives" markdown="1">
 
@@ -42,7 +42,7 @@ The links below to the earth engine guides may assist you as you work through th
 
 </div>
 
-## Machine Learning Workflow
+## Random Forest Machine Learning Workflow
 
 In this tutorial, we will take you through the following steps to classify species at the NEON site CLBJ. Note that these steps closely align with the more general supervised classification steps, described in the <a href="https://developers.google.com/earth-engine/guides/classification" target="_blank"> Earth Engine Classification Guide </a>.
 
@@ -52,6 +52,8 @@ Workflow:
 3. Create reference (training/test) data for plant species and land cover types based on NEON vegetation structure data
 4. Fit a random forest model based on spectral/CHM composite to map the distribution of plant species at CLBJ
 5. Evaluate the model accuracy 
+
+## Load in and Display the AOP and TOS Data
 
 Let's get started. In this first chunk of code, we'll specify the CLBJ location, read in the pre-processed woody vegetation data, as well as the TOS and Airshed boundaries.
 
@@ -150,6 +152,8 @@ Map.addLayer(CLBJ_Airshed.style({width: 3, color: "white", fillColor: "#00000000
 print(CLBJ_veg, 'All woody plant samples')
 ```
 
+## Create Training Data Variables
+
 This next chunk of code pulls out the variables for each species (by their taxon ID), and adds a layer for each of the species training data variables.
 
 ```javascript
@@ -174,6 +178,7 @@ Map.addLayer(CLBJ_WATR, {color: 'blue'}, 'Water', 0);
 var CLBJ_SHADE = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['SHADE']));
 Map.addLayer(CLBJ_SHADE, {color: 'black'}, 'Shade', 0);
 ```
+## Train/Test Split
 
 Next let's split the data for each species into training and test data, using an 80/20 split.
 
@@ -241,6 +246,8 @@ var Features = CLBJ_SDR2017_airshed.sampleRegions({
 print('Features with spectral signatures:', Features)
 ```
 
+## Generate and Apply the Random Forest Model
+
 Now that we've assembled the training and test data, and generated predictor data for all of the training data, we can train our random forest model to creat the `trainedClassifier` variable, and apply it to the reflectance-CHM composite data covering the airshed using `.classify(trainedClassifier)`. Generating the random forest model is pretty simple, once everything is set up!
 
 ```javascript
@@ -255,6 +262,8 @@ var trainedClassifier = ee.Classifier.smileRandomForest(100)
 // Classify the reflectance/CHM image from the trained classifier
 var classified = CLBJ_SDR2017_airshed.classify(trainedClassifier);
 ```
+
+## Assess Model Performance
 
 Next we can assess the performance of this classificiation, by looking at some different metrics. The train accuracy should be very high, as it is testing the performance on the data used to generate the model - however, it is not an accurate representation of the actual accuracy. Instead, the test accuracy tends to be a little more reliable, as it is an independent assessment on the separate (test) data set.
 
@@ -291,6 +300,8 @@ print('Producers Accuracy', Test.errorMatrix('taxonIDnum', 'classification').pro
 // User's Accuracy: frequency with which a feature in the classified map will actually be present on the ground (corresponds to error of commission)
 print('Users Accuracy', Test.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
 ```
+
+## Display Model Results
 
 Lastly, we can write a function to display the image classification
 ```
