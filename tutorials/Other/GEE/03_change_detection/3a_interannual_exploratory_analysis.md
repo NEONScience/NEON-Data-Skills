@@ -247,7 +247,7 @@ print(hist3);
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2018.png" alt="CHM difference histogram 2021-2018"></a>
 </figure>
 
-Let's take a minute to understand what's going on here. In each case, we subtracted the earlier year from the later year. So from 2019 to 2021, it looks like the vegetation grew on average by ~0.6m, but from 2018 to 2019 it shrunk by the same amount. This is because in 2021 there was a lower vertical cutoff, so shrubs of at least 0.67m were resolved, where before anything below 2m was obscured. These low shrubs are likely the dominant source of the change we're seeing. We can see the same pattern, but in reverse between 2018 and 2019. The difference histogram from 2021 to 2018 more accurately represents the change, which is centered around 0, and the map we displayed shows local changes in certain areas, related to actual vegetation growth and ecological drivers. 2021 was a particularly wet year, and AOP's flight was in optimal peak greenness, as you can see when comparing the SDR imagery to earlier years.
+Let's take a minute to understand what's going on here. In each case, we subtracted the earlier year from the later year. So from 2019 to 2021, it looks like the vegetation grew on average by ~0.6m, but from 2018 to 2019 it shrunk by the same amount. This is because in 2021 there was a lower vertical cutoff, so shrubs of at least 0.67m were resolved, where before anything below 2m was obscured. These low shrubs are likely the dominant source of the change we're seeing. We can see the same pattern, but in reverse between 2018 and 2019. The difference histogram from 2021 to 2018 more accurately represents the change, which is centered around 0, and the map we displayed shows local changes in certain areas, related to actual vegetation growth and ecological drivers. Note that 2021 was a particularly wet year, and AOP's flight was in optimal peak greenness, as you can see when comparing the SDR imagery to earlier years.
 
 ## NDVI Time Series
 
@@ -290,7 +290,7 @@ print(plotNDVI);
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/ndvi_time_series.PNG" alt="NDVI time series"></a>
 </figure>
 
-We can see how much NDVI has increased in 2021 relative to the earlier years. While this doesn't show us a lot of information now, as the AOP data set builds up in years to come, this may be a more interesting plot. 
+We can see how much NDVI has increased in 2021 relative to the earlier years, which makes sense when we look at the reflectance RGB composites - it is much greener in 2021! While this line plot doesn't show us a lot of information now, as the AOP data set builds up in years to come, this may become a more interesting figure. 
 
 On your own, we encourage you to dig into the code from this tutorial and modify according to your scientific interests. Think of some questions you have about this dataset, and modify these functions or try writing your own function to answer your question. For example, try out a different reducer, repeat the plots for different areas of the site, and see if there are any other datasets that you could bring in to help you with your analysis. You can also pull in satellite data and see how the NEON data compares. This is just the starting point!
 
