@@ -55,6 +55,8 @@ Workflow:
 
 Let's get started. In this first chunk of code, we'll specify the CLBJ location, read in the pre-processed woody vegetation data, as well as the TOS and Airshed boundaries.
 
+The plant species data, contained in the CLBJ_veg_2017_filtered feature collection, was derived from the NEON woody plant vegetation structure data product (DP1.10098.001). Land cover classes (grassland, water, shade) were subsequently added to the Feature Collection from visual inspection of the NEON spectrometer reflectance data product (DP3.30006.001). 
+
 ```javascript
 // Specify CLBJ location
 var geo = ee.Geometry.Point([-97.5706464, 33.4045729])
@@ -135,7 +137,7 @@ var CLBJ_SDR2017_airshed = composite.clip(CLBJ_Airshed) // comment if uncommenti
 Map.addLayer(CLBJ_SDR2017_airshed, {bands:['band053', 'band035', 'band019'], min:.5, max:10}, 'CLBJ-Airshed SDR/CHM 2017');
 ```
 
-The next chunk of code just displays the TOS and Airshed polygon layers.
+The next chunk of code just displays the TOS and Airshed polygon layers, and prints some details about the NEON vegetation structure data to the Console.
 
 ```
 // Display the TOS boundary polygon layer
@@ -143,8 +145,10 @@ Map.addLayer(CLBJ_TOS.style({width: 3, color: "blue", fillColor: "#00000000"}),{
 
 // Display the Airshed polygon layer
 Map.addLayer(CLBJ_Airshed.style({width: 3, color: "white", fillColor: "#00000000"}),{},"CLBJ Airshed", 0)
-```
 
+// Print details about the NEON vegetation structure Feature Collection to the Console
+print(CLBJ_veg, 'All woody plant samples')
+```
 
 ## Get Lesson Code
 
