@@ -123,6 +123,27 @@ var CLBJ_SDR2017mask = CLBJ_SDR2017.updateMask(CLBJ_SDR2017.gte(0.0000)).select(
 Map.addLayer(CLBJ_SDR2017mask, {min:.5, max:10}, 'CLBJ SDR 2017', 0);
 ```
 
+Next we can combine the SDR bands (391 after we removed the water vapor bands) and the CHM band to create a composite multi-band raster that will become our predictor variable (what we use to generate the random forest classification model). We can then crop this to the tower airshed boundary so we can start with a smaller area. This will speed up the process considerably. Optionally, you could classify the full airshed - this code is commented out, if you want to try this instead.
+
+```javascript
+//Combine the SDR (391 bands) and CHM (1 band) for classification
+var composite = CLBJ_SDR2017.addBands(CLBJ_CHM2017mask).aside(print, 'Composite SDR and CHM image');
+
+//Crop the reflectance image/CHM composite to the NEON tower airshed boundary and add to the map
+var CLBJ_SDR2017_airshed = composite.clip(CLBJ_Airshed) // comment if uncommenting next line of code
+//var CLBJ_SDR2017_airshed = composite // uncomment to classify entire SDR scene
+Map.addLayer(CLBJ_SDR2017_airshed, {bands:['band053', 'band035', 'band019'], min:.5, max:10}, 'CLBJ-Airshed SDR/CHM 2017');
+```
+
+The next chunk of code just displays the TOS and Airshed polygon layers.
+
+```
+// Display the TOS boundary polygon layer
+Map.addLayer(CLBJ_TOS.style({width: 3, color: "blue", fillColor: "#00000000"}),{},"CLBJ TOS", 0)
+
+// Display the Airshed polygon layer
+Map.addLayer(CLBJ_Airshed.style({width: 3, color: "white", fillColor: "#00000000"}),{},"CLBJ Airshed", 0)
+```
 
 
 ## Get Lesson Code
