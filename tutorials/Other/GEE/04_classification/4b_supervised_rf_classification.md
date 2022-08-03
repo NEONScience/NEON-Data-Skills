@@ -22,9 +22,11 @@ Google Earth Engine has a number of built in machine learning tools that are des
 
 ## Objectives
 After completing this activity, you will be able to:
- * Integrate NEON airborne (AOP) and field (TOS) datasets
- * Run the Random Forest Classifier in Google Earth Engine
+ * Integrate NEON airborne (AOP) and field (TOS) datasets to run supervised classification
  * Understand pre-processing steps required for supervised learning classification
+ * Split data into train and test data sets
+ * Run the Random Forest machine learning model in Google Earth Engine
+ * Assess model performance and learn what the different accuracy metrics can tell you
 
 ## Requirements
  * A gmail (@gmail.com) account
