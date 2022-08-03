@@ -333,7 +333,7 @@ Here is our final classified image:
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/classified_airshed_map.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/classified_airshed_map.png" alt="Classified airshed map"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/classified_airshed_map.png" alt="Classified airshed map"></a>
 </figure>
 
 ## Get Lesson Code
