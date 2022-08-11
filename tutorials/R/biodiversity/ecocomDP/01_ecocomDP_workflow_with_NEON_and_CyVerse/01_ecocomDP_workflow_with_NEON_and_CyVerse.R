@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA----------------------------------------------------------------------------
+## ----load libraries, eval=F, comment=NA-------------------------
 # clean out workspace
 
 #rm(list = ls()) # OPTIONAL - clear out your environment
@@ -12,19 +12,19 @@ library(ecocomDP)
 
 
 
-## ----create-Renviron, eval=F, comment=NA---------------------------------------------------------------------------
+## ----create-Renviron, eval=F, comment=NA------------------------
 usethis::edit_r_environ()
 
 
-## ----set-token, eval=F, comment=NA---------------------------------------------------------------------------------
+## ----set-token, eval=F, comment=NA------------------------------
 NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 
-## ----read-Renviron, eval=F, comment=NA-----------------------------------------------------------------------------
+## ----read-Renviron, eval=F, comment=NA--------------------------
 readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 
 
-## ----download-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------------
+## ----download-data, message=FALSE, warning=FALSE, results='hide'----
 # Download NEON aquatic macroinvertebrate data from the NEON data portal API
 # Should take < 1 minute
 all_tabs_inv <- neonUtilities::loadByProduct(
@@ -37,7 +37,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 
 
 
-## ----download-all-data, eval=F, comment=NA-------------------------------------------------------------------------
+## ----download-all-data, eval=F, comment=NA----------------------
 # this download as of Aug 2022 is ~100MB
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = "DP1.20120.001", # the NEON aquatic macroinvert data product
@@ -45,7 +45,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
   check.size = T) # you should probably check the filesize before proceeding
 
 
-## ----download-overview, message=FALSE, warning=FALSE---------------------------------------------------------------
+## ----download-overview, message=FALSE, warning=FALSE------------
 # what tables do you get with macroinvertebrate 
 # data product
 names(all_tabs_inv)
@@ -70,7 +70,7 @@ View(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing, message=FALSE, warning=FALSE----------------------------------------------------------
+## ----munging-and-organizing, message=FALSE, warning=FALSE-------
 
 # It is good to check for duplicate records. This had occurred in the past in 
 # data published in the inv_fieldData table in 2021. Those duplicates were 
@@ -279,14 +279,12 @@ table_observation %>%
   geom_col()
 
 
-## ----make-wide, message=FALSE, warning=FALSE-----------------------------------------------------------------------
+## ----make-wide, message=FALSE, warning=FALSE--------------------
 # select only site by species density info and remove duplicate records
 table_sample_by_taxon_density_long <- table_observation %>%
   select(sampleID, acceptedTaxonID, inv_dens) %>%
   distinct() %>%
   filter(!is.na(inv_dens))
-
-
 
 
 # pivot to wide format, sum multiple counts per sampleID
@@ -304,133 +302,184 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----download-macroinvert, message=FALSE, warning=FALSE, results='hide'--------------------------------------------
+## ----search-macroinvert, message=FALSE, warning=FALSE, results='hide'----
+# clean out workspace from previous section
+
+#rm(list = ls()) # OPTIONAL - clear out your environment
+#gc()            # Uncomment these lines if desired
+
+# search for data sets with periphyton or algae
+# regex works!
+search_result <- ecocomDP::search_data(text = "periphyt|algae")
+View(search_result)
 
 # search for invertebrate data products
-my_search_result <- ecocomDP::search_data(text = "invertebrate")
-View(my_search_result)
+search_result <- search_data(text = "invertebrate")
+View(search_result)
 
-# pull data for the NEON aquatic "Macroinvertebrate
-# collection" from ARIK collected during 2017 and 2018
-my_data <- ecocomDP::read_data(
+
+## ----download-neon-macroinvert, message=FALSE, warning=FALSE, results='hide'----
+# pull NEON aquatic "Macroinvertebrate collection" from the same sites
+# and dates as used in the example above.
+data_neon_inv <- read_data(
   id = "neon.ecocomdp.20120.001.001",
-  site = "ARIK",
-  startdate = "2017-01",
-  enddate = "2018-12",
+  site = c("COMO","HOPB"), # NEON sites
+  startdate = "2017-01", # start year-month
+  enddate = "2019-12", # end year-month
   token = Sys.getenv("NEON_TOKEN"), #Uncomment to use your token
   check.size = FALSE)
 
 
 
-## ----view-ecocomDP-str---------------------------------------------------------------------------------------------
+## ----view-neon-ecocomDP-str-------------------------------------
 
 # examine the structure of the data object that is returned
-my_data %>% names()
+data_neon_inv %>% names()
 
 # the data package id
-my_data$id
+data_neon_inv$id
 
 # short list of package summary data
-my_data$metadata$data_package_info
+data_neon_inv$metadata$data_package_info
 
 # validation issues? None if returns an empty list
-my_data$validation_issues
+data_neon_inv$validation_issues
 
 # examine the tables
-my_data$tables %>% names()
-my_data$tables$taxon %>% head()
-my_data$tables$observation %>% head()
+data_neon_inv$tables %>% names()
+data_neon_inv$tables$taxon %>% head()
+data_neon_inv$tables$observation %>% head()
 
 
-
-## ----macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from the Arikaree River site."----
+## ----macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from select NEON sites."----
 
 # Explore the spatial and temporal coverage 
 # of the dataset
-my_data %>% ecocomDP::plot_sample_space_time()
+data_neon_inv %>% plot_sample_space_time()
+
+# As noted above, this plot shows replicate "event_id's" can occur
+# at the same time at the same site, indicating these are replicate
+# observations or samples. 
 
 
 
-## ----macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from the Arikaree River site."----
+## ----macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from select NEON sites."----
 
 # Explore the taxonomic resolution in the dataset. 
 # What is the most common taxonomic resolution (rank) 
 # for macroinvertebrate identifications in this dataset?
-my_data %>% ecocomDP::plot_taxa_rank()
+data_neon_inv %>% plot_taxa_rank()
 
 
 
-## ----search-ecocomDP-----------------------------------------------------------------------------------------------
+## ----flatten-neon-ecocomDP, message=FALSE, warning=FALSE--------
+# combine all core and ancillary tables into one flat table and explore
+# NOTE: we add the id so we can stack with other datasets
+flat_neon_inv <- data_neon_inv %>% 
+  flatten_data() %>%
+  mutate(id = data_neon_inv$id) 
+View(flat_neon_inv)
 
-# search for data sets with periphyton or algae
-# regex works!
-my_search_result <- ecocomDP::search_data(text = "periphyt|algae")
-View(my_search_result)
-
-
-
-## ----download-algae-data, message=FALSE, warning=FALSE, results='hide'---------------------------------------------
-
-# pull data for the NEON "Periphyton, seston, and phytoplankton collection" 
-# data product (expect the download to take 1-2 mins)
-my_data <- ecocomDP::read_data(
-  id = "neon.ecocomdp.20166.001.001", 
-  site = c("ARIK","COMO"),
-  startdate = "2017-01",
-  enddate = "2020-12",
-  # token = NEON_TOKEN, #Uncomment to use your token
-  check.size = FALSE)
+# note that event_id maps to a sample ID in the dataset
+# we can tell because multiple event_id's can share a site and date
 
 
-
-## ----explore-algae-data-structure----------------------------------------------------------------------------------
-# Explore the structure of the returned data object
-my_data %>% names()
-my_data$id
-my_data$metadata$data_package_info
-my_data$validation_issues
-my_data$tables %>% names()
-
-my_data$tables$location
-my_data$tables$taxon %>% head()
-my_data$tables$observation %>% head()
+## ----macroinvert-datavis-densities, message=FALSE, warning=FALSE, fig.cap="Densities of benthic macroinvertebrates from select NEON sites."----
+# compare taxa and abundances across sites
+flat_neon_inv %>% 
+  plot_taxa_abund(
+    trans = "log10",
+    min_relative_abundance = 0.01,
+    color_var = "samplerType")
 
 
 
-## ----flattening-and-cleaning, message=FALSE, warning=FALSE---------------------------------------------------------
+## ----wide-neon-ecocomDP, message=FALSE, warning=FALSE, fig.cap="NMDS of benthic macroinvertebrates from select NEON sites."----
+# make wide, event_id by taxon_id
+wide_neon_inv <- data_neon_inv$tables$observation %>%
+  pivot_wider(
+    id_cols = event_id,
+    names_from = taxon_id,
+    values_from = value,
+    values_fill = 0) %>%
+  tibble::column_to_rownames("event_id")
 
-# flatten the ecocomDP data tables into one flat table
-my_data_flat <- my_data %>% ecocomDP::flatten_data()
-
-# This data product has algal densities reported for both
-# lakes and streams, so densities could be standardized
-# either to volume collected or area sampled. 
-
-# Verify that only benthic algae standardized to area 
-# are returned in this data pull:
-my_data_flat$unit %>%
-    unique()
-
-
-
-# filter the data to only records standardized to area
-# sampled
-my_data_benthic <- my_data_flat %>%
-  dplyr::filter(unit == "cells/cm2")
+# make sure now rows or columns sum to 0
+rowSums(wide_neon_inv) %>% min()
+colSums(wide_neon_inv) %>% min()  
 
 
-## ----algae-data-vis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space in time represented in the downloaded data set for algae."----
+# load vegan library for ordination analysis
+library(vegan)
 
-# Note that you can send flattened data 
-# to the ecocomDP plotting functions
-my_data_benthic %>% ecocomDP::plot_sample_space_time()
+# create ordination using metaMDS
+my_nmds_result <- wide_neon_inv %>% metaMDS()
+
+# ordination stress
+my_nmds_result$stress
+
+# plot ordination
+ordiplot(my_nmds_result)
 
 
 
-## ----algae-data-vis-richness-time, message=FALSE, warning=FALSE, fig.cap="Benthic algal richness by year at ARIK and COMO"----
+## ----download-ntl-macroinvert, message=FALSE, warning=FALSE-----
+# pull data for NTL aquatic macroinvertebrates to compate
+data_ntl_inv <- read_data(id = "edi.290.2")
 
-# Note that you can also send flattened data 
-# to the ecocomDP plotting functions
-my_data_benthic %>% ecocomDP::plot_taxa_diversity(time_window_size = "year")
+# flatten the dataset
+flat_ntl_inv <- data_ntl_inv %>%
+  flatten_data() %>%
+  mutate(
+    package_id = data_ntl_inv$id,  # add id so multiple datasets can be stacked
+    taxon_rank = tolower(taxon_rank))  # fix case for plotting
+
+View(flat_ntl_inv)
+
+
+
+## ----stack-and-compare-ranks, message=FALSE, warning=FALSE, fig.cap="Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"----
+# stack two datasets
+stacked_inv <- bind_rows(
+  flat_neon_inv,
+  flat_ntl_inv) %>% 
+  as.data.frame()
+
+# compare taxon ranks used in the two data sets
+stacked_inv %>% 
+  plot_taxa_rank(
+    facet_var = "package_id",
+    facet_scales = "free_x")
+
+
+
+## ----stacked-data-spatial-and-temporal-replication, message=FALSE, warning=FALSE, fig.cap="Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"----
+# compare spatial and temporal replication
+# updates are planned for this plotting function to allow 
+# additional aesthetic mappings and faceting
+stacked_inv %>%
+  plot_sample_space_time()
+
+
+## ----stacked-data-map, message=FALSE, warning=FALSE, fig.cap="Map of NEON and NTL LTER macroinvertebrate datasets"----
+# plot on a US Map
+stacked_inv %>% 
+  plot_sites()
+
+
+## ----stacked-data-richness, message=FALSE, warning=FALSE, fig.cap="Richness over time of NEON and NTL LTER macroinvertebrate datasets"----
+# explore richness through time
+stacked_inv %>% 
+  plot_taxa_diversity(time_window_size = "year")
+
+
+
+## ----stacked-abundances, message=FALSE, warning=FALSE, fig.cap="Abundances observed in NEON and NTL LTER macroinvertebrate datasets"----
+# compare taxa and abundances
+stacked_inv %>% 
+  plot_taxa_abund(
+    trans = "log10",
+    min_relative_abundance = 0.01,
+    facet_var = "package_id")
 
 
