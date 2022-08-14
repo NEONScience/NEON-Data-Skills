@@ -41,15 +41,16 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 Let's get started! In this tutorial we generate basic GEE (JavaScript) code to visualize hyperspectral data. We will work through the following steps:
 
-1) Pull in an AOP hyperspectral data set
+1) Pull in an AOP hyperspectral (SDR) image
 2) Set the visualization parameters
 3) Mask the no data values
-4) Add the AOP layer to the GEE Map
-5) Center on the region of interest
+4) Add the AOP SDR layer to the GEE Map
+5) Center on the region of interest and set zoom level
 
 We encourage you to follow along with this code chunks in this exercise in your code editor. To run the cells, you can click the **Run** button at the top of the code editor. Note that until you run the last two steps (adding the data layer to the map), you will not see the AOP data show up in the Interactive Map.
 
-1) Read in the SRER 2018 SDR image, using `ee.Image`. You can pull in a single image if you know the path and name of the image (as opposed to filtering down from an image collection). We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE tutorial</a>, to see how to pull in spectral data from a different site or date.
+### Read in the SRER 2018 SDR image
+Using `ee.Image`, you can pull in a single image if you know the path and name of the image (as opposed to filtering down to the individual images from an image collection). If you don't know this path, you can pull in the image collection and look at the Asset Details > Images tab. We will assign this image to a variable (**var**) called `SRER_SDR2018`. You can refer to the tables in the Data Access and Availability section, in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP data in GEE tutorial</a>, to see how to pull in spectral data from a different site or date.
 
 ```javascript
 var SRER_SDR2018 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2018");
@@ -78,7 +79,8 @@ Another way to learn more about this asset is to left-click on the blue `project
 
 Click `Esc` to return to the code editor. Note that you can run the code either way, with the variable explicitly specified in the code editor, or imported as a variable, but we encourage you to leave the variable written out in the code, as this way is more reproducible.
 
-2) Set the visualization parameters - this specifies the band combination that is displayed, and other display options. For more detailed information, refer to the GEE documentation on <a href="https://developers.google.com/earth-engine/guides/image_visualization" target="_blank">image visualization</a>.
+### Set the visualization parameters
+The visualization parameters specifies the band combination that is displayed, and other display options, such as the minimum and maximum values for the histogram stretch. For more detailed information, refer to the GEE documentation on <a href="https://developers.google.com/earth-engine/guides/image_visualization" target="_blank">image visualization</a>.
 
 To set the visualization parameters, we will create a new variable (called `visParams`). This variable is applied to the layer and determines what is displayed. In this we are setting the RGB bands to display - for this exercise we are setting them to red, green, and blue portions of the spectrum in order to show a True Color Image. You can change these bands to show a False Color Image or any band combination of interest. You can refer to NEON's lessons on <a href="https://www.neonscience.org/resources/learning-hub/tutorials/dc-multiband-rasters-r" target="_blank">Multi-Band Rasters in R</a> or <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-hsi-aop-functions-tiles-py" target="_blank">RGB and False Color Images in Python</a> for more background on band stacking.
 
@@ -86,21 +88,23 @@ To set the visualization parameters, we will create a new variable (called `visP
 var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band019']};
 ```
 
-3) Mask layers to only show values > 0
+### Mask the no data values
 
-This step is optional, but recommended. AOP sets No Data Values to -9999, so if you don't mask these out you will see any missing data as black in the image (this will often result in a black boundary surrounding the site, but if any data is missing inside the site that will show up as black as well). To show only the data that was collected, we recommend masking these values using the `updateMask` function, as shown below:
+This step is optional, but recommended. AOP sets No Data Values to -9999, so if you don't mask these out you will see any missing data as black in the image (this will often result in a black boundary surrounding the site, but if any data is missing inside the site that will show up as black as well). To show only the data that was collected, we recommend masking these values using the `updateMask` function, keeping only values greater than or equal to zero, as shown below:
 
 ```javascript
 var SRER_SDR2018mask = SRER_SDR2018.updateMask(SRER_SDR2021.gte(0.0000));
 ```
 
-4) Now that we've defined the data, the visualization parameters, and the mask, we can add this Layer to the Map! To do this, we use the `Map.addLayer` function with our masked data variable, `SRER_SDRmask`, using the `visParams` and assign this layer a label, which will show up in the Map.
+### Add SDR layer to the map
+Now that we've defined the data, the visualization parameters, and the mask, we can add the reflectance layer to the Map! To do this, we use the `Map.addLayer` function with our masked data variable, `SRER_SDRmask`, using the `visParams` and assign this layer a label, which will show up in the Map.
 
 ```javascript
 Map.addLayer(SRER_SDR2018mask, visParams, 'SRER 2018');
 ```
 
-5) Center the map on our area of interest. GEE by default does not know where we are interested in looking. We can center the map over our new data layer by specifiying `Map.setCenter` with the longitude, latitude, and zoom level (for this site, zoom of 11 works well to show the full site, but you can try other values to see how the image size changes).
+### Center the map on our area of interest and set zoom level
+GEE by default does not know where we are interested in looking. We can center the map over our new data layer by specifiying `Map.setCenter` with the longitude, latitude, and zoom level (for this site, zoom of 11 works well to show the full site, but you can try other values to see how the image size changes).
 
 ```javascript
 Map.setCenter(-110.83549, 31.91068, 11);
