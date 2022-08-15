@@ -109,10 +109,7 @@ var CLBJ_SDR2017 = ee.ImageCollection('projects/neon/DP3-30006-001_SDR')
 
 // Then select all bands except water absorption bands (band195-band205 and band287-band310), as well as the last 10 bands, which also tend to be noisy
 var bandNames = CLBJ_SDR2017.bandNames()
-var bandsToRemove = ['band195','band196','band197','band198','band199','band200','band201','band202','band203','band204','band205',
-                    'band287','band288','band289','band290','band291','band292','band293','band294','band295','band296','band297',
-                    'band298','band299','band300','band301','band302','band303','band304','band305','band306','band307','band308',
-                    'band309','band310','band416','band417','band418','band419','band420','band421','band422','band423','band424','band425']
+var bandsToRemove = ['band195','band196','band197','band198','band199','band200','band201','band202','band203','band204','band205','band287','band288','band289','band290','band291','band292','band293','band294','band295','band296','band297','band298','band299','band300','band301','band302','band303','band304','band305','band306','band307','band308','band309','band310','band416','band417','band418','band419','band420','band421','band422','band423','band424','band425']
 var bandsToKeep = bandNames.removeAll(bandsToRemove)
 var CLBJ_SDR2017subset = CLBJ_SDR2017.select(bandsToKeep)
 
