@@ -16,7 +16,7 @@ urlTitle: aop-gee-random-forest-classification
 
 ---
 
-Google Earth Engine has a number of built in machine learning tools that are designed to work with multi-band raster data. This simplifies more complex analyses like classification (eg. classifying land types or species). In this example, we demonstrate species classification using a random forest machine learning model, using NEON AOP reflectance and ecosystem structure (CHM) data, and TOS (Terrestrial Observation System) woody vegetation data to train the model. For this example, we'll use airshed boundary of the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">CLBJ</a>) (Lyndon B. Johnson National Grassland in north-central Texas).
+Google Earth Engine has a number of built in machine learning tools that are designed to work with multi-band raster data. This simplifies more complex analyses like classification (eg. classifying land types or species). In this example, we demonstrate species classification using a random forest machine learning model, using NEON AOP reflectance and ecosystem structure (CHM) data, and TOS (Terrestrial Observation System) woody vegetation data to train the model. For this example, we'll use airshed boundary of the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">CLBJ</a> (Lyndon B. Johnson National Grassland in north-central Texas).
 
 <div id="ds-objectives" markdown="1">
 
@@ -148,6 +148,13 @@ Map.addLayer(CLBJ_Airshed.style({width: 3, color: "white", fillColor: "#00000000
 // Print details about the NEON vegetation structure Feature Collection to the Console
 print(CLBJ_veg, 'All woody plant samples')
 ```
+
+If you run all the code so far, you should be able to see the following layers in the map. Expand the variables printed to the console to make sure the # of bands are correct, and the "bad" (water vapor / noisy) bands are removed.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/added_layers.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/added_layers.png" alt="Classified airshed map"></a>
+</figure>
 
 ## Create Training Data Variables
 
