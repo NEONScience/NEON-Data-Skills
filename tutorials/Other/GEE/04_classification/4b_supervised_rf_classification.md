@@ -158,7 +158,8 @@ If you run all the code so far, you should be able to see the following layers i
 
 ## Create Training Data Variables
 
-This next chunk of code pulls out the variables for each species (by their taxon ID), and adds a layer for each of the species training data variables.
+Now that we've added the relevant AOP data, let's start preparing the training data, which we pulled in at the beginning of the script to the variable `CLBJ_veg`.
+This next chunk of code pulls out each species into separate variables (by their taxon ID), and adds a layer to the Map for each of these variables.
 
 ```javascript
 var CLBJ_QUMA3 = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['QUMA3']))
@@ -184,7 +185,7 @@ Map.addLayer(CLBJ_SHADE, {color: 'black'}, 'Shade', 0);
 ```
 ## Train/Test Split
 
-Next let's split the data for each species into training and test data, using an 80/20 split.
+Once we have the training data for each species, we can split the data for each species into training and test data, using an 80/20 split. The training data will be used later on to train the random forest model, and the test data is used to test the accuracy of the model results on an independent data set.
 
 ```javascript
 // Create training and test subsets for each class (i.e., species types) using stratified random sampling (80/20%)
@@ -230,7 +231,7 @@ var SHADEtraining = new_table.filter(ee.Filter.lt('random', 0.80));
 var SHADEtest = new_table.filter(ee.Filter.gte('random', 0.80));
 ```
 
-Now we can merge all the training data for each species together to create the `training` data (variable), and similarly merge the test data to create the full `test` data. From thsose data we'll create a `Features` variable containing the predictor data (from the spectral and CHM composite) for the training data.
+Now we can merge all the training data for each species together to create the `training` data (variable), and similarly merge the test data to create the full `test` data. From those data we'll create a `Features` variable containing the predictor data (from the spectral and CHM composite) for the training data.
 
 ```javascript
 // Combine species-type reference points for training partition
