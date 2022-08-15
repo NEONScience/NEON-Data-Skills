@@ -56,7 +56,7 @@ Workflow Steps:
 
 ## Load in and Display the AOP and TOS Data
 
-Let's get started. In this first chunk of code, we'll specify the CLBJ location, read in the pre-processed woody vegetation data, as well as the TOS and Airshed boundaries.
+Let's get started. In this first chunk of code, we'll specify the CLBJ location, read in the pre-processed woody vegetation data, as well as the TOS and Airshed boundaries. Details about these boundaries are described on the NEON <a href="https://www.neonscience.org/data-collection/flight-box-design" target="_blank"> Flight Box Design </a> webpage.
 
 The plant species data, contained in the CLBJ_veg_2017_filtered feature collection, was derived from the NEON woody plant vegetation structure data product (DP1.10098.001). Land cover classes (grassland, water, shade) were subsequently added to the Feature Collection from visual inspection of the NEON spectrometer reflectance data product (DP3.30006.001). 
 
