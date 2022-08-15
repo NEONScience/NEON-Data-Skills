@@ -232,9 +232,7 @@ Now we can merge all the training data for each species together to create the `
 
 ```javascript
 // Combine species-type reference points for training partition
-
 var training = (CELAtraining).merge(JUVItraining).merge(PRMEtraining).merge(QUMA3training).merge(QUSTtraining).merge(ULALtraining).merge(ULCRtraining).merge(GRSStraining).merge(WATRtraining).merge(SHADEtraining).aside(print, 'Training partition');
-
 var test = (CELAtest).merge(JUVItest).merge(PRMEtest).merge(QUMA3test).merge(QUSTtest).merge(ULALtest).merge(ULCRtest).merge(GRSStest).merge(WATRtest).merge(SHADEtest).aside(print, 'Test partition');
 var points = training.merge(test).aside(print,'All points');
 
