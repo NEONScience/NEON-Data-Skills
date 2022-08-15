@@ -4,7 +4,7 @@ title: "Random Forest Species Classification using AOP and TOS data in GEE"
 description: "Classifying species using AOP and observational field data at CLBJ"
 dateCreated: 2022-08-02
 authors: John Musinsky, Bridget Hass
-contributors: Tristan Goulden, Lukas Straube
+contributors: Tristan Goulden
 estimatedTime: 1 hour
 packagesLibraries: 
 topics: lidar, hyperspectral, canopy height, remote-sensing, woody vegetation
@@ -16,17 +16,16 @@ urlTitle: aop-gee-random-forest-classification
 
 ---
 
-Google Earth Engine has a number of built in machine learning tools that are designed to work with multi-band raster data. This simplifies more complex analyses like classification. In this example, we will show an example of using TOS (Terrestrial Observational Data) woody vegetation data, which includes information about the plant species in the terrestrial sampling plots, to train a random forest machine learning model over a larger area, using the AOP reflectance and ecosystem structure (CHM) data. We will demonstrate this at the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">CLBJ</a>) (Lyndon B. Johnson National Grassland in north-central Texas).
+Google Earth Engine has a number of built in machine learning tools that are designed to work with multi-band raster data. This simplifies more complex analyses like classification (eg. classifying land types or species). In this example, we demonstrate species classification using a random forest machine learning model, using NEON AOP reflectance and ecosystem structure (CHM) data, and TOS (Terrestrial Observation System) woody vegetation data to train the model. For this example, we'll use airshed boundary of the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">CLBJ</a>) (Lyndon B. Johnson National Grassland in north-central Texas).
 
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
-After completing this activity, you will be able to:
- * Integrate NEON airborne (AOP) and field (TOS) datasets to run supervised classification
- * Understand pre-processing steps required for supervised learning classification
- * Split data into train and test data sets
- * Run the Random Forest machine learning model in Google Earth Engine
- * Assess model performance and learn what the different accuracy metrics can tell you
+After completing this activity, you will be able to integrate NEON airborne (AOP) and field (TOS) datasets to run supervised classification, which requires:
+ * Understanding pre-processing steps required for supervised learning classification
+ * Splitting data into train and test data sets
+ * Running the Random Forest machine learning model in Google Earth Engine
+ * Assessing model performance and learn what the different accuracy metrics can tell you
 
 ## Requirements
  * A gmail (@gmail.com) account
@@ -48,7 +47,7 @@ The links below to the earth engine guides may assist you as you work through th
 
 In this tutorial, we will take you through the following steps to classify species at the NEON site CLBJ. Note that these steps closely align with the more general supervised classification steps, described in the <a href="https://developers.google.com/earth-engine/guides/classification" target="_blank"> Earth Engine Classification Guide </a>.
 
-Workflow:
+Workflow Steps:
 1. Specify the input data for display and use in analysis
 2. Combine the AOP spectrometer reflectance data with the lidar-derived canopy height model (CHM) to create the predictor dataset
 3. Create reference (training/test) data for plant species and land cover types based on NEON vegetation structure data
@@ -72,7 +71,7 @@ var CLBJ_TOS = ee.FeatureCollection('projects/neon/AOP_TOS_Boundaries/D11_CLBJ_T
 var CLBJ_Airshed = ee.FeatureCollection('projects/neon/Airsheds/CLBJ_90percent_footprint')
 ```
 
-Next, display the Digital Terrain Model (DTM) and Canopy Height Model (CHM) from the 2017 CLBJ collection, masking out the no-data values (-9999). 
+Next, let's display the Digital Terrain Model (DTM) and Canopy Height Model (CHM) from the 2017 CLBJ collection, masking out the no-data values (-9999). 
 
 ```javascript
 // Display DTM for CLBJ. First, filter the DEM image collection by year, DEM type and geographic location
@@ -92,12 +91,12 @@ var CLBJ_CHM2017 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
   .filterBounds(geo)
   .first();
   
-// Then mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
+// Mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
 var CLBJ_CHM2017mask = CLBJ_CHM2017.updateMask(CLBJ_CHM2017.gte(0.0000));
 Map.addLayer(CLBJ_CHM2017mask, {min:0, max:33}, 'CLBJ CHM 2017',0);
 ```
 
-We also want to pull in the Surface Directional Reflectance (SDR) data. When we do this, we want to keep only the valid bands. Water vapor absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm, and the atmospheric correction that converts radiance to reflectance subsequently results in spikes in reflectance in these two band windows. For more information on the water vapor bands, refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/plot-spec-sig-tiles-python" target="_blank">Plot Spectral Signatures in Python</a>. This code below looks a little long, but it just using the `.select` filter to keep only the valid bands, and remove the water vapor bands. Note we are including as much spectral information as possible for this tutorial, but you could select a smaller subset of bands and likely obtain similar results. When running the classification on a larger area, it may be a valuable trade-off to include a smaller number of bands so the code runs faster (or doesn't run out of memory).  
+We also want to pull in the Surface Directional Reflectance (SDR) data. When we do this, we want to keep only the valid bands. Water vapor absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm, and the atmospheric correction that converts radiance to reflectance subsequently results in spikes in reflectance in these two band windows. For more information on the water vapor bands, refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/plot-spec-sig-tiles-python" target="_blank">Plot Spectral Signatures in Python</a>. This code below looks a little long, but it just using the `.select` filter to keep only the valid bands, and remove the water vapor bands. Note we are including as much spectral information as possible for this tutorial, but you could select a smaller subset of bands and likely obtain similar results. We encourage you to test this out on your own. When running the classification on a larger area, it may be a valuable trade-off to include a smaller number of bands so the code runs faster (or doesn't run out of memory).  
 
 ```javascript
 // Display SDR image for CLBJ. First, filter the image collection by year, type and geographic location
