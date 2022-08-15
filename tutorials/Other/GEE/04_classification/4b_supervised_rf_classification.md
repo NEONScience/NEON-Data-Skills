@@ -305,6 +305,29 @@ print('Producers Accuracy', Test.errorMatrix('taxonIDnum', 'classification').pro
 print('Users Accuracy', Test.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
 ```
 
+When you look in the Console and expand the metrics, you can assess the values. Note each taxon ID is assigned a number so you will need to refer to the order in the code to understand the Confusion Matrix as well as the Producer's and User's Accuracy. Each class is listed below for reference.
+
+0) CELA - Sugarberry
+1) JUVI - Eastern Redcedar
+2) PRME - Mexican Plum
+3) QUMA3 - Blackjack Oak
+4) QUST - Post Oak
+5) ULAL - Winged Elm
+6) ULCR - Cedar Elm
+7) GRSS - Grass
+8) WATR - Water
+9) SHADE - Shade
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_confusion_overall_kappa.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_confusion_overall_kappa.PNG" alt="Accuracy Metrics"></a>
+</figure>
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_producers_users.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_producers_users.PNG" alt="Producers and Users Accuracy"></a>
+</figure>
+
 ## Display Model Results
 
 Lastly, we can write a function to display the image classification
