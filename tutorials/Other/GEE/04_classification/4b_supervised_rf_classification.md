@@ -267,14 +267,26 @@ var classified = CLBJ_SDR2017_airshed.classify(trainedClassifier);
 
 ## Assess Model Performance
 
-Next we can assess the performance of this classificiation, by looking at some different metrics. The train accuracy should be very high, as it is testing the performance on the data used to generate the model - however, it is not an accurate representation of the actual accuracy. Instead, the test accuracy tends to be a little more reliable, as it is an independent assessment on the separate (test) data set.
+Next we can assess the performance of this classificiation, by looking at some different metrics. The train accuracy should be high (close to 1, or 100%), as it is testing the performance on the data used to generate the model - however, it is not an accurate representation of the actual accuracy. Instead, the test accuracy tends to be a little more reliable, as it is an independent assessment on the separate (test) data set.
 
 ```javascript
 // Calulate a confusion matrix and overall accuracy for the training sample
 // Note that this overestimates the accuracy of the model since it does not consider the test sample
 var trainAccuracy = trainedClassifier.confusionMatrix().accuracy();
 print('Train Accuracy', trainAccuracy);
+```
 
+If you look at the console, you should see a train accuracy of 0.973, pretty good! But we expect this to be good, because we are calculating the accuracy of the samples we used to generate the model. It is not representative of the actual model accuracy.
+
+We can also look at some other accuracy metrics. We won't go into details on each of these, but highlight some of the main takeaways for each of the metrics. For more information on accuracy assessments, you can also refer to <a href="https://blog.gishub.org/earth-engine-tutorial-33-performing-accuracy-assessment-for-image-classification" target="_blank"> Qiusheng Wu's Accuracy Assessment for Image Classification Tutorial</a>
+
+- **Confusion Matrix**: 2D matrix for a classifier based on its training data, where Axis 0 of the matrix corresponds to the input classes (reference data), and axis 1 corresponds to the output classes (classified data). The rows and columns start at class 0 and increase sequentially up to the maximum class value.
+- **Overall Accuracy**: conveys what proportion were mapped correctly out of all of the reference sites (includes training and test data)
+- **Kappa Coefficient**: evaluates how well a classification performs as compared to randomly assigning classes
+- **Producer's Accuracy**: frequency with which a real feature on the ground is correctly shown in the classified map (corresponds to error of omission)
+- **User's Accuracy**: frequency with which a feature in the classified map will actually be present on the ground (corresponds to error of commission)
+
+```javascript
 // Test the classification accuracy (more reliable estimation of accuracy)
 // Extract spectral signatures from airshed reflectance image for test sample
 var test = CLBJ_SDR2017_airshed.sampleRegions({
@@ -283,23 +295,13 @@ var test = CLBJ_SDR2017_airshed.sampleRegions({
   scale: 1,
   tileScale: 16
 });
-```
 
-We can also look at some other accuracy metrics, including the Confusion Matrix, Kappa Coefficient, Producer's Accuracy, and User's Accuracy. 
-
-```javascript
-// Calculate different accuracy estimates
+// Calculate different test accuracy estimates
 var Test = test.classify(trainedClassifier);
 print('Confusion Matrix', Test.errorMatrix('taxonIDnum', 'classification'));
 print('Overall Accuracy', Test.errorMatrix('taxonIDnum', 'classification').accuracy());
-
-// Kappa Coefficient: evaluates how well a classification performs as compared to randomly assigning values
 print('Kappa Coefficient', Test.errorMatrix('taxonIDnum', 'classification').kappa());
-
-// Producer's Accuracy: frequency with which a real feature on the ground is correctly shown in the classified map (corresponds to error of omission)
 print('Producers Accuracy', Test.errorMatrix('taxonIDnum', 'classification').producersAccuracy());
-
-// User's Accuracy: frequency with which a feature in the classified map will actually be present on the ground (corresponds to error of commission)
 print('Users Accuracy', Test.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
 ```
 
