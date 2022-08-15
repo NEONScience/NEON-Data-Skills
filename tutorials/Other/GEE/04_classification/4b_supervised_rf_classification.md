@@ -303,18 +303,18 @@ print('Producers Accuracy', Test.errorMatrix('taxonIDnum', 'classification').pro
 print('Users Accuracy', Test.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
 ```
 
-When you look in the Console and expand the metrics, you can assess the values. Note each taxon ID is assigned a number so you will need to refer to the order in the code to understand the Confusion Matrix as well as the Producer's and User's Accuracy. Each class is listed below for reference.
+When you look in the Console and expand the metrics, you can assess the values. Note each taxon ID is assigned a number so you will need to refer to the order in the code to understand the Confusion Matrix as well as the Producer's and User's Accuracy. Each class is listed below for reference, along with the number of training samples for each of the species, in parentheses. When interpreting accuracy, it's important to consider how many training samples were used to generate the model; the model accuracy is impacted if there is poor representation in the training data.
 
-0) CELA - Sugarberry
-1) JUVI - Eastern Redcedar
-2) PRME - Mexican Plum
-3) QUMA3 - Blackjack Oak
-4) QUST - Post Oak
-5) ULAL - Winged Elm
-6) ULCR - Cedar Elm
-7) GRSS - Grass
-8) WATR - Water
-9) SHADE - Shade
+0) CELA - Sugarberry (12)
+1) JUVI - Eastern Redcedar (35)
+2) PRME - Mexican Plum (2)
+3) QUMA3 - Blackjack Oak (26)
+4) QUST - Post Oak (162)
+5) ULAL - Winged Elm (5)
+6) ULCR - Cedar Elm (18)
+7) GRSS - Grass (8)
+8) WATR - Water (6)
+9) SHADE - Shade (9)
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_confusion_overall_kappa.PNG">
