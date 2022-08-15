@@ -4,6 +4,7 @@ syncID: 19fe7b1f052c478c8a7df52e4e03efbf
 description: Download and explore NEON algae and aquatic macroinvertebrate data with
   the ecocomDP package for R using the CyVerse Discovery Environment
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 authors: Eric R. Sokol
@@ -20,16 +21,20 @@ dateCreated: "2022-01-21"
 ---
 
 <div id="ds-objectives" markdown="1">
-## Learning objectives 
+
+## Learning objectives  
+
 After completing this tutorial you will be able to: 
 
 * Run an RStudio session on the Visual Interactive Computing Environment (VICE) using the CyVerse Discovery Environment.
 * Search for and download NEON and LTER organismal datasets.
 * Understand and work with the ecocomDP data model.
 * Explore NEON and LTER biodiversity datasets with `ecocomDP` plotting functions.
+
 </div>
 
 ## Introduction  
+
 In ecological synthesis projects, tasks related to finding, accessing, and vetting datasets to include in an analysis often creates an enormous time sink. However, it is crucial that investigators understand the structure of and assumptions behind each of the datasets included in a study. In this code-along tutorial, we will learn about tools available in the `ecocomDP` package for R to facilitate this initial data discovery, wrangling, and vetting process for datasets representing communities of organisms. 
 
 "ecocomDP" is both the name of an R package and a data model. 
@@ -54,16 +59,21 @@ Excises in this lesson will cover:
  * Options for working with data in the CyVerse Data Store
 
 ## Things you'll need to complete this tutorial  
-#### _1. R Programming Language_
+
+#### _1. R Programming Language_  
+
 You will need some familiarity with the R programming language to complete this tutorial and we recommend you use a version of the [RStudio IDE](https://www.rstudio.com/products/rstudio/). In this tutorial, we will describe how to access an instance of RStudio with all the required packages pre-installed via your web browser using the Visual Interactive Computing Environment (VICE) provided in the [CyVerse Discovery Environment](https://cyverse.org/discovery-environment). Alternatively, you can also complete most of the exercises in this tutorial using a locally installed version of [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/).
 
-#### _2. [OPTIONAL] A NEON user account and API token_
+#### _2. [OPTIONAL] A NEON user account and API token_  
+
 We recommend that you sign up for a NEON user account and set up an API token to access NEON data following the instructions outlined in [this tutorial](https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial). This is not required. You can download NEON data without a token, but using an API token will enable faster download speeds. 
 
-#### _3. [OPTIONAL] Create a CyVerse account and request access to VICE_
+#### _3. [OPTIONAL] Create a CyVerse account and request access to VICE_  
+
 To use the cloud computing resources available through VICE, you will need to create a CyVerse account and request access to VICE ahead of time (see below). If you choose this option, all of the required R packages should already be installed and you will be able to easily access and/or share large datasets in the [CyVerse Data Store](https://learning.cyverse.org/ds/)  
 
-#### _4. R packages required for this tutorial_
+#### _4. R packages required for this tutorial_  
+
 Prior to starting the tutorial, ensure that the following packages are installed (NOTE: these packages should be pre-installed if you are using the VICE RStudio app): 
 
 * **tidyverse:** `install.packages("tidyverse")`
@@ -73,14 +83,16 @@ Prior to starting the tutorial, ensure that the following packages are installed
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 <div id="ds-cyverse" markdown="1">
-## RStudio on the VICE cloud
-### Creating a CyVerse Account
+
+## RStudio on the VICE cloud  
+
+### Creating a CyVerse Account  
 
 To create a CyVerse account, navigate to [user.cyverse.org](https://user.cyverse.org/) and click "Sign Up". You will be prompted to fill in your name, a username, and an email. It is **highly recommended** that you use a `.edu`, `.org`, or `.gov` email address if you have one. Cloud computing platforms are a prime target for cryptocurrency miners, and using an institutional email address makes it easier to verify that you *aren't* one.
 
 You will be prompted to fill out a few more pieces of information about yourself and what you intend to use CyVerse for. Once you have completed the registration process, you will have a CyVerse account and can proceed to the next step.
 
-### Requesting VICE access
+### Requesting VICE access  
 
 Next, you will have to request access to the Visual Interactive Computing Environment (VICE), which is a platform for running interactive applications, like RStudio or JupyterLab, on the cloud. VICE access requires a one-time approval, due to the cryptocurrency miner issue mentioned above.
 
@@ -90,7 +102,7 @@ You can navigate to [user.cyverse.org/services](https://user.cyverse.org/service
 
 Once **DE-VICE** appears under "My Services" in the User Portal, with a "Launch" button, that means you have been approved for VICE access, and you can proceed to the next step.
 
-### Launching RStudio with the `ecocomDP` package
+### Launching RStudio with the `ecocomDP` package  
 
 We will be using an RStudio application running on the VICE cloud. It already has several R packages installed for this tutorial.
 
@@ -108,9 +120,11 @@ You will either be brought to a loading page or directly to an RStudio session. 
 Once RStudio is open, you should be able to begin the rest of the tutorial.
 
 **NOTE**: to get more information on using any of the CyVerse platforms, including VICE, you can check out the [CyVerse Learning Center](https://learning.cyverse.org/).
+
 </div>
 
-## Load libraries and prepare workspace
+## Load libraries and prepare workspace  
+
 First, we will load all necessary libraries into our R environment. If you are not using the RStudio VICE app with the packages pre-installed and you have not already installed these libraries, please see the "R packages required for this tutorial" section above. 
 
     # clean out workspace
@@ -130,31 +144,35 @@ This code chunk also includes two optional lines for clearing out your environme
 
 Also, consider using a NEON API token. This will allow you increased download speeds and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.
 
-<div id="ds-tokensetup" markdown="1">
-## Using your NEON_TOKEN with the VICE cloud
-1. In your RStudio session running on the VICE app, type the following in the Console:
+<div id="ds-tokensetup" markdown="1">  
+
+## Using your NEON_TOKEN with the VICE cloud  
+
+1. In your RStudio session running on the VICE app, type the following in the Console:  
 
     usethis::edit_r_environ()
 A new .Renviron file will be created. 
 
-2. Add one line to the .Renviron file. There are no quotes around the token value.
+2. Add one line to the .Renviron file. There are no quotes around the token value.  
 
     NEON_TOKEN=PASTE YOUR TOKEN HERE
 
-3. Go to "File -> Save As" and then navigate to "work > home > YOUR CYVERSE USERNAME" and save your .Renviron file in your personal storage space. 
+3. Go to "File -> Save As" and then navigate to "work > home > YOUR CYVERSE USERNAME" and save your .Renviron file in your personal storage space.   
 
-4. Read your .Renviron variables to your R session:
+4. Read your .Renviron variables to your R session:  
 
     readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 
-You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables. 
+You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables.  
+
 </div>
 
 Now that our workspace is prepared, let's look at some data.
 
 ## How to get data from the source (NEON and EDI data portals)
 
-### EXAMPLE 1: NEON benthic macroinvertebrates
+### EXAMPLE 1: NEON benthic macroinvertebrates  
+
 First, take a look at the data product landing page:
 https://data.neonscience.org/data-products/DP1.20120.001
 
@@ -162,7 +180,8 @@ Note the abstract, information on latency, the design description, links to rele
 
 You can download the data using the web interface ([see this video](https://www.youtube.com/watch?v=gaA_duzWnvk)), but today we will learn how to download data from the NEON Data Portal API in an R session.
 
-#### How to download a NEON data product using `neonUtilities`
+#### How to download a NEON data product using `neonUtilities`  
+
 NEON data are delivered in site-month chunks, so it is necessary to "stack" the data after you have downloaded all of your desired site-month data packages. However, you do not need to worry about data stacking because the NEON staff have developed the `neonUtilities` R package, which provides wrapper functions to interact with the NEON Data Portal API and appropriately unzip and stack the data tables so that they are more user friendly. For more details, see [this tutorial on NEON data stacking](https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr). Here we use the `loadByProduct` function to download NEON macroinvertebrate data from two sites from 2017-2019. The `loadByProduct` function will extract the zip files, stack the data, and load it into your R environment. See [this cheatsheet](https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf) for more information on neonUtilities. 
 
 
@@ -175,6 +194,7 @@ NEON data are delivered in site-month chunks, so it is necessary to "stack" the 
       enddate = "2019-12", # end year-month
       token = Sys.getenv("NEON_TOKEN"), # use NEON_TOKEN environmental variable
       check.size = F) # proceed with download regardless of file size
+
 To download the entire dataset for all sites for all time, don't include the `site`, `startdate`, or `enddate` arguments. 
 
 
@@ -186,7 +206,8 @@ To download the entire dataset for all sites for all time, don't include the `si
 
 This larger download will take longer and might time out. For the macroinvertebrates data product the download could take ~5 minutes on a typical setup. This is not insurmountable, but you don't want to have to download and stack the data every time you run an analysis. Also, other NEON data products can be much larger. A nice feature about working with VICE is we can download the large dataset one time and store it in a shared space in the CyVerse Data Store. We will access a dataset saved on the Data Store later in this tutorial.
 
-#### NEON macroinvertebrate data wrangling
+#### NEON macroinvertebrate data wrangling  
+
 Now that we have the data downloaded, we will need to do some 'data wrangling' to reorganize our data into a more useful format for typical community ecology analyses. First, let's take a look at some of the tables that were generated by `loadByProduct()`:
 
 
@@ -407,7 +428,8 @@ Now that the data have been "wrangled", we can plot some basic visualizations to
 
 What other visualizations would you plot as an initial exploration of this dataset to determine if it would be sufficient for your science question?
 
-#### Working with 'long' and 'wide' data
+#### Working with 'long' and 'wide' data  
+
 'Reshaping' your data to use as an input to a particular function may require you to consider: do I want 'long' or 'wide' data? Here's a link to <a href="https://www.theanalysisfactor.com/wide-and-long-data/">a great article from 'the analysis factor' that describes the differences</a>. Our `table_observation` data.frame is currently in long format, however, many tools used in community ecology analyses, such as functions in the `vegan` R package, expect wide-format site-by-species inputs.   
 
 Below, we create a site-by-species table.
@@ -439,7 +461,8 @@ Below, we create a site-by-species table.
     ## [1] 32
 
 
-### EXAMPLE 2: North Temperate Lakes (NTL) LTER site benthic macroinvertebrates from the EDI data portal
+### EXAMPLE 2: North Temperate Lakes (NTL) LTER site benthic macroinvertebrates from the EDI data portal  
+
 You can search EDI data holdings at https://portal.edirepository.org/nis/home.jsp. Searching for "benthic macroinvertebrates" will result in data packages from across the LTER network and other NSF funded projects (e.g., data from LTREB and macrosystems projects). For our exmaple, we will use "[North Temperate Lakes LTER: Benthic Macroinvertebrates 1981 - current](https://doi.org/10.6073/pasta/e34b247937277b35905018f728849a10)". If you go to the data package landing page and scroll down to the "Code Generation" section, there are buttons to generate scripts to download the dataset from the EDI data portal API. Try clicking the ["R" button](https://portal.edirepository.org/nis/codeGeneration?packageId=knb-lter-ntl.11.35&statisticalFileType=r) and running that code in your R session. 
 
  * Are these data suitable for your science question?
@@ -448,7 +471,8 @@ You can search EDI data holdings at https://portal.edirepository.org/nis/home.js
  * What data wrangling steps are needed before you proceed?
 
 
-## Using ecocomDP
+## Using ecocomDP  
+
 Examining the data model for ecocomDP, we see it follows a star-schema with long-format species abundances (or similar) in the `observation` table. The design pattern includes `location`, `taxon`, and other ancillary tables that provide a flexible option to link additional information to the records in the observation, location, and taxon tables. The `ecocomDP` library for R includes functions to search the EDI and NEON data holdings, read the data into your R session, and functions to work with and plot datasets that are in the ecocomDP format.  
 
 <figure>
@@ -457,7 +481,8 @@ Examining the data model for ecocomDP, we see it follows a star-schema with long
 <figcaption>Diagram showing relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
 </figure>
 
-### Find a NEON ecocomDP dataset
+### Find a NEON ecocomDP dataset  
+
 The `search_data()` function in the `ecocomDP` provides a tool to explore the ecocomDP catalog, which includes datasets from LTER and NEON sites (and others). Using `search_data()` with no arguments will return the entire catalog. Your search can be constrained by passing a text string (you can use regular expressions) to the `text` argument. The query will search data package titles, descriptions, and abstracts. Below, we show a couple examples of how to search datasets in the ecocomDP catalog.
 
 
@@ -508,7 +533,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220812181032"
+    ## [1] "neon.ecocomdp.20120.001.001.20220815180958"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -523,7 +548,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-08-12 18:10:33 MDT"
+    ## [1] "2022-08-15 18:10:00 EDT"
 
     # validation issues? None if returns an empty list
     data_neon_inv$validation_issues
@@ -556,12 +581,12 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$tables$observation %>% head()
 
     ##   observation_id                event_id                                 package_id    location_id
-    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
+    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
     ##              datetime taxon_id variable_name value                   unit
     ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
     ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -650,42 +675,38 @@ The ecocomDP format is also easy to pivot to wide format for use with commonly u
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.1977579 
-    ## Run 1 stress 0.1961899 
+    ## Run 1 stress 0.2413866 
+    ## Run 2 stress 0.1952459 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.03013281  max resid 0.3230676 
-    ## Run 2 stress 0.2440653 
-    ## Run 3 stress 0.2266946 
-    ## Run 4 stress 0.2358899 
-    ## Run 5 stress 0.2268218 
-    ## Run 6 stress 0.220625 
-    ## Run 7 stress 0.2356672 
-    ## Run 8 stress 0.2481401 
-    ## Run 9 stress 0.2046903 
-    ## Run 10 stress 0.2530561 
-    ## Run 11 stress 0.2342954 
-    ## Run 12 stress 0.1986369 
-    ## Run 13 stress 0.1960911 
+    ## ... Procrustes: rmse 0.02892479  max resid 0.3230924 
+    ## Run 3 stress 0.2074269 
+    ## Run 4 stress 0.2493315 
+    ## Run 5 stress 0.2372703 
+    ## Run 6 stress 0.2216672 
+    ## Run 7 stress 0.2063018 
+    ## Run 8 stress 0.1952428 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.002948853  max resid 0.01965847 
-    ## Run 14 stress 0.1960911 
-    ## ... Procrustes: rmse 2.716025e-05  max resid 0.0002043893 
-    ## ... Similar to previous best
-    ## Run 15 stress 0.206171 
-    ## Run 16 stress 0.213349 
-    ## Run 17 stress 0.2208264 
-    ## Run 18 stress 0.2082006 
-    ## Run 19 stress 0.1952459 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.008103515  max resid 0.08891535 
-    ## Run 20 stress 0.2267329 
+    ## ... Procrustes: rmse 0.001200194  max resid 0.01156968 
+    ## Run 9 stress 0.2469163 
+    ## Run 10 stress 0.2265748 
+    ## Run 11 stress 0.2521283 
+    ## Run 12 stress 0.2177269 
+    ## Run 13 stress 0.2076243 
+    ## Run 14 stress 0.22689 
+    ## Run 15 stress 0.2495064 
+    ## Run 16 stress 0.221731 
+    ## Run 17 stress 0.2072354 
+    ## Run 18 stress 0.2499488 
+    ## Run 19 stress 0.2183244 
+    ## Run 20 stress 0.2378091 
     ## *** No convergence -- monoMDS stopping criteria:
-    ##     14: stress ratio > sratmax
-    ##      6: scale factor of the gradient < sfgrmin
+    ##     18: stress ratio > sratmax
+    ##      2: scale factor of the gradient < sfgrmin
 
     # ordination stress
     my_nmds_result$stress
 
-    ## [1] 0.1952459
+    ## [1] 0.1952428
 
     # plot ordination
     ordiplot(my_nmds_result)
@@ -709,13 +730,15 @@ The full NEON macroinvertebrate dataset from RELEASE-2022 can be downloaded in t
       release = "RELEASE-2022",
       check.size = FALSE)
 
-The above download has been saved in the CyVerse Data Store for easy access from the VICE RStudio app. There are three options for accessing the file:
+The above download has been saved in the CyVerse Data Store for easy access from the VICE RStudio app. There are three options for accessing the file:  
 
  1. If you are using the RStudio VICE app: 
+ 
 
     data_neon_inv_allsites <- readRDS("../rstudio/work/home/shared/NEON/ESA2022/macroinverts_neon.ecocomdp.20120.001.001_release2022.RDS")
 
  2. If you are not running an in instance of RStudio that has the CyVerse Data Store mounted, you can access the data here via a static URL:
+ 
 
     # reading in the data when not using CyVerse VICE
     data_neon_inv_allsites <- readRDS(
@@ -724,6 +747,7 @@ The above download has been saved in the CyVerse Data Store for easy access from
  3. You can download the file from your web browser from the CyVerse DE web UI. To navigate to the dataset using the CyVerse Discovery Environment webUI, go to the Data Store icon on in the left menu, choose "Community Data" in the dropdown menu, and then navigate to "NEON > ESA2022 > macroinverts_neon.ecocomdp.20120.001.001_release2002.RDS". Here you can download the dataset and work with it locally on your machine. 
  
 Next, we will flatten the dataset:
+
 
     flat_neon_inv_allsites <- data_neon_inv_allsites %>% flatten_data()
  

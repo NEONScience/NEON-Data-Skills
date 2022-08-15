@@ -164,13 +164,16 @@ hr {
 
 <body>
 <div id="ds-objectives" markdown="1">
-## Learning objectives 
+
+## Learning objectives  
+
 After completing this tutorial you will be able to: 
 
 * Run an RStudio session on the Visual Interactive Computing Environment (VICE) using the CyVerse Discovery Environment.
 * Search for and download NEON and LTER organismal datasets.
 * Understand and work with the ecocomDP data model.
 * Explore NEON and LTER biodiversity datasets with ecocomDP plotting functions.
+
 </div>
 
 <h2>Introduction</h2>
@@ -227,14 +230,16 @@ After completing this tutorial you will be able to:
 <p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
 
 <div id="ds-cyverse" markdown="1">
-## RStudio on the VICE cloud
-### Creating a CyVerse Account
+
+## RStudio on the VICE cloud  
+
+### Creating a CyVerse Account  
 
 To create a CyVerse account, navigate to [user.cyverse.org](https://user.cyverse.org/) and click &ldquo;Sign Up&rdquo;. You will be prompted to fill in your name, a username, and an email. It is **highly recommended** that you use a .edu, .org, or .gov email address if you have one. Cloud computing platforms are a prime target for cryptocurrency miners, and using an institutional email address makes it easier to verify that you *aren&rsquo;t* one.
 
 You will be prompted to fill out a few more pieces of information about yourself and what you intend to use CyVerse for. Once you have completed the registration process, you will have a CyVerse account and can proceed to the next step.
 
-### Requesting VICE access
+### Requesting VICE access  
 
 Next, you will have to request access to the Visual Interactive Computing Environment (VICE), which is a platform for running interactive applications, like RStudio or JupyterLab, on the cloud. VICE access requires a one-time approval, due to the cryptocurrency miner issue mentioned above.
 
@@ -244,7 +249,7 @@ You can navigate to [user.cyverse.org/services](https://user.cyverse.org/service
 
 Once **DE-VICE** appears under &ldquo;My Services&rdquo; in the User Portal, with a &ldquo;Launch&rdquo; button, that means you have been approved for VICE access, and you can proceed to the next step.
 
-### Launching RStudio with the ecocomDP package
+### Launching RStudio with the ecocomDP package  
 
 We will be using an RStudio application running on the VICE cloud. It already has several R packages installed for this tutorial.
 
@@ -262,6 +267,7 @@ You will either be brought to a loading page or directly to an RStudio session. 
 Once RStudio is open, you should be able to begin the rest of the tutorial.
 
 **NOTE**: to get more information on using any of the CyVerse platforms, including VICE, you can check out the [CyVerse Learning Center](https://learning.cyverse.org/).
+
 </div>
 
 <h2>Load libraries and prepare workspace</h2>
@@ -283,24 +289,27 @@ library(ecocomDP)
 
 <p>Also, consider using a NEON API token. This will allow you increased download speeds and helps NEON <strong>anonymously</strong> track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.</p>
 
-<div id="ds-tokensetup" markdown="1">
-## Using your NEON_TOKEN with the VICE cloud
-1. In your RStudio session running on the VICE app, type the following in the Console:
+<div id="ds-tokensetup" markdown="1">  
+
+## Using your NEON_TOKEN with the VICE cloud  
+
+1. In your RStudio session running on the VICE app, type the following in the Console:  
 
     usethis::edit_r_environ()
 A new .Renviron file will be created. 
 
-2. Add one line to the .Renviron file. There are no quotes around the token value.
+2. Add one line to the .Renviron file. There are no quotes around the token value.  
 
     NEON_TOKEN=PASTE YOUR TOKEN HERE
 
-3. Go to &ldquo;File -> Save As&rdquo; and then navigate to &ldquo;work > home > YOUR CYVERSE USERNAME&rdquo; and save your .Renviron file in your personal storage space. 
+3. Go to &ldquo;File -> Save As&rdquo; and then navigate to &ldquo;work > home > YOUR CYVERSE USERNAME&rdquo; and save your .Renviron file in your personal storage space.   
 
-4. Read your .Renviron variables to your R session:
+4. Read your .Renviron variables to your R session:  
 
     readRenviron(&ldquo;../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron&rdquo;)
 
-You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables. 
+You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables.  
+
 </div>
 
 <p>Now that our workspace is prepared, let&#39;s look at some data.</p>
@@ -669,7 +678,7 @@ data_neon_inv$id
 data_neon_inv$metadata$data_package_info
 
 ## $data_package_id
-## [1] &quot;neon.ecocomdp.20120.001.001.20220812181032&quot;
+## [1] &quot;neon.ecocomdp.20120.001.001.20220815180958&quot;
 ## 
 ## $taxonomic_group
 ## [1] &quot;MACROINVERTEBRATES&quot;
@@ -684,7 +693,7 @@ data_neon_inv$metadata$data_package_info
 ## [1] &quot;original NEON data accessed using neonUtilities v2.1.4&quot;
 ## 
 ## $data_access_date_time
-## [1] &quot;2022-08-12 18:10:33 MDT&quot;
+## [1] &quot;2022-08-15 18:10:00 EDT&quot;
 
 # validation issues? None if returns an empty list
 data_neon_inv$validation_issues
@@ -717,12 +726,12 @@ data_neon_inv$tables$taxon %&gt;% head()
 data_neon_inv$tables$observation %&gt;% head()
 
 ##   observation_id                event_id                                 package_id    location_id
-## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
-## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220812181032 COMO.AOS.reach
+## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
 ##              datetime taxon_id variable_name value                   unit
 ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
 ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -812,42 +821,38 @@ my_nmds_result &lt;- wide_neon_inv %&gt;% metaMDS()
 ## Square root transformation
 ## Wisconsin double standardization
 ## Run 0 stress 0.1977579 
-## Run 1 stress 0.1961899 
+## Run 1 stress 0.2413866 
+## Run 2 stress 0.1952459 
 ## ... New best solution
-## ... Procrustes: rmse 0.03013281  max resid 0.3230676 
-## Run 2 stress 0.2440653 
-## Run 3 stress 0.2266946 
-## Run 4 stress 0.2358899 
-## Run 5 stress 0.2268218 
-## Run 6 stress 0.220625 
-## Run 7 stress 0.2356672 
-## Run 8 stress 0.2481401 
-## Run 9 stress 0.2046903 
-## Run 10 stress 0.2530561 
-## Run 11 stress 0.2342954 
-## Run 12 stress 0.1986369 
-## Run 13 stress 0.1960911 
+## ... Procrustes: rmse 0.02892479  max resid 0.3230924 
+## Run 3 stress 0.2074269 
+## Run 4 stress 0.2493315 
+## Run 5 stress 0.2372703 
+## Run 6 stress 0.2216672 
+## Run 7 stress 0.2063018 
+## Run 8 stress 0.1952428 
 ## ... New best solution
-## ... Procrustes: rmse 0.002948853  max resid 0.01965847 
-## Run 14 stress 0.1960911 
-## ... Procrustes: rmse 2.716025e-05  max resid 0.0002043893 
-## ... Similar to previous best
-## Run 15 stress 0.206171 
-## Run 16 stress 0.213349 
-## Run 17 stress 0.2208264 
-## Run 18 stress 0.2082006 
-## Run 19 stress 0.1952459 
-## ... New best solution
-## ... Procrustes: rmse 0.008103515  max resid 0.08891535 
-## Run 20 stress 0.2267329 
+## ... Procrustes: rmse 0.001200194  max resid 0.01156968 
+## Run 9 stress 0.2469163 
+## Run 10 stress 0.2265748 
+## Run 11 stress 0.2521283 
+## Run 12 stress 0.2177269 
+## Run 13 stress 0.2076243 
+## Run 14 stress 0.22689 
+## Run 15 stress 0.2495064 
+## Run 16 stress 0.221731 
+## Run 17 stress 0.2072354 
+## Run 18 stress 0.2499488 
+## Run 19 stress 0.2183244 
+## Run 20 stress 0.2378091 
 ## *** No convergence -- monoMDS stopping criteria:
-##     14: stress ratio &gt; sratmax
-##      6: scale factor of the gradient &lt; sfgrmin
+##     18: stress ratio &gt; sratmax
+##      2: scale factor of the gradient &lt; sfgrmin
 
 # ordination stress
 my_nmds_result$stress
 
-## [1] 0.1952459
+## [1] 0.1952428
 
 # plot ordination
 ordiplot(my_nmds_result)
@@ -872,7 +877,7 @@ data_neon_inv_allsites &lt;- read_data(
   check.size = FALSE)
 </code></pre>
 
-<p>The above download has been saved in the CyVerse Data Store for easy access from the VICE RStudio app. There are three options for accessing the file:</p>
+<p>The above download has been saved in the CyVerse Data Store for easy access from the VICE RStudio app. There are three options for accessing the file:  </p>
 
 <ol>
 <li><p>If you are using the RStudio VICE app: </p>
