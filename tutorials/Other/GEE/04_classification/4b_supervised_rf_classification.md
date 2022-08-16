@@ -363,4 +363,4 @@ Here is our final classified image:
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/d0f4ee7261d2470d10345862d4307f83" target="_blank">AOP GEE Random Forest Classification</a>
+<a href="https://code.earthengine.google.com/1b8667f39ff0c5054c5597d167541385" target="_blank">AOP GEE Random Forest Classification</a>
