@@ -1,4 +1,4 @@
-## ----load libraries, eval=F, comment=NA-------------------------------------------------------------
+## ----load libraries, eval=F, comment=NA-----------------------------------------------------------------------------
 # clean out workspace
 
 #rm(list = ls()) # OPTIONAL - clear out your environment
@@ -12,19 +12,19 @@ library(ecocomDP)
 
 
 
-## ----create-Renviron, eval=F, comment=NA------------------------------------------------------------
+## ----create-Renviron, eval=F, comment=NA----------------------------------------------------------------------------
 usethis::edit_r_environ()
 
 
-## ----set-token, eval=F, comment=NA------------------------------------------------------------------
+## ----set-token, eval=F, comment=NA----------------------------------------------------------------------------------
 NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 
-## ----read-Renviron, eval=F, comment=NA--------------------------------------------------------------
+## ----read-Renviron, eval=F, comment=NA------------------------------------------------------------------------------
 readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 
 
-## ----download-data, message=FALSE, warning=FALSE, results='hide'------------------------------------
+## ----download-data, message=FALSE, warning=FALSE, results='hide'----------------------------------------------------
 # Download NEON aquatic macroinvertebrate data from the NEON data portal API
 # Should take < 1 minute
 all_tabs_inv <- neonUtilities::loadByProduct(
@@ -37,7 +37,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 
 
 
-## ----download-all-data, eval=F, comment=NA----------------------------------------------------------
+## ----download-all-data, eval=F, comment=NA--------------------------------------------------------------------------
 # this download as of Aug 2022 is ~100MB
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = "DP1.20120.001", # the NEON aquatic macroinvert data product
@@ -45,7 +45,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
   check.size = T) # you should probably check the filesize before proceeding
 
 
-## ----download-overview, message=FALSE, warning=FALSE------------------------------------------------
+## ----download-overview, message=FALSE, warning=FALSE----------------------------------------------------------------
 # what tables do you get with macroinvertebrate 
 # data product
 names(all_tabs_inv)
@@ -70,7 +70,7 @@ View(categoricalCodes_20120)
 
 
 
-## ----munging-and-organizing, message=FALSE, warning=FALSE-------------------------------------------
+## ----munging-and-organizing, message=FALSE, warning=FALSE-----------------------------------------------------------
 
 # It is good to check for duplicate records. This had occurred in the past in 
 # data published in the inv_fieldData table in 2021. Those duplicates were 
@@ -238,7 +238,7 @@ table_observation %>%
   geom_col()
 
 
-## ----make-wide, message=FALSE, warning=FALSE--------------------------------------------------------
+## ----make-wide, message=FALSE, warning=FALSE------------------------------------------------------------------------
 # select only site by species density info and remove duplicate records
 table_sample_by_taxon_density_long <- table_observation %>%
   select(sampleID, acceptedTaxonID, inv_dens) %>%
@@ -261,7 +261,7 @@ rowSums(table_sample_by_taxon_density_wide) %>% min()
 
 
 
-## ----search-macroinvert, message=FALSE, warning=FALSE, results='hide'-------------------------------
+## ----search-macroinvert, message=FALSE, warning=FALSE, results='hide'-----------------------------------------------
 # clean out workspace from previous section
 
 #rm(list = ls()) # OPTIONAL - clear out your environment
@@ -277,7 +277,7 @@ search_result <- search_data(text = "invertebrate")
 View(search_result)
 
 
-## ----download-neon-macroinvert, message=FALSE, warning=FALSE, results='hide'------------------------
+## ----download-neon-macroinvert, message=FALSE, warning=FALSE, results='hide'----------------------------------------
 # pull NEON aquatic "Macroinvertebrate collection" from the same sites
 # and dates as used in the example above.
 data_neon_inv <- read_data(
@@ -290,7 +290,7 @@ data_neon_inv <- read_data(
 
 
 
-## ----view-neon-ecocomDP-str-------------------------------------------------------------------------
+## ----view-neon-ecocomDP-str-----------------------------------------------------------------------------------------
 
 # examine the structure of the data object that is returned
 data_neon_inv %>% names()
@@ -331,7 +331,7 @@ data_neon_inv %>% plot_taxa_rank()
 
 
 
-## ----flatten-neon-ecocomDP, message=FALSE, warning=FALSE--------------------------------------------
+## ----flatten-neon-ecocomDP, message=FALSE, warning=FALSE------------------------------------------------------------
 # combine all core and ancillary tables into one flat table and explore
 # NOTE: we add the id so we can stack with other datasets
 flat_neon_inv <- data_neon_inv %>% 
@@ -344,7 +344,7 @@ View(flat_neon_inv)
 
 
 ## ----macroinvert-datavis-densities, message=FALSE, warning=FALSE, fig.cap="Densities of benthic macroinvertebrates from select NEON sites."----
-# compare taxa and abundances across sites
+# compare taxa and abundances across sampler types
 flat_neon_inv %>% 
   plot_taxa_abund(
     trans = "log10",
@@ -382,7 +382,7 @@ ordiplot(my_nmds_result)
 
 
 
-## ----download-full-neon-inv, eval=F, message=FALSE, warning=FALSE-----------------------------------
+## ----download-full-neon-inv, eval=F, message=FALSE, warning=FALSE---------------------------------------------------
 ## # pull NEON aquatic "Macroinvertebrate collection" for all locations and times
 ## # in the 2022 Data Release
 ## 
@@ -394,21 +394,21 @@ ordiplot(my_nmds_result)
 ##   check.size = FALSE)
 
 
-## ----load-all-inv-dataset-mounted-cyverse-datastore, eval=F, message=FALSE, warning=FALSE-----------
+## ----load-all-inv-dataset-mounted-cyverse-datastore, eval=F, message=FALSE, warning=FALSE---------------------------
 ## data_neon_inv_allsites <- readRDS("../rstudio/work/home/shared/NEON/ESA2022/macroinverts_neon.ecocomdp.20120.001.001_release2022.RDS")
 
 
-## ----load-all-inv-dataset-url, message=FALSE, warning=FALSE-----------------------------------------
+## ----load-all-inv-dataset-url, message=FALSE, warning=FALSE---------------------------------------------------------
 # reading in the data when not using CyVerse VICE
 data_neon_inv_allsites <- readRDS(
   file = gzcon(url("https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2022/macroinverts_neon.ecocomdp.20120.001.001_release2022.RDS")))
 
 
-## ----load-all-inv-dataset-from-mounted-cyverse-datastore, message=FALSE, warning=FALSE--------------
+## ----load-all-inv-dataset-from-mounted-cyverse-datastore, message=FALSE, warning=FALSE------------------------------
 flat_neon_inv_allsites <- data_neon_inv_allsites %>% flatten_data()
 
 
-## ----download-ntl-macroinvert, message=FALSE, warning=FALSE-----------------------------------------
+## ----download-ntl-macroinvert, message=FALSE, warning=FALSE---------------------------------------------------------
 # pull data for NTL aquatic macroinvertebrates to compate
 data_ntl_inv <- read_data(id = "edi.290.2")
 
@@ -461,7 +461,7 @@ stacked_inv %>%
   plot_sample_space_time()
 
 
-## ----stacked-data-map, message=FALSE, warning=FALSE, eval=FALSE-------------------------------------
+## ----stacked-data-map, message=FALSE, warning=FALSE, eval=FALSE-----------------------------------------------------
 ## # plot on a US Map
 ## 
 ## # NOTE: for this to work, you may need to install some dependencies that
@@ -490,7 +490,7 @@ stacked_inv %>%
     facet_var = "package_id")
 
 
-## ----plot-common-neon-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NEON taxa"----
+## ----plot-common-neon-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NEON taxa"-------------
 # Plot common NEON taxa abundances
 # you can set the min_occurrence argument to have a reasonable cutoff based 
 # on the plot above
@@ -498,7 +498,7 @@ flat_neon_inv_d05 %>%
   plot_taxa_occur_freq(min_occurrence = 100)
 
 
-## ----plot-common-ntl-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NTL taxa"----
+## ----plot-common-ntl-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NTL taxa"---------------
 # Plot common NTL taxa abundances
 flat_ntl_inv %>% 
   plot_taxa_occur_freq(min_occurrence = 30)

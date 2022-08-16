@@ -4,7 +4,6 @@ syncID: 19fe7b1f052c478c8a7df52e4e03efbf
 description: Download and explore NEON algae and aquatic macroinvertebrate data with
   the ecocomDP package for R using the CyVerse Discovery Environment
 output:
-  pdf_document: default
   html_document:
     df_print: paged
 authors: Eric R. Sokol
@@ -80,7 +79,8 @@ Prior to starting the tutorial, ensure that the following packages are installed
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **ecocomDP:** `install.packages("ecocomDP")`
 
-<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.  
+
 
 <div id="ds-cyverse" markdown="1">
 
@@ -121,7 +121,9 @@ Once RStudio is open, you should be able to begin the rest of the tutorial.
 
 **NOTE**: to get more information on using any of the CyVerse platforms, including VICE, you can check out the [CyVerse Learning Center](https://learning.cyverse.org/).
 
+
 </div>
+
 
 ## Load libraries and prepare workspace  
 
@@ -215,9 +217,8 @@ Now that we have the data downloaded, we will need to do some 'data wrangling' t
     # data product
     names(all_tabs_inv)
 
-    ## [1] "categoricalCodes_20120" "inv_fieldData"          "inv_persample"         
-    ## [4] "inv_taxonomyProcessed"  "issueLog_20120"         "readme_20120"          
-    ## [7] "validation_20120"       "variables_20120"
+    ## [1] "categoricalCodes_20120" "inv_fieldData"          "inv_persample"          "inv_taxonomyProcessed" 
+    ## [5] "issueLog_20120"         "readme_20120"           "validation_20120"       "variables_20120"
 
     # extract items from list and put in R env. 
     all_tabs_inv %>% list2env(.GlobalEnv)
@@ -533,7 +534,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220815180958"
+    ## [1] "neon.ecocomdp.20120.001.001.20220816164058"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -548,7 +549,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-08-15 18:10:00 EDT"
+    ## [1] "2022-08-16 16:40:59 EDT"
 
     # validation issues? None if returns an empty list
     data_neon_inv$validation_issues
@@ -563,30 +564,23 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
 
     data_neon_inv$tables$taxon %>% head()
 
-    ##   taxon_id taxon_rank             taxon_name                                    authority_system
-    ## 1   ABLMAL    species   Ablabesmyia mallochi Epler 2001, and Maschwitz and Cook 2000; Epler 2001
-    ## 2    ABLSP      genus        Ablabesmyia sp.                          Roback 1985 and Epler 2001
-    ## 3   ACASP1   subclass              Acari sp.                               Thorp and Covich 2001
-    ## 4   ACEMAC    species Acerpenna macdunnoughi                          Morihara & McCafferty 1979
-    ## 5   ACEPYG    species      Acerpenna pygmaea           Morihara & McCafferty 1979; Wiersema 2004
-    ## 6    ACESP      genus         Acentrella sp. Merritt and Cummins 2008; Jacobus & McCafferty 2006
-    ##   authority_taxon_id
-    ## 1               <NA>
-    ## 2               <NA>
-    ## 3               <NA>
-    ## 4               <NA>
-    ## 5               <NA>
-    ## 6               <NA>
+    ##   taxon_id taxon_rank             taxon_name                                    authority_system authority_taxon_id
+    ## 1   ABLMAL    species   Ablabesmyia mallochi Epler 2001, and Maschwitz and Cook 2000; Epler 2001               <NA>
+    ## 2    ABLSP      genus        Ablabesmyia sp.                          Roback 1985 and Epler 2001               <NA>
+    ## 3   ACASP1   subclass              Acari sp.                               Thorp and Covich 2001               <NA>
+    ## 4   ACEMAC    species Acerpenna macdunnoughi                          Morihara & McCafferty 1979               <NA>
+    ## 5   ACEPYG    species      Acerpenna pygmaea           Morihara & McCafferty 1979; Wiersema 2004               <NA>
+    ## 6    ACESP      genus         Acentrella sp. Merritt and Cummins 2008; Jacobus & McCafferty 2006               <NA>
 
     data_neon_inv$tables$observation %>% head()
 
     ##   observation_id                event_id                                 package_id    location_id
-    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
     ##              datetime taxon_id variable_name value                   unit
     ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
     ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -636,7 +630,7 @@ The `flatten_data()` function will properly flatten and merge all the tables in 
     # we can tell because multiple event_id's can share a site and date
 
 
-    # compare taxa and abundances across sites
+    # compare taxa and abundances across sampler types
     flat_neon_inv %>% 
       plot_taxa_abund(
         trans = "log10",
