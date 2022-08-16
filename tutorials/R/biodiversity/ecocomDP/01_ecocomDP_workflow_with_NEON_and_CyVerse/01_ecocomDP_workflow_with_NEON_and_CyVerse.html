@@ -227,7 +227,7 @@ After completing this tutorial you will be able to:
 <li><strong>ecocomDP:</strong> <code>install.packages(&quot;ecocomDP&quot;)</code></li>
 </ul>
 
-<p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
+<p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.  </p>
 
 <div id="ds-cyverse" markdown="1">
 
@@ -267,6 +267,7 @@ You will either be brought to a loading page or directly to an RStudio session. 
 Once RStudio is open, you should be able to begin the rest of the tutorial.
 
 **NOTE**: to get more information on using any of the CyVerse platforms, including VICE, you can check out the [CyVerse Learning Center](https://learning.cyverse.org/).
+
 
 </div>
 
@@ -359,9 +360,8 @@ all_tabs_inv &lt;- neonUtilities::loadByProduct(
 # data product
 names(all_tabs_inv)
 
-## [1] &quot;categoricalCodes_20120&quot; &quot;inv_fieldData&quot;          &quot;inv_persample&quot;         
-## [4] &quot;inv_taxonomyProcessed&quot;  &quot;issueLog_20120&quot;         &quot;readme_20120&quot;          
-## [7] &quot;validation_20120&quot;       &quot;variables_20120&quot;
+## [1] &quot;categoricalCodes_20120&quot; &quot;inv_fieldData&quot;          &quot;inv_persample&quot;          &quot;inv_taxonomyProcessed&quot; 
+## [5] &quot;issueLog_20120&quot;         &quot;readme_20120&quot;           &quot;validation_20120&quot;       &quot;variables_20120&quot;
 
 # extract items from list and put in R env. 
 all_tabs_inv %&gt;% list2env(.GlobalEnv)
@@ -678,7 +678,7 @@ data_neon_inv$id
 data_neon_inv$metadata$data_package_info
 
 ## $data_package_id
-## [1] &quot;neon.ecocomdp.20120.001.001.20220815180958&quot;
+## [1] &quot;neon.ecocomdp.20120.001.001.20220816164058&quot;
 ## 
 ## $taxonomic_group
 ## [1] &quot;MACROINVERTEBRATES&quot;
@@ -693,7 +693,7 @@ data_neon_inv$metadata$data_package_info
 ## [1] &quot;original NEON data accessed using neonUtilities v2.1.4&quot;
 ## 
 ## $data_access_date_time
-## [1] &quot;2022-08-15 18:10:00 EDT&quot;
+## [1] &quot;2022-08-16 16:40:59 EDT&quot;
 
 # validation issues? None if returns an empty list
 data_neon_inv$validation_issues
@@ -708,30 +708,23 @@ data_neon_inv$tables %&gt;% names()
 
 data_neon_inv$tables$taxon %&gt;% head()
 
-##   taxon_id taxon_rank             taxon_name                                    authority_system
-## 1   ABLMAL    species   Ablabesmyia mallochi Epler 2001, and Maschwitz and Cook 2000; Epler 2001
-## 2    ABLSP      genus        Ablabesmyia sp.                          Roback 1985 and Epler 2001
-## 3   ACASP1   subclass              Acari sp.                               Thorp and Covich 2001
-## 4   ACEMAC    species Acerpenna macdunnoughi                          Morihara &amp; McCafferty 1979
-## 5   ACEPYG    species      Acerpenna pygmaea           Morihara &amp; McCafferty 1979; Wiersema 2004
-## 6    ACESP      genus         Acentrella sp. Merritt and Cummins 2008; Jacobus &amp; McCafferty 2006
-##   authority_taxon_id
-## 1               &lt;NA&gt;
-## 2               &lt;NA&gt;
-## 3               &lt;NA&gt;
-## 4               &lt;NA&gt;
-## 5               &lt;NA&gt;
-## 6               &lt;NA&gt;
+##   taxon_id taxon_rank             taxon_name                                    authority_system authority_taxon_id
+## 1   ABLMAL    species   Ablabesmyia mallochi Epler 2001, and Maschwitz and Cook 2000; Epler 2001               &lt;NA&gt;
+## 2    ABLSP      genus        Ablabesmyia sp.                          Roback 1985 and Epler 2001               &lt;NA&gt;
+## 3   ACASP1   subclass              Acari sp.                               Thorp and Covich 2001               &lt;NA&gt;
+## 4   ACEMAC    species Acerpenna macdunnoughi                          Morihara &amp; McCafferty 1979               &lt;NA&gt;
+## 5   ACEPYG    species      Acerpenna pygmaea           Morihara &amp; McCafferty 1979; Wiersema 2004               &lt;NA&gt;
+## 6    ACESP      genus         Acentrella sp. Merritt and Cummins 2008; Jacobus &amp; McCafferty 2006               &lt;NA&gt;
 
 data_neon_inv$tables$observation %&gt;% head()
 
 ##   observation_id                event_id                                 package_id    location_id
-## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
-## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220815180958 COMO.AOS.reach
+## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
 ##              datetime taxon_id variable_name value                   unit
 ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
 ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -782,7 +775,7 @@ View(flat_neon_inv)
 # we can tell because multiple event_id&#39;s can share a site and date
 
 
-# compare taxa and abundances across sites
+# compare taxa and abundances across sampler types
 flat_neon_inv %&gt;% 
   plot_taxa_abund(
     trans = &quot;log10&quot;,
