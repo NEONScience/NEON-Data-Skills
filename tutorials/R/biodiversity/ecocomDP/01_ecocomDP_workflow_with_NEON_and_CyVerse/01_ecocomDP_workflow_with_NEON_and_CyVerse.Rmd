@@ -45,7 +45,7 @@ For more information on `ecocomDP`, see the GitHub repo here:
 
 In this lesson, we will learn how to find and access ecological community datasets provided by the [National Ecological Observatory Network (NEON)](https://www.neonscience.org/) and the [Environmental Data Initiative (EDI)](https://edirepository.org/). 
 
-Excises in this lesson will cover:  
+Exercises in this lesson will cover:  
 
  * How to access NEON data and supporting information using the NEON data portal
  * How to import NEON data into your R session
@@ -78,11 +78,13 @@ Prior to starting the tutorial, ensure that the following packages are installed
 * **tidyverse:** `install.packages("tidyverse")`
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **ecocomDP:** `install.packages("ecocomDP")`
+* **vegan:** `install.packages("vegan")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.  
 
 
-<div id="ds-cyverse" markdown="1">
+<div id="ds-objectives" markdown="1">
+
 
 ## RStudio on the VICE cloud  
 
@@ -157,7 +159,9 @@ This code chunk also includes two optional lines for clearing out your environme
 
 Also, consider using a NEON API token. This will allow you increased download speeds and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.
 
-<div id="ds-tokensetup" markdown="1">  
+
+<div id="ds-objectives" markdown="1">
+
 
 ## Using your NEON_TOKEN with the VICE cloud  
 
@@ -165,6 +169,7 @@ Also, consider using a NEON API token. This will allow you increased download sp
 ```{r create-Renviron, eval=F, comment=NA}
 usethis::edit_r_environ()
 ```
+
 A new .Renviron file will be created. 
 
 2. Add one line to the .Renviron file. There are no quotes around the token value.  
@@ -181,7 +186,9 @@ readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 
 You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables.  
 
+
 </div>
+
 
 Now that our workspace is prepared, let's look at some data.
 
@@ -419,7 +426,7 @@ In addition to the `sampling_effort_summary` table displayed above, we have also
 
 Now that the data have been "wrangled", we can plot some basic visualizations to explore some characteristics of this dataset. Here we will look at the taxonomic resolution reported in the dataset. Does it make sense for this type of data?
 
-```{r long-data, fig.cap= "Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.", message=FALSE, warning=FALSE}
+```{r long-data, message=FALSE, warning=FALSE, fig.cap= "Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."}
 
 # no. taxa by rank by site
 table_observation %>% 
@@ -481,7 +488,7 @@ Examining the data model for ecocomDP, we see it follows a star-schema with long
 <figure>
 <a href="https://github.com/EDIorg/ecocomDP/blob/master/model/table_description.md">
 <img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
-<figcaption>Diagram showing relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
+<figcaption>Fig 2. Diagram showing relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
 </figure>
 
 ### Find a NEON ecocomDP dataset  
@@ -550,7 +557,7 @@ Notice that the records in the observation table are reported as densities stand
 
 The `ecocomDP` package offers some useful data visualization tools.
 
-```{r macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from select NEON sites."}
+```{r macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Fig 3. Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from select NEON sites."}
 
 # Explore the spatial and temporal coverage 
 # of the dataset
@@ -562,7 +569,7 @@ data_neon_inv %>% plot_sample_space_time()
 
 ```
 
-```{r macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from select NEON sites."}
+```{r macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Fig 4. Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from select NEON sites."}
 
 # Explore the taxonomic resolution in the dataset. 
 # What is the most common taxonomic resolution (rank) 
@@ -587,7 +594,7 @@ View(flat_neon_inv)
 # we can tell because multiple event_id's can share a site and date
 ```
 
-```{r macroinvert-datavis-densities, message=FALSE, warning=FALSE, fig.cap="Densities of benthic macroinvertebrates from select NEON sites."}
+```{r macroinvert-datavis-densities, message=FALSE, warning=FALSE, fig.cap="Fig 5. Densities of benthic macroinvertebrates from select NEON sites."}
 # compare taxa and abundances across sampler types
 flat_neon_inv %>% 
   plot_taxa_abund(
@@ -599,7 +606,7 @@ flat_neon_inv %>%
 
 
 The ecocomDP format is also easy to pivot to wide format for use with commonly used analyses, such as the ordination functions in the `vegan` package for R. 
-```{r wide-neon-ecocomDP, message=FALSE, warning=FALSE, fig.cap="NMDS of benthic macroinvertebrates from select NEON sites."}
+```{r wide-neon-ecocomDP, message=FALSE, warning=FALSE, fig.cap="Fig 6. NMDS of benthic macroinvertebrates from select NEON sites."}
 # make wide, event_id by taxon_id
 wide_neon_inv <- data_neon_inv$tables$observation %>%
   pivot_wider(
@@ -690,7 +697,7 @@ View(flat_ntl_inv)
 
 Next, we can stack the NEON and the North Temperate Lakes (NTL) LTER benthic macroinvertebrate datasets and make some plots to explore if these two datasets are comparable. Many of the built-in ecocomDP plotting functions will work with the stacked datasets because they both have the same required core ecocomDP variables. However, the ancillary variabiles from each dataset will be different, and these fields will not be useful in the stacked dataset.  
 
-```{r stack-and-compare-ranks, message=FALSE, warning=FALSE, fig.cap="Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"}
+```{r stack-and-compare-ranks, message=FALSE, warning=FALSE, fig.cap="Fig 7. Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"}
 # The NEON dataset is pretty extensive, including streams and lakes. Let's
 # look at what kind of ancillary data are included that might be useful
 # for filtering the dataset:
@@ -722,7 +729,7 @@ stacked_inv %>%
 
 
 
-```{r stacked-data-spatial-and-temporal-replication, message=FALSE, warning=FALSE, fig.cap="Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"}
+```{r stacked-data-spatial-and-temporal-replication, message=FALSE, warning=FALSE, fig.cap="Fig 8. Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"}
 # compare spatial and temporal replication
 # updates are planned for this plotting function to allow 
 # additional aesthetic mappings and faceting
@@ -746,7 +753,7 @@ stacked_inv %>%
 # Figure not shown
 ```
 
-```{r stacked-data-richness, message=FALSE, warning=FALSE, fig.cap="Richness over time of NEON and NTL LTER macroinvertebrate datasets"}
+```{r stacked-data-richness, message=FALSE, warning=FALSE, fig.cap="Fig 9. Richness over time of NEON and NTL LTER macroinvertebrate datasets"}
 # explore richness through time
 stacked_inv %>% 
   plot_taxa_diversity(time_window_size = "year") 
@@ -754,14 +761,14 @@ stacked_inv %>%
 ```
 
 
-```{r stacked-occurrence-freq, message=FALSE, warning=FALSE, fig.cap="Occurrence frequencies observed in NEON and NTL LTER macroinvertebrate datasets"}
+```{r stacked-occurrence-freq, message=FALSE, warning=FALSE, fig.cap="Fig 10. Occurrence frequencies observed in NEON and NTL LTER macroinvertebrate datasets"}
 # compare taxa and abundances
 stacked_inv %>% 
   plot_taxa_occur_freq(
     facet_var = "package_id")
 ```
 To actually see the top taxa in each dataset, we need to plot them separately.
-```{r plot-common-neon-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NEON taxa"}
+```{r plot-common-neon-taxa, message=FALSE, warning=FALSE, fig.cap="Fig 11. No. occurrences of common NEON taxa"}
 # Plot common NEON taxa abundances
 # you can set the min_occurrence argument to have a reasonable cutoff based 
 # on the plot above
@@ -769,7 +776,7 @@ flat_neon_inv_d05 %>%
   plot_taxa_occur_freq(min_occurrence = 100)
 ```
 
-```{r plot-common-ntl-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NTL taxa"}
+```{r plot-common-ntl-taxa, message=FALSE, warning=FALSE, fig.cap="Fig 12. No. occurrences of common NTL taxa"}
 # Plot common NTL taxa abundances
 flat_ntl_inv %>% 
   plot_taxa_occur_freq(min_occurrence = 30)

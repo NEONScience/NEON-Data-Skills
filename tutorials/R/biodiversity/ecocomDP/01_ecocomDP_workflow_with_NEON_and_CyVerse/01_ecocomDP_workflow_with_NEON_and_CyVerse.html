@@ -189,7 +189,7 @@ After completing this tutorial you will be able to:
 
 <p>In this lesson, we will learn how to find and access ecological community datasets provided by the <a href="https://www.neonscience.org/">National Ecological Observatory Network (NEON)</a> and the <a href="https://edirepository.org/">Environmental Data Initiative (EDI)</a>. </p>
 
-<p>Excises in this lesson will cover:  </p>
+<p>Exercises in this lesson will cover:  </p>
 
 <ul>
 <li>How to access NEON data and supporting information using the NEON data portal</li>
@@ -225,11 +225,13 @@ After completing this tutorial you will be able to:
 <li><strong>tidyverse:</strong> <code>install.packages(&quot;tidyverse&quot;)</code></li>
 <li><strong>neonUtilities:</strong> <code>install.packages(&quot;neonUtilities&quot;)</code></li>
 <li><strong>ecocomDP:</strong> <code>install.packages(&quot;ecocomDP&quot;)</code></li>
+<li><strong>vegan:</strong> <code>install.packages(&quot;vegan&quot;)</code></li>
 </ul>
 
 <p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.  </p>
 
-<div id="ds-cyverse" markdown="1">
+<div id="ds-objectives" markdown="1">
+
 
 ## RStudio on the VICE cloud  
 
@@ -290,13 +292,15 @@ library(ecocomDP)
 
 <p>Also, consider using a NEON API token. This will allow you increased download speeds and helps NEON <strong>anonymously</strong> track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.</p>
 
-<div id="ds-tokensetup" markdown="1">  
+<div id="ds-objectives" markdown="1">
+
 
 ## Using your NEON_TOKEN with the VICE cloud  
 
 1. In your RStudio session running on the VICE app, type the following in the Console:  
 
     usethis::edit_r_environ()
+
 A new .Renviron file will be created. 
 
 2. Add one line to the .Renviron file. There are no quotes around the token value.  
@@ -310,6 +314,7 @@ A new .Renviron file will be created.
     readRenviron(&ldquo;../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron&rdquo;)
 
 You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables.  
+
 
 </div>
 
@@ -571,7 +576,7 @@ table_observation %&gt;%
   geom_col()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/long-data-1.png" alt="Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/long-data-1.png" alt="Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."/></p>
 
 <p>What other visualizations would you plot as an initial exploration of this dataset to determine if it would be sufficient for your science question?</p>
 
@@ -625,7 +630,7 @@ rowSums(table_sample_by_taxon_density_wide) %&gt;% min()
 <figure>
 <a href="https://github.com/EDIorg/ecocomDP/blob/master/model/table_description.md">
 <img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
-<figcaption>Diagram showing relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
+<figcaption>Fig 2. Diagram showing relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
 </figure>
 
 <h3>Find a NEON ecocomDP dataset</h3>
@@ -678,7 +683,7 @@ data_neon_inv$id
 data_neon_inv$metadata$data_package_info
 
 ## $data_package_id
-## [1] &quot;neon.ecocomdp.20120.001.001.20220816164058&quot;
+## [1] &quot;neon.ecocomdp.20120.001.001.20220817160727&quot;
 ## 
 ## $taxonomic_group
 ## [1] &quot;MACROINVERTEBRATES&quot;
@@ -693,7 +698,7 @@ data_neon_inv$metadata$data_package_info
 ## [1] &quot;original NEON data accessed using neonUtilities v2.1.4&quot;
 ## 
 ## $data_access_date_time
-## [1] &quot;2022-08-16 16:40:59 EDT&quot;
+## [1] &quot;2022-08-17 16:07:27 EDT&quot;
 
 # validation issues? None if returns an empty list
 data_neon_inv$validation_issues
@@ -719,12 +724,12 @@ data_neon_inv$tables$taxon %&gt;% head()
 data_neon_inv$tables$observation %&gt;% head()
 
 ##   observation_id                event_id                                 package_id    location_id
-## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
-## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
-## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
-## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
-## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
-## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220816164058 COMO.AOS.reach
+## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
+## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
+## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
+## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
+## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
+## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
 ##              datetime taxon_id variable_name value                   unit
 ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
 ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -745,7 +750,7 @@ data_neon_inv$tables$observation %&gt;% head()
 data_neon_inv %&gt;% plot_sample_space_time()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/macroinvert-datavis-space-time-1.png" alt="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from select NEON sites."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/macroinvert-datavis-space-time-1.png" alt="Fig 3. Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from select NEON sites."/></p>
 
 <pre><code># As noted above, this plot shows replicate &quot;event_id&#39;s&quot; can occur
 # at the same time at the same site, indicating these are replicate
@@ -758,7 +763,7 @@ data_neon_inv %&gt;% plot_sample_space_time()
 data_neon_inv %&gt;% plot_taxa_rank()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/macroinvert-datavis-ranks-1.png" alt="Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from select NEON sites."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/macroinvert-datavis-ranks-1.png" alt="Fig 4. Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from select NEON sites."/></p>
 
 <h3>Manipulating ecocomDP data objects</h3>
 
@@ -783,7 +788,7 @@ flat_neon_inv %&gt;%
     color_var = &quot;samplerType&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/macroinvert-datavis-densities-1.png" alt="Densities of benthic macroinvertebrates from select NEON sites."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/macroinvert-datavis-densities-1.png" alt="Fig 5. Densities of benthic macroinvertebrates from select NEON sites."/></p>
 
 <p>The ecocomDP format is also easy to pivot to wide format for use with commonly used analyses, such as the ordination functions in the <code>vegan</code> package for R. </p>
 
@@ -814,33 +819,35 @@ my_nmds_result &lt;- wide_neon_inv %&gt;% metaMDS()
 ## Square root transformation
 ## Wisconsin double standardization
 ## Run 0 stress 0.1977579 
-## Run 1 stress 0.2413866 
-## Run 2 stress 0.1952459 
+## Run 1 stress 0.2519111 
+## Run 2 stress 0.2317414 
+## Run 3 stress 0.1960912 
 ## ... New best solution
-## ... Procrustes: rmse 0.02892479  max resid 0.3230924 
-## Run 3 stress 0.2074269 
-## Run 4 stress 0.2493315 
-## Run 5 stress 0.2372703 
-## Run 6 stress 0.2216672 
-## Run 7 stress 0.2063018 
-## Run 8 stress 0.1952428 
+## ... Procrustes: rmse 0.02992753  max resid 0.322737 
+## Run 4 stress 0.2201524 
+## Run 5 stress 0.2385764 
+## Run 6 stress 0.2360815 
+## Run 7 stress 0.1960912 
+## ... Procrustes: rmse 4.914874e-05  max resid 0.0003309762 
+## ... Similar to previous best
+## Run 8 stress 0.2509116 
+## Run 9 stress 0.2383856 
+## Run 10 stress 0.2259427 
+## Run 11 stress 0.1952428 
 ## ... New best solution
-## ... Procrustes: rmse 0.001200194  max resid 0.01156968 
-## Run 9 stress 0.2469163 
-## Run 10 stress 0.2265748 
-## Run 11 stress 0.2521283 
-## Run 12 stress 0.2177269 
-## Run 13 stress 0.2076243 
-## Run 14 stress 0.22689 
-## Run 15 stress 0.2495064 
-## Run 16 stress 0.221731 
-## Run 17 stress 0.2072354 
-## Run 18 stress 0.2499488 
-## Run 19 stress 0.2183244 
-## Run 20 stress 0.2378091 
+## ... Procrustes: rmse 0.00773054  max resid 0.08461311 
+## Run 12 stress 0.2470383 
+## Run 13 stress 0.2427363 
+## Run 14 stress 0.2367005 
+## Run 15 stress 0.2504481 
+## Run 16 stress 0.2507786 
+## Run 17 stress 0.2367918 
+## Run 18 stress 0.2530849 
+## Run 19 stress 0.2443391 
+## Run 20 stress 0.1962005 
 ## *** No convergence -- monoMDS stopping criteria:
-##     18: stress ratio &gt; sratmax
-##      2: scale factor of the gradient &lt; sfgrmin
+##     19: stress ratio &gt; sratmax
+##      1: scale factor of the gradient &lt; sfgrmin
 
 # ordination stress
 my_nmds_result$stress
@@ -851,7 +858,7 @@ my_nmds_result$stress
 ordiplot(my_nmds_result)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/wide-neon-ecocomDP-1.png" alt="NMDS of benthic macroinvertebrates from select NEON sites."/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/wide-neon-ecocomDP-1.png" alt="Fig 6. NMDS of benthic macroinvertebrates from select NEON sites."/></p>
 
 <h3>EXAMPLE 4: Compare NEON and LTER ecocomDP datasets</h3>
 
@@ -951,7 +958,7 @@ stacked_inv %&gt;%
     facet_scales = &quot;free_x&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stack-and-compare-ranks-1.png" alt="Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stack-and-compare-ranks-1.png" alt="Fig 7. Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"/></p>
 
 <pre><code># compare spatial and temporal replication
 # updates are planned for this plotting function to allow 
@@ -960,7 +967,7 @@ stacked_inv %&gt;%
   plot_sample_space_time()
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stacked-data-spatial-and-temporal-replication-1.png" alt="Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"/>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stacked-data-spatial-and-temporal-replication-1.png" alt="Fig 8. Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"/>
 Notice that the NTL sites have a much longer time series and the NEON data add a good amount of spatial replication.</p>
 
 <pre><code># plot on a US Map
@@ -982,7 +989,7 @@ stacked_inv %&gt;%
   plot_taxa_diversity(time_window_size = &quot;year&quot;) 
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stacked-data-richness-1.png" alt="Richness over time of NEON and NTL LTER macroinvertebrate datasets"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stacked-data-richness-1.png" alt="Fig 9. Richness over time of NEON and NTL LTER macroinvertebrate datasets"/></p>
 
 <pre><code># compare taxa and abundances
 stacked_inv %&gt;% 
@@ -990,7 +997,7 @@ stacked_inv %&gt;%
     facet_var = &quot;package_id&quot;)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stacked-occurrence-freq-1.png" alt="Occurrence frequencies observed in NEON and NTL LTER macroinvertebrate datasets"/>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/stacked-occurrence-freq-1.png" alt="Fig 10. Occurrence frequencies observed in NEON and NTL LTER macroinvertebrate datasets"/>
 To actually see the top taxa in each dataset, we need to plot them separately.</p>
 
 <pre><code># Plot common NEON taxa abundances
@@ -1000,14 +1007,14 @@ flat_neon_inv_d05 %&gt;%
   plot_taxa_occur_freq(min_occurrence = 100)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/plot-common-neon-taxa-1.png" alt="No. occurrences of common NEON taxa"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/plot-common-neon-taxa-1.png" alt="Fig 11. No. occurrences of common NEON taxa"/></p>
 
 <pre><code># Plot common NTL taxa abundances
 flat_ntl_inv %&gt;% 
   plot_taxa_occur_freq(min_occurrence = 30)
 </code></pre>
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/plot-common-ntl-taxa-1.png" alt="No. occurrences of common NTL taxa"/></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/plot-common-ntl-taxa-1.png" alt="Fig 12. No. occurrences of common NTL taxa"/></p>
 
 <h2>Moving forward with synthesis</h2>
 
