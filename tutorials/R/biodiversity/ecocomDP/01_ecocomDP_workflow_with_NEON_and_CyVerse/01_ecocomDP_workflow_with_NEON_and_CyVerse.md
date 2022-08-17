@@ -432,6 +432,8 @@ Now that the data have been "wrangled", we can plot some basic visualizations to
       facet_wrap(~ domainID + siteID) +
       geom_col()
 
+    ## `summarise()` has grouped output by 'domainID', 'siteID'. You can override using the `.groups` argument.
+
 ![Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/long-data-1.png)
 
 What other visualizations would you plot as an initial exploration of this dataset to determine if it would be sufficient for your science question?
@@ -541,7 +543,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220817160727"
+    ## [1] "neon.ecocomdp.20120.001.001.20220817162019"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -556,7 +558,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-08-17 16:07:27 EDT"
+    ## [1] "2022-08-17 16:20:21 EDT"
 
     # validation issues? None if returns an empty list
     data_neon_inv$validation_issues
@@ -582,12 +584,12 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$tables$observation %>% head()
 
     ##   observation_id                event_id                                 package_id    location_id
-    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
-    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
-    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
-    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
-    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
-    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817160727 COMO.AOS.reach
+    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
+    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
+    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
+    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
+    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
+    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
     ##              datetime taxon_id variable_name value                   unit
     ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
     ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -676,35 +678,34 @@ The ecocomDP format is also easy to pivot to wide format for use with commonly u
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.1977579 
-    ## Run 1 stress 0.2519111 
-    ## Run 2 stress 0.2317414 
-    ## Run 3 stress 0.1960912 
+    ## Run 1 stress 0.2423953 
+    ## Run 2 stress 0.2533573 
+    ## Run 3 stress 0.2493682 
+    ## Run 4 stress 0.1960867 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.02992753  max resid 0.322737 
-    ## Run 4 stress 0.2201524 
-    ## Run 5 stress 0.2385764 
-    ## Run 6 stress 0.2360815 
-    ## Run 7 stress 0.1960912 
-    ## ... Procrustes: rmse 4.914874e-05  max resid 0.0003309762 
-    ## ... Similar to previous best
-    ## Run 8 stress 0.2509116 
-    ## Run 9 stress 0.2383856 
-    ## Run 10 stress 0.2259427 
-    ## Run 11 stress 0.1952428 
+    ## ... Procrustes: rmse 0.02997405  max resid 0.3228762 
+    ## Run 5 stress 0.2368729 
+    ## Run 6 stress 0.2457034 
+    ## Run 7 stress 0.2318591 
+    ## Run 8 stress 0.2179033 
+    ## Run 9 stress 0.2266342 
+    ## Run 10 stress 0.2501205 
+    ## Run 11 stress 0.1961934 
+    ## ... Procrustes: rmse 0.003229357  max resid 0.02282667 
+    ## Run 12 stress 0.2399977 
+    ## Run 13 stress 0.2178652 
+    ## Run 14 stress 0.1990967 
+    ## Run 15 stress 0.1971954 
+    ## Run 16 stress 0.2359991 
+    ## Run 17 stress 0.2406257 
+    ## Run 18 stress 0.1952428 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.00773054  max resid 0.08461311 
-    ## Run 12 stress 0.2470383 
-    ## Run 13 stress 0.2427363 
-    ## Run 14 stress 0.2367005 
-    ## Run 15 stress 0.2504481 
-    ## Run 16 stress 0.2507786 
-    ## Run 17 stress 0.2367918 
-    ## Run 18 stress 0.2530849 
-    ## Run 19 stress 0.2443391 
-    ## Run 20 stress 0.1962005 
+    ## ... Procrustes: rmse 0.007645605  max resid 0.08465691 
+    ## Run 19 stress 0.2442925 
+    ## Run 20 stress 0.1971954 
     ## *** No convergence -- monoMDS stopping criteria:
-    ##     19: stress ratio > sratmax
-    ##      1: scale factor of the gradient < sfgrmin
+    ##     15: stress ratio > sratmax
+    ##      5: scale factor of the gradient < sfgrmin
 
     # ordination stress
     my_nmds_result$stress

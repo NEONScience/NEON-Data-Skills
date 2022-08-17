@@ -166,21 +166,21 @@ Also, consider using a NEON API token. This will allow you increased download sp
 ## Using your NEON_TOKEN with the VICE cloud  
 
 1. In your RStudio session running on the VICE app, type the following in the Console:  
-```{r create-Renviron, eval=F, comment=NA}
+```{r create-Renviron, eval=F}
 usethis::edit_r_environ()
 ```
 
 A new .Renviron file will be created. 
 
 2. Add one line to the .Renviron file. There are no quotes around the token value.  
-```{r set-token, eval=F, comment=NA}
+```{r add-token-Renviron, eval=F}
 NEON_TOKEN=PASTE YOUR TOKEN HERE
 ```
 
 3. Go to "File -> Save As" and then navigate to "work > home > YOUR CYVERSE USERNAME" and save your .Renviron file in your personal storage space.   
 
 4. Read your .Renviron variables to your R session:  
-```{r read-Renviron, eval=F, comment=NA}
+```{r read-Renviron, eval=F}
 readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 ```
 
@@ -426,7 +426,7 @@ In addition to the `sampling_effort_summary` table displayed above, we have also
 
 Now that the data have been "wrangled", we can plot some basic visualizations to explore some characteristics of this dataset. Here we will look at the taxonomic resolution reported in the dataset. Does it make sense for this type of data?
 
-```{r long-data, message=FALSE, warning=FALSE, fig.cap= "Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."}
+```{r long-data, warning=FALSE, fig.cap= "Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."}
 
 # no. taxa by rank by site
 table_observation %>% 

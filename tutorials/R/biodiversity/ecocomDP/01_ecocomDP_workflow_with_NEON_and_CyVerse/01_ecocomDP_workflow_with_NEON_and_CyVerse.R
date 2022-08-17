@@ -12,16 +12,16 @@ library(ecocomDP)
 
 
 
-## ----create-Renviron, eval=F, comment=NA----------------------------------------------------------------------------
-usethis::edit_r_environ()
+## ----create-Renviron, eval=F----------------------------------------------------------------------------------------
+## usethis::edit_r_environ()
 
 
-## ----set-token, eval=F, comment=NA----------------------------------------------------------------------------------
-NEON_TOKEN=PASTE YOUR TOKEN HERE
+## ----add-token-Renviron, eval=F-------------------------------------------------------------------------------------
+## NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 
-## ----read-Renviron, eval=F, comment=NA------------------------------------------------------------------------------
-readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
+## ----read-Renviron, eval=F------------------------------------------------------------------------------------------
+## readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 
 
 ## ----download-data, message=FALSE, warning=FALSE, results='hide'----------------------------------------------------
@@ -225,7 +225,7 @@ sampling_effort_summary %>% as.data.frame() %>%
   head() %>% print()
 
 
-## ----long-data, message=FALSE, warning=FALSE, fig.cap= "Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."----
+## ----long-data, warning=FALSE, fig.cap= "Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."----
 
 # no. taxa by rank by site
 table_observation %>% 
