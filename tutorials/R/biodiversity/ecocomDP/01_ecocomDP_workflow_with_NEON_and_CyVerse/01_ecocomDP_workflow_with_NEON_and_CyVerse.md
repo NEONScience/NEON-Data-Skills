@@ -3,13 +3,10 @@ title: "Explore NEON biodiversity data using ecocomDP"
 syncID: 19fe7b1f052c478c8a7df52e4e03efbf
 description: Download and explore NEON algae and aquatic macroinvertebrate data with
   the ecocomDP package for R using the CyVerse Discovery Environment
-output:
-  html_document:
-    df_print: paged
 authors: Eric R. Sokol
 contributors: "Donal O'Leary, Michael Culshaw-Maurer, Sydne Record"
 estimatedTime: 1.5 Hours
-packagesLibraries: tidyverse, neonUtilities, ecocomDP
+packagesLibraries: tidyverse, neonUtilities, ecocomDP, vegan
 topics: "data-analysis, organisms, data-viz"
 languagesTool: R
 dataProduct: DP1.20120.001
@@ -432,8 +429,6 @@ Now that the data have been "wrangled", we can plot some basic visualizations to
       facet_wrap(~ domainID + siteID) +
       geom_col()
 
-    ## `summarise()` has grouped output by 'domainID', 'siteID'. You can override using the `.groups` argument.
-
 ![Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/long-data-1.png)
 
 What other visualizations would you plot as an initial exploration of this dataset to determine if it would be sufficient for your science question?
@@ -543,7 +538,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220817162019"
+    ## [1] "neon.ecocomdp.20120.001.001.20220817162807"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -558,7 +553,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-08-17 16:20:21 EDT"
+    ## [1] "2022-08-17 16:28:07 EDT"
 
     # validation issues? None if returns an empty list
     data_neon_inv$validation_issues
@@ -584,12 +579,12 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$tables$observation %>% head()
 
     ##   observation_id                event_id                                 package_id    location_id
-    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
-    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
-    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
-    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
-    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
-    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162019 COMO.AOS.reach
+    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
+    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
+    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
+    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
+    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
+    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
     ##              datetime taxon_id variable_name value                   unit
     ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
     ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -678,31 +673,28 @@ The ecocomDP format is also easy to pivot to wide format for use with commonly u
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.1977579 
-    ## Run 1 stress 0.2423953 
-    ## Run 2 stress 0.2533573 
-    ## Run 3 stress 0.2493682 
-    ## Run 4 stress 0.1960867 
+    ## Run 1 stress 0.2552762 
+    ## Run 2 stress 0.2442044 
+    ## Run 3 stress 0.249624 
+    ## Run 4 stress 0.2196078 
+    ## Run 5 stress 0.2512428 
+    ## Run 6 stress 0.2491116 
+    ## Run 7 stress 0.2320675 
+    ## Run 8 stress 0.2074375 
+    ## Run 9 stress 0.2049156 
+    ## Run 10 stress 0.1952428 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.02997405  max resid 0.3228762 
-    ## Run 5 stress 0.2368729 
-    ## Run 6 stress 0.2457034 
-    ## Run 7 stress 0.2318591 
-    ## Run 8 stress 0.2179033 
-    ## Run 9 stress 0.2266342 
-    ## Run 10 stress 0.2501205 
-    ## Run 11 stress 0.1961934 
-    ## ... Procrustes: rmse 0.003229357  max resid 0.02282667 
-    ## Run 12 stress 0.2399977 
-    ## Run 13 stress 0.2178652 
-    ## Run 14 stress 0.1990967 
-    ## Run 15 stress 0.1971954 
-    ## Run 16 stress 0.2359991 
-    ## Run 17 stress 0.2406257 
-    ## Run 18 stress 0.1952428 
-    ## ... New best solution
-    ## ... Procrustes: rmse 0.007645605  max resid 0.08465691 
-    ## Run 19 stress 0.2442925 
-    ## Run 20 stress 0.1971954 
+    ## ... Procrustes: rmse 0.02897359  max resid 0.323252 
+    ## Run 11 stress 0.2394849 
+    ## Run 12 stress 0.1960913 
+    ## Run 13 stress 0.2496593 
+    ## Run 14 stress 0.2241801 
+    ## Run 15 stress 0.2408263 
+    ## Run 16 stress 0.217398 
+    ## Run 17 stress 0.2176384 
+    ## Run 18 stress 0.2534779 
+    ## Run 19 stress 0.197599 
+    ## Run 20 stress 0.2047104 
     ## *** No convergence -- monoMDS stopping criteria:
     ##     15: stress ratio > sratmax
     ##      5: scale factor of the gradient < sfgrmin

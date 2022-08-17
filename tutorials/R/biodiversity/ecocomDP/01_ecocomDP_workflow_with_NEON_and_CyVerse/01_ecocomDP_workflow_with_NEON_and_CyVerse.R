@@ -225,7 +225,7 @@ sampling_effort_summary %>% as.data.frame() %>%
   head() %>% print()
 
 
-## ----long-data, warning=FALSE, fig.cap= "Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."----
+## ----long-data, warning=FALSE, message=FALSE, fig.cap="Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."----
 
 # no. taxa by rank by site
 table_observation %>% 

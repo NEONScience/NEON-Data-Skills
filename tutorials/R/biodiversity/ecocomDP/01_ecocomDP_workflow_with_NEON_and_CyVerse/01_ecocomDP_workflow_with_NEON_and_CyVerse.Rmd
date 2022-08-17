@@ -3,13 +3,10 @@ title: "Explore NEON biodiversity data using ecocomDP"
 syncID: 19fe7b1f052c478c8a7df52e4e03efbf
 description: Download and explore NEON algae and aquatic macroinvertebrate data with
   the ecocomDP package for R using the CyVerse Discovery Environment
-output:
-  html_document:
-    df_print: paged
 authors: Eric R. Sokol
 contributors: "Donal O'Leary, Michael Culshaw-Maurer, Sydne Record"
 estimatedTime: 1.5 Hours
-packagesLibraries: tidyverse, neonUtilities, ecocomDP
+packagesLibraries: tidyverse, neonUtilities, ecocomDP, vegan
 topics: "data-analysis, organisms, data-viz"
 languagesTool: R
 dataProduct: DP1.20120.001
@@ -426,7 +423,7 @@ In addition to the `sampling_effort_summary` table displayed above, we have also
 
 Now that the data have been "wrangled", we can plot some basic visualizations to explore some characteristics of this dataset. Here we will look at the taxonomic resolution reported in the dataset. Does it make sense for this type of data?
 
-```{r long-data, warning=FALSE, fig.cap= "Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."}
+```{r long-data, warning=FALSE, message=FALSE, fig.cap="Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."}
 
 # no. taxa by rank by site
 table_observation %>% 
