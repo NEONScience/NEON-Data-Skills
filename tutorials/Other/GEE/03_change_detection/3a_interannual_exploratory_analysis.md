@@ -296,7 +296,7 @@ On your own, we encourage you to dig into the code from this tutorial and modify
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/326d3a190f17845eda163a9eaf45e82f" target="_blank">AOP GEE Internannual Change Exploratory Analysis</a>
+<a href="https://code.earthengine.google.com/8a8ee1c359d14c6c2413b6483a2b1615" target="_blank">AOP GEE Internannual Change Exploratory Analysis</a>
 
 
 ### Footnotes
