@@ -100,7 +100,7 @@ for (f in rmd.files) {
   # remember, fig.path gets concatenated with the base.url to make the 
   # URL for the figures in the resulting markdown document.
   opts_chunk$set(fig.path = fig.path)
-  # opts_chunk$set(fig.cap = " ")
+  opts_chunk$set(fig.cap = " ")
   # render_jekyll()
   render_markdown(strict = TRUE)
   

@@ -483,7 +483,7 @@ Examining the data model for ecocomDP, we see it follows a star-schema with long
 <figure>
 <a href="https://github.com/EDIorg/ecocomDP/blob/master/model/table_description.md">
 <img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
-<figcaption>Fig 2. Diagram showing relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
+<figcaption>The above diagram shows the relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
 </figure>
 
 ### Find a NEON ecocomDP dataset  
@@ -538,7 +538,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220817164055"
+    ## [1] "neon.ecocomdp.20120.001.001.20220817164731"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -553,7 +553,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-08-17 16:40:56 EDT"
+    ## [1] "2022-08-17 16:47:31 EDT"
 
     # validation issues? None if returns an empty list
     data_neon_inv$validation_issues
@@ -579,12 +579,12 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$tables$observation %>% head()
 
     ##   observation_id                event_id                                 package_id    location_id
-    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
-    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
-    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
-    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
-    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
-    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
+    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164731 COMO.AOS.reach
+    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164731 COMO.AOS.reach
+    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164731 COMO.AOS.reach
+    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164731 COMO.AOS.reach
+    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164731 COMO.AOS.reach
+    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164731 COMO.AOS.reach
     ##              datetime taxon_id variable_name value                   unit
     ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
     ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -673,33 +673,32 @@ The ecocomDP format is also easy to pivot to wide format for input to commonly u
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.1977579 
-    ## Run 1 stress 0.2123943 
-    ## Run 2 stress 0.2213449 
-    ## Run 3 stress 0.2185374 
-    ## Run 4 stress 0.2453631 
-    ## Run 5 stress 0.2485014 
-    ## Run 6 stress 0.2471133 
-    ## Run 7 stress 0.2436132 
-    ## Run 8 stress 0.239342 
-    ## Run 9 stress 0.2432646 
-    ## Run 10 stress 0.1960912 
+    ## Run 1 stress 0.2341592 
+    ## Run 2 stress 0.2515459 
+    ## Run 3 stress 0.2395489 
+    ## Run 4 stress 0.2024809 
+    ## Run 5 stress 0.2554477 
+    ## Run 6 stress 0.1952459 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.02992709  max resid 0.3227303 
-    ## Run 11 stress 0.245353 
-    ## Run 12 stress 0.2114205 
-    ## Run 13 stress 0.1952459 
+    ## ... Procrustes: rmse 0.02892651  max resid 0.3231079 
+    ## Run 7 stress 0.2271347 
+    ## Run 8 stress 0.2419546 
+    ## Run 9 stress 0.2420857 
+    ## Run 10 stress 0.2538498 
+    ## Run 11 stress 0.2046558 
+    ## Run 12 stress 0.2384393 
+    ## Run 13 stress 0.2049674 
+    ## Run 14 stress 0.2560111 
+    ## Run 15 stress 0.1952459 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.00764699  max resid 0.08467572 
-    ## Run 14 stress 0.2519998 
-    ## Run 15 stress 0.2297105 
-    ## Run 16 stress 0.2420364 
-    ## Run 17 stress 0.249567 
-    ## Run 18 stress 0.2280626 
-    ## Run 19 stress 0.2478268 
-    ## Run 20 stress 0.2346275 
-    ## *** No convergence -- monoMDS stopping criteria:
-    ##     16: stress ratio > sratmax
-    ##      4: scale factor of the gradient < sfgrmin
+    ## ... Procrustes: rmse 2.410456e-05  max resid 0.0001344506 
+    ## ... Similar to previous best
+    ## Run 16 stress 0.2143971 
+    ## Run 17 stress 0.2301762 
+    ## Run 18 stress 0.2468485 
+    ## Run 19 stress 0.2325335 
+    ## Run 20 stress 0.2487664 
+    ## *** Solution reached
 
     # ordination stress
     my_nmds_result$stress

@@ -485,7 +485,7 @@ Examining the data model for ecocomDP, we see it follows a star-schema with long
 <figure>
 <a href="https://github.com/EDIorg/ecocomDP/blob/master/model/table_description.md">
 <img src="https://raw.githubusercontent.com/EDIorg/ecocomDP/master/model/ecocomDP.svg" alt="data model workflow showing relationships between various tables in ecocomDP model"> </a>
-<figcaption>Fig 2. Diagram showing relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
+<figcaption>The above diagram shows the relationships between the tables in the ecocomDP model. Source: EDIorg</figcaption>
 </figure>
 
 ### Find a NEON ecocomDP dataset  
