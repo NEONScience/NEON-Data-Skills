@@ -490,7 +490,7 @@ Examining the data model for ecocomDP, we see it follows a star-schema with long
 
 ### Find a NEON ecocomDP dataset  
 
-The `search_data()` function in the `ecocomDP` provides a tool to explore the ecocomDP catalog, which includes datasets from LTER and NEON sites (and others). Using `search_data()` with no arguments will return the entire catalog. Your search can be constrained by passing a text string (you can use regular expressions) to the `text` argument. The query will search data package titles, descriptions, and abstracts. Below, we show a couple examples of how to search datasets in the ecocomDP catalog.
+The `search_data()` function in `ecocomDP` provides a tool to explore the ecocomDP catalog, which includes datasets from LTER and NEON sites (and others). Using `search_data()` with no arguments will return the entire catalog. Your search can be constrained by passing a text string (you can use [regular expressions](https://en.wikipedia.org/wiki/Regular_expression)) to the `text` argument. The query will search data package titles, descriptions, and abstracts. Below, we show a couple examples of how to search datasets in the ecocomDP catalog.
 
 ```{r search-macroinvert, message=FALSE, warning=FALSE, results='hide'}
 # clean out workspace from previous section
@@ -602,7 +602,7 @@ flat_neon_inv %>%
 ```
 
 
-The ecocomDP format is also easy to pivot to wide format for use with commonly used analyses, such as the ordination functions in the `vegan` package for R. 
+The ecocomDP format is also easy to pivot to wide format for input to commonly used analyses, such as the ordination functions in the `vegan` package for R. 
 ```{r wide-neon-ecocomDP, message=FALSE, warning=FALSE, fig.cap="Fig 6. NMDS of benthic macroinvertebrates from select NEON sites."}
 # make wide, event_id by taxon_id
 wide_neon_inv <- data_neon_inv$tables$observation %>%
@@ -637,7 +637,7 @@ ordiplot(my_nmds_result)
 
 Let's compare the full NEON benthic macroinvertebrate dataset pusblished in the 2022 Data Release ([RELEASE-2022](https://www.neonscience.org/data-samples/data-management/data-revisions-releases/release-2022): https://doi.org/10.48443/gn8x-k322) to an LTER benthic macroinvertebrate dataset from the North Temperate Lates (NTL) LTER site. 
 
-The full NEON macroinvertebrate dataset from RELEASE-2022 can be downloaded in to the ecocomDP format using the code below; however, I have already downloaded this dataset and saved it to the CyVerse Data Store for this workshop (so don't run this code chunk).
+The full NEON macroinvertebrate dataset from RELEASE-2022 can be downloaded into the ecocomDP format using the code below; however, I have already downloaded this dataset and saved it to the CyVerse Data Store for this workshop (so don't run this code chunk).
 ```{r download-full-neon-inv, eval=F, message=FALSE, warning=FALSE}
 # pull NEON aquatic "Macroinvertebrate collection" for all locations and times
 # in the 2022 Data Release

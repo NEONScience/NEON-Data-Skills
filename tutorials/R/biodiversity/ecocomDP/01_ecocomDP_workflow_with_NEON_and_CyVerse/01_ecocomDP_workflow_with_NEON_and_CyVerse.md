@@ -488,7 +488,7 @@ Examining the data model for ecocomDP, we see it follows a star-schema with long
 
 ### Find a NEON ecocomDP dataset  
 
-The `search_data()` function in the `ecocomDP` provides a tool to explore the ecocomDP catalog, which includes datasets from LTER and NEON sites (and others). Using `search_data()` with no arguments will return the entire catalog. Your search can be constrained by passing a text string (you can use regular expressions) to the `text` argument. The query will search data package titles, descriptions, and abstracts. Below, we show a couple examples of how to search datasets in the ecocomDP catalog.
+The `search_data()` function in `ecocomDP` provides a tool to explore the ecocomDP catalog, which includes datasets from LTER and NEON sites (and others). Using `search_data()` with no arguments will return the entire catalog. Your search can be constrained by passing a text string (you can use [regular expressions](https://en.wikipedia.org/wiki/Regular_expression)) to the `text` argument. The query will search data package titles, descriptions, and abstracts. Below, we show a couple examples of how to search datasets in the ecocomDP catalog.
 
 
     # clean out workspace from previous section
@@ -538,7 +538,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$metadata$data_package_info
 
     ## $data_package_id
-    ## [1] "neon.ecocomdp.20120.001.001.20220817162807"
+    ## [1] "neon.ecocomdp.20120.001.001.20220817164055"
     ## 
     ## $taxonomic_group
     ## [1] "MACROINVERTEBRATES"
@@ -553,7 +553,7 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     ## [1] "original NEON data accessed using neonUtilities v2.1.4"
     ## 
     ## $data_access_date_time
-    ## [1] "2022-08-17 16:28:07 EDT"
+    ## [1] "2022-08-17 16:40:56 EDT"
 
     # validation issues? None if returns an empty list
     data_neon_inv$validation_issues
@@ -579,12 +579,12 @@ Now that we have downloaded the data, let's take a look at the `ecocomDP` data o
     data_neon_inv$tables$observation %>% head()
 
     ##   observation_id                event_id                                 package_id    location_id
-    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
-    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
-    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
-    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
-    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
-    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817162807 COMO.AOS.reach
+    ## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
+    ## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
+    ## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
+    ## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
+    ## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
+    ## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20220817164055 COMO.AOS.reach
     ##              datetime taxon_id variable_name value                   unit
     ## 1 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
     ## 2 2017-08-03 15:29:00   BILALG       density   424 count per square meter
@@ -644,7 +644,7 @@ The `flatten_data()` function will properly flatten and merge all the tables in 
 ![Fig 5. Densities of benthic macroinvertebrates from select NEON sites.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials//R/biodiversity/ecocomDP/01_ecocomDP_workflow_with_NEON_and_CyVerse/rfigs/macroinvert-datavis-densities-1.png)
 
 
-The ecocomDP format is also easy to pivot to wide format for use with commonly used analyses, such as the ordination functions in the `vegan` package for R. 
+The ecocomDP format is also easy to pivot to wide format for input to commonly used analyses, such as the ordination functions in the `vegan` package for R. 
 
     # make wide, event_id by taxon_id
     wide_neon_inv <- data_neon_inv$tables$observation %>%
@@ -673,36 +673,38 @@ The ecocomDP format is also easy to pivot to wide format for use with commonly u
     ## Square root transformation
     ## Wisconsin double standardization
     ## Run 0 stress 0.1977579 
-    ## Run 1 stress 0.2552762 
-    ## Run 2 stress 0.2442044 
-    ## Run 3 stress 0.249624 
-    ## Run 4 stress 0.2196078 
-    ## Run 5 stress 0.2512428 
-    ## Run 6 stress 0.2491116 
-    ## Run 7 stress 0.2320675 
-    ## Run 8 stress 0.2074375 
-    ## Run 9 stress 0.2049156 
-    ## Run 10 stress 0.1952428 
+    ## Run 1 stress 0.2123943 
+    ## Run 2 stress 0.2213449 
+    ## Run 3 stress 0.2185374 
+    ## Run 4 stress 0.2453631 
+    ## Run 5 stress 0.2485014 
+    ## Run 6 stress 0.2471133 
+    ## Run 7 stress 0.2436132 
+    ## Run 8 stress 0.239342 
+    ## Run 9 stress 0.2432646 
+    ## Run 10 stress 0.1960912 
     ## ... New best solution
-    ## ... Procrustes: rmse 0.02897359  max resid 0.323252 
-    ## Run 11 stress 0.2394849 
-    ## Run 12 stress 0.1960913 
-    ## Run 13 stress 0.2496593 
-    ## Run 14 stress 0.2241801 
-    ## Run 15 stress 0.2408263 
-    ## Run 16 stress 0.217398 
-    ## Run 17 stress 0.2176384 
-    ## Run 18 stress 0.2534779 
-    ## Run 19 stress 0.197599 
-    ## Run 20 stress 0.2047104 
+    ## ... Procrustes: rmse 0.02992709  max resid 0.3227303 
+    ## Run 11 stress 0.245353 
+    ## Run 12 stress 0.2114205 
+    ## Run 13 stress 0.1952459 
+    ## ... New best solution
+    ## ... Procrustes: rmse 0.00764699  max resid 0.08467572 
+    ## Run 14 stress 0.2519998 
+    ## Run 15 stress 0.2297105 
+    ## Run 16 stress 0.2420364 
+    ## Run 17 stress 0.249567 
+    ## Run 18 stress 0.2280626 
+    ## Run 19 stress 0.2478268 
+    ## Run 20 stress 0.2346275 
     ## *** No convergence -- monoMDS stopping criteria:
-    ##     15: stress ratio > sratmax
-    ##      5: scale factor of the gradient < sfgrmin
+    ##     16: stress ratio > sratmax
+    ##      4: scale factor of the gradient < sfgrmin
 
     # ordination stress
     my_nmds_result$stress
 
-    ## [1] 0.1952428
+    ## [1] 0.1952459
 
     # plot ordination
     ordiplot(my_nmds_result)
@@ -714,7 +716,7 @@ The ecocomDP format is also easy to pivot to wide format for use with commonly u
 
 Let's compare the full NEON benthic macroinvertebrate dataset pusblished in the 2022 Data Release ([RELEASE-2022](https://www.neonscience.org/data-samples/data-management/data-revisions-releases/release-2022): https://doi.org/10.48443/gn8x-k322) to an LTER benthic macroinvertebrate dataset from the North Temperate Lates (NTL) LTER site. 
 
-The full NEON macroinvertebrate dataset from RELEASE-2022 can be downloaded in to the ecocomDP format using the code below; however, I have already downloaded this dataset and saved it to the CyVerse Data Store for this workshop (so don't run this code chunk).
+The full NEON macroinvertebrate dataset from RELEASE-2022 can be downloaded into the ecocomDP format using the code below; however, I have already downloaded this dataset and saved it to the CyVerse Data Store for this workshop (so don't run this code chunk).
 
     # pull NEON aquatic "Macroinvertebrate collection" for all locations and times
     # in the 2022 Data Release
