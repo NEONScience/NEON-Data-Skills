@@ -12,16 +12,16 @@ library(ecocomDP)
 
 
 
-## ----create-Renviron, eval=F, comment=NA----------------------------------------------------------------------------
-usethis::edit_r_environ()
+## ----create-Renviron, eval=F----------------------------------------------------------------------------------------
+## usethis::edit_r_environ()
 
 
-## ----set-token, eval=F, comment=NA----------------------------------------------------------------------------------
-NEON_TOKEN=PASTE YOUR TOKEN HERE
+## ----add-token-Renviron, eval=F-------------------------------------------------------------------------------------
+## NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 
-## ----read-Renviron, eval=F, comment=NA------------------------------------------------------------------------------
-readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
+## ----read-Renviron, eval=F------------------------------------------------------------------------------------------
+## readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 
 
 ## ----download-data, message=FALSE, warning=FALSE, results='hide'----------------------------------------------------
@@ -225,7 +225,7 @@ sampling_effort_summary %>% as.data.frame() %>%
   head() %>% print()
 
 
-## ----long-data, fig.cap= "Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID.", message=FALSE, warning=FALSE----
+## ----long-data, warning=FALSE, message=FALSE, fig.cap="Fig 1. Horizontal bar graph showing the number of taxa for each taxonomic rank for select NEON sites. Including facet_wrap to the ggplot call creates a seperate plot for each of the faceting arguments, which in this case are domainID and siteID."----
 
 # no. taxa by rank by site
 table_observation %>% 
@@ -310,7 +310,7 @@ data_neon_inv$tables$taxon %>% head()
 data_neon_inv$tables$observation %>% head()
 
 
-## ----macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from select NEON sites."----
+## ----macroinvert-datavis-space-time, message=FALSE, warning=FALSE, fig.cap="Fig 3. Sampling events in space and time represented in the downloaded data set for benthic macroinvertebrate counts from select NEON sites."----
 
 # Explore the spatial and temporal coverage 
 # of the dataset
@@ -322,7 +322,7 @@ data_neon_inv %>% plot_sample_space_time()
 
 
 
-## ----macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from select NEON sites."----
+## ----macroinvert-datavis-ranks, message=FALSE, warning=FALSE, fig.cap="Fig 4. Frequencies of different taxonomic ranks in benthic macroinvertebrate counts from select NEON sites."----
 
 # Explore the taxonomic resolution in the dataset. 
 # What is the most common taxonomic resolution (rank) 
@@ -343,7 +343,7 @@ View(flat_neon_inv)
 # we can tell because multiple event_id's can share a site and date
 
 
-## ----macroinvert-datavis-densities, message=FALSE, warning=FALSE, fig.cap="Densities of benthic macroinvertebrates from select NEON sites."----
+## ----macroinvert-datavis-densities, message=FALSE, warning=FALSE, fig.cap="Fig 5. Densities of benthic macroinvertebrates from select NEON sites."----
 # compare taxa and abundances across sampler types
 flat_neon_inv %>% 
   plot_taxa_abund(
@@ -353,7 +353,7 @@ flat_neon_inv %>%
 
 
 
-## ----wide-neon-ecocomDP, message=FALSE, warning=FALSE, fig.cap="NMDS of benthic macroinvertebrates from select NEON sites."----
+## ----wide-neon-ecocomDP, message=FALSE, warning=FALSE, fig.cap="Fig 6. NMDS of benthic macroinvertebrates from select NEON sites."----
 # make wide, event_id by taxon_id
 wide_neon_inv <- data_neon_inv$tables$observation %>%
   pivot_wider(
@@ -423,7 +423,7 @@ View(flat_ntl_inv)
 
 
 
-## ----stack-and-compare-ranks, message=FALSE, warning=FALSE, fig.cap="Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"----
+## ----stack-and-compare-ranks, message=FALSE, warning=FALSE, fig.cap="Fig 7. Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"----
 # The NEON dataset is pretty extensive, including streams and lakes. Let's
 # look at what kind of ancillary data are included that might be useful
 # for filtering the dataset:
@@ -453,7 +453,7 @@ stacked_inv %>%
 
 
 
-## ----stacked-data-spatial-and-temporal-replication, message=FALSE, warning=FALSE, fig.cap="Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"----
+## ----stacked-data-spatial-and-temporal-replication, message=FALSE, warning=FALSE, fig.cap="Fig 8. Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"----
 # compare spatial and temporal replication
 # updates are planned for this plotting function to allow 
 # additional aesthetic mappings and faceting
@@ -476,21 +476,21 @@ stacked_inv %>%
 ## # Figure not shown
 
 
-## ----stacked-data-richness, message=FALSE, warning=FALSE, fig.cap="Richness over time of NEON and NTL LTER macroinvertebrate datasets"----
+## ----stacked-data-richness, message=FALSE, warning=FALSE, fig.cap="Fig 9. Richness over time of NEON and NTL LTER macroinvertebrate datasets"----
 # explore richness through time
 stacked_inv %>% 
   plot_taxa_diversity(time_window_size = "year") 
 
 
 
-## ----stacked-occurrence-freq, message=FALSE, warning=FALSE, fig.cap="Occurrence frequencies observed in NEON and NTL LTER macroinvertebrate datasets"----
+## ----stacked-occurrence-freq, message=FALSE, warning=FALSE, fig.cap="Fig 10. Occurrence frequencies observed in NEON and NTL LTER macroinvertebrate datasets"----
 # compare taxa and abundances
 stacked_inv %>% 
   plot_taxa_occur_freq(
     facet_var = "package_id")
 
 
-## ----plot-common-neon-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NEON taxa"-------------
+## ----plot-common-neon-taxa, message=FALSE, warning=FALSE, fig.cap="Fig 11. No. occurrences of common NEON taxa"-----
 # Plot common NEON taxa abundances
 # you can set the min_occurrence argument to have a reasonable cutoff based 
 # on the plot above
@@ -498,7 +498,7 @@ flat_neon_inv_d05 %>%
   plot_taxa_occur_freq(min_occurrence = 100)
 
 
-## ----plot-common-ntl-taxa, message=FALSE, warning=FALSE, fig.cap="No. occurrences of common NTL taxa"---------------
+## ----plot-common-ntl-taxa, message=FALSE, warning=FALSE, fig.cap="Fig 12. No. occurrences of common NTL taxa"-------
 # Plot common NTL taxa abundances
 flat_ntl_inv %>% 
   plot_taxa_occur_freq(min_occurrence = 30)
