@@ -139,7 +139,7 @@ For more information on the vertical resolution, read the footnotes at the end o
 ```
 var SRER_CHM2018 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
   .filterDate('2018-01-01', '2018-12-31')
-  .filterBounds(mySite).first(); // not sure if this is needed
+  .filterBounds(mySite).first(); 
 
 var SRER_CHM2021 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
   .filterDate('2021-01-01', '2021-12-31')
