@@ -162,12 +162,10 @@ Also, consider using a NEON API token. This will allow you increased download sp
 
 ## Using your NEON_TOKEN with the VICE cloud  
 
-1. In your RStudio session running on the VICE app, type the following in the Console:  
+1. In your RStudio session running on the VICE app, type the following in the console to create a new .Renviron file:  
 ```{r create-Renviron, eval=F}
 usethis::edit_r_environ()
 ```
-
-A new .Renviron file will be created. 
 
 2. Add one line to the .Renviron file. There are no quotes around the token value.  
 ```{r add-token-Renviron, eval=F}
