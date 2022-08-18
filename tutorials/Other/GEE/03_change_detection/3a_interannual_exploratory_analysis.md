@@ -22,10 +22,10 @@ GEE is a great place to conduct exploratory analysis to better understand the da
 
 ## Objectives
 After completing this activity, you will be able to:
- * Write GEE functions to display map images of SDR, NDVI, and CHM data
- * Create chart images (histogram and line charts) to summarize data over an area.
- * Understand how acquisition parameters may affect interpretation of data.
- * Understand how weather conditions may affect reflectance data.
+ * Write GEE functions to display map images of AOP SDR, NDVI, and CHM data.
+ * Create chart images (histogram and line graphs) to summarize data over an area.
+ * Understand how acquisition parameters may affect the interpretation of data.
+ * Understand how weather conditions during acquisition may affect reflectance data quality.
 
 You will gain familiarity with:
  * User-defined GEE functions
