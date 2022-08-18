@@ -53,9 +53,9 @@ The NEON data products that have been made available on GEE can be accessed thro
 | SDR | Surface Directional Reflectance | DP3-30006-001_SDR |
 | RGB | Red Green Blue (Camera Imagery) | DP3-30010-001_RGB |
 | DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3-30024-001_DEM |
-| CHM | Canopy Height Model | DP3-30015-001_CHM |*
+| CHM | Canopy Height Model | DP3-30015-001_CHM |
 
-The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE. The * indicates partial availability.
+The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE.
 
 | Domain | Site | Years      | Data Products        |
 |--------|------|------------|----------------------|
