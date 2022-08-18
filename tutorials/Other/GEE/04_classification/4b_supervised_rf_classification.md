@@ -361,6 +361,10 @@ Here is our final classified image:
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/classified_airshed_map.png" alt="Classified airshed map"></a>
 </figure>
 
+## Acknowledgements
+
+This tutorial was modified from a lesson developed by the Organization for Tropical Studies as part of the course <a href="https://tropicalstudies.org/course/google-earth-engine-for-ecology-and-conservation/" target="_blank">Google Earth Engine for Ecology and Conservation</a>.
+
 ## Get Lesson Code
 
 <a href="https://code.earthengine.google.com/1b8667f39ff0c5054c5597d167541385" target="_blank">AOP GEE Random Forest Classification</a>
