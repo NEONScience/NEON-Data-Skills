@@ -334,7 +334,7 @@ Lastly, we can write a function to display the image classification
 function showTrainingData(){
   var colours = ee.List(["yellow", "white", "green", "orange", "darkgreen", "cyan", "purple","lightgreen","blue","black"]);
   var lc_type = ee.List(["CELA", "JUVI", "PRME","QUMA3","QUST","ULAL","ULCR","GRSS","WATR","SHADE"]);
-  var lc_label = ee.List([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  var lc_label = ee.List([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
   var lc_points = ee.FeatureCollection(
     lc_type.map(function(lc){
@@ -345,7 +345,7 @@ function showTrainingData(){
                   });
         })).flatten();
 
-  Map.addLayer(classified, {min: 1, max: 10, palette: ["yellow","white", "green", "orange", "darkgreen", "cyan", "purple", "lightgreen", "blue", "black"]}, 'Classified image', false);
+  Map.addLayer(classified, {min: 0, max: 9, palette: ["yellow","white", "green", "orange", "darkgreen", "cyan", "purple", "lightgreen", "blue", "black"]}, 'Classified image', false);
   Map.addLayer(lc_points.style({styleProperty: "style"}), {}, 'All training sample points', false);
   Map.centerObject(geo, 16)
 }
