@@ -316,16 +316,6 @@ When you look in the Console and expand the metrics, you can assess the values. 
 8) WATR - Water (6)
 9) SHADE - Shade (9)
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_confusion_overall_kappa.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_confusion_overall_kappa.PNG" alt="Accuracy Metrics"></a>
-</figure>
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_producers_users.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/accuracy_producers_users.PNG" alt="Producers and Users Accuracy"></a>
-</figure>
-
 ## Display Model Results
 
 Lastly, we can write a function to display the image classification
