@@ -357,4 +357,4 @@ This tutorial was modified from a lesson developed by the <a href="https://tropi
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/1b8667f39ff0c5054c5597d167541385" target="_blank">AOP GEE Random Forest Classification</a>
+<a href="https://code.earthengine.google.com/31018cbab5e14d34ac9e8a78e48052f9" target="_blank">AOP GEE Random Forest Classification</a>
