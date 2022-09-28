@@ -313,7 +313,7 @@ Start Guide.
 
 #### j > n1 + n2
 This can be possible in rare circumstances, but usually it indicates a 
-problem. Records consistently found multiple matches between the two 
+problem. There were consistent multiple matches between the two 
 tables, resulting in multiplication of the number of rows. This can 
 happen if, for example, two long-format tables are joined together, each 
 containing records for several analytes from a single sample. The sample 
@@ -329,8 +329,10 @@ single site. Inspecting the join results visually for this smaller set
 should be informative - are there large numbers of blanks where values 
 from one of the tables should be? Are values from one of the tables 
 frequently duplicated in unexpected ways? Make sure you understand how 
-the values from each table are lined up before proceeding with your 
-analysis.
+the values originating from each table are matched up before proceeding 
+with your analysis.
+
+SHOULD I WRITE A WHOLE SEPARATE TABLE JOIN TUTORIAL? CAN'T FIND WHAT I'M LOOKING FOR ELSEWHERE
 
 ### Checking the aquatic plant table join
 
