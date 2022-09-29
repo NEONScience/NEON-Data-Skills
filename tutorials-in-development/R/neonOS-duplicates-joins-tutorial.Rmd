@@ -267,72 +267,14 @@ aqbc <- joinTableNEON(apl_biomass,
 
 After joining tables, always take a look at the resulting table and 
 make sure it makes sense. Errors in joining can easily result in 
-completely nonsensical data.
+completely nonsensical data. If you're not familiar with table 
+joining operations, check out a lesson on the basics. The chapter on 
+relational data in <a href="https://r4ds.had.co.nz/relational-data.html" target="_blank">R for Data Science</a> is a good one.
 
 When checking your results, keep in mind that the default behavior of 
 `joinTableNEON()` is a full join, i.e., all records from both original 
 tables are retained, even if they don't match. For a small number of 
 table pairs, the Quick Start Guide specifies a left join.
-
-### Table-joining pitfalls
-
-The risks and potential errors discussed in this section are general 
-concerns, not specific to NEON data. You can skip this section if 
-you're familiar with navigating relational tables.
-
-I always start by checking the number of rows, and comparing to the 
-numbers of rows in the two original tables. Let's walk through each 
-of the possible outcomes, and what they might indicate, where j is the 
-number of rows in the joined table, and n1 and n2 are the number of 
-rows in each of the original tables:
-
-#### j = n1 or j = n2
-This is generally a good sign! Each of the records in one of the 
-tables had one or more matches from the other table. Look in the 
-data table to verify this is true.
-
-#### n1 + n2 > j > max(n1, n2)
-Generally this means either some records had multiple matches between 
-the two tables, or some records didn't match. The former can happen if 
-there are unresolved duplicates in both tables, turning 2 records 
-from each table into 4 in the joined table, and the latter can happen 
-if there are key values present in one table and absent in the other. 
-For example, in NEON data, there can be field data records noting days 
-when sampling was attempted, but wasn't possible due to local conditions, 
-such as flooding. These records don't have corresponding analytical data, 
-because no samples were collected.
-
-#### j = n1 + n2
-Usually this happens when the key fields used to perform the join are 
-incorrect, and there are no matches between the two tables. In the data, 
-you'll see a block of data with columns from the first table and blanks 
-from the second table, appended to a block of data with columns from the 
-second table and blanks from the first table. If this happens with NEON 
-data, check your code for errors, then contact NEON to correct the Quick 
-Start Guide.
-
-#### j > n1 + n2
-This can be possible in rare circumstances, but usually it indicates a 
-problem. There were consistent multiple matches between the two 
-tables, resulting in multiplication of the number of rows. This can 
-happen if, for example, two long-format tables are joined together, each 
-containing records for several analytes from a single sample. The sample 
-is the key, but since it has records for (say), carbon, nitrogen, and 
-phosphorus in one table, and the corresponding isotopes in the other, 
-each record has 3 matches in the other table, and vice versa. In 
-situations like this, it's much better to filter or re-structure your 
-data before joining.
-
-If your join results seem suspicious, filter down to a small number of 
-records in each table, e.g. records from a single sampling event at a 
-single site. Inspecting the join results visually for this smaller set 
-should be informative - are there large numbers of blanks where values 
-from one of the tables should be? Are values from one of the tables 
-frequently duplicated in unexpected ways? Make sure you understand how 
-the values originating from each table are matched up before proceeding 
-with your analysis.
-
-SHOULD I WRITE A WHOLE SEPARATE TABLE JOIN TUTORIAL? CAN'T FIND WHAT I'M LOOKING FOR ELSEWHERE
 
 ### Checking the aquatic plant table join
 
