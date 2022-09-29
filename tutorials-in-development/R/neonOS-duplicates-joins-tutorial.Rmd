@@ -242,8 +242,8 @@ Of course, NEON scientists also review NEON data and identify
 duplicates as part of quality assurance and quality control procedures, 
 and resolve them if possible. In the data download step above, we 
 accessed RELEASE-2022. The data release is stable and reproducible over 
-time, but these duplicates may be resolved in future releases of these 
-data.
+time, but duplicates you find in one release may be resolved in future 
+releases.
 
 ## Join Data Tables
 
@@ -274,14 +274,68 @@ relational data in <a href="https://r4ds.had.co.nz/relational-data.html" target=
 When checking your results, keep in mind that the default behavior of 
 `joinTableNEON()` is a full join, i.e., all records from both original 
 tables are retained, even if they don't match. For a small number of 
-table pairs, the Quick Start Guide specifies a left join.
+table pairs, the Quick Start Guide specifies a left join, and in those 
+cases `joinTableNEON()` performs a left join.
 
-### Checking the aquatic plant table join
+Let's take a look at the aquatic plant table join:
 
+```{r aqbc-check}
 
+nrow(apl_biomass)
+nrow(apl_plantExternalLabDataPerSample)
+nrow(aqbc)
 
+```
 
-SOME KIND OF FIGURE HERE??
+The number of rows in the joined table is larger than both of the 
+original tables, but smaller than the sum of the original two. This 
+suggests that most of the records in each of the original tables had 
+a matching record in the other table, but some didn't.
+
+View the full table:
+
+```{r aqbc-view, results="hide"}
+
+View(aqbc)
+
+```
+
+(Table not displayed here due to size)
+
+Here we can see we have several rows per `chemSubsampleID` for most 
+`chemSubsampleID`s. Each row corresponds to one of the chemical 
+analytes, and the biomass data are repeated on each row. At the bottom 
+of the table are a number of biomass records with no corresponding 
+chemistry data; these explain why the merged table is larger than the 
+original chemistry table.
+
+This table structure is consistent with the original tables and with 
+the intended join, so we're satisfied all is well. If you're working 
+with a different data product and encounter something unexpected or 
+undesirable in a joined table, contact NEON using the 
+<a href="https://www.neonscience.org/about/contact-us" target="_blank">Contact Us</a> page.
+
+We can now connect chemical content to taxon, as in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
+tutorial. Let's look at nitrogen content by species and site:
+
+```{r aq-fig}
+
+gg <- ggplot(subset(aqbc, analyte=="nitrogen"),
+             aes(scientificName, analyteConcentration, 
+                 group=scientificName, 
+                 color=scientificName)) +
+             geom_boxplot() + 
+             facet_wrap(~siteID) +
+        theme(axis.text.x=element_text(angle=90,
+                                       hjust=1,
+                                       size=4)) +
+        theme(legend.position="none") +
+        ylab("Nitrogen (%)") + 
+        xlab("Scientific name")
+gg
+
+```
+
 
 ## Other Input Options
 
@@ -348,8 +402,11 @@ Error in joinTableNEON(mos_trapping, mos_expertTaxonomistIDProcessed) :
 The function returns an error, telling us it can't perform a simple join 
 on the two tables, but there is a table they can each join to, which can be 
 used to join them indirectly. As directed, we refer to the Quick Start Guide 
-for DP1.10043.001, where we learn that `mos_sorting` is the intermediate 
-table required.
+for DP1.10043.001. The QSG is included in data downloads from the Portal, 
+and can also be viewed on the <a href="https://data.neonscience.org/data-products/DP1.10043.001" target="_blank">Data Product Details</a> page for DP1.10043.001.
+
+From the QSG, we learn that `mos_sorting` is the intermediate table 
+between `mos_trapping` and `mos_expertTaxonomistIDProcessed`.
 
 First, let's join `mos_trapping` and `mos_sorting`:
 
@@ -395,7 +452,9 @@ gg <- ggplot(mos.tax,
                  color=scientificName)) +
              geom_boxplot() + 
         facet_wrap(~nlcdClass) +
-        theme(axis.text.x=element_blank())
+        theme(axis.text.x=element_blank()) +
+        ylab("Count") +
+        xlab("Scientific name")
 gg
 
 ```
