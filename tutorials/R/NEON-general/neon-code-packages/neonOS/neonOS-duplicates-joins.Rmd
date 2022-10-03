@@ -1,7 +1,7 @@
 ---
-syncID: FILL IN
+syncID: 994e7c10f35b4243bbaa31243d6c2355
 title: "Using the neonOS Package to Check for Duplicates and Join Tables"
-description: "Use the functions in the neonOS package to process NEON observational data: check for duplicate data records, and join data tables."
+description: "Use the functions in the neonOS package to process NEON observational data: check for duplicate data records and join data tables."
 dateCreated: 2022-03-25
 authors: [Claire K. Lunch]
 contributors: 
@@ -10,9 +10,9 @@ packagesLibraries: neonOS, neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: 
-code1: FILL IN
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/neonOS/neonOS-duplicates-joins.R
 tutorialSeries:
-urlTitle: neonOS-duplicates-joins-tutorial
+urlTitle: neonOS-duplicates-joins
 
 ---
 
@@ -35,11 +35,19 @@ single flat table.
 The Quick Start Guides and Data Product User Guides provide information 
 about the relationships between different data tables, and we 
 recommend you consult these documents for the data products you are 
-working with to gain the full picture. For the step of joining related 
-tables, the `neonOS` package provides the `joinTableNEON()` function, 
-which will join tables if their relationship is sufficiently simple, 
-and will provide an informative message if this is not possible, or if 
-customized code is required.
+working with to gain the full picture. Quick Start Guides (QSGs) are 
+included in the download package when you download data via the Data 
+Portal, and can also be viewed on the Data Product Details page for 
+each data product; for example, see the page for <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">Plant foliar traits</a>. 
+Scroll down to the Documentation section to see the QSG. The Data 
+Product User Guide is also available in the Documentation menu.
+
+To join related tables, the `neonOS` package provides the 
+`joinTableNEON()` function, which checks the Table joining section of 
+the QSG, and uses the information there to join the tables if 
+possible. If the join isn't possible, or if it requires customized code, 
+the function will return an informative error, and usually refer you 
+to the QSG for more details.
 
 ### Duplicates
 
@@ -47,11 +55,12 @@ One of the most common data entry errors that occurs in NEON OS data is
 duplicate entry. NEON data entry applications and ingest validation rules 
 are designed to prevent duplicate entry where possible, but errors can't 
 be avoided completely. Consequently, NEON metadata for each OS data product 
-(the variables file) includes an indicator of which data fields, taken 
-together, should define a unique record. The `neonOS` function `removeDups()` 
-uses these metadata to identify duplicate records. Depending on the content 
-of the duplicate records, they may be resolved to a single record or 
-marked as unresolvable - see below for details.
+(the `variables` file) includes an indicator of which data fields, taken 
+together, should define a unique record. This combination of fields is 
+called the "primary key" for the data table. The `neonOS` function 
+`removeDups()` uses these metadata to identify duplicate records. 
+Depending on the content of the duplicate records, they may be resolved to 
+a single record or marked as unresolvable - see below for details.
 
 In this tutorial, we will de-duplicate and then join two data tables in the 
 Aquatic plant bryophyte chemical properties (DP1.20063.001) data product, 
@@ -77,7 +86,7 @@ loaded on your computer to complete this tutorial.
 ### Install R Packages
 
 * **neonUtilities:** `install.packages("neonUtilities")`
-* **neonOS**: `devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")`
+* **neonOS**: `install.packages("neonOS")`
 
 ## Additional Resources
 
@@ -93,11 +102,11 @@ First install and load the necessary packages.
 
 ```{r setup, eval=c(9,10,11), results="hide"}
 
-# install packages. can skip this step if already installed
-# update neonOS installation after CRAN release
+# install packages. you can skip this step if 
+# the packages are already installed
 install.packages("neonUtilities")
+install.packages("neonOS")
 install.packages("ggplot2")
-devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")
 
 # load packages
 library(neonUtilities)
@@ -198,9 +207,9 @@ Records that can be merged to a single record by these criteria are flagged
 with `duplicateRecordQF=1`. Records with mis-matched data that can't be merged 
 are retained as-is and flagged with `duplicateRecordQF=2`.
 
-Note that even in fully identical duplicates, the uid field will always be 
-unique. Thus the uid field in merged records will always contain the 
-pipe-delimited set of uids of the original records.
+Note that even in fully identical duplicates, the `uid` field (universal 
+identifier) will always be unique. Thus the `uid` field in merged records 
+will always contain the pipe-delimited set of uids of the original records.
 
 What does this look like in practice? Let's look at the two resolved 
 duplicates:
@@ -387,7 +396,7 @@ which vegetation types. The species identifications are in the
 `mos_expertTaxonomistIDProcessed` table, and the trapping conditions are in 
 the `mos_trapping` table. So we'll attempt to join those two tables.
 
-```{r try-join-mos, results="hide"}
+```{r try-join-mos, eval=FALSE}
 
 mos.sp <- joinTableNEON(mos_trapping,
                         mos_expertTaxonomistIDProcessed)
@@ -402,8 +411,7 @@ Error in joinTableNEON(mos_trapping, mos_expertTaxonomistIDProcessed) :
 The function returns an error, telling us it can't perform a simple join 
 on the two tables, but there is a table they can each join to, which can be 
 used to join them indirectly. As directed, we refer to the Quick Start Guide 
-for DP1.10043.001. The QSG is included in data downloads from the Portal, 
-and can also be viewed on the <a href="https://data.neonscience.org/data-products/DP1.10043.001" target="_blank">Data Product Details</a> page for DP1.10043.001.
+for DP1.10043.001, on the <a href="https://data.neonscience.org/data-products/DP1.10043.001" target="_blank">Data Product Details</a> page.
 
 From the QSG, we learn that `mos_sorting` is the intermediate table 
 between `mos_trapping` and `mos_expertTaxonomistIDProcessed`.
