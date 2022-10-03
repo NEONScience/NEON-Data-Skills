@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Joining data tables</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>NEON observational data are diverse in both content and in data structure. 
+Generally, data are published in a set of data tables, each of which 
+corresponds to a particular activity: for example, several data 
+products include a field collection data table, a sample processing 
+data table, and a table of laboratory analytical results.</p>
+
+<h3>Joining data tables</h3>
+
+<p>Depending on the analysis you want to carry out, there may be data in 
+multiple tables that you want to bring together. For example, it is 
+very common that species identifications are in a different table from 
+chemical composition or pathogen status. For species-specific analyses, 
+you would need to draw on multiple tables. There are a variety of ways 
+to do this, but one of the simplest is to join the tables and create a 
+single flat table.</p>
+
+<p>The Quick Start Guides and Data Product User Guides provide information 
+about the relationships between different data tables, and we 
+recommend you consult these documents for the data products you are 
+working with to gain the full picture. Quick Start Guides (QSGs) are 
+included in the download package when you download data via the Data 
+Portal, and can also be viewed on the Data Product Details page for 
+each data product; for example, see the page for <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">Plant foliar traits</a>. 
+Scroll down to the Documentation section to see the QSG. The Data 
+Product User Guide is also available in the Documentation menu.</p>
+
+<p>To join related tables, the <code>neonOS</code> package provides the 
+<code>joinTableNEON()</code> function, which checks the Table joining section of 
+the QSG, and uses the information there to join the tables if 
+possible. If the join isn&#39;t possible, or if it requires customized code, 
+the function will return an informative error, and usually refer you 
+to the QSG for more details.</p>
+
+<h3>Duplicates</h3>
+
+<p>One of the most common data entry errors that occurs in NEON OS data is 
+duplicate entry. NEON data entry applications and ingest validation rules 
+are designed to prevent duplicate entry where possible, but errors can&#39;t 
+be avoided completely. Consequently, NEON metadata for each OS data product 
+(the <code>variables</code> file) includes an indicator of which data fields, taken 
+together, should define a unique record. This combination of fields is 
+called the &ldquo;primary key&rdquo; for the data table. The <code>neonOS</code> function 
+<code>removeDups()</code> uses these metadata to identify duplicate records. 
+Depending on the content of the duplicate records, they may be resolved to 
+a single record or marked as unresolvable - see below for details.</p>
+
+<p>In this tutorial, we will de-duplicate and then join two data tables in the 
+Aquatic plant bryophyte chemical properties (DP1.20063.001) data product, 
+using it as an example to demonstrate the operation of these two functions. 
+Then we will take a look at Mosquitoes sampled from CO2 traps (DP1.10043.001), 
+which contains more complicated table relationships, and see how to modify 
+the code to work with those tables.</p>
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+After completing this activity, you will be able to:
+
+ * Identify and resolve duplicate data using the neonOS package 
+ * Join NEON data tables using the neonOS package 
+
+## Things You’ll Need To Complete This Tutorial
+You will need a version of R (4.0 or higher. This code may work with 
+earlier versions but it hasn&rsquo;t been tested) and, preferably, RStudio 
+loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities:** install.packages(&ldquo;neonUtilities&rdquo;)
+* **neonOS**: install.packages(&ldquo;neonOS&rdquo;)
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://www.neonscience.org/resources/code-hub" target="_blank">NEON Code Hub</a>
+
+</div>
+
+<h2>Set Up R Environment and Download Data</h2>
+
+<p>First install and load the necessary packages.</p>
+
+<pre><code>## 
+
+## # install packages. you can skip this step if
+
+## # the packages are already installed
+
+## install.packages(&quot;neonUtilities&quot;)
+
+## install.packages(&quot;neonOS&quot;)
+
+## install.packages(&quot;ggplot2&quot;)
+
+## 
+
+## # load packages
+
+library(neonUtilities)
+
+library(neonOS)
+
+library(ggplot2)
+
+## 
+</code></pre>
+
+<p>We&#39;ll use aquatic plant chemistry (DP1.20063.001) as the example dataset. Use 
+the <code>neonUtilities</code> function <code>loadByProduct()</code> to download and read in the 
+data. If you&#39;re not familiar with the <code>neonUtilities</code> package and how to use 
+it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
+tutorial before proceeding with this one.</p>
+
+<p>Here, we&#39;ll use the same subset of aquatic plant chemistry data as in the 
+Download and Explore tutorial. Get the data from the Prairie Lake, Suggs Lake, 
+and Toolik Lake sites, specifying the 2022 data release.</p>
+
+<pre><code>apchem &lt;- loadByProduct(dpID=&quot;DP1.20063.001&quot;, 
+                        site=c(&quot;PRLA&quot;,&quot;SUGG&quot;,&quot;TOOK&quot;), 
+                        package=&quot;expanded&quot;,
+                        release=&quot;RELEASE-2022&quot;,
+                        check.size=F)
+</code></pre>
+
+<p>Copy each of the downloaded tables into the R environment.</p>
+
+<pre><code>list2env(apchem, .GlobalEnv)
+</code></pre>
+
+<h2>Identify and Resolve Duplicates</h2>
+
+<p>As noted above, duplicate data entry is a common error in human 
+data entry. <code>removeDups()</code> uses the definitional metadata in the 
+variables file to identify duplicates. It requires two inputs: 
+the data table, and the corresponding variables file.</p>
+
+<pre><code>apl_biomass &lt;- removeDups(data=apl_biomass, 
+                          variables=variables_20063)
+
+## No duplicated key values found!
+</code></pre>
+
+<p>There were no duplicates found in the <code>apl_biomass</code> data table. 
+A <code>duplicateRecordQF</code> quality flag has been added to the table, 
+and you can confirm that there were no duplicates by checking 
+the values of the flag.</p>
+
+<pre><code>unique(apl_biomass$duplicateRecordQF)
+
+## [1] 0
+</code></pre>
+
+<p>All data have flag value = 0, indicating they are not duplicated. 
+Let&#39;s check the <code>apl_plantExternalLabDataPerSample</code> table.</p>
+
+<pre><code>apl_plantExternalLabDataPerSample &lt;- removeDups(
+  data=apl_plantExternalLabDataPerSample, 
+  variables=variables_20063)
+
+## 10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
+
+## 2 resolveable duplicates merged into matching records
+## 2 resolved records flagged with duplicateRecordQF=1
+
+## 16 unresolveable duplicates flagged with duplicateRecordQF=2
+</code></pre>
+
+<pre><code>10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
+  |==========================================================================================| 100%
+2 resolveable duplicates merged into matching records
+2 resolved records flagged with duplicateRecordQF=1
+16 unresolveable duplicates flagged with duplicateRecordQF=2
+</code></pre>
+
+<p>The function output tells you there were 20 duplicates (out of 26108 
+total data records). Four of those duplicates were resolved, leaving two 
+records flagged as resolved duplicates, with <code>duplicateRecordQF=1</code>. The 
+remaining 16 couldn&#39;t be resolved, and were flagged with 
+<code>duplicateRecordQF=2</code>.</p>
+
+<p>What does it mean for duplicates to be resolved? Some duplicates represent 
+identical data that have been entered multiple times, whereas some duplicates 
+have the same values in the primary key, but differ in data values. 
+<code>removeDups()</code> has a fairly narrow set of criteria for resolving to a single 
+record:</p>
+
+<ol>
+<li>If one data record has empty fields that are populated in the other record, the non-empty values are retained.</li>
+<li>If records are identical except for uid, remarks, and/or personnel (<code>identifiedBy</code>, <code>recordedBy</code>, etc) fields, unique values are concatenated within the non-matching fields, separated by <code>|</code> (pipes).</li>
+</ol>
+
+<p>Records that can be merged to a single record by these criteria are flagged 
+with <code>duplicateRecordQF=1</code>. Records with mis-matched data that can&#39;t be merged 
+are retained as-is and flagged with <code>duplicateRecordQF=2</code>.</p>
+
+<p>Note that even in fully identical duplicates, the <code>uid</code> field (universal 
+identifier) will always be unique. Thus the <code>uid</code> field in merged records 
+will always contain the pipe-delimited set of uids of the original records.</p>
+
+<p>What does this look like in practice? Let&#39;s look at the two resolved 
+duplicates:</p>
+
+<pre><code>apl_plantExternalLabDataPerSample[which(
+  apl_plantExternalLabDataPerSample$duplicateRecordQF==1),]
+
+##                                                                          uid domainID siteID
+## 55 cca9850e-165d-4cb7-9872-eff490c79ffa|1f5a5389-c18c-4fbf-81d6-9cd45e65f48a      D03   SUGG
+## 60 e6cab47f-427b-47a9-a281-cbfe7c101fc3|368e16bb-23d4-4596-b624-b338777bc9bc      D03   SUGG
+##     namedLocation collectDate              sampleID sampleCondition
+## 55 SUGG.AOS.reach  2016-02-22 SUGG.20160222.UTFO.Q5    condition ok
+## 60 SUGG.AOS.reach  2016-02-22 SUGG.20160222.UTFO.Q5    condition ok
+##                                      laboratoryName analysisDate   analyzedBy sampleType replicate
+## 55 Academy of Natural Sciences of Drexel University   2016-07-12 OKgcKejxXbI=         CN         1
+## 60 Academy of Natural Sciences of Drexel University   2016-07-12 OKgcKejxXbI=         CN         1
+##    sampleVolumeFiltered filterSize percentFilterAnalyzed  analyte analyteConcentration plantAlgaeLabUnits
+## 55                   NA         25                   100   carbon                34.01            percent
+## 60                   NA         25                   100 nitrogen                 2.84            percent
+##    method externalRemarks  publicationDate      release duplicateRecordQF
+## 55   &lt;NA&gt;            &lt;NA&gt; 20211221T225348Z RELEASE-2022                 1
+## 60   &lt;NA&gt;            &lt;NA&gt; 20211221T225348Z RELEASE-2022                 1
+</code></pre>
+
+<p>You can see that both records have two pipe-delimited uids, and are 
+flagged.</p>
+
+<p>Let&#39;s look at the unresolveable duplicates:</p>
+
+<pre><code>apl_plantExternalLabDataPerSample[which(
+  apl_plantExternalLabDataPerSample$duplicateRecordQF==2),]
+
+##                                     uid domainID siteID  namedLocation collectDate              sampleID
+## 1  5fa69a8b-d19e-40f1-84a8-e46ed08cdc59      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
+## 2  cebefd95-f4c7-4e60-9b79-93efd3f27691      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
+## 3  a4b6d931-b093-419e-bb69-0b684219405e      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
+## 4  f462390b-2d4a-4aec-92e1-b46a740ec40d      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
+## 5  d4fa7f65-6b2b-46fa-9bca-529745970c56      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
+## 6  ab43c466-b235-4f3d-9146-a1f81a91012d      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
+## 7  1140a4c2-139e-40dc-a14d-c2446e3a5664      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
+## 8  5201dc04-da3d-4bc2-b2bf-668ad4a3ddb5      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
+## 9  1e36cdeb-4e94-431d-8342-5ce5ff6ac6ae      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
+## 10 b98069a4-74fb-40d8-8b98-7a5aedea7912      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
+## 11 9633d367-bd10-4588-a6e2-cbe954327bf6      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
+## 12 309ccbe3-d4a8-4bd3-b773-85aa98dd7627      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
+## 13 6d6b1da2-049f-439c-81c9-add482f6fab8      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
+## 14 841e51f4-dcc9-45fc-937b-871678ff16f2      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
+## 15 3e04c3a1-7e2f-4349-a1c2-822d736fc2cf      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
+## 16 431a4418-fdd0-4566-8791-d16ecfce76eb      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
+##    sampleCondition                                   laboratoryName analysisDate   analyzedBy sampleType
+## 1     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 2     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 3     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 4     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 5     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 6     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 7     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 8     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 9     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 10    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 11    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 12    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 13    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 14    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 15    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+## 16    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
+##    replicate sampleVolumeFiltered filterSize percentFilterAnalyzed  analyte analyteConcentration
+## 1          1                   NA         25                   100   carbon                38.22
+## 2          1                   NA         25                   100 nitrogen                 2.26
+## 3          1                   NA         25                   100 nitrogen                 1.98
+## 4          1                   NA         25                   100   carbon                43.79
+## 5          1                   NA         25                   100 nitrogen                 3.16
+## 6          1                   NA         25                   100   carbon                39.77
+## 7          1                   NA         25                   100   carbon                43.26
+## 8          1                   NA         25                   100 nitrogen                 3.14
+## 9          1                   NA         25                   100 nitrogen                 2.94
+## 10         1                   NA         25                   100   carbon                43.20
+## 11         1                   NA         25                   100 nitrogen                 3.00
+## 12         1                   NA         25                   100   carbon                38.23
+## 13         1                   NA         25                   100 nitrogen                 2.02
+## 14         1                   NA         25                   100 nitrogen                 2.23
+## 15         1                   NA         25                   100   carbon                43.93
+## 16         1                   NA         25                   100   carbon                39.66
+##    plantAlgaeLabUnits method   externalRemarks  publicationDate      release duplicateRecordQF
+## 1             percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+## 2             percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+## 3             percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+## 4             percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 5             percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 6             percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+## 7             percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 8             percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 9             percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 10            percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 11            percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 12            percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+## 13            percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+## 14            percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+## 15            percent   &lt;NA&gt;     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
+## 16            percent   &lt;NA&gt; Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+</code></pre>
+
+<p>The key for this data table is the sample identifier and analyte, and 
+here there are multiple records with the same sample identifier, both for 
+carbon and nitrogen values. The most likely scenario is that these are 
+unlabeled replicate analyses, i.e., the lab ran multiple analyses on the 
+same samples for quality control purposes, but forgot to label them 
+accordingly.</p>
+
+<p>Now, how should you proceed with your analysis? Of course, that is up to 
+you, and depends on your analysis. Because these appear to be unlabeled 
+analytical replicates, I would probably average the analyte values, but 
+a decision like this can&#39;t be made automatically - <code>removeDups()</code> can 
+identify the records of concern, but what to do with them is a 
+judgement call.</p>
+
+<p>Of course, NEON scientists also review NEON data and identify 
+duplicates as part of quality assurance and quality control procedures, 
+and resolve them if possible. In the data download step above, we 
+accessed RELEASE-2022. The data release is stable and reproducible over 
+time, but duplicates you find in one release may be resolved in future 
+releases.</p>
+
+<h2>Join Data Tables</h2>
+
+<p>If you are using <code>neonOS</code> to check for duplicates and also to join data 
+tables, the duplicate step should always come first. Because duplicate 
+identification uses the variables file to determine uniqueness of data 
+records, the duplicate check step requires that the data match the 
+variables file exactly, which they won&#39;t after being joined.</p>
+
+<p>To join the <code>apl_biomass</code> and <code>apl_plantExternalLabDataPerSample</code> tables, 
+we input both tables to the <code>joinTableNEON()</code> function. It uses the 
+information provided in NEON quick start guides to determine whether the 
+join is possible, and if it is, which fields to use to perform the join.</p>
+
+<pre><code>aqbc &lt;- joinTableNEON(apl_biomass,
+                      apl_plantExternalLabDataPerSample)
+
+## Linking sample fields do not have the same names; barcodes are not included in the joining variables.
+</code></pre>
+
+<p>After joining tables, always take a look at the resulting table and 
+make sure it makes sense. Errors in joining can easily result in 
+completely nonsensical data. If you&#39;re not familiar with table 
+joining operations, check out a lesson on the basics. The chapter on 
+relational data in <a href="https://r4ds.had.co.nz/relational-data.html" target="_blank">R for Data Science</a> is a good one.</p>
+
+<p>When checking your results, keep in mind that the default behavior of 
+<code>joinTableNEON()</code> is a full join, i.e., all records from both original 
+tables are retained, even if they don&#39;t match. For a small number of 
+table pairs, the Quick Start Guide specifies a left join, and in those 
+cases <code>joinTableNEON()</code> performs a left join.</p>
+
+<p>Let&#39;s take a look at the aquatic plant table join:</p>
+
+<pre><code>nrow(apl_biomass)
+
+## [1] 268
+
+nrow(apl_plantExternalLabDataPerSample)
+
+## [1] 572
+
+nrow(aqbc)
+
+## [1] 661
+</code></pre>
+
+<p>The number of rows in the joined table is larger than both of the 
+original tables, but smaller than the sum of the original two. This 
+suggests that most of the records in each of the original tables had 
+a matching record in the other table, but some didn&#39;t.</p>
+
+<p>View the full table:</p>
+
+<pre><code>View(aqbc)
+</code></pre>
+
+<p>(Table not displayed here due to size)</p>
+
+<p>Here we can see we have several rows per <code>chemSubsampleID</code> for most 
+<code>chemSubsampleID</code>s. Each row corresponds to one of the chemical 
+analytes, and the biomass data are repeated on each row. At the bottom 
+of the table are a number of biomass records with no corresponding 
+chemistry data; these explain why the merged table is larger than the 
+original chemistry table.</p>
+
+<p>This table structure is consistent with the original tables and with 
+the intended join, so we&#39;re satisfied all is well. If you&#39;re working 
+with a different data product and encounter something unexpected or 
+undesirable in a joined table, contact NEON using the 
+<a href="https://www.neonscience.org/about/contact-us" target="_blank">Contact Us</a> page.</p>
+
+<p>We can now connect chemical content to taxon, as in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
+tutorial. Let&#39;s look at nitrogen content by species and site:</p>
+
+<pre><code>gg &lt;- ggplot(subset(aqbc, analyte==&quot;nitrogen&quot;),
+             aes(scientificName, analyteConcentration, 
+                 group=scientificName, 
+                 color=scientificName)) +
+             geom_boxplot() + 
+             facet_wrap(~siteID) +
+        theme(axis.text.x=element_text(angle=90,
+                                       hjust=1,
+                                       size=4)) +
+        theme(legend.position=&quot;none&quot;) +
+        ylab(&quot;Nitrogen (%)&quot;) + 
+        xlab(&quot;Scientific name&quot;)
+
+gg
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/neonOS/rfigs/aq-fig-1.png" alt=" "/></p>
+
+<h2>Other Input Options</h2>
+
+<p>After downloading the data above, we ran <code>list2env()</code> to make each table 
+an independent object in the R environment, and then provided the tables 
+to the two functions as-is. This worked because the names of the objects 
+were identical to the table names, so the functions were able to figure 
+out which tables they were. If the object names are not exactly equal to 
+the table names, you will need to input the table names separately. If 
+we hadn&#39;t used <code>list2env()</code>, this is how we would proceed:</p>
+
+<pre><code>bio.dup &lt;- removeDups(data=apchem$apl_biomass,
+                      variables=apchem$variables_20063,
+                      table=&quot;apl_biomass&quot;)
+
+## No duplicated key values found!
+
+chem.dup &lt;- removeDups(data=apchem$apl_plantExternalLabDataPerSample,
+                      variables=apchem$variables_20063,
+                      table=&quot;apl_plantExternalLabDataPerSample&quot;)
+
+## 10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
+
+## 2 resolveable duplicates merged into matching records
+## 2 resolved records flagged with duplicateRecordQF=1
+
+## 16 unresolveable duplicates flagged with duplicateRecordQF=2
+
+aq.join &lt;- joinTableNEON(table1=bio.dup, 
+                         table2=chem.dup,
+                         name1=&quot;apl_biomass&quot;,
+                         name2=&quot;apl_plantExternalLabDataPerSample&quot;)
+
+## Linking sample fields do not have the same names; barcodes are not included in the joining variables.
+</code></pre>
+
+<h2>More Complicated Table Joins</h2>
+
+<p>In the aquatic plant chemistry example, we were able to join two tables 
+in a single step. In some cases, the relationship between tables is 
+more complicated, and joining is more difficult. In these cases, 
+<code>joinTableNEON()</code> will provide an error message, and usually direct 
+you to the Quick Start Guide for more information. Let&#39;s walk through 
+how you can use this information, using Mosquitoes sampled from CO2 traps 
+(DP1.10043.001) from Toolik Lake as an example.</p>
+
+<pre><code>mos &lt;- loadByProduct(dpID=&quot;DP1.10043.001&quot;,
+                     site=&quot;TOOL&quot;, 
+                     release=&quot;RELEASE-2022&quot;,
+                     check.size=F)
+
+list2env(mos, .GlobalEnv)
+</code></pre>
+
+<p>Let&#39;s say we&#39;re interested in evaluating which mosquito species are found in 
+which vegetation types. The species identifications are in the 
+<code>mos_expertTaxonomistIDProcessed</code> table, and the trapping conditions are in 
+the <code>mos_trapping</code> table. So we&#39;ll attempt to join those two tables.</p>
+
+<pre><code>mos.sp &lt;- joinTableNEON(mos_trapping,
+
+                        mos_expertTaxonomistIDProcessed)
+</code></pre>
+
+<pre><code>Error in joinTableNEON(mos_trapping, mos_expertTaxonomistIDProcessed) : 
+  Tables mos_trapping and mos_expertTaxonomistIDProcessed can&#39;t be joined directly, but can each be joined to a common table(s). Consult quick start guide for details.
+</code></pre>
+
+<p>The function returns an error, telling us it can&#39;t perform a simple join 
+on the two tables, but there is a table they can each join to, which can be 
+used to join them indirectly. As directed, we refer to the Quick Start Guide 
+for DP1.10043.001, on the <a href="https://data.neonscience.org/data-products/DP1.10043.001" target="_blank">Data Product Details</a> page.</p>
+
+<p>From the QSG, we learn that <code>mos_sorting</code> is the intermediate table 
+between <code>mos_trapping</code> and <code>mos_expertTaxonomistIDProcessed</code>.</p>
+
+<p>First, let&#39;s join <code>mos_trapping</code> and <code>mos_sorting</code>:</p>
+
+<pre><code>mos.trap &lt;- joinTableNEON(mos_trapping,
+                          mos_sorting)
+</code></pre>
+
+<p>Now, this next step is a bit odd. We&#39;ve created a merged table of 
+<code>mos_trapping</code> and <code>mos_sorting</code>, but we know 
+<code>mos_expertTaxonomistIDProcessed</code> can only join to <code>mos_sorting</code>. So 
+we pass the merged table to <code>joinTableNEON()</code>, telling the function to 
+use the join instructions for <code>mos_sorting</code> and 
+<code>mos_expertTaxonomistIDProcessed</code>.</p>
+
+<pre><code>mos.tax &lt;- joinTableNEON(mos.trap,
+                         mos_expertTaxonomistIDProcessed,
+                         name1=&quot;mos_sorting&quot;)
+</code></pre>
+
+<p>When you join data in this way, check carefully that the resulting 
+table is structured logically and contains the data you expect it to. 
+Looking at the merged table, we now have multiple records for each 
+trapping event, with one record for each species captured in that event, 
+plus a set of records for traps that either caught no mosquitoes or 
+couldn&#39;t be deployed, and thus have no species identifications. This 
+is consistent with the table join we performed, so everything appears 
+to be correct.</p>
+
+<p>Let&#39;s take a look at species occurrence by habitat, as we set out to 
+do:</p>
+
+<pre><code>gg &lt;- ggplot(mos.tax, 
+             aes(scientificName, individualCount, 
+                 group=scientificName, 
+                 color=scientificName)) +
+             geom_boxplot() + 
+        facet_wrap(~nlcdClass) +
+        theme(axis.text.x=element_blank()) +
+        ylab(&quot;Count&quot;) +
+        xlab(&quot;Scientific name&quot;)
+
+gg
+
+## Warning: Removed 599 rows containing non-finite values (stat_boxplot).
+</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/neonOS/rfigs/mos-fig-1.png" alt=" "/></p>
+
+</body>
+
+</html>

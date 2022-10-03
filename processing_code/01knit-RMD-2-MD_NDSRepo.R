@@ -15,13 +15,14 @@ require(markdown)
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
           "R/NEON-general/neon-code-packages/neonUtilities",
-          "R/Lidar/lidar-topography/veg_structure_and_chm")
+          "R/Lidar/lidar-topography/veg_structure_and_chm",
+          "R/NEON-general/neon-code-packages/neonOS")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[1]
+subDir <- dirs[4]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"

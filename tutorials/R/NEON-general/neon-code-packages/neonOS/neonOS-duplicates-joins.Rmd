@@ -1,7 +1,7 @@
 ---
-syncID: FILL IN
+syncID: 994e7c10f35b4243bbaa31243d6c2355
 title: "Using the neonOS Package to Check for Duplicates and Join Tables"
-description: "Use the functions in the neonOS package to process NEON observational data: check for duplicate data records, and join data tables."
+description: "Use the functions in the neonOS package to process NEON observational data: check for duplicate data records and join data tables."
 dateCreated: 2022-03-25
 authors: [Claire K. Lunch]
 contributors: 
@@ -10,16 +10,16 @@ packagesLibraries: neonOS, neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: 
-code1: FILL IN
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/neonOS/neonOS-duplicates-joins.R
 tutorialSeries:
-urlTitle: neonOS-duplicates-joins-tutorial
+urlTitle: neonOS-duplicates-joins
 
 ---
 
 NEON observational data are diverse in both content and in data structure. 
 Generally, data are published in a set of data tables, each of which 
 corresponds to a particular activity: for example, several data 
-products includes a field collection data table, a sample processing 
+products include a field collection data table, a sample processing 
 data table, and a table of laboratory analytical results.
 
 ### Joining data tables
@@ -29,33 +29,45 @@ multiple tables that you want to bring together. For example, it is
 very common that species identifications are in a different table from 
 chemical composition or pathogen status. For species-specific analyses, 
 you would need to draw on multiple tables. There are a variety of ways 
-to do this, but the simplest is to join the tables and create a single 
-flat table.
+to do this, but one of the simplest is to join the tables and create a 
+single flat table.
 
 The Quick Start Guides and Data Product User Guides provide information 
 about the relationships between different data tables, and we 
 recommend you consult these documents for the data products you are 
-working with to gain the full picture. For the step of joining related 
-tables, the `neonOS` package provides the `joinTableNEON()` function, 
-which will join tables if their relationship allows this to be done 
-automatically, and will provide an informative message if this is not 
-possible.
+working with to gain the full picture. Quick Start Guides (QSGs) are 
+included in the download package when you download data via the Data 
+Portal, and can also be viewed on the Data Product Details page for 
+each data product; for example, see the page for <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">Plant foliar traits</a>. 
+Scroll down to the Documentation section to see the QSG. The Data 
+Product User Guide is also available in the Documentation menu.
+
+To join related tables, the `neonOS` package provides the 
+`joinTableNEON()` function, which checks the Table joining section of 
+the QSG, and uses the information there to join the tables if 
+possible. If the join isn't possible, or if it requires customized code, 
+the function will return an informative error, and usually refer you 
+to the QSG for more details.
 
 ### Duplicates
 
 One of the most common data entry errors that occurs in NEON OS data is 
 duplicate entry. NEON data entry applications and ingest validation rules 
 are designed to prevent duplicate entry where possible, but errors can't 
-be avoided completely. Consequently, NEON metadata for each data product 
-(the variables file) includes an indicator of which data fields, taken 
-together, should define a unique record. The `neonOS` function `removeDups()` 
-uses these metadata to identify duplicate records. Depending on the content 
-of the duplicate records, they may be resolved to a single record or 
-marked as unresolvable - see below for details.
+be avoided completely. Consequently, NEON metadata for each OS data product 
+(the `variables` file) includes an indicator of which data fields, taken 
+together, should define a unique record. This combination of fields is 
+called the "primary key" for the data table. The `neonOS` function 
+`removeDups()` uses these metadata to identify duplicate records. 
+Depending on the content of the duplicate records, they may be resolved to 
+a single record or marked as unresolvable - see below for details.
 
 In this tutorial, we will de-duplicate and then join two data tables in the 
 Aquatic plant bryophyte chemical properties (DP1.20063.001) data product, 
-using it as an example to demonstrate the operation of these two functions.
+using it as an example to demonstrate the operation of these two functions. 
+Then we will take a look at Mosquitoes sampled from CO2 traps (DP1.10043.001), 
+which contains more complicated table relationships, and see how to modify 
+the code to work with those tables.
 
 
 <div id="ds-objectives" markdown="1">
@@ -74,7 +86,7 @@ loaded on your computer to complete this tutorial.
 ### Install R Packages
 
 * **neonUtilities:** `install.packages("neonUtilities")`
-* **neonOS**: `devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")`
+* **neonOS**: `install.packages("neonOS")`
 
 ## Additional Resources
 
@@ -90,11 +102,11 @@ First install and load the necessary packages.
 
 ```{r setup, eval=c(9,10,11), results="hide"}
 
-# install packages. can skip this step if already installed
-# update neonOS installation after CRAN release
+# install packages. you can skip this step if 
+# the packages are already installed
 install.packages("neonUtilities")
+install.packages("neonOS")
 install.packages("ggplot2")
-devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")
 
 # load packages
 library(neonUtilities)
@@ -184,19 +196,20 @@ remaining 16 couldn't be resolved, and were flagged with
 
 What does it mean for duplicates to be resolved? Some duplicates represent 
 identical data that have been entered multiple times, whereas some duplicates 
-have the same key values, but differ in data values. `removeDups()` has a 
-fairly narrow set of criteria for resolving:
+have the same values in the primary key, but differ in data values. 
+`removeDups()` has a fairly narrow set of criteria for resolving to a single 
+record:
 
-1. If one data record has empty fields that are populated in the other record, and the records otherwise match, the non-empty values are retained.
+1. If one data record has empty fields that are populated in the other record, the non-empty values are retained.
 2. If records are identical except for uid, remarks, and/or personnel (`identifiedBy`, `recordedBy`, etc) fields, unique values are concatenated within the non-matching fields, separated by `|` (pipes).
 
-Records that can be merged to a single record by those criteria are flagged 
+Records that can be merged to a single record by these criteria are flagged 
 with `duplicateRecordQF=1`. Records with mis-matched data that can't be merged 
-are retained and flagged with `duplicateRecordQF=2`.
+are retained as-is and flagged with `duplicateRecordQF=2`.
 
-Note that even in fully identical duplicates, the uid field will always be 
-unique. Thus the uid field in merged records will always contain the 
-pipe-delimited set of uids of the original records.
+Note that even in fully identical duplicates, the `uid` field (universal 
+identifier) will always be unique. Thus the `uid` field in merged records 
+will always contain the pipe-delimited set of uids of the original records.
 
 What does this look like in practice? Let's look at the two resolved 
 duplicates:
@@ -223,7 +236,9 @@ apl_plantExternalLabDataPerSample[which(
 The key for this data table is the sample identifier and analyte, and 
 here there are multiple records with the same sample identifier, both for 
 carbon and nitrogen values. The most likely scenario is that these are 
-unlabeled replicate analyses.
+unlabeled replicate analyses, i.e., the lab ran multiple analyses on the 
+same samples for quality control purposes, but forgot to label them 
+accordingly.
 
 Now, how should you proceed with your analysis? Of course, that is up to 
 you, and depends on your analysis. Because these appear to be unlabeled 
@@ -232,20 +247,20 @@ a decision like this can't be made automatically - `removeDups()` can
 identify the records of concern, but what to do with them is a 
 judgement call.
 
-Of course, NEON scientists also evaluate NEON data to identify 
+Of course, NEON scientists also review NEON data and identify 
 duplicates as part of quality assurance and quality control procedures, 
-and to resolve them if possible. In the data download step above, we 
+and resolve them if possible. In the data download step above, we 
 accessed RELEASE-2022. The data release is stable and reproducible over 
-time, but these duplicates may be resolved in future releases of these 
-data.
+time, but duplicates you find in one release may be resolved in future 
+releases.
 
 ## Join Data Tables
 
 If you are using `neonOS` to check for duplicates and also to join data 
 tables, the duplicate step should always come first. Because duplicate 
-identification uses the variables file to determine uniqueness of data, 
-the duplicate check step requires that the data match the variables 
-file exactly, which they won't after being joined.
+identification uses the variables file to determine uniqueness of data 
+records, the duplicate check step requires that the data match the 
+variables file exactly, which they won't after being joined.
 
 To join the `apl_biomass` and `apl_plantExternalLabDataPerSample` tables, 
 we input both tables to the `joinTableNEON()` function. It uses the 
@@ -259,7 +274,77 @@ aqbc <- joinTableNEON(apl_biomass,
 
 ```
 
-SOME KIND OF FIGURE HERE??
+After joining tables, always take a look at the resulting table and 
+make sure it makes sense. Errors in joining can easily result in 
+completely nonsensical data. If you're not familiar with table 
+joining operations, check out a lesson on the basics. The chapter on 
+relational data in <a href="https://r4ds.had.co.nz/relational-data.html" target="_blank">R for Data Science</a> is a good one.
+
+When checking your results, keep in mind that the default behavior of 
+`joinTableNEON()` is a full join, i.e., all records from both original 
+tables are retained, even if they don't match. For a small number of 
+table pairs, the Quick Start Guide specifies a left join, and in those 
+cases `joinTableNEON()` performs a left join.
+
+Let's take a look at the aquatic plant table join:
+
+```{r aqbc-check}
+
+nrow(apl_biomass)
+nrow(apl_plantExternalLabDataPerSample)
+nrow(aqbc)
+
+```
+
+The number of rows in the joined table is larger than both of the 
+original tables, but smaller than the sum of the original two. This 
+suggests that most of the records in each of the original tables had 
+a matching record in the other table, but some didn't.
+
+View the full table:
+
+```{r aqbc-view, results="hide"}
+
+View(aqbc)
+
+```
+
+(Table not displayed here due to size)
+
+Here we can see we have several rows per `chemSubsampleID` for most 
+`chemSubsampleID`s. Each row corresponds to one of the chemical 
+analytes, and the biomass data are repeated on each row. At the bottom 
+of the table are a number of biomass records with no corresponding 
+chemistry data; these explain why the merged table is larger than the 
+original chemistry table.
+
+This table structure is consistent with the original tables and with 
+the intended join, so we're satisfied all is well. If you're working 
+with a different data product and encounter something unexpected or 
+undesirable in a joined table, contact NEON using the 
+<a href="https://www.neonscience.org/about/contact-us" target="_blank">Contact Us</a> page.
+
+We can now connect chemical content to taxon, as in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
+tutorial. Let's look at nitrogen content by species and site:
+
+```{r aq-fig}
+
+gg <- ggplot(subset(aqbc, analyte=="nitrogen"),
+             aes(scientificName, analyteConcentration, 
+                 group=scientificName, 
+                 color=scientificName)) +
+             geom_boxplot() + 
+             facet_wrap(~siteID) +
+        theme(axis.text.x=element_text(angle=90,
+                                       hjust=1,
+                                       size=4)) +
+        theme(legend.position="none") +
+        ylab("Nitrogen (%)") + 
+        xlab("Scientific name")
+gg
+
+```
+
 
 ## Other Input Options
 
@@ -267,8 +352,8 @@ After downloading the data above, we ran `list2env()` to make each table
 an independent object in the R environment, and then provided the tables 
 to the two functions as-is. This worked because the names of the objects 
 were identical to the table names, so the functions were able to figure 
-out which tables they were. If the object names are not equal to the 
-function names, you will need to input the table names separately. If 
+out which tables they were. If the object names are not exactly equal to 
+the table names, you will need to input the table names separately. If 
 we hadn't used `list2env()`, this is how we would proceed:
 
 ```{r with-table-names, results="hide"}
@@ -311,7 +396,7 @@ which vegetation types. The species identifications are in the
 `mos_expertTaxonomistIDProcessed` table, and the trapping conditions are in 
 the `mos_trapping` table. So we'll attempt to join those two tables.
 
-```{r try-join-mos, results="hide"}
+```{r try-join-mos, eval=FALSE}
 
 mos.sp <- joinTableNEON(mos_trapping,
                         mos_expertTaxonomistIDProcessed)
@@ -326,8 +411,10 @@ Error in joinTableNEON(mos_trapping, mos_expertTaxonomistIDProcessed) :
 The function returns an error, telling us it can't perform a simple join 
 on the two tables, but there is a table they can each join to, which can be 
 used to join them indirectly. As directed, we refer to the Quick Start Guide 
-for DP1.10043.001, where we learn that `mos_sorting` is the intermediate 
-table required.
+for DP1.10043.001, on the <a href="https://data.neonscience.org/data-products/DP1.10043.001" target="_blank">Data Product Details</a> page.
+
+From the QSG, we learn that `mos_sorting` is the intermediate table 
+between `mos_trapping` and `mos_expertTaxonomistIDProcessed`.
 
 First, let's join `mos_trapping` and `mos_sorting`:
 
@@ -373,7 +460,9 @@ gg <- ggplot(mos.tax,
                  color=scientificName)) +
              geom_boxplot() + 
         facet_wrap(~nlcdClass) +
-        theme(axis.text.x=element_blank())
+        theme(axis.text.x=element_blank()) +
+        ylab("Count") +
+        xlab("Scientific name")
 gg
 
 ```
