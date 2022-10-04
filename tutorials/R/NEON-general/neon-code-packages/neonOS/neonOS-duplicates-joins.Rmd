@@ -100,7 +100,7 @@ loaded on your computer to complete this tutorial.
 
 First install and load the necessary packages.
 
-```{r setup, eval=c(9,10,11), results="hide"}
+```{r setup, eval=FALSE}
 
 # install packages. you can skip this step if 
 # the packages are already installed
@@ -113,6 +113,12 @@ library(neonUtilities)
 library(neonOS)
 library(ggplot2)
 
+```
+
+```{r libraries, include=FALSE}
+library(neonUtilities)
+library(neonOS)
+library(ggplot2)
 ```
 
 We'll use aquatic plant chemistry (DP1.20063.001) as the example dataset. Use 
@@ -172,7 +178,7 @@ unique(apl_biomass$duplicateRecordQF)
 All data have flag value = 0, indicating they are not duplicated. 
 Let's check the `apl_plantExternalLabDataPerSample` table.
 
-``` {r remove-dups-analytes, results="hide"}
+``` {r remove-dups-analytes, results="hide", message=FALSE}
 
 apl_plantExternalLabDataPerSample <- removeDups(
   data=apl_plantExternalLabDataPerSample, 
@@ -267,7 +273,7 @@ we input both tables to the `joinTableNEON()` function. It uses the
 information provided in NEON quick start guides to determine whether the 
 join is possible, and if it is, which fields to use to perform the join.
 
-```{r join, results="hide"}
+```{r join, results="hide", message=FALSE}
 
 aqbc <- joinTableNEON(apl_biomass,
                       apl_plantExternalLabDataPerSample)
@@ -356,7 +362,7 @@ out which tables they were. If the object names are not exactly equal to
 the table names, you will need to input the table names separately. If 
 we hadn't used `list2env()`, this is how we would proceed:
 
-```{r with-table-names, results="hide"}
+```{r with-table-names, results="hide", message=FALSE}
 
 bio.dup <- removeDups(data=apchem$apl_biomass,
                       variables=apchem$variables_20063,
