@@ -1,16 +1,22 @@
-## ----setup, eval=c(9,10,11), results="hide"--------------------------------------------------------------
+## ----setup, eval=FALSE-----------------------------------------------------------------------------------
+## 
+## # install packages. you can skip this step if
+## # the packages are already installed
+## install.packages("neonUtilities")
+## install.packages("neonOS")
+## install.packages("ggplot2")
+## 
+## # load packages
+## library(neonUtilities)
+## library(neonOS)
+## library(ggplot2)
+## 
 
-# install packages. you can skip this step if 
-# the packages are already installed
-install.packages("neonUtilities")
-install.packages("neonOS")
-install.packages("ggplot2")
 
-# load packages
+## ----libraries, include=FALSE----------------------------------------------------------------------------
 library(neonUtilities)
 library(neonOS)
 library(ggplot2)
-
 
 
 ## ----load-data, results="hide"---------------------------------------------------------------------------
@@ -42,7 +48,7 @@ unique(apl_biomass$duplicateRecordQF)
 
 
 
-## ----remove-dups-analytes, results="hide"----------------------------------------------------------------
+## ----remove-dups-analytes, results="hide", message=FALSE-------------------------------------------------
 
 apl_plantExternalLabDataPerSample <- removeDups(
   data=apl_plantExternalLabDataPerSample, 
@@ -64,7 +70,7 @@ apl_plantExternalLabDataPerSample[which(
 
 
 
-## ----join, results="hide"--------------------------------------------------------------------------------
+## ----join, results="hide", message=FALSE-----------------------------------------------------------------
 
 aqbc <- joinTableNEON(apl_biomass,
                       apl_plantExternalLabDataPerSample)
@@ -103,7 +109,7 @@ gg
 
 
 
-## ----with-table-names, results="hide"--------------------------------------------------------------------
+## ----with-table-names, results="hide", message=FALSE-----------------------------------------------------
 
 bio.dup <- removeDups(data=apchem$apl_biomass,
                       variables=apchem$variables_20063,

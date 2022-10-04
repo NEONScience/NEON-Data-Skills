@@ -101,21 +101,19 @@ loaded on your computer to complete this tutorial.
 First install and load the necessary packages.
 
 
-    ## 
+    # install packages. you can skip this step if 
 
-    ## # install packages. you can skip this step if
+    # the packages are already installed
 
-    ## # the packages are already installed
+    install.packages("neonUtilities")
 
-    ## install.packages("neonUtilities")
+    install.packages("neonOS")
 
-    ## install.packages("neonOS")
+    install.packages("ggplot2")
 
-    ## install.packages("ggplot2")
+    
 
-    ## 
-
-    ## # load packages
+    # load packages
 
     library(neonUtilities)
 
@@ -123,7 +121,7 @@ First install and load the necessary packages.
 
     library(ggplot2)
 
-    ## 
+
 
 We'll use aquatic plant chemistry (DP1.20063.001) as the example dataset. Use 
 the `neonUtilities` function `loadByProduct()` to download and read in the 
@@ -178,13 +176,6 @@ Let's check the `apl_plantExternalLabDataPerSample` table.
     apl_plantExternalLabDataPerSample <- removeDups(
       data=apl_plantExternalLabDataPerSample, 
       variables=variables_20063)
-
-    ## 10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
-
-    ## 2 resolveable duplicates merged into matching records
-    ## 2 resolved records flagged with duplicateRecordQF=1
-
-    ## 16 unresolveable duplicates flagged with duplicateRecordQF=2
 
 ```
 10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
@@ -356,8 +347,6 @@ join is possible, and if it is, which fields to use to perform the join.
     aqbc <- joinTableNEON(apl_biomass,
                           apl_plantExternalLabDataPerSample)
 
-    ## Linking sample fields do not have the same names; barcodes are not included in the joining variables.
-
 After joining tables, always take a look at the resulting table and 
 make sure it makes sense. Errors in joining can easily result in 
 completely nonsensical data. If you're not familiar with table 
@@ -447,25 +436,14 @@ we hadn't used `list2env()`, this is how we would proceed:
                           variables=apchem$variables_20063,
                           table="apl_biomass")
 
-    ## No duplicated key values found!
-
     chem.dup <- removeDups(data=apchem$apl_plantExternalLabDataPerSample,
                           variables=apchem$variables_20063,
                           table="apl_plantExternalLabDataPerSample")
-
-    ## 10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
-
-    ## 2 resolveable duplicates merged into matching records
-    ## 2 resolved records flagged with duplicateRecordQF=1
-
-    ## 16 unresolveable duplicates flagged with duplicateRecordQF=2
 
     aq.join <- joinTableNEON(table1=bio.dup, 
                              table2=chem.dup,
                              name1="apl_biomass",
                              name2="apl_plantExternalLabDataPerSample")
-
-    ## Linking sample fields do not have the same names; barcodes are not included in the joining variables.
 
 ## More Complicated Table Joins
 

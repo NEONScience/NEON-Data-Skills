@@ -245,29 +245,25 @@ loaded on your computer to complete this tutorial.
 
 <p>First install and load the necessary packages.</p>
 
-<pre><code>## 
+<pre><code># install packages. you can skip this step if 
 
-## # install packages. you can skip this step if
+# the packages are already installed
 
-## # the packages are already installed
+install.packages(&quot;neonUtilities&quot;)
 
-## install.packages(&quot;neonUtilities&quot;)
+install.packages(&quot;neonOS&quot;)
 
-## install.packages(&quot;neonOS&quot;)
+install.packages(&quot;ggplot2&quot;)
 
-## install.packages(&quot;ggplot2&quot;)
 
-## 
 
-## # load packages
+# load packages
 
 library(neonUtilities)
 
 library(neonOS)
 
 library(ggplot2)
-
-## 
 </code></pre>
 
 <p>We&#39;ll use aquatic plant chemistry (DP1.20063.001) as the example dataset. Use 
@@ -321,13 +317,6 @@ Let&#39;s check the <code>apl_plantExternalLabDataPerSample</code> table.</p>
 <pre><code>apl_plantExternalLabDataPerSample &lt;- removeDups(
   data=apl_plantExternalLabDataPerSample, 
   variables=variables_20063)
-
-## 10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
-
-## 2 resolveable duplicates merged into matching records
-## 2 resolved records flagged with duplicateRecordQF=1
-
-## 16 unresolveable duplicates flagged with duplicateRecordQF=2
 </code></pre>
 
 <pre><code>10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
@@ -499,8 +488,6 @@ join is possible, and if it is, which fields to use to perform the join.</p>
 
 <pre><code>aqbc &lt;- joinTableNEON(apl_biomass,
                       apl_plantExternalLabDataPerSample)
-
-## Linking sample fields do not have the same names; barcodes are not included in the joining variables.
 </code></pre>
 
 <p>After joining tables, always take a look at the resulting table and 
@@ -590,25 +577,14 @@ we hadn&#39;t used <code>list2env()</code>, this is how we would proceed:</p>
                       variables=apchem$variables_20063,
                       table=&quot;apl_biomass&quot;)
 
-## No duplicated key values found!
-
 chem.dup &lt;- removeDups(data=apchem$apl_plantExternalLabDataPerSample,
                       variables=apchem$variables_20063,
                       table=&quot;apl_plantExternalLabDataPerSample&quot;)
-
-## 10 duplicated key values found, representing 20 non-unique records. Attempting to resolve.
-
-## 2 resolveable duplicates merged into matching records
-## 2 resolved records flagged with duplicateRecordQF=1
-
-## 16 unresolveable duplicates flagged with duplicateRecordQF=2
 
 aq.join &lt;- joinTableNEON(table1=bio.dup, 
                          table2=chem.dup,
                          name1=&quot;apl_biomass&quot;,
                          name2=&quot;apl_plantExternalLabDataPerSample&quot;)
-
-## Linking sample fields do not have the same names; barcodes are not included in the joining variables.
 </code></pre>
 
 <h2>More Complicated Table Joins</h2>
