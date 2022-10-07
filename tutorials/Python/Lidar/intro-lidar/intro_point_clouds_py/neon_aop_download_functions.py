@@ -103,14 +103,14 @@ def get_file_size(urls,match_string):
         print('Download size:',round(size/(10**12),2),'TB')
     return size
 
-def download_aop_files(data_product_id,site,year=None,download_folder='./data',match_string=None,check_size=True):
+def download_aop_files(product,site,year=None,download_folder='./data',match_string=None,check_size=True):
     """
     download_aop_files downloads NEON AOP files from the AOP for a given data product, site, and 
     optional year, download folder, and 
     --------
      Inputs:
          required:
-             data_product_id: the data product code (eg. 'DP3.30015.001' - CHM)
+             product: the data product code (eg. 'DP3.30015.001' - CHM)
              site: the 4-digit NEON site code (eg. 'SRER', 'JORN')
          
          optional:
@@ -126,9 +126,9 @@ def download_aop_files(data_product_id,site,year=None,download_folder='./data',m
     
     #get a list of the urls for a given data product, site, and year (if included)
     if year is not None:
-        urls = list_available_urls_by_year(data_product_id,site,year)
+        urls = list_available_urls_by_year(product,site,year)
     else:
-        urls = list_available_urls(data_product_id,site)
+        urls = list_available_urls(product,site)
     
     #make the download folder if it doesn't already exist
     if not os.path.exists(download_folder):
