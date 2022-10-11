@@ -2,9 +2,9 @@
 # coding: utf-8
 
 # ---
-# syncID: 
-# title: "Introduction to NEON Discrete Lidar Point Clodus in Python"
-# description: "Programmatically download lidar data and metadata and explore discrete lidar point clouds in Python"
+# syncID: 9bf062c33697432790b63db187cbc565
+# title: "Introduction to NEON Discrete Lidar Data in Python"
+# description: "Programmatically download lidar data and metadata and explore discrete lidar point clouds and rasters in Python"
 # dateCreated: 2022-09-24
 # authors: Bridget Hass
 # contributors: 
@@ -103,7 +103,7 @@
 # 
 # Once all packages are successfully installed, import them as follows. Note that the `requests` and `json` packages will be imported when we import the separate module, so you don't need to import those separately.
 
-# In[ ]:
+# In[1]:
 
 
 #import required packages
@@ -117,7 +117,7 @@ import laspy
 # 
 # First make sure this script is saved in your working directory, which we'll check below, otherwise you will need to provide the relative path to this script. 
 
-# In[ ]:
+# In[2]:
 
 
 # check that script is saved in same folder:
@@ -126,7 +126,7 @@ os.listdir()
 
 # We can see that the download_functions script is there, so to import the contents, use the command:
 
-# In[ ]:
+# In[3]:
 
 
 from neon_aop_download_functions import *
@@ -142,7 +142,7 @@ from neon_aop_download_functions import *
 
 # Now that we've imported in all the required packages and functions, we can get started! First let's take a look at what exactly we've imported by using the magic command `%whos`. Since there's no variable explorer in Jupyter Notebooks, this is a quick way to see what all we have in our working environment.
 
-# In[ ]:
+# In[4]:
 
 
 get_ipython().run_line_magic('whos', '')
@@ -169,7 +169,7 @@ get_ipython().run_line_magic('whos', '')
 # 
 # First we'll start by defining variables that specify the NEON data product ID, site, and year. You can change these to look at a different site of your interest, but this tutorial will explore the NEON site `GUAN` in Domain 04, Puerto Rico.
 
-# In[ ]:
+# In[5]:
 
 
 dpID='DP1.30003.001' 
@@ -178,13 +178,13 @@ site = 'GUAN'
 
 # We can use the function `list_available_urls` to see what data is available for this data product and site. This function requires two inputs: the data product ID `dpID` and the site ID, `site`.
 
-# In[ ]:
+# In[6]:
 
 
 help(list_available_urls)
 
 
-# In[ ]:
+# In[7]:
 
 
 list_available_urls(dpID,site)
@@ -194,7 +194,7 @@ list_available_urls(dpID,site)
 # 
 # Next let's set up some paths where we can save our downloaded data. We'll start with downloading geospatial metadata in order to get a sense of the coverage (geographic extents) of the flight area. We'll make a folder for the shapefiles (shp), kml files (which may be useful for interactively looking at the site boundaries in Google Earth), and a folder for the actual lidar (laz) data.
 
-# In[ ]:
+# In[8]:
 
 
 year='2018'
@@ -207,7 +207,7 @@ print(data_root_path)
 
 # Next, let's take a look at the `download_aop_files` function, which we'll use to download the metadata and data that we want to explore.
 
-# In[ ]:
+# In[9]:
 
 
 help(download_aop_files)
@@ -232,7 +232,7 @@ help(download_aop_files)
 # download_aop_files(dpID,site,year,kml_path,'full_boundary.kml',check_size=False) 
 # ```
 
-# In[ ]:
+# In[10]:
 
 
 download_aop_files(dpID,site,year,shp_path,'merged_tiles.shp',check_size=False)
@@ -241,7 +241,7 @@ download_aop_files(dpID,site,year,shp_path,'merged_tiles.shx',check_size=False)
 
 # We can see that these files have downloaded to the expected location by listing the contents of the `shp_path` directory that we've made:
 
-# In[ ]:
+# In[11]:
 
 
 os.listdir(shp_path)
@@ -249,7 +249,7 @@ os.listdir(shp_path)
 
 # download_aop_files(dpID,site,year,kml_path,'.kml')
 
-# In[ ]:
+# In[12]:
 
 
 gdf = gpd.read_file(os.path.join(shp_path,'2018_GUAN_1_merged_tiles.shp'))
@@ -259,7 +259,7 @@ ax.set_title('AOP Coverage of ' + site + ' in ' + year);
 plt.xticks(rotation=90); #optionally rotate the xtick labels
 
 
-# In[ ]:
+# In[13]:
 
 
 download_aop_files(dpID,site,year,kml_path,'full_boundary.kml',check_size=False) 

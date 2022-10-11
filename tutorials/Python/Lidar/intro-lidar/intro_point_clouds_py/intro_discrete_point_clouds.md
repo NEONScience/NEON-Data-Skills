@@ -1,7 +1,7 @@
 ---
-syncID: 
-title: "Introduction to NEON Discrete Lidar Point Clodus in Python"
-description: "Programmatically download lidar data and metadata and explore discrete lidar point clouds in Python"
+syncID: 9bf062c33697432790b63db187cbc565
+title: "Introduction to NEON Discrete Lidar Data in Python"
+description: "Programmatically download lidar data and metadata and explore discrete lidar point clouds and rasters in Python"
 dateCreated: 2022-09-24
 authors: Bridget Hass
 contributors: 
@@ -120,6 +120,21 @@ First make sure this script is saved in your working directory, which we'll chec
 os.listdir()
 ```
 
+
+
+
+    ['.ipynb_checkpoints',
+     'data',
+     'intro_discrete_point_clouds.html',
+     'intro_discrete_point_clouds.ipynb',
+     'intro_discrete_point_clouds.md',
+     'intro_discrete_point_clouds.py',
+     'intro_discrete_point_clouds_files',
+     'neon_aop_download_functions.py',
+     '__pycache__']
+
+
+
 We can see that the download_functions script is there, so to import the contents, use the command:
 
 
@@ -141,6 +156,23 @@ Now that we've imported in all the required packages and functions, we can get s
 ```python
 %whos
 ```
+
+    Variable                      Type        Data/Info
+    ---------------------------------------------------
+    download_aop_files            function    <function download_aop_fi<...>es at 0x000001862C014550>
+    download_file                 function    <function download_file at 0x000001862C014430>
+    download_urls                 function    <function download_urls at 0x000001862C0143A0>
+    get_file_size                 function    <function get_file_size at 0x000001862C0144C0>
+    gpd                           module      <module 'geopandas' from <...>\geopandas\\__init__.py'>
+    laspy                         module      <module 'laspy' from 'C:\<...>ges\\laspy\\__init__.py'>
+    list_available_urls           function    <function list_available_<...>ls at 0x000001862C014280>
+    list_available_urls_by_year   function    <function list_available_<...>ar at 0x000001862C014310>
+    np                            module      <module 'numpy' from 'C:\<...>ges\\numpy\\__init__.py'>
+    os                            module      <module 'os' from 'C:\\Us<...>\\Anaconda3\\lib\\os.py'>
+    plt                           module      <module 'matplotlib.pyplo<...>\\matplotlib\\pyplot.py'>
+    requests                      module      <module 'requests' from '<...>\\requests\\__init__.py'>
+    urllib                        module      <module 'urllib' from 'C:<...>ib\\urllib\\__init__.py'>
+    
 
 ### Data Tip
 If you are unsure what a function or module does, you can find more information about the function in two ways: 
@@ -176,10 +208,32 @@ We can use the function `list_available_urls` to see what data is available for 
 help(list_available_urls)
 ```
 
+    Help on function list_available_urls in module neon_aop_download_functions:
+    
+    list_available_urls(product, site)
+        list_available urls lists the api url for a given product and site
+        --------
+         Inputs:
+             product: the data product code (eg. 'DP3.30015.001' - CHM)
+             site: the 4-digit NEON site code (eg. 'SRER', 'JORN')
+        --------
+        Usage:
+        --------
+        jorn_chm_urls = list_available_urls('DP3.30015.001','JORN')
+    
+    
+
 
 ```python
 list_available_urls(dpID,site)
 ```
+
+
+
+
+    ['https://data.neonscience.org/api/v0/data/DP1.30003.001/GUAN/2018-05']
+
+
 
 The AOP has only flown Puerto Rico (D04) once so far, in 2018. D04 is only on the AOP schedule every 4 years; the next campaign is scheduled for the fall of 2022, so new data is expected relatively soon!
 
@@ -195,12 +249,38 @@ laz_path = data_root_path+'laz/'
 print(data_root_path)
 ```
 
+    ./data/GUAN/2018/
+    
+
 Next, let's take a look at the `download_aop_files` function, which we'll use to download the metadata and data that we want to explore.
 
 
 ```python
 help(download_aop_files)
 ```
+
+    Help on function download_aop_files in module neon_aop_download_functions:
+    
+    download_aop_files(product, site, year=None, download_folder='./data', match_string=None, check_size=True)
+        download_aop_files downloads NEON AOP files from the AOP for a given data product, site, and 
+        optional year, download folder, and 
+        --------
+         Inputs:
+             required:
+                 product: the data product code (eg. 'DP3.30015.001' - CHM)
+                 site: the 4-digit NEON site code (eg. 'SRER', 'JORN')
+             
+             optional:
+                 year: year (eg. '2020'); default (None) is all years
+                 download_folder: folder to store downloaded files; default (./data) in current directory
+                 match_string: subset of data to match, need to use exact pattern for file name
+                 check_size: prompt to continue download (y/n) after displaying size; default = True
+        --------
+        Usage:
+        --------
+        download_aop_files('DP3.30015.001','JORN','2019','./data/JORN_2019/CHM','314000_3610000_CHM.tif')
+    
+    
 
 The only required inputs for this function are the `product` and the `site`; optionally we can specify the `year`, the `download_folder` to save the files, and a `match_string` to download a subset of the data by a string. By default, the function will display the size of the files, and prompt the user to continue the download (by typing `y`); any other response will halt the download. This is to prevent an accidental download of a large volume of data.
 
@@ -227,12 +307,25 @@ download_aop_files(dpID,site,year,shp_path,'merged_tiles.shp',check_size=False)
 download_aop_files(dpID,site,year,shp_path,'merged_tiles.shx',check_size=False)
 ```
 
+    Download size: 0.78 kB
+    downloading 2018_GUAN_1_merged_tiles.shp to ./data/GUAN/2018/shp/
+    Download size: 0.0 kB
+    downloading 2018_GUAN_1_merged_tiles.shx to ./data/GUAN/2018/shp/
+    
+
 We can see that these files have downloaded to the expected location by listing the contents of the `shp_path` directory that we've made:
 
 
 ```python
 os.listdir(shp_path)
 ```
+
+
+
+
+    ['2018_GUAN_1_merged_tiles.shp', '2018_GUAN_1_merged_tiles.shx']
+
+
 
 download_aop_files(dpID,site,year,kml_path,'.kml')
 
@@ -246,9 +339,19 @@ plt.xticks(rotation=90); #optionally rotate the xtick labels
 ```
 
 
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds_files/intro_discrete_point_clouds_26_0.png)
+    
+
+
+
 ```python
 download_aop_files(dpID,site,year,kml_path,'full_boundary.kml',check_size=False) 
 ```
+
+    Download size: 0.13 kB
+    downloading full_boundary.kml to ./data/GUAN/2018/kml/
+    
 
 If you pull this into Google Earth you can see the coverage with more geographic context:
 
@@ -265,12 +368,24 @@ Now that we can see the extent of the tiles, we'll pick a single tile in this ar
 download_aop_files('DP1.30003.001',site,year,laz_path,match_string='725000_1985000_classified_point_cloud_colorized.laz')
 ```
 
+    Download size: 18.0 MB
+    Do you want to continue with the download? (y/n) y
+    downloading NEON_D04_GUAN_DP1_725000_1985000_classified_point_cloud_colorized.laz to ./data/GUAN/2018/laz/
+    
+
 We can use `os.listdir` again to check that this file successfully downloaded to the expected location. Alternatively you could go into your file explorer.
 
 
 ```python
 os.listdir(laz_path)
 ```
+
+
+
+
+    ['NEON_D04_GUAN_DP1_725000_1985000_classified_point_cloud_colorized.laz']
+
+
 
 Now that we've successfully downloaded a laz (or zipped las) file, we can use the `laspy` package to read it in! We'll do that in the next line, reading the lidar file into the variable name `point_cloud`:
 
@@ -287,12 +402,45 @@ Reading in the file with with laspy.read() reads in both the metadata and the ra
 point_cloud
 ```
 
+
+
+
+    <LasData(1.3, point fmt: <PointFormat(3, 4 bytes of extra dims)>, 2968778 points, 2 vlrs)>
+
+
+
 `point_format.dimension_names` show us the available information stored in this LasData object format:
 
 
 ```python
 list(point_cloud.point_format.dimension_names)
 ```
+
+
+
+
+    ['X',
+     'Y',
+     'Z',
+     'intensity',
+     'return_number',
+     'number_of_returns',
+     'scan_direction_flag',
+     'edge_of_flight_line',
+     'classification',
+     'synthetic',
+     'key_point',
+     'withheld',
+     'scan_angle_rank',
+     'user_data',
+     'point_source_id',
+     'gps_time',
+     'red',
+     'green',
+     'blue',
+     'reversible index (lastile)']
+
+
 
 In the next few cells, we can explore some of these variables:
 
@@ -301,12 +449,26 @@ In the next few cells, we can explore some of these variables:
 point_cloud.classification
 ```
 
+
+
+
+    <SubFieldView([2 2 2 ... 7 7 7])>
+
+
+
 Let's get the `set` of this `list` to see all the unique classification values in this file. This may take a little time to run.
 
 
 ```python
 set(list(point_cloud.classification))
 ```
+
+
+
+
+    {1, 2, 5, 6, 7}
+
+
 
 Las files have "predefined classification schemes defined by the American Society for Photogrammetry and Remote Sensing (ASPRS)". Refer to https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm for more details.
 
@@ -330,6 +492,19 @@ Next let's take a look at what we can consider to be the main data - the geograp
 point_cloud.xyz
 ```
 
+
+
+
+    array([[ 7.25894810e+05,  1.98500265e+06,  2.50000000e-01],
+           [ 7.25915210e+05,  1.98500018e+06,  4.20000000e-01],
+           [ 7.25893550e+05,  1.98500798e+06,  2.20000000e-01],
+           ...,
+           [ 7.25085510e+05,  1.98583553e+06, -1.80370000e+02],
+           [ 7.25101320e+05,  1.98584004e+06, -2.37230000e+02],
+           [ 7.25122790e+05,  1.98583813e+06, -3.05320000e+02]])
+
+
+
 We can see this is a 3-dimensional array, as we might expect. Let's read this into the variable `xyz`:
 
 
@@ -343,6 +518,13 @@ We can see the size (or number of points) in this array using the built-in pytho
 ```python
 len(xyz)
 ```
+
+
+
+
+    2968778
+
+
 
 There are > 2 million lidar points in this single 1km x 1km tile. For the rest of this exercise, we'll look at a random subset of these points, taking every100th point (you can change this subset factor, but when we visualize the data in a few steps, subsetting by a larger factor will speed up the time it takes to make the plot).
 
@@ -391,6 +573,12 @@ ax.set_zlim3d(-10,50)
 plt.show()
 ```
 
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds_files/intro_discrete_point_clouds_58_0.png)
+    
+
+
 We can see a mix of both land and sea here, with slightly fewer returns on the ocean. A lot of the energy from the laser beam is absorbed in water, so it is typical to see low density over bodies of water. Remember this plot only displays 1/100th of the data, so there is a lot more information stored in the las file than is shown here.
 
 ### AOP Raster Data
@@ -420,6 +608,14 @@ download_aop_files('DP3.30024.001',site,year,l3_path,match_string='725000_198500
 download_aop_files('DP3.30024.001',site,year,l3_path,match_string='725000_1985000_DSM.tif',check_size=False)
 ```
 
+    Download size: 4.01 MB
+    downloading NEON_D04_GUAN_DP3_725000_1985000_CHM.tif to ./data/GUAN/2018/L3/
+    Download size: 4.01 MB
+    downloading NEON_D04_GUAN_DP3_725000_1985000_DTM.tif to ./data/GUAN/2018/L3/
+    Download size: 4.01 MB
+    downloading NEON_D04_GUAN_DP3_725000_1985000_DSM.tif to ./data/GUAN/2018/L3/
+    
+
 Next we'll read these in, using `rasterio`, as follows:
 
 
@@ -439,6 +635,12 @@ show((dtm), ax=ax2, title='DTM');
 show((dsm), ax=ax3, title='DSM');
 plt.show;
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds_files/intro_discrete_point_clouds_68_0.png)
+    
+
 
 ## Additional Resources
 
