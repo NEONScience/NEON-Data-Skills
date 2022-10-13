@@ -14586,7 +14586,7 @@ description: "Programmatically download lidar data and metadata and explore disc
 dateCreated: 2022-09-24
 authors: Bridget Hass
 contributors: 
-estimatedTime: 30 minutes
+estimatedTime: 45 minutes - 1 hour
 packagesLibraries: requests, json, gdal, geopandas, laspy, lasrs
 topics:
 languagesTool: python
@@ -14610,30 +14610,41 @@ tutorialSeries:</p>
 After completing this tutorial, you will be able to:
 
 * Use Python functions to programmatically download NEON AOP data from the API
-* Download and plot shapefiles and kmls included in lidar metadata to visualize coverage for a given year
+* Download and plot shapefiles and kmls (included as lidar metadata) to visualize coverage for a given year
 * Explore and plot the AOP discrete lidar point cloud contents in Python using the `laspy` package
 * Read in and plot the AOP L3 raster data products (CHM, DTM, DSM) in Python using the `rasterio` package 
 
 ### Requirements
 
-To follow along with this code, you will need to install Python. We recommend starting in Jupyter Notebooks so you can run each cell "chunk" individually. You can install both Python and Jupyter Notebooks by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
+To follow along with this code, you will need to install **Python 3.x**. This tutorial was developed and testing using Python 3.9, so if you are installing Python for the first time, we recommend that version. 
 
-You will also need to have the script `download_aop_files.py` downloaded and saved in your working directory.
+We recommend following along in `Jupyter Notebooks` so you can run each cell "chunk" individually, although you can also use a different IDE (Interactive Development Environment) of your choice. If not using `Jupyter`, we recommend using `Spyder`, which has similar functionality. 
 
-### Additional Resources
+1. **Install Python** 
 
-If you are interested in learning more about the NEON API, or want a deeper dive in how this works with the Python `requests` package, please refer to the tutorial and webpages linked below.
- * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-01-introduction-requests" target="_blank"> Introduction to NEON API in Python  </a>
- * <a href="https://data.neonscience.org/data-api/" target="_blank"> NEON Data API </a>
+You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
 
-For a handy resource on Jupyter Notebook tips, tricks and shortcuts, check out the DataQuest blog linked below.
- * <a href="https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-sh" target="_blank"> 28 Jupyter Notebook Tips, Tricks, and Shortcuts  </a>
+2. **Install required Python packages**
 
+* requests
+* gdal
+* fiona
+* geopandas
+* rasterio
+* laspy
+* lazrs
+
+More detailed installation instructions are provided below.
+
+3. **Try out Jupyter Notebooks**
+
+If you are new to using Jupyter Notebooks, please run through the tutorial below to familiarize yourself with the Notebook environment: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/jupyter-python-notebook" target="_blank">Introduction to Using Jupyter Notebooks</a>
+
+4. **Download the script** <a href="neon_aop_download_functions.py" download="neon_aop_download_functions.py">`neon_aop_download_functions.py`</a> and save it in your working directory.
 
 ### Install Python Packages
 
 * **requests**
-* **json** 
 * **gdal**
 * **fiona**
 * **geopandas**
@@ -14642,23 +14653,29 @@ For a handy resource on Jupyter Notebook tips, tricks and shortcuts, check out t
 * **lazrs**
 
 #### Installation Tips: 
-Most of these packages can be installed using `pip install`, eg. to install `gdal`, in the command line, run:
+Most of these packages can be installed using `pip install` or `conda install`. To install `gdal`, in the command line, run:
 
 ```python
 pip install gdal
 ```
 
-or within Jupyter notebooks you can also install packages but have to include an ! before the statement to run a shell command (as you would from a command prompt):
+Within Jupyter notebooks (or the Spyder Console) you can also install packages directly, but have to include an `!` before the statement, which runs a shell command (as you would from a command prompt):
 
 ```python
 !pip install gdal
 ```
 
-However for many of the geospatial packages (eg. gdal, fiona, geopandas, rasterio), there may be errors installing on your version of python if you don't find the correct wheel file. You can find the package wheel file specific to your version of python and your computer. A comprehensive archive of these geospatial (and other) wheel files can be found here:
+**Installation Tips for Mac Users:**
+
+For Python 3.9, if gdal does not install using pip, try running `conda install gdal` in the terminal. 
+
+**Installation Tips for Windows Users:**
+
+For many of the geospatial packages (eg. gdal, fiona, geopandas, rasterio), there may be errors installing on your version of Python using the standard `pip install`. You may need to find the package wheel file specific to your version of Python and your computer. A fairly comprehensive archive of these geospatial (and other) wheel files can be found here:
 
 https://www.lfd.uci.edu/~gohlke/pythonlibs/
 
-For example, to install `gdal` on a windows 64 machine, using Python 3.9, download the file GDAL-3.4.3-cp39-cp39-win_amd64.whl, found here (you can also find this by navigating through the link above):
+For example, to install `gdal` on a windows 64 machine, using Python 3.9, download the file GDAL-3.4.3-cp39-cp39-win_amd64.whl, found here (you can also find this by navigating through the link above, clicking on gdal in the list of packages at the top):
 
 https://www.lfd.uci.edu/~gohlke/pythonlibs/#gdal
 
@@ -14668,7 +14685,16 @@ Then install with `pip` as follows:
 pip install C:\Users\username\Downloads\GDAL-3.4.3-cp39-cp39-win_amd64.whl
 ```
 
-To confirm the installation worked properly, import the package and make sure there are no error messages.
+To confirm the installations worked properly, import each package separately, and make sure there are no error messages. You can also run this installation and set-up validation script.
+
+### Additional Resources
+
+If you are interested in learning more about the NEON API, or want a deeper dive in how this works with the Python `requests` package, please refer to the tutorial and webpages linked below.
+ * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-01-introduction-requests" target="_blank"> Introduction to NEON API in Python </a>
+ * <a href="https://data.neonscience.org/data-api/" target="_blank"> NEON Data API </a>
+
+For a handy resource on Jupyter Notebook tips, tricks and shortcuts, check out the DataQuest blog linked below.
+ * <a href="https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-sh" target="_blank"> 28 Jupyter Notebook Tips, Tricks, and Shortcuts </a>
 
 </div>
 </div>
@@ -14681,10 +14707,9 @@ To confirm the installation worked properly, import the package and make sure th
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>First, we need to import the required Python packages.</p>
+<h2 id="Import-Packages">Import Packages<a class="anchor-link" href="#Import-Packages">&#182;</a></h2><p>First, we need to import the required Python packages.</p>
 <p><strong>Reminder</strong>: If you haven't installed these packages (see more detailed installation instructions above), you can install them in the notebook as shown below. If the install doesn't work with a simple pip install, download the appropriate wheel file and substitute the package name with the wheel file name (including the full path). We recommend installing these packages one by one so you can make sure each package installs successfully.</p>
 <div class="highlight"><pre><span></span><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">requests</span>
-<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">json</span>
 <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">gdal</span>
 <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">fiona</span>
 <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">geopandas</span>
@@ -14692,7 +14717,7 @@ To confirm the installation worked properly, import the package and make sure th
 <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">laspy</span>
 <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">lazrs</span>
 </pre></div>
-<p>Once all packages are successfully installed, import them as follows. Note that the <code>requests</code> and <code>json</code> packages will be imported when we import the separate module, so you don't need to import those separately.</p>
+<p>Once all packages are successfully installed, import them as follows. Note that <code>requests</code> and <code>json</code> will be imported when we import the separate module (script), so you don't need to import those separately.</p>
 
 </div>
 </div>
@@ -14702,7 +14727,7 @@ To confirm the installation worked properly, import the package and make sure th
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#import required packages</span>
@@ -14726,61 +14751,14 @@ To confirm the installation worked properly, import the package and make sure th
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>Now we'll pull in all the functions in the module <strong>neon_aop_download_functions.py</strong>, linked at the top of this tutorial.</p>
-<p>First make sure this script is saved in your working directory, which we'll check below, otherwise you will need to provide the relative path to this script.</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># check that script is saved in same folder:</span>
+<p>First make sure this script is saved in your working directory, which we can check by navigating into that directory, or by using <code>os.listdir</code>. If you haven't saved it in your working directory, you will need to provide the relative path to this script when importing.</p>
+<div class="highlight"><pre><span></span><span class="c1"># check that script is saved in same folder:</span>
 <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">()</span>
 </pre></div>
 
-     </div>
 </div>
 </div>
 </div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;.ipynb_checkpoints&#39;,
- &#39;data&#39;,
- &#39;intro_discrete_point_clouds.html&#39;,
- &#39;intro_discrete_point_clouds.ipynb&#39;,
- &#39;intro_discrete_point_clouds.md&#39;,
- &#39;intro_discrete_point_clouds.py&#39;,
- &#39;intro_discrete_point_clouds_files&#39;,
- &#39;neon_aop_download_functions.py&#39;,
- &#39;__pycache__&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -14788,7 +14766,7 @@ To confirm the installation worked properly, import the package and make sure th
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can see that the download_functions script is there, so to import the contents, use the command:</p>
+<p>Once you've confirmed that the <code>neon_aop_download_functions script</code> is in your working directory, you can import the contents of this file as follows:</p>
 
 </div>
 </div>
@@ -14798,7 +14776,7 @@ To confirm the installation worked properly, import the package and make sure th
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">neon_aop_download_functions</span> <span class="kn">import</span> <span class="o">*</span>
@@ -14816,10 +14794,10 @@ To confirm the installation worked properly, import the package and make sure th
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Alternatively, if you'd like to see the contents of that file, you can use the "magic" command <code>%load</code> as follows:</p>
+<p>Alternatively, if you'd like to see the contents of that file in your notebook, you can use the "magic" command <code>%load</code> as follows:</p>
 <div class="highlight"><pre><span></span><span class="o">%</span><span class="n">load</span> <span class="n">neon_aop_download_functions</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
-<p>If you go this route, you will need to run the cell twice for the functions to be read into the ntoebook. The first run will load the functions and the second will run the cell. This option of loading in the functions may be useful if you wish to modify the functions in the notebook cell for your specific workflow.</p>
+<p>If you go this route, you will need to run the cell twice for the functions to be read into the notebook. The first run will load the functions into the cell, and the second run will load the functions into the working environment. This option of loading in the functions may be useful if you wish to modify the functions locally, eg. according to your specific workflow.</p>
 
 </div>
 </div>
@@ -14831,17 +14809,17 @@ To confirm the installation worked properly, import the package and make sure th
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now that we've imported in all the required packages and functions, we can get started! First let's take a look at what exactly we've imported by using the magic command <code>%whos</code>. Since there's no variable explorer in Jupyter Notebooks, this is a quick way to see what all we have in our working environment.</p>
+<p>Now that we've imported in all the required packages and functions, we can get started! First let's take a look at what exactly we've imported by using the magic command <code>%whos</code>. Since there is no variable explorer in Jupyter Notebooks, this is a quick way to see the contents (variables, functions, modules, etc.) that have been loaded in our current environment.</p>
 
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">whos</span>
@@ -14850,43 +14828,6 @@ To confirm the installation worked properly, import the package and make sure th
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Variable                      Type        Data/Info
----------------------------------------------------
-download_aop_files            function    &lt;function download_aop_fi&lt;...&gt;es at 0x000001862C014550&gt;
-download_file                 function    &lt;function download_file at 0x000001862C014430&gt;
-download_urls                 function    &lt;function download_urls at 0x000001862C0143A0&gt;
-get_file_size                 function    &lt;function get_file_size at 0x000001862C0144C0&gt;
-gpd                           module      &lt;module &#39;geopandas&#39; from &lt;...&gt;\geopandas\\__init__.py&#39;&gt;
-laspy                         module      &lt;module &#39;laspy&#39; from &#39;C:\&lt;...&gt;ges\\laspy\\__init__.py&#39;&gt;
-list_available_urls           function    &lt;function list_available_&lt;...&gt;ls at 0x000001862C014280&gt;
-list_available_urls_by_year   function    &lt;function list_available_&lt;...&gt;ar at 0x000001862C014310&gt;
-np                            module      &lt;module &#39;numpy&#39; from &#39;C:\&lt;...&gt;ges\\numpy\\__init__.py&#39;&gt;
-os                            module      &lt;module &#39;os&#39; from &#39;C:\\Us&lt;...&gt;\\Anaconda3\\lib\\os.py&#39;&gt;
-plt                           module      &lt;module &#39;matplotlib.pyplo&lt;...&gt;\\matplotlib\\pyplot.py&#39;&gt;
-requests                      module      &lt;module &#39;requests&#39; from &#39;&lt;...&gt;\\requests\\__init__.py&#39;&gt;
-urllib                        module      &lt;module &#39;urllib&#39; from &#39;C:&lt;...&gt;ib\\urllib\\__init__.py&#39;&gt;
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -14904,7 +14845,7 @@ urllib                        module      &lt;module &#39;urllib&#39; from &#39;
 <div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">requests</span><span class="p">)</span>
 <span class="n">requests</span><span class="err">?</span>
 </pre></div>
-<p>The functions loaded from the <code>neon_aop_download_functions.py</code> file also include similar documentation, so you can use this trick for these user-defined functions.</p>
+<p>The functions loaded from the <code>neon_aop_download_functions.py</code> file also include similar documentation, so you can also use the help function with for user-defined functions, as long as the appropriate <code>docstrings</code> (comments) have been added.</p>
 <div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">list_available_urls</span><span class="p">)</span>
 <span class="n">list_available_urls</span><span class="err">?</span>
 </pre></div>
@@ -14919,8 +14860,45 @@ urllib                        module      &lt;module &#39;urllib&#39; from &#39;
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>This tutorial will be working with the Discrete Return LiDAR Point Cloud <a href="https://data.neonscience.org/data-products/DP1.30003.001">https://data.neonscience.org/data-products/DP1.30003.001</a>)</p>
-<p>First we'll start by defining variables that specify the NEON data product ID, site, and year. You can change these to look at a different site of your interest, but this tutorial will explore the NEON site <code>GUAN</code> in Domain 04, Puerto Rico.</p>
+<h2 id="Overview-of-AOP-Discrete-Lidar-Data-Products">Overview of AOP Discrete Lidar Data Products<a class="anchor-link" href="#Overview-of-AOP-Discrete-Lidar-Data-Products">&#182;</a></h2><p>AOP generates several Level-1 and Level-3 (derived) data products. The table below summarizes these products. This lesson will give a brief introduction to both the Level 1 Classified Point Cloud data, as well as the Level 3 raster data products. For more detailed information on these data products, please refer to: <a href="https://www.neonscience.org/data-collection/lidar" target="_blank">  Airborne Remote Sensing Lidar </a>, and/or click on the linked data product pages in the table.</p>
+<table>
+<thead><tr>
+<th>Acronym / Short Name</th>
+<th>Data Product Name</th>
+<th>Data Product ID</th>
+<th>Link to ATBD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Point Cloud</td>
+<td>Discrete return LiDAR point cloud</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30003.001" target="_blank">DP3.30003.001</a></td>
+<td><a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001292vB" target="_blank">NEON L0-to-L1 Discrete Return LiDAR ATBD</a></td>
+</tr>
+<tr>
+<td>CHM</td>
+<td>Ecosystem structure</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a></td>
+<td><a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vA" target="_blank">NEON Ecosystem Structure ATBD</a></td>
+</tr>
+<tr>
+<td>DSM/DTM</td>
+<td>Elevation - LiDAR</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a></td>
+<td><a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002390vA" target="_blank">NEON Elevation (DTM and DSM) ATBD</a></td>
+</tr>
+<tr>
+<td>Slope/Aspect</td>
+<td>Slope and Aspect - LiDAR</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30025.001" target="_blank">DP3.30025.001</a></td>
+<td><a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.003791vA" target="_blank">NEON Elevation (Slope and Aspect) ATBD</a></td>
+</tr>
+</tbody>
+</table>
+<p>The Data Product page contains important information, as well as linked Algorithm Theoretical Basis Documents (ATBDs) which provide necessary information for understanding how the data products were generated, uncertainty associated with the data, and other essential contextual information.</p>
+<h3 id="Lidar-Point-Clouds">Lidar Point Clouds<a class="anchor-link" href="#Lidar-Point-Clouds">&#182;</a></h3><p>The first part of this tutorial will be working with the Discrete Return LiDAR Point Cloud data product (<a href="https://data.neonscience.org/data-products/DP3.30003.001" target="_blank">DP3.30003.001</a>) at the NEON site <a href="https://www.neonscience.org/field-sites/guan" target="_blank">Guanica Forest (GUAN)</a> in Domain 04, Puerto Rico.</p>
+<p>First we'll start by defining variables that specify the NEON data product ID (<code>dpID</code>), site, and year. You can change the site code to look at a different site of your interest (for more detailed information about the NEON sites, please check out the <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">Explore Field Sites</a> webpage.</p>
 
 </div>
 </div>
@@ -14930,7 +14908,7 @@ urllib                        module      &lt;module &#39;urllib&#39; from &#39;
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dpID</span><span class="o">=</span><span class="s1">&#39;DP1.30003.001&#39;</span> 
@@ -14954,12 +14932,12 @@ urllib                        module      &lt;module &#39;urllib&#39; from &#39;
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">list_available_urls</span><span class="p">)</span>
@@ -14970,47 +14948,12 @@ urllib                        module      &lt;module &#39;urllib&#39; from &#39;
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Help on function list_available_urls in module neon_aop_download_functions:
-
-list_available_urls(product, site)
-    list_available urls lists the api url for a given product and site
-    --------
-     Inputs:
-         product: the data product code (eg. &#39;DP3.30015.001&#39; - CHM)
-         site: the 4-digit NEON site code (eg. &#39;SRER&#39;, &#39;JORN&#39;)
-    --------
-    Usage:
-    --------
-    jorn_chm_urls = list_available_urls(&#39;DP3.30015.001&#39;,&#39;JORN&#39;)
-
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">list_available_urls</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">)</span>
@@ -15019,31 +14962,6 @@ list_available_urls(product, site)
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;https://data.neonscience.org/api/v0/data/DP1.30003.001/GUAN/2018-05&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -15059,12 +14977,12 @@ list_available_urls(product, site)
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">year</span><span class="o">=</span><span class="s1">&#39;2018&#39;</span>
@@ -15080,29 +14998,6 @@ list_available_urls(product, site)
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>./data/GUAN/2018/
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15115,12 +15010,12 @@ list_available_urls(product, site)
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">download_aop_files</span><span class="p">)</span>
@@ -15131,49 +15026,6 @@ list_available_urls(product, site)
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Help on function download_aop_files in module neon_aop_download_functions:
-
-download_aop_files(product, site, year=None, download_folder=&#39;./data&#39;, match_string=None, check_size=True)
-    download_aop_files downloads NEON AOP files from the AOP for a given data product, site, and 
-    optional year, download folder, and 
-    --------
-     Inputs:
-         required:
-             product: the data product code (eg. &#39;DP3.30015.001&#39; - CHM)
-             site: the 4-digit NEON site code (eg. &#39;SRER&#39;, &#39;JORN&#39;)
-         
-         optional:
-             year: year (eg. &#39;2020&#39;); default (None) is all years
-             download_folder: folder to store downloaded files; default (./data) in current directory
-             match_string: subset of data to match, need to use exact pattern for file name
-             check_size: prompt to continue download (y/n) after displaying size; default = True
-    --------
-    Usage:
-    --------
-    download_aop_files(&#39;DP3.30015.001&#39;,&#39;JORN&#39;,&#39;2019&#39;,&#39;./data/JORN_2019/CHM&#39;,&#39;314000_3610000_CHM.tif&#39;)
-
-</pre>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15181,10 +15033,13 @@ download_aop_files(product, site, year=None, download_folder=&#39;./data&#39;, m
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>The only required inputs for this function are the <code>product</code> and the <code>site</code>; optionally we can specify the <code>year</code>, the <code>download_folder</code> to save the files, and a <code>match_string</code> to download a subset of the data by a string. By default, the function will display the size of the files, and prompt the user to continue the download (by typing <code>y</code>); any other response will halt the download. This is to prevent an accidental download of a large volume of data.</p>
-<p>We'll start by downloading the shape files, which are included as part of the metadata with the lidar data products. Because AOP data for a full site can be pretty large, and you may only need to work with a subset of the data for a given site, we recommend starting with the metadata to get a better sense of the data and your area of interest.</p>
-<p>There are summary shape files provided along with the lidar data for each site. These summary files end with <code>merged_tiles.shp/.shx</code>, so we can key off that string to download only the full boundary shape file. You could also download all of the individual <code>.shp</code> files for each data tile (L3 data is provided in 1km x 1km tiles), by using the match string <code>.shp</code>, or similarly all the <code>.kml</code> files, if you wanted to pull the data boundaries into Google Earth and explore more interactively.</p>
-<p>Try out some of the options below to explore different metadata products. Optionally, you can set <code>check_size=False</code> since these will all have small data volumes.</p>
+<h4 id="Lidar-Metadata">Lidar Metadata<a class="anchor-link" href="#Lidar-Metadata">&#182;</a></h4><p>The only required inputs for this function are the <code>product</code> and the <code>site</code>; optionally we can specify the <code>year</code>, the <code>download_folder</code> to save the files, and a <code>match_string</code> to download a subset of the data by a string. By default, the function will display the size of the files, and prompt the user to continue the download (by typing <code>y</code>); any other response will halt the download. This is to prevent an accidental download of a large volume of data.</p>
+<p>We'll start by downloading the some of the metadata, including the pdf documentation, and shape files that provide geographic information corresponding to the data. Because AOP data can be pretty large for an entire site, and you may only need to work with a subset of the data for a given site, we recommend starting with downloading only the metadata.</p>
+<h4 id="Documentation---pdfs">Documentation - pdfs<a class="anchor-link" href="#Documentation---pdfs">&#182;</a></h4><p>AOP data provides summary pdf documents, which include important information about the sensors used to collect the lidar data, acquisition parameters, processing parameters, and QA information. When working with any AOP data, we recommend reviewing this documentation, as well as referencing the relevant ATBDs.</p>
+<div class="highlight"><pre><span></span><span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">kml_path</span><span class="p">,</span><span class="s1">&#39;.shp&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+<h4 id="Shape-files-and-KMLs">Shape files and KMLs<a class="anchor-link" href="#Shape-files-and-KMLs">&#182;</a></h4><p>There are summary shape files provided along with the lidar data for each site. These summary files end with <code>merged_tiles.shp/.shx</code>, so we can key off that string to download only the full boundary shape file. You could also download all of the individual <code>.shp</code> files for each data tile (L3 data is provided in 1km x 1km tiles), by using the match string <code>.shp</code>, or similarly all the <code>.kml</code> files, if you wanted to pull the data boundaries into Google Earth and explore more interactively.</p>
+<p>Try out some of the options below to explore different metadata products. Optionally, you can set <code>check_size=False</code> since the metadata files will all have relatively small data volumes.</p>
 <div class="highlight"><pre><span></span><span class="c1">#download all shp files (L3 - tiles)</span>
 <span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">kml_path</span><span class="p">,</span><span class="s1">&#39;.shp&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
 
@@ -15198,16 +15053,16 @@ download_aop_files(product, site, year=None, download_folder=&#39;./data&#39;, m
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">shp_path</span><span class="p">,</span><span class="s1">&#39;merged_tiles.shp&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">shp_path</span><span class="p">,</span><span class="s1">&#39;merged_tiles.shx&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#download the QA reports to the default download directory (./data)</span>
+<span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">match_string</span><span class="o">=</span><span class="s1">&#39;.pdf&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15215,30 +15070,35 @@ download_aop_files(product, site, year=None, download_folder=&#39;./data&#39;, m
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>Please take a look at these pdfs on your own time!</p>
+<p>Next we'll download the merged_tiles shapefiles (you need to download both extensions .shp and .shx):</p>
 
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Download size: 0.78 kB
-downloading 2018_GUAN_1_merged_tiles.shp to ./data/GUAN/2018/shp/
-Download size: 0.0 kB
-downloading 2018_GUAN_1_merged_tiles.shx to ./data/GUAN/2018/shp/
-</pre>
 </div>
 </div>
-
 </div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#download the full-boundary shape files</span>
+<span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">shp_path</span><span class="p">,</span><span class="s1">&#39;merged_tiles.shp&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">shp_path</span><span class="p">,</span><span class="s1">&#39;merged_tiles.shx&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
 
+     </div>
+</div>
+</div>
 </div>
 
 </div>
@@ -15253,12 +15113,12 @@ downloading 2018_GUAN_1_merged_tiles.shx to ./data/GUAN/2018/shp/
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">shp_path</span><span class="p">)</span>
@@ -15269,31 +15129,6 @@ downloading 2018_GUAN_1_merged_tiles.shx to ./data/GUAN/2018/shp/
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>[&#39;2018_GUAN_1_merged_tiles.shp&#39;, &#39;2018_GUAN_1_merged_tiles.shx&#39;]</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15301,17 +15136,17 @@ downloading 2018_GUAN_1_merged_tiles.shx to ./data/GUAN/2018/shp/
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>download_aop_files(dpID,site,year,kml_path,'.kml')</p>
+<p>We can see these files in the <code>shp</code> directory we created. Next, let's plot the data using <code>geopandas</code> (imported as <code>gpd</code>) as follows:</p>
 
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">shp_path</span><span class="p">,</span><span class="s1">&#39;2018_GUAN_1_merged_tiles.shp&#39;</span><span class="p">))</span>
@@ -15326,42 +15161,12 @@ downloading 2018_GUAN_1_merged_tiles.shx to ./data/GUAN/2018/shp/
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-
-<div class="jp-RenderedImage jp-OutputArea-output ">
-<img src="data:image/png;base64,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
-"
-class="
-jp-needs-light-background
-"
->
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">download_aop_files</span><span class="p">(</span><span class="n">dpID</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="n">year</span><span class="p">,</span><span class="n">kml_path</span><span class="p">,</span><span class="s1">&#39;full_boundary.kml&#39;</span><span class="p">,</span><span class="n">check_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
@@ -15370,30 +15175,6 @@ jp-needs-light-background
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Download size: 0.13 kB
-downloading full_boundary.kml to ./data/GUAN/2018/kml/
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -15616,7 +15397,8 @@ downloading full_boundary.kml to ./data/GUAN/2018/kml/
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Las files have "predefined classification schemes defined by the American Society for Photogrammetry and Remote Sensing (ASPRS)". Refer to <a href="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm">https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm</a> for more details.</p>
+<p>We can see that there are a several unique classification values for this site.
+Las files have "predefined classification schemes defined by the American Society for Photogrammetry and Remote Sensing (ASPRS)". You can refere to the ArcGIS documentation for more details: <a href="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm">https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm</a> for more details.</p>
 <p>The following table lists the LAS classification codes defined by ASPRS for these LAS versions:</p>
 <table>
 <thead><tr>
