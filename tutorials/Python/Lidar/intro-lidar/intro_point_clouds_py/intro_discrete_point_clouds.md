@@ -179,14 +179,14 @@ Now that we've imported in all the required packages and functions, we can get s
 
     Variable                      Type        Data/Info
     ---------------------------------------------------
-    download_aop_files            function    <function download_aop_fi<...>es at 0x0000020916E05280>
-    download_file                 function    <function download_file at 0x0000020916E05040>
-    download_urls                 function    <function download_urls at 0x0000020916DFCEE0>
-    get_file_size                 function    <function get_file_size at 0x0000020916E05160>
+    download_aop_files            function    <function download_aop_fi<...>es at 0x0000013878039280>
+    download_file                 function    <function download_file at 0x0000013878039160>
+    download_urls                 function    <function download_urls at 0x00000138780390D0>
+    get_file_size                 function    <function get_file_size at 0x00000138780391F0>
     gpd                           module      <module 'geopandas' from <...>\geopandas\\__init__.py'>
     laspy                         module      <module 'laspy' from 'C:\<...>ges\\laspy\\__init__.py'>
-    list_available_urls           function    <function list_available_<...>ls at 0x00000209125B04C0>
-    list_available_urls_by_year   function    <function list_available_<...>ar at 0x0000020912584AF0>
+    list_available_urls           function    <function list_available_<...>ls at 0x000001387802EF70>
+    list_available_urls_by_year   function    <function list_available_<...>ar at 0x0000013878039040>
     np                            module      <module 'numpy' from 'C:\<...>ges\\numpy\\__init__.py'>
     os                            module      <module 'os' from 'C:\\Us<...>\\Anaconda3\\lib\\os.py'>
     plt                           module      <module 'matplotlib.pyplo<...>\\matplotlib\\pyplot.py'>
@@ -371,7 +371,7 @@ plt.xticks(rotation=90); #optionally rotate the xtick labels
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds_files/intro_discrete_point_clouds_28_0.png)
+![png](intro_discrete_point_clouds_files/intro_discrete_point_clouds_28_0.png)
     
 
 
@@ -500,8 +500,15 @@ Let's get the `set` of this `list` to see all the unique classification values i
 set(list(point_cloud.classification))
 ```
 
+
+
+
+    {1, 2, 5, 6, 7}
+
+
+
 We can see that there are a several unique classification values for this site.
-Las files have "predefined classification schemes defined by the American Society for Photogrammetry and Remote Sensing (ASPRS)". You can refere to the ArcGIS documentation for more details: https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm for more details.
+Las files have "predefined classification schemes defined by the American Society for Photogrammetry and Remote Sensing (ASPRS)". You can refer to the <a href="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm" target="_blank">ArcGIS documentation</a> for more details.
 
 The following table lists the LAS classification codes defined by ASPRS for these LAS versions:
 
@@ -523,6 +530,19 @@ Next let's take a look at what we can consider to be the main data - the geograp
 point_cloud.xyz
 ```
 
+
+
+
+    array([[ 7.25894810e+05,  1.98500265e+06,  2.50000000e-01],
+           [ 7.25915210e+05,  1.98500018e+06,  4.20000000e-01],
+           [ 7.25893550e+05,  1.98500798e+06,  2.20000000e-01],
+           ...,
+           [ 7.25085510e+05,  1.98583553e+06, -1.80370000e+02],
+           [ 7.25101320e+05,  1.98584004e+06, -2.37230000e+02],
+           [ 7.25122790e+05,  1.98583813e+06, -3.05320000e+02]])
+
+
+
 We can see this is a 3-dimensional array, as we might expect. Let's read this into the variable `xyz`:
 
 
@@ -536,6 +556,13 @@ We can see the size (or number of points) in this array using the built-in pytho
 ```python
 len(xyz)
 ```
+
+
+
+
+    2968778
+
+
 
 There are > 2 million lidar points in this single 1km x 1km tile. For the rest of this exercise, we'll look at a random subset of these points, taking every100th point (you can change this subset factor, but when we visualize the data in a few steps, subsetting by a larger factor will speed up the time it takes to make the plot).
 
@@ -584,6 +611,12 @@ ax.set_zlim3d(-10,50)
 plt.show()
 ```
 
+
+    
+![png](intro_discrete_point_clouds_files/intro_discrete_point_clouds_61_0.png)
+    
+
+
 We can see a mix of both land and sea here, with slightly fewer returns on the ocean. A lot of the energy from the laser beam is absorbed in water, so it is typical to see low density over bodies of water. Remember this plot only displays 1/100th of the data, so there is a lot more information stored in the las file than is shown here.
 
 ### Lidar Raster Data - DTM, DSM, and CHM
@@ -612,6 +645,14 @@ download_aop_files('DP3.30024.001',site,year,l3_path,match_string='725000_198500
 download_aop_files('DP3.30024.001',site,year,l3_path,match_string='725000_1985000_DSM.tif',check_size=False)
 ```
 
+    Download size: 4.01 MB
+    downloading NEON_D04_GUAN_DP3_725000_1985000_CHM.tif to ./data/GUAN/2018/L3/
+    Download size: 4.01 MB
+    downloading NEON_D04_GUAN_DP3_725000_1985000_DTM.tif to ./data/GUAN/2018/L3/
+    Download size: 4.01 MB
+    downloading NEON_D04_GUAN_DP3_725000_1985000_DSM.tif to ./data/GUAN/2018/L3/
+    
+
 Next we'll read these in, using `rasterio`, as follows:
 
 
@@ -631,6 +672,12 @@ show((dtm), ax=ax2, title='DTM');
 show((dsm), ax=ax3, title='DSM');
 plt.show;
 ```
+
+
+    
+![png](intro_discrete_point_clouds_files/intro_discrete_point_clouds_71_0.png)
+    
+
 
 ## Additional Resources
 
