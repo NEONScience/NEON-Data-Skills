@@ -32,7 +32,7 @@ To follow along with this code, you will need to install **Python 3.x**. This tu
 We recommend following along in **Jupyter Notebooks** so you can run each cell "chunk" individually, although you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. 
 
 * **Install Python and Jupyter Notebooks** 
-You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
+   * You can install Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
 
 * **Install required Python packages**
 
@@ -44,9 +44,9 @@ You can install both Python, Jupyter Notebooks, and Spyder by downloading <a hre
     * laspy
     * lazrs
 
-    More detailed installation instructions are provided below.
+    More detailed instructions and tips for installing these packages are provided below.
 
-* **Download the script** <a href="neon_aop_download_functions.py" download="https://github.com/NEONScience/NEON-Data-Skills/blob/99bdeb0d31975372dbe0b163ef48986235f4d67b/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py">neon_aop_download_functions.py</a> and save it in your working directory.
+* **Download the script** <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/99bdeb0d31975372dbe0b163ef48986235f4d67b/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py" download="https://github.com/NEONScience/NEON-Data-Skills/blob/99bdeb0d31975372dbe0b163ef48986235f4d67b/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py">neon_aop_download_functions.py</a> and save it in your working directory.
 
 
 
