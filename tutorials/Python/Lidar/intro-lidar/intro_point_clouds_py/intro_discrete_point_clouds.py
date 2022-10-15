@@ -32,42 +32,32 @@
 # 
 # To follow along with this code, you will need to install **Python 3.x**. This tutorial was developed and testing using Python 3.9, so if you are installing Python for the first time, we recommend that version. 
 # 
-# We recommend following along in `Jupyter Notebooks` so you can run each cell "chunk" individually, although you can also use a different IDE (Interactive Development Environment) of your choice. If not using `Jupyter`, we recommend using `Spyder`, which has similar functionality. 
+# We recommend following along in **Jupyter Notebooks** so you can run each cell "chunk" individually, although you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. 
 # 
-# 1. **Install Python** 
-# 
+# * **Install Python and Jupyter Notebooks** 
 # You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
 # 
-# 2. **Install required Python packages**
+# * **Install required Python packages**
 # 
-# * requests
-# * gdal
-# * fiona
-# * geopandas
-# * rasterio
-# * laspy
-# * lazrs
+#     * requests
+#     * gdal
+#     * fiona
+#     * geopandas
+#     * rasterio
+#     * laspy
+#     * lazrs
 # 
-# More detailed installation instructions are provided below.
+#     More detailed installation instructions are provided below.
 # 
-# 3. **Try out Jupyter Notebooks**
+# * **Download the script** <a href="neon_aop_download_functions.py" download="neon_aop_download_functions.py">`neon_aop_download_functions.py`</a> and save it in your working directory.
+# 
+# * **Try out Jupyter Notebooks**
 # 
 # If you are new to using Jupyter Notebooks, please run through the tutorial below to familiarize yourself with the Notebook environment: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/jupyter-python-notebook" target="_blank">Introduction to Using Jupyter Notebooks</a>
 # 
-# 4. **Download the script** <a href="neon_aop_download_functions.py" download="neon_aop_download_functions.py">`neon_aop_download_functions.py`</a> and save it in your working directory.
+# #### Python Installation Tips: 
 # 
-# ### Install Python Packages
-# 
-# * **requests**
-# * **gdal**
-# * **fiona**
-# * **geopandas**
-# * **rasterio**
-# * **laspy**
-# * **lazrs**
-# 
-# #### Installation Tips: 
-# Most of these packages can be installed using `pip install` or `conda install`. To install `gdal`, in the command line, run:
+# Most of the required packages can be installed using `pip install` or `conda install`. To install `gdal`, in the command line, run:
 # 
 # ```python
 # pip install gdal
@@ -81,7 +71,7 @@
 # 
 # **Installation Tips for Mac Users:**
 # 
-# For Python 3.9, if gdal does not install using pip, try running `conda install gdal` in the terminal. 
+# For Python 3.9, if pip does not successfully install gdal, try running `conda install gdal` in the terminal. 
 # 
 # **Installation Tips for Windows Users:**
 # 
@@ -112,7 +102,26 @@
 # 
 # </div>
 
-# ## Import Packages
+# ## Overview of AOP Discrete Lidar Data Products
+# 
+# AOP generates several Level-1 and Level-3 (derived) data products. The table below summarizes these products. This lesson will give a brief introduction to both the Level 1 Classified Point Cloud data, as well as the Level 3 raster data products. For more detailed information on these data products, please refer to: <a href="https://www.neonscience.org/data-collection/lidar" target="_blank">  Airborne Remote Sensing Lidar </a>, and/or click on the linked data product pages in the table. 
+# 
+# | Acronym / Short Name | Data Product Name | Data Product ID | Link to ATBD |
+# |---------|-------------------|-----------------|--------------|
+# | Point Cloud | Discrete return LiDAR point cloud | <a href="https://data.neonscience.org/data-products/DP3.30003.001" target="_blank">DP3.30003.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001292vB" target="_blank">NEON L0-to-L1 Discrete Return LiDAR ATBD</a>|
+# | CHM | Ecosystem structure | <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vA" target="_blank">NEON Ecosystem Structure ATBD</a>|
+# | DSM/DTM | Elevation - LiDAR| <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002390vA" target="_blank">NEON Elevation (DTM and DSM) ATBD</a> |
+# | Slope/Aspect | Slope and Aspect - LiDAR | <a href="https://data.neonscience.org/data-products/DP3.30025.001" target="_blank">DP3.30025.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.003791vA" target="_blank">NEON Elevation (Slope and Aspect) ATBD</a> |
+# 
+# The Data Product page contains important information, as well as linked Algorithm Theoretical Basis Documents (ATBDs) which provide necessary information for understanding how the data products were generated, uncertainty associated with the data, and other essential contextual information.
+# 
+# ### Lidar Point Clouds
+# 
+# The first part of this tutorial will be working with the Discrete Return LiDAR Point Cloud data product (<a href="https://data.neonscience.org/data-products/DP3.30003.001" target="_blank">DP3.30003.001</a>) at the NEON site <a href="https://www.neonscience.org/field-sites/guan" target="_blank">Guanica Forest (GUAN)</a> in Domain 04, Puerto Rico.
+# 
+# Before we dig into the data, we'll need to import the required packages.
+
+# #### Import Packages
 # 
 # First, we need to import the required Python packages. 
 # 
@@ -130,7 +139,7 @@
 # 
 # Once all packages are successfully installed, import them as follows. Note that `requests` and `json` will be imported when we import the separate module (script), so you don't need to import those separately.
 
-# In[ ]:
+# In[1]:
 
 
 #import required packages
@@ -151,7 +160,7 @@ import laspy
 
 # Once you've confirmed that the `neon_aop_download_functions script` is in your working directory, you can import the contents of this file as follows:
 
-# In[ ]:
+# In[2]:
 
 
 from neon_aop_download_functions import *
@@ -167,13 +176,13 @@ from neon_aop_download_functions import *
 
 # Now that we've imported in all the required packages and functions, we can get started! First let's take a look at what exactly we've imported by using the magic command `%whos`. Since there is no variable explorer in Jupyter Notebooks, this is a quick way to see the contents (variables, functions, modules, etc.) that have been loaded in our current environment.
 
-# In[ ]:
+# In[3]:
 
 
 get_ipython().run_line_magic('whos', '')
 
 
-# ### Data Tip
+# #### Data Tip
 # If you are unsure what a function or module does, you can find more information about the function in two ways: 
 # 1. type `help(function_name)`, which will print out documentation below the cell, or
 # 2. type the function name followed by `?`, which will pop up the documentation at the bottom of your Jupyter Notebook window, and you can then exit out of it at your convenience
@@ -190,26 +199,11 @@ get_ipython().run_line_magic('whos', '')
 # list_available_urls?
 # ```
 
-# ## Overview of AOP Discrete Lidar Data Products
-# 
-# AOP generates several Level-1 and Level-3 (derived) data products. The table below summarizes these products. This lesson will give a brief introduction to both the Level 1 Classified Point Cloud data, as well as the Level 3 raster data products. For more detailed information on these data products, please refer to: <a href="https://www.neonscience.org/data-collection/lidar" target="_blank">  Airborne Remote Sensing Lidar </a>, and/or click on the linked data product pages in the table. 
-# 
-# | Acronym / Short Name | Data Product Name | Data Product ID | Link to ATBD |
-# |---------|-------------------|-----------------|--------------|
-# | Point Cloud | Discrete return LiDAR point cloud | <a href="https://data.neonscience.org/data-products/DP3.30003.001" target="_blank">DP3.30003.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001292vB" target="_blank">NEON L0-to-L1 Discrete Return LiDAR ATBD</a>|
-# | CHM | Ecosystem structure | <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vA" target="_blank">NEON Ecosystem Structure ATBD</a>|
-# | DSM/DTM | Elevation - LiDAR| <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002390vA" target="_blank">NEON Elevation (DTM and DSM) ATBD</a> |
-# | Slope/Aspect | Slope and Aspect - LiDAR | <a href="https://data.neonscience.org/data-products/DP3.30025.001" target="_blank">DP3.30025.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.003791vA" target="_blank">NEON Elevation (Slope and Aspect) ATBD</a> |
-# 
-# The Data Product page contains important information, as well as linked Algorithm Theoretical Basis Documents (ATBDs) which provide necessary information for understanding how the data products were generated, uncertainty associated with the data, and other essential contextual information.
-# 
-# ### Lidar Point Clouds
-# 
-# The first part of this tutorial will be working with the Discrete Return LiDAR Point Cloud data product (<a href="https://data.neonscience.org/data-products/DP3.30003.001" target="_blank">DP3.30003.001</a>) at the NEON site <a href="https://www.neonscience.org/field-sites/guan" target="_blank">Guanica Forest (GUAN)</a> in Domain 04, Puerto Rico.
+# Now that we've pulled in the packages needed for the first part of the tutorial, we can download a dataset from the NEON API.
 # 
 # First we'll start by defining variables that specify the NEON data product ID (`dpID`), site, and year. You can change the site code to look at a different site of your interest (for more detailed information about the NEON sites, please check out the <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">Explore Field Sites</a> webpage. 
 
-# In[ ]:
+# In[4]:
 
 
 dpID='DP1.30003.001' 
@@ -218,13 +212,13 @@ site = 'GUAN'
 
 # We can use the function `list_available_urls` to see what data is available for this data product and site. This function requires two inputs: the data product ID `dpID` and the site ID, `site`.
 
-# In[ ]:
+# In[5]:
 
 
 help(list_available_urls)
 
 
-# In[ ]:
+# In[6]:
 
 
 list_available_urls(dpID,site)
@@ -234,7 +228,7 @@ list_available_urls(dpID,site)
 # 
 # Next let's set up some paths where we can save our downloaded data. We'll start with downloading geospatial metadata in order to get a sense of the coverage (geographic extents) of the flight area. We'll make a folder for the shapefiles (shp), kml files (which may be useful for interactively looking at the site boundaries in Google Earth), and a folder for the actual lidar (laz) data.
 
-# In[ ]:
+# In[7]:
 
 
 year='2018'
@@ -247,44 +241,23 @@ print(data_root_path)
 
 # Next, let's take a look at the `download_aop_files` function, which we'll use to download the metadata and data that we want to explore.
 
-# In[ ]:
+# In[8]:
 
 
 help(download_aop_files)
 
 
-# #### Lidar Metadata
-# 
 # The only required inputs for this function are the `product` and the `site`; optionally we can specify the `year`, the `download_folder` to save the files, and a `match_string` to download a subset of the data by a string. By default, the function will display the size of the files, and prompt the user to continue the download (by typing `y`); any other response will halt the download. This is to prevent an accidental download of a large volume of data.
+# 
+# ### Lidar Metadata
 # 
 # We'll start by downloading the some of the metadata, including the pdf documentation, and shape files that provide geographic information corresponding to the data. Because AOP data can be pretty large for an entire site, and you may only need to work with a subset of the data for a given site, we recommend starting with downloading only the metadata. 
 # 
-# #### Documentation - pdfs
+# #### Lidar Documentation - QA pdfs
 # 
 # AOP data provides summary pdf documents, which include important information about the sensors used to collect the lidar data, acquisition parameters, processing parameters, and QA information. When working with any AOP data, we recommend reviewing this documentation, as well as referencing the relevant ATBDs.
-# 
-# ```python
-# download_aop_files(dpID,site,year,kml_path,'.shp',check_size=False) 
-# ```
-# 
-# #### Shape files and KMLs
-# 
-# There are summary shape files provided along with the lidar data for each site. These summary files end with `merged_tiles.shp/.shx`, so we can key off that string to download only the full boundary shape file. You could also download all of the individual `.shp` files for each data tile (L3 data is provided in 1km x 1km tiles), by using the match string `.shp`, or similarly all the `.kml` files, if you wanted to pull the data boundaries into Google Earth and explore more interactively.
-# 
-# Try out some of the options below to explore different metadata products. Optionally, you can set `check_size=False` since the metadata files will all have relatively small data volumes.
-# 
-# ```python
-# #download all shp files (L3 - tiles)
-# download_aop_files(dpID,site,year,kml_path,'.shp',check_size=False) 
-# 
-# #download all kml files (L1 - flightline + L3 - tiles)
-# download_aop_files(dpID,site,year,kml_path,'.kml',check_size=False) 
-# 
-# #downloads only the full boundary kml files
-# download_aop_files(dpID,site,year,kml_path,'full_boundary.kml',check_size=False) 
-# ```
 
-# In[ ]:
+# In[9]:
 
 
 #download the QA reports to the default download directory (./data)
@@ -293,9 +266,13 @@ download_aop_files(dpID,site,year,match_string='.pdf',check_size=False)
 
 # Please take a look at these pdfs on your own time!
 # 
-# Next we'll download the merged_tiles shapefiles (you need to download both extensions .shp and .shx):
+# #### Download and Plot Shapefile Boundaries
+# 
+# There are summary shape files provided along with the lidar data for each site. These summary files end with `merged_tiles.shp/.shx`, so we can key off that string to download only the full boundary shape file. You could also download all of the individual `.shp` files for each data tile (L3 data is provided in 1km x 1km tiles), by using the match string `.shp`, or similarly all the `.kml` files, if you wanted to pull the data boundaries into Google Earth and explore more interactively.
+# 
+# We'll download the merged_tiles shapefiles (you need to download both extensions .shp and .shx):
 
-# In[ ]:
+# In[10]:
 
 
 #download the full-boundary shape files
@@ -305,15 +282,15 @@ download_aop_files(dpID,site,year,shp_path,'merged_tiles.shx',check_size=False)
 
 # We can see that these files have downloaded to the expected location by listing the contents of the `shp_path` directory that we've made:
 
-# In[ ]:
+# In[11]:
 
 
 os.listdir(shp_path)
 
 
-# We can see these files in the `shp` directory we created. Next, let's plot the data using `geopandas` (imported as `gpd`) as follows:
+# We can see these files in the `shp` directory we created. Next, let's plot the boundary shapefile data using `geopandas` (imported as `gpd`) as follows:
 
-# In[ ]:
+# In[12]:
 
 
 gdf = gpd.read_file(os.path.join(shp_path,'2018_GUAN_1_merged_tiles.shp'))
@@ -323,7 +300,9 @@ ax.set_title('AOP Coverage of ' + site + ' in ' + year);
 plt.xticks(rotation=90); #optionally rotate the xtick labels
 
 
-# In[ ]:
+# We can also pull in the boundary kml file, which can be pulled into Google Earth for a more interactive experience.
+
+# In[13]:
 
 
 download_aop_files(dpID,site,year,kml_path,'full_boundary.kml',check_size=False) 
@@ -339,7 +318,7 @@ download_aop_files(dpID,site,year,kml_path,'full_boundary.kml',check_size=False)
 
 # Now that we can see the extent of the tiles, we'll pick a single tile in this area to download. For this example, I'll choose the tile "724000_1985000" towards the southern part of the site, including both land and sea.
 
-# In[ ]:
+# In[14]:
 
 
 download_aop_files('DP1.30003.001',site,year,laz_path,match_string='725000_1985000_classified_point_cloud_colorized.laz')
@@ -347,24 +326,28 @@ download_aop_files('DP1.30003.001',site,year,laz_path,match_string='725000_19850
 
 # We can use `os.listdir` again to check that this file successfully downloaded to the expected location. Alternatively you could go into your file explorer.
 
-# In[ ]:
+# In[15]:
 
 
 os.listdir(laz_path)
 
 
+# ### Exploring point cloud data with `laspy`
+# 
 # Now that we've successfully downloaded a laz (or zipped las) file, we can use the `laspy` package to read it in! We'll do that in the next line, reading the lidar file into the variable name `point_cloud`:
 
-# In[ ]:
+# In[16]:
 
 
+# use os.path.join to get the full path of the laz file
 laz_data_file=os.path.join(laz_path,'NEON_D04_GUAN_DP1_725000_1985000_classified_point_cloud_colorized.laz')
+# read the laz file into a LasData object using laspy.read()
 point_cloud=laspy.read(laz_data_file)
 
 
 # Reading in the file with with laspy.read() reads in both the metadata and the raw point cloud data. We can print out the `point_cloud` variable to show some basic information about what we've read in:
 
-# In[ ]:
+# In[17]:
 
 
 point_cloud
@@ -372,7 +355,7 @@ point_cloud
 
 # `point_format.dimension_names` show us the available information stored in this LasData object format:
 
-# In[ ]:
+# In[18]:
 
 
 list(point_cloud.point_format.dimension_names)
@@ -380,7 +363,7 @@ list(point_cloud.point_format.dimension_names)
 
 # In the next few cells, we can explore some of these variables:
 
-# In[ ]:
+# In[19]:
 
 
 point_cloud.classification
@@ -410,7 +393,7 @@ set(list(point_cloud.classification))
 # | 6                   | Building          |
 # | 7                   | Low Point         |
 
-# Next let's take a look at what we can consider to be the main data - the geographic loation of each point in the point cloud. This can be accessed either by `point_cloud.X`, `point_cloud.Y`, `point_cloud.Z`, or more succinctly by `point_cloud.xyz`. Let's take a look at this:
+# Next let's take a look at what we can consider to be the main data - the geographic loation of each point in the point cloud. This can be accessed either by `point_cloud.xyz`. Let's take a look:
 
 # In[ ]:
 
@@ -488,10 +471,9 @@ plt.show()
 
 # We can see a mix of both land and sea here, with slightly fewer returns on the ocean. A lot of the energy from the laser beam is absorbed in water, so it is typical to see low density over bodies of water. Remember this plot only displays 1/100th of the data, so there is a lot more information stored in the las file than is shown here.
 
-# ### AOP Raster Data
+# ### Lidar Raster Data - DTM, DSM, and CHM
 # 
 # Lastly, we'll take a look at some of the derived (Level-3, or L3) data products generated from this point cloud data. NEON generates 5 different derived L3 products from the discrete data, summarized below. 
-# 
 # 
 # In the last part of this lesson, we'll show how to read in and visualize the CHM, DTM, and DSM data using the Python package `rasterio`. First we'll import the package and sub-package that's used to display the data
 
