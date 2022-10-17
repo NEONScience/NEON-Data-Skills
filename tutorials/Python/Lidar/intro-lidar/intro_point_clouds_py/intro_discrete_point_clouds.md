@@ -46,7 +46,7 @@ We recommend following along in **Jupyter Notebooks** so you can run each cell "
 
     More detailed instructions and tips for installing these packages are provided below.
 
-* **Download the script** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py">neon_aop_download_functions.py</a> and save it in your working directory.
+* **Download the script** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py" download>neon_aop_download_functions.py</a> and save it in your working directory.
 
 
 
