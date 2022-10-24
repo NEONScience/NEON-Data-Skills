@@ -155,13 +155,20 @@ Once all packages are successfully installed, import them as follows. Note that 
 ```python
 #import required packages
 import os
+import requests
 import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
 import laspy
 ```
 
-Now we'll pull in all the functions in the module **neon_aop_download_functions.py**, linked at the top of this tutorial. 
+Now we'll pull in all the functions in the module **neon_aop_download_functions.py**, linked at the top of this tutorial. You can also download this file programmatically as follows:
+
+```python
+url = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py"
+response = requests.get(url)
+open("neon_aop_download_functions.py", "wb").write(response.content)
+```
 
 First make sure this script is saved in your working directory, which we can check by navigating into that directory, or by using `os.listdir`. If you haven't saved it in your working directory, you will need to provide the relative path to this script when importing.
 
