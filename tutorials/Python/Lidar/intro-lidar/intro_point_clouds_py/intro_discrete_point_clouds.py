@@ -30,11 +30,11 @@
 # 
 # ### Requirements
 # 
-# To follow along with this code, you will need to install **Python 3.x**. This tutorial was developed and testing using Python 3.9, so if you are installing Python for the first time, we recommend that version. 
+# To follow along with this code, you will need to install **Python 3.x**. This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. 
 # 
 # We recommend following along in **Jupyter Notebooks** so you can run each cell "chunk" individually, although you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. 
 # 
-# * **Install Python and Jupyter Notebooks** 
+# * **Install Python 3.x and Jupyter Notebooks** 
 # You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
 # 
 # * **Install required Python packages**
@@ -49,7 +49,7 @@
 # 
 #     More detailed installation instructions are provided below.
 # 
-# * **Download the script** <a href="neon_aop_download_functions.py" download="neon_aop_download_functions.py">`neon_aop_download_functions.py`</a> and save it in your working directory.
+# * **Download the script** <a href="./neon_aop_download_functions.py" download="neon_aop_download_functions.py">neon_aop_download_functions.py</a> and save it in your working directory.
 # 
 # * **Try out Jupyter Notebooks**
 # 
@@ -104,16 +104,31 @@
 
 # ## Overview of AOP Discrete Lidar Data Products
 # 
-# AOP generates several Level-1 and Level-3 (derived) data products. The table below summarizes these products. This lesson will give a brief introduction to both the Level 1 Classified Point Cloud data, as well as the Level 3 raster data products. For more detailed information on these data products, please refer to: <a href="https://www.neonscience.org/data-collection/lidar" target="_blank">  Airborne Remote Sensing Lidar </a>, and/or click on the linked data product pages in the table. 
+# AOP generates several Level-1 and Level-3 (derived) data products. The Level 1 lidar data is the point cloud data, provided in laz (or zipped las) format, while the Level 3 data is provided in geotiff (.tif) raster format. Images of these two data types are shown in the figures below.
+# 
+# <figure>
+#     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/AOP-WREF-discrete-point-lidar-forest.png">
+#     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/AOP-WREF-discrete-point-lidar-forest.png" width="600"/>Lidar Point Cloud</a>
+#     <figcaption="Example Lidar Point Cloud, colorized by elevation and RGB camera imagery"</figcaption>
+# </figure>
+# 
+# <figure>
+#     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/L3-raster.png">
+#     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/L3-raster.png" width="300"/>Lidar Elevation Raster</a>
+#     <figcaption="Example Lidar Elevation Raster"</figcaption>
+# </figure>
+# 
+# The table below summarizes the NEON AOP Lidar data products. This lesson will give a brief introduction to both the Level 1 Classified Point Cloud data, as well as the Level 3 raster geotiff data products (DTM, DSM, and CHM). For more detailed information on these data products, please refer to: <a href="https://www.neonscience.org/data-collection/lidar" target="_blank"> Airborne Remote Sensing Lidar</a>, and/or click on the linked data product pages in the table. 
 # 
 # | Acronym / Short Name | Data Product Name | Data Product ID | Link to ATBD |
 # |---------|-------------------|-----------------|--------------|
-# | Point Cloud | Discrete return LiDAR point cloud | <a href="https://data.neonscience.org/data-products/DP3.30003.001" target="_blank">DP3.30003.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001292vB" target="_blank">NEON L0-to-L1 Discrete Return LiDAR ATBD</a>|
+# | Point Cloud | Discrete return LiDAR point cloud | <a href="https://data.neonscience.org/data-products/DP1.30003.001" target="_blank">DP1.30003.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001292vB" target="_blank">NEON L0-to-L1 Discrete Return LiDAR ATBD</a>|
 # | CHM | Ecosystem structure | <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vA" target="_blank">NEON Ecosystem Structure ATBD</a>|
 # | DSM/DTM | Elevation - LiDAR| <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002390vA" target="_blank">NEON Elevation (DTM and DSM) ATBD</a> |
 # | Slope/Aspect | Slope and Aspect - LiDAR | <a href="https://data.neonscience.org/data-products/DP3.30025.001" target="_blank">DP3.30025.001</a> | <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.003791vA" target="_blank">NEON Elevation (Slope and Aspect) ATBD</a> |
 # 
 # The Data Product page contains important information, as well as linked Algorithm Theoretical Basis Documents (ATBDs) which provide necessary information for understanding how the data products were generated, uncertainty associated with the data, and other essential contextual information.
+# 
 # 
 # ### Lidar Point Clouds
 # 
@@ -371,14 +386,14 @@ point_cloud.classification
 
 # Let's get the `set` of this `list` to see all the unique classification values in this file. This may take a little time to run.
 
-# In[ ]:
+# In[20]:
 
 
 set(list(point_cloud.classification))
 
 
 # We can see that there are a several unique classification values for this site.
-# Las files have "predefined classification schemes defined by the American Society for Photogrammetry and Remote Sensing (ASPRS)". You can refere to the ArcGIS documentation for more details: https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm for more details.
+# Las files have "predefined classification schemes defined by the American Society for Photogrammetry and Remote Sensing (ASPRS)". You can refer to the <a href="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/las-dataset/lidar-point-classification.htm" target="_blank">ArcGIS documentation</a> for more details.
 # 
 # The following table lists the LAS classification codes defined by ASPRS for these LAS versions:
 # 
@@ -395,7 +410,7 @@ set(list(point_cloud.classification))
 
 # Next let's take a look at what we can consider to be the main data - the geographic loation of each point in the point cloud. This can be accessed either by `point_cloud.xyz`. Let's take a look:
 
-# In[ ]:
+# In[21]:
 
 
 point_cloud.xyz
@@ -403,7 +418,7 @@ point_cloud.xyz
 
 # We can see this is a 3-dimensional array, as we might expect. Let's read this into the variable `xyz`:
 
-# In[ ]:
+# In[22]:
 
 
 xyz = point_cloud.xyz
@@ -411,7 +426,7 @@ xyz = point_cloud.xyz
 
 # We can see the size (or number of points) in this array using the built-in python function `len`:
 
-# In[ ]:
+# In[23]:
 
 
 len(xyz)
@@ -419,7 +434,7 @@ len(xyz)
 
 # There are > 2 million lidar points in this single 1km x 1km tile. For the rest of this exercise, we'll look at a random subset of these points, taking every100th point (you can change this subset factor, but when we visualize the data in a few steps, subsetting by a larger factor will speed up the time it takes to make the plot).
 
-# In[ ]:
+# In[24]:
 
 
 factor=100
@@ -428,7 +443,7 @@ points_dec = xyz[::factor]
 
 # These point clouds have been "colorized" by the camera RGB imagery. If you refer back to the dimension names, you can see there are a `red`, `green`, and `blue` attributes. We can pull these into a single array by using `np.vstack`:
 
-# In[ ]:
+# In[25]:
 
 
 # points = np.vstack((point_cloud.x, point_cloud.y, point_cloud.z)).transpose()
@@ -437,7 +452,7 @@ colors = np.vstack((point_cloud.red, point_cloud.green, point_cloud.blue)).trans
 
 # These colors have been scaled to store the color at a higher resolution, accomodated by the camera, so we'll need to re-scale the values between 0-1 in order to use them in our plot. The code below does this re-scaling, and then subsets the color data to by same factor we used to subset the `xyz` data.
 
-# In[ ]:
+# In[26]:
 
 
 colors_norm = (colors - np.min(colors))/np.ptp(colors)
@@ -445,20 +460,16 @@ colors_dec = colors_norm[::factor]
 
 
 # ### 3D Point Cloud Visualization 
-# Lastly, we can visualize this 3D data using matplotlib to see what the point cloud looks like. Other open-source tools such as https://plas.io/ are more interactive, and Python may not be the best platform to do this sort of visualization, but we can at least demonstrate how this might look.
-# 
-# For this you'll need to import some visualization packages. These should be part of the standard Anaconda distribution.
-# 
-# https://www.neonscience.org/resources/learning-hub/tutorials/introduction-light-detection-and-ranging-lidar-explore-point#toggle-13
+# Lastly, we can visualize this 3D data using matplotlib to see what the point cloud looks like. 
 
-# In[ ]:
+# In[27]:
 
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
 
-# In[ ]:
+# In[28]:
 
 
 # Plot the las data in 3D
@@ -477,7 +488,7 @@ plt.show()
 # 
 # In the last part of this lesson, we'll show how to read in and visualize the CHM, DTM, and DSM data using the Python package `rasterio`. First we'll import the package and sub-package that's used to display the data
 
-# In[ ]:
+# In[29]:
 
 
 import rasterio
@@ -486,13 +497,13 @@ from rasterio.plot import show
 
 # In the next couple cells, we'll create a path to save the raster data, and then download the L3 CHM, DTM, and DSM geotiffs of the same tile as the point cloud file we downloaded earlier. You'll see the syntax here is the same, we are just using different data product IDs and match_strings with the appropriate extensions.
 
-# In[ ]:
+# In[30]:
 
 
 l3_path = data_root_path+'L3/'
 
 
-# In[ ]:
+# In[31]:
 
 
 download_aop_files('DP3.30015.001',site,year,l3_path,match_string='725000_1985000_CHM.tif',check_size=False)
@@ -502,7 +513,7 @@ download_aop_files('DP3.30024.001',site,year,l3_path,match_string='725000_198500
 
 # Next we'll read these in, using `rasterio`, as follows:
 
-# In[ ]:
+# In[32]:
 
 
 chm = rasterio.open(os.path.join(l3_path,'NEON_D04_GUAN_DP3_725000_1985000_CHM.tif'))
@@ -512,7 +523,7 @@ dsm = rasterio.open(os.path.join(l3_path,'NEON_D04_GUAN_DP3_725000_1985000_DSM.t
 
 # And finally, we can plot the data using the rasterio `show` function that we imported earlier.
 
-# In[ ]:
+# In[33]:
 
 
 fig, (ax1, ax2, ax3) = plt.subplots(1,3, figsize=(18,4))
@@ -533,4 +544,5 @@ plt.show;
 # 
 # * <a href="https://rapidlasso.com/lastools/" target="_blank">LAStools</a>
 # * <a href="https://pdal.io/en/stable/" target="_blank">PDAL (Point Data Abstraction Library)</a> 
+# * <a href="https://plas.io/" target="_blank">plas.io (free, interactive, web-based point cloud visualization)</a> 
 # * <a href="https://r-lidar.github.io/lidRbook/" target="_blank"> lidR (R package for point cloud data)</a>
