@@ -622,6 +622,12 @@ ax.set_zlim3d(-10,50)
 plt.show()
 ```
 
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_point_cloud_3d.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_point_cloud_3d.png" width="400"/>GUAN colorized point cloud</a>
+    <figcaption="Scatter Plot of GUAN Colorized Point Cloud"</figcaption>
+</figure>
+
 We can see a mix of both land and sea here, with slightly fewer returns on the ocean. A lot of the energy from the laser beam is absorbed in water, so it is typical to see low density over bodies of water. Remember this plot only displays 1/100th of the data, so there is a lot more information stored in the las file than is shown here.
 
 ### Lidar Raster Data - DTM, DSM, and CHM
@@ -669,6 +675,12 @@ show((dtm), ax=ax2, title='DTM');
 show((dsm), ax=ax3, title='DSM');
 plt.show;
 ```
+
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_rasters.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_rasters.png" width="800"/>GUAN CHM, DTM, and DSM rasters</a>
+    <figcaption="GUAN CHM, DTM, and DSM Rasters"</figcaption>
+</figure>
 
 ## Additional Resources
 
