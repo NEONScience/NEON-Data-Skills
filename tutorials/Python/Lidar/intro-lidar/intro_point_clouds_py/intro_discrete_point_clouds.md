@@ -678,8 +678,8 @@ plt.show;
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_rasters.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_rasters.png" width="1200"/>GUAN CHM, DTM, and DSM rasters</a>
-    <figcaption="GUAN Rasters"</figcaption>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_rasters.png" width="1200"/>GUAN Rasters</a>
+    <figcaption="GUAN CHM, DTM, and DSM Rasters"</figcaption>
 </figure>
 
 ## Additional Resources
