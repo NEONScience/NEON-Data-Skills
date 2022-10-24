@@ -385,8 +385,11 @@ plt.xticks(rotation=90); #optionally rotate the xtick labels
 ```
 
 
-    
-![png](intro_discrete_point_clouds_files/intro_discrete_point_clouds_28_0.png)
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_coverage_shp.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_coverage_shp.png" width="1200"/>GUAN 2018 Coverage</a>
+    <figcaption="GUAN Coverage Shapefile"</figcaption>
+</figure>
     
 
 
