@@ -624,7 +624,7 @@ plt.show()
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_point_cloud_3d.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_point_cloud_3d.png" width="400"/>GUAN colorized point cloud</a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_point_cloud_3d.png" width="500"/>GUAN colorized point cloud</a>
     <figcaption="Scatter Plot of GUAN Colorized Point Cloud"</figcaption>
 </figure>
 
@@ -679,7 +679,7 @@ plt.show;
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_rasters.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_rasters.png" width="1200"/>GUAN CHM, DTM, and DSM rasters</a>
-    <figcaption="GUAN CHM, DTM, and DSM Rasters"</figcaption>
+    <figcaption="GUAN Rasters"</figcaption>
 </figure>
 
 ## Additional Resources
