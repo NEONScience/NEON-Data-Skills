@@ -46,8 +46,6 @@ You can install both Python, Jupyter Notebooks, and Spyder by downloading <a hre
 
     More detailed installation instructions are provided below.
 
-* **Download the script** <a href="./neon_aop_download_functions.py" download="neon_aop_download_functions.py">neon_aop_download_functions.py</a> and save it in your working directory.
-
 * **Try out Jupyter Notebooks**
 
 If you are new to using Jupyter Notebooks, please run through the tutorial below to familiarize yourself with the Notebook environment: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/jupyter-python-notebook" target="_blank">Introduction to Using Jupyter Notebooks</a>
