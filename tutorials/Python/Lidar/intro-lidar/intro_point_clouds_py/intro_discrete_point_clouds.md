@@ -149,7 +149,7 @@ First, we need to import the required Python packages.
 !pip install lazrs
 ```
 
-Once all packages are successfully installed, import them as follows. Note that `requests` and `json` will be imported when we import the separate module (script), so you don't need to import those separately.
+Once all packages are successfully installed, import them as follows. 
 
 
 ```python
