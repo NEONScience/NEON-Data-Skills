@@ -394,7 +394,7 @@ plt.xticks(rotation=90); #optionally rotate the xtick labels
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_coverage_shp.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_coverage_shp.png" width="1200"/>GUAN 2018 Coverage</a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_coverage_shp.png" width="500"/>GUAN 2018 Coverage</a>
     <figcaption="GUAN Coverage Shapefile"</figcaption>
 </figure>
     
@@ -415,7 +415,7 @@ If you pull this into Google Earth you can see the coverage with more geographic
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_boundary_google_earth.PNG">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_boundary_google_earth.PNG" width="400"/>GUAN kml boundary</a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/intro-point-clouds-py/guan_boundary_google_earth.PNG" width="500"/>GUAN kml boundary</a>
     <figcaption="KML boundary of GUAN"</figcaption>
 </figure>
 
