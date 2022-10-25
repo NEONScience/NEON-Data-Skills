@@ -638,7 +638,7 @@ plt.show()
     <figcaption="Scatter Plot of GUAN Colorized Point Cloud"</figcaption>
 </figure>
 
-We can see a mix of both land and sea here, with slightly fewer returns on the ocean. A lot of the energy from the laser beam is absorbed in water, so it is typical to see low density over bodies of water. Remember this plot only displays 1/100th of the data, so there is a lot more information stored in the las file than is shown here.
+We can see a mix of both land and sea here, with slightly fewer returns on the ocean. A lot of the energy from the laser beam is absorbed in water, so it is typical to see low point density (or data gaps) over bodies of water. Remember this plot only displays 1/100th of the data, so there are many more points in the las file than are plotted here.
 
 ### Lidar Raster Data - DTM, DSM, and CHM
 
