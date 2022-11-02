@@ -53,12 +53,16 @@ preferably, RStudio loaded on your computer.
 ### Install R Packages
 
 * **neonUtilities**: Basic functions for accessing NEON data
+* **neonOS**: Functions for common data wrangling needs for NEON observational data
 * **raster**: Raster package; needed for remote sensing data
 
 Both of these packages can be installed from CRAN:
 
 
     install.packages("neonUtilities")
+
+    install.packages("neonOS")
+
     install.packages("raster")
 
 
@@ -87,10 +91,17 @@ Now switch over to R and load all the packages installed above.
 
 
     # load packages
+
     library(neonUtilities)
+
+    library(neonOS)
+
     library(raster)
+
     
+
     # Set global option to NOT convert all character variables to factors
+
     options(stringsAsFactors=F)
 
 
@@ -101,6 +112,7 @@ downloaded zip file.
 
 
     # Modify the file path to match the path to your zip file
+
     stackByTable("~/Downloads/NEON_par.zip")
 
 In the same directory as the zipped file, you should now have an unzipped 
@@ -152,9 +164,9 @@ quality, such as chemical standards and quality flags. Not every
 data product has an expanded package; if the expanded package is 
 requested but there isn't one, the basic package will be 
 downloaded.
-* `avg`: defaults to "all", to download all data; or the 
-number of minutes in the averaging interval. See example below; 
-only applicable to IS data.
+* `timeIndex`: defaults to "all", to download all data; or the 
+number of minutes in the averaging interval. Only applicable to IS 
+data.
 * `savepath`: the file path you want to download to; defaults to the 
 working directory.
 * `check.size`: T or F: should the function pause before downloading 
@@ -178,7 +190,9 @@ and Toolik Lake (TOOK).
 
 
     apchem <- loadByProduct(dpID="DP1.20063.001", 
+
                       site=c("PRLA","SUGG","TOOK"), 
+
                       package="expanded", check.size=T)
 
 
@@ -188,6 +202,7 @@ using the `$` operator.
 
 
     names(apchem)
+
     View(apchem$apl_plantExternalLabDataPerSample)
 
 If you prefer to extract each table from the list and work 
@@ -206,16 +221,27 @@ so you can use it with `readTableNEON()` (see below).
 
 
     write.csv(apl_clipHarvest, 
+
               "~/Downloads/apl_clipHarvest.csv", 
+
               row.names=F)
+
     write.csv(apl_biomass, 
+
               "~/Downloads/apl_biomass.csv", 
+
               row.names=F)
+
     write.csv(apl_plantExternalLabDataPerSample, 
+
               "~/Downloads/apl_plantExternalLabDataPerSample.csv", 
+
               row.names=F)
+
     write.csv(variables_20063, 
+
               "~/Downloads/variables_20063.csv", 
+
               row.names=F)
 
 But, if you want to save files locally and load them into R (or another 
@@ -256,6 +282,7 @@ Model) (DP3.30015.001) from WREF in 2017.
 
 
     byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
+
               easting=580000, northing=5075000, savepath="~/Downloads")
 
 In the directory indicated in `savepath`, you should now have a folder 
@@ -274,11 +301,12 @@ column of data:
     par30 <- readTableNEON(
       dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
       varFile="~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
+
     View(par30)
 
 The first four columns are added by `stackByTable()` when it merges 
-files across sites, months, and tower heights. The final column, 
-`publicationDate`, is the date-time stamp indicating when the data 
+files across sites, months, and tower heights. The column 
+`publicationDate` is the date-time stamp indicating when the data 
 were published. This can be used as an indicator for whether data 
 have been updated since the last time you downloaded them.
 
@@ -286,10 +314,16 @@ The remaining columns are described by the variables file:
 
 
     parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
+
     View(parvar)
 
 The variables file shows you the definition and units for each column 
 of data.
+
+The Quick Start Guide is a pdf file, and it contains basic information 
+to get you started using this data product, such as the data quality 
+information provided and common calculations many user will want to 
+make.
 
 Now that we know what we're looking at, let's plot PAR from the top 
 tower level:
@@ -326,7 +360,9 @@ were applied to the data:
 
 
     View(variables_20063)
+
     
+
     View(validation_20063)
 
 OS data products each come with a Data Product User Guide, 
@@ -359,16 +395,17 @@ But taxonomic data aren't present in the `apl_plantExternalLabDataPerSample`
 table, they're in the `apl_biomass` table. We'll need to join the two 
 tables to get chemistry by taxon.
 
-The Data Relationships section of the User Guide can help you determine 
-which fields to use as the key to join the tables. Here, `sampleID` is 
-the joining variable. We'll also include the basic spatial variables, to 
-avoid creating unnecessary duplicates of those columns.
+As mentioned above, each data product has a Quick Start Guide, and for OS 
+products it includes a section describing how to join the tables in the 
+data product. Since it's a pdf file, `loadByProduct()` doesn't bring it in, 
+but you can view the Aquatic plant chemistry QSG on the 
+<a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
+page. The `neonOS` package uses the information from the QSGs to provide 
+an automated table-joining function, `joinTableNEON()`.
 
 
-    apct <- merge(apl_biomass, 
-                  apl_plantExternalLabDataPerSample, 
-                  by=c("sampleID","namedLocation",
-                       "domainID","siteID"))
+    apct <- joinTableNEON(apl_biomass, 
+                apl_plantExternalLabDataPerSample)
 
 Using the merged data, now we can plot carbon isotope ratio 
 for each taxon.
@@ -395,7 +432,7 @@ It has functionality for most analyses you might want to do.
 We'll use it to read in the tile we downloaded:
 
 
-    chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+    chm <- raster("~/Downloads/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
 The `raster` package includes plotting functions:
 
