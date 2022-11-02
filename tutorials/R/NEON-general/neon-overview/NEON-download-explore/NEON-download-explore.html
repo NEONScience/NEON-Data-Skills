@@ -202,12 +202,16 @@ preferably, RStudio loaded on your computer.
 ### Install R Packages
 
 * **neonUtilities**: Basic functions for accessing NEON data
+* **neonOS**: Functions for common data wrangling needs for NEON observational data
 * **raster**: Raster package; needed for remote sensing data
 
 Both of these packages can be installed from CRAN:
 
 
     install.packages(&ldquo;neonUtilities&rdquo;)
+
+    install.packages(&ldquo;neonOS&rdquo;)
+
     install.packages(&ldquo;raster&rdquo;)
 
 
@@ -235,10 +239,17 @@ from September-November 2019.</p>
 <p>Now switch over to R and load all the packages installed above.</p>
 
 <pre><code># load packages
+
 library(neonUtilities)
+
+library(neonOS)
+
 library(raster)
 
+
+
 # Set global option to NOT convert all character variables to factors
+
 options(stringsAsFactors=F)
 </code></pre>
 
@@ -248,6 +259,7 @@ options(stringsAsFactors=F)
 downloaded zip file.</p>
 
 <pre><code># Modify the file path to match the path to your zip file
+
 stackByTable(&quot;~/Downloads/NEON_par.zip&quot;)
 </code></pre>
 
@@ -301,9 +313,9 @@ quality, such as chemical standards and quality flags. Not every
 data product has an expanded package; if the expanded package is 
 requested but there isn&#39;t one, the basic package will be 
 downloaded.</li>
-<li><code>avg</code>: defaults to &ldquo;all&rdquo;, to download all data; or the 
-number of minutes in the averaging interval. See example below; 
-only applicable to IS data.</li>
+<li><code>timeIndex</code>: defaults to &ldquo;all&rdquo;, to download all data; or the 
+number of minutes in the averaging interval. Only applicable to IS 
+data.</li>
 <li><code>savepath</code>: the file path you want to download to; defaults to the 
 working directory.</li>
 <li><code>check.size</code>: T or F: should the function pause before downloading 
@@ -327,7 +339,9 @@ three lake sites: Prairie Lake (PRLA), Suggs Lake (SUGG),
 and Toolik Lake (TOOK).</p>
 
 <pre><code>apchem &lt;- loadByProduct(dpID=&quot;DP1.20063.001&quot;, 
+
                   site=c(&quot;PRLA&quot;,&quot;SUGG&quot;,&quot;TOOK&quot;), 
+
                   package=&quot;expanded&quot;, check.size=T)
 </code></pre>
 
@@ -336,6 +350,7 @@ frames. To work with each of them, select them from the list
 using the <code>$</code> operator.</p>
 
 <pre><code>names(apchem)
+
 View(apchem$apl_plantExternalLabDataPerSample)
 </code></pre>
 
@@ -354,16 +369,27 @@ also saving the variables file, both so you&#39;ll have it to refer to, and
 so you can use it with <code>readTableNEON()</code> (see below).</p>
 
 <pre><code>write.csv(apl_clipHarvest, 
+
           &quot;~/Downloads/apl_clipHarvest.csv&quot;, 
+
           row.names=F)
+
 write.csv(apl_biomass, 
+
           &quot;~/Downloads/apl_biomass.csv&quot;, 
+
           row.names=F)
+
 write.csv(apl_plantExternalLabDataPerSample, 
+
           &quot;~/Downloads/apl_plantExternalLabDataPerSample.csv&quot;, 
+
           row.names=F)
+
 write.csv(variables_20063, 
+
           &quot;~/Downloads/variables_20063.csv&quot;, 
+
           row.names=F)
 </code></pre>
 
@@ -406,6 +432,7 @@ around coordinates when deciding which tiles to download</li>
 Model) (DP3.30015.001) from WREF in 2017.</p>
 
 <pre><code>byTileAOP(&quot;DP3.30015.001&quot;, site=&quot;WREF&quot;, year=&quot;2017&quot;, check.size = T,
+
           easting=580000, northing=5075000, savepath=&quot;~/Downloads&quot;)
 </code></pre>
 
@@ -424,23 +451,30 @@ column of data:</p>
 <pre><code>par30 &lt;- readTableNEON(
   dataFile=&quot;~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv&quot;, 
   varFile=&quot;~/Downloads/NEON_par/stackedFiles/variables_00024.csv&quot;)
+
 View(par30)
 </code></pre>
 
 <p>The first four columns are added by <code>stackByTable()</code> when it merges 
-files across sites, months, and tower heights. The final column, 
-<code>publicationDate</code>, is the date-time stamp indicating when the data 
+files across sites, months, and tower heights. The column 
+<code>publicationDate</code> is the date-time stamp indicating when the data 
 were published. This can be used as an indicator for whether data 
 have been updated since the last time you downloaded them.</p>
 
 <p>The remaining columns are described by the variables file:</p>
 
 <pre><code>parvar &lt;- read.csv(&quot;~/Downloads/NEON_par/stackedFiles/variables_00024.csv&quot;)
+
 View(parvar)
 </code></pre>
 
 <p>The variables file shows you the definition and units for each column 
 of data.</p>
+
+<p>The Quick Start Guide is a pdf file, and it contains basic information 
+to get you started using this data product, such as the data quality 
+information provided and common calculations many user will want to 
+make.</p>
 
 <p>Now that we know what we&#39;re looking at, let&#39;s plot PAR from the top 
 tower level:</p>
@@ -477,6 +511,8 @@ were applied to the data:</p>
 
 <pre><code>View(variables_20063)
 
+
+
 View(validation_20063)
 </code></pre>
 
@@ -510,15 +546,16 @@ But taxonomic data aren&#39;t present in the <code>apl_plantExternalLabDataPerSa
 table, they&#39;re in the <code>apl_biomass</code> table. We&#39;ll need to join the two 
 tables to get chemistry by taxon.</p>
 
-<p>The Data Relationships section of the User Guide can help you determine 
-which fields to use as the key to join the tables. Here, <code>sampleID</code> is 
-the joining variable. We&#39;ll also include the basic spatial variables, to 
-avoid creating unnecessary duplicates of those columns.</p>
+<p>As mentioned above, each data product has a Quick Start Guide, and for OS 
+products it includes a section describing how to join the tables in the 
+data product. Since it&#39;s a pdf file, <code>loadByProduct()</code> doesn&#39;t bring it in, 
+but you can view the Aquatic plant chemistry QSG on the 
+<a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
+page. The <code>neonOS</code> package uses the information from the QSGs to provide 
+an automated table-joining function, <code>joinTableNEON()</code>.</p>
 
-<pre><code>apct &lt;- merge(apl_biomass, 
-              apl_plantExternalLabDataPerSample, 
-              by=c(&quot;sampleID&quot;,&quot;namedLocation&quot;,
-                   &quot;domainID&quot;,&quot;siteID&quot;))
+<pre><code>apct &lt;- joinTableNEON(apl_biomass, 
+            apl_plantExternalLabDataPerSample)
 </code></pre>
 
 <p>Using the merged data, now we can plot carbon isotope ratio 
@@ -543,7 +580,7 @@ It has functionality for most analyses you might want to do.</p>
 
 <p>We&#39;ll use it to read in the tile we downloaded:</p>
 
-<pre><code>chm &lt;- raster(&quot;~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif&quot;)
+<pre><code>chm &lt;- raster(&quot;~/Downloads/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif&quot;)
 </code></pre>
 
 <p>The <code>raster</code> package includes plotting functions:</p>

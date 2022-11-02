@@ -1,19 +1,21 @@
-## ----opts-set, echo=FALSE--------------------------------------------------------------------------------
+## ----opts-set, echo=FALSE------------------------------------------------------------------------------------
 library(knitr)
 opts_knit$set(global.par = TRUE)
 
 
-## ----packages, eval=FALSE--------------------------------------------------------------------------------
+## ----packages, eval=FALSE------------------------------------------------------------------------------------
 ## 
 ## install.packages("neonUtilities")
+## install.packages("neonOS")
 ## install.packages("raster")
 ## 
 
 
-## ----setup, results='hide', message=FALSE, warning=FALSE-------------------------------------------------
+## ----setup, results='hide', message=FALSE, warning=FALSE-----------------------------------------------------
 
 # load packages
 library(neonUtilities)
+library(neonOS)
 library(raster)
 
 # Set global option to NOT convert all character variables to factors
@@ -21,14 +23,14 @@ options(stringsAsFactors=F)
 
 
 
-## ----stacking-portal, results="hide", message=FALSE, warning=FALSE---------------------------------------
+## ----stacking-portal, results="hide", message=FALSE, warning=FALSE-------------------------------------------
 
 # Modify the file path to match the path to your zip file
 stackByTable("~/Downloads/NEON_par.zip")
 
 
 
-## ----run-loadByProduct, results="hide", eval=FALSE, comment=NA-------------------------------------------
+## ----run-loadByProduct, results="hide", eval=FALSE, comment=NA-----------------------------------------------
 
 apchem <- loadByProduct(dpID="DP1.20063.001", 
                   site=c("PRLA","SUGG","TOOK"), 
@@ -37,20 +39,20 @@ apchem <- loadByProduct(dpID="DP1.20063.001",
 
 
 
-## ----loadBy-list, eval=F---------------------------------------------------------------------------------
+## ----loadBy-list, eval=F-------------------------------------------------------------------------------------
 ## 
 ## names(apchem)
 ## View(apchem$apl_plantExternalLabDataPerSample)
 ## 
 
 
-## ----env, eval=T-----------------------------------------------------------------------------------------
+## ----env, eval=T---------------------------------------------------------------------------------------------
 
 list2env(apchem, .GlobalEnv)
 
 
 
-## ----save-files, eval=F----------------------------------------------------------------------------------
+## ----save-files, eval=F--------------------------------------------------------------------------------------
 ## 
 ## write.csv(apl_clipHarvest,
 ##           "~/Downloads/apl_clipHarvest.csv",
@@ -67,7 +69,7 @@ list2env(apchem, .GlobalEnv)
 ## 
 
 
-## ----aop-tile, results="hide", eval=FALSE, comment=NA----------------------------------------------------
+## ----aop-tile, results="hide", eval=FALSE, comment=NA--------------------------------------------------------
 
 byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
           easting=580000, northing=5075000, savepath="~/Downloads")
@@ -75,7 +77,7 @@ byTileAOP("DP3.30015.001", site="WREF", year="2017", check.size = T,
 
 
 
-## ----read-par, results="hide", message=FALSE, warning=FALSE----------------------------------------------
+## ----read-par, results="hide", message=FALSE, warning=FALSE--------------------------------------------------
 
 par30 <- readTableNEON(
   dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
@@ -84,14 +86,14 @@ View(par30)
 
 
 
-## ----read-par-var, results="hide", message=FALSE, warning=FALSE------------------------------------------
+## ----read-par-var, results="hide", message=FALSE, warning=FALSE----------------------------------------------
 
 parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
 View(parvar)
 
 
 
-## ----plot-par, eval=TRUE---------------------------------------------------------------------------------
+## ----plot-par, eval=TRUE-------------------------------------------------------------------------------------
 
 plot(PARMean~startDateTime, 
      data=par30[which(par30$verticalPosition=="080"),],
@@ -99,7 +101,7 @@ plot(PARMean~startDateTime,
 
 
 
-## ----read-vst-var, results="hide", message=FALSE, warning=FALSE------------------------------------------
+## ----read-vst-var, results="hide", message=FALSE, warning=FALSE----------------------------------------------
 
 View(variables_20063)
 
@@ -107,7 +109,7 @@ View(validation_20063)
 
 
 
-## ----13C-by-site, message=FALSE, warning=FALSE-----------------------------------------------------------
+## ----13C-by-site, message=FALSE, warning=FALSE---------------------------------------------------------------
 
 boxplot(analyteConcentration~siteID, 
         data=apl_plantExternalLabDataPerSample, 
@@ -116,22 +118,20 @@ boxplot(analyteConcentration~siteID,
 
 
 
-## ----table-merge, eval=TRUE------------------------------------------------------------------------------
+## ----table-merge, eval=TRUE, results="hide", message=F-------------------------------------------------------
 
-apct <- merge(apl_biomass, 
-              apl_plantExternalLabDataPerSample, 
-              by=c("sampleID","namedLocation",
-                   "domainID","siteID"))
+apct <- joinTableNEON(apl_biomass, 
+            apl_plantExternalLabDataPerSample)
 
 
 
-## ----set-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F----------------------------
+## ----set-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F--------------------------------
 
 par(mar=c(12,4,0.25,1))
 
 
 
-## ----plot-13C-by-tax, eval=TRUE--------------------------------------------------------------------------
+## ----plot-13C-by-tax, eval=TRUE------------------------------------------------------------------------------
 
 boxplot(analyteConcentration~scientificName, 
         data=apct, subset=analyte=="d13C", 
@@ -140,19 +140,19 @@ boxplot(analyteConcentration~scientificName,
 
 
 
-## ----read-aop, eval=TRUE---------------------------------------------------------------------------------
+## ----read-aop, eval=TRUE-------------------------------------------------------------------------------------
 
-chm <- raster("~/Downloads/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+chm <- raster("~/Downloads/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
 
 
-## ----reset-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F--------------------------
+## ----reset-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F------------------------------
 
 par(mar=c(5,4,4,1))
 
 
 
-## ----plot-aop, eval=TRUE---------------------------------------------------------------------------------
+## ----plot-aop, eval=TRUE-------------------------------------------------------------------------------------
 
 plot(chm, col=topo.colors(6))
 
