@@ -35,6 +35,7 @@ skip ahead to section 4.
 You will need the most current version of R loaded on your computer to complete this tutorial.
 
 </div>
+
 ## 1. Setup
 
 Start by installing and loading packages (if necessary) and setting 
