@@ -173,7 +173,7 @@ tutorial can be generalized to other data products.</p>
 <p>In planning your analyses, consider what level of spatial resolution is 
 required. There is no reason to carefully map each measurement if precise 
 spatial locations aren&#39;t required to address your hypothesis! For example, 
-if you want to use the Woody vegetation structure 
+if you want to use the Vegetation structure 
 data product to calculate a site-scale estimate of biomass and production, 
 the spatial coordinates of each tree are probably not needed. If 
 you want to explore relationships between vegetation and beetle communities, 
@@ -206,17 +206,30 @@ the RStudio IDE to work with R.
 already installed, and load the libraries for each. </p>
 
 <pre><code># run once to get the package, and re-run if you need to get updates
+
 install.packages(&quot;ggplot2&quot;)  # plotting
+
 install.packages(&quot;neonUtilities&quot;)  # work with NEON data
+
+install.packages(&quot;neonOS&quot;)  # work with NEON observational data
+
 install.packages(&quot;devtools&quot;)  # to use the install_github() function
+
 devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)  # work with NEON spatial data
 
 
 
 # run every time you start a script
+
 library(ggplot2)
+
 library(neonUtilities)
+
+library(neonOS)
+
 library(geoNEON)
+
+
 
 options(stringsAsFactors=F)
 </code></pre>
@@ -233,7 +246,7 @@ the sampling plots. In some cases, the plot is the most precise location
 available, but for many terrestrial data products, more precise locations 
 can be calculated for specific sampling events.</p>
 
-<p>Here, we&#39;ll download the Woody vegetation structure (DP1.10098.001) data 
+<p>Here, we&#39;ll download the Vegetation structure (DP1.10098.001) data 
 product, examine the plot location data in the download, then calculate 
 the locations of individual trees. These steps can be extrapolated to other 
 terrestrial observational data products; the specific sampling layout 
@@ -247,7 +260,9 @@ River Experimental Forest (WREF).</p>
 the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial.</p>
 
 <pre><code># load veg structure data
-vst &lt;- loadByProduct(dpID=&quot;DP1.10098.001&quot;, site=&quot;WREF&quot;,
+
+vst &lt;- loadByProduct(dpID=&quot;DP1.10098.001&quot;, 
+                     site=&quot;WREF&quot;,
                      check.size=F)
 </code></pre>
 
@@ -281,17 +296,28 @@ size.</p>
 those plots where trees were found and measured.</p>
 
 <pre><code># start by subsetting data to plots with trees
+
 vst.trees &lt;- vst$vst_perplotperyear[which(
         vst$vst_perplotperyear$treesPresent==&quot;Y&quot;),]
 
+
+
 # make variable for plot sizes
+
 plot.size &lt;- numeric(nrow(vst.trees))
 
+
+
 # populate plot sizes in new variable
+
 plot.size[which(vst.trees$plotType==&quot;tower&quot;)] &lt;- 40
+
 plot.size[which(vst.trees$plotType==&quot;distributed&quot;)] &lt;- 20
 
+
+
 # create map of plots
+
 symbols(vst.trees$easting,
         vst.trees$northing,
         squares=plot.size, inches=F,
@@ -357,15 +383,17 @@ function may take a while to download all the location data. For faster
 downloads, use an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API token</a>.</p>
 
 <pre><code># calculate individual tree locations
+
 vst.loc &lt;- getLocTOS(data=vst$vst_mappingandtagging,
-                           dataProd=&quot;vst_mappingandtagging&quot;)
+                     dataProd=&quot;vst_mappingandtagging&quot;)
 </code></pre>
 
 <p>What additional data are now available in the data obtained by <code>getLocTOS()</code>?</p>
 
 <pre><code># print variable names that are new
+
 names(vst.loc)[which(!names(vst.loc) %in% 
-                             names(vst$vst_mappingandtagging))]
+                      names(vst$vst_mappingandtagging))]
 
 ## [1] &quot;utmZone&quot;                  &quot;adjNorthing&quot;              &quot;adjEasting&quot;              
 ## [4] &quot;adjCoordinateUncertainty&quot; &quot;adjDecimalLatitude&quot;       &quot;adjDecimalLongitude&quot;     
@@ -379,8 +407,8 @@ uncertainty data for these coordinates. </p>
 <p>As we did with the plots above, we can use the easting and northing 
 data to plot the locations of the individual trees.</p>
 
-<pre><code>plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=&quot;.&quot;,
-     xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
+<pre><code>plot(vst.loc$adjEasting, vst.loc$adjNorthing, 
+     pch=&quot;.&quot;, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/vst-all-trees-1.png" alt="All mapped tree locations at WREF"/></p>
@@ -409,6 +437,7 @@ and the <code>vst.loc$taxonID</code> field.</p>
 <pre><code>plot(vst.loc$adjEasting[which(vst.loc$plotID==&quot;WREF_085&quot;)], 
      vst.loc$adjNorthing[which(vst.loc$plotID==&quot;WREF_085&quot;)], 
      type=&quot;n&quot;, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
+
 text(vst.loc$adjEasting[which(vst.loc$plotID==&quot;WREF_085&quot;)], 
      vst.loc$adjNorthing[which(vst.loc$plotID==&quot;WREF_085&quot;)],
      labels=vst.loc$taxonID[which(vst.loc$plotID==&quot;WREF_085&quot;)],
@@ -430,13 +459,14 @@ growth form, and canopy position, are found in the <code>vst_apparentindividual<
 table, not in the <code>vst_mappingandtagging</code> table. We&#39;ll need to join the 
 two tables to get the tree attributes together with their mapped locations.</p>
 
-<p>The joining variable is <code>individualID</code>, the identifier for each tree, which 
-is found in both tables. We&#39;ll also include the plot, site, and domain 
-identifiers, to avoid creating duplicates of those columns.</p>
+<p>The <code>neonOS</code> package contains the function <code>joinTableNEON()</code>, which can be 
+used to do this. See the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins" target="_blank">tutorial</a> for the <code>neonOS</code> package for more details 
+about this function.</p>
 
-<pre><code>veg &lt;- merge(vst.loc, vst$vst_apparentindividual,
-             by=c(&quot;individualID&quot;,&quot;namedLocation&quot;,
-                  &quot;domainID&quot;,&quot;siteID&quot;,&quot;plotID&quot;))
+<pre><code>veg &lt;- joinTableNEON(vst.loc, 
+                     vst$vst_apparentindividual,
+                     name1=&quot;vst_mappingandtagging&quot;,
+                     name2=&quot;vst_apparentindividual&quot;)
 </code></pre>
 
 <p>Now we can use the <code>symbols()</code> function to plot the diameter of each tree, 
@@ -483,9 +513,10 @@ create a depth profile of soil temperature in one soil plot.</p>
 for ease of running the code. </p>
 
 <pre><code># load soil temperature data of interest 
+
 soilT &lt;- loadByProduct(dpID=&quot;DP1.00041.001&quot;, site=&quot;TREE&quot;,
                     startdate=&quot;2018-07&quot;, enddate=&quot;2018-07&quot;,
-                    avg=30, check.size=F)
+                    timeIndex=30, check.size=F)
 
 ## Attempting to stack soil sensor data. Note that due to the number of soil sensors at each site, data volume is very high for these data. Consider dividing data processing into chunks, using the nCores= parameter to parallelize stacking, and/or using a high-performance system.
 </code></pre>
@@ -495,18 +526,24 @@ soilT &lt;- loadByProduct(dpID=&quot;DP1.00041.001&quot;, site=&quot;TREE&quot;,
 <p>Now we can specifically look at the sensor positions file.</p>
 
 <pre><code># create object for sensor positions file
+
 pos &lt;- soilT$sensor_positions_00041
 
+
+
 # view column names
+
 names(pos)
 
 ##  [1] &quot;siteID&quot;               &quot;HOR.VER&quot;              &quot;name&quot;                 &quot;description&quot;         
 ##  [5] &quot;start&quot;                &quot;end&quot;                  &quot;referenceName&quot;        &quot;referenceDescription&quot;
 ##  [9] &quot;referenceStart&quot;       &quot;referenceEnd&quot;         &quot;xOffset&quot;              &quot;yOffset&quot;             
 ## [13] &quot;zOffset&quot;              &quot;pitch&quot;                &quot;roll&quot;                 &quot;azimuth&quot;             
-## [17] &quot;referenceLatitude&quot;    &quot;referenceLongitude&quot;   &quot;referenceElevation&quot;   &quot;publicationDate&quot;
+## [17] &quot;referenceLatitude&quot;    &quot;referenceLongitude&quot;   &quot;referenceElevation&quot;   &quot;eastOffset&quot;          
+## [21] &quot;northOffset&quot;          &quot;xAzimuth&quot;             &quot;yAzimuth&quot;             &quot;publicationDate&quot;
 
 # view table
+
 View(pos)
 </code></pre>
 
@@ -514,7 +551,7 @@ View(pos)
 <a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
 page for more details. </p>
 
-<p>Using <code>unique()</code> we can view all the location indexes in this file. </p>
+<p>Using <code>unique()</code> we can view all the location indices in this file. </p>
 
 <pre><code>unique(pos$HOR.VER)
 
@@ -539,8 +576,22 @@ in meters, to the reference latitude, longitude, and elevation in the file. </p>
 <p>Note that there are two sets of position data for soil plot 001, and that 
 one set has an <code>end</code> date in the file. This indicates sensors either 
 moved or were relocated; in this case there was a frost heave incident. 
-You can read about it in the issue log, both in the readme file and on 
-the <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page.</p>
+You can read about it in the issue log, which is displayed on the 
+<a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page, 
+and also included as a table in the data download:</p>
+
+<pre><code>soilT$issueLog_00041[grep(&quot;TREE soil plot 1&quot;, 
+                     soilT$issueLog_00041$locationAffected),]
+
+##      id parentIssueID            issueDate         resolvedDate       dateRangeStart         dateRangeEnd
+## 1: 9328            NA 2019-05-23T00:00:00Z 2019-05-23T00:00:00Z 2018-11-07T00:00:00Z 2019-04-19T00:00:00Z
+##                                                                                                                          locationAffected
+## 1: D05 TREE soil plot 1 measurement levels 1-9 (HOR.VER: 001.501, 001.502, 001.503, 001.504, 001.505, 001.506, 001.507, 001.508, 001.509)
+##                                                                                                                                                                                                                           issue
+## 1: Soil temperature sensors were pushed or pulled out of the ground by 3 cm over winter, presumably due to freeze-thaw action. The exact timing of this is unknown, but it occurred sometime between 2018-11-07 and 2019-04-19.
+##                                                                                        resolution
+## 1: Sensor depths were updated in the database with a start date of 2018-11-07 for the new depths.
+</code></pre>
 
 <p>Since we&#39;re working with data from July 2018, and the change in 
 sensor locations is dated Nov 2018, we&#39;ll use the original locations. 
@@ -559,12 +610,17 @@ file, to bring the depth measurements into the same data frame with
 the data.</p>
 
 <pre><code># paste horizontalPosition and verticalPosition together
+
 # to match HOR.VER in the sensor positions file
+
 soilT$ST_30_minute$HOR.VER &lt;- paste(soilT$ST_30_minute$horizontalPosition,
                                     soilT$ST_30_minute$verticalPosition,
                                     sep=&quot;.&quot;)
 
+
+
 # left join to keep all temperature records
+
 soilTHV &lt;- merge(soilT$ST_30_minute, pos, 
                  by=&quot;HOR.VER&quot;, all.x=T)
 </code></pre>
@@ -579,6 +635,7 @@ is its own line:</p>
                  group=zOffset, color=zOffset)) +
              geom_line() + 
         facet_wrap(~horizontalPosition)
+
 gg
 
 ## Warning: Removed 1488 row(s) containing missing values (geom_path).
@@ -598,6 +655,7 @@ quality flag passed, i.e. <code>finalQF</code> = 0</p>
                  group=zOffset, color=zOffset)) +
              geom_line() + 
         facet_wrap(~horizontalPosition)
+
 gg
 </code></pre>
 
