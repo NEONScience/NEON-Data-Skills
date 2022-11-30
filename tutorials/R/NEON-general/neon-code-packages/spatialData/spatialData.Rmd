@@ -26,7 +26,7 @@ tutorial can be generalized to other data products.
 In planning your analyses, consider what level of spatial resolution is 
 required. There is no reason to carefully map each measurement if precise 
 spatial locations aren't required to address your hypothesis! For example, 
-if you want to use the Woody vegetation structure 
+if you want to use the Vegetation structure 
 data product to calculate a site-scale estimate of biomass and production, 
 the spatial coordinates of each tree are probably not needed. If 
 you want to explore relationships between vegetation and beetle communities, 
@@ -65,6 +65,7 @@ already installed, and load the libraries for each.
 # run once to get the package, and re-run if you need to get updates
 install.packages("ggplot2")  # plotting
 install.packages("neonUtilities")  # work with NEON data
+install.packages("neonOS")  # work with NEON observational data
 install.packages("devtools")  # to use the install_github() function
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NEON spatial data
 
@@ -76,6 +77,7 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NE
 # run every time you start a script
 library(ggplot2)
 library(neonUtilities)
+library(neonOS)
 library(geoNEON)
 
 options(stringsAsFactors=F)
@@ -93,7 +95,7 @@ the sampling plots. In some cases, the plot is the most precise location
 available, but for many terrestrial data products, more precise locations 
 can be calculated for specific sampling events.
 
-Here, we'll download the Woody vegetation structure (DP1.10098.001) data 
+Here, we'll download the Vegetation structure (DP1.10098.001) data 
 product, examine the plot location data in the download, then calculate 
 the locations of individual trees. These steps can be extrapolated to other 
 terrestrial observational data products; the specific sampling layout 
@@ -109,7 +111,8 @@ the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/downlo
 ```{r get-vst-data, results="hide"}
 
 # load veg structure data
-vst <- loadByProduct(dpID="DP1.10098.001", site="WREF",
+vst <- loadByProduct(dpID="DP1.10098.001", 
+                     site="WREF",
                      check.size=F)
 
 ```
@@ -231,7 +234,7 @@ downloads, use an <a href="https://www.neonscience.org/resources/learning-hub/tu
 
 # calculate individual tree locations
 vst.loc <- getLocTOS(data=vst$vst_mappingandtagging,
-                           dataProd="vst_mappingandtagging")
+                     dataProd="vst_mappingandtagging")
 
 ```
 
@@ -241,7 +244,7 @@ What additional data are now available in the data obtained by `getLocTOS()`?
 
 # print variable names that are new
 names(vst.loc)[which(!names(vst.loc) %in% 
-                             names(vst$vst_mappingandtagging))]
+                      names(vst$vst_mappingandtagging))]
 
 ```
 
@@ -254,8 +257,8 @@ data to plot the locations of the individual trees.
 
 ```{r vst-all-trees, fig.cap="All mapped tree locations at WREF"}
 
-plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
-     xlab="Easting", ylab="Northing")
+plot(vst.loc$adjEasting, vst.loc$adjNorthing, 
+     pch=".", xlab="Easting", ylab="Northing")
 
 ```
 
@@ -306,15 +309,16 @@ growth form, and canopy position, are found in the `vst_apparentindividual`
 table, not in the `vst_mappingandtagging` table. We'll need to join the 
 two tables to get the tree attributes together with their mapped locations.
 
-The joining variable is `individualID`, the identifier for each tree, which 
-is found in both tables. We'll also include the plot, site, and domain 
-identifiers, to avoid creating duplicates of those columns.
+The `neonOS` package contains the function `joinTableNEON()`, which can be 
+used to do this. See the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins" target="_blank">tutorial</a> for the `neonOS` package for more details 
+about this function.
 
 ```{r join-vst}
 
-veg <- merge(vst.loc, vst$vst_apparentindividual,
-             by=c("individualID","namedLocation",
-                  "domainID","siteID","plotID"))
+veg <- joinTableNEON(vst.loc, 
+                     vst$vst_apparentindividual,
+                     name1="vst_mappingandtagging",
+                     name2="vst_apparentindividual")
 
 ```
 
@@ -367,7 +371,7 @@ for ease of running the code.
 # load soil temperature data of interest 
 soilT <- loadByProduct(dpID="DP1.00041.001", site="TREE",
                     startdate="2018-07", enddate="2018-07",
-                    avg=30, check.size=F)
+                    timeIndex=30, check.size=F)
 
 ```
 
@@ -391,7 +395,7 @@ The sensor locations are indexed by the `HOR.VER` variable - see the
 <a href="https://data.neonscience.org/file-naming-conventions" target="_blank">file naming conventions</a> 
 page for more details. 
 
-Using `unique()` we can view all the location indexes in this file. 
+Using `unique()` we can view all the location indices in this file. 
 
 ```{r pos-levs}
 
@@ -413,8 +417,16 @@ The HOR and VER indices in the sensor positions file correspond to the
 Note that there are two sets of position data for soil plot 001, and that 
 one set has an `end` date in the file. This indicates sensors either 
 moved or were relocated; in this case there was a frost heave incident. 
-You can read about it in the issue log, both in the readme file and on 
-the <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page.
+You can read about it in the issue log, which is displayed on the 
+<a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page, 
+and also included as a table in the data download:
+
+```{r issue-log}
+
+soilT$issueLog_00041[grep("TREE soil plot 1", 
+                     soilT$issueLog_00041$locationAffected),]
+
+```
 
 Since we're working with data from July 2018, and the change in 
 sensor locations is dated Nov 2018, we'll use the original locations. 

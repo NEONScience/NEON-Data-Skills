@@ -168,7 +168,7 @@ data products to estimate tree height: </p>
 
 <ul>
 <li><strong>DP3.30015.001, Ecosystem structure</strong>, aka Canopy Height Model (CHM) </li>
-<li><strong>DP1.10098.001, Woody plant vegetation structure</strong></li>
+<li><strong>DP1.10098.001, Vegetation structure</strong></li>
 </ul>
 
 <p>The <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the remote sensing platform. 
@@ -196,9 +196,15 @@ The other packages can be installed directly from CRAN.</p>
 <p>Installation can be run once, then periodically to get package updates.</p>
 
 <pre><code>install.packages(&quot;neonUtilities&quot;)
+
+install.packages(&quot;neonOS&quot;)
+
 install.packages(&quot;sp&quot;)
+
 install.packages(&quot;raster&quot;)
+
 install.packages(&quot;devtools&quot;)
+
 devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
 </code></pre>
 
@@ -206,15 +212,27 @@ devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
 We&#39;ll also set a working directory for data downloads.</p>
 
 <pre><code>library(sp)
+
 library(raster)
+
 library(neonUtilities)
+
+library(neonOS)
+
 library(geoNEON)
+
+
 
 options(stringsAsFactors=F)
 
+
+
 # set working directory
+
 # adapt directory path for your system
+
 wd &lt;- &quot;~/data&quot;
+
 setwd(wd)
 </code></pre>
 
@@ -225,12 +243,12 @@ the <code>neonUtilities</code> package. Inputs needed to the function are:</p>
 
 <ul>
 <li><code>dpID</code>: data product ID; woody vegetation structure = DP1.10098.001</li>
-<li><code>site</code>: 4-letter site code; Wind River = WREF</li>
+<li><code>site</code>: (vector of) 4-letter site codes; Wind River = WREF</li>
 <li><code>package</code>: basic or expanded; we&#39;ll download basic here</li>
-<li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>True</code> when downloading a dataset for the first time.</li>
+<li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>TRUE</code> when downloading a dataset for the first time.</li>
 </ul>
 
-<p>Refer to the <a href="https://www.neonscience.org/neonDataStackR" target="_blank">tutorial</a> 
+<p>Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
 for the <code>neonUtilities</code> package for more details if desired.</p>
 
 <pre><code>veglist &lt;- loadByProduct(dpID=&quot;DP1.10098.001&quot;, 
@@ -247,19 +265,18 @@ documentation for more details.</p>
                           &quot;vst_mappingandtagging&quot;)
 </code></pre>
 
-<p>Merge the mapped locations of individuals (the <code>vst_mappingandtagging</code> table) 
-with the annual measurements of height, diameter, etc (the 
-<code>vst_apparentindividual</code> table). The two tables join on <code>individualID</code>, 
-the identifier for each tagged plant, but we&#39;ll include <code>namedLocation</code>, 
-<code>domainID</code>, <code>siteID</code>, and <code>plotID</code> in the list of variables to merge on, to 
-avoid ending up with duplicates of each of those columns. Refer to the 
-variables table and to the <a href="https://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vA" target="_blank">Data Product User Guide</a> 
-for Woody plant vegetation structure for more 
-information about the contents of each data table.</p>
+<p>Now we have the mapped locations of individuals in the <code>vst_mappingandtagging</code> 
+table, and the annual measurements of tree dimensions such as height and 
+diameter in the <code>vst_apparentindividual</code> table. To bring these measurements 
+together, join the two tables, using the <code>joinTableNEON()</code> function from the 
+<code>neonOS</code> package. Refer to the <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">Quick Start Guide</a> 
+for Vegetation structure for more information about the data tables and the 
+joining instructions <code>joinTableNEON()</code> is using.</p>
 
-<pre><code>veg &lt;- merge(veglist$vst_apparentindividual, vegmap, 
-             by=c(&quot;individualID&quot;,&quot;namedLocation&quot;,
-                  &quot;domainID&quot;,&quot;siteID&quot;,&quot;plotID&quot;))
+<pre><code>veg &lt;- joinTableNEON(veglist$vst_apparentindividual, 
+                     vegmap, 
+                     name1=&quot;vst_apparentindividual&quot;,
+                     name2=&quot;vst_mappingandtagging&quot;)
 </code></pre>
 
 <p>Let&#39;s see what the data look like! Make a stem map of the plants in 
@@ -283,6 +300,7 @@ in blue:</p>
         veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)], 
         circles=veg$stemDiameter[which(veg$plotID==&quot;WREF_075&quot;)]/100/2, 
         inches=F, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
+
 symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
         veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)], 
         circles=veg$adjCoordinateUncertainty[which(veg$plotID==&quot;WREF_075&quot;)], 
@@ -293,15 +311,17 @@ symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)],
 
 <h2>3. Canopy height model data</h2>
 
-<p>Now we&#39;ll download the CHM tile corresponding to plot WREF_075. Several 
+<p>Now we&#39;ll download the CHM tile covering plot WREF_075. Several 
 other plots are also covered by this tile. We could download all tiles 
 that contain vegetation structure plots, but in this exercise we&#39;re 
 sticking to one tile to limit download size and processing time.</p>
 
 <p>The <code>tileByAOP()</code> function in the <code>neonUtilities</code> package allows for 
 download of remote sensing tiles based on easting and northing 
-coordinates, so we&#39;ll give it the coordinates of plot WREF_075 and 
-the data product ID, DP3.30015.001.</p>
+coordinates, so we&#39;ll give it the coordinates of all the trees in 
+plot WREF_075 and the data product ID, DP3.30015.001 (note that if 
+WREF_075 crossed tile boundaries, this code would download all 
+relevant tiles).</p>
 
 <p>The download will include several metadata files as well as the data 
 tile. Load the data tile into the environment using the <code>raster</code> package.</p>
@@ -309,9 +329,11 @@ tile. Load the data tile into the environment using the <code>raster</code> pack
 <pre><code>byTileAOP(dpID=&quot;DP3.30015.001&quot;, site=&quot;WREF&quot;, year=&quot;2017&quot;, 
           easting=veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
           northing=veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)],
-          check.size = FALSE, savepath=wd)
+          check.size=FALSE, savepath=wd)
 
-chm &lt;- raster(paste0(wd, &quot;/DP3.30015.001/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif&quot;))
+
+
+chm &lt;- raster(paste0(wd, &quot;/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif&quot;))
 </code></pre>
 
 <p>Let&#39;s view the tile.</p>
@@ -328,8 +350,8 @@ the height of the top surface of the canopy, measured from the air. There
 are many different ways to make a comparison between these two 
 datasets! This section will walk through three different approaches.</p>
 
-<p>First, subset the vegetation structure data to only the individuals that fall 
-within this tile, using the <code>extent()</code> function from the raster package.</p>
+<p>First, subset the vegetation structure data to only the trees that fall 
+within this tile, using the <code>extent()</code> function from the <code>raster</code> package.</p>
 
 <p>This step isn&#39;t strictly necessary, but it will make the processing faster.</p>
 
@@ -352,8 +374,11 @@ location.</p>
                      buffer=vegsub$adjCoordinateUncertainty, 
                      fun=max)
 
+
+
 plot(bufferCHM~vegsub$height, pch=20, xlab=&quot;Height&quot;, 
      ylab=&quot;Canopy height model&quot;)
+
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
 
@@ -364,7 +389,7 @@ measurements?</p>
 
 <pre><code>cor(bufferCHM, vegsub$height, use=&quot;complete&quot;)
 
-## [1] 0.3650552
+## [1] 0.3770437
 </code></pre>
 
 <p>There are a lot of points clustered on the 1-1 line, but there is also a 
@@ -388,13 +413,18 @@ with the same numbering as the raster pixels (the rasters/pixels are
 numbered by their southwest corners).</p>
 
 <pre><code>easting10 &lt;- 10*floor(vegsub$adjEasting/10)
+
 northing10 &lt;- 10*floor(vegsub$adjNorthing/10)
+
 vegsub &lt;- cbind(vegsub, easting10, northing10)
 </code></pre>
 
 <p>Use the <code>aggregate()</code> function to get the tallest tree in each 10m bin.</p>
 
-<pre><code>vegbin &lt;- stats::aggregate(vegsub, by=list(vegsub$easting10, vegsub$northing10), FUN=max)
+<pre><code>vegbin &lt;- stats::aggregate(vegsub, 
+                           by=list(vegsub$easting10, 
+                                   vegsub$northing10), 
+                           FUN=max)
 </code></pre>
 
 <p>To get the CHM values for the 10m bins, use the <code>raster</code> package version 
@@ -402,6 +432,7 @@ of the <code>aggregate()</code> function. Let&#39;s take a look at the lower-res
 image we get as a result.</p>
 
 <pre><code>CHM10 &lt;- raster::aggregate(chm, fact=10, fun=max)
+
 plot(CHM10, col=topo.colors(5))
 </code></pre>
 
@@ -412,12 +443,16 @@ don&#39;t need a buffer this time, since we&#39;ve put both datasets onto the sa
 grid. But our grids are numbered by the corners, so add 5 to each tree 
 coordinate to make sure it&#39;s in the correct pixel.</p>
 
-<pre><code>vegbin$easting10 &lt;- vegbin$easting10+5
-vegbin$northing10 &lt;- vegbin$northing10+5
+<pre><code>vegbin$easting10 &lt;- vegbin$easting10 + 5
+
+vegbin$northing10 &lt;- vegbin$northing10 + 5
+
 binCHM &lt;- extract(CHM10, cbind(vegbin$easting10, 
                                vegbin$northing10))
+
 plot(binCHM~vegbin$height, pch=20, 
      xlab=&quot;Height&quot;, ylab=&quot;Canopy height model&quot;)
+
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
 
@@ -425,7 +460,7 @@ lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 
 <pre><code>cor(binCHM, vegbin$height, use=&quot;complete&quot;)
 
-## [1] 0.3565511
+## [1] 0.333413
 </code></pre>
 
 <p>The understory points are thinned out substantially, but so are the rest. 
@@ -435,7 +470,8 @@ We&#39;ve lost a lot of data by going to a lower resolution.</p>
 using the trees as the starting point instead of map area. Start by sorting 
 the veg structure data by height.</p>
 
-<pre><code>vegsub &lt;- vegsub[order(vegsub$height, decreasing=T),]
+<pre><code>vegsub &lt;- vegsub[order(vegsub$height, 
+                       decreasing=T),]
 </code></pre>
 
 <p>Now, for each tree, let&#39;s estimate which nearby trees might be beneath 
@@ -453,6 +489,7 @@ be improved on!</li>
 <p>We&#39;ll use a simple <code>for</code> loop to do this:</p>
 
 <pre><code>vegfil &lt;- vegsub
+
 for(i in 1:nrow(vegsub)) {
     if(is.na(vegfil$height[i]))
         next
@@ -461,6 +498,8 @@ for(i in 1:nrow(vegsub)) {
     vegfil$height[which(dist&lt;0.3*vegsub$height[i] &amp; 
                         vegsub$height&lt;vegsub$height[i])] &lt;- NA
 }
+
+
 
 vegfil &lt;- vegfil[which(!is.na(vegfil$height)),]
 </code></pre>
@@ -471,8 +510,10 @@ the uncertainty in the ground locations.</p>
 
 <pre><code>filterCHM &lt;- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
                          buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
+
 plot(filterCHM~vegfil$height, pch=20, 
      xlab=&quot;Height&quot;, ylab=&quot;Canopy height model&quot;)
+
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
 
@@ -480,7 +521,7 @@ lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 
 <pre><code>cor(filterCHM,vegfil$height)
 
-## [1] 0.7273229
+## [1] 0.6821749
 </code></pre>
 
 <p>This is quite a bit better! There are still several understory points we 
@@ -494,10 +535,13 @@ likely, and it&#39;s also less likely to get a good Lidar return. Exclude all
 trees that aren&#39;t alive:</p>
 
 <pre><code>vegfil &lt;- vegfil[which(vegfil$plantStatus==&quot;Live&quot;),]
+
 filterCHM &lt;- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
                          buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
+
 plot(filterCHM~vegfil$height, pch=20, 
      xlab=&quot;Height&quot;, ylab=&quot;Canopy height model&quot;)
+
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
 
@@ -505,7 +549,7 @@ lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 
 <pre><code>cor(filterCHM,vegfil$height)
 
-## [1] 0.8135262
+## [1] 0.806845
 </code></pre>
 
 <p>Nice!</p>
