@@ -117,7 +117,7 @@ print('CLBJ_SDR2017 Valid Band Subset')
 print(CLBJ_SDR2017subset)
 
 //Then mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
-var CLBJ_SDR2017mask = CLBJ_SDR2017subset.updateMask(CLBJ_SDR2017.gte(0.0000)).select(['band053', 'band035', 'band019']);
+var CLBJ_SDR2017mask = CLBJ_SDR2017subset.updateMask(CLBJ_SDR2017subset.gte(0.0000)).select(['band053', 'band035', 'band019']);
 Map.addLayer(CLBJ_SDR2017mask, {min:.5, max:10}, 'CLBJ SDR 2017', 0);
 ```
 
@@ -129,7 +129,7 @@ var CLBJ_SDR_CHMcomposite = CLBJ_SDR2017subset.addBands(CLBJ_CHM2017mask).aside(
 
 //Crop the reflectance image/CHM composite to the NEON tower airshed boundary and add to the map
 var CLBJ_SDR2017_airshed = CLBJ_SDR_CHMcomposite.clip(CLBJ_Airshed) // comment if uncommenting next line of code
-//var CLBJ_SDR2017_airshed = composite // uncomment to classify entire SDR scene
+//var CLBJ_SDR2017_airshed = CLBJ_SDR_CHMcomposite // uncomment to classify entire SDR scene
 Map.addLayer(CLBJ_SDR2017_airshed, {bands:['band053', 'band035', 'band019'], min:.5, max:10}, 'CLBJ-Airshed SDR/CHM 2017');
 ```
 
