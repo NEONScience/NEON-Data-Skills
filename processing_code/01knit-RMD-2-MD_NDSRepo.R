@@ -27,7 +27,7 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
 subDir <- dirs[6]
 
 # Inputs - Where the git repo is on your computer
-gitRepoPath <-"~/GitHub/FORKS/NEON-Data-Skills"
+gitRepoPath <-"~/Documents/GitHub/FORKS/NEON-Data-Skills"
 
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 

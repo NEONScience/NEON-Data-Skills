@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>mammal-data-intro</title>
+
+
+
+
+
+<style type="text/css">
+body, td {
+  font-family: sans-serif;
+  background-color: white;
+  font-size: 13px;
+}
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+}
+tt, code, pre {
+  font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+a:visited { color: #80007f; }
+pre, img { max-width: 100%; }
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+code[class] { background-color: #F8F8F8; }
+code.language-undefined { background-color: inherit; }
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color:#666;
+  margin:0;
+  padding-left: 1em;
+  border-left: 0.5em #eee solid;
+}
+hr { border: 1px #ddd dashed; }
+
+@media print {
+  * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+  }
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  a, a:visited { text-decoration: underline; }
+  hr {
+    visibility: hidden;
+    page-break-before: always;
+  }
+  pre, blockquote {
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page :left { margin: 15mm 20mm 15mm 10mm; }
+  @page :right { margin: 15mm 10mm 15mm 20mm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<div id="ds-objectives" markdown="1">
+<h2>Learning Objectives</h2>
+<p>After completing this tutorial you will be able to:</p>
+<ul>
+<li>Download NEON small mammal data.</li>
+<li>Generate simple abundance metrics.</li>
+<li>Calculate and visualize diversity metrics</li>
+</ul>
+<div id="ds-objectives" markdown="1">
+<h2>Things You’ll Need To Complete This Tutorial</h2>
+<h3>R Programming Language</h3>
+<p>You will need a current version of R to complete this tutorial. We also recommend
+the RStudio IDE to work with R.</p>
+</div>
+<h2>1. Setup</h2>
+<h3>Load Packages</h3>
+<p>Start by installing and loading packages (if necessary) and setting
+options. Installation can be run once, then periodically to get package updates.</p>
+<pre><code>* **dplyr:** `install.packages(&quot;dplyr&quot;)`
+
+* **neonUtilities:** `install.packages(&quot;neonUtilities&quot;)`
+
+* **neonOS:** `install.packages(&quot;neonOS&quot;)`
+
+* **ggplot2:** `install.packages(&quot;ggplot2&quot;)`
+</code></pre>
+<p><a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
+<p>Now load packages. This needs to be done every time you run code.
+We’ll also set a working directory for data downloads.</p>
+<pre><code>library(dplyr)
+
+library(neonUtilities)
+
+library(neonOS)
+
+library(ggplot2)
+</code></pre>
+<h3>Download NEON Small Nammal Data</h3>
+<p>Download the small mammal box trapping data using the <code>loadByProduct()</code> function in
+the <code>neonUtilities</code> package. Inputs needed to the function are:</p>
+<ul>
+<li><code>dpID</code>: data product ID; woody vegetation structure = DP1.10072.001</li>
+<li><code>site</code>: (vector of) 4-letter site codes; SCBI, SRER, UNDE</li>
+<li><code>package</code>: basic or expanded; we’ll download basic here</li>
+<li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>TRUE</code> when downloading a dataset for the first time.</li>
+</ul>
+<p>Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
+for the <code>neonUtilities</code> package for more details if desired.</p>
+<pre><code>mamdat &lt;- loadByProduct(dpID=&quot;DP1.10072.001&quot;, 
+                         site=c(&quot;SCBI&quot;, &quot;SRER&quot;, &quot;UNDE&quot;),
+                         package=&quot;basic&quot;, 
+                         check.size = FALSE,
+                        startdate = &quot;2021-01&quot;,
+                        enddate = &quot;2022-12&quot;)
+</code></pre>
+<h3>Set Working Directory if Needed</h3>
+<p>If the data are not loaded directly into the R session with loadByProduct, this lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets.</p>
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a></p>
+<pre><code>#Set working directory
+
+#wd&lt;-&quot;~/data&quot;
+
+#setwd(wd)
+</code></pre>
+<h3>NEON Data Citation:</h3>
+<p>The data used in this tutorial were collected at the
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network’s</a>
+<a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.</p>
+<ul>
+<li>NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). <a href="https://data.neonscience.org">https://data.neonscience.org</a> (accessed on 2022-12-16)</li>
+</ul>
+<h2>2. Compiling the NEON Small Mammal Data</h2>
+<p>The data are downloaded into a list of separate tables. Before working with the data the tables are added to the R environment</p>
+<pre><code>#View all tables in the list of downloaded small mammal data:
+
+names(mamdat)
+
+## [1] &quot;categoricalCodes_10072&quot; &quot;issueLog_10072&quot;         &quot;mam_perplotnight&quot;      
+## [4] &quot;mam_pertrapnight&quot;       &quot;readme_10072&quot;           &quot;validation_10072&quot;      
+## [7] &quot;variables_10072&quot;
+
+# The categoricalCodes file provides controlled 
+
+# lists used in the data
+
+
+
+# The issueLog and readme have the same information that you
+
+# will find on the data product landing page of the data portal
+
+
+
+# The mam_perplotnight table includes the date and time for all trap setting efforts and will
+
+# include an eventID value to indicate a unique bout of sampling in the 2023 release
+
+
+
+#The mam_pertrapnight table includes a record for each trap set along with information about any captures and samples.
+
+
+
+# The validation file provides the rules that constrain data upon ingest into the NEON database:
+
+
+
+# The variables file describes each field in the returned data tables
+
+
+
+#Extract the items from the list and add as dataframes in the R environment:
+
+list2env(mamdat, envir=.GlobalEnv)
+
+## &lt;environment: R_GlobalEnv&gt;
+</code></pre>
+<h3>Checking for Duplicates:</h3>
+<p>It is useful to check the two data tables for duplicate entries.  In the mam_perplotnight table this would be records with the same plot and date.  In the mam_pertrapnight table this would be records with the same nightuid, trap coordinate, and tagID.  It is worth noting that standard function cannot account for multiple captures of untagged individuals in a single trap (trapStatus = 4) and thus those should be filtered out before running the removeDups function.</p>
+<pre><code>#1. check perplotnight table by nightuid using standard removeDups function
+
+mam_plotNight_nodups &lt;- neonOS::removeDups(data=mam_perplotnight,
+                             variables=variables_10072,
+                             table='mam_perplotnight')
+
+## No duplicated key values found!
+
+#2. check pertrapnight table by nightuid and trapcoordinate using standard removeDups function 
+
+mam_trapNight_multipleCaps &lt;- mam_pertrapnight %&gt;% filter(trapStatus == &quot;4 - more than 1 capture in one trap&quot; &amp; is.na(tagID) &amp; is.na(individualCode)) #This data subset contains no multiple captures so no further filtering is necessary
+
+
+
+mam_trapNight_nodups &lt;- neonOS::removeDups(data=mam_pertrapnight,
+                             variables=variables_10072,
+                             table='mam_pertrapnight') 
+
+## No duplicated key values found!
+</code></pre>
+<h3>Joining Tables:</h3>
+<p>The mam_perplotnight data table contains information about the trapping effort as well as an eventID that can be used to identify the bout of sampling.  These two tables can be joined so that the trapping data will include the associated eventID to group trapping sessions by bout.</p>
+<pre><code>mamjn&lt;-neonOS::joinTableNEON(mam_plotNight_nodups, mam_trapNight_nodups, name1 = &quot;mam_perplotnight&quot;, name2 = &quot;mam_pertrapnight&quot;)
+
+
+
+#It is useful to verify that there are the expected number of records (the total in the pertrapnight table) and that the key variables are not blank/NA.
+
+which(is.na(mamjn$eventID))
+</code></pre>
+<h3>Additional Quality Verification:</h3>
+<p>NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.</p>
+<p>For small mammal data any records that have a tagID should also have a trapStatus that includes the word ‘capture’.  Before filtering the data to just the captured individuals from the target taxon it is helpful to ensure that the trapStatus is set correctly.</p>
+<pre><code>trapStatusErrorCheck &lt;- mam_trapNight_nodups %&gt;% 
+  filter(!is.na(tagID)) %&gt;% 
+  filter(!grepl(&quot;capture&quot;,trapStatus))
+
+nrow(trapStatusErrorCheck)
+
+#There are no records that have a tagID without a captured trapStatus so we can proceed using the trapStatus field to filter the data to only those traps that captured animals.
+</code></pre>
+<h2>3. Calculating Minimum Number Known Alive:</h2>
+<p>The minimum number known alive (MNKA) is an index of total small mammal abundance - e.g., Norman A. Slade, Susan M. Blair, An Empirical Test of Using Counts of Individuals Captured as Indices of Population Size, Journal of Mammalogy, Volume 81, Issue 4, November 2000, Pages 1035–1045, <a href="https://doi.org/10.1644/1545-1542(2000)081">https://doi.org/10.1644/1545-1542(2000)081</a>&lt;1035:AETOUC&gt;2.0.CO;2. This approach assumes that a marked individual is present at all sampling points between its first and last capture dates, even if it wasn’t actually captured in those interim trapping sessions.</p>
+<p>Start by generating a data table that fills in records of captures of target taxa that are not in the data but are presumed alive on a given trap-night because they were captured before and after that time-point.</p>
+<pre><code>#1. Filter the captures down to the target taxa.  The raw table includes numerous records for opportunistic taxa that are not specifically targeted by our sampling methods.  The small mammal taxonomy table lists each taxonID as being target or not and can be used to filter to only target species.
+
+
+
+#Read in master SMALL_MAMMAL taxon table. Use verbose = T to get taxonProtocolCategory
+
+mam.list &lt;- neonOS::getTaxonList(taxonType=&quot;SMALL_MAMMAL&quot;, recordReturnLimit=1000, verbose=T)
+
+
+
+targetTaxa &lt;- mam.list %&gt;% filter(taxonProtocolCategory == &quot;target&quot;) %&gt;% select(taxonID, scientificName)
+
+
+
+#Filter trap dataset to just the capture records of target taxa and a few core fields needed for the analyses.
+
+coreFields &lt;- c(&quot;nightuid&quot;, &quot;plotID&quot;, &quot;collectDate.x&quot;, &quot;tagID&quot;, &quot;taxonID&quot;, &quot;eventID&quot;)
+
+captures &lt;- mamjn %&gt;% 
+  filter(grepl(&quot;capture&quot;,trapStatus) &amp; taxonID %in% targetTaxa$taxonID) %&gt;% 
+  select(coreFields) %&gt;%
+  rename('collectDate' = 'collectDate.x')
+
+
+
+#Next add implicit records of animals assumed present at a given sampling date because they were captured before and after that sample point.
+
+
+
+#Generate a column of all of the unique tagIDs included in the dataset
+
+uTags &lt;- captures %&gt;% select(tagID) %&gt;% filter(!is.na(tagID)) %&gt;% distinct()
+
+#create empty data frame to populate
+
+capsNew &lt;- slice(captures,0)
+
+
+
+#for each tagged individual, add a record for each night of trapping done on the plots on which it was captured between the first and last dates of capture
+
+for (i in uTags$tagID){
+  indiv &lt;- captures %&gt;% filter(tagID == i)
+  firstCap &lt;- as.Date(min(indiv$collectDate), &quot;YYYY-MM-DD&quot;, tz = &quot;UTC&quot;)
+  lastCap &lt;- as.Date(max(indiv$collectDate), &quot;YYYY-MM-DD&quot;, tz = &quot;UTC&quot;)
+  possibleDates &lt;- seq(as.Date(firstCap), as.Date(lastCap), by=&quot;days&quot;)
+  potentialNights &lt;- mam_plotNight_nodups %&gt;% 
+    filter(as.character(collectDate) %in% as.character(possibleDates) &amp; 
+                                                       plotID %in% indiv$plotID) %&gt;% 
+    select(nightuid,plotID, collectDate, eventID) %&gt;% 
+    mutate(tagID=i)
+  allnights &lt;- left_join(potentialNights, indiv)
+  allnights$taxonID&lt;-unique(indiv$taxonID)[1] #Note that taxonID sometimes changes between recaptures.  This uses only the first identification but there are a number of other ways to handle this situation.
+  capsNew &lt;- bind_rows(capsNew, allnights)
+}
+
+
+
+#check for untagged individuals and add back to the dataset if necessary:
+
+caps_notags &lt;- captures %&gt;% filter(is.na(tagID))
+
+caps_notags
+</code></pre>
+<p>Next create a function that takes this data table as the input to calculate the mean minimum number known alive at a given site during a particular bout of sampling.</p>
+<pre><code>mnka_per_site &lt;- function(capture_data) {
+  mnka_by_plot_bout &lt;- capture_data %&gt;% group_by(eventID,plotID) %&gt;% 
+    summarize(n=n_distinct(tagID))
+    mean_mnka_by_site_bout &lt;- mnka_by_plot_bout %&gt;% mutate(siteID = substr(plotID, 1, 4)) %&gt;%
+      group_by(siteID, eventID) %&gt;% 
+      summarise(meanMNKA = mean(n))
+      return(mean_mnka_by_site_bout)
+}
+
+
+
+MNKA&lt;-mnka_per_site(capture_data = capsNew)
+
+head(MNKA)
+
+## # A tibble: 6 × 3
+## # Groups:   siteID [1]
+##   siteID eventID      meanMNKA
+##   &lt;chr&gt;  &lt;chr&gt;           &lt;dbl&gt;
+## 1 SCBI   SCBI.2021.14     3.33
+## 2 SCBI   SCBI.2021.18     6   
+## 3 SCBI   SCBI.2021.22     8.67
+## 4 SCBI   SCBI.2021.31     8.5 
+## 5 SCBI   SCBI.2021.35     7   
+## 6 SCBI   SCBI.2021.39     6.6
+</code></pre>
+<p>Make a graph to visualize the minimum number known alive across sites and years.</p>
+<pre><code>#If we are interested in just the abundance fluctuations of all Peromyscus leucopus / Peromyscus maniculatis at a site we can first filter the capture dataset down to those 2 species and then run our function and plot the outputs via date.
+
+splist&lt;-c(&quot;PELE&quot;, &quot;PEMA&quot;)
+
+PELEPEMA&lt;-capsNew %&gt;% filter(taxonID %in% splist)
+
+
+
+MNKA_PE&lt;-mnka_per_site(PELEPEMA)
+
+
+
+#Create a dataframe with the first date of collection for each bout to use as the date variable when plotting
+
+datedf&lt;-mam_plotNight_nodups %&gt;% 
+  select(eventID, collectDate) %&gt;% 
+  group_by(eventID) %&gt;%
+  summarise(Date = min(collectDate)) %&gt;%
+  mutate(Year = substr(Date,1,4), MMDD=substr(Date,6,10))
+
+
+
+MNKA_PE&lt;-left_join(MNKA_PE, datedf)
+
+
+
+PELEabunplot&lt;-ggplot(data=MNKA_PE, aes(x=MMDD, y=meanMNKA, color=Year, group=Year)) +
+  geom_point() +
+  geom_line()+
+  facet_wrap(~siteID) +
+  theme(axis.text.x =element_text(angle=90))
+
+#group tells ggplot which points to group together when connecting via a line.
+
+
+
+PELEabunplot
+</code></pre>
+<p>![ ](<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/plot">https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/plot</a> MNKA-1.png)</p>
+
+
+<script src="https://cdn.jsdelivr.net/combine/npm/@xiee/utils/js/center-img.min.js" async></script>
+</body>
+
+</html>

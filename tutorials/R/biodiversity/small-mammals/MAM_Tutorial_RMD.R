@@ -1,109 +1,34 @@
----
-syncID: TBD
-title: "mammal-data-intro"
-description: "This tutorial will provide an introduction to discovering, accessing and preparing NEON small mammal collection data using R"
-dateCreated: 2022-12-08
-authors: Sara Paull
-contributors: Sara Paull
-estimatedTime: 1.5 hrs
-packagesLibraries: neonUtilities, dplyr
-topics: data-analysis, data-visualization
-languagesTool: R
-dataProduct: DP1.10072.001
-code1: TBD
-tutorialSeries: NA
-urlTitle: TBD
----
+## ----install_packages, eval=FALSE------------------------------------------------------------------
+## * **dplyr:** `install.packages("dplyr")`
+## * **neonUtilities:** `install.packages("neonUtilities")`
+## * **neonOS:** `install.packages("neonOS")`
+## * **ggplot2:** `install.packages("ggplot2")`
 
-<div id="ds-objectives" markdown="1">
 
-## Learning Objectives 
-After completing this tutorial you will be able to: 
-
-* Download NEON small mammal data. 
-* Generate simple abundance metrics.
-* Calculate and visualize diversity metrics
-
-<div id="ds-objectives" markdown="1">
-
-## Things You’ll Need To Complete This Tutorial
-
-### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
-the RStudio IDE to work with R. 
-
-</div>
-
-## 1. Setup
-
-### Load Packages
-Start by installing and loading packages (if necessary) and setting 
-options. Installation can be run once, then periodically to get package updates.
-
-```{r install_packages, eval=FALSE}
-* **dplyr:** `install.packages("dplyr")`
-* **neonUtilities:** `install.packages("neonUtilities")`
-* **neonOS:** `install.packages("neonOS")`
-* **ggplot2:** `install.packages("ggplot2")`
-```
-
-<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
-
-Now load packages. This needs to be done every time you run code. 
-We'll also set a working directory for data downloads.
-
-```{r load-packages, , message=FALSE, warning=FALSE, results="hide"}
+## ----load-packages, , message=FALSE, warning=FALSE, results="hide"---------------------------------
 library(dplyr)
 library(neonUtilities)
 library(neonOS)
 library(ggplot2)
-```
 
-### Download NEON Small Nammal Data
-Download the small mammal box trapping data using the `loadByProduct()` function in
-the `neonUtilities` package. Inputs needed to the function are:
 
-* `dpID`: data product ID; woody vegetation structure = DP1.10072.001
-* `site`: (vector of) 4-letter site codes; SCBI, SRER, UNDE
-* `package`: basic or expanded; we'll download basic here
-* `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
-
-Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
-for the `neonUtilities` package for more details if desired.
-
-```{r mamdat, results="hide"}
+## ----mamdat, results="hide"------------------------------------------------------------------------
 mamdat <- loadByProduct(dpID="DP1.10072.001", 
                          site=c("SCBI", "SRER", "UNDE"),
                          package="basic", 
                          check.size = FALSE,
                         startdate = "2021-01",
                         enddate = "2022-12")
-```
 
-### Set Working Directory if Needed
-If the data are not loaded directly into the R session with loadByProduct, this lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets. 
 
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
-
-```{r set directory, results="hide"}
+## ----set directory, results="hide"-----------------------------------------------------------------
 #Set working directory
 #wd<-"~/data"
 #setwd(wd)
 
-```
 
-### NEON Data Citation:
-The data used in this tutorial were collected at the 
-<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.  
 
-* NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). https://data.neonscience.org (accessed on `r Sys.Date()`)
-
-## 2. Compiling the NEON Small Mammal Data
-The data are downloaded into a list of separate tables. Before working with the data the tables are added to the R environment
-
-```{r download-overview, message=FALSE, warning=FALSE}
+## ----download-overview, message=FALSE, warning=FALSE-----------------------------------------------
 #View all tables in the list of downloaded small mammal data:
 names(mamdat)
 # The categoricalCodes file provides controlled 
@@ -123,12 +48,9 @@ names(mamdat)
 
 #Extract the items from the list and add as dataframes in the R environment:
 list2env(mamdat, envir=.GlobalEnv)
-```
 
-### Checking for Duplicates:
-It is useful to check the two data tables for duplicate entries.  In the mam_perplotnight table this would be records with the same plot and date.  In the mam_pertrapnight table this would be records with the same nightuid, trap coordinate, and tagID.  It is worth noting that standard function cannot account for multiple captures of untagged individuals in a single trap (trapStatus = 4) and thus those should be filtered out before running the removeDups function.
 
-```{r data download, results="hide"}
+## ----data download, results="hide"-----------------------------------------------------------------
 #1. check perplotnight table by nightuid using standard removeDups function
 mam_plotNight_nodups <- neonOS::removeDups(data=mam_perplotnight,
                              variables=variables_10072,
@@ -139,37 +61,24 @@ mam_trapNight_multipleCaps <- mam_pertrapnight %>% filter(trapStatus == "4 - mor
 mam_trapNight_nodups <- neonOS::removeDups(data=mam_pertrapnight,
                              variables=variables_10072,
                              table='mam_pertrapnight') 
-```
 
-### Joining Tables:
-The mam_perplotnight data table contains information about the trapping effort as well as an eventID that can be used to identify the bout of sampling.  These two tables can be joined so that the trapping data will include the associated eventID to group trapping sessions by bout.
 
-```{r data join, results="hide"}
+## ----data join, results="hide"---------------------------------------------------------------------
 mamjn<-neonOS::joinTableNEON(mam_plotNight_nodups, mam_trapNight_nodups, name1 = "mam_perplotnight", name2 = "mam_pertrapnight")
 
 #It is useful to verify that there are the expected number of records (the total in the pertrapnight table) and that the key variables are not blank/NA.
 which(is.na(mamjn$eventID))
-```
 
-### Additional Quality Verification:
-NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.  
 
-For small mammal data any records that have a tagID should also have a trapStatus that includes the word 'capture'.  Before filtering the data to just the captured individuals from the target taxon it is helpful to ensure that the trapStatus is set correctly.
-
-```{r quality checks, results="hide"}
+## ----quality checks, results="hide"----------------------------------------------------------------
 trapStatusErrorCheck <- mam_trapNight_nodups %>% 
   filter(!is.na(tagID)) %>% 
   filter(!grepl("capture",trapStatus))
 nrow(trapStatusErrorCheck)
 #There are no records that have a tagID without a captured trapStatus so we can proceed using the trapStatus field to filter the data to only those traps that captured animals.
-```
 
-## 3. Calculating Minimum Number Known Alive:
-The minimum number known alive (MNKA) is an index of total small mammal abundance - e.g., Norman A. Slade, Susan M. Blair, An Empirical Test of Using Counts of Individuals Captured as Indices of Population Size, Journal of Mammalogy, Volume 81, Issue 4, November 2000, Pages 1035–1045, https://doi.org/10.1644/1545-1542(2000)081<1035:AETOUC>2.0.CO;2. This approach assumes that a marked individual is present at all sampling points between its first and last capture dates, even if it wasn't actually captured in those interim trapping sessions. 
 
-Start by generating a data table that fills in records of captures of target taxa that are not in the data but are presumed alive on a given trap-night because they were captured before and after that time-point.
-
-```{r generate data table MNKA, message=FALSE, warning=FALSE,  results="hide"}
+## ----generate data table MNKA, message=FALSE, warning=FALSE,  results="hide"-----------------------
 #1. Filter the captures down to the target taxa.  The raw table includes numerous records for opportunistic taxa that are not specifically targeted by our sampling methods.  The small mammal taxonomy table lists each taxonID as being target or not and can be used to filter to only target species.
 
 #Read in master SMALL_MAMMAL taxon table. Use verbose = T to get taxonProtocolCategory
@@ -210,11 +119,9 @@ for (i in uTags$tagID){
 #check for untagged individuals and add back to the dataset if necessary:
 caps_notags <- captures %>% filter(is.na(tagID))
 caps_notags
-```
 
-Next create a function that takes this data table as the input to calculate the mean minimum number known alive at a given site during a particular bout of sampling. 
 
-```{r calculate MNKA, message=FALSE, warning=FALSE}
+## ----calculate MNKA, message=FALSE, warning=FALSE--------------------------------------------------
 
 mnka_per_site <- function(capture_data) {
   mnka_by_plot_bout <- capture_data %>% group_by(eventID,plotID) %>% 
@@ -227,11 +134,9 @@ mnka_per_site <- function(capture_data) {
 
 MNKA<-mnka_per_site(capture_data = capsNew)
 head(MNKA)
-```
 
-Make a graph to visualize the minimum number known alive across sites and years.  
 
-```{r plot MNKA, message=FALSE, warning=FALSE}
+## ----plot MNKA, message=FALSE, warning=FALSE-------------------------------------------------------
 #If we are interested in just the abundance fluctuations of all Peromyscus leucopus / Peromyscus maniculatis at a site we can first filter the capture dataset down to those 2 species and then run our function and plot the outputs via date.
 splist<-c("PELE", "PEMA")
 PELEPEMA<-capsNew %>% filter(taxonID %in% splist)
@@ -255,6 +160,4 @@ PELEabunplot<-ggplot(data=MNKA_PE, aes(x=MMDD, y=meanMNKA, color=Year, group=Yea
 #group tells ggplot which points to group together when connecting via a line.
 
 PELEabunplot
-```
-
 
