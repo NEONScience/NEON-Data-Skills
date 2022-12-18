@@ -231,7 +231,7 @@ head(MNKA)
 
 Make a graph to visualize the minimum number known alive across sites and years.  
 
-```{r plot MNKA, message=FALSE, warning=FALSE}
+```{r plotMNKA, message=FALSE, warning=FALSE}
 #If we are interested in just the abundance fluctuations of all Peromyscus leucopus / Peromyscus maniculatis at a site we can first filter the capture dataset down to those 2 species and then run our function and plot the outputs via date.
 splist<-c("PELE", "PEMA")
 PELEPEMA<-capsNew %>% filter(taxonID %in% splist)
@@ -256,5 +256,25 @@ PELEabunplot<-ggplot(data=MNKA_PE, aes(x=MMDD, y=meanMNKA, color=Year, group=Yea
 
 PELEabunplot
 ```
+
+## 4. Additional Plots to Visualize Diversity:
+Make some diversity plots to show number of species being captured.
+
+```{r plotDiversity, message=FALSE, warning=FALSE}
+#NOTE TO SELF - DOUBLECHECK THE CAPTURES INPUT DATAFRAME
+TaxDat<-captures %>% 
+  mutate(siteID = substr(plotID,1,4)) %>% 
+  group_by(taxonID, siteID) %>% summarise(tot=n())
+
+TaxPlot<-ggplot(TaxDat[which(TaxDat$tot>0),], aes(x=taxonID, y=tot, fill=taxonID)) + 
+  geom_bar(stat = "identity")+
+  facet_wrap(~siteID, scales = 'free') +
+  theme_bw()+
+  theme(axis.text.x = element_text(angle=90, vjust=.5, hjust=1))
+
+TaxPlot
+```
+## 5. Visualize Pathogen Prevalence Data at these Sites:
+
 
 
