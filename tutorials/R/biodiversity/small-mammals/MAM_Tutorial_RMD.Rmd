@@ -232,11 +232,17 @@ head(MNKA)
 Make a graph to visualize the minimum number known alive across sites and years.  
 
 ```{r plotMNKA, message=FALSE, warning=FALSE}
-#If we are interested in just the abundance fluctuations of all Peromyscus leucopus / Peromyscus maniculatis at a site we can first filter the capture dataset down to those 2 species and then run our function and plot the outputs via date.
-splist<-c("PELE", "PEMA")
-PELEPEMA<-capsNew %>% filter(taxonID %in% splist)
+#To estimate the minimum number known alive for each species at each bout and site it is possible to loop through and run the function for each taxonID
+MNKAbysp<-data.frame()
+splist<-unique(capsNew$taxonID)
+for(i in 1:length(splist)){
+  taxsub<-capsNew %>% filter (taxonID %in% splist[i]) %>% mutate(taxonID = splist[i])
+  MNKAtax<-mnka_per_site(taxsub) %>% mutate(taxonID=splist[i], Year = substr(eventID,6,9))
+  MNKAbysp<-rbind(MNKAbysp,MNKAtax)
+}
 
-MNKA_PE<-mnka_per_site(PELEPEMA)
+#Next we will visualize the abundance flucutations for Peromyscus leucopus through time:
+MNKA_PE<-MNKAbysp %>% filter(taxonID%in%"PELE")
 
 #Create a dataframe with the first date of collection for each bout to use as the date variable when plotting
 datedf<-mam_plotNight_nodups %>% 
@@ -257,16 +263,13 @@ PELEabunplot<-ggplot(data=MNKA_PE, aes(x=MMDD, y=meanMNKA, color=Year, group=Yea
 PELEabunplot
 ```
 
-## 4. Additional Plots to Visualize Diversity:
-Make some diversity plots to show number of species being captured.
+Next we will look at the maximum abundance of the different species recorded at each site over the timespan of the data.
 
 ```{r plotDiversity, message=FALSE, warning=FALSE}
-#NOTE TO SELF - DOUBLECHECK THE CAPTURES INPUT DATAFRAME
-TaxDat<-captures %>% 
-  mutate(siteID = substr(plotID,1,4)) %>% 
-  group_by(taxonID, siteID) %>% summarise(tot=n())
+TaxDat<-MNKAbysp %>% 
+  group_by(taxonID, siteID) %>% summarise(max=max(meanMNKA))
 
-TaxPlot<-ggplot(TaxDat[which(TaxDat$tot>0),], aes(x=taxonID, y=tot, fill=taxonID)) + 
+TaxPlot<-ggplot(TaxDat, aes(x=taxonID, y=max, fill=taxonID)) + 
   geom_bar(stat = "identity")+
   facet_wrap(~siteID, scales = 'free') +
   theme_bw()+
