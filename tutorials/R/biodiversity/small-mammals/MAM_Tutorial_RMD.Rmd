@@ -277,9 +277,10 @@ TaxPlot<-ggplot(TaxDat, aes(x=taxonID, y=max, fill=taxonID)) +
 
 TaxPlot
 ```
+
 ## 5. Visualize Pathogen Prevalence Data at these Sites:
 
-```{r pathogen data compilation, message = FALSE, warning = FALSE}
+```{r pathogen data compilation, message = FALSE, warning = FALSE, results="hide"}
 #First download the rodent pathogen data
 rptdat <- loadByProduct(dpID="DP1.10064.002", 
                          site=c("SCBI", "SRER", "UNDE"),
@@ -300,7 +301,11 @@ rpt_pathres_nodups <- neonOS::removeDups(data=rpt2_pathogentesting,
 #If you attempt to use that function you will get the error: 
 #Error in neonOS::joinTableNEON(mam_pertrapnight, rpt2_pathogentesting) : 
 #  Tables mam_pertrapnight and rpt2_pathogentesting can't be joined automatically. Consult quick start guide for details about data relationships.
+```
 
+The information about the species from which the samples were taken is found in the small mammal trapping data.  Any analyses that will look at species will need to join the trapping data table with the pathogen data table.
+
+```{r trapping pathogen merge, message = FALSE, warning = FALSE}
 #First subset the two dataframes that will be merged to select out a smaller subset of columns to make working with the data easier:
 rptdat.merge<-rpt_pathres_nodups %>% select(plotID, collectDate, sampleID, testPathogenName, testResult) %>%
   mutate(Site = substr(plotID,1,4))
@@ -314,7 +319,11 @@ rptblood<-rptdat.merge %>% filter(grepl('.B', sampleID, fixed=T))
 rptear.j<-left_join(rptear, mamdat.merge, by=c("sampleID"="earSampleID"))
 rptblood.j<-left_join(rptblood, mamdat.merge, by=c("sampleID"="bloodSampleID"))
 rptall<-rbind(rptear.j[,-8], rptblood.j[,-8]) #combine the dataframes after getting rid of the last column whose names don't match and whose data is replaced by the sampleID column
+```
 
+Next we will summarize the prevalence of the different pathogens across sites and species and compare them visually.
+
+```{r prevalencePlots, message = FALSE, warning = FALSE}
 #Calculate the prevalence of the different pathogens in the different taxa at each site.
 rptprev<-rptall %>%
   group_by(Site, testPathogenName, taxonID) %>% 

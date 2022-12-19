@@ -101,7 +101,7 @@ The data used in this tutorial were collected at the
 <a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
 <a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.  
 
-* NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). https://data.neonscience.org (accessed on 2022-12-16)
+* NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). https://data.neonscience.org (accessed on 2022-12-18)
 
 ## 2. Compiling the NEON Small Mammal Data
 The data are downloaded into a list of separate tables. Before working with the data the tables are added to the R environment
@@ -303,15 +303,23 @@ Next create a function that takes this data table as the input to calculate the 
 Make a graph to visualize the minimum number known alive across sites and years.  
 
 
-    #If we are interested in just the abundance fluctuations of all Peromyscus leucopus / Peromyscus maniculatis at a site we can first filter the capture dataset down to those 2 species and then run our function and plot the outputs via date.
+    #To estimate the minimum number known alive for each species at each bout and site it is possible to loop through and run the function for each taxonID
 
-    splist<-c("PELE", "PEMA")
+    MNKAbysp<-data.frame()
 
-    PELEPEMA<-capsNew %>% filter(taxonID %in% splist)
+    splist<-unique(capsNew$taxonID)
+
+    for(i in 1:length(splist)){
+      taxsub<-capsNew %>% filter (taxonID %in% splist[i]) %>% mutate(taxonID = splist[i])
+      MNKAtax<-mnka_per_site(taxsub) %>% mutate(taxonID=splist[i], Year = substr(eventID,6,9))
+      MNKAbysp<-rbind(MNKAbysp,MNKAtax)
+    }
 
     
 
-    MNKA_PE<-mnka_per_site(PELEPEMA)
+    #Next we will visualize the abundance flucutations for Peromyscus leucopus through time:
+
+    MNKA_PE<-MNKAbysp %>% filter(taxonID%in%"PELE")
 
     
 
@@ -341,6 +349,128 @@ Make a graph to visualize the minimum number known alive across sites and years.
 
     PELEabunplot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/plot MNKA-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/plotMNKA-1.png)
+
+Next we will look at the maximum abundance of the different species recorded at each site over the timespan of the data.
+
+
+    TaxDat<-MNKAbysp %>% 
+      group_by(taxonID, siteID) %>% summarise(max=max(meanMNKA))
+
+    
+
+    TaxPlot<-ggplot(TaxDat, aes(x=taxonID, y=max, fill=taxonID)) + 
+      geom_bar(stat = "identity")+
+      facet_wrap(~siteID, scales = 'free') +
+      theme_bw()+
+      theme(axis.text.x = element_text(angle=90, vjust=.5, hjust=1))
+
+    
+
+    TaxPlot
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/plotDiversity-1.png)
+
+## 5. Visualize Pathogen Prevalence Data at these Sites:
+
+
+    #First download the rodent pathogen data
+
+    rptdat <- loadByProduct(dpID="DP1.10064.002", 
+                             site=c("SCBI", "SRER", "UNDE"),
+                             package="basic", 
+                             check.size = FALSE,
+                            startdate = "2021-01",
+                            enddate = "2022-12")
+
+    
+
+    list2env(rptdat, envir=.GlobalEnv)
+
+    
+
+    #Then check for and deal with any duplicates
+
+    rpt_pathres_nodups <- neonOS::removeDups(data=rpt2_pathogentesting,
+                                 variables=variables_10064,
+                                 table='rpt2_pathogentesting')
+
+    
+
+    #Next join the pathogen data with the trapping data to get the taxonID of the individual from which the pathogen samples were taken.
+
+    #Note that joinTableNEON is not an option for the rodent tick-borne pathogen data because of the complexities involved in matching the sample IDs.  This is noted in the Table joining section of the quick start guide for tick-borne rodent pathogens on the data product landing page.
+
+    #If you attempt to use that function you will get the error: 
+
+    #Error in neonOS::joinTableNEON(mam_pertrapnight, rpt2_pathogentesting) : 
+
+    #  Tables mam_pertrapnight and rpt2_pathogentesting can't be joined automatically. Consult quick start guide for details about data relationships.
+
+The information about the species from which the samples were taken is found in the small mammal trapping data.  Any analyses that will look at species will need to join the trapping data table with the pathogen data table.
+
+
+    #First subset the two dataframes that will be merged to select out a smaller subset of columns to make working with the data easier:
+
+    rptdat.merge<-rpt_pathres_nodups %>% select(plotID, collectDate, sampleID, testPathogenName, testResult) %>%
+      mutate(Site = substr(plotID,1,4))
+
+    mamdat.merge<-mam_trapNight_nodups %>% select(taxonID, bloodSampleID, earSampleID)
+
+    
+
+    #Split the rodent pathogen data by sample types (ear or blood) before joining with the trapping data since there are 2 different columns for sampleID in the mammal trapping data - one for blood samples and one for ear samples.
+
+    rptear<-rptdat.merge %>% filter(grepl('.E', sampleID, fixed=T))
+
+    rptblood<-rptdat.merge %>% filter(grepl('.B', sampleID, fixed=T))
+
+    
+
+    #Join each sample type with the correct column from the mammal trapping data.
+
+    rptear.j<-left_join(rptear, mamdat.merge, by=c("sampleID"="earSampleID"))
+
+    rptblood.j<-left_join(rptblood, mamdat.merge, by=c("sampleID"="bloodSampleID"))
+
+    rptall<-rbind(rptear.j[,-8], rptblood.j[,-8]) #combine the dataframes after getting rid of the last column whose names don't match and whose data is replaced by the sampleID column
+
+Next we will summarize the prevalence of the different pathogens across sites and species and compare them visually.
+
+
+    #Calculate the prevalence of the different pathogens in the different taxa at each site.
+
+    rptprev<-rptall %>%
+      group_by(Site, testPathogenName, taxonID) %>% 
+      summarise(tot.test=n(), tot.pos = sum(testResult=='Positive')) %>%
+      mutate(prevalence = tot.pos/tot.test)
+
+    
+
+    #Barplot of prevalence by site and pathogen name
+
+    PathPlot<-ggplot(rptprev, aes(x=testPathogenName, y=prevalence, fill=testPathogenName)) + 
+      geom_bar(stat = "identity")+
+      facet_wrap(~Site) +
+      theme_bw()+
+      theme(axis.text.x = element_text(angle=90, vjust=.5, hjust=1))
+
+    PathPlot
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/prevalencePlots-1.png)
+
+    #SCBI seems to have a high prevalence of pathogens - let's look at the prevalence across the species examined for testing:
+
+    SCBIpathdat<-rptprev %>% filter(Site %in% 'SCBI')
+
+    SCBIPlot<-ggplot(SCBIpathdat, aes(x=testPathogenName, y=prevalence, fill=testPathogenName)) + 
+      geom_bar(stat = "identity")+
+      facet_wrap(~taxonID) +
+      theme_bw()+
+      theme(axis.text.x = element_text(angle=90, vjust=.5, hjust=1))
+
+    SCBIPlot
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/prevalencePlots-2.png)
 
 
