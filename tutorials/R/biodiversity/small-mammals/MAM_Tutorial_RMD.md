@@ -1,6 +1,6 @@
 ---
 syncID: c1faf40f008d403eb0b6b35a10b28ad7
-title: "mammal-data-intro"
+title: "Introduction to Small Mammal Data"
 description: "This tutorial will provide an introduction to discovering, accessing and preparing NEON small mammal collection data using R"
 dateCreated: 2022-12-08
 authors: Sara Paull
