@@ -278,7 +278,7 @@ TaxPlot<-ggplot(TaxDat, aes(x=taxonID, y=max, fill=taxonID)) +
 TaxPlot
 ```
 
-## 5. Visualize Pathogen Prevalence Data at these Sites:
+## 4. Visualize Pathogen Prevalence Data at these Sites:
 
 ```{r pathogen data compilation, message = FALSE, warning = FALSE, results="hide"}
 #First download the rodent pathogen data
