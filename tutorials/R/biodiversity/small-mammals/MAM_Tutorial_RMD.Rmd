@@ -24,21 +24,14 @@ After completing this tutorial you will be able to:
 * Generate simple abundance metrics.
 * Calculate and visualize diversity metrics
 
-<div id="ds-objectives" markdown="1">
-
 ## Things You’ll Need To Complete This Tutorial
 
 ### R Programming Language
 You will need a current version of R to complete this tutorial. We also recommend 
 the RStudio IDE to work with R. 
 
-</div>
-
-## 1. Setup
-
-### Load Packages
-Start by installing and loading packages (if necessary) and setting 
-options. Installation can be run once, then periodically to get package updates.
+### R Packages To Install
+Start by installing any packages that are used during the course of the tutorial (if necessary) and setting options. Installation can be run once, then periodically to get package updates.
 
 ```{r install_packages, eval=FALSE}
 * **dplyr:** `install.packages("dplyr")`
@@ -49,8 +42,15 @@ options. Installation can be run once, then periodically to get package updates.
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
-Now load packages. This needs to be done every time you run code. 
-We'll also set a working directory for data downloads.
+</div>
+
+## 1. Setup
+
+In this first section we will get our R session set up so that we are prepared to work with and analyze the data.  This involves loading the necessary R packages, downloading the data, setting a working directory if manual data upload is needed, and a review of the NEON data citation policies.
+
+### Load R Packages:
+
+Once the packages have been installed they need to be loaded to the session. This needs to be done every time you run code. 
 
 ```{r load-packages, , message=FALSE, warning=FALSE, results="hide"}
 library(dplyr)
@@ -63,7 +63,7 @@ library(ggplot2)
 Download the small mammal box trapping data using the `loadByProduct()` function in
 the `neonUtilities` package. Inputs needed to the function are:
 
-* `dpID`: data product ID; woody vegetation structure = DP1.10072.001
+* `dpID`: data product ID; small mammal box trapping = DP1.10072.001
 * `site`: (vector of) 4-letter site codes; SCBI, SRER, UNDE
 * `package`: basic or expanded; we'll download basic here
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
@@ -73,7 +73,7 @@ for the `neonUtilities` package for more details if desired.
 
 ```{r mamdat, results="hide"}
 mamdat <- loadByProduct(dpID="DP1.10072.001", 
-                         site=c("SCBI", "SRER", "UNDE"),
+                         site=c("SCBI", "KONZ", "UNDE"),
                          package="basic", 
                          check.size = FALSE,
                         startdate = "2021-01",
@@ -94,6 +94,9 @@ of setting the working directory in R can be found here.</a>
 ```
 
 ### NEON Data Citation:
+The use of NEON data should be cited according to our
+<a href="https://www.neonscience.org/data-samples/data-policies-citation" target="_blank"> Data Policies & Citation Guidelines</a>.
+
 The data used in this tutorial were collected at the 
 <a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
 <a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.  
@@ -126,6 +129,8 @@ list2env(mamdat, envir=.GlobalEnv)
 ```
 
 ### Checking for Duplicates:
+NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.  
+
 It is useful to check the two data tables for duplicate entries.  In the mam_perplotnight table this would be records with the same plot and date.  In the mam_pertrapnight table this would be records with the same nightuid, trap coordinate, and tagID.  It is worth noting that standard function cannot account for multiple captures of untagged individuals in a single trap (trapStatus = 4) and thus those should be filtered out before running the removeDups function.
 
 ```{r data download, results="hide"}
@@ -147,13 +152,11 @@ The mam_perplotnight data table contains information about the trapping effort a
 ```{r data join, results="hide"}
 mamjn<-neonOS::joinTableNEON(mam_plotNight_nodups, mam_trapNight_nodups, name1 = "mam_perplotnight", name2 = "mam_pertrapnight")
 
-#It is useful to verify that there are the expected number of records (the total in the pertrapnight table) and that the key variables are not blank/NA.
+#It is helpful to verify that there are the expected number of records (the total in the pertrapnight table) and that the key variables are not blank/NA.
 which(is.na(mamjn$eventID))
 ```
 
 ### Additional Quality Verification:
-NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.  
-
 For small mammal data any records that have a tagID should also have a trapStatus that includes the word 'capture'.  Before filtering the data to just the captured individuals from the target taxon it is helpful to ensure that the trapStatus is set correctly.
 
 ```{r quality checks, results="hide"}
@@ -170,7 +173,7 @@ The minimum number known alive (MNKA) is an index of total small mammal abundanc
 Start by generating a data table that fills in records of captures of target taxa that are not in the data but are presumed alive on a given trap-night because they were captured before and after that time-point.
 
 ```{r generate data table MNKA, message=FALSE, warning=FALSE,  results="hide"}
-#1. Filter the captures down to the target taxa.  The raw table includes numerous records for opportunistic taxa that are not specifically targeted by our sampling methods.  The small mammal taxonomy table lists each taxonID as being target or not and can be used to filter to only target species.
+#First it is necessary to filter the captures down to the target taxa.  The raw table includes numerous records for opportunistic taxa that are not specifically targeted by our sampling methods.  The small mammal taxonomy table lists each taxonID as being target or not and can be used to filter to only target species.
 
 #Read in master SMALL_MAMMAL taxon table. Use verbose = T to get taxonProtocolCategory
 mam.list <- neonOS::getTaxonList(taxonType="SMALL_MAMMAL", recordReturnLimit=1000, verbose=T)
@@ -279,11 +282,12 @@ TaxPlot
 ```
 
 ## 4. Visualize Pathogen Prevalence Data at these Sites:
+NEON is testing small mammal ear and blood tissue for a variety of tick-borne pathogens.  We began with a pilot at a subset of sites in 2020 and expanded to all sites in 2021.  Next we will take a look at some of the preliminary results for this new pathogen data product.  Interesting extensions can be made to connect these data with the Ticks sampled using drag cloths data product (DP1.10093.001) and Tick pathogen status data product (DP1.10092.001)
 
 ```{r pathogen data compilation, message = FALSE, warning = FALSE, results="hide"}
 #First download the rodent pathogen data
 rptdat <- loadByProduct(dpID="DP1.10064.002", 
-                         site=c("SCBI", "SRER", "UNDE"),
+                         site=c("SCBI", "KONZ", "UNDE"),
                          package="basic", 
                          check.size = FALSE,
                         startdate = "2021-01",
