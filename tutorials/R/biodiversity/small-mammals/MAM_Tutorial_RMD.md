@@ -1,5 +1,5 @@
 ---
-syncID: TBD
+syncID: c1faf40f008d403eb0b6b35a10b28ad7
 title: "mammal-data-intro"
 description: "This tutorial will provide an introduction to discovering, accessing and preparing NEON small mammal collection data using R"
 dateCreated: 2022-12-08
@@ -10,9 +10,9 @@ packagesLibraries: neonUtilities, dplyr
 topics: data-analysis, data-visualization
 languagesTool: R
 dataProduct: DP1.10072.001
-code1: TBD
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/MAM_Tutorial_RMD.R
 tutorialSeries: NA
-urlTitle: TBD
+urlTitle: mammal-data-intro
 ---
 
 <div id="ds-objectives" markdown="1">
