@@ -4,7 +4,7 @@ title: "Introduction to Small Mammal Data"
 description: "This tutorial will provide an introduction to discovering, accessing and preparing NEON small mammal collection data using R"
 dateCreated: 2022-12-08
 authors: Sara Paull
-contributors: Sara Paull
+contributors: Sara Paull, Kate Thibault, Claire Lunch
 estimatedTime: 1.5 hrs
 packagesLibraries: neonUtilities, dplyr
 topics: data-analysis, data-visualization
