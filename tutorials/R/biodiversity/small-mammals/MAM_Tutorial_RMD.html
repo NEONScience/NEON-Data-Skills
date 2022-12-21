@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>mammal-data-intro</title>
+<title>Introduction to Small Mammal Data</title>
 
 
 
@@ -87,29 +87,27 @@ hr { border: 1px #ddd dashed; }
 <ul>
 <li>Download NEON small mammal data.</li>
 <li>Generate simple abundance metrics.</li>
-<li>Calculate and visualize diversity metrics</li>
+<li>Visualize diversity across sites</li>
+<li>Visualize tick-borne pathogen prevalence across sites and taxa.</li>
 </ul>
-<div id="ds-objectives" markdown="1">
 <h2>Things You’ll Need To Complete This Tutorial</h2>
 <h3>R Programming Language</h3>
 <p>You will need a current version of R to complete this tutorial. We also recommend
 the RStudio IDE to work with R.</p>
+<h3>R Packages To Install</h3>
+<p>Start by installing any packages that are used during the course of the tutorial (if necessary) and setting options. Installation can be run once, then periodically to get package updates.</p>
+<ul>
+<li><strong>dplyr:</strong> <code>install.packages(&quot;dplyr&quot;)</code></li>
+<li><strong>neonUtilities:</strong> <code>install.packages(&quot;neonUtilities&quot;)</code></li>
+<li><strong>neonOS:</strong> <code>install.packages(&quot;neonOS&quot;)</code></li>
+<li><strong>ggplot2:</strong> <code>install.packages(&quot;ggplot2&quot;)</code></li>
+</ul>
+<p><a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
 </div>
 <h2>1. Setup</h2>
-<h3>Load Packages</h3>
-<p>Start by installing and loading packages (if necessary) and setting
-options. Installation can be run once, then periodically to get package updates.</p>
-<pre><code>* **dplyr:** `install.packages(&quot;dplyr&quot;)`
-
-* **neonUtilities:** `install.packages(&quot;neonUtilities&quot;)`
-
-* **neonOS:** `install.packages(&quot;neonOS&quot;)`
-
-* **ggplot2:** `install.packages(&quot;ggplot2&quot;)`
-</code></pre>
-<p><a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
-<p>Now load packages. This needs to be done every time you run code.
-We’ll also set a working directory for data downloads.</p>
+<p>In this first section we will get our R session set up so that we are prepared to work with and analyze the data.  This involves loading the necessary R packages, downloading the data, setting a working directory if manual data upload is needed, and a review of the NEON data citation policies.</p>
+<h3>Load R Packages:</h3>
+<p>Once the packages have been installed they need to be loaded to the session. This needs to be done every time you run code.</p>
 <pre><code>library(dplyr)
 
 library(neonUtilities)
@@ -118,19 +116,19 @@ library(neonOS)
 
 library(ggplot2)
 </code></pre>
-<h3>Download NEON Small Nammal Data</h3>
+<h3>Download NEON Small Mammal Data</h3>
 <p>Download the small mammal box trapping data using the <code>loadByProduct()</code> function in
 the <code>neonUtilities</code> package. Inputs needed to the function are:</p>
 <ul>
-<li><code>dpID</code>: data product ID; woody vegetation structure = DP1.10072.001</li>
-<li><code>site</code>: (vector of) 4-letter site codes; SCBI, SRER, UNDE</li>
+<li><code>dpID</code>: data product ID; small mammal box trapping = DP1.10072.001</li>
+<li><code>site</code>: (vector of) 4-letter site codes; SCBI, UNDE, KONZ</li>
 <li><code>package</code>: basic or expanded; we’ll download basic here</li>
 <li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>TRUE</code> when downloading a dataset for the first time.</li>
 </ul>
 <p>Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
 for the <code>neonUtilities</code> package for more details if desired.</p>
 <pre><code>mamdat &lt;- loadByProduct(dpID=&quot;DP1.10072.001&quot;, 
-                         site=c(&quot;SCBI&quot;, &quot;SRER&quot;, &quot;UNDE&quot;),
+                         site=c(&quot;SCBI&quot;, &quot;KONZ&quot;, &quot;UNDE&quot;),
                          package=&quot;basic&quot;, 
                          check.size = FALSE,
                         startdate = &quot;2021-01&quot;,
@@ -142,16 +140,42 @@ for the <code>neonUtilities</code> package for more details if desired.</p>
 of setting the working directory in R can be found here.</a></p>
 <pre><code>#Set working directory
 
-#wd&lt;-&quot;~/data&quot;
+# rm(list=ls())
 
-#setwd(wd)
+# wd&lt;-&quot;/Users/paull/Desktop/data/&quot;
+
+# setwd(wd)
+
+# mam_pertrapnight&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_pertrapnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+
+# 
+
+# mam_perplotnight&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_perplotnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+
+# 
+
+# rpt2_pathogentesting&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/rpt2_pathogentesting.csv'), varFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
+
+# 
+
+# mam.list&lt;-read.csv(paste0(wd,'taxonTableMAM.csv'))
+
+# 
+
+# variables_10072&lt;-read.csv(paste0(wd, 'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+
+# 
+
+# variables_10064&lt;-read.csv(paste0(wd, 'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
 </code></pre>
 <h3>NEON Data Citation:</h3>
+<p>The use of NEON data should be cited according to our
+<a href="https://www.neonscience.org/data-samples/data-policies-citation" target="_blank"> Data Policies &amp; Citation Guidelines</a>.</p>
 <p>The data used in this tutorial were collected at the
 <a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network’s</a>
 <a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.</p>
 <ul>
-<li>NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). <a href="https://data.neonscience.org">https://data.neonscience.org</a> (accessed on 2022-12-18)</li>
+<li>NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). <a href="https://data.neonscience.org">https://data.neonscience.org</a> (accessed on 2022-12-21)</li>
 </ul>
 <h2>2. Compiling the NEON Small Mammal Data</h2>
 <p>The data are downloaded into a list of separate tables. Before working with the data the tables are added to the R environment</p>
@@ -163,45 +187,22 @@ names(mamdat)
 ## [4] &quot;mam_pertrapnight&quot;       &quot;readme_10072&quot;           &quot;validation_10072&quot;      
 ## [7] &quot;variables_10072&quot;
 
-# The categoricalCodes file provides controlled 
-
-# lists used in the data
-
-
-
-# The issueLog and readme have the same information that you
-
-# will find on the data product landing page of the data portal
-
-
-
-# The mam_perplotnight table includes the date and time for all trap setting efforts and will
-
-# include an eventID value to indicate a unique bout of sampling in the 2023 release
-
-
-
-#The mam_pertrapnight table includes a record for each trap set along with information about any captures and samples.
-
-
-
-# The validation file provides the rules that constrain data upon ingest into the NEON database:
-
-
-
-# The variables file describes each field in the returned data tables
-
-
-
 #Extract the items from the list and add as dataframes in the R environment:
 
 list2env(mamdat, envir=.GlobalEnv)
 
 ## &lt;environment: R_GlobalEnv&gt;
 </code></pre>
+<p>The categoricalCodes file provides controlled lists used in the data</p>
+<p>The issueLog and readme have the same information that you will find on the data product landing page of the data portal</p>
+<p>The mam_perplotnight table includes the date and time for all trap setting efforts and will include an eventID value to indicate a unique bout of sampling in the 2023 release</p>
+<p>The mam_pertrapnight table includes a record for each trap set along with information about any captures and samples.</p>
+<p>The validation file provides the rules that constrain data upon ingest into the NEON database:</p>
+<p>The variables file describes each field in the returned data tables</p>
 <h3>Checking for Duplicates:</h3>
-<p>It is useful to check the two data tables for duplicate entries.  In the mam_perplotnight table this would be records with the same plot and date.  In the mam_pertrapnight table this would be records with the same nightuid, trap coordinate, and tagID.  It is worth noting that standard function cannot account for multiple captures of untagged individuals in a single trap (trapStatus = 4) and thus those should be filtered out before running the removeDups function.</p>
-<pre><code>#1. check perplotnight table by nightuid using standard removeDups function
+<p>NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.</p>
+<p>It is useful to check the two data tables for duplicate entries.  The primaryKey to indicate which fields define a unique record for each NEON data table can be found in the variables file.  In the mam_perplotnight table this would be records with the same nightuid.  In the mam_pertrapnight table this would be records with the same plotID, trap coordinate, collectDate and tagID. The neonOS function uses this information to check for duplicates in the data.</p>
+<pre><code>#1.Check the perplotnight table by nightuid using standard removeDups function
 
 mam_plotNight_nodups &lt;- neonOS::removeDups(data=mam_perplotnight,
                              variables=variables_10072,
@@ -209,11 +210,24 @@ mam_plotNight_nodups &lt;- neonOS::removeDups(data=mam_perplotnight,
 
 ## No duplicated key values found!
 
-#2. check pertrapnight table by nightuid and trapcoordinate using standard removeDups function 
+#2. It is worth noting that standard function cannot account for multiple 
 
-mam_trapNight_multipleCaps &lt;- mam_pertrapnight %&gt;% filter(trapStatus == &quot;4 - more than 1 capture in one trap&quot; &amp; is.na(tagID) &amp; is.na(individualCode)) #This data subset contains no multiple captures so no further filtering is necessary
+# captures of untagged individuals in a single trap (trapStatus = 4) and thus 
+
+# those should be filtered out before running the removeDups function on the 
+
+# mam_pertrapnight data.
+
+mam_trapNight_multipleCaps &lt;- mam_pertrapnight %&gt;% 
+  filter(trapStatus == &quot;4 - more than 1 capture in one trap&quot; &amp; is.na(tagID) &amp; is.na(individualCode)) 
+
+#This data subset contains no multiple captures so no further filtering is 
+
+# necessary
 
 
+
+#Check the pertrapnight table using standard removeDups function 
 
 mam_trapNight_nodups &lt;- neonOS::removeDups(data=mam_pertrapnight,
                              variables=variables_10072,
@@ -222,17 +236,18 @@ mam_trapNight_nodups &lt;- neonOS::removeDups(data=mam_pertrapnight,
 ## No duplicated key values found!
 </code></pre>
 <h3>Joining Tables:</h3>
-<p>The mam_perplotnight data table contains information about the trapping effort as well as an eventID that can be used to identify the bout of sampling.  These two tables can be joined so that the trapping data will include the associated eventID to group trapping sessions by bout.</p>
+<p>Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information.  For instance, the mam_perplotnight data table contains information about the trapping effort as well as an eventID that indicates a unique bout of sampling. By contrast, the information about captures and samples from a collection bout is found in the mam_pertrapnight data table.  These two tables can be joined so that the trapping data will include the associated eventID to group trapping sessions by bout.  Details about which tables can be joined together and what variables should be used to link between the two tables can be found in the “Table joining” section of the Quick Start Guide on each data product landing page.</p>
 <pre><code>mamjn&lt;-neonOS::joinTableNEON(mam_plotNight_nodups, mam_trapNight_nodups, name1 = &quot;mam_perplotnight&quot;, name2 = &quot;mam_pertrapnight&quot;)
 
 
 
-#It is useful to verify that there are the expected number of records (the total in the pertrapnight table) and that the key variables are not blank/NA.
+#It is helpful to verify that there are the expected number of records (the 
+
+# total in the pertrapnight table) and that the key variables are not blank/NA.
 
 which(is.na(mamjn$eventID))
 </code></pre>
 <h3>Additional Quality Verification:</h3>
-<p>NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.</p>
 <p>For small mammal data any records that have a tagID should also have a trapStatus that includes the word ‘capture’.  Before filtering the data to just the captured individuals from the target taxon it is helpful to ensure that the trapStatus is set correctly.</p>
 <pre><code>trapStatusErrorCheck &lt;- mam_trapNight_nodups %&gt;% 
   filter(!is.na(tagID)) %&gt;% 
@@ -240,41 +255,56 @@ which(is.na(mamjn$eventID))
 
 nrow(trapStatusErrorCheck)
 
-#There are no records that have a tagID without a captured trapStatus so we can proceed using the trapStatus field to filter the data to only those traps that captured animals.
+#There are no records that have a tagID without a captured trapStatus
+
+
+
+tagIDErrorCheck &lt;- mam_trapNight_nodups %&gt;% 
+  filter(is.na(tagID)) %&gt;% 
+  filter(grepl(&quot;capture&quot;,trapStatus))
+
+nrow(trapStatusErrorCheck)
+
+#There are no records that lack a tagID but are marked with a captured trapStatus 
+
+
+
+#We can proceed using the trapStatus field to filter the data to only those 
+
+# traps that captured animals.
 </code></pre>
 <h2>3. Calculating Minimum Number Known Alive:</h2>
 <p>The minimum number known alive (MNKA) is an index of total small mammal abundance - e.g., Norman A. Slade, Susan M. Blair, An Empirical Test of Using Counts of Individuals Captured as Indices of Population Size, Journal of Mammalogy, Volume 81, Issue 4, November 2000, Pages 1035–1045, <a href="https://doi.org/10.1644/1545-1542(2000)081">https://doi.org/10.1644/1545-1542(2000)081</a>&lt;1035:AETOUC&gt;2.0.CO;2. This approach assumes that a marked individual is present at all sampling points between its first and last capture dates, even if it wasn’t actually captured in those interim trapping sessions.</p>
-<p>Start by generating a data table that fills in records of captures of target taxa that are not in the data but are presumed alive on a given trap-night because they were captured before and after that time-point.</p>
-<pre><code>#1. Filter the captures down to the target taxa.  The raw table includes numerous records for opportunistic taxa that are not specifically targeted by our sampling methods.  The small mammal taxonomy table lists each taxonID as being target or not and can be used to filter to only target species.
+<p>First we will filter the captures down to the target taxa.  The raw table includes numerous records for opportunistic taxa that are not specifically targeted by our sampling methods. The abundance estimates for these non-target taxa (e.g., diurnal species) may be unreliable since these taxa are not explicitly targeted by our method of overnight sampling.  The small mammal taxonomy table lists each taxonID as being target or not and can be used to filter to only target species.</p>
+<pre><code>#Read in master SMALL_MAMMAL taxon table. Use verbose = T to get taxonProtocolCategory
+
+mam.list &lt;- neonOS::getTaxonList(taxonType=&quot;SMALL_MAMMAL&quot;, 
+                                 recordReturnLimit=1000, verbose=T)
 
 
 
-#Read in master SMALL_MAMMAL taxon table. Use verbose = T to get taxonProtocolCategory
-
-mam.list &lt;- neonOS::getTaxonList(taxonType=&quot;SMALL_MAMMAL&quot;, recordReturnLimit=1000, verbose=T)
-
-
-
-targetTaxa &lt;- mam.list %&gt;% filter(taxonProtocolCategory == &quot;target&quot;) %&gt;% select(taxonID, scientificName)
+targetTaxa &lt;- mam.list %&gt;% 
+  filter(taxonProtocolCategory == &quot;target&quot;) %&gt;% 
+  select(taxonID, scientificName)
 
 
 
-#Filter trap dataset to just the capture records of target taxa and a few core fields needed for the analyses.
+#Filter trap dataset to just the capture records of target taxa and a few core 
 
-coreFields &lt;- c(&quot;nightuid&quot;, &quot;plotID&quot;, &quot;collectDate.x&quot;, &quot;tagID&quot;, &quot;taxonID&quot;, &quot;eventID&quot;)
+# fields needed for the analyses.
+
+coreFields &lt;- c(&quot;nightuid&quot;, &quot;plotID&quot;, &quot;collectDate.x&quot;, &quot;tagID&quot;, 
+                &quot;taxonID&quot;, &quot;eventID&quot;)
+
+
 
 captures &lt;- mamjn %&gt;% 
   filter(grepl(&quot;capture&quot;,trapStatus) &amp; taxonID %in% targetTaxa$taxonID) %&gt;% 
   select(coreFields) %&gt;%
   rename('collectDate' = 'collectDate.x')
-
-
-
-#Next add implicit records of animals assumed present at a given sampling date because they were captured before and after that sample point.
-
-
-
-#Generate a column of all of the unique tagIDs included in the dataset
+</code></pre>
+<p>Start by generating a data table that fills in records of captures of target taxa that are not in the data but are presumed alive on a given trap-night because they were captured before and after that time-point.  To do this we add implicit records of animals assumed present at a given sampling date because they were captured before and after that sample point.</p>
+<pre><code>#Generate a column of all of the unique tagIDs included in the dataset
 
 uTags &lt;- captures %&gt;% select(tagID) %&gt;% filter(!is.na(tagID)) %&gt;% distinct()
 
@@ -284,7 +314,9 @@ capsNew &lt;- slice(captures,0)
 
 
 
-#for each tagged individual, add a record for each night of trapping done on the plots on which it was captured between the first and last dates of capture
+#For each tagged individual, add a record for each night of trapping done on 
+
+# the plots on which it was captured between the first and last dates of capture
 
 for (i in uTags$tagID){
   indiv &lt;- captures %&gt;% filter(tagID == i)
@@ -292,12 +324,14 @@ for (i in uTags$tagID){
   lastCap &lt;- as.Date(max(indiv$collectDate), &quot;YYYY-MM-DD&quot;, tz = &quot;UTC&quot;)
   possibleDates &lt;- seq(as.Date(firstCap), as.Date(lastCap), by=&quot;days&quot;)
   potentialNights &lt;- mam_plotNight_nodups %&gt;% 
-    filter(as.character(collectDate) %in% as.character(possibleDates) &amp; 
-                                                       plotID %in% indiv$plotID) %&gt;% 
+    filter(as.character(collectDate) %in% 
+             as.character(possibleDates) &amp; plotID %in% indiv$plotID) %&gt;% 
     select(nightuid,plotID, collectDate, eventID) %&gt;% 
     mutate(tagID=i)
   allnights &lt;- left_join(potentialNights, indiv)
-  allnights$taxonID&lt;-unique(indiv$taxonID)[1] #Note that taxonID sometimes changes between recaptures.  This uses only the first identification but there are a number of other ways to handle this situation.
+  allnights$taxonID&lt;-unique(indiv$taxonID)[1] #Note that taxonID sometimes 
+  # changes between recaptures.  This uses only the first identification but 
+  #there are a number of other ways to handle this situation.
   capsNew &lt;- bind_rows(capsNew, allnights)
 }
 
@@ -313,7 +347,8 @@ caps_notags
 <pre><code>mnka_per_site &lt;- function(capture_data) {
   mnka_by_plot_bout &lt;- capture_data %&gt;% group_by(eventID,plotID) %&gt;% 
     summarize(n=n_distinct(tagID))
-    mean_mnka_by_site_bout &lt;- mnka_by_plot_bout %&gt;% mutate(siteID = substr(plotID, 1, 4)) %&gt;%
+    mean_mnka_by_site_bout &lt;- mnka_by_plot_bout %&gt;% 
+      mutate(siteID = substr(plotID, 1, 4)) %&gt;%
       group_by(siteID, eventID) %&gt;% 
       summarise(meanMNKA = mean(n))
       return(mean_mnka_by_site_bout)
@@ -329,35 +364,43 @@ head(MNKA)
 ## # Groups:   siteID [1]
 ##   siteID eventID      meanMNKA
 ##   &lt;chr&gt;  &lt;chr&gt;           &lt;dbl&gt;
-## 1 SCBI   SCBI.2021.14     3.33
-## 2 SCBI   SCBI.2021.18     6   
-## 3 SCBI   SCBI.2021.22     8.67
-## 4 SCBI   SCBI.2021.31     8.5 
-## 5 SCBI   SCBI.2021.35     7   
-## 6 SCBI   SCBI.2021.39     6.6
+## 1 KONZ   KONZ.2021.27     10.2
+## 2 KONZ   KONZ.2021.31     17  
+## 3 KONZ   KONZ.2021.35     16.7
+## 4 KONZ   KONZ.2021.39     12  
+## 5 KONZ   KONZ.2022.17      2  
+## 6 KONZ   KONZ.2022.21     12
 </code></pre>
 <p>Make a graph to visualize the minimum number known alive across sites and years.</p>
-<pre><code>#To estimate the minimum number known alive for each species at each bout and site it is possible to loop through and run the function for each taxonID
+<pre><code>#To estimate the minimum number known alive for each species at each bout and 
+
+# site it is possible to loop through and run the function for each taxonID
 
 MNKAbysp&lt;-data.frame()
 
 splist&lt;-unique(capsNew$taxonID)
 
 for(i in 1:length(splist)){
-  taxsub&lt;-capsNew %&gt;% filter (taxonID %in% splist[i]) %&gt;% mutate(taxonID = splist[i])
-  MNKAtax&lt;-mnka_per_site(taxsub) %&gt;% mutate(taxonID=splist[i], Year = substr(eventID,6,9))
+  taxsub&lt;-capsNew %&gt;% 
+    filter (taxonID %in% splist[i]) %&gt;% mutate(taxonID = splist[i])
+  MNKAtax&lt;-mnka_per_site(taxsub) %&gt;% 
+    mutate(taxonID=splist[i], Year = substr(eventID,6,9))
   MNKAbysp&lt;-rbind(MNKAbysp,MNKAtax)
 }
 
 
 
-#Next we will visualize the abundance flucutations for Peromyscus leucopus through time:
+#Next we will visualize the abundance flucutations for Peromyscus leucopus 
+
+# through time:
 
 MNKA_PE&lt;-MNKAbysp %&gt;% filter(taxonID%in%&quot;PELE&quot;)
 
 
 
-#Create a dataframe with the first date of collection for each bout to use as the date variable when plotting
+#Create a dataframe with the first date of collection for each bout to use as 
+
+# the date variable when plotting
 
 datedf&lt;-mam_plotNight_nodups %&gt;% 
   select(eventID, collectDate) %&gt;% 
@@ -371,7 +414,8 @@ MNKA_PE&lt;-left_join(MNKA_PE, datedf)
 
 
 
-PELEabunplot&lt;-ggplot(data=MNKA_PE, aes(x=MMDD, y=meanMNKA, color=Year, group=Year)) +
+PELEabunplot&lt;-ggplot(data=MNKA_PE, 
+                     aes(x=MMDD, y=meanMNKA, color=Year, group=Year)) +
   geom_point() +
   geom_line()+
   facet_wrap(~siteID) +
@@ -401,11 +445,12 @@ TaxPlot&lt;-ggplot(TaxDat, aes(x=taxonID, y=max, fill=taxonID)) +
 TaxPlot
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/plotDiversity-1.png" alt=" " /></p>
-<h2>5. Visualize Pathogen Prevalence Data at these Sites:</h2>
+<h2>4. Visualize Pathogen Prevalence Data at these Sites:</h2>
+<p>NEON is testing small mammal ear and blood tissue for a variety of tick-borne pathogens.  We began with a pilot at a subset of sites in 2020 and expanded to all sites in 2021.  Next we will take a look at some of the preliminary results for this new pathogen data product.  Interesting extensions can be made to connect these data with the Ticks sampled using drag cloths data product (DP1.10093.001) and Tick pathogen status data product (DP1.10092.001)</p>
 <pre><code>#First download the rodent pathogen data
 
 rptdat &lt;- loadByProduct(dpID=&quot;DP1.10064.002&quot;, 
-                         site=c(&quot;SCBI&quot;, &quot;SRER&quot;, &quot;UNDE&quot;),
+                         site=c(&quot;SCBI&quot;, &quot;KONZ&quot;, &quot;UNDE&quot;),
                          package=&quot;basic&quot;, 
                          check.size = FALSE,
                         startdate = &quot;2021-01&quot;,
@@ -422,30 +467,29 @@ list2env(rptdat, envir=.GlobalEnv)
 rpt_pathres_nodups &lt;- neonOS::removeDups(data=rpt2_pathogentesting,
                              variables=variables_10064,
                              table='rpt2_pathogentesting')
-
-
-
-#Next join the pathogen data with the trapping data to get the taxonID of the individual from which the pathogen samples were taken.
-
-#Note that joinTableNEON is not an option for the rodent tick-borne pathogen data because of the complexities involved in matching the sample IDs.  This is noted in the Table joining section of the quick start guide for tick-borne rodent pathogens on the data product landing page.
-
-#If you attempt to use that function you will get the error: 
-
-#Error in neonOS::joinTableNEON(mam_pertrapnight, rpt2_pathogentesting) : 
-
-#  Tables mam_pertrapnight and rpt2_pathogentesting can't be joined automatically. Consult quick start guide for details about data relationships.
 </code></pre>
-<p>The information about the species from which the samples were taken is found in the small mammal trapping data.  Any analyses that will look at species will need to join the trapping data table with the pathogen data table.</p>
-<pre><code>#First subset the two dataframes that will be merged to select out a smaller subset of columns to make working with the data easier:
+<p>The information about the species from which the samples were taken is found in the small mammal trapping data.  Any analyses that will look at species will need to join the trapping data table with the pathogen data table.  In Section 2 above we used the joinTableNEON function to join mam_perplotnight data with mam_pertrapnight data.  Unfortunately the joinTableNEON function is not an option for the rodent tick-borne pathogen data because of the complexities involved in matching the sample IDs.  This is noted in the “Table joining” section of the quick start guide for tick-borne rodent pathogens on the data product landing page.</p>
+<p>If you attempt to use that function you will get the error:
+Error in neonOS::joinTableNEON(mam_pertrapnight, rpt2_pathogentesting) :
+Tables mam_pertrapnight and rpt2_pathogentesting can’t be joined automatically. Consult quick start guide for details about data relationships.  Instead we can follow the steps below to join the rodent tick-borne pathogen data with the small mammal trapping data.</p>
+<pre><code>#First subset the two dataframes that will be merged to select out a smaller 
 
-rptdat.merge&lt;-rpt_pathres_nodups %&gt;% select(plotID, collectDate, sampleID, testPathogenName, testResult) %&gt;%
+# subset of columns to make working with the data easier:
+
+rptdat.merge&lt;-rpt_pathres_nodups %&gt;% 
+  select(plotID, collectDate, sampleID, testPathogenName, testResult) %&gt;%
   mutate(Site = substr(plotID,1,4))
 
-mamdat.merge&lt;-mam_trapNight_nodups %&gt;% select(taxonID, bloodSampleID, earSampleID)
+mamdat.merge&lt;-mam_trapNight_nodups %&gt;% 
+  select(taxonID, bloodSampleID, earSampleID)
 
 
 
-#Split the rodent pathogen data by sample types (ear or blood) before joining with the trapping data since there are 2 different columns for sampleID in the mammal trapping data - one for blood samples and one for ear samples.
+#Split the rodent pathogen data by sample types (ear or blood) before joining 
+
+# with the trapping data since there are 2 different columns for sampleID in 
+
+# the mammal trapping data - one for blood samples and one for ear samples.
 
 rptear&lt;-rptdat.merge %&gt;% filter(grepl('.E', sampleID, fixed=T))
 
@@ -459,10 +503,16 @@ rptear.j&lt;-left_join(rptear, mamdat.merge, by=c(&quot;sampleID&quot;=&quot;ear
 
 rptblood.j&lt;-left_join(rptblood, mamdat.merge, by=c(&quot;sampleID&quot;=&quot;bloodSampleID&quot;))
 
-rptall&lt;-rbind(rptear.j[,-8], rptblood.j[,-8]) #combine the dataframes after getting rid of the last column whose names don't match and whose data is replaced by the sampleID column
+rptall&lt;-rbind(rptear.j[,-8], rptblood.j[,-8]) #combine the dataframes after 
+
+# getting rid of the last column whose names don't match and whose data is 
+
+# replaced by the sampleID column
 </code></pre>
 <p>Next we will summarize the prevalence of the different pathogens across sites and species and compare them visually.</p>
-<pre><code>#Calculate the prevalence of the different pathogens in the different taxa at each site.
+<pre><code>#Calculate the prevalence of the different pathogens in the different taxa at 
+
+#each site.
 
 rptprev&lt;-rptall %&gt;%
   group_by(Site, testPathogenName, taxonID) %&gt;% 
@@ -473,7 +523,8 @@ rptprev&lt;-rptall %&gt;%
 
 #Barplot of prevalence by site and pathogen name
 
-PathPlot&lt;-ggplot(rptprev, aes(x=testPathogenName, y=prevalence, fill=testPathogenName)) + 
+PathPlot&lt;-ggplot(rptprev, 
+                 aes(x=testPathogenName, y=prevalence, fill=testPathogenName)) + 
   geom_bar(stat = &quot;identity&quot;)+
   facet_wrap(~Site) +
   theme_bw()+
@@ -482,11 +533,14 @@ PathPlot&lt;-ggplot(rptprev, aes(x=testPathogenName, y=prevalence, fill=testPath
 PathPlot
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/prevalencePlots-1.png" alt=" " /></p>
-<pre><code>#SCBI seems to have a high prevalence of pathogens - let's look at the prevalence across the species examined for testing:
+<pre><code>#SCBI seems to have a high prevalence of pathogens - let's look at the 
+
+# prevalence across the species examined for testing:
 
 SCBIpathdat&lt;-rptprev %&gt;% filter(Site %in% 'SCBI')
 
-SCBIPlot&lt;-ggplot(SCBIpathdat, aes(x=testPathogenName, y=prevalence, fill=testPathogenName)) + 
+SCBIPlot&lt;-ggplot(SCBIpathdat, 
+                 aes(x=testPathogenName, y=prevalence, fill=testPathogenName)) + 
   geom_bar(stat = &quot;identity&quot;)+
   facet_wrap(~taxonID) +
   theme_bw()+
@@ -495,6 +549,7 @@ SCBIPlot&lt;-ggplot(SCBIpathdat, aes(x=testPathogenName, y=prevalence, fill=test
 SCBIPlot
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/small-mammals/rfigs/prevalencePlots-2.png" alt=" " /></p>
+<p>Pathogen distribution and prevalence are governed by a complex array of factors involving hosts, vectors and abiotic variables.  It appears from our visualization of these 3 NEON sites that there is a larger diversity of tick-borne pathogens present at SCBI than the other sites co-inciding with a lower diversity of the small mammmal population targeted by our sampling methods.  Further analyses could use additional NEON data products such as tick diversity and abundance and/or abiotic conditions related to temperature, humidity and/or soil properties to determine their associations with rodent pathogen diversity and prevalence.</p>
 
 
 <script src="https://cdn.jsdelivr.net/combine/npm/@xiee/utils/js/center-img.min.js" async></script>
