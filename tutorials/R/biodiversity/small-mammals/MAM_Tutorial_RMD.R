@@ -15,21 +15,25 @@ mamdat <- loadByProduct(dpID="DP1.10072.001",
 
 
 ## ----set directory, results="hide"-----------------------------------------------------------------
+#This section of code should only be run if the section above using loadByProduct is not used.
+
 #Set working directory
-# rm(list=ls())
-# wd<-"/Users/paull/Desktop/data/"
-# setwd(wd)
-# mam_pertrapnight<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_pertrapnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
-# 
-# mam_perplotnight<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_perplotnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
-# 
-# rpt2_pathogentesting<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/rpt2_pathogentesting.csv'), varFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
-# 
-# mam.list<-read.csv(paste0(wd,'taxonTableMAM.csv'))
-# 
-# variables_10072<-read.csv(paste0(wd, 'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
-# 
-# variables_10064<-read.csv(paste0(wd, 'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
+
+#Change the filepath below to match the location of locally saved files:
+ wd<-"/Users/paull/Desktop/data/"
+ setwd(wd)
+ 
+ mam_pertrapnight<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_pertrapnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+ 
+ mam_perplotnight<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_perplotnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+ 
+ rpt2_pathogentesting<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/rpt2_pathogentesting.csv'), varFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
+ 
+ mam.list<-read.csv(paste0(wd,'taxonTableMAM.csv'))
+ 
+ variables_10072<-read.csv(paste0(wd, 'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+ 
+ variables_10064<-read.csv(paste0(wd, 'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
 
 
 ## ----download-overview, message=FALSE, warning=FALSE-----------------------------------------------
@@ -46,12 +50,12 @@ mam_plotNight_nodups <- neonOS::removeDups(data=mam_perplotnight,
                              variables=variables_10072,
                              table='mam_perplotnight')
 
-#2. It is worth noting that standard function cannot account for multiple 
-# captures of untagged individuals in a single trap (trapStatus = 4) and thus 
-# those should be filtered out before running the removeDups function on the 
-# mam_pertrapnight data.
+#2. Filter out multiple captures of untagged individuals in a single trap 
+#(trapStatus = 4) before running the removeDups function on the 
+#mam_pertrapnight data.
 mam_trapNight_multipleCaps <- mam_pertrapnight %>% 
-  filter(trapStatus == "4 - more than 1 capture in one trap" & is.na(tagID) & is.na(individualCode)) 
+  filter(trapStatus == "4 - more than 1 capture in one trap" & 
+           is.na(tagID) & is.na(individualCode)) 
 #This data subset contains no multiple captures so no further filtering is 
 # necessary
 
@@ -62,7 +66,9 @@ mam_trapNight_nodups <- neonOS::removeDups(data=mam_pertrapnight,
 
 
 ## ----data join, results="hide"---------------------------------------------------------------------
-mamjn<-neonOS::joinTableNEON(mam_plotNight_nodups, mam_trapNight_nodups, name1 = "mam_perplotnight", name2 = "mam_pertrapnight")
+mamjn<-neonOS::joinTableNEON(mam_plotNight_nodups, 
+                             mam_trapNight_nodups, name1 = "mam_perplotnight", 
+                             name2 = "mam_pertrapnight")
 
 #It is helpful to verify that there are the expected number of records (the 
 # total in the pertrapnight table) and that the key variables are not blank/NA.
@@ -79,7 +85,7 @@ nrow(trapStatusErrorCheck)
 tagIDErrorCheck <- mam_trapNight_nodups %>% 
   filter(is.na(tagID)) %>% 
   filter(grepl("capture",trapStatus))
-nrow(trapStatusErrorCheck)
+nrow(tagIDErrorCheck)
 #There are no records that lack a tagID but are marked with a captured trapStatus 
 
 #We can proceed using the trapStatus field to filter the data to only those 

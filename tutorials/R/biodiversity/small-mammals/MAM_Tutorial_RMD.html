@@ -134,39 +134,47 @@ for the <code>neonUtilities</code> package for more details if desired.</p>
                         startdate = &quot;2021-01&quot;,
                         enddate = &quot;2022-12&quot;)
 </code></pre>
-<h3>Set Working Directory if Needed</h3>
-<p>If the data are not loaded directly into the R session with loadByProduct, this lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets.</p>
+<h3>Set Working Directory if Using Locally Saved Data</h3>
+<p>If the data are not loaded directly into the R session with loadByProduct (e.g., if wifi is not available), this lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets.</p>
 <p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a></p>
-<pre><code>#Set working directory
+<pre><code>#This section of code should only be run if the section above using loadByProduct is not used.
 
-# rm(list=ls())
 
-# wd&lt;-&quot;/Users/paull/Desktop/data/&quot;
 
-# setwd(wd)
+#Set working directory
 
-# mam_pertrapnight&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_pertrapnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
 
-# 
 
-# mam_perplotnight&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_perplotnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+#Change the filepath below to match the location of locally saved files:
 
-# 
+ wd&lt;-&quot;/Users/paull/Desktop/data/&quot;
 
-# rpt2_pathogentesting&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/rpt2_pathogentesting.csv'), varFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
+ setwd(wd)
 
-# 
+ 
 
-# mam.list&lt;-read.csv(paste0(wd,'taxonTableMAM.csv'))
+ mam_pertrapnight&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_pertrapnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
 
-# 
+ 
 
-# variables_10072&lt;-read.csv(paste0(wd, 'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+ mam_perplotnight&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_perplotnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
 
-# 
+ 
 
-# variables_10064&lt;-read.csv(paste0(wd, 'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
+ rpt2_pathogentesting&lt;-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/rpt2_pathogentesting.csv'), varFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
+
+ 
+
+ mam.list&lt;-read.csv(paste0(wd,'taxonTableMAM.csv'))
+
+ 
+
+ variables_10072&lt;-read.csv(paste0(wd, 'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
+
+ 
+
+ variables_10064&lt;-read.csv(paste0(wd, 'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
 </code></pre>
 <h3>NEON Data Citation:</h3>
 <p>The use of NEON data should be cited according to our
@@ -201,7 +209,7 @@ list2env(mamdat, envir=.GlobalEnv)
 <p>The variables file describes each field in the returned data tables</p>
 <h3>Checking for Duplicates:</h3>
 <p>NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.</p>
-<p>It is useful to check the two data tables for duplicate entries.  The primaryKey to indicate which fields define a unique record for each NEON data table can be found in the variables file.  In the mam_perplotnight table this would be records with the same nightuid.  In the mam_pertrapnight table this would be records with the same plotID, trap coordinate, collectDate and tagID. The neonOS function uses this information to check for duplicates in the data.</p>
+<p>It is useful to check the two data tables for duplicate entries.  The primaryKey to indicate which fields define a unique record for each NEON data table can be found in the variables file.  In the mam_perplotnight table this would be records with the same nightuid.  In the mam_pertrapnight table this would be records with the same plotID, trap coordinate, collectDate and tagID. The neonOS function uses this information to check for duplicates in the data.  It is worth noting that standard function cannot account for multiple captures of untagged individuals in a single trap (trapStatus = 4) and thus those should be filtered out before running the removeDups function on the mam_pertrapnight data.</p>
 <pre><code>#1.Check the perplotnight table by nightuid using standard removeDups function
 
 mam_plotNight_nodups &lt;- neonOS::removeDups(data=mam_perplotnight,
@@ -210,16 +218,15 @@ mam_plotNight_nodups &lt;- neonOS::removeDups(data=mam_perplotnight,
 
 ## No duplicated key values found!
 
-#2. It is worth noting that standard function cannot account for multiple 
+#2. Filter out multiple captures of untagged individuals in a single trap 
 
-# captures of untagged individuals in a single trap (trapStatus = 4) and thus 
+#(trapStatus = 4) before running the removeDups function on the 
 
-# those should be filtered out before running the removeDups function on the 
-
-# mam_pertrapnight data.
+#mam_pertrapnight data.
 
 mam_trapNight_multipleCaps &lt;- mam_pertrapnight %&gt;% 
-  filter(trapStatus == &quot;4 - more than 1 capture in one trap&quot; &amp; is.na(tagID) &amp; is.na(individualCode)) 
+  filter(trapStatus == &quot;4 - more than 1 capture in one trap&quot; &amp; 
+           is.na(tagID) &amp; is.na(individualCode)) 
 
 #This data subset contains no multiple captures so no further filtering is 
 
@@ -237,7 +244,9 @@ mam_trapNight_nodups &lt;- neonOS::removeDups(data=mam_pertrapnight,
 </code></pre>
 <h3>Joining Tables:</h3>
 <p>Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information.  For instance, the mam_perplotnight data table contains information about the trapping effort as well as an eventID that indicates a unique bout of sampling. By contrast, the information about captures and samples from a collection bout is found in the mam_pertrapnight data table.  These two tables can be joined so that the trapping data will include the associated eventID to group trapping sessions by bout.  Details about which tables can be joined together and what variables should be used to link between the two tables can be found in the “Table joining” section of the Quick Start Guide on each data product landing page.</p>
-<pre><code>mamjn&lt;-neonOS::joinTableNEON(mam_plotNight_nodups, mam_trapNight_nodups, name1 = &quot;mam_perplotnight&quot;, name2 = &quot;mam_pertrapnight&quot;)
+<pre><code>mamjn&lt;-neonOS::joinTableNEON(mam_plotNight_nodups, 
+                             mam_trapNight_nodups, name1 = &quot;mam_perplotnight&quot;, 
+                             name2 = &quot;mam_pertrapnight&quot;)
 
 
 
@@ -263,7 +272,7 @@ tagIDErrorCheck &lt;- mam_trapNight_nodups %&gt;%
   filter(is.na(tagID)) %&gt;% 
   filter(grepl(&quot;capture&quot;,trapStatus))
 
-nrow(trapStatusErrorCheck)
+nrow(tagIDErrorCheck)
 
 #There are no records that lack a tagID but are marked with a captured trapStatus 
 
@@ -468,7 +477,7 @@ rpt_pathres_nodups &lt;- neonOS::removeDups(data=rpt2_pathogentesting,
                              variables=variables_10064,
                              table='rpt2_pathogentesting')
 </code></pre>
-<p>The information about the species from which the samples were taken is found in the small mammal trapping data.  Any analyses that will look at species will need to join the trapping data table with the pathogen data table.  In Section 2 above we used the joinTableNEON function to join mam_perplotnight data with mam_pertrapnight data.  Unfortunately the joinTableNEON function is not an option for the rodent tick-borne pathogen data because of the complexities involved in matching the sample IDs.  This is noted in the “Table joining” section of the quick start guide for tick-borne rodent pathogens on the data product landing page.</p>
+<p>The information about the species from which the samples were taken is found in the small mammal trapping data.  Any analyses that will look at species will need to join the trapping data table with the pathogen data table.  In Section 2 above we used the joinTableNEON function to join mam_perplotnight data with mam_pertrapnight data.  Unfortunately the joinTableNEON function is not an option for the rodent tick-borne pathogen data because of the complexities involved in matching the sample IDs.  This is noted in the “Table joining” section of the quick start guide for tick-borne rodent pathogens on the <a href="https://data.neonscience.org/data-products/DP1.10064.002" target="_blank">data product landing page</a>.</p>
 <p>If you attempt to use that function you will get the error:
 Error in neonOS::joinTableNEON(mam_pertrapnight, rpt2_pathogentesting) :
 Tables mam_pertrapnight and rpt2_pathogentesting can’t be joined automatically. Consult quick start guide for details about data relationships.  Instead we can follow the steps below to join the rodent tick-borne pathogen data with the small mammal trapping data.</p>
