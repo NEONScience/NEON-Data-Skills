@@ -125,7 +125,7 @@ The data used in this tutorial were collected at the
 <a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
 <a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.  
 
-* NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). https://data.neonscience.org (accessed on 2022-12-21)
+* NEON (National Ecological Observatory Network). Small mammal box trapping (DP1.10072.001). https://data.neonscience.org (accessed on 2022-12-30)
 
 ## 2. Compiling the NEON Small Mammal Data
 The data are downloaded into a list of separate tables. Before working with the data the tables are added to the R environment
