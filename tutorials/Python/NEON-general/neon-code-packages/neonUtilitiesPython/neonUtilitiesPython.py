@@ -42,19 +42,13 @@
 # 2. R installed. You don't need to have ever used it directly. We wrote this 
 # tutorial using R 4.1.1, but most other recent versions should also work.
 # 3. `rpy2` installed. Run the line below from the command line, it won't run within 
-# Jupyter. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
+# a Python script. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
 # `rpy2` often has install problems on Windows, see "Windows Users" section below if 
 # you are running Windows.
 # 4. You may need to install `pip` before installing `rpy2`, if you don't have it 
 # installed already.
 # 
-# From the command line, run:
-
-# In[1]:
-
-
-pip install rpy2
-
+# From the command line, run `pip install rpy2`
 
 # ### Windows users
 # 
@@ -84,9 +78,9 @@ pip install rpy2
 
 # ## Load packages
 
-# Now import `rpy2` into your session.
+# Now open up your Python interface of choice (Jupyter notebook, Spyder, etc) and import `rpy2` into your session.
 
-# In[2]:
+# In[1]:
 
 
 import rpy2
@@ -96,7 +90,7 @@ from rpy2.robjects.packages import importr
 
 # Load the base R functionality, using the `rpy2` function `importr()`.
 
-# In[3]:
+# In[2]:
 
 
 base = importr('base')
@@ -110,7 +104,7 @@ stats = importr('stats')
 # words, it's very similar to running code in R as `package::function(inputs)`. 
 # For example:
 
-# In[4]:
+# In[3]:
 
 
 stats.rnorm(6, 0, 1)
@@ -119,7 +113,7 @@ stats.rnorm(6, 0, 1)
 # Suppress R warnings. This step can be skipped, but will result in messages 
 # getting passed through from R that Python will interpret as warnings.
 
-# In[5]:
+# In[4]:
 
 
 from rpy2.rinterface_lib.callbacks import logger as rpy2_logger
@@ -148,7 +142,7 @@ rpy2_logger.setLevel(logging.ERROR)
 # or modify files on your local drive, but none of the data are read into the 
 # Python or R environments.
 
-# In[6]:
+# In[5]:
 
 
 utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
@@ -158,7 +152,7 @@ utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
 # you use the code; if you're familiar with R, `importr()` is roughly 
 # equivalent to the `library()` function in R.
 
-# In[7]:
+# In[6]:
 
 
 neonUtilities = importr('neonUtilities')
@@ -180,7 +174,7 @@ neonUtilities = importr('neonUtilities')
 # For additional, optional inputs to `stackByTable()`, see the <a href="http://neonscience.org/neonDataStackR" target="_blank">R tutorial</a> 
 # for neonUtilities.
 
-# In[8]:
+# In[7]:
 
 
 neonUtilities.stackByTable(filepath='/Users/Shared/NEON_temp-bio.zip');
@@ -216,13 +210,13 @@ neonUtilities.stackByTable(filepath='/Users/Shared/NEON_temp-bio.zip');
 # have special meaning in Python the way they do in R, so it interprets them 
 # as variables if they're unquoted.
 # 
-# `check_size='TRUE'` does not work correctly in the Python environment. It 
-# estimates the size of the download and asks you to confirm before proceeding, 
-# and this interactive display doesn't work correctly outside R. Set 
-# `check_size='FALSE'` to avoid this problem, but be thoughtful about the size 
-# of your query since it will proceed to download without checking.
+# `check_size='TRUE'` does not work correctly in the Python environment. In R, 
+# it estimates the size of the download and asks you to confirm before 
+# proceeding, and the interactive question and answer don't work correctly 
+# outside R. Set `check_size='FALSE'` to avoid this problem, but be thoughtful 
+# about the size of your query since it will proceed to download without checking.
 
-# In[9]:
+# In[8]:
 
 
 neonUtilities.zipsByProduct(dpID='DP1.10003.001', 
@@ -237,7 +231,7 @@ neonUtilities.zipsByProduct(dpID='DP1.10003.001',
 # 
 # Now take that file path and pass it to `stackByTable()`.
 
-# In[10]:
+# In[9]:
 
 
 neonUtilities.stackByTable(filepath='/Users/Shared/filesToStack10003');
@@ -251,14 +245,14 @@ neonUtilities.stackByTable(filepath='/Users/Shared/filesToStack10003');
 # 
 # First let's take a look at what's in the output folders.
 
-# In[11]:
+# In[10]:
 
 
 import os
 os.listdir('/Users/Shared/filesToStack10003/stackedFiles/')
 
 
-# In[12]:
+# In[11]:
 
 
 os.listdir('/Users/Shared/NEON_temp-bio/stackedFiles/')
@@ -276,7 +270,7 @@ os.listdir('/Users/Shared/NEON_temp-bio/stackedFiles/')
 # First, let's read in the two data tables in the bird data: 
 # `brd_countdata` and `brd_perpoint`.
 
-# In[13]:
+# In[12]:
 
 
 import pandas
@@ -287,13 +281,13 @@ brd_countdata = pandas.read_csv('/Users/Shared/filesToStack10003/stackedFiles/br
 # And take a look at the contents of each file. For descriptions and unit of each 
 # column, see the `variables_10003` file.
 
-# In[14]:
+# In[13]:
 
 
 brd_perpoint
 
 
-# In[15]:
+# In[14]:
 
 
 brd_countdata
@@ -302,7 +296,7 @@ brd_countdata
 # And now let's do the same with the 30-minute data table for biological 
 # temperature.
 
-# In[16]:
+# In[15]:
 
 
 IRBT30 = pandas.read_csv('/Users/Shared/NEON_temp-bio/stackedFiles/IRBT_30_minute.csv')
@@ -327,7 +321,7 @@ IRBT30
 # Here, we'll download Ecosystem structure (Canopy Height Model) data from 
 # Hopbrook (HOPB) in 2017.
 
-# In[17]:
+# In[16]:
 
 
 neonUtilities.byFileAOP(dpID='DP3.30015.001', site='HOPB',
@@ -339,14 +333,14 @@ neonUtilities.byFileAOP(dpID='DP3.30015.001', site='HOPB',
 # `rasterio` and `matplotlib` modules here, but as with tabular data, 
 # there are other options available.
 
-# In[18]:
+# In[17]:
 
 
 import rasterio
 CHMtile = rasterio.open('/Users/Shared/DP3.30015.001/neon-aop-products/2017/FullSite/D01/2017_HOPB_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D01_HOPB_DP3_718000_4709000_CHM.tif')
 
 
-# In[19]:
+# In[18]:
 
 
 import matplotlib.pyplot as plt
@@ -355,7 +349,7 @@ fig, ax = plt.subplots(figsize = (8,3))
 show(CHMtile)
 
 
-# In[20]:
+# In[19]:
 
 
 fig
