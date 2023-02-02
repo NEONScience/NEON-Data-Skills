@@ -34,21 +34,22 @@ After completing this tutorial, you will be able to:
 
 ### Install Python Packages
 
+* **os**
 * **numpy**
 * **gdal** 
-* **matplotlib** 
-* **matplotlib.pyplot** 
-* **os**
+* **matplotlib**
+* **scipy** 
 
 
 ### Download Data
 
 If you have already downloaded the data set for the Data Institute, you have the 
 data for this tutorial within the SJER directory. If you would like to just 
-download the data for this tutorial use the following link. 
+download the data for this tutorial use the following links. 
 
-<a href="https://neondata.sharefile.com/d-s58db39240bf49ac8" class="link--button link--arrow">
-Download the Biomass Calculation teaching data subset</a>
+**Download the Training Data:** <a href="./calc-biomass_py_files/SJER_Biomass_Training.csv" download="SJER_Biomass_Training.csv">SJER_Biomass_Training.csv</a> and save it in your working directory.
+
+**Download the SJER Canopy Height Model Tile:** <a href="https://storage.googleapis.com/neon-aop-products/2018/FullSite/D17/2018_SJER_3/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D17_SJER_DP3_256000_4106000_CHM.tif" class="link--button link--arrow">NEON_D17_SJER_DP3_256000_4106000_CHM.tif</a>
 
 </div>
 
@@ -73,27 +74,27 @@ given in Jenkins et al. (2003).
 
 ## Get Started
 
-First, we need to specify the directory where we will find and save the data needed for this tutorial. You will need to change this line to suit your local machine. I have decided to save my data in the following directory:
+First, we will import some Python packages required to run various parts of the script:
 
 
 ```python
-data_path = '/Users/olearyd/Git/data/'
-```
-
-Next, we will import several of the typical libraries. 
-
-
-```python
-import numpy as np
-import os
+import os, sys
 import gdal, osr
+import numpy as np
 import matplotlib.pyplot as plt
-import sys
 from scipy import ndimage as ndi
 %matplotlib inline 
 ```
 
-Next, we will add libraries from skilearn which will help with the watershed delination, determination of predictor variables and random forest algorithm
+Next, we need to specify the directory where we will find and save the data needed for this tutorial. You may need to change this line if you have a different working directly, or to suit your local machine. I have decided to save my data in the following directory:
+
+
+```python
+data_path = os.path.abspath(os.path.join(os.sep,'neon_biomass_tutorial','data'))
+data_path
+```
+
+Next, we will add libraries from skimage and sklearn which will help with the watershed delination, determination of predictor variables and random forest algorithm
 
 
 ```python
@@ -239,7 +240,8 @@ With everything set up, we can now start working with our data by define the fil
 
 
 ```python
-chm_file = data_path+'NEON_D17_SJER_DP3_256000_4106000_CHM.tif'
+chm_file = os.path.join(data_path,'NEON_D17_SJER_DP3_256000_4106000_CHM.tif')
+chm_file
 ```
 
 When we output the results, we will want to include the same file information as the input, so we will gather the file name information. 
@@ -267,18 +269,14 @@ plt.figure(1)
 
 #Plot the CHM figure
 plot_band_array(chm_array,chm_array_metadata['extent'],
-                'Canopy height Model',
-                'Canopy height (m)',
+                'Canopy Height Model',
+                'Canopy Height (m)',
                 'Greens',[0, 9])
-plt.savefig(data_path+just_chm_file[0:-4]+'_CHM.png',dpi=300,orientation='landscape',
+plt.savefig(os.path.join(data_path,just_chm_file.replace('.tif','.png')),dpi=300,orientation='landscape',
             bbox_inches='tight',
             pad_inches=0.1)
 
 ```
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_25_0.png)
-
 
 It looks like SJER primarily has low vegetation with scattered taller trees. 
 
@@ -303,7 +301,7 @@ Now save a copy of filtered CHM. We will later use this in our code, so we'll ou
 
 ```python
 #Save the smoothed CHM
-array2raster(data_path+'chm_filter.tif',
+array2raster(os.path.join(data_path,'chm_filter.tif'),
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,
              np.array(chm_array_smooth,dtype=float),
@@ -327,38 +325,12 @@ Our new object `local_maxi` is an array of boolean values where each pixel is id
 local_maxi
 ```
 
-
-
-
-    array([[False, False, False, ..., False, False, False],
-           [False, False,  True, ..., False, False, False],
-           [False, False, False, ..., False, False, False],
-           ...,
-           [False, False, False, ..., False, False, False],
-           [False, False, False, ..., False, False, False],
-           [False, False, False, ..., False, False, False]])
-
-
-
-This is very helpful, but it can be difficult to visualizee boolean values using our typical numeric plotting procedures as defined in the `plot_band_array` function above. Therefore, we will need to convert this boolean array to an numeric format to use this function. Booleans convert easily to integers with values of `False=0` and `True=1` using the `.astype(int)` method.
+This is helpful, but it can be difficult to visualize boolean values using our typical numeric plotting procedures as defined in the `plot_band_array` function above. Therefore, we will need to convert this boolean array to an numeric format to use this function. Booleans convert easily to integers with values of `False=0` and `True=1` using the `.astype(int)` method.
 
 
 ```python
 local_maxi.astype(int)
 ```
-
-
-
-
-    array([[0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 1, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0],
-           ...,
-           [0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0]])
-
-
 
 Next ,we can plot the raster of local maximums bo coercing the boolean array into an array ofintegers inline. The following figure shows the difference in finding local maximums for a filtered vs. non-filtered CHM.
 
@@ -383,10 +355,6 @@ array2raster(data_path+'maximum.tif',
              1,-1,np.array(local_maxi,dtype=np.float32),32611)
 
 ```
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_37_0.png)
-
 
 If we were to look at the overlap between the tree crowns and the local maxima from each method, it would appear a bit like this raster. 
 
@@ -439,12 +407,7 @@ labels_for_plot = labels.copy()
 labels_for_plot = np.array(labels_for_plot,dtype = np.float32)
 labels_for_plot[labels_for_plot==0] = np.nan
 max_labels = np.max(labels)
-
 ```
-
-    /opt/anaconda3/envs/py37/lib/python3.7/site-packages/skimage/morphology/_deprecated.py:5: skimage_deprecation: Function ``watershed`` is deprecated and will be removed in version 0.19. Use ``skimage.segmentation.watershed`` instead.
-      def watershed(image, markers=None, connectivity=1, offset=None, mask=None,
-
 
 
 ```python
@@ -461,12 +424,7 @@ array2raster(data_path+'labels.tif',
              (chm_array_metadata['ext_dict']['xMin'],
               chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(labels,dtype=float),32611)
-
 ```
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_44_0.png)
-
 
 Now we will get several properties of the individual trees will be used as predictor variables. 
 
@@ -487,16 +445,14 @@ tree_ids = predictors_chm[:,0]
 
 ## Training data
 
-We now bring in the training data file which is a simple CSV file with no header. The first column is biomass, and the remaining columns are the same predictor variables defined above. The tree diameter and max height are defined in the NEON vegetation structure data along with the tree DBH. The field validated values are used for training, while the other were determined from the CHM and camera images by manually delineating the tree crowns and pulling out the relevant information from the CHM. 
+We now bring in the training data file which is a simple CSV file with no header. If you haven't yet downloaded this, you can scroll up to the top of the lesson and find the **Download Data** section. The first column is biomass, and the remaining columns are the same predictor variables defined above. The tree diameter and max height are defined in the NEON vegetation structure data along with the tree DBH. The field validated values are used for training, while the other were determined from the CHM and camera images by manually delineating the tree crowns and pulling out the relevant information from the CHM. 
 
 Biomass was calculated from DBH according to the formulas in Jenkins et al. (2003). 
-
-If you didn't download this training dataset above, you can <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fobd4959-4cf0-44ab-acc6-0695a04a1afc" target="_blank">Download the training dataset CSV here</a>.
 
 
 ```python
 #Define the file of training data  
-training_data_file = data_path+'SJER_Biomass_Training.csv'
+training_data_file = os.path.join(data_path,'SJER_Biomass_Training.csv')
 
 #Read in the training data from a CSV file
 training_data = np.genfromtxt(training_data_file,delimiter=',') 
@@ -506,7 +462,6 @@ biomass = training_data[:,0]
 
 #Grab the biomass prdeictors from the remaining lines
 biomass_predictors = training_data[:,1:12]
-    
 ```
 
 ## Random Forest classifiers
@@ -523,15 +478,7 @@ regr_rf = RandomForestRegressor(max_depth=max_depth, random_state=2)
 
 #Fit the biomass to regressor variables
 regr_rf.fit(biomass_predictors,biomass)
-
 ```
-
-
-
-
-    RandomForestRegressor(max_depth=30, random_state=2)
-
-
 
 We now apply the Random Forest model to the predictor variables to retreive biomass
 
@@ -553,8 +500,13 @@ for tree_id, biomass_of_tree_id in zip(tree_ids, estimated_biomass):
     biomass_map[biomass_map == tree_id] = biomass_of_tree_id  
 ```
 
-## Calc Biomass
+## Calculate Biomass
 Collect some of the biomass statistics and then plot the results and save an output geotiff.
+
+
+```python
+os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png'))
+```
 
 
 ```python
@@ -566,32 +518,21 @@ sum_biomass = np.sum(estimated_biomass)
 
 print('Sum of biomass is ',sum_biomass,' kg')
 
-#Plot the biomass!
+# Plot the biomass!
 plt.figure(5)
 plot_band_array(biomass_map,chm_array_metadata['extent'],
                 'Biomass (kg)','Biomass (kg)',
                 'winter',
                 [min_biomass+std_biomass, mean_biomass+std_biomass*3])
 
-plt.savefig(data_path+just_chm_file_split[0]+'_'+just_chm_file_split[1]+'_'+just_chm_file_split[2]+'_'+just_chm_file_split[3]+'_'+just_chm_file_split[4]+'_'+just_chm_file_split[5]+'_'+'Biomass.png',
+# Save the biomass figure; use the same name as the original file, but replace CHM with Biomass
+plt.savefig(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png')),
             dpi=300,orientation='landscape',
             bbox_inches='tight',
             pad_inches=0.1)
 
-array2raster(data_path+'biomass.tif',
+# Use the array2raster function to create a geotiff file of the Biomass
+array2raster(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.tif')),
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(biomass_map,dtype=float),32611)
-
-```
-
-    Sum of biomass is  6785587.567415567  kg
-
-
-
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_58_1.png)
-
-
-
-```python
-
 ```

@@ -37,21 +37,22 @@
 # 
 # ### Install Python Packages
 # 
+# * **os**
 # * **numpy**
 # * **gdal** 
-# * **matplotlib** 
-# * **matplotlib.pyplot** 
-# * **os**
+# * **matplotlib**
+# * **scipy** 
 # 
 # 
 # ### Download Data
 # 
 # If you have already downloaded the data set for the Data Institute, you have the 
 # data for this tutorial within the SJER directory. If you would like to just 
-# download the data for this tutorial use the following link. 
+# download the data for this tutorial use the following links. 
 # 
-# <a href="https://neondata.sharefile.com/d-s58db39240bf49ac8" class="link--button link--arrow">
-# Download the Biomass Calculation teaching data subset</a>
+# **Download the Training Data:** <a href="./calc-biomass_py_files/SJER_Biomass_Training.csv" download="SJER_Biomass_Training.csv">SJER_Biomass_Training.csv</a> and save it in your working directory.
+# 
+# **Download the SJER Canopy Height Model Tile:** <a href="https://storage.googleapis.com/neon-aop-products/2018/FullSite/D17/2018_SJER_3/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D17_SJER_DP3_256000_4106000_CHM.tif" class="link--button link--arrow">NEON_D17_SJER_DP3_256000_4106000_CHM.tif</a>
 # 
 # </div>
 
@@ -76,31 +77,30 @@
 # 
 # ## Get Started
 # 
-# First, we need to specify the directory where we will find and save the data needed for this tutorial. You will need to change this line to suit your local machine. I have decided to save my data in the following directory:
+# First, we will import some Python packages required to run various parts of the script:
 
-# In[1]:
-
-
-data_path = '/Users/olearyd/Git/data/'
+# In[ ]:
 
 
-# Next, we will import several of the typical libraries. 
-
-# In[2]:
-
-
-import numpy as np
-import os
+import os, sys
 import gdal, osr
+import numpy as np
 import matplotlib.pyplot as plt
-import sys
 from scipy import ndimage as ndi
-get_ipython().run_line_magic('matplotlib', 'inline')
+%matplotlib inline 
+
+# Next, we need to specify the directory where we will find and save the data needed for this tutorial. You may need to change this line if you have a different working directly, or to suit your local machine. I have decided to save my data in the following directory:
+
+# In[ ]:
 
 
-# Next, we will add libraries from skilearn which will help with the watershed delination, determination of predictor variables and random forest algorithm
+data_path = os.path.abspath(os.path.join(os.sep,'neon_biomass_tutorial','data'))
+data_path
 
-# In[3]:
+
+# Next, we will add libraries from skimage and sklearn which will help with the watershed delination, determination of predictor variables and random forest algorithm
+
+# In[ ]:
 
 
 #Import biomass specific libraries
@@ -116,7 +116,7 @@ from sklearn.ensemble import RandomForestRegressor
 # 
 # * `plot_band_array`: function to plot NEON spatial data.
 
-# In[4]:
+# In[ ]:
 
 
 #Define plot band array function
@@ -132,7 +132,7 @@ def plot_band_array(band_array,image_extent,title,cmap_title,colormap,colormap_l
 
 # * `array2raster`: function to output geotiff files.
 
-# In[5]:
+# In[ ]:
 
 
 def array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array,epsg):
@@ -156,7 +156,7 @@ def array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array,epsg):
 
 # * `raster2array`: function to conver rasters to an array.
 
-# In[6]:
+# In[ ]:
 
 
 def raster2array(geotif_file):
@@ -208,7 +208,7 @@ def raster2array(geotif_file):
 
 # * `crown_geometric_volume_pth`: function to get tree crown volumn. 
 
-# In[7]:
+# In[ ]:
 
 
 def crown_geometric_volume_pth(tree_data,min_tree_height,pth):
@@ -220,7 +220,7 @@ def crown_geometric_volume_pth(tree_data,min_tree_height,pth):
 
 # * `get_predictors`: function to get the trees from the biomass data. 
 
-# In[8]:
+# In[ ]:
 
 
 def get_predictors(tree,chm_array, labels):
@@ -247,15 +247,16 @@ def get_predictors(tree,chm_array, labels):
 # 
 # With everything set up, we can now start working with our data by define the file path to our CHM file. Note that you will need to change this and subsequent filepaths according to your local machine.
 
-# In[9]:
+# In[ ]:
 
 
-chm_file = data_path+'NEON_D17_SJER_DP3_256000_4106000_CHM.tif'
+chm_file = os.path.join(data_path,'NEON_D17_SJER_DP3_256000_4106000_CHM.tif')
+chm_file
 
 
 # When we output the results, we will want to include the same file information as the input, so we will gather the file name information. 
 
-# In[10]:
+# In[ ]:
 
 
 #Get info from chm file for outputting results
@@ -265,7 +266,7 @@ just_chm_file_split = just_chm_file.split(sep="_")
 
 # Now we will get the CHM data...
 
-# In[11]:
+# In[ ]:
 
 
 chm_array, chm_array_metadata = raster2array(chm_file)
@@ -273,7 +274,7 @@ chm_array, chm_array_metadata = raster2array(chm_file)
 
 # ..., plot it, and save the figure.
 
-# In[12]:
+# In[ ]:
 
 
 #Plot the original CHM
@@ -281,10 +282,10 @@ plt.figure(1)
 
 #Plot the CHM figure
 plot_band_array(chm_array,chm_array_metadata['extent'],
-                'Canopy height Model',
-                'Canopy height (m)',
+                'Canopy Height Model',
+                'Canopy Height (m)',
                 'Greens',[0, 9])
-plt.savefig(data_path+just_chm_file[0:-4]+'_CHM.png',dpi=300,orientation='landscape',
+plt.savefig(os.path.join(data_path,just_chm_file.replace('.tif','.png')),dpi=300,orientation='landscape',
             bbox_inches='tight',
             pad_inches=0.1)
 
@@ -299,7 +300,7 @@ plt.savefig(data_path+just_chm_file[0:-4]+'_CHM.png',dpi=300,orientation='landsc
 # 
 # Of most importance are the second and fifth inputs. The second input defines the standard deviation of the Gaussian smoothing kernal. Too large a value will apply too much smoothing, too small and some spurious high points may be left behind. The fifth, the truncate value, controls after how many standard deviations the Gaussian kernal will get cut off (since it theoretically goes to infinity).
 
-# In[13]:
+# In[ ]:
 
 
 #Smooth the CHM using a gaussian filter to remove spurious points
@@ -310,11 +311,11 @@ chm_array_smooth[chm_array==0] = 0
 
 # Now save a copy of filtered CHM. We will later use this in our code, so we'll output it into our data directory. 
 
-# In[14]:
+# In[ ]:
 
 
 #Save the smoothed CHM
-array2raster(data_path+'chm_filter.tif',
+array2raster(os.path.join(data_path,'chm_filter.tif'),
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,
              np.array(chm_array_smooth,dtype=float),
@@ -325,7 +326,7 @@ array2raster(data_path+'chm_filter.tif',
 # 
 # Now we will run an algorithm to determine local maximums within the image. Setting indices to 'False' returns a raster of the maximum points, as opposed to a list of coordinates. The footprint parameter is an area where only a single peak can be found. This should be approximately the size of the smallest tree. Information on more sophisticated methods to define the window can be found in Chen (2006).  
 
-# In[15]:
+# In[ ]:
 
 
 #Calculate local maximum points in the smoothed CHM
@@ -334,15 +335,15 @@ local_maxi = peak_local_max(chm_array_smooth,indices=False, footprint=np.ones((5
 
 # Our new object `local_maxi` is an array of boolean values where each pixel is identified as either being the local maximum (`True`) or not being the local maximum (`False`). 
 
-# In[16]:
+# In[ ]:
 
 
 local_maxi
 
 
-# This is very helpful, but it can be difficult to visualizee boolean values using our typical numeric plotting procedures as defined in the `plot_band_array` function above. Therefore, we will need to convert this boolean array to an numeric format to use this function. Booleans convert easily to integers with values of `False=0` and `True=1` using the `.astype(int)` method.
+# This is helpful, but it can be difficult to visualize boolean values using our typical numeric plotting procedures as defined in the `plot_band_array` function above. Therefore, we will need to convert this boolean array to an numeric format to use this function. Booleans convert easily to integers with values of `False=0` and `True=1` using the `.astype(int)` method.
 
-# In[17]:
+# In[ ]:
 
 
 local_maxi.astype(int)
@@ -352,7 +353,7 @@ local_maxi.astype(int)
 # 
 # We will save the graphics (.png) in an outputs folder sister to our working directory and data outputs (.tif) to our data directory. 
 
-# In[18]:
+# In[ ]:
 
 
 #Plot the local maximums
@@ -386,7 +387,7 @@ array2raster(data_path+'maximum.tif',
 # 
 # Apply labels to all of the local maximum points
 
-# In[19]:
+# In[ ]:
 
 
 #Identify all the maximum points
@@ -395,7 +396,7 @@ markers = ndi.label(local_maxi)[0]
 
 # Next we will create a mask layer of all of the vegetation points so that the watershed segmentation will only occur on the trees and not extend into the surrounding ground points. Since 0 represent ground points in the CHM, setting the mask to 1 where the CHM is not zero will define the mask
 
-# In[20]:
+# In[ ]:
 
 
 #Create a CHM mask so the segmentation will only occur on the trees
@@ -417,7 +418,7 @@ chm_mask[chm_array_smooth != 0] = 1
 # 
 # Next, we will perform the watershed segmentation which produces a raster of labels.
 
-# In[21]:
+# In[ ]:
 
 
 #Perfrom watershed segmentation        
@@ -428,7 +429,7 @@ labels_for_plot[labels_for_plot==0] = np.nan
 max_labels = np.max(labels)
 
 
-# In[22]:
+# In[ ]:
 
 
 #Plot the segments      
@@ -448,7 +449,7 @@ array2raster(data_path+'labels.tif',
 
 # Now we will get several properties of the individual trees will be used as predictor variables. 
 
-# In[23]:
+# In[ ]:
 
 
 #Get the properties of each segment
@@ -457,7 +458,7 @@ tree_properties = regionprops(labels,chm_array)
 
 # Now we will get the predictor variables to match the (soon to be loaded) training data using the function defined above. The first column will be segment IDs, the rest will be the predictor variables.
 
-# In[24]:
+# In[ ]:
 
 
 predictors_chm = np.array([get_predictors(tree, chm_array, labels) for tree in tree_properties])
@@ -467,17 +468,15 @@ tree_ids = predictors_chm[:,0]
 
 # ## Training data
 # 
-# We now bring in the training data file which is a simple CSV file with no header. The first column is biomass, and the remaining columns are the same predictor variables defined above. The tree diameter and max height are defined in the NEON vegetation structure data along with the tree DBH. The field validated values are used for training, while the other were determined from the CHM and camera images by manually delineating the tree crowns and pulling out the relevant information from the CHM. 
+# We now bring in the training data file which is a simple CSV file with no header. If you haven't yet downloaded this, you can scroll up to the top of the lesson and find the **Download Data** section. The first column is biomass, and the remaining columns are the same predictor variables defined above. The tree diameter and max height are defined in the NEON vegetation structure data along with the tree DBH. The field validated values are used for training, while the other were determined from the CHM and camera images by manually delineating the tree crowns and pulling out the relevant information from the CHM. 
 # 
 # Biomass was calculated from DBH according to the formulas in Jenkins et al. (2003). 
-# 
-# If you didn't download this training dataset above, you can <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fobd4959-4cf0-44ab-acc6-0695a04a1afc" target="_blank">Download the training dataset CSV here</a>.
 
-# In[25]:
+# In[ ]:
 
 
 #Define the file of training data  
-training_data_file = data_path+'SJER_Biomass_Training.csv'
+training_data_file = os.path.join(data_path,'SJER_Biomass_Training.csv')
 
 #Read in the training data from a CSV file
 training_data = np.genfromtxt(training_data_file,delimiter=',') 
@@ -487,14 +486,13 @@ biomass = training_data[:,0]
 
 #Grab the biomass prdeictors from the remaining lines
 biomass_predictors = training_data[:,1:12]
-    
 
 
 # ## Random Forest classifiers
 # 
 # We can then define parameters of the Random Forest classifier and fit the predictor variables from the training data to the Biomass estaimtes.
 
-# In[26]:
+# In[ ]:
 
 
 #Define paraemters for Random forest regressor
@@ -509,7 +507,7 @@ regr_rf.fit(biomass_predictors,biomass)
 
 # We now apply the Random Forest model to the predictor variables to retreive biomass
 
-# In[27]:
+# In[ ]:
 
 
 #Apply the model to the predictors
@@ -518,7 +516,7 @@ estimated_biomass = regr_rf.predict(X)
 
 # For outputting a raster, copy the labels raster to a biomass raster, then cycle through the segments and assign the biomass estimate to each individual tree segment.
 
-# In[28]:
+# In[ ]:
 
 
 #Set an out raster with the same size as the labels
@@ -529,10 +527,16 @@ for tree_id, biomass_of_tree_id in zip(tree_ids, estimated_biomass):
     biomass_map[biomass_map == tree_id] = biomass_of_tree_id  
 
 
-# ## Calc Biomass
+# ## Calculate Biomass
 # Collect some of the biomass statistics and then plot the results and save an output geotiff.
 
-# In[29]:
+# In[ ]:
+
+
+os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png'))
+
+
+# In[ ]:
 
 
 #Get biomass stats for plotting
@@ -543,25 +547,21 @@ sum_biomass = np.sum(estimated_biomass)
 
 print('Sum of biomass is ',sum_biomass,' kg')
 
-#Plot the biomass!
+# Plot the biomass!
 plt.figure(5)
 plot_band_array(biomass_map,chm_array_metadata['extent'],
                 'Biomass (kg)','Biomass (kg)',
                 'winter',
                 [min_biomass+std_biomass, mean_biomass+std_biomass*3])
 
-plt.savefig(data_path+just_chm_file_split[0]+'_'+just_chm_file_split[1]+'_'+just_chm_file_split[2]+'_'+just_chm_file_split[3]+'_'+just_chm_file_split[4]+'_'+just_chm_file_split[5]+'_'+'Biomass.png',
+# Save the biomass figure; use the same name as the original file, but replace CHM with Biomass
+plt.savefig(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png')),
             dpi=300,orientation='landscape',
             bbox_inches='tight',
             pad_inches=0.1)
 
-array2raster(data_path+'biomass.tif',
+# Use the array2raster function to create a geotiff file of the Biomass
+array2raster(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.tif')),
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(biomass_map,dtype=float),32611)
-
-
-# In[ ]:
-
-
-
 
