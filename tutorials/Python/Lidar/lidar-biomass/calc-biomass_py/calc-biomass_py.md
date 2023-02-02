@@ -94,7 +94,14 @@ data_path = os.path.abspath(os.path.join(os.sep,'neon_biomass_tutorial','data'))
 data_path
 ```
 
-Next, we will add libraries from skimage and sklearn which will help with the watershed delination, determination of predictor variables and random forest algorithm
+
+
+
+    'D:\\neon_biomass_tutorial\\data'
+
+
+
+Next, we will add libraries from skilearn which will help with the watershed delination, determination of predictor variables and random forest algorithm
 
 
 ```python
@@ -244,6 +251,13 @@ chm_file = os.path.join(data_path,'NEON_D17_SJER_DP3_256000_4106000_CHM.tif')
 chm_file
 ```
 
+
+
+
+    'D:\\neon_biomass_tutorial\\data\\NEON_D17_SJER_DP3_256000_4106000_CHM.tif'
+
+
+
 When we output the results, we will want to include the same file information as the input, so we will gather the file name information. 
 
 
@@ -277,6 +291,12 @@ plt.savefig(os.path.join(data_path,just_chm_file.replace('.tif','.png')),dpi=300
             pad_inches=0.1)
 
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_25_0.png)
+    
+
 
 It looks like SJER primarily has low vegetation with scattered taller trees. 
 
@@ -325,12 +345,38 @@ Our new object `local_maxi` is an array of boolean values where each pixel is id
 local_maxi
 ```
 
+
+
+
+    array([[False, False, False, ..., False, False, False],
+           [False, False, False, ..., False, False, False],
+           [False, False, False, ..., False, False, False],
+           ...,
+           [False, False, False, ..., False, False, False],
+           [False, False, False, ..., False, False, False],
+           [False, False, False, ..., False, False, False]])
+
+
+
 This is helpful, but it can be difficult to visualize boolean values using our typical numeric plotting procedures as defined in the `plot_band_array` function above. Therefore, we will need to convert this boolean array to an numeric format to use this function. Booleans convert easily to integers with values of `False=0` and `True=1` using the `.astype(int)` method.
 
 
 ```python
 local_maxi.astype(int)
 ```
+
+
+
+
+    array([[0, 0, 0, ..., 0, 0, 0],
+           [0, 0, 0, ..., 0, 0, 0],
+           [0, 0, 0, ..., 0, 0, 0],
+           ...,
+           [0, 0, 0, ..., 0, 0, 0],
+           [0, 0, 0, ..., 0, 0, 0],
+           [0, 0, 0, ..., 0, 0, 0]])
+
+
 
 Next ,we can plot the raster of local maximums bo coercing the boolean array into an array ofintegers inline. The following figure shows the difference in finding local maximums for a filtered vs. non-filtered CHM.
 
@@ -355,6 +401,12 @@ array2raster(data_path+'maximum.tif',
              1,-1,np.array(local_maxi,dtype=np.float32),32611)
 
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_37_0.png)
+    
+
 
 If we were to look at the overlap between the tree crowns and the local maxima from each method, it would appear a bit like this raster. 
 
@@ -426,6 +478,12 @@ array2raster(data_path+'labels.tif',
              1,-1,np.array(labels,dtype=float),32611)
 ```
 
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_44_0.png)
+    
+
+
 Now we will get several properties of the individual trees will be used as predictor variables. 
 
 
@@ -480,6 +538,19 @@ regr_rf = RandomForestRegressor(max_depth=max_depth, random_state=2)
 regr_rf.fit(biomass_predictors,biomass)
 ```
 
+
+
+
+    RandomForestRegressor(bootstrap=True, ccp_alpha=0.0, criterion='mse',
+                          max_depth=30, max_features='auto', max_leaf_nodes=None,
+                          max_samples=None, min_impurity_decrease=0.0,
+                          min_impurity_split=None, min_samples_leaf=1,
+                          min_samples_split=2, min_weight_fraction_leaf=0.0,
+                          n_estimators=100, n_jobs=None, oob_score=False,
+                          random_state=2, verbose=0, warm_start=False)
+
+
+
 We now apply the Random Forest model to the predictor variables to retreive biomass
 
 
@@ -509,6 +580,13 @@ os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png'))
 ```
 
 
+
+
+    'D:\\neon_biomass_tutorial\\data\\NEON_D17_SJER_DP3_256000_4106000_Biomass.png'
+
+
+
+
 ```python
 #Get biomass stats for plotting
 mean_biomass = np.mean(estimated_biomass)
@@ -536,3 +614,12 @@ array2raster(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.tif
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(biomass_map,dtype=float),32611)
 ```
+
+    Sum of biomass is  7249752.02745825  kg
+    
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_59_1.png)
+    
+
