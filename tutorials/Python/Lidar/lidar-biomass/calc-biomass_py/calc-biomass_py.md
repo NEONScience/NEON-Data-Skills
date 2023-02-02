@@ -574,19 +574,6 @@ for tree_id, biomass_of_tree_id in zip(tree_ids, estimated_biomass):
 ## Calculate Biomass
 Collect some of the biomass statistics and then plot the results and save an output geotiff.
 
-
-```python
-os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png'))
-```
-
-
-
-
-    'D:\\neon_biomass_tutorial\\data\\NEON_D17_SJER_DP3_256000_4106000_Biomass.png'
-
-
-
-
 ```python
 #Get biomass stats for plotting
 mean_biomass = np.mean(estimated_biomass)
