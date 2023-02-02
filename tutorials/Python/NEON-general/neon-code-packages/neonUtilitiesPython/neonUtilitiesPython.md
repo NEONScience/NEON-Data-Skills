@@ -39,19 +39,13 @@ but these instructions were developed and tested using 3.7.4.
 2. R installed. You don't need to have ever used it directly. We wrote this 
 tutorial using R 4.1.1, but most other recent versions should also work.
 3. `rpy2` installed. Run the line below from the command line, it won't run within 
-Jupyter. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
+a Python script. See <a href="https://docs.python.org/3/installing/" target="_blank">Python documentation</a> for more information on how to install packages. 
 `rpy2` often has install problems on Windows, see "Windows Users" section below if 
 you are running Windows.
 4. You may need to install `pip` before installing `rpy2`, if you don't have it 
 installed already.
 
-From the command line, run:
-
-
-```python
-pip install rpy2
-```
-
+From the command line, run `pip install rpy2`
 
 ### Windows users
 
@@ -81,7 +75,7 @@ pointing Python directly to your R installation path.
 
 ## Load packages
 
-Now import `rpy2` into your session.
+Now open up your Python interface of choice (Jupyter notebook, Spyder, etc) and import `rpy2` into your session.
 
 
 ```python
@@ -120,27 +114,27 @@ stats.rnorm(6, 0, 1)
   <tr>
 
     <td>
-    -0.938409
+    0.920298
     </td>
 
     <td>
-    0.189041
+    -0.318376
     </td>
 
     <td>
-    -0.169062
+    0.906473
     </td>
 
     <td>
-    0.976939
+    -1.004184
     </td>
 
     <td>
-    -0.862790
+    -0.267872
     </td>
 
     <td>
-    0.648383
+    -0.470278
     </td>
 
   </tr>
@@ -188,7 +182,7 @@ utils.install_packages('neonUtilities', repos='https://cran.rstudio.com/');
 
     
     The downloaded binary packages are in
-    	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//Rtmpdy9fY1/downloaded_packages
+    	/var/folders/_k/gbjn452j1h3fk7880d5ppkx1_9xf6m/T//Rtmpl5OpMA/downloaded_packages
 
 
 Now load the `neonUtilities` package. This does need to be run every time 
@@ -227,7 +221,7 @@ neonUtilities.stackByTable(filepath='/Users/Shared/NEON_temp-bio.zip');
     Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
     Copied the most recent publication of variable definition file to /stackedFiles
     Finished: Stacked 2 data tables and 3 metadata tables!
-    Stacking took 1.585054 secs
+    Stacking took 2.019079 secs
     All unzipped monthly data folders have been removed.
 
 
@@ -261,11 +255,11 @@ in Python
 have special meaning in Python the way they do in R, so it interprets them 
 as variables if they're unquoted.
 
-`check_size='TRUE'` does not work correctly in the Python environment. It 
-estimates the size of the download and asks you to confirm before proceeding, 
-and this interactive display doesn't work correctly outside R. Set 
-`check_size='FALSE'` to avoid this problem, but be thoughtful about the size 
-of your query since it will proceed to download without checking.
+`check_size='TRUE'` does not work correctly in the Python environment. In R, 
+it estimates the size of the download and asks you to confirm before 
+proceeding, and the interactive question and answer don't work correctly 
+outside R. Set `check_size='FALSE'` to avoid this problem, but be thoughtful 
+about the size of your query since it will proceed to download without checking.
 
 
 ```python
@@ -279,10 +273,10 @@ neonUtilities.zipsByProduct(dpID='DP1.10003.001',
     Finding available files
       |======================================================================| 100%
     
-    Downloading files totaling approximately 3.718684 MB
-    Downloading 16 files
+    Downloading files totaling approximately 4.217543 MB
+    Downloading 18 files
       |======================================================================| 100%
-    16 files successfully downloaded to /Users/Shared/filesToStack10003
+    18 files successfully downloaded to /Users/Shared/filesToStack10003
 
 
 The message output by `zipsByProduct()` indicates the file path where the 
@@ -303,7 +297,7 @@ neonUtilities.stackByTable(filepath='/Users/Shared/filesToStack10003');
     Copied the most recent publication of categoricalCodes file to /stackedFiles
     Copied the most recent publication of variable definition file to /stackedFiles
     Finished: Stacked 2 data tables and 4 metadata tables!
-    Stacking took 0.3076231 secs
+    Stacking took 0.4586661 secs
     All unzipped monthly data folders have been removed.
 
 
@@ -424,7 +418,7 @@ brd_perpoint
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>32ab1419-b087-47e1-829d-b1a67a223a01</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -448,7 +442,7 @@ brd_perpoint
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>1</td>
+      <th>1</th>
       <td>f02e2458-caab-44d8-a21a-b3b210b71006</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -472,7 +466,7 @@ brd_perpoint
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>2</td>
+      <th>2</th>
       <td>58ccefb8-7904-4aa6-8447-d6f6590ccdae</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -496,7 +490,7 @@ brd_perpoint
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>3</td>
+      <th>3</th>
       <td>1b14ead4-03fc-4d47-bd00-2f6e31cfe971</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -520,7 +514,7 @@ brd_perpoint
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>4</td>
+      <th>4</th>
       <td>3055a0a5-57ae-4e56-9415-eeb7704fab02</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -544,7 +538,7 @@ brd_perpoint
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>...</td>
+      <th>...</th>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -568,128 +562,128 @@ brd_perpoint
       <td>...</td>
     </tr>
     <tr>
-      <td>1234</td>
-      <td>3400dfdf-54f1-4921-a3b0-61f03c6db3e9</td>
-      <td>HARV_006.birdGrid.brd</td>
+      <th>1405</th>
+      <td>56d2f3b3-3ee5-41b9-ae22-e78a814d83e4</td>
+      <td>HARV_021.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_006</td>
-      <td>distributed</td>
-      <td>A1</td>
-      <td>deciduousForest</td>
-      <td>42.401149</td>
-      <td>-72.253238</td>
-      <td>...</td>
-      <td>43.0</td>
-      <td>other</td>
-      <td>16.0</td>
-      <td>10.0</td>
-      <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vK</td>
-      <td>The RH would not stay still today, kept swingi...</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <td>1235</td>
-      <td>b43b199c-51b6-4222-b575-7564315e47bb</td>
-      <td>HARV_006.birdGrid.brd</td>
-      <td>D01</td>
-      <td>HARV</td>
-      <td>HARV_006</td>
+      <td>HARV_021</td>
       <td>distributed</td>
       <td>A2</td>
-      <td>deciduousForest</td>
-      <td>42.401149</td>
-      <td>-72.253238</td>
+      <td>evergreenForest</td>
+      <td>42.451400</td>
+      <td>-72.250100</td>
       <td>...</td>
-      <td>43.0</td>
-      <td>deciduous forest</td>
-      <td>15.0</td>
-      <td>4.0</td>
-      <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vK</td>
-      <td>The RH would not stay still today, kept swingi...</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <td>1236</td>
-      <td>a7040ad5-d253-47b7-964d-2711dafa42c4</td>
-      <td>HARV_006.birdGrid.brd</td>
-      <td>D01</td>
-      <td>HARV</td>
-      <td>HARV_006</td>
-      <td>distributed</td>
-      <td>B2</td>
-      <td>deciduousForest</td>
-      <td>42.401149</td>
-      <td>-72.253238</td>
-      <td>...</td>
-      <td>43.0</td>
-      <td>deciduous forest</td>
+      <td>71.0</td>
+      <td>mixed deciduous/evergreen forest</td>
       <td>16.0</td>
       <td>1.0</td>
       <td>Bird Conservancy of the Rockies</td>
       <td>NEON.DOC.014041vK</td>
-      <td>The RH would not stay still today, kept swingi...</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
+      <td>NaN</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>1237</td>
-      <td>97a3c2dc-d8b0-436f-af62-00c88167b60e</td>
-      <td>HARV_006.birdGrid.brd</td>
+      <th>1406</th>
+      <td>8f61949b-d0cc-49c2-8b59-4e2938286da0</td>
+      <td>HARV_021.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_006</td>
-      <td>distributed</td>
-      <td>B3</td>
-      <td>deciduousForest</td>
-      <td>42.401149</td>
-      <td>-72.253238</td>
-      <td>...</td>
-      <td>43.0</td>
-      <td>deciduous forest</td>
-      <td>17.0</td>
-      <td>1.0</td>
-      <td>Bird Conservancy of the Rockies</td>
-      <td>NEON.DOC.014041vK</td>
-      <td>The RH would not stay still today, kept swingi...</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <td>1238</td>
-      <td>b8a27ff5-3aa3-432a-858e-c8d31324ab2e</td>
-      <td>HARV_006.birdGrid.brd</td>
-      <td>D01</td>
-      <td>HARV</td>
-      <td>HARV_006</td>
+      <td>HARV_021</td>
       <td>distributed</td>
       <td>A3</td>
-      <td>deciduousForest</td>
-      <td>42.401149</td>
-      <td>-72.253238</td>
+      <td>evergreenForest</td>
+      <td>42.451400</td>
+      <td>-72.250100</td>
       <td>...</td>
-      <td>43.0</td>
-      <td>deciduous forest</td>
-      <td>18.0</td>
-      <td>1.0</td>
+      <td>71.0</td>
+      <td>mixed deciduous/evergreen forest</td>
+      <td>17.0</td>
+      <td>0.0</td>
       <td>Bird Conservancy of the Rockies</td>
       <td>NEON.DOC.014041vK</td>
-      <td>The RH would not stay still today, kept swingi...</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
+      <td>NaN</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <th>1407</th>
+      <td>36574bab-3725-44d4-b96c-3fc6dcea0765</td>
+      <td>HARV_021.birdGrid.brd</td>
+      <td>D01</td>
+      <td>HARV</td>
+      <td>HARV_021</td>
+      <td>distributed</td>
+      <td>B3</td>
+      <td>evergreenForest</td>
+      <td>42.451400</td>
+      <td>-72.250100</td>
+      <td>...</td>
+      <td>71.0</td>
+      <td>mixed deciduous/evergreen forest</td>
+      <td>19.0</td>
+      <td>0.0</td>
+      <td>Bird Conservancy of the Rockies</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>NaN</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <th>1408</th>
+      <td>eb6dcb4a-cc6c-4ec1-9ee2-6932b7aefc54</td>
+      <td>HARV_021.birdGrid.brd</td>
+      <td>D01</td>
+      <td>HARV</td>
+      <td>HARV_021</td>
+      <td>distributed</td>
+      <td>A1</td>
+      <td>evergreenForest</td>
+      <td>42.451400</td>
+      <td>-72.250100</td>
+      <td>...</td>
+      <td>71.0</td>
+      <td>deciduous forest</td>
+      <td>19.0</td>
+      <td>2.0</td>
+      <td>Bird Conservancy of the Rockies</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>NaN</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <th>1409</th>
+      <td>51ff3c20-397f-4c88-84e9-f34c2f52d6a8</td>
+      <td>HARV_021.birdGrid.brd</td>
+      <td>D01</td>
+      <td>HARV</td>
+      <td>HARV_021</td>
+      <td>distributed</td>
+      <td>B2</td>
+      <td>evergreenForest</td>
+      <td>42.451400</td>
+      <td>-72.250100</td>
+      <td>...</td>
+      <td>71.0</td>
+      <td>evergreen forest</td>
+      <td>19.0</td>
+      <td>3.0</td>
+      <td>Bird Conservancy of the Rockies</td>
+      <td>NEON.DOC.014041vK</td>
+      <td>NaN</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
       <td>PROVISIONAL</td>
     </tr>
   </tbody>
 </table>
-<p>1239 rows × 31 columns</p>
+<p>1410 rows × 31 columns</p>
 </div>
 
 
@@ -745,7 +739,7 @@ brd_countdata
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>4e22256f-5e86-4a2c-99be-dd1c7da7af28</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -769,7 +763,7 @@ brd_countdata
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>1</td>
+      <th>1</th>
       <td>93106c0d-06d8-4816-9892-15c99de03c91</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -793,7 +787,7 @@ brd_countdata
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>2</td>
+      <th>2</th>
       <td>5eb23904-9ae9-45bf-af27-a4fa1efd4e8a</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -817,7 +811,7 @@ brd_countdata
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>3</td>
+      <th>3</th>
       <td>99592c6c-4cf7-4de8-9502-b321e925684d</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -841,7 +835,7 @@ brd_countdata
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>4</td>
+      <th>4</th>
       <td>6c07d9fb-8813-452b-8182-3bc5e139d920</td>
       <td>BART_025.birdGrid.brd</td>
       <td>D01</td>
@@ -865,7 +859,7 @@ brd_countdata
       <td>RELEASE-2022</td>
     </tr>
     <tr>
-      <td>...</td>
+      <th>...</th>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -889,128 +883,128 @@ brd_countdata
       <td>...</td>
     </tr>
     <tr>
-      <td>13579</td>
-      <td>87c9dae4-ee30-4673-b669-5ca8acdc7bd7</td>
-      <td>HARV_006.birdGrid.brd</td>
+      <th>15378</th>
+      <td>cffdd5e4-f664-411b-9aea-e6265071332a</td>
+      <td>HARV_021.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_006</td>
+      <td>HARV_021</td>
       <td>distributed</td>
-      <td>A3</td>
-      <td>2021-06-16T13:08Z</td>
-      <td>HARV_006.A3.2021-06-16</td>
-      <td>1</td>
+      <td>B2</td>
+      <td>2022-06-12T13:31Z</td>
+      <td>HARV_021.B2.2022-06-12</td>
+      <td>3</td>
       <td>...</td>
-      <td>Eastern Towhee</td>
-      <td>13.0</td>
+      <td>Belted Kingfisher</td>
+      <td>37.0</td>
       <td>calling</td>
       <td>No</td>
       <td>Unknown</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>13580</td>
-      <td>1a65553a-6189-4c74-a1e3-2ada0f1d9f63</td>
-      <td>HARV_006.birdGrid.brd</td>
+      <th>15379</th>
+      <td>92b58b34-077f-420a-871d-116ac5b1c98a</td>
+      <td>HARV_021.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_006</td>
+      <td>HARV_021</td>
       <td>distributed</td>
-      <td>A3</td>
-      <td>2021-06-16T13:08Z</td>
-      <td>HARV_006.A3.2021-06-16</td>
-      <td>4</td>
+      <td>B2</td>
+      <td>2022-06-12T13:31Z</td>
+      <td>HARV_021.B2.2022-06-12</td>
+      <td>5</td>
       <td>...</td>
-      <td>NaN</td>
-      <td>20.0</td>
-      <td>visual</td>
-      <td>No</td>
-      <td>Unknown</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
-      <td>PROVISIONAL</td>
-    </tr>
-    <tr>
-      <td>13581</td>
-      <td>e33deb1c-e79d-41dc-8fc1-8e984b9d0450</td>
-      <td>HARV_006.birdGrid.brd</td>
-      <td>D01</td>
-      <td>HARV</td>
-      <td>HARV_006</td>
-      <td>distributed</td>
-      <td>A3</td>
-      <td>2021-06-16T13:08Z</td>
-      <td>HARV_006.A3.2021-06-16</td>
-      <td>1</td>
-      <td>...</td>
-      <td>Eastern Towhee</td>
-      <td>48.0</td>
+      <td>Common Yellowthroat</td>
+      <td>8.0</td>
       <td>calling</td>
-      <td>No</td>
-      <td>Unknown</td>
+      <td>Yes</td>
+      <td>Male</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>13582</td>
-      <td>070ec577-9aec-4d05-91df-86124d383697</td>
-      <td>HARV_006.birdGrid.brd</td>
+      <th>15380</th>
+      <td>06ccb684-da77-4cdf-a8f7-b0d9ac106847</td>
+      <td>HARV_021.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_006</td>
+      <td>HARV_021</td>
       <td>distributed</td>
-      <td>A3</td>
-      <td>2021-06-16T13:08Z</td>
-      <td>HARV_006.A3.2021-06-16</td>
+      <td>B2</td>
+      <td>2022-06-12T13:31Z</td>
+      <td>HARV_021.B2.2022-06-12</td>
       <td>1</td>
       <td>...</td>
-      <td>Eastern Towhee</td>
-      <td>61.0</td>
+      <td>Ovenbird</td>
+      <td>28.0</td>
       <td>singing</td>
       <td>No</td>
       <td>Unknown</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>13583</td>
-      <td>7a3be1a1-03c3-49e7-a486-343708c3b271</td>
-      <td>HARV_006.birdGrid.brd</td>
+      <th>15381</th>
+      <td>0254f165-0052-406e-b9ae-b76ef4109df1</td>
+      <td>HARV_021.birdGrid.brd</td>
       <td>D01</td>
       <td>HARV</td>
-      <td>HARV_006</td>
+      <td>HARV_021</td>
       <td>distributed</td>
-      <td>A3</td>
-      <td>2021-06-16T13:08Z</td>
-      <td>HARV_006.A3.2021-06-16</td>
+      <td>B2</td>
+      <td>2022-06-12T13:31Z</td>
+      <td>HARV_021.B2.2022-06-12</td>
       <td>2</td>
       <td>...</td>
       <td>Veery</td>
-      <td>64.0</td>
+      <td>50.0</td>
       <td>calling</td>
       <td>No</td>
       <td>Unknown</td>
       <td>1.0</td>
       <td>NaN</td>
-      <td>JGLAG</td>
-      <td>20211222T011332Z</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
+      <td>PROVISIONAL</td>
+    </tr>
+    <tr>
+      <th>15382</th>
+      <td>432c797d-c4ea-4bfd-901c-5c2481b845c4</td>
+      <td>HARV_021.birdGrid.brd</td>
+      <td>D01</td>
+      <td>HARV</td>
+      <td>HARV_021</td>
+      <td>distributed</td>
+      <td>B2</td>
+      <td>2022-06-12T13:31Z</td>
+      <td>HARV_021.B2.2022-06-12</td>
+      <td>4</td>
+      <td>...</td>
+      <td>Pine Warbler</td>
+      <td>29.0</td>
+      <td>singing</td>
+      <td>No</td>
+      <td>Unknown</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>KKLAP</td>
+      <td>20221129T224415Z</td>
       <td>PROVISIONAL</td>
     </tr>
   </tbody>
 </table>
-<p>13584 rows × 24 columns</p>
+<p>15383 rows × 24 columns</p>
 </div>
 
 
@@ -1065,7 +1059,7 @@ IRBT30
   </thead>
   <tbody>
     <tr>
-      <td>0</td>
+      <th>0</th>
       <td>D18</td>
       <td>BARR</td>
       <td>0</td>
@@ -1084,7 +1078,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>1</td>
+      <th>1</th>
       <td>D18</td>
       <td>BARR</td>
       <td>0</td>
@@ -1103,7 +1097,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>2</td>
+      <th>2</th>
       <td>D18</td>
       <td>BARR</td>
       <td>0</td>
@@ -1122,7 +1116,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>3</td>
+      <th>3</th>
       <td>D18</td>
       <td>BARR</td>
       <td>0</td>
@@ -1141,7 +1135,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>4</td>
+      <th>4</th>
       <td>D18</td>
       <td>BARR</td>
       <td>0</td>
@@ -1160,7 +1154,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>...</td>
+      <th>...</th>
       <td>...</td>
       <td>...</td>
       <td>...</td>
@@ -1179,7 +1173,7 @@ IRBT30
       <td>...</td>
     </tr>
     <tr>
-      <td>13099</td>
+      <th>13099</th>
       <td>D18</td>
       <td>BARR</td>
       <td>3</td>
@@ -1198,7 +1192,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>13100</td>
+      <th>13100</th>
       <td>D18</td>
       <td>BARR</td>
       <td>3</td>
@@ -1217,7 +1211,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>13101</td>
+      <th>13101</th>
       <td>D18</td>
       <td>BARR</td>
       <td>3</td>
@@ -1236,7 +1230,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>13102</td>
+      <th>13102</th>
       <td>D18</td>
       <td>BARR</td>
       <td>3</td>
@@ -1255,7 +1249,7 @@ IRBT30
       <td>PROVISIONAL</td>
     </tr>
     <tr>
-      <td>13103</td>
+      <th>13103</th>
       <td>D18</td>
       <td>BARR</td>
       <td>3</td>
@@ -1308,7 +1302,7 @@ neonUtilities.byFileAOP(dpID='DP3.30015.001', site='HOPB',
     Downloading files totaling approximately 147.930656 MB 
     Downloading 217 files
       |======================================================================| 100%
-    Successfully downloaded  217  files.
+    Successfully downloaded 217 files to /Users/Shared/DP3.30015.001
 
 
 Let's read one tile of data into Python and view it. We'll use the 
@@ -1330,13 +1324,15 @@ show(CHMtile)
 ```
 
 
-    <Figure size 800x300 with 1 Axes>
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-general/neon-code-packages/neonUtilitiesPython/neonUtilitiesPython_files/neonUtilitiesPython_39_0.png)
+    
 
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7fa16298fd50>
+    <AxesSubplot:>
 
 
 
@@ -1348,7 +1344,9 @@ fig
 
 
 
-![Canopy Height Model at Hopbrook in 2017](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-general/neon-code-packages/neonUtilitiesPython/neonUtilitiesPython_files/neonUtilitiesPython_41_0.png)
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-general/neon-code-packages/neonUtilitiesPython/neonUtilitiesPython_files/neonUtilitiesPython_40_0.png)
+    
 
 
 

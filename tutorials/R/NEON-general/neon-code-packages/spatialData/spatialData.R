@@ -1,45 +1,48 @@
-## ----install, eval=FALSE---------------------------------------------------------------------------------
+## ----install, eval=FALSE------------------------------------------------------------------------------------
 ## 
 ## # run once to get the package, and re-run if you need to get updates
 ## install.packages("ggplot2")  # plotting
 ## install.packages("neonUtilities")  # work with NEON data
+## install.packages("neonOS")  # work with NEON observational data
 ## install.packages("devtools")  # to use the install_github() function
 ## devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NEON spatial data
 ## 
 
 
-## ----libraries, results="hide"---------------------------------------------------------------------------
+## ----libraries, results="hide"------------------------------------------------------------------------------
 
 # run every time you start a script
 library(ggplot2)
 library(neonUtilities)
+library(neonOS)
 library(geoNEON)
 
 options(stringsAsFactors=F)
 
 
 
-## ----get-vst-data, results="hide"------------------------------------------------------------------------
+## ----get-vst-data, results="hide"---------------------------------------------------------------------------
 
 # load veg structure data
-vst <- loadByProduct(dpID="DP1.10098.001", site="WREF",
+vst <- loadByProduct(dpID="DP1.10098.001", 
+                     site="WREF",
                      check.size=F)
 
 
 
-## ----find-sp-data----------------------------------------------------------------------------------------
+## ----find-sp-data-------------------------------------------------------------------------------------------
 
 View(vst$variables_10098)
 
 
 
-## ----print-vst-pppy--------------------------------------------------------------------------------------
+## ----print-vst-pppy-----------------------------------------------------------------------------------------
 
 View(vst$vst_perplotperyear)
 
 
 
-## ----plot-plots, fig.cap="All vegetation structure plots at WREF"----------------------------------------
+## ----plot-plots, fig.cap="All vegetation structure plots at WREF"-------------------------------------------
 
 # start by subsetting data to plots with trees
 vst.trees <- vst$vst_perplotperyear[which(
@@ -60,36 +63,36 @@ symbols(vst.trees$easting,
 
 
 
-## ----print-vst-mat---------------------------------------------------------------------------------------
+## ----print-vst-mat------------------------------------------------------------------------------------------
 
 View(vst$vst_mappingandtagging)
 
 
 
-## ----vst-getLocTOS, results="hide"-----------------------------------------------------------------------
+## ----vst-getLocTOS, results="hide"--------------------------------------------------------------------------
 
 # calculate individual tree locations
 vst.loc <- getLocTOS(data=vst$vst_mappingandtagging,
-                           dataProd="vst_mappingandtagging")
+                     dataProd="vst_mappingandtagging")
 
 
 
-## ----vst-diff--------------------------------------------------------------------------------------------
+## ----vst-diff-----------------------------------------------------------------------------------------------
 
 # print variable names that are new
 names(vst.loc)[which(!names(vst.loc) %in% 
-                             names(vst$vst_mappingandtagging))]
+                      names(vst$vst_mappingandtagging))]
 
 
 
-## ----vst-all-trees, fig.cap="All mapped tree locations at WREF"------------------------------------------
+## ----vst-all-trees, fig.cap="All mapped tree locations at WREF"---------------------------------------------
 
-plot(vst.loc$adjEasting, vst.loc$adjNorthing, pch=".",
-     xlab="Easting", ylab="Northing")
+plot(vst.loc$adjEasting, vst.loc$adjNorthing, 
+     pch=".", xlab="Easting", ylab="Northing")
 
 
 
-## ----plot-WREF_085, fig.width=6, fig.height=6, fig.cap="Tree locations in plot WREF_085"-----------------
+## ----plot-WREF_085, fig.width=6, fig.height=6, fig.cap="Tree locations in plot WREF_085"--------------------
 
 plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
      vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
@@ -109,15 +112,16 @@ text(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")],
 
 
 
-## ----join-vst--------------------------------------------------------------------------------------------
+## ----join-vst-----------------------------------------------------------------------------------------------
 
-veg <- merge(vst.loc, vst$vst_apparentindividual,
-             by=c("individualID","namedLocation",
-                  "domainID","siteID","plotID"))
+veg <- joinTableNEON(vst.loc, 
+                     vst$vst_apparentindividual,
+                     name1="vst_mappingandtagging",
+                     name2="vst_apparentindividual")
 
 
 
-## ----plot-WREF_085-diameter, fig.width=6, fig.height=6, fig.cap="Tree bole diameters in plot WREF_085"----
+## ----plot-WREF_085-diameter, fig.width=6, fig.height=6, fig.cap="Tree bole diameters in plot WREF_085"------
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
         veg$adjNorthing[which(veg$plotID=="WREF_085")], 
@@ -126,16 +130,16 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_085")],
 
 
 
-## ----soilT-load, results="hide"--------------------------------------------------------------------------
+## ----soilT-load, results="hide"-----------------------------------------------------------------------------
 
 # load soil temperature data of interest 
 soilT <- loadByProduct(dpID="DP1.00041.001", site="TREE",
                     startdate="2018-07", enddate="2018-07",
-                    avg=30, check.size=F)
+                    timeIndex=30, check.size=F)
 
 
 
-## ----sens-pos--------------------------------------------------------------------------------------------
+## ----sens-pos-----------------------------------------------------------------------------------------------
 
 # create object for sensor positions file
 pos <- soilT$sensor_positions_00041
@@ -148,20 +152,27 @@ View(pos)
 
 
 
-## ----pos-levs--------------------------------------------------------------------------------------------
+## ----pos-levs-----------------------------------------------------------------------------------------------
 
 unique(pos$HOR.VER)
 
 
 
-## ----pos-rem---------------------------------------------------------------------------------------------
+## ----issue-log----------------------------------------------------------------------------------------------
+
+soilT$issueLog_00041[grep("TREE soil plot 1", 
+                     soilT$issueLog_00041$locationAffected),]
+
+
+
+## ----pos-rem------------------------------------------------------------------------------------------------
 
 pos <- pos[-intersect(grep("001.", pos$HOR.VER),
                       which(pos$end=="")),]
 
 
 
-## ----pos-join--------------------------------------------------------------------------------------------
+## ----pos-join-----------------------------------------------------------------------------------------------
 
 # paste horizontalPosition and verticalPosition together
 # to match HOR.VER in the sensor positions file
@@ -175,7 +186,7 @@ soilTHV <- merge(soilT$ST_30_minute, pos,
 
 
 
-## ----soilT-plot, fig.cap="Tiled figure of temperature by depth in each plot"-----------------------------
+## ----soilT-plot, fig.cap="Tiled figure of temperature by depth in each plot"--------------------------------
 
 gg <- ggplot(soilTHV, 
              aes(endDateTime, soilTempMean, 

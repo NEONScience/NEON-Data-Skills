@@ -58,7 +58,7 @@ loaded on your computer to complete this tutorial.
 ### Install R Packages
 
 * **neonUtilities:** `install.packages("neonUtilities")`
-* **neonOS**: `devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")`
+* **neonOS**: `install.packages("neonOS")`
 
 ## Additional Resources
 
@@ -73,13 +73,13 @@ loaded on your computer to complete this tutorial.
 
 First install and load the necessary packages.
 
-```{r setup, eval=c(9,10,11), results="hide"}
+```{r setup, eval=FALSE}
 
-# install packages. can skip this step if already installed
-# update neonOS installation after CRAN release
-#install.packages("neonUtilities")
-#install.packages("visNetwork")
-#devtools::install_github("NEONScience/NEON-OS-data-processing/neonOS")
+# install packages. can skip this step if 
+# the packages are already installed
+install.packages("neonUtilities")
+install.packages("visNetwork")
+install.packages("neonOS")
 
 # load packages
 library(visNetwork)
@@ -88,9 +88,15 @@ library(neonOS)
 
 ```
 
+```{r libraries, include=FALSE}
+library(neonUtilities)
+library(neonOS)
+library(visNetwork)
+```
+
 We'll download Vegetation structure (DP1.10098.001) data from 
-Rocky Mountain National Park (RMNP), and Mosquitoes sampled from 
-CO2 traps (DP1.10043.001) from Toolik Lake (TOOL).
+Rocky Mountain National Park (RMNP), and Rodent pathogen status, 
+tick-borne (DP1.10064.002) from all available sites.
 
 If you're not familiar with the `neonUtilities` package and how to use 
 it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
@@ -131,7 +137,43 @@ potr.samp <- getSampleTree("NEON.PLA.D10.RMNP.03623")
 
 ```
 
-SOME STUFF ABOUT HOW TO UNDERSTAND WHAT YOU'RE LOOKING AT?
+Let's take a look at the table this function returns:
+
+``` {r view-potr}
+
+potr.samp
+
+```
+
+There are 10 columns. The first 5 are:
+
+* sampleUuid: Unique identifier for the sample in the NEON database
+* sampleTag: Identifier for the sample. Frequently human-readable, may be non-unique across sampleClasses.
+* barcode: Identifier in scannable barcode on the sample. Unique within NEON.
+* archiveGuid: Globally unique identifier for an archived sample.
+* sampleClass: Category or type of sample. Used within NEON to classify samples at different levels in the hierarchy, and define expectations for sample handling.
+
+For each row, we describe the sample identified in these 5 columns as the 
+focal sample. The next 5 columns contain the same identifiers and 
+descriptors, but for the parent sample of the focal sample on each row. Note 
+that each parent sample identified in the table will also be a focal sample 
+in at least one row.
+
+Because samples can have multiple parents, and parents can have multiple 
+children, there may be rows with the sample focal sample but different 
+parents, and rows with different focal samples but the same parents. In 
+the case of the sample hierarchy for `NEON.PLA.D10.RMNP.03623`, most of 
+the samples are children of the sample with barcode A00000125509. This is 
+a foliar sample, which is taken from the tree and then split into 
+subsamples for various analyses.
+
+It's usually much easier to understand these relationships visually than in 
+a table. The parent-child relationships create a 
+<a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" target="_blank">directed acyclic graph</a>, and there are many tools available for viewing such graphs. Here, 
+we'll use the `visNetwork` package.
+
+To be understood by the `visNetwork` package, we need to define the "nodes" 
+and "edges" of the graph - that is, the samples and their relationships.
 
 ``` {r plant-network}
 
@@ -145,4 +187,33 @@ visNetwork(nodes=potr.samp,
   visEdges(arrows="to")
 
 ```
+
+This graph displays the relationships, but we don't know which sample 
+is which. It helps to add the sampleClass as a label:
+
+``` {r plant-network-with-labels}
+
+potr.samp$label <- potr.samp$sampleClass
+
+visNetwork(nodes=potr.samp,
+           edges=edges) %>%
+  visNodes(shape="ellipse", font=list(size=10)) %>%
+  visEdges(arrows="to")
+
+```
+
+Now we have a clearer picture. There is one sample with no parents, in 
+the class `taggedPlant`. Referring back to the table, we can see this is 
+the tree itself, that we initially queried, `NEON.PLA.D10.RMNP.03623`. It 
+has two children, one of which is the foliar sample that has many 
+subsamples (children) of its own. If you're familiar with the Foliar traits 
+data product (DP1.10026.001), you'll be able to identify these subsamples 
+easily, as the samples for analysis of lignin, carbon and nitrogen, etc.
+
+There is also one sample with a class label indicating archive, and we can 
+see in the table that it has an `archiveGuid` identifier. You can look up 
+this sample at the NEON Biorepository, where it is stored: 
+<a href="https://biorepo.neonscience.org/portal/collections/individual/index.php?occid=737499&clid=0" target="_blank">barcode A00000134072</a>
+
+TO DO: Example from rodent pathogens? How to conclude? How should people use this info?
 
