@@ -262,9 +262,8 @@ When we output the results, we will want to include the same file information as
 
 
 ```python
-#Get info from chm file for outputting results
+# Get the chm file name for outputting results
 just_chm_file = os.path.basename(chm_file)
-just_chm_file_split = just_chm_file.split(sep="_")
 ```
 
 Now we will get the CHM data...
