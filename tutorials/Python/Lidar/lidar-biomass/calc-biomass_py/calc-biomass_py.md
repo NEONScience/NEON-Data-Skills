@@ -607,6 +607,6 @@ array2raster(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.tif
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_59_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_58_1.png)
     
 
