@@ -51,6 +51,8 @@ If you have already downloaded the data set for the Data Institute, you have the
 
 </div>
 
+### Overview of Biomass Calculation
+
 In this tutorial, we will calculate the biomass for a section of the SJER site. We 
 will be using the Canopy Height Model discrete LiDAR data product as well as NEON
 field data on vegetation data. This tutorial will calculate Biomass for individual 
