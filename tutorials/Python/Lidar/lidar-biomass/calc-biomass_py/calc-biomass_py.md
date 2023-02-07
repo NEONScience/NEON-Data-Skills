@@ -47,7 +47,7 @@ If you have already downloaded the data set for the Data Institute, you have the
 data for this tutorial within the SJER directory. If you would like to just 
 download the data for this tutorial use the following links. 
 
-**Download the Training Data:** <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/SJER_Biomass_Training.csv" download="SJER_Biomass_Training.csv">SJER_Biomass_Training.csv</a> and save it in your working directory.
+**Download the Training Data:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/SJER_Biomass_Training.csv" download="SJER_Biomass_Training.csv">SJER_Biomass_Training.csv</a> and save it in your working directory.
 
 **Download the SJER Canopy Height Model Tile:** <a href="https://storage.googleapis.com/neon-aop-products/2018/FullSite/D17/2018_SJER_3/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D17_SJER_DP3_256000_4106000_CHM.tif" class="link--button link--arrow">NEON_D17_SJER_DP3_256000_4106000_CHM.tif</a>
 
