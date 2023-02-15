@@ -33,8 +33,7 @@
 # 
 # * **requests**
 # * **json** 
-# 
-# 
+# * **rasterio**
 # 
 # </div>
 
@@ -58,13 +57,15 @@
 # 
 # In python we can easily deal with the complexities of the API call with by creating the different parts of the request as strings, then combining them with string concatenation. Concatenating (combining end to end) string in python is as easy as using a `+` sign. This approach makes it easy to modify different parts of our request as needed.
 
-# In[ ]:
+# In[1]:
 
 
+import os
 import requests
 import json
+import itertools
 
-# In[ ]:
+# In[2]:
 
 
 #Every request begins with the server's URL
@@ -75,7 +76,7 @@ SERVER = 'http://data.neonscience.org/api/v0/'
 # 
 # NEON manages 81 different sites across the United States and Puerto Rico. These sites are separated into two main groups, terrestrial and aquatic, and the aquatic sites are further subdivided into lakes, rivers, and wadable streams. Each of these different site types has a different set of instrumentation and observation strategies, therefore, not every data product is available at every site. Often we begin by asking what kinds of data products are available for a given site. This is done by using the *sites/* endpoint in the API; this endpoint is used for getting information about specific NEON field sites. In this example we will query which data products are available at the <a href="https://www.neonscience.org/field-sites/field-sites-map/TEAK" target="_blank">Lower Teakettle (TEAK)</a> site.
 
-# In[ ]:
+# In[3]:
 
 
 #Site Code for Lower Teakettle
@@ -85,13 +86,21 @@ SITECODE = 'TEAK'
 # We first use the requests module to send the API request using the 'get' function; this returns a 'request' object.
 # To more easily access the data returned by the request, we convert the request object into a Python JSON object.
 
-# In[ ]:
+# In[4]:
 
 
-#Make request, using the sites/ endpoint
-site_request = requests.get(SERVER+'sites/'+SITECODE)
+#Define the url, using the sites/ endpoint
+url = SERVER+'sites/'+SITECODE
+print(url)
 
-#Convert to Python JSON object
+
+# In[5]:
+
+
+#Request the url
+site_request = requests.get(url)
+
+#Convert the request to Python JSON object
 site_json = site_request.json()
 
 
@@ -99,17 +108,11 @@ site_json = site_request.json()
 # 
 # Briefly, a list is a collection of data in which each element is identified by index number, while a dictionary is a collection in which each element is identified by a label (called a 'key') that is usually a text string. You can visit the [w3schools website](https://www.w3schools.com/python/python_lists.asp) for more information on lists, and the [realpython website](https://realpython.com/python-dicts/) for more information on dictionaries. 
 # 
-# Dictionaries are defined using curly brackets ({...}) and lists are defined using square brackets (\[...\]). When we look at the request in JSON format, we can see this this is quite a lot of text arranged in nested dicts and lists:
-
-# In[ ]:
-
-
-import itertools
-
+# Dictionaries are defined using curly brackets ({...}) and lists are defined using square brackets (\[...\]). When we look at the request in JSON format, we can see this this is quite a lot of text arranged in nested dicts and lists. Click on the url link to see the data in json format in a new tab.
 
 # At the uppermost level the JSON object is a dictionary containing a single element with the label 'data'. This 'data' element in turn contains a dictionary with elements containing various pieces of information about the site. When we want to know what elements a dict contians, we can use the *.keys()* method to list the keys to each element in that dict.
 
-# In[ ]:
+# In[6]:
 
 
 #Use the 'keys' method to view the component of the uppermost json dictionary
@@ -118,7 +121,7 @@ site_json.keys()
 
 # This output shows that the entire API response is contained within a single dict called 'data'. In order to access any of the information contained within this highest-level 'data' dict, we will need to reference that dict directly. Let's view the different keys that are available within 'data':
 
-# In[ ]:
+# In[7]:
 
 
 #Access the 'data' component, and use the 'keys' method to view to componenets of the json data dictionary
@@ -127,9 +130,9 @@ site_json['data'].keys()
 
 # The returned JSON keys includes information on site location, site type, site name and code, and the availability of different data products for the site. 
 # 
-# Let's use the `.items()` method to look at some of this information in more detail:
+# Let's use the `itertools` package and `.items()` method to look at some of this information in more detail. This next line will print out the first 12 components of the 'data'. 
 
-# In[ ]:
+# In[8]:
 
 
 dict(itertools.islice(site_json['data'].items(),12))
@@ -139,7 +142,7 @@ dict(itertools.islice(site_json['data'].items(),12))
 # 
 # The 'dataProducts' element is a list of dictionaries, one for each type of NEON data product available at the site; each of these dictionaries has the same keys, but different values. Let's look at the JSON for the third to last entry ("\[-3\]") in the list of data products:
 
-# In[ ]:
+# In[9]:
 
 
 #View a data product dictionary
@@ -148,7 +151,7 @@ site_json['data']['dataProducts'][-3]
 
 # Lists are a type of sequential data, so we can use Python's *for* loop to directly go through every element one by one, in this case to print out the data product code and data product name.
 
-# In[ ]:
+# In[10]:
 
 
 #View product code and name for every available data product
@@ -158,7 +161,7 @@ for product in site_json['data']['dataProducts']:
 
 # Typically, we use site queries to determine which months a particular data product is available at a given site. Let's look for the availability of Ecosystem structure (DP3.30015.001) - this is the Canopy Height Model, one of the data products generated by NEON's Airborne Observation Platform (AOP).
 
-# In[ ]:
+# In[11]:
 
 
 #Set the Ecosystem structure (CHM) data product
@@ -167,7 +170,7 @@ PRODUCTCODE = 'DP3.30015.001'
 
 # For each data product, there will be a list of the months for which data of that type was collected and it available at the site, and a corresponding list with the URLs that we would put into the API to get data on that month of data products.
 
-# In[ ]:
+# In[12]:
 
 
 #Get available months of Ecosystem structure data products for TEAK site
@@ -184,7 +187,7 @@ for product in site_json['data']['dataProducts']:
 # 
 # Alternatively, we may want a specific type of data product, but aren't certain of the sites and months for which that data is available. In this case we can use the product code and the *products/* API endpoint to look up availability.
 
-# In[ ]:
+# In[13]:
 
 
 #Make request
@@ -194,7 +197,7 @@ product_json = product_request.json()
 
 # The product JSON will again store everything first in a 'data' element. Within this container, the product data is a dictionary with information on the data product we are looking up.
 
-# In[ ]:
+# In[14]:
 
 
 #Print keys for product data dictionary
@@ -203,7 +206,7 @@ print(product_json['data'].keys())
 
 # This request returned a lot of different types of information. Much of this information is meant to provide explanations and context for the data product. Let's look at the abstract, which provides a relatively brief description of the data product.
 
-# In[ ]:
+# In[15]:
 
 
 #Print code, name, and abstract of data product
@@ -215,7 +218,7 @@ print(product_json['data']['productAbstract'])
 # 
 # For looking up the availability of the data product, we want the 'siteCodes' element. This is a list with an entry for each site at which the data product is available. Each site entry is a dict whose elements includes site code, a list of months for which data is available, and a list of the API request URLs to request data for that site for a given month.
 
-# In[ ]:
+# In[16]:
 
 
 #View keys of one site dictionary
@@ -224,7 +227,7 @@ print(product_json['data']['siteCodes'][0].keys())
 
 # We can look up the availability of data at a particular site, and get a URL to request data for a specific month. We know from earlier that Lower Teakettle (TEAK) has the data product we want for June 2018; we can get the URL needed to request that data with nested loops through site and month lists.
 
-# In[ ]:
+# In[17]:
 
 
 #View available months and corresponding API urls, then save desired URL
@@ -236,7 +239,7 @@ for site in product_json['data']['siteCodes']:
                 data_url = month[1]
 
 
-# In[ ]:
+# In[18]:
 
 
 print(data_url)
@@ -246,7 +249,7 @@ print(data_url)
 # 
 # We now know that landbird count data products are available for 2018-06 at the Lower Teakettle site. Using the server url, site code, product code, and a year-month argument, we can make a request to the *data/* endpoint of the NEON API. This will allow us to see what specific landbird count data files can be obtained for 2018-06 at the Lower Teakettle site, and to learn the locations of these files as URLs.
 
-# In[ ]:
+# In[19]:
 
 
 #Make Request
@@ -256,7 +259,7 @@ data_json = data_request.json()
 
 # Alternatively we could use one of the "Available Data URLs" from a *sites/* or *products/* request, like the data_url we saved earlier.
 
-# In[ ]:
+# In[20]:
 
 
 #Make request with saved url
@@ -264,7 +267,7 @@ data_request = requests.get(data_url)
 data_json = data_request.json()
 
 
-# In[ ]:
+# In[21]:
 
 
 #Print dict key for 'data' element of data JSON
@@ -273,9 +276,9 @@ print(data_json['data'].keys())
 
 # As with the sites JSON content, the uppermost level of a data request JSON object is a dictionary whose only member has the 'data' key; this member in turn is a dictionary with the product code, the sitecode, the month, and a list of the available data files.
 # 
-# The 'files' list is a list of python dictionaries, one for each file available based on our query; the dictionary for each file includes an internal reference code, the file name, the size of the file in bytes, and the url at which the file is located.
+# The `'files'` list is a list of python dictionaries, one for each file available based on our query. The dictionary for each file includes the `name` of the file, `size` of the file in bytes, a `crc32c` checksum code, and the `url` of the file - clicking on this url will download the file.
 
-# In[ ]:
+# In[22]:
 
 
 #View keys and values in first file dict
@@ -283,7 +286,9 @@ for key in data_json['data']['files'][0].keys(): #Loop through keys of the data 
     print(key,':\t', data_json['data']['files'][0][key])
 
 
-# In[ ]:
+# Next let's take a look at the names of the first 10 files, by looping through the `data_json['data']['files']` list:
+
+# In[23]:
 
 
 #Display the names of the first 10 files
@@ -295,11 +300,11 @@ for file in data_json['data']['files'][:10]:
 # 
 # We can use **if** statements to get info on only the CHM files. The Python **in** operator checks if a particular value is present in a sequence, in this case we'll check if a particular series of characters `'CHM.tif'` is present in the file name string.
 
-# In[ ]:
+# In[24]:
 
 
 for file in data_json['data']['files'][:20]:
-    if 'CHM.tif' in file['name']: #if file name includes 'CHM.tif'
+    if 'CHM.tif' in file['name']:
         print(file['name'])
         print(file['url'])
 
@@ -308,7 +313,7 @@ for file in data_json['data']['files'][:20]:
 
 # Lastly, let's plot the CHM tile. You can do this with a number of different packages, but we'll show how to do it with the `rasterio` package. 
 
-# In[ ]:
+# In[25]:
 
 
 import rasterio as rio
@@ -316,15 +321,16 @@ import matplotlib.pyplot as plt
 from rasterio.plot import show
 
 
-# In[ ]:
+# In[26]:
 
 
-#Read in the chm file
-chm_tif = r"C:\Users\bhass\Downloads\NEON_D17_TEAK_DP3_319000_4107000_CHM.tif"
+#Read in the CHM file - change the path if it's not in this Downloads directory
+username = os.getlogin()
+chm_tif = r'C:/Users/'+username+'/Downloads/NEON_D17_TEAK_DP3_319000_4107000_CHM.tif'
 chm = rio.open(chm_tif)
 
 
-# In[ ]:
+# In[27]:
 
 
 #Configure the plot
