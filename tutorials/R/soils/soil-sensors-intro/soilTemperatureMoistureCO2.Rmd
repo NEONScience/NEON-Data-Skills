@@ -1,7 +1,7 @@
 ---
 title: "Introduction to NEON soil sensor data"
 syncID: 454afb27a5f445ed95a1829d5d7ee130
-description: Create a time series plot of soil temperature, moisture, and CO~2~ concentrations
+description: Create a time series plot of soil temperature, moisture, and CO<sub>2</sub> concentrations
   to investigate relationships
 output:
   html_document:
@@ -20,13 +20,13 @@ dateCreated: "2023-1-27"
 ---
 
 This data tutorial provides instruction on working with three different NEON 
-data products to investigate controls on soil CO~2~ concentrations: 
+data products to investigate controls on soil CO<sub>2</sub> concentrations: 
 
 * **DP1.00041.001, Soil temperature**
 * **DP1.00094.001, Soil water content and water salinity**
-* **DP1.00095.001, Soil CO~2~ concentration**
+* **DP1.00095.001, Soil CO<sub>2</sub> concentration**
 
-<a href="https://data.neonscience.org/data-products/DP1.00040.001" target="_blank">Soil temperature</a>, <a href="https://data.neonscience.org/data-products/DP1.00094.001" target="_blank">soil water content</a>, and <a href="https://data.neonscience.org/data-products/DP1.00095.001" target="_blank">soil CO~2~ concentration</a> are measured in each of the five sensor-based soil plots at each NEON terrestrial site. Vertical profiles of soil temperature (up to 9 measurement levels per plot) and soil water content (up to 8 levels) are measured from near the soil surface down to 2 m deep or restrictive feature if shallower. Soil CO~2~ concentrations are measured at three different surface soil depths, typically <20 cm deep. Within each soil plot all these measurements are made within a few meters of one-another.
+<a href="https://data.neonscience.org/data-products/DP1.00040.001" target="_blank">Soil temperature</a>, <a href="https://data.neonscience.org/data-products/DP1.00094.001" target="_blank">soil water content</a>, and <a href="https://data.neonscience.org/data-products/DP1.00095.001" target="_blank">soil CO<sub>2</sub> concentration</a> are measured in each of the five sensor-based soil plots at each NEON terrestrial site. Vertical profiles of soil temperature (up to 9 measurement levels per plot) and soil water content (up to 8 levels) are measured from near the soil surface down to 2 m deep or restrictive feature if shallower. Soil CO<sub>2</sub> concentrations are measured at three different surface soil depths, typically <20 cm deep. Within each soil plot all these measurements are made within a few meters of one-another.
 
 We will be using data from the <a href="https://www.neonscience.org/field-sites/cper" target="_blank">Central Plains Experimental Range</a> (CPER) site in Colorado, which is moderately grazed shortgrass steppe with hot dry summers and cold winters.
 
@@ -60,11 +60,11 @@ library(neonUtilities)
 
 ## 2. Download the data
 
-Download the soil temperature, soil water content, and soil CO~2~ concentration 
+Download the soil temperature, soil water content, and soil CO<sub>2</sub> concentration 
 data using the `loadByProduct()` function in the `neonUtilities` package. Inputs 
 needed for the function are:
 
-* `dpID`: data product ID; soil temperature = DP1.00041.001 (or soil water content = DP1.00094.001, or soil CO~2~ concentration = DP1.00095.001)
+* `dpID`: data product ID; soil temperature = DP1.00041.001 (or soil water content = DP1.00094.001, or soil CO<sub>2</sub> concentration = DP1.00095.001)
 * `site`: (vector of) 4-letter site codes; Central Plains Experimental Range = CPER
 * `startdate`: start year and month (YYYY-MM); January 2021 = 2021-01
 * `enddate`: end year and month (YYYY-MM); December 2021 = 2021-12
@@ -110,7 +110,7 @@ co2 <- loadByProduct(dpID="DP1.00095.001",
 
 The data we downloaded contains data from each of the five sensor-based soil plots, but here we will just focus on one of the soil plots (soil plot 1; horizontalPosition = "001"). In addition, soil temperature is measured at multiple depths in each soil plot, but for simplicity we will just use measurements with a nominal depth of 6 cm (verticalPosition = "502"). Lastly, we only want to use data that passed the QA/QC tests (finalQF = 0). The following steps will identify the rows that correspond to each of these conditions and we will then identify the rows corresponding to all of these conditions using the `intersect()` function.
 
-```{r temp rows}
+```{r temp-rows}
 
 p1rowsT <- grep("001", st$ST_30_minute$horizontalPosition)
 d2rowsT <- grep("502", st$ST_30_minute$verticalPosition)
@@ -121,7 +121,7 @@ useTheseT <- intersect(intersect(p1rowsT, d2rowsT), goodRowsT)
 
 Next let's identify the exact measurement depth so we can add that to the plot legend. To do this we'll use the `st$sensor_positions_00041` data frame, which contains information about the physical location of the sensors such as their depth, their distance from the soil plot reference corner, and the latitude, longitude and elevation of the soil plot reference corner. We can get a sense of the type of data in the sensor positions file using the `head` function.
 
-```{r temp depth}
+```{r temp-depth}
 
 head(st$sensor_positions_00041)
 
@@ -129,7 +129,7 @@ head(st$sensor_positions_00041)
 
 We just want to know the depth (zOffset) of the sensor in soil plot 1 measurement level 2 (HOR.VER = "001.502") so we'll filter that value.
 
-```{r temp depth 2}
+```{r temp-depth-2}
 
 st$sensor_positions_00041[grep("001.502", st$sensor_positions_00041$HOR.VER), "zOffset"]
 
@@ -137,16 +137,16 @@ st$sensor_positions_00041[grep("001.502", st$sensor_positions_00041$HOR.VER), "z
 
 This results in two depth values (albeit the same in this example), but we can check which one corresponds to our date range (i.e., 2021) by displaying the start and end date for each value. This shows a zOffset of -0.06, indicating that the measurement was 0.06 m (6 cm) below the soil surface.
 
-```{r temp depth 3}
+```{r temp-depth-3}
 
 st$sensor_positions_00041[grep("001.502", st$sensor_positions_00041$HOR.VER), 
-                             c("referenceStart", "referenceEnd", "zOffset")]
+                             c("positionStartDateTime", "positionEndDateTime", "zOffset")]
 
 ```
 
 Now let's see what the data look like! Make a time series plot of soil temperature at CPER soil plot 1 measurement level 2 and add a legend indicating the sensor was at 6 cm.
 
-```{r temp plot}
+```{r temp-plot}
 
 plot(st$ST_30_minute$startDateTime[useTheseT], 
      st$ST_30_minute$soilTempMean[useTheseT], 
@@ -165,7 +165,7 @@ We see the expected pattern of warmer soil temperatures in the summer and cooler
 
 Now we'll identify the soil water content rows corresponding to soil plot 1 (horizontalPosition = "001"), with a nominal depth of 6 cm (verticalPosition = "501"), and that passed the QA/QC tests (VSWCFinalQF = 0).
 
-```{r swc row}
+```{r swc-row}
 
 p1rowsM <- grep("001", swc$SWS_30_minute$horizontalPosition)
 d1rowsM <- grep("501", swc$SWS_30_minute$verticalPosition)
@@ -180,7 +180,7 @@ The <a href="https://data.neonscience.org/data-products/DP1.00094.001" target="_
 
 Looking at the row in this file with siteID = CPER, horizontalPosition.HOR = "001" (soil plot 1), and verticalPosition.VER = "501 (measurement level 1) we see that the measurement depth was -0.06 m (i.e., 6 cm below the soil surface). Now we can also add a legend to the soil water content time series.
 
-```{r swc plot}
+```{r swc-plot}
 
 labelM=expression(paste("Soil water content (m"^" 3", " m"^"-3", ")"))
 plot(swc$SWS_30_minute$startDateTime[useTheseM], 
@@ -194,7 +194,7 @@ legend("topleft", legend="6 cm", lty=1, bty="n")
 
 Looks good except the superscripts are partially cut off on the y-axis label. Let's adjust the plot margins to create enough space for the label using the `mar` graphical parameter.
 
-```{r swc plot 2}
+```{r swc-plot-2}
 
 par(mar=c(3,5,2,1))
 plot(swc$SWS_30_minute$startDateTime[useTheseM], 
@@ -208,11 +208,11 @@ legend("topleft", legend="6 cm", lty=1, bty="n")
 
 That's better. Soil water content shows typical patterns of sharp rises in moisture (presumably from rain events) followed by gradual declines as the soil dries. Soil moisture is higher in the first half of the year, which is typical of the climate at CPER where snow melt and rain events often occur in spring and early summer, followed by a drier late summer and fall.
 
-## 5. Soil CO~2~ concentration
+## 5. Soil CO<sub>2</sub> concentration
 
-Now we want to see the temporal patterns in soil CO~2~ concentration data. Soil CO~2~ concentration is measured at three depths in surface soils in each soil plot and we'll look at data from all three depths. As we did with soil temperature and soil water content, we'll first identify the rows that correspond to soil plot 1, each measurement level (verticalPosition = "501", "502", or "503"), and that passed the QA/QC tests (finalQF = 0). 
+Now we want to see the temporal patterns in soil CO<sub>2</sub> concentration data. Soil CO<sub>2</sub> concentration is measured at three depths in surface soils in each soil plot and we'll look at data from all three depths. As we did with soil temperature and soil water content, we'll first identify the rows that correspond to soil plot 1, each measurement level (verticalPosition = "501", "502", or "503"), and that passed the QA/QC tests (finalQF = 0). 
 
-```{r co2 rows}
+```{r co2-rows}
 
 # Identify rows for soil plot 1
 p1rowsC <- grep("001", co2$SCO2C_30_minute$horizontalPosition)
@@ -234,10 +234,10 @@ useTheseC3 <- intersect(intersect(p1rowsC, d3rowsC), goodRowsC)
 
 Next let's find out the depths of these measurements by identifying the rows corresponding to soil plot 1 in the sensor_positions table.
 
-```{r co2 depths}
+```{r co2-depths}
 
 rows <- grep(c("001"), co2$sensor_positions_00095$HOR.VER)
-co2$sensor_positions_00095[rows, c("referenceStart", "referenceEnd", "zOffset")]
+co2$sensor_positions_00095[rows, c("positionStartDateTime", "positionEndDateTime", "zOffset")]
 
 ```
 
@@ -245,7 +245,7 @@ For our date range (2021) the sensors were measuring at 2, 6, and 10 cm below th
 
 Next we'll create an axis label using the `expression()` function to display the subscript and then create the time series plot. The `points()` function is used to add data from measurement levels 2 and 3 to the graph of level 1.
 
-```{r co2 plot}
+```{r co2-plot}
 
 labelC=expression(paste("Soil CO"[2]," concentration (ppm)"))
 plot(co2$SCO2C_30_minute$startDateTime[useTheseC1], 
@@ -266,16 +266,16 @@ legend("topleft", legend=c("2 cm", "6 cm", "10 cm"), lty=1, col=c("black", "red"
 
 ```
 
-Soil CO~2~ concentrations were higher in the summer and close to atmospheric levels in the winter, likely reflecting periods of higher root, microbial and other soil organism activity. The typical soil CO~2~ concentration depth profile is also clear, with higher concentrations deeper in the soil reflecting the long time it takes CO~2~ produced at depth to diffuse to the atmosphere relative to CO~2~ produced near the soil surface.
+Soil CO<sub>2</sub> concentrations were higher in the summer and close to atmospheric levels in the winter, likely reflecting periods of higher root, microbial and other soil organism activity. The typical soil CO<sub>2</sub> concentration depth profile is also clear, with higher concentrations deeper in the soil reflecting the long time it takes CO<sub>2</sub> produced at depth to diffuse to the atmosphere relative to CO<sub>2</sub> produced near the soil surface.
 
 ## 6. Displaying the time series together
 
-Now we've created separate time series plots for soil temperature, water content, and soil CO~2~ concentration. However, to help us looks for relationships between the three data sets it can be useful to plot them all on a single multi-panel plot.
+Now we've created separate time series plots for soil temperature, water content, and soil CO<sub>2</sub> concentration. However, to help us looks for relationships between the three data sets it can be useful to plot them all on a single multi-panel plot.
 
 To do this we will first change the graphical parameter `mfcol` to produce one column with three rows (one row for each plot). We 
-will also change the margins of the plots by adjusting the `mar` parameter to leave enough space for the axis labels. Then we'll add the temperature, water content, and CO~2~ concentration plots sequentially using the same code as above.
+will also change the margins of the plots by adjusting the `mar` parameter to leave enough space for the axis labels. Then we'll add the temperature, water content, and CO<sub>2</sub> concentration plots sequentially using the same code as above.
 
-```{r combined plot}
+```{r combined-plot}
 
 par(mfcol=c(3,1))
 par(mar=c(3,5,2,1))
@@ -316,7 +316,7 @@ legend("topleft", legend=c("2 cm", "6 cm", "10 cm"), lty=1, col=c("black", "red"
 
 ```
 
-This multi-panel plot suggests that both soil temperature and water content influence soil CO~2~ concentrations at CPER. Specifically, soil CO~2~ concentrations tend to be low when the soil is cold regardless of water content, likewise concentrations tend to be low when the soil is dry regardless of temperature. When the soil is warm, CO~2~ concentrations responds rapidly to increases in soil moisture and then gradually decrease as the soil dries, presumably due to changes in the activity of roots and soil organisms.
+This multi-panel plot suggests that both soil temperature and water content influence soil CO<sub>2</sub> concentrations at CPER. Specifically, soil CO<sub>2</sub> concentrations tend to be low when the soil is cold regardless of water content, likewise concentrations tend to be low when the soil is dry regardless of temperature. When the soil is warm, CO<sub>2</sub> concentrations responds rapidly to increases in soil moisture and then gradually decrease as the soil dries, presumably due to changes in the activity of roots and soil organisms.
 
-In this tutorial we've focused on soil CO~2~ concentrations but most researchers are more interested in soil respiration rates than the soil CO~2~ concentrations themselves. Soil respiration can be calculated using these data products in combination with other NEON products, but this requires calculation of the soil CO~2~ diffusivity coefficient which is too complex to include in a brief data skills tutorial. However, some researchers have already started developing code to make these calculations based on NEON data (e.g., <a href="https://essopenarchive.org/doi/full/10.1002/essoar.10501234.1" target="_blank">Ayres 2019</a>, <a href="https://agu2022fallmeeting-agu.ipostersessions.com/Default.aspx?s=5E-2D-B8-23-AC-2B-28-D5-35-E9-3C-5E-E7-4B-3B-5C" target="_blank">Zobitz et al. 2022a</a>, <a href="https://github.com/jmzobitz/NEONSoils" target="_blank">Zobitz et al. 2022b</a>).
+In this tutorial we've focused on soil CO<sub>2</sub> concentrations but most researchers are more interested in soil respiration rates than the soil CO<sub>2</sub> concentrations themselves. Soil respiration can be calculated using these data products in combination with other NEON products, but this requires calculation of the soil CO<sub>2</sub> diffusivity coefficient which is too complex to include in a brief data skills tutorial. However, some researchers have already started developing code to make these calculations based on NEON data (e.g., <a href="https://essopenarchive.org/doi/full/10.1002/essoar.10501234.1" target="_blank">Ayres 2019</a>, <a href="https://agu2022fallmeeting-agu.ipostersessions.com/Default.aspx?s=5E-2D-B8-23-AC-2B-28-D5-35-E9-3C-5E-E7-4B-3B-5C" target="_blank">Zobitz et al. 2022a</a>, <a href="https://github.com/jmzobitz/NEONSoils" target="_blank">Zobitz et al. 2022b</a>).
  
