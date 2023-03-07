@@ -38,7 +38,7 @@ co2 <- loadByProduct(dpID="DP1.00095.001",
 
 
 
-## ----temp rows-------------------------------------------------------------------------------------------
+## ----temp-rows-------------------------------------------------------------------------------------------
 
 p1rowsT <- grep("001", st$ST_30_minute$horizontalPosition)
 d2rowsT <- grep("502", st$ST_30_minute$verticalPosition)
@@ -47,26 +47,26 @@ useTheseT <- intersect(intersect(p1rowsT, d2rowsT), goodRowsT)
 
 
 
-## ----temp depth------------------------------------------------------------------------------------------
+## ----temp-depth------------------------------------------------------------------------------------------
 
 head(st$sensor_positions_00041)
 
 
 
-## ----temp depth 2----------------------------------------------------------------------------------------
+## ----temp-depth-2----------------------------------------------------------------------------------------
 
 st$sensor_positions_00041[grep("001.502", st$sensor_positions_00041$HOR.VER), "zOffset"]
 
 
 
-## ----temp depth 3----------------------------------------------------------------------------------------
+## ----temp-depth-3----------------------------------------------------------------------------------------
 
 st$sensor_positions_00041[grep("001.502", st$sensor_positions_00041$HOR.VER), 
-                             c("referenceStart", "referenceEnd", "zOffset")]
+                             c("positionStartDateTime", "positionEndDateTime", "zOffset")]
 
 
 
-## ----temp plot-------------------------------------------------------------------------------------------
+## ----temp-plot-------------------------------------------------------------------------------------------
 
 plot(st$ST_30_minute$startDateTime[useTheseT], 
      st$ST_30_minute$soilTempMean[useTheseT], 
@@ -78,7 +78,7 @@ legend("topleft", legend="6 cm", lty=1, bty="n")
 
 
 
-## ----swc row---------------------------------------------------------------------------------------------
+## ----swc-row---------------------------------------------------------------------------------------------
 
 p1rowsM <- grep("001", swc$SWS_30_minute$horizontalPosition)
 d1rowsM <- grep("501", swc$SWS_30_minute$verticalPosition)
@@ -87,7 +87,7 @@ useTheseM <- intersect(intersect(p1rowsM, d1rowsM), goodRowsM)
 
 
 
-## ----swc plot--------------------------------------------------------------------------------------------
+## ----swc-plot--------------------------------------------------------------------------------------------
 
 labelM=expression(paste("Soil water content (m"^" 3", " m"^"-3", ")"))
 plot(swc$SWS_30_minute$startDateTime[useTheseM], 
@@ -99,7 +99,7 @@ legend("topleft", legend="6 cm", lty=1, bty="n")
 
 
 
-## ----swc plot 2------------------------------------------------------------------------------------------
+## ----swc-plot-2------------------------------------------------------------------------------------------
 
 par(mar=c(3,5,2,1))
 plot(swc$SWS_30_minute$startDateTime[useTheseM], 
@@ -111,7 +111,7 @@ legend("topleft", legend="6 cm", lty=1, bty="n")
 
 
 
-## ----co2 rows--------------------------------------------------------------------------------------------
+## ----co2-rows--------------------------------------------------------------------------------------------
 
 # Identify rows for soil plot 1
 p1rowsC <- grep("001", co2$SCO2C_30_minute$horizontalPosition)
@@ -131,14 +131,14 @@ useTheseC3 <- intersect(intersect(p1rowsC, d3rowsC), goodRowsC)
 
 
 
-## ----co2 depths------------------------------------------------------------------------------------------
+## ----co2-depths------------------------------------------------------------------------------------------
 
 rows <- grep(c("001"), co2$sensor_positions_00095$HOR.VER)
-co2$sensor_positions_00095[rows, c("referenceStart", "referenceEnd", "zOffset")]
+co2$sensor_positions_00095[rows, c("positionStartDateTime", "positionEndDateTime", "zOffset")]
 
 
 
-## ----co2 plot--------------------------------------------------------------------------------------------
+## ----co2-plot--------------------------------------------------------------------------------------------
 
 labelC=expression(paste("Soil CO"[2]," concentration (ppm)"))
 plot(co2$SCO2C_30_minute$startDateTime[useTheseC1], 
@@ -159,7 +159,7 @@ legend("topleft", legend=c("2 cm", "6 cm", "10 cm"), lty=1, col=c("black", "red"
 
 
 
-## ----combined plot---------------------------------------------------------------------------------------
+## ----combined-plot---------------------------------------------------------------------------------------
 
 par(mfcol=c(3,1))
 par(mar=c(3,5,2,1))
