@@ -387,12 +387,18 @@ Now we can specifically look at the sensor positions file.
 
     names(pos)
 
-    ##  [1] "siteID"               "HOR.VER"              "name"                 "description"         
-    ##  [5] "start"                "end"                  "referenceName"        "referenceDescription"
-    ##  [9] "referenceStart"       "referenceEnd"         "xOffset"              "yOffset"             
-    ## [13] "zOffset"              "pitch"                "roll"                 "azimuth"             
-    ## [17] "referenceLatitude"    "referenceLongitude"   "referenceElevation"   "eastOffset"          
-    ## [21] "northOffset"          "xAzimuth"             "yAzimuth"             "publicationDate"
+    ##  [1] "siteID"                           "HOR.VER"                         
+    ##  [3] "sensorLocationID"                 "sensorLocationDescription"       
+    ##  [5] "positionStartDateTime"            "positionEndDateTime"             
+    ##  [7] "referenceLocationID"              "referenceLocationIDDescription"  
+    ##  [9] "referenceLocationIDStartDateTime" "referenceLocationIDEndDateTime"  
+    ## [11] "xOffset"                          "yOffset"                         
+    ## [13] "zOffset"                          "pitch"                           
+    ## [15] "roll"                             "azimuth"                         
+    ## [17] "locationReferenceLatitude"        "locationReferenceLongitude"      
+    ## [19] "locationReferenceElevation"       "eastOffset"                      
+    ## [21] "northOffset"                      "xAzimuth"                        
+    ## [23] "yAzimuth"                         "publicationDate"
 
     # view table
 
@@ -425,7 +431,7 @@ The HOR and VER indices in the sensor positions file correspond to the
 `verticalPosition` and `horizontalPosition` fields in `soilT$ST_30_minute`.
 
 Note that there are two sets of position data for soil plot 001, and that 
-one set has an `end` date in the file. This indicates sensors either 
+one set has a `positionEndDateTime` date in the file. This indicates sensors either 
 moved or were relocated; in this case there was a frost heave incident. 
 You can read about it in the issue log, which is displayed on the 
 <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page, 
@@ -447,13 +453,13 @@ and also included as a table in the data download:
 Since we're working with data from July 2018, and the change in 
 sensor locations is dated Nov 2018, we'll use the original locations. 
 There are a number of ways to drop the later locations from the 
-table; here, we find the rows in which the `end` field is empty, 
+table; here, we find the rows in which the `positionEndDateTime` field is empty, 
 indicating no end date, and the rows corresponding to soil plot 001, 
 and drop all the rows that meet both criteria.
 
 
     pos <- pos[-intersect(grep("001.", pos$HOR.VER),
-                          which(pos$end=="")),]
+                          which(pos$positionEndDateTime=="")),]
 
 Our goal is to plot a time series of temperature, stratified by 
 depth, so let's start by joining the data file and sensor positions 
@@ -490,7 +496,7 @@ is its own line:
 
     gg
 
-    ## Warning: Removed 1488 row(s) containing missing values (geom_path).
+    ## Warning: Removed 1488 rows containing missing values (`geom_line()`).
 
 
 ![Tiled figure of temperature by depth in each plot](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-1.png)

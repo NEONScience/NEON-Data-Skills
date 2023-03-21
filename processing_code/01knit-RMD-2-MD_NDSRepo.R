@@ -19,6 +19,7 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
           "R/Lidar/lidar-topography/veg_structure_and_chm",
           "R/NEON-general/neon-code-packages/neonOS",
           "R/soils/soil-sensors-intro",
+          "R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp",
           "Python/GCP/discharge-bq-demo")
 
 #################### Set up Input Variables #############################
