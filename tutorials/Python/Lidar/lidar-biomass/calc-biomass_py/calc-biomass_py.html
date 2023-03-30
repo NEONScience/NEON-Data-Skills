@@ -14585,12 +14585,12 @@ title: "Calculate Vegetation Biomass from LiDAR Data in Python"
 description: "Learn to calculate the biomass of standing vegetation using a canopy height model data product." 
 dateCreated: 2017-06-21 
 authors: Tristan Goulden
-contributors: Donal O'Leary
+contributors: Donal O'Leary, Bridget Hass
 estimatedTime: 1 hour
-packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot, os
-topics: lidar,remote-sensing
+packagesLibraries: os, sys, numpy, matplotlib, gdal, scipy, scikit-learn, scikit-image
+topics: lidar, remote-sensing
 languagesTool: python
-dataProduct: DP1.10098.001, DP3.30015.001, 
+dataProduct: DP1.10098.001, DP3.30015.001 
 code1: <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py.ipynb">https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py.ipynb</a>
 tutorialSeries: intro-lidar-py-series</p>
 <h2 id="urlTitle:-calc-biomass-py">urlTitle: calc-biomass-py<a class="anchor-link" href="#urlTitle:-calc-biomass-py">&#182;</a></h2>
@@ -14623,11 +14623,16 @@ After completing this tutorial, you will be able to:
 
 ### Install Python Packages
 
-* **os**
-* **numpy**
 * **gdal** 
-* **matplotlib**
 * **scipy** 
+* **scikit-learn**
+* **scikit-image**
+
+The following packages should be part of the standard conda installation:
+* **os**
+* **sys**
+* **numpy**
+* **matplotlib**
 
 
 ### Download Data
@@ -14651,23 +14656,17 @@ download the data for this tutorial use the following links.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In this tutorial, we will calculate the biomass for a section of the SJER site. We 
-will be using the Canopy Height Model discrete LiDAR data product as well as NEON
-field data on vegetation data. This tutorial will calculate Biomass for individual 
+<p>In this tutorial, we will calculate the biomass for a section of the SJER site. We will be using the Canopy Height Model discrete LiDAR data product as well as NEON field data on vegetation data. This tutorial will calculate biomass for individual 
 trees in the forest.</p>
 <p>The calculation of biomass consists of four primary steps:</p>
 <ol>
-<li>Delineating individual tree crowns</li>
-<li>Calculating predictor variables for all individuals</li>
-<li>Collecting training data</li>
-<li>Applying a regression model to estiamte biomass from predictors</li>
+<li>Delineate individual tree crowns</li>
+<li>Calculate predictor variables for all individual trees</li>
+<li>Collect training data</li>
+<li>Apply a Random Forest regression model to estimate biomass from the predictor variables</li>
 </ol>
-<p>In this tutorial we will use a watershed segmentation algorithm for delineating 
-tree crowns (step 1) and and a Random Forest (RF) machine learning algorithm for 
-relating the predictor variables to biomass (part 4). The predictor variables were 
-selected following suggestions by Gleason et al. (2012) and biomass estimates were 
-determined from DBH (diamter at breast height) measurements following relationships 
-given in Jenkins et al. (2003).</p>
+<p>In this tutorial we will use a watershed segmentation algorithm for delineating tree crowns (step 1) and and a Random Forest (RF) machine learning algorithm for relating the predictor variables to biomass (part 4). The predictor variables were 
+selected following suggestions by Gleason et al. (2012) and biomass estimates were determined from DBH (diameter at breast height) measurements following relationships given in Jenkins et al. (2003).</p>
 <h2 id="Get-Started">Get Started<a class="anchor-link" href="#Get-Started">&#182;</a></h2><p>First, we will import some Python packages required to run various parts of the script:</p>
 
 </div>
@@ -14701,61 +14700,7 @@ given in Jenkins et al. (2003).</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Next, we need to specify the directory where we will find and save the data needed for this tutorial. You may need to change this line if you have a different working directly, or to suit your local machine. I have decided to save my data in the following directory:</p>
-
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span><span class="s1">&#39;neon_biomass_tutorial&#39;</span><span class="p">,</span><span class="s1">&#39;data&#39;</span><span class="p">))</span>
-<span class="n">data_path</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;D:\\neon_biomass_tutorial\\data&#39;</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Next, we will add libraries from skilearn which will help with the watershed delination, determination of predictor variables and random forest algorithm</p>
+<p>Next, we will add libraries from scikit-learn which will help with the watershed delination, determination of predictor variables and random forest algorithm</p>
 
 </div>
 </div>
@@ -14765,7 +14710,7 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Import biomass specific libraries</span>
@@ -14787,9 +14732,63 @@ given in Jenkins et al. (2003).</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p>We also need to specify the directory where we will find and save the data needed for this tutorial. You may need to change this line to follow a different working directory structure, or to suit your local machine. I have decided to save my data in the following directory:</p>
+
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span><span class="s1">&#39;neon_biomass_tutorial&#39;</span><span class="p">,</span><span class="s1">&#39;data&#39;</span><span class="p">))</span>
+<span class="n">data_path</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;D:\\neon_biomass_tutorial\\data&#39;</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="Define-functions">Define functions<a class="anchor-link" href="#Define-functions">&#182;</a></h2><p>Now we will define a few functions that allow us to more easily work with the NEON data.</p>
 <ul>
-<li><code>plot_band_array</code>: function to plot NEON spatial data.</li>
+<li><code>plot_band_array</code>: function to plot NEON geospatial raster data</li>
 </ul>
 
 </div>
@@ -14803,8 +14802,7 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Define plot band array function</span>
-
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Define a function to plot a raster band</span>
 <span class="k">def</span> <span class="nf">plot_band_array</span><span class="p">(</span><span class="n">band_array</span><span class="p">,</span><span class="n">image_extent</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">cmap_title</span><span class="p">,</span><span class="n">colormap</span><span class="p">,</span><span class="n">colormap_limits</span><span class="p">):</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">band_array</span><span class="p">,</span><span class="n">extent</span><span class="o">=</span><span class="n">image_extent</span><span class="p">)</span>
     <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span> <span class="n">plt</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="n">colormap</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">clim</span><span class="p">(</span><span class="n">colormap_limits</span><span class="p">)</span>
@@ -14827,7 +14825,7 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <ul>
-<li><code>array2raster</code>: function to output geotiff files.</li>
+<li><code>array2raster</code>: function to convert a numpy array to a geotiff file</li>
 </ul>
 
 </div>
@@ -14857,7 +14855,6 @@ given in Jenkins et al. (2003).</p>
     <span class="n">outRasterSRS</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
     <span class="n">outRaster</span><span class="o">.</span><span class="n">SetProjection</span><span class="p">(</span><span class="n">outRasterSRS</span><span class="o">.</span><span class="n">ExportToWkt</span><span class="p">())</span>
     <span class="n">outband</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>
-    
 </pre></div>
 
      </div>
@@ -14873,7 +14870,7 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <ul>
-<li><code>raster2array</code>: function to conver rasters to an array.</li>
+<li><code>raster2array</code>: function to conver rasters to an array</li>
 </ul>
 
 </div>
@@ -14930,8 +14927,8 @@ given in Jenkins et al. (2003).</p>
         <span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="o">/</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;scaleFactor&#39;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">array</span><span class="p">,</span> <span class="n">metadata</span>
 
-    <span class="k">elif</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;bands&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;More than one band ... need to modify function for case of multiple bands&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;More than one band ... function only set up for single band data&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14947,7 +14944,7 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <ul>
-<li><code>crown_geometric_volume_pth</code>: function to get tree crown volumn. </li>
+<li><code>crown_geometric_volume_pct</code>: function to get the tree height and crown volume percentiles</li>
 </ul>
 
 </div>
@@ -14961,11 +14958,11 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">crown_geometric_volume_pth</span><span class="p">(</span><span class="n">tree_data</span><span class="p">,</span><span class="n">min_tree_height</span><span class="p">,</span><span class="n">pth</span><span class="p">):</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">tree_data</span><span class="p">,</span> <span class="n">pth</span><span class="p">)</span>
-    <span class="n">tree_data_pth</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">p</span> <span class="k">else</span> <span class="n">p</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tree_data</span><span class="p">]</span>
-    <span class="n">crown_geometric_volume_pth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tree_data_pth</span> <span class="o">-</span> <span class="n">min_tree_height</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">crown_geometric_volume_pth</span><span class="p">,</span> <span class="n">p</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">crown_geometric_volume_pct</span><span class="p">(</span><span class="n">tree_data</span><span class="p">,</span><span class="n">min_tree_height</span><span class="p">,</span><span class="n">pct</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">tree_data</span><span class="p">,</span> <span class="n">pct</span><span class="p">)</span>
+    <span class="n">tree_data_pct</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">p</span> <span class="k">else</span> <span class="n">p</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tree_data</span><span class="p">]</span>
+    <span class="n">crown_geometric_volume_pct</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tree_data_pct</span> <span class="o">-</span> <span class="n">min_tree_height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">crown_geometric_volume_pct</span><span class="p">,</span> <span class="n">p</span>
 </pre></div>
 
      </div>
@@ -14981,7 +14978,7 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <ul>
-<li><code>get_predictors</code>: function to get the trees from the biomass data. </li>
+<li><code>get_predictors</code>: function to get the predictor variables from the biomass data</li>
 </ul>
 
 </div>
@@ -15001,10 +14998,9 @@ given in Jenkins et al. (2003).</p>
     
     <span class="n">full_crown</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tree_crown_heights</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tree_crown_heights</span><span class="p">))</span>
     
-    <span class="n">crown50</span><span class="p">,</span> <span class="n">p50</span> <span class="o">=</span> <span class="n">crown_geometric_volume_pth</span><span class="p">(</span><span class="n">tree_crown_heights</span><span class="p">,</span><span class="n">tree</span><span class="o">.</span><span class="n">min_intensity</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
-    <span class="n">crown60</span><span class="p">,</span> <span class="n">p60</span> <span class="o">=</span> <span class="n">crown_geometric_volume_pth</span><span class="p">(</span><span class="n">tree_crown_heights</span><span class="p">,</span><span class="n">tree</span><span class="o">.</span><span class="n">min_intensity</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
-    <span class="n">crown70</span><span class="p">,</span> <span class="n">p70</span> <span class="o">=</span> <span class="n">crown_geometric_volume_pth</span><span class="p">(</span><span class="n">tree_crown_heights</span><span class="p">,</span><span class="n">tree</span><span class="o">.</span><span class="n">min_intensity</span><span class="p">,</span><span class="mi">70</span><span class="p">)</span>
-    
+    <span class="n">crown50</span><span class="p">,</span> <span class="n">p50</span> <span class="o">=</span> <span class="n">crown_geometric_volume_pct</span><span class="p">(</span><span class="n">tree_crown_heights</span><span class="p">,</span><span class="n">tree</span><span class="o">.</span><span class="n">min_intensity</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">crown60</span><span class="p">,</span> <span class="n">p60</span> <span class="o">=</span> <span class="n">crown_geometric_volume_pct</span><span class="p">(</span><span class="n">tree_crown_heights</span><span class="p">,</span><span class="n">tree</span><span class="o">.</span><span class="n">min_intensity</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+    <span class="n">crown70</span><span class="p">,</span> <span class="n">p70</span> <span class="o">=</span> <span class="n">crown_geometric_volume_pct</span><span class="p">(</span><span class="n">tree_crown_heights</span><span class="p">,</span><span class="n">tree</span><span class="o">.</span><span class="n">min_intensity</span><span class="p">,</span><span class="mi">70</span><span class="p">)</span>
         
     <span class="k">return</span> <span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
             <span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">area</span><span class="p">),</span>
@@ -15012,7 +15008,8 @@ given in Jenkins et al. (2003).</p>
             <span class="n">tree</span><span class="o">.</span><span class="n">max_intensity</span><span class="p">,</span>
             <span class="n">tree</span><span class="o">.</span><span class="n">min_intensity</span><span class="p">,</span> 
             <span class="n">p50</span><span class="p">,</span> <span class="n">p60</span><span class="p">,</span> <span class="n">p70</span><span class="p">,</span>
-            <span class="n">full_crown</span><span class="p">,</span> <span class="n">crown50</span><span class="p">,</span> <span class="n">crown60</span><span class="p">,</span> <span class="n">crown70</span><span class="p">]</span>
+            <span class="n">full_crown</span><span class="p">,</span> 
+            <span class="n">crown50</span><span class="p">,</span> <span class="n">crown60</span><span class="p">,</span> <span class="n">crown70</span><span class="p">]</span>
 </pre></div>
 
      </div>
@@ -15095,7 +15092,7 @@ given in Jenkins et al. (2003).</p>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Get info from chm file for outputting results</span>
-<span class="n">just_chm_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">chm_file</span><span class="p">)</span>
+<span class="n">chm_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">chm_file</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15159,7 +15156,7 @@ given in Jenkins et al. (2003).</p>
                 <span class="s1">&#39;Canopy Height Model&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Canopy Height (m)&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Greens&#39;</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">just_chm_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">,</span><span class="s1">&#39;.png&#39;</span><span class="p">)),</span><span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;landscape&#39;</span><span class="p">,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">chm_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tif&#39;</span><span class="p">,</span><span class="s1">&#39;.png&#39;</span><span class="p">)),</span><span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;landscape&#39;</span><span class="p">,</span>
             <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span>
             <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
@@ -15223,8 +15220,7 @@ jp-needs-light-background
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Smooth the CHM using a gaussian filter to remove spurious points</span>
-<span class="n">chm_array_smooth</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">chm_array</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span>
-                                       <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span><span class="n">cval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">truncate</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">chm_array_smooth</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">chm_array</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span><span class="n">cval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">truncate</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
 <span class="n">chm_array_smooth</span><span class="p">[</span><span class="n">chm_array</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> 
 </pre></div>
 
@@ -15256,9 +15252,7 @@ jp-needs-light-background
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Save the smoothed CHM</span>
 <span class="n">array2raster</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s1">&#39;chm_filter.tif&#39;</span><span class="p">),</span>
              <span class="p">(</span><span class="n">chm_array_metadata</span><span class="p">[</span><span class="s1">&#39;ext_dict&#39;</span><span class="p">][</span><span class="s1">&#39;xMin&#39;</span><span class="p">],</span><span class="n">chm_array_metadata</span><span class="p">[</span><span class="s1">&#39;ext_dict&#39;</span><span class="p">][</span><span class="s1">&#39;yMax&#39;</span><span class="p">]),</span>
-             <span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-             <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chm_array_smooth</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span>
-             <span class="mi">32611</span><span class="p">)</span>
+             <span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chm_array_smooth</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span><span class="mi">32611</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15273,7 +15267,7 @@ jp-needs-light-background
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Determine-local-maximums">Determine local maximums<a class="anchor-link" href="#Determine-local-maximums">&#182;</a></h2><p>Now we will run an algorithm to determine local maximums within the image. Setting indices to 'False' returns a raster of the maximum points, as opposed to a list of coordinates. The footprint parameter is an area where only a single peak can be found. This should be approximately the size of the smallest tree. Information on more sophisticated methods to define the window can be found in Chen (2006).</p>
+<h2 id="Determine-local-maximums">Determine local maximums<a class="anchor-link" href="#Determine-local-maximums">&#182;</a></h2><p>Now we will run an algorithm to determine local maximums within the image. Setting indices to <code>False</code> returns a raster of the maximum points, as opposed to a list of coordinates. The footprint parameter is an area where only a single peak can be found. This should be approximately the size of the smallest tree. Information on more sophisticated methods to define the window can be found in Chen (2006).</p>
 
 </div>
 </div>
@@ -15420,7 +15414,7 @@ jp-needs-light-background
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Next ,we can plot the raster of local maximums bo coercing the boolean array into an array ofintegers inline. The following figure shows the difference in finding local maximums for a filtered vs. non-filtered CHM.</p>
+<p>Next we can plot the raster of local maximums by coercing the boolean array into an array of integers inline. The following figure shows the difference in finding local maximums for a filtered vs. non-filtered CHM.</p>
 <p>We will save the graphics (.png) in an outputs folder sister to our working directory and data outputs (.tif) to our data directory.</p>
 
 </div>
@@ -15442,7 +15436,7 @@ jp-needs-light-background
                 <span class="s1">&#39;Greys&#39;</span><span class="p">,</span>
                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="n">just_chm_file</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span> <span class="s1">&#39;_Maximums.png&#39;</span><span class="p">,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="n">chm_name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span> <span class="s1">&#39;_Maximums.png&#39;</span><span class="p">,</span>
             <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;landscape&#39;</span><span class="p">,</span>
             <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span><span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
@@ -15495,10 +15489,9 @@ jp-needs-light-background
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>If we were to look at the overlap between the tree crowns and the local maxima from each method, it would appear a bit like this raster.</p>
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg"></a>
-    <figcaption> The difference in finding local maximums for a filtered vs. 
-    non-filtered CHM. 
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg" >
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg" width="70%"/></a>
+    <figcaption> The difference in finding local maximums for a filtered vs. un-filtered CHM. 
     Source: National Ecological Observatory Network (NEON) 
     </figcaption>
 </figure><p>Apply labels to all of the local maximum points</p>
@@ -15563,7 +15556,7 @@ jp-needs-light-background
 <h2 id="Watershed-segmentation">Watershed segmentation<a class="anchor-link" href="#Watershed-segmentation">&#182;</a></h2><p>As in a river system, a watershed is divided by a ridge that divides areas. Here our watershed are the individual tree canopies and the ridge is the delineation between each one.</p>
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png" width="70%"></a>
     <figcaption> A raster classified based on watershed segmentation. 
     Source: National Ecological Observatory Network (NEON) 
     </figcaption>
@@ -15580,7 +15573,7 @@ jp-needs-light-background
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Perfrom watershed segmentation        </span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Perform watershed segmentation        </span>
 <span class="n">labels</span> <span class="o">=</span> <span class="n">watershed</span><span class="p">(</span><span class="n">chm_array_smooth</span><span class="p">,</span> <span class="n">markers</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">chm_mask</span><span class="p">)</span>
 <span class="n">labels_for_plot</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">labels_for_plot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels_for_plot</span><span class="p">,</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -15606,7 +15599,7 @@ jp-needs-light-background
                 <span class="s1">&#39;Crown Segmentation&#39;</span><span class="p">,</span><span class="s1">&#39;Tree Crown Number&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;Spectral&#39;</span><span class="p">,[</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_labels</span><span class="p">])</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="n">just_chm_file</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Segmentation.png&#39;</span><span class="p">,</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">data_path</span><span class="o">+</span><span class="n">chm_name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39;_Segmentation.png&#39;</span><span class="p">,</span>
             <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;landscape&#39;</span><span class="p">,</span>
             <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span><span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
@@ -15687,7 +15680,7 @@ jp-needs-light-background
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Now we will get the predictor variables to match the (soon to be loaded) training data using the function defined above. The first column will be segment IDs, the rest will be the predictor variables.</p>
+<p>Now we will get the predictor variables to match the (soon to be loaded) training data using the <code>get_predictors</code> function defined above. The first column will be segment IDs, the rest will be the predictor variables, namely the tree label, area, major_axis_length, maximum height, minimum height, height percentiles (p50, p60, p70), and crown geometric volume percentiles (full and percentiles 50, 60, and 70).</p>
 
 </div>
 </div>
@@ -15710,6 +15703,47 @@ jp-needs-light-background
 </div>
 </div>
 
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">predictors_chm</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>(1107, 12)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper">
@@ -15728,19 +15762,19 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Define the file of training data  </span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Get the full path + training data file</span>
 <span class="n">training_data_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s1">&#39;SJER_Biomass_Training.csv&#39;</span><span class="p">)</span>
 
-<span class="c1">#Read in the training data from a CSV file</span>
+<span class="c1">#Read in the training data csv file into a numpy array</span>
 <span class="n">training_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">training_data_file</span><span class="p">,</span><span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> 
 
-<span class="c1">#Grab the biomass (Y) from the first line</span>
+<span class="c1">#Grab the biomass (Y) from the first column</span>
 <span class="n">biomass</span> <span class="o">=</span> <span class="n">training_data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="c1">#Grab the biomass prdeictors from the remaining lines</span>
+<span class="c1">#Grab the biomass predictors from the remaining columns</span>
 <span class="n">biomass_predictors</span> <span class="o">=</span> <span class="n">training_data</span><span class="p">[:,</span><span class="mi">1</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span>
 </pre></div>
 
@@ -15756,7 +15790,7 @@ jp-needs-light-background
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Random-Forest-classifiers">Random Forest classifiers<a class="anchor-link" href="#Random-Forest-classifiers">&#182;</a></h2><p>We can then define parameters of the Random Forest classifier and fit the predictor variables from the training data to the Biomass estaimtes.</p>
+<h2 id="Random-Forest-classifiers">Random Forest classifiers<a class="anchor-link" href="#Random-Forest-classifiers">&#182;</a></h2><p>We can then define parameters of the Random Forest classifier and fit the predictor variables from the training data to the Biomass estimates.</p>
 
 </div>
 </div>
@@ -15766,13 +15800,13 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Define paraemters for Random forest regressor</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Define parameters for the Random Forest Regressor</span>
 <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">30</span>
 
-<span class="c1">#Define regressor rules</span>
+<span class="c1">#Define regressor settings</span>
 <span class="n">regr_rf</span> <span class="o">=</span> <span class="n">RandomForestRegressor</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="n">max_depth</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1">#Fit the biomass to regressor variables</span>
@@ -15794,7 +15828,7 @@ jp-needs-light-background
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[26]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[27]:</div>
 
 
 
@@ -15822,7 +15856,7 @@ jp-needs-light-background
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We now apply the Random Forest model to the predictor variables to retreive biomass</p>
+<p>We will now apply the Random Forest model to the predictor variables to estimate biomass</p>
 
 </div>
 </div>
@@ -15832,7 +15866,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Apply the model to the predictors</span>
@@ -15851,7 +15885,7 @@ jp-needs-light-background
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>For outputting a raster, copy the labels raster to a biomass raster, then cycle through the segments and assign the biomass estimate to each individual tree segment.</p>
+<p>To output a raster, pre-allocate (copy) an array from the labels raster, then cycle through the segments and assign the biomass estimate to each individual tree segment.</p>
 
 </div>
 </div>
@@ -15861,7 +15895,7 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Set an out raster with the same size as the labels</span>
@@ -15894,47 +15928,6 @@ jp-needs-light-background
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">just_chm_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;CHM.tif&#39;</span><span class="p">,</span><span class="s1">&#39;Biomass.png&#39;</span><span class="p">))</span>
-</pre></div>
-
-     </div>
-</div>
-</div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>&#39;D:\\neon_biomass_tutorial\\data\\NEON_D17_SJER_DP3_256000_4106000_Biomass.png&#39;</pre>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
@@ -15954,13 +15947,13 @@ jp-needs-light-background
                 <span class="p">[</span><span class="n">min_biomass</span><span class="o">+</span><span class="n">std_biomass</span><span class="p">,</span> <span class="n">mean_biomass</span><span class="o">+</span><span class="n">std_biomass</span><span class="o">*</span><span class="mi">3</span><span class="p">])</span>
 
 <span class="c1"># Save the biomass figure; use the same name as the original file, but replace CHM with Biomass</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">just_chm_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;CHM.tif&#39;</span><span class="p">,</span><span class="s1">&#39;Biomass.png&#39;</span><span class="p">)),</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">chm_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;CHM.tif&#39;</span><span class="p">,</span><span class="s1">&#39;Biomass.png&#39;</span><span class="p">)),</span>
             <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;landscape&#39;</span><span class="p">,</span>
             <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span>
             <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="c1"># Use the array2raster function to create a geotiff file of the Biomass</span>
-<span class="n">array2raster</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">just_chm_file</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;CHM.tif&#39;</span><span class="p">,</span><span class="s1">&#39;Biomass.tif&#39;</span><span class="p">)),</span>
+<span class="n">array2raster</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="n">chm_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;CHM.tif&#39;</span><span class="p">,</span><span class="s1">&#39;Biomass.tif&#39;</span><span class="p">)),</span>
              <span class="p">(</span><span class="n">chm_array_metadata</span><span class="p">[</span><span class="s1">&#39;ext_dict&#39;</span><span class="p">][</span><span class="s1">&#39;xMin&#39;</span><span class="p">],</span><span class="n">chm_array_metadata</span><span class="p">[</span><span class="s1">&#39;ext_dict&#39;</span><span class="p">][</span><span class="s1">&#39;yMax&#39;</span><span class="p">]),</span>
              <span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">biomass_map</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">),</span><span class="mi">32611</span><span class="p">)</span>
 </pre></div>

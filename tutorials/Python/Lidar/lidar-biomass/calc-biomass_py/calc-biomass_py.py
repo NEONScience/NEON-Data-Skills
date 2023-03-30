@@ -7,12 +7,12 @@
 # description: "Learn to calculate the biomass of standing vegetation using a canopy height model data product." 
 # dateCreated: 2017-06-21 
 # authors: Tristan Goulden
-# contributors: Donal O'Leary
+# contributors: Donal O'Leary, Bridget Hass
 # estimatedTime: 1 hour
-# packagesLibraries: numpy, gdal, matplotlib, matplotlib.pyplot, os
-# topics: lidar,remote-sensing
+# packagesLibraries: os, sys, numpy, matplotlib, gdal, scipy, scikit-learn, scikit-image
+# topics: lidar, remote-sensing
 # languagesTool: python
-# dataProduct: DP1.10098.001, DP3.30015.001, 
+# dataProduct: DP1.10098.001, DP3.30015.001 
 # code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py.ipynb
 # tutorialSeries: intro-lidar-py-series
 # urlTitle: calc-biomass-py
@@ -37,11 +37,16 @@
 # 
 # ### Install Python Packages
 # 
-# * **os**
-# * **numpy**
 # * **gdal** 
-# * **matplotlib**
 # * **scipy** 
+# * **scikit-learn**
+# * **scikit-image**
+# 
+# The following packages should be part of the standard conda installation:
+# * **os**
+# * **sys**
+# * **numpy**
+# * **matplotlib**
 # 
 # 
 # ### Download Data
@@ -56,24 +61,18 @@
 # 
 # </div>
 
-# In this tutorial, we will calculate the biomass for a section of the SJER site. We 
-# will be using the Canopy Height Model discrete LiDAR data product as well as NEON
-# field data on vegetation data. This tutorial will calculate Biomass for individual 
+# In this tutorial, we will calculate the biomass for a section of the SJER site. We will be using the Canopy Height Model discrete LiDAR data product as well as NEON field data on vegetation data. This tutorial will calculate biomass for individual 
 # trees in the forest. 
 # 
 # The calculation of biomass consists of four primary steps:
 # 
-# 1. Delineating individual tree crowns
-# 2. Calculating predictor variables for all individuals
-# 3. Collecting training data
-# 4. Applying a regression model to estiamte biomass from predictors
+# 1. Delineate individual tree crowns
+# 2. Calculate predictor variables for all individual trees
+# 3. Collect training data
+# 4. Apply a Random Forest regression model to estimate biomass from the predictor variables
 # 
-# In this tutorial we will use a watershed segmentation algorithm for delineating 
-# tree crowns (step 1) and and a Random Forest (RF) machine learning algorithm for 
-# relating the predictor variables to biomass (part 4). The predictor variables were 
-# selected following suggestions by Gleason et al. (2012) and biomass estimates were 
-# determined from DBH (diamter at breast height) measurements following relationships 
-# given in Jenkins et al. (2003). 
+# In this tutorial we will use a watershed segmentation algorithm for delineating tree crowns (step 1) and and a Random Forest (RF) machine learning algorithm for relating the predictor variables to biomass (part 4). The predictor variables were 
+# selected following suggestions by Gleason et al. (2012) and biomass estimates were determined from DBH (diameter at breast height) measurements following relationships given in Jenkins et al. (2003). 
 # 
 # ## Get Started
 # 
@@ -89,18 +88,9 @@ import matplotlib.pyplot as plt
 from scipy import ndimage as ndi
 %matplotlib inline 
 
-# Next, we need to specify the directory where we will find and save the data needed for this tutorial. You may need to change this line if you have a different working directly, or to suit your local machine. I have decided to save my data in the following directory:
+# Next, we will add libraries from scikit-learn which will help with the watershed delination, determination of predictor variables and random forest algorithm
 
 # In[2]:
-
-
-data_path = os.path.abspath(os.path.join(os.sep,'neon_biomass_tutorial','data'))
-data_path
-
-
-# Next, we will add libraries from skilearn which will help with the watershed delination, determination of predictor variables and random forest algorithm
-
-# In[3]:
 
 
 #Import biomass specific libraries
@@ -110,17 +100,25 @@ from skimage.measure import regionprops
 from sklearn.ensemble import RandomForestRegressor
 
 
+# We also need to specify the directory where we will find and save the data needed for this tutorial. You may need to change this line to follow a different working directory structure, or to suit your local machine. I have decided to save my data in the following directory:
+
+# In[3]:
+
+
+data_path = os.path.abspath(os.path.join(os.sep,'neon_biomass_tutorial','data'))
+data_path
+
+
 # ## Define functions 
 # 
 # Now we will define a few functions that allow us to more easily work with the NEON data. 
 # 
-# * `plot_band_array`: function to plot NEON spatial data.
+# * `plot_band_array`: function to plot NEON geospatial raster data
 
 # In[4]:
 
 
-#Define plot band array function
-
+#Define a function to plot a raster band
 def plot_band_array(band_array,image_extent,title,cmap_title,colormap,colormap_limits):
     plt.imshow(band_array,extent=image_extent)
     cbar = plt.colorbar(); plt.set_cmap(colormap); plt.clim(colormap_limits)
@@ -130,7 +128,7 @@ def plot_band_array(band_array,image_extent,title,cmap_title,colormap,colormap_l
     rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90)
 
 
-# * `array2raster`: function to output geotiff files.
+# * `array2raster`: function to convert a numpy array to a geotiff file
 
 # In[5]:
 
@@ -151,10 +149,9 @@ def array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array,epsg):
     outRasterSRS.ImportFromEPSG(epsg)
     outRaster.SetProjection(outRasterSRS.ExportToWkt())
     outband.FlushCache()
-    
 
 
-# * `raster2array`: function to conver rasters to an array.
+# * `raster2array`: function to conver rasters to an array
 
 # In[6]:
 
@@ -202,23 +199,23 @@ def raster2array(geotif_file):
         array = array/metadata['scaleFactor']
         return array, metadata
 
-    elif metadata['bands'] > 1:
-        print('More than one band ... need to modify function for case of multiple bands')
+    else:
+        print('More than one band ... function only set up for single band data')
 
 
-# * `crown_geometric_volume_pth`: function to get tree crown volumn. 
+# * `crown_geometric_volume_pct`: function to get the tree height and crown volume percentiles
 
 # In[7]:
 
 
-def crown_geometric_volume_pth(tree_data,min_tree_height,pth):
-    p = np.percentile(tree_data, pth)
-    tree_data_pth = [v if v < p else p for v in tree_data]
-    crown_geometric_volume_pth = np.sum(tree_data_pth - min_tree_height)
-    return crown_geometric_volume_pth, p
+def crown_geometric_volume_pct(tree_data,min_tree_height,pct):
+    p = np.percentile(tree_data, pct)
+    tree_data_pct = [v if v < p else p for v in tree_data]
+    crown_geometric_volume_pct = np.sum(tree_data_pct - min_tree_height)
+    return crown_geometric_volume_pct, p
 
 
-# * `get_predictors`: function to get the trees from the biomass data. 
+# * `get_predictors`: function to get the predictor variables from the biomass data
 
 # In[8]:
 
@@ -229,10 +226,9 @@ def get_predictors(tree,chm_array, labels):
     
     full_crown = np.sum(tree_crown_heights - np.min(tree_crown_heights))
     
-    crown50, p50 = crown_geometric_volume_pth(tree_crown_heights,tree.min_intensity,50)
-    crown60, p60 = crown_geometric_volume_pth(tree_crown_heights,tree.min_intensity,60)
-    crown70, p70 = crown_geometric_volume_pth(tree_crown_heights,tree.min_intensity,70)
-    
+    crown50, p50 = crown_geometric_volume_pct(tree_crown_heights,tree.min_intensity,50)
+    crown60, p60 = crown_geometric_volume_pct(tree_crown_heights,tree.min_intensity,60)
+    crown70, p70 = crown_geometric_volume_pct(tree_crown_heights,tree.min_intensity,70)
         
     return [tree.label,
             np.float(tree.area),
@@ -240,7 +236,8 @@ def get_predictors(tree,chm_array, labels):
             tree.max_intensity,
             tree.min_intensity, 
             p50, p60, p70,
-            full_crown, crown50, crown60, crown70]
+            full_crown, 
+            crown50, crown60, crown70]
 
 
 # ## Canopy Height Data
@@ -260,8 +257,7 @@ chm_file
 
 
 #Get info from chm file for outputting results
-just_chm_file = os.path.basename(chm_file)
-just_chm_file_split = just_chm_file.split(sep="_")
+chm_name = os.path.basename(chm_file)
 
 
 # Now we will get the CHM data...
@@ -285,7 +281,7 @@ plot_band_array(chm_array,chm_array_metadata['extent'],
                 'Canopy Height Model',
                 'Canopy Height (m)',
                 'Greens',[0, 9])
-plt.savefig(os.path.join(data_path,just_chm_file.replace('.tif','.png')),dpi=300,orientation='landscape',
+plt.savefig(os.path.join(data_path,chm_name.replace('.tif','.png')),dpi=300,orientation='landscape',
             bbox_inches='tight',
             pad_inches=0.1)
 
@@ -304,8 +300,7 @@ plt.savefig(os.path.join(data_path,just_chm_file.replace('.tif','.png')),dpi=300
 
 
 #Smooth the CHM using a gaussian filter to remove spurious points
-chm_array_smooth = ndi.gaussian_filter(chm_array,2,
-                                       mode='constant',cval=0,truncate=2.0)
+chm_array_smooth = ndi.gaussian_filter(chm_array,2,mode='constant',cval=0,truncate=2.0)
 chm_array_smooth[chm_array==0] = 0 
 
 
@@ -317,14 +312,12 @@ chm_array_smooth[chm_array==0] = 0
 #Save the smoothed CHM
 array2raster(os.path.join(data_path,'chm_filter.tif'),
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
-             1,-1,
-             np.array(chm_array_smooth,dtype=float),
-             32611)
+             1,-1,np.array(chm_array_smooth,dtype=float),32611)
 
 
 # ## Determine local maximums
 # 
-# Now we will run an algorithm to determine local maximums within the image. Setting indices to 'False' returns a raster of the maximum points, as opposed to a list of coordinates. The footprint parameter is an area where only a single peak can be found. This should be approximately the size of the smallest tree. Information on more sophisticated methods to define the window can be found in Chen (2006).  
+# Now we will run an algorithm to determine local maximums within the image. Setting indices to `False` returns a raster of the maximum points, as opposed to a list of coordinates. The footprint parameter is an area where only a single peak can be found. This should be approximately the size of the smallest tree. Information on more sophisticated methods to define the window can be found in Chen (2006).  
 
 # In[15]:
 
@@ -349,7 +342,7 @@ local_maxi
 local_maxi.astype(int)
 
 
-# Next ,we can plot the raster of local maximums bo coercing the boolean array into an array ofintegers inline. The following figure shows the difference in finding local maximums for a filtered vs. non-filtered CHM.
+# Next we can plot the raster of local maximums by coercing the boolean array into an array of integers inline. The following figure shows the difference in finding local maximums for a filtered vs. non-filtered CHM.
 # 
 # We will save the graphics (.png) in an outputs folder sister to our working directory and data outputs (.tif) to our data directory. 
 
@@ -364,7 +357,7 @@ plot_band_array(local_maxi.astype(int),chm_array_metadata['extent'],
                 'Greys',
                 [0, 1])
 
-plt.savefig(data_path+just_chm_file[0:-4]+ '_Maximums.png',
+plt.savefig(data_path+chm_name[0:-4]+ '_Maximums.png',
             dpi=300,orientation='landscape',
             bbox_inches='tight',pad_inches=0.1)
 
@@ -376,10 +369,9 @@ array2raster(data_path+'maximum.tif',
 # If we were to look at the overlap between the tree crowns and the local maxima from each method, it would appear a bit like this raster. 
 # 
 #  <figure>
-# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg"></a>
-# 	<figcaption> The difference in finding local maximums for a filtered vs. 
-# 	non-filtered CHM. 
+# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg" >
+# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg" width="70%"/></a>
+# 	<figcaption> The difference in finding local maximums for a filtered vs. un-filtered CHM. 
 # 	Source: National Ecological Observatory Network (NEON) 
 # 	</figcaption>
 # </figure>
@@ -410,7 +402,7 @@ chm_mask[chm_array_smooth != 0] = 1
 # 
 # <figure>
 # 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png"></a>
+# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png" width="70%"></a>
 # 	<figcaption> A raster classified based on watershed segmentation. 
 # 	Source: National Ecological Observatory Network (NEON) 
 # 	</figcaption>
@@ -421,7 +413,7 @@ chm_mask[chm_array_smooth != 0] = 1
 # In[21]:
 
 
-#Perfrom watershed segmentation        
+#Perform watershed segmentation        
 labels = watershed(chm_array_smooth, markers, mask=chm_mask)
 labels_for_plot = labels.copy()
 labels_for_plot = np.array(labels_for_plot,dtype = np.float32)
@@ -437,7 +429,7 @@ plot_band_array(labels_for_plot,chm_array_metadata['extent'],
                 'Crown Segmentation','Tree Crown Number',
                 'Spectral',[0, max_labels])
 
-plt.savefig(data_path+just_chm_file[0:-4]+'_Segmentation.png',
+plt.savefig(data_path+chm_name[0:-4]+'_Segmentation.png',
             dpi=300,orientation='landscape',
             bbox_inches='tight',pad_inches=0.1)
 
@@ -456,7 +448,7 @@ array2raster(data_path+'labels.tif',
 tree_properties = regionprops(labels,chm_array)
 
 
-# Now we will get the predictor variables to match the (soon to be loaded) training data using the function defined above. The first column will be segment IDs, the rest will be the predictor variables.
+# Now we will get the predictor variables to match the (soon to be loaded) training data using the `get_predictors` function defined above. The first column will be segment IDs, the rest will be the predictor variables, namely the tree label, area, major_axis_length, maximum height, minimum height, height percentiles (p50, p60, p70), and crown geometric volume percentiles (full and percentiles 50, 60, and 70).
 
 # In[24]:
 
@@ -466,57 +458,63 @@ X = predictors_chm[:,1:]
 tree_ids = predictors_chm[:,0]
 
 
+# In[25]:
+
+
+np.shape(predictors_chm)
+
+
 # ## Training data
 # 
 # We now bring in the training data file which is a simple CSV file with no header. If you haven't yet downloaded this, you can scroll up to the top of the lesson and find the **Download Data** section. The first column is biomass, and the remaining columns are the same predictor variables defined above. The tree diameter and max height are defined in the NEON vegetation structure data along with the tree DBH. The field validated values are used for training, while the other were determined from the CHM and camera images by manually delineating the tree crowns and pulling out the relevant information from the CHM. 
 # 
 # Biomass was calculated from DBH according to the formulas in Jenkins et al. (2003). 
 
-# In[25]:
+# In[26]:
 
 
-#Define the file of training data  
+#Get the full path + training data file
 training_data_file = os.path.join(data_path,'SJER_Biomass_Training.csv')
 
-#Read in the training data from a CSV file
+#Read in the training data csv file into a numpy array
 training_data = np.genfromtxt(training_data_file,delimiter=',') 
 
-#Grab the biomass (Y) from the first line
+#Grab the biomass (Y) from the first column
 biomass = training_data[:,0]
 
-#Grab the biomass prdeictors from the remaining lines
+#Grab the biomass predictors from the remaining columns
 biomass_predictors = training_data[:,1:12]
 
 
 # ## Random Forest classifiers
 # 
-# We can then define parameters of the Random Forest classifier and fit the predictor variables from the training data to the Biomass estaimtes.
+# We can then define parameters of the Random Forest classifier and fit the predictor variables from the training data to the Biomass estimates.
 
-# In[26]:
+# In[27]:
 
 
-#Define paraemters for Random forest regressor
+#Define parameters for the Random Forest Regressor
 max_depth = 30
 
-#Define regressor rules
+#Define regressor settings
 regr_rf = RandomForestRegressor(max_depth=max_depth, random_state=2)
 
 #Fit the biomass to regressor variables
 regr_rf.fit(biomass_predictors,biomass)
 
 
-# We now apply the Random Forest model to the predictor variables to retreive biomass
+# We will now apply the Random Forest model to the predictor variables to estimate biomass
 
-# In[27]:
+# In[28]:
 
 
 #Apply the model to the predictors
 estimated_biomass = regr_rf.predict(X)
 
 
-# For outputting a raster, copy the labels raster to a biomass raster, then cycle through the segments and assign the biomass estimate to each individual tree segment.
+# To output a raster, pre-allocate (copy) an array from the labels raster, then cycle through the segments and assign the biomass estimate to each individual tree segment.
 
-# In[28]:
+# In[29]:
 
 
 #Set an out raster with the same size as the labels
@@ -529,12 +527,6 @@ for tree_id, biomass_of_tree_id in zip(tree_ids, estimated_biomass):
 
 # ## Calculate Biomass
 # Collect some of the biomass statistics and then plot the results and save an output geotiff.
-
-# In[29]:
-
-
-os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png'))
-
 
 # In[30]:
 
@@ -555,13 +547,13 @@ plot_band_array(biomass_map,chm_array_metadata['extent'],
                 [min_biomass+std_biomass, mean_biomass+std_biomass*3])
 
 # Save the biomass figure; use the same name as the original file, but replace CHM with Biomass
-plt.savefig(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.png')),
+plt.savefig(os.path.join(data_path,chm_name.replace('CHM.tif','Biomass.png')),
             dpi=300,orientation='landscape',
             bbox_inches='tight',
             pad_inches=0.1)
 
 # Use the array2raster function to create a geotiff file of the Biomass
-array2raster(os.path.join(data_path,just_chm_file.replace('CHM.tif','Biomass.tif')),
+array2raster(os.path.join(data_path,chm_name.replace('CHM.tif','Biomass.tif')),
              (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
              1,-1,np.array(biomass_map,dtype=float),32611)
 
