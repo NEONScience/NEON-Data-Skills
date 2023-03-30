@@ -415,7 +415,7 @@ The HOR and VER indices in the sensor positions file correspond to the
 `verticalPosition` and `horizontalPosition` fields in `soilT$ST_30_minute`.
 
 Note that there are two sets of position data for soil plot 001, and that 
-one set has an `end` date in the file. This indicates sensors either 
+one set has a `positionEndDateTime` date in the file. This indicates sensors either 
 moved or were relocated; in this case there was a frost heave incident. 
 You can read about it in the issue log, which is displayed on the 
 <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page, 
@@ -431,14 +431,14 @@ soilT$issueLog_00041[grep("TREE soil plot 1",
 Since we're working with data from July 2018, and the change in 
 sensor locations is dated Nov 2018, we'll use the original locations. 
 There are a number of ways to drop the later locations from the 
-table; here, we find the rows in which the `end` field is empty, 
+table; here, we find the rows in which the `positionEndDateTime` field is empty, 
 indicating no end date, and the rows corresponding to soil plot 001, 
 and drop all the rows that meet both criteria.
 
 ```{r pos-rem}
 
 pos <- pos[-intersect(grep("001.", pos$HOR.VER),
-                      which(pos$end=="")),]
+                      which(pos$positionEndDateTime=="")),]
 
 ```
 

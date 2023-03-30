@@ -516,6 +516,6 @@ show((chm, 1), ax=ax, cmap='Greens', title='NEON_D17_TEAK_DP3_319000_4107000_CHM
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-API-python/neon_api_01_introduction_requests_py/neon_api_intro_requests_py_files/neon_api_intro_requests_py_52_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/NEON-API-python/intro_requests_py/neon_api_intro_requests_py_files/neon_api_intro_requests_py_52_0.png)
     
 

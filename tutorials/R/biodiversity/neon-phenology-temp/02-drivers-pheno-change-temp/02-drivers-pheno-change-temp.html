@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Explore NEON Air Temperature Data</title>
+<title>Background Information About NEON Air Temperature Data</title>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -192,18 +192,6 @@ on your computer to complete this tutorial.
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
-### Download Data 
-
-This tutorial is designed to have you download data directly from the NEON
-portal API using the neonUtilities package. However, you can also directly 
-download this data, prepackaged, from FigShare. This data set includes all the 
-files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
-tutorial series. The data are in the format you would receive if downloading them
-using the zipsByProduct() function in the neonUtilities package. 
-
-<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
-
-****
 
 ## Additional Resources
 
@@ -221,143 +209,106 @@ using the zipsByProduct() function in the neonUtilities package.
 
 </div>
 
-<h2>Explore NEON Air Temperature Data</h2>
+<h2>Background Information About NEON Air Temperature Data</h2>
 
 <p>Air temperature is continuously monitored by NEON by two methods. At terrestrial 
-sites temperature for the top of the tower will be derived from a triple 
+sites temperature at the top of the tower is derived from a triple 
 redundant aspirated air temperature sensor. This is provided as NEON data 
-product <strong>DP1.00003.001</strong>. Single Aspirated Air Temperature Sensors (SAATS) are 
-deployed to develop temperature profiles at the tower at NEON terrestrial sites 
-and on the meteorological stations at NEON aquatic sites. This is provided as 
-NEON data product <strong>DP1.00002.001</strong>. These data are also available as part of the
-NEON Mobile Deployment Platforms. </p>
+product <strong>DP1.00003.001</strong>. Single Aspirated Air Temperature sensors (SAAT) are 
+deployed to develop temperature profiles at multiple levels on the tower at NEON 
+terrestrial sites and on the meteorological stations at NEON aquatic sites. This 
+is provided as NEON data product <strong>DP1.00002.001</strong>.</p>
 
-<p>When designing a research project using this data, you should consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10002.001" target="_blank">documents associated with this or any data product</a> 
-and not rely solely on this summary. </p>
+<p>When designing a research project using this data, consult the 
+<a href="http://data.neonscience.org/data-products/DP1.00002.001" target="_blank">Data Product Details Page</a> 
+for more detailed documentation. </p>
 
 <h3>Single-aspirated Air Temperature</h3>
 
-<p>Air temperature profiles are ascertained by deploying SAATS at various heights 
+<p>Air temperature profiles are ascertained by deploying SAATs at various heights 
 on NEON tower infrastructure. Air temperature at aquatic sites is measured 
 using a single SAAT at a standard height of 3m above ground level. Air temperature 
 for this data product is provided as one- and thirty-minute averages of 1 Hz 
 observations. Temperature observations are made using platinum resistance 
 thermometers, which are housed in a fan aspirated shield to reduce radiative 
-bias. The temperature is measured in Ohms and subsequently converted to degrees 
+heating. The temperature is measured in Ohms and subsequently converted to degrees 
 Celsius during data processing. Details on the conversion can be found in the 
-associated Algorithm Theoretic Basis Document (ATBD) for any instrumented data 
-product. </p>
+associated Algorithm Theoretic Basis Document (ATBD; see Product Details page 
+linked above).</p>
 
 <h3>Available Data Tables</h3>
 
-<p>The SAAT data product has two available data tables that are delivered for each
-site and month-year selected. In addition, there are several metadata files that
-provide you with additional useful information.</p>
+<p>The SAAT data product contains two data tables for each site and month selected, 
+consisting of the 1-minute and 30-minute averaging intervals. In addition, there 
+are several metadata files that provide additional useful information.</p>
 
 <ul>
-<li>a <strong>readme</strong> with information on the data product and the download; </li>
-<li>a <strong>variables</strong> file that defines the term descriptions, data types, and units; </li>
-<li>a <strong>validation</strong> file with data entry validation and parsing rules; and </li>
-<li>an <strong>XML</strong> file with machine readable metadata. </li>
+<li><strong>readme</strong> with information on the data product and the download</li>
+<li><strong>variables</strong> file that defines the terms, data types, and units</li>
+<li><strong>EML</strong> file with machine readable metadata in standardized Ecological Metadata Language </li>
 </ul>
-
-<p>For the data tables, there are both a 1-minute average and a 30-minute 
-average available. If you download data directly off the portal, you will get 
-one of these files for each level on the tower for each site &amp; month-year selected. </p>
-
-<h3>File Naming Conventions</h3>
-
-<p>It is important to understand the file names to know which file is which. The 
-readme associated with the data provides the following information: </p>
-
-<p>The file naming convention for sensor data files is
-<strong>NEON.DOM.SITE.DPL.PRNUM.REV.TERMS.HOR.VER.TMI.DESC</strong> </p>
-
-<p>where:</p>
-
-<ul>
-<li><strong>DOM</strong> refers to the domain of data acquisition (D01 or D20)</li>
-<li><strong>SITE</strong> refers to the standardized four-character alphabetic code of the site of 
-data acquisition.</li>
-<li><strong>DPL</strong> refers to the data product processing level</li>
-<li><strong>PRNUM</strong> refers to the data product number (see 
-<a href="http://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products</a>.)</li>
-<li><strong>REV</strong> refers to the revision number of the data product. (001 = initial REV, Engineering-Grade or Provisional; 101 = initial REV, Science-Grade)</li>
-<li><strong>TERMS</strong> is used in data product numbering to identify a sub-product or discrete 
-vector of metadata. Since each download file typically contains several 
-sub-products, this field is set to 00000 in the file name to maintain 
-consistency with the data product numbering scheme.</li>
-<li><strong>HOR</strong> refers to measurement locations within one horizontal plane. </li>
-<li><strong>VER</strong> refers to measurement locations within one vertical plane. For example, 
-if eight temperature measurements are collected, one at each tower level, the 
-number in the VER field would range from 010-080.</li>
-<li><strong>TMI</strong> is the Temporal Index; refers to the temporal representation, averaging 
-period, or coverage of the data product (e.g., minute, hour, month, year, 
-sub-hourly, day, lunar month, single instance, seasonal, annual, multi-annual)</li>
-<li><strong>DESC</strong> is an abbreviated description of the data product </li>
-</ul>
-
-<p>Therefore, we can interpret the following .csv file name</p>
-
-<p><strong>NEON.D02.SERC.DP1.00002.001.00000.000.010.030.SAAT_30min.csv</strong></p>
-
-<p>as NEON data from Smithsonian Environmental Research Center (SERC) located in 
-Domain 02 (D02). The specific data product is level 1 data product (DP1) and is 
-single aspirated temperature data (00002). There have not been revisions, there 
-are no associated terms, and there is no differentiation in horizontal plane. 
-This data comes from the first (010) vertical level of the tower. The temporal 
-interval is 30-minute averaged data (030; the other option in our data is 1 minute 
-averaging. Finally there is the abbreviated description that is more human readable
-and tells us again that it is single-aspirated air temperature at 30 minute averages.  </p>
 
 <h2>Access NEON Data</h2>
 
 <p>There are several ways to access NEON data, directly from the NEON data portal, 
 access through a data partner (select data products only), writing code to 
-directly pull data from the NEON API, or, as we&#39;ll use here, using the neonUtilities
-package which is a wrapper for the API with useful function to make working with 
-the data easier. </p>
+directly pull data from the NEON API, or, as we&#39;ll do here, using the neonUtilities
+package which is a wrapper for the API to make working with the data easier. </p>
 
-<h3>Data Downloaded Direct from Portal</h3>
+<h3>Downloading from the Data Portal</h3>
 
-<p>If you prefer to work with data that are downloaded from the data portal, please 
+<p>If you prefer to download data from the data portal, please 
 review the <em>Getting started</em> and <em>Stack the downloaded data</em> sections of the
 <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank"> <em>Download and Explore NEON Data</em> tutorial</a>. 
-This will get you to the point where you can upload your data from sites or dates
+This will get you to the point where you can download data from sites or dates
 of interest and resume this tutorial. </p>
 
-<h2>Import Data</h2>
+<h3>Downloading Data Using neonUtilities</h3>
 
 <p>First, we need to set up our environment with the packages needed for this tutorial. </p>
 
 <pre><code># Install needed package (only uncomment &amp; run if not already installed)
+
 #install.packages(&quot;neonUtilities&quot;)
+
 #install.packages(&quot;ggplot2&quot;)
+
 #install.packages(&quot;dplyr&quot;)
+
 #install.packages(&quot;tidyr&quot;)
 
 
+
+
+
 # Load required libraries
+
 library(neonUtilities)  # for accessing NEON data
+
 library(ggplot2)  # for plotting
+
 library(dplyr)  # for data munging
+
 library(tidyr)  # for data munging
 
 
-# set working directory to ensure R can find the file we wish to import and where
-# we want to save our files. Be sure to move the download into your working directory!
-wd &lt;- &quot;~/Documents/data/&quot; # Change this to match your local environment
+
+# set working directory
+
+# this step is optional, only needed if you plan to save the 
+
+# data files at the end of the tutorial
+
+wd &lt;- &quot;~/data&quot; # enter your working directory here
+
 setwd(wd)
 </code></pre>
 
-<h3>Data of Interest</h3>
-
-<p>This tutorial is part of series working with discrete, plant phenology data and 
-(near) continuous temperature data. Our overall &ldquo;research&rdquo; question is to see if 
-there is any correlation between the plant phenology and the temperature. 
+<p>This tutorial is part of series working with discrete plant phenology data and 
+(nearly) continuous temperature data. Our overall &ldquo;research&rdquo; question is to see if 
+there is any correlation between plant phenology and temperature. 
 Therefore, we will want to work with data that 
-aligns with the plant phenology data that we worked with in the first tutorial. 
+align with the plant phenology data that we worked with in the first tutorial. 
 If you are only interested in working with the temperature data, you do not need
 to complete the previous tutorial. </p>
 
@@ -371,198 +322,16 @@ depend on your research questions. Here, we&#39;re going to only download and wo
 with the 30 minute interval data as we&#39;re primarily interest in longer term (daily, 
 weekly, annual) patterns. </p>
 
-<p>This will download 7.7 MiB of data. <code>check.size</code> is set to false (<code>F</code>) to improve flow 
+<p>This will download 7.7 MB of data. <code>check.size</code> is set to false (<code>F</code>) to improve flow 
 of the script but is always a good idea to view the size with true (<code>T</code>) before 
 downloading a new dataset. </p>
 
-<p>If you are using the data downloaded at the start of the tutorial, use the 
-commented out code in the second half of this code chunk. </p>
-
 <pre><code># download data of interest - Single Aspirated Air Temperature
-saat&lt;-loadByProduct(dpID=&quot;DP1.00002.001&quot;, site=&quot;SCBI&quot;, 
-                                        startdate=&quot;2018-01&quot;, enddate=&quot;2018-12&quot;, 
-                                        package=&quot;basic&quot;, 
-                                        avg = &quot;30&quot;,
-                                        token = Sys.getenv(&quot;NEON_TOKEN&quot;),
-                                        check.size = F)
 
-## Input parameter avg is deprecated; use timeIndex to download by time interval.
-## Finding available files
-## 
-</code></pre>
-
-<p>|<br/>
-  |                                                                               |   0%
-  |<br/>
-  |=======                                                                        |   8%
-  |<br/>
-  |=============                                                                  |  17%
-  |<br/>
-  |====================                                                           |  25%
-  |<br/>
-  |==========================                                                     |  33%
-  |<br/>
-  |=================================                                              |  42%
-  |<br/>
-  |========================================                                       |  50%
-  |<br/>
-  |==============================================                                 |  58%
-  |<br/>
-  |=====================================================                          |  67%
-  |<br/>
-  |===========================================================                    |  75%
-  |<br/>
-  |==================================================================             |  83%
-  |<br/>
-  |========================================================================       |  92%
-  |<br/>
-  |===============================================================================| 100%
-    ## 
-    ## Downloading files totaling approximately 8.056716 MB
-    ## Downloading 63 files
-    ## 
-  |<br/>
-  |                                                                               |   0%
-  |<br/>
-  |=                                                                              |   2%
-  |<br/>
-  |===                                                                            |   3%
-  |<br/>
-  |====                                                                           |   5%
-  |<br/>
-  |=====                                                                          |   6%
-  |<br/>
-  |======                                                                         |   8%
-  |<br/>
-  |========                                                                       |  10%
-  |<br/>
-  |=========                                                                      |  11%
-  |<br/>
-  |==========                                                                     |  13%
-  |<br/>
-  |===========                                                                    |  15%
-  |<br/>
-  |=============                                                                  |  16%
-  |<br/>
-  |==============                                                                 |  18%
-  |<br/>
-  |===============                                                                |  19%
-  |<br/>
-  |=================                                                              |  21%
-  |<br/>
-  |==================                                                             |  23%
-  |<br/>
-  |===================                                                            |  24%
-  |<br/>
-  |====================                                                           |  26%
-  |<br/>
-  |======================                                                         |  27%
-  |<br/>
-  |=======================                                                        |  29%
-  |<br/>
-  |========================                                                       |  31%
-  |<br/>
-  |=========================                                                      |  32%
-  |<br/>
-  |===========================                                                    |  34%
-  |<br/>
-  |============================                                                   |  35%
-  |<br/>
-  |=============================                                                  |  37%
-  |<br/>
-  |===============================                                                |  39%
-  |<br/>
-  |================================                                               |  40%
-  |<br/>
-  |=================================                                              |  42%
-  |<br/>
-  |==================================                                             |  44%
-  |<br/>
-  |====================================                                           |  45%
-  |<br/>
-  |=====================================                                          |  47%
-  |<br/>
-  |======================================                                         |  48%
-  |<br/>
-  |========================================                                       |  50%
-  |<br/>
-  |=========================================                                      |  52%
-  |<br/>
-  |==========================================                                     |  53%
-  |<br/>
-  |===========================================                                    |  55%
-  |<br/>
-  |=============================================                                  |  56%
-  |<br/>
-  |==============================================                                 |  58%
-  |<br/>
-  |===============================================                                |  60%
-  |<br/>
-  |================================================                               |  61%
-  |<br/>
-  |==================================================                             |  63%
-  |<br/>
-  |===================================================                            |  65%
-  |<br/>
-  |====================================================                           |  66%
-  |<br/>
-  |======================================================                         |  68%
-  |<br/>
-  |=======================================================                        |  69%
-  |<br/>
-  |========================================================                       |  71%
-  |<br/>
-  |=========================================================                      |  73%
-  |<br/>
-  |===========================================================                    |  74%
-  |<br/>
-  |============================================================                   |  76%
-  |<br/>
-  |=============================================================                  |  77%
-  |<br/>
-  |==============================================================                 |  79%
-  |<br/>
-  |================================================================               |  81%
-  |<br/>
-  |=================================================================              |  82%
-  |<br/>
-  |==================================================================             |  84%
-  |<br/>
-  |====================================================================           |  85%
-  |<br/>
-  |=====================================================================          |  87%
-  |<br/>
-  |======================================================================         |  89%
-  |<br/>
-  |=======================================================================        |  90%
-  |<br/>
-  |=========================================================================      |  92%
-  |<br/>
-  |==========================================================================     |  94%
-  |<br/>
-  |===========================================================================    |  95%
-  |<br/>
-  |============================================================================   |  97%
-  |<br/>
-  |============================================================================== |  98%
-  |<br/>
-  |===============================================================================| 100%
-    ## 
-    ## Stacking operation across a single core.
-    ## Stacking table SAAT_30min
-    ## Merged the most recent publication of sensor position files for each site and saved to /stackedFiles
-    ## Copied the most recent publication of variable definition file to /stackedFiles
-    ## Finished: Stacked 1 data tables and 2 metadata tables!
-    ## Stacking took 0.4314961 secs</p>
-
-<pre><code>##If choosing to use example dataset downloaded from this tutorial: 
-
-# Stack multiple files within the downloaded phenology data
-#stackByTable(&quot;NEON-pheno-temp-timeseries_v2/filesToStack00002&quot;, folder = T)
-
-# read in data - readTableNEON uses the variables file to assign the correct
-# data type for each variable
-#SAAT_30min &lt;- readTableNEON(&#39;NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/SAAT_30min.csv&#39;, &#39;NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv&#39;)
+saat &lt;- loadByProduct(dpID=&quot;DP1.00002.001&quot;, site=&quot;SCBI&quot;, 
+                      startdate=&quot;2018-01&quot;, enddate=&quot;2018-12&quot;, 
+                      package=&quot;basic&quot;, timeIndex=&quot;30&quot;,
+                      check.size = F)
 </code></pre>
 
 <h2>Explore Temperature Data</h2>
@@ -570,16 +339,10 @@ saat&lt;-loadByProduct(dpID=&quot;DP1.00002.001&quot;, site=&quot;SCBI&quot;,
 <p>Now that you have the data, let&#39;s take a look at the structure and understand 
 what&#39;s in the data. The data (<code>saat</code>) come in as a large list of four items. </p>
 
-<pre><code># View the list
-View(saat)
-
-# if using the pre-downloaded data, you need to read in the variables file 
-# or open and look at it on your desktop
-#var &lt;- read.csv(&#39;NEON-pheno-temp-timeseries_v2/filesToStack00002/stackedFiles/variables_00002.csv&#39;)
-#View(var)
+<pre><code>View(saat)
 </code></pre>
 
-<p>So what exactly are these four files and why would you want to use them? </p>
+<p>So what exactly are these five files and why would you want to use them? </p>
 
 <ul>
 <li><strong>data file(s)</strong>: There will always be one or more dataframes that include the 
@@ -588,39 +351,37 @@ minute averaged data we only have one data table <code>SAAT_30min</code>.</li>
 <li><strong>readme_xxxxx</strong>: The readme file, with the corresponding 5 digits from the data
 product number, provides you with important information relevant to the data 
 product and the specific instance of downloading the data.</li>
-<li><strong>sensor_positions_xxxxx</strong>: this file contains information about the coordinates 
+<li><strong>sensor_positions_xxxxx</strong>: This table contains the spatial coordinates 
 of each sensor, relative to a reference location. </li>
-<li><strong>variables_xxxxx</strong>: this file contains all the variables found in the associated
-data table(s). This includes full definitions, units, and other important 
-information. </li>
+<li><strong>variables_xxxxx</strong>: This table contains all the variables found in the associated
+data table(s). This includes full definitions, units, and rounding. </li>
+<li><strong>issueLog_xxxxx</strong>: This table contains records of any known issues with the 
+data product, such as sensor malfunctions. </li>
+<li><strong>scienceReviewFlags_xxxxx</strong>: This table may or may not be present. It contains 
+descriptions of adverse events that led to manual flagging of the data, and is 
+usually more detailed than the issue log. It only contains records relevant to 
+the sites and dates of data downloaded.</li>
 </ul>
 
-<p>Since we want to work with the individual files, let&#39;s create individual objects
-from the large list. There are several ways to do this, including the following 
-two. </p>
+<p>Since we want to work with the individual files, let&#39;s make the elements of the 
+list into independent objects. </p>
 
-<pre><code># if using the pre-downloaded data - you can skip this part.
-# assign individual dataFrames in the list as an object
-#SAAT_30min &lt;- saat$SAAT_30min
-
-# unlist all objects
-list2env(saat, .GlobalEnv)
+<pre><code>list2env(saat, .GlobalEnv)
 
 ## &lt;environment: R_GlobalEnv&gt;
 </code></pre>
 
-<p>Now we the four files as separate R objects. But what is in our data file?</p>
+<p>Now let&#39;s take a look at the data table.</p>
 
-<pre><code># what is in the data?
-str(SAAT_30min)
+<pre><code>str(SAAT_30min)
 
 ## &#39;data.frame&#39;:    87600 obs. of  16 variables:
 ##  $ domainID           : chr  &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; ...
 ##  $ siteID             : chr  &quot;SCBI&quot; &quot;SCBI&quot; &quot;SCBI&quot; &quot;SCBI&quot; ...
 ##  $ horizontalPosition : chr  &quot;000&quot; &quot;000&quot; &quot;000&quot; &quot;000&quot; ...
 ##  $ verticalPosition   : chr  &quot;010&quot; &quot;010&quot; &quot;010&quot; &quot;010&quot; ...
-##  $ startDateTime      : POSIXct, format: &quot;2018-01-01 00:00:00&quot; &quot;2018-01-01 00:30:00&quot; ...
-##  $ endDateTime        : POSIXct, format: &quot;2018-01-01 00:30:00&quot; &quot;2018-01-01 01:00:00&quot; ...
+##  $ startDateTime      : POSIXct, format: &quot;2018-01-01 00:00:00&quot; &quot;2018-01-01 00:30:00&quot; &quot;2018-01-01 01:00:00&quot; ...
+##  $ endDateTime        : POSIXct, format: &quot;2018-01-01 00:30:00&quot; &quot;2018-01-01 01:00:00&quot; &quot;2018-01-01 01:30:00&quot; ...
 ##  $ tempSingleMean     : num  -11.8 -11.8 -12 -12.2 -12.4 ...
 ##  $ tempSingleMinimum  : num  -12.1 -12.2 -12.3 -12.6 -12.8 ...
 ##  $ tempSingleMaximum  : num  -11.4 -11.3 -11.3 -11.7 -12.1 ...
@@ -629,65 +390,72 @@ str(SAAT_30min)
 ##  $ tempSingleExpUncert: num  0.13 0.13 0.13 0.13 0.129 ...
 ##  $ tempSingleStdErMean: num  0.0034 0.0042 0.0048 0.0047 0.0045 0.004 0.0026 0.0034 0.0025 0.0011 ...
 ##  $ finalQF            : num  0 0 0 0 0 0 0 0 0 0 ...
-##  $ publicationDate    : chr  &quot;20200621T115323Z&quot; &quot;20200621T115323Z&quot; &quot;20200621T115323Z&quot; &quot;20200621T115323Z&quot; ...
+##  $ publicationDate    : chr  &quot;20221210T185420Z&quot; &quot;20221210T185420Z&quot; &quot;20221210T185420Z&quot; &quot;20221210T185420Z&quot; ...
 ##  $ release            : chr  &quot;undetermined&quot; &quot;undetermined&quot; &quot;undetermined&quot; &quot;undetermined&quot; ...
 </code></pre>
 
 <h2>Quality Flags</h2>
 
-<p>The sensor data undergo a variety of quality assurance and quality control 
-checks. Data can pass or fail these many checks. The expanded data package 
+<p>The sensor data undergo a variety of automated quality assurance and quality control 
+checks. You can read about them in detail in the <a href="https://data.neonscience.org/data-products/DP1.00002.001" target="_blank">Quality Flags and Quality Metrics ATBD</a>, in the Documentation section of the product details page.
+The expanded data package 
 includes all of these quality flags, which can allow you to decide if not passing
 one of the checks will significantly hamper your research and if you should 
-therefore remove the data from your analysis. The data that we are using is the
-basic data package and only includes the <code>finalQF</code> flag. </p>
+therefore remove the data from your analysis. Here, we&#39;re using the
+basic data package, which only includes the final quality flag (<code>finalQF</code>), 
+which is aggregated from the full set of quality flags. </p>
 
-<p>A pass of the check is <strong>0</strong>, while a fail is <strong>1</strong>. Let&#39;s see if we have data 
-with a quality flag. </p>
+<p>A pass of the check is <strong>0</strong>, while a fail is <strong>1</strong>. Let&#39;s see what percentage 
+of the data we downloaded passed the quality checks.</p>
 
-<pre><code># Are there quality flags in your data? Count &#39;em up
+<pre><code>sum(SAAT_30min$finalQF==1)/nrow(SAAT_30min)
 
-sum(SAAT_30min$finalQF==1)
-
-## [1] 20501
+## [1] 0.2340297
 </code></pre>
 
-<p>How do we want to deal with this quality flagged data. This may depend on why it
-is flagged and what questions you are asking. The expanded data package will be
-useful for determining this.  </p>
+<p>What should we do with the 23% of the data that are flagged? 
+This may depend on why it is flagged and what questions you are asking, 
+and the expanded data package would be useful for determining this.  </p>
 
-<p>For our demonstration purposes here we will keep the flagged data for now.  </p>
+<p>For now, for demonstration purposes, we&#39;ll keep the flagged data.  </p>
 
 <p>What about null (<code>NA</code>) data? </p>
 
-<pre><code># Are there NA&#39;s in your data? Count &#39;em up
-sum(is.na(SAAT_30min$tempSingleMean) )
+<pre><code>sum(is.na(SAAT_30min$tempSingleMean))/nrow(SAAT_30min)
 
-## [1] 19616
+## [1] 0.2239269
 
 mean(SAAT_30min$tempSingleMean)
 
 ## [1] NA
 </code></pre>
 
-<p>Why was there no output? </p>
+<p>22% of the mean temperature values are <code>NA</code>. Note that this is not 
+additive with the flagged data! Empty data records are flagged, so this 
+indicates nearly all of the flagged data in our download are empty records.</p>
 
-<p>We had previously seen that there are NA values in the temperature data. Given 
-there are NA values, R, by default, won&#39;t calculate a mean (and many other 
-summary statistics) as the NA values could skew the data. </p>
+<p>Why was there no output from the calculation of mean temperature? </p>
 
-<p><code>na.rm=TRUE</code> </p>
-
-<p>tells R to ignore them for calculation,etc</p>
+<p>The R programming language, by default, won&#39;t calculate a mean (and many other 
+summary statistics) in data that contain <code>NA</code> values. We could override this 
+using the input parameter <code>na.rm=TRUE</code> in the <code>mean()</code> function, or just 
+remove the empty values from our analysis.</p>
 
 <pre><code># create new dataframe without NAs
+
 SAAT_30min_noNA &lt;- SAAT_30min %&gt;%
     drop_na(tempSingleMean)  # tidyr function
 
+
+
 # alternate base R
+
 # SAAT_30min_noNA &lt;- SAAT_30min[!is.na(SAAT_30min$tempSingleMean),]
 
+
+
 # did it work?
+
 sum(is.na(SAAT_30min_noNA$tempSingleMean))
 
 ## [1] 0
@@ -705,7 +473,7 @@ several options? </p>
 </ul>
 
 <p>Depending on exactly what question you are asking you may prefer to use one over
-the other. For many applications, the <strong>mean temperature</strong> of the one or 30 minute
+the other. For many applications, the <strong>mean temperature</strong> of the 1- or 30-minute
 interval will provide the best representation of the data. </p>
 
 <p>Let&#39;s plot it. (This is a plot of a large amount of data. It can take 1-2 mins 
@@ -713,22 +481,22 @@ to process. It is not essential for completing the next steps if this takes too
 much of your computer memory.)</p>
 
 <pre><code># plot temp data
+
 tempPlot &lt;- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
-    geom_point() +
+    geom_point(size=0.3) +
     ggtitle(&quot;Single Aspirated Air Temperature&quot;) +
     xlab(&quot;Date&quot;) + ylab(&quot;Temp (C)&quot;) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
 
+
+
 tempPlot
 
-## Warning: Removed 19616 rows containing missing values (geom_point).
+## Warning: Removed 19616 rows containing missing values (`geom_point()`).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp/rfigs/plot-temp-1.png" alt="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data shows erroneous sensor readings occured during late April/May 2018."/></p>
-
-<p>Given all the data &ndash; 68,000+ observations &ndash; it took a little while for that to 
-plot.  </p>
 
 <p>What patterns can you see in the data? </p>
 
@@ -758,74 +526,87 @@ to that level.</p>
 
 <h3>Subset to remove quality flagged data</h3>
 
-<p>We previously saw a fair number of data points that were flagged. Now we&#39;ll 
-subset the data to remove those data points. </p>
+<p>We already removed the empty records. Now we&#39;ll 
+subset the data to remove the remaining flagged data. </p>
 
 <pre><code># subset and add C to name for &quot;clean&quot;
+
 SAAT_30minC &lt;- filter(SAAT_30min_noNA, SAAT_30min_noNA$finalQF==0)
 
-# Do any quality flags remain? Count &#39;em up
+
+
+# Do any quality flags remain?
+
 sum(SAAT_30minC$finalQF==1)
 
 ## [1] 0
 </code></pre>
 
-<p>Now we can plot it with the clean data.</p>
+<p>Now we can plot only the unflagged data.</p>
 
 <pre><code># plot temp data
+
 tempPlot &lt;- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
-    geom_point() +
+    geom_point(size=0.3) +
     ggtitle(&quot;Single Aspirated Air Temperature&quot;) +
     xlab(&quot;Date&quot;) + ylab(&quot;Temp (C)&quot;) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
+
+
 
 tempPlot
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp/rfigs/plot-temp-clean-1.png" alt="Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data now has been cleaned of the erroneous sensor readings by filtering out flagged data."/></p>
 
-<p>That looks better! But we still have the 30 min data. </p>
+<p>That looks better! But we&#39;re still working with the 30-minute data. </p>
 
 <h2>Aggregate Data by Day</h2>
 
 <p>We can use the dplyr package functions to aggregate the data. However, we have to
-choose what product we want from the aggregation. Again, you might want daily 
+choose which data we want to aggregate. Again, you might want daily 
 minimum temps, mean temperature or maximum temps depending on your question. </p>
 
 <p>In the context of phenology, minimum temperatures might be very important if you
 are interested in a species that is very frost susceptible. Any days with a 
 minimum temperature below 0C could dramatically change the phenophase. For other 
-species or climates, maximum thresholds may be very import. Or you might be most
-interested in the daily mean.  </p>
+species or climates, maximum thresholds may be very important. Or you might be most
+interested in the daily mean.</p>
 
-<p>For this tutorial, let&#39;s stick with maximum daily temperature (of the interval
-means).  </p>
+<p>And note that you can combine different input values with different aggregation 
+functions - for example, you could calculate the minimum of the half-hourly 
+average temperature, or the average of the half-hourly maximum temperature.</p>
+
+<p>For this tutorial, let&#39;s use maximum daily temperature, i.e. the maximum of the 
+<code>tempSingleMax</code> values for the day.</p>
 
 <pre><code># convert to date, easier to work with
+
 SAAT_30minC$Date &lt;- as.Date(SAAT_30minC$startDateTime)
 
-# did it work
-str(SAAT_30minC$Date)
 
-##  Date[1:67099], format: &quot;2018-01-01&quot; &quot;2018-01-01&quot; &quot;2018-01-01&quot; &quot;2018-01-01&quot; &quot;2018-01-01&quot; &quot;2018-01-01&quot; ...
 
 # max of mean temp each day
+
 temp_day &lt;- SAAT_30minC %&gt;%
     group_by(Date) %&gt;%
     distinct(Date, .keep_all=T) %&gt;%
-    mutate(dayMax=max(tempSingleMean))
+    mutate(dayMax=max(tempSingleMaximum))
 </code></pre>
 
 <p>Now we can plot the cleaned up daily temperature. </p>
 
 <pre><code># plot Air Temperature Data across 2018 using daily data
+
 tempPlot_dayMax &lt;- ggplot(temp_day, aes(Date, dayMax)) +
-    geom_point() +
+    geom_point(size=0.5) +
     ggtitle(&quot;Daily Max Air Temperature&quot;) +
     xlab(&quot;&quot;) + ylab(&quot;Temp (C)&quot;) +
     theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
     theme(text = element_text(size=18))
+
+
 
 tempPlot_dayMax
 </code></pre>
@@ -836,7 +617,7 @@ tempPlot_dayMax
 
 <ul>
 <li>What do we gain by this visualization? </li>
-<li>What do we loose over the 30 minute intervals?<br/></li>
+<li>What do we lose relative to the 30 minute intervals?<br/></li>
 </ul>
 
 <h2>ggplot - Subset by Time</h2>
@@ -851,45 +632,52 @@ follows:</p>
 <p>Let&#39;s plot just the first three months of the year. </p>
 
 <pre><code># Define Start and end times for the subset as R objects that are the time class
+
 startTime &lt;- as.Date(&quot;2018-01-01&quot;)
+
 endTime &lt;- as.Date(&quot;2018-03-31&quot;)
 
+
+
 # create a start and end time R object
+
 start.end &lt;- c(startTime,endTime)
+
 str(start.end)
 
 ##  Date[1:2], format: &quot;2018-01-01&quot; &quot;2018-03-31&quot;
 
 # View data for first 3 months only
+
 # And we&#39;ll add some color for a change. 
+
 tempPlot_dayMax3m &lt;- ggplot(temp_day, aes(Date, dayMax)) +
-           geom_point(color=&quot;blue&quot;, size=1) +  # defines what points look like
+           geom_point(color=&quot;blue&quot;, size=0.5) +  
            ggtitle(&quot;Air Temperature\n Jan - March&quot;) +
            xlab(&quot;Date&quot;) + ylab(&quot;Air Temperature (C)&quot;)+ 
            (scale_x_date(limits=start.end, 
                 date_breaks=&quot;1 week&quot;,
                 date_labels=&quot;%b %d&quot;))
 
+
+
 tempPlot_dayMax3m
 
-## Warning: Removed 268 rows containing missing values (geom_point).
+## Warning: Removed 268 rows containing missing values (`geom_point()`).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp/rfigs/subset-ggplot-time-1.png" alt="Scatter plot showing daily maximum temperatures(of 30 minute interval means) from the beginning of January 2018 through the end of March 2018 at the Smithsonian Conservation Biology Institute (SCBI)."/></p>
 
 <p>Now we have the temperature data matching our Phenology data from the previous 
 tutorial, we want to save it to our computer to use in future analyses (or the
-next tutorial). This is optional if you are continuing as you already have this 
-data in R. </p>
+next tutorial). This is optional if you are continuing directly to the next tutorial 
+as you already have the data in R. </p>
 
 <pre><code># Write .csv - this step is optional 
-# This will write to your current working directory, change as desired.
-write.csv( temp_day , file=&quot;NEONsaat_daily_SCBI_2018.csv&quot;, row.names=F)
 
-#If you are using the downloaded example date, this code will write it to the 
-# pheno data file. Note - this file is already a part of the download.
+# This will write to the working directory we set at the start of the tutorial
 
-#write.csv(temp_day , file=&quot;NEON-pheno-temp-timeseries_v2/NEONsaat_daily_SCBI_2018.csv&quot;, row.names=F)
+write.csv(temp_day , file=&quot;NEONsaat_daily_SCBI_2018.csv&quot;, row.names=F)
 </code></pre>
 
 </body>

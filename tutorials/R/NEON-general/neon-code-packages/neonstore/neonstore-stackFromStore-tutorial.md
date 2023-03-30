@@ -21,7 +21,8 @@ reproducibility. This tutorial covers one possible workflow for managing
 NEON data downloads reproducibly, using a community-developed R package, 
 `neonstore`.
 
-NEON data are initially published as provisional, i.e. subject to change. 
+NEON data are initially published as provisional, i.e. subject to change 
+at any time and without notice. 
 Data in the provisional state may be re-processed and re-published on an 
 as-needed basis, usually due to data quality procedures. Starting in 2021, 
 an annual static Release of NEON data is published, containing most or 
