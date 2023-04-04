@@ -490,18 +490,6 @@ X = predictors_chm[:,1:]
 tree_ids = predictors_chm[:,0]
 ```
 
-
-```python
-np.shape(predictors_chm)
-```
-
-
-
-
-    (1107, 12)
-
-
-
 ## Training data
 
 We now bring in the training data file which is a simple CSV file with no header. If you haven't yet downloaded this, you can scroll up to the top of the lesson and find the **Download Data** section. The first column is biomass, and the remaining columns are the same predictor variables defined above. The tree diameter and max height are defined in the NEON vegetation structure data along with the tree DBH. The field validated values are used for training, while the other were determined from the CHM and camera images by manually delineating the tree crowns and pulling out the relevant information from the CHM. 
