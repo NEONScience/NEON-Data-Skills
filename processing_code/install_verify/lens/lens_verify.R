@@ -85,7 +85,7 @@ workshop.readiness <- function() {
   }
   
   # victory message if no errors
-  if(length(pkg.fail)==0 & all(c(class(bird), class(chm), class(arik))!="try-error")) {
+  if(length(pkg.fail)==0 & all(c(class(bird), class(bird.dup), class(chm), class(arik))!="try-error")) {
     message("Hooray, all tests passed!")
   }
   
