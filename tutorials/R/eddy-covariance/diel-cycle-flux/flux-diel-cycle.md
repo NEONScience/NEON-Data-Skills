@@ -1,8 +1,8 @@
 ---
-syncID: 
-title: "Introduction to working with NEON eddy flux data"
+syncID: 963d7dcebaa54e09a297bc43ecd9ae2b
+title: "Exploring diel carbon flux cycles"
 description: Download and extract NEON eddy flux data to evaluate diel carbon flux cycles
-dateCreated:  '2023-04-09'
+dateCreated:  2023-04-09
 authors: [David Durden]
 contributors: 
 estimatedTime: 1 hour
@@ -10,7 +10,7 @@ packagesLibraries: [rhdf5, neonUtilities, ggplot2]
 topics: HDF5, eddy-covariance, eddy-flux, carbon
 languageTool: R
 dataProducts: DP4.00200.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/ #Update once on main repo
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/flux-diel-cycle.R 
 tutorialSeries: 
 urlTitle: eddy-diel-cycle
 ---
