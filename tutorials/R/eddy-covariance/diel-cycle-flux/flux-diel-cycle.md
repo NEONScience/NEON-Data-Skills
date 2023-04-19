@@ -37,25 +37,7 @@ Start by installing and loading packages and setting options. The function below
         install.packages(x)
         library(x, character.only = TRUE)
       }})
-
-    ## [[1]]
-    ## NULL
-    ## 
-    ## [[2]]
-    ## NULL
-    ## 
-    ## [[3]]
-    ## NULL
-    ## 
-    ## [[4]]
-    ## NULL
-    ## 
-    ## [[5]]
-    ## NULL
-    ## 
-    ## [[6]]
-    ## NULL
-
+    
     options(stringsAsFactors=F)
 
 Now that all the required packages are loaded, let's define all the necessary function arguments to download and stack our flux data using the `neonUtilities` package's `zipsByProduct()` and `stackEddy()` functions. I will define the input arguments as variables to make it easy to modify if I want to explore additional sites or months of data. For this analysis, we will focus on the 2022 growing season at STEI and TREE. Please be aware that the data download size is ~ 1 GB. The code can be modified to shorten or extend this window, but to get a good look at the carbon dynamics at the site it was important to capture most of the growing season.

@@ -27,7 +27,7 @@ This tutorial assumes general familiarity with eddy-covariance data, and will br
 Start by installing and loading packages and setting options. The function below will evaluate if the required packages (`packReq`) already exist in you R library, and will install and load these packages. The `rhdf5` package  is hosted on Bioconductor requiring a BiocManager to be installed to allow `rhdf5` to be pulled from the Bioconductor repository:
 
 
-```{r install-load}
+```{r install-load, results='hide'}
 
 #Required R packages
 packReq <- c("BiocManager", "rhdf5", 'neonUtilities', 'ggplot2','tidyverse', "lubridate")
