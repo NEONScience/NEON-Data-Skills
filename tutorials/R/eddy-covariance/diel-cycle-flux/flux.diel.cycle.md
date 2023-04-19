@@ -38,12 +38,6 @@ Start by installing and loading packages and setting options. The function below
         library(x, character.only = TRUE)
       }})
 
-    ## Loading required package: BiocManager
-
-    ## Bioconductor version 3.12 (BiocManager 1.30.15), R 4.0.5 (2021-03-31)
-
-    ## Bioconductor version '3.12' is out-of-date; the current release version '3.16' is available with R version '4.2'; see https://bioconductor.org/install
-
     ## [[1]]
     ## NULL
     ## 
@@ -93,11 +87,9 @@ For faster downloads, consider using an <a href="https://www.neonscience.org/res
     
     zipsByProduct(dpID="DP4.00200.001", package="basic", 
                   site=site, 
-                  startdate=startdate, enddate=enddate,
+                  startdate=startDate, enddate=endDate,
                   savepath=dirFile, 
                   check.size=FALSE)
-
-    ## Error in zipsByProduct(dpID = "DP4.00200.001", package = "basic", site = site, : object 'startdate' not found
 
 ## 2. Stacking Level 4 Flux Data
 

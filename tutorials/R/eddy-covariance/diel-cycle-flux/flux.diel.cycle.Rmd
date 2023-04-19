@@ -73,7 +73,7 @@ dirFile <- c(tempdir(),"/home/ddurden/eddy/tmp/tutorial")[2]
 
 zipsByProduct(dpID="DP4.00200.001", package="basic", 
               site=site, 
-              startdate=startdate, enddate=enddate,
+              startdate=startDate, enddate=endDate,
               savepath=dirFile, 
               check.size=FALSE)
 
