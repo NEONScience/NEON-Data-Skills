@@ -402,16 +402,16 @@ The carbon uptake should align with peak solar angle and incoming
 photosynthetically active radiation (PAR). The boxplot also provides us information
 about the variability of the fluxes throughout the day across the growing season
 with interquartile range (IQR) represented by the box and the whiskers indicating
-the threshold for outliers (black dots) as <math>1.5 * IQR</math> subtracted from 1st quantile (`Q1`) 
+the threshold for outliers (black dots) as 1.5 * IQR subtracted from 1st quantile (`Q1`) 
 and added to 3rd quantile (`Q3`):
 
-<math>
-    Q1 - 1.5 * IQR
-</math>
+<div class="eq-c">
+    Q1 - 1.5 \cdot IQR
+</div>
 
-<math>
-    Q3 + 1.5 * IQR
-</math>
+<div class="eq-c">
+    Q3 + 1.5 \cdot IQR
+</div>
 
 In the boxplots above the outlier points were greatly reduced after the qfFinal
 data removal; however, some outliers remained. To focus our attention on the 
