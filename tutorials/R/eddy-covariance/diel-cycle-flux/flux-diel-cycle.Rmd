@@ -69,7 +69,7 @@ endDate <- "2022-09"
 site <- c("STEI", "TREE")
 
 #File directory
-dirFile <- c(tempdir(),"/home/ddurden/eddy/tmp/tutorial")[2]
+dirFile <- tempdir()
 
 zipsByProduct(dpID="DP4.00200.001", package="basic", 
               site=site, 

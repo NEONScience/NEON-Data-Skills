@@ -65,7 +65,7 @@ For faster downloads, consider using an <a href="https://www.neonscience.org/res
     site <- c("STEI", "TREE")
     
     #File directory
-    dirFile <- c(tempdir(),"/home/ddurden/eddy/tmp/tutorial")[2]
+    dirFile <- tempdir()
     
     zipsByProduct(dpID="DP4.00200.001", package="basic", 
                   site=site, 
@@ -78,7 +78,7 @@ For faster downloads, consider using an <a href="https://www.neonscience.org/res
 There are five levels of data contained in the eddy flux bundle. For full 
 details, refer to the <a href="https://data.neonscience.org/documents/10179/2403599/NEON.DOC.004571vC/4c72353a-35fb-1136-ef9f-cbdc514711ad" target="_blank">NEON algorithm document</a>.
 
-In this tutorial we will only be focusing on Level 4 (`dp04`) flux data products; however, additional data products from Level 0' (`dp0p`) calibrated raw data to Level 3 (`dp03`) spatially interpolated vertical profiles used to derive the storage flux are available in the EC bundled HDF5 files. Information can be found on the <a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">NEON algorithm document</a> webpage. The <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a> tutorial dives into additional detail regarding the other data product levels, but this tutoiral will focus exclusively on flux data.
+In this tutorial we will only be focusing on Level 4 (`dp04`) flux data products; however, additional data products from Level 0' (`dp0p`) calibrated raw data to Level 3 (`dp03`) spatially interpolated vertical profiles used to derive the storage flux are available in the EC bundled HDF5 files. Information can be found on the <a href="<a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">NEON algorithm document</a>" target="_blank">NEON Bundled data product - eddy covariance</a> webpage. The  <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a> tutorial dives into additional detail regarding the other data product levels, but this tutoiral will focus exclusively on flux data.
 
 To extract the `dp04` data from the HDF5 files and merge them into a 
 single table, we'll use the `stackEddy()` function. We provide the function to input arguments, `filepath` and `level`. The `filepath` will be the file directory (`dirFile`) used for the data download via `zipsByProduct()` combined with the `filestoStack00200` folder created by the function. To grab just the flux data products `level = dp04`:
@@ -203,6 +203,8 @@ Let's look at some data! First, we will combine the data from the two sites into
         scale_color_brewer(palette="Set2", name="qfFinal") +
         facet_grid(~Site) 
 
+    ## Warning: Removed 1619 rows containing missing values (geom_point).
+
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-fluxes-1.png)
 
 When we plot the data turbulent CO<sub>2</sub> flux data, we see a good agreement
@@ -236,8 +238,8 @@ at our 2 sites.
     ## # A tibble: 2 x 2
     ##   Site  `mean(qfqm.fluxCo2.turb.qfFinl)`
     ##   <fct>                            <dbl>
-    ## 1 STEI                             0.219
-    ## 2 TREE                             0.261
+    ## 1 STEI                             0.222
+    ## 2 TREE                             0.277
 
 Now, lets plot the qfFinal failed percentage for all our flux data products:
 
@@ -268,13 +270,28 @@ for all the `fluxCo2` data streams, lets remove flagged data from our dataframe.
 
     dfFlux %>% select(contains("qfqm") & contains("fluxCO2"))  %>% summarise_each(sum)
 
+    ## Warning: `summarise_each_()` was deprecated in dplyr 0.7.0.
+    ## Please use `across()` instead.
+
     ##   qfqm.fluxCo2.nsae.qfFinl qfqm.fluxCo2.stor.qfFinl qfqm.fluxCo2.turb.qfFinl
-    ## 1                     9322                     7886                     3526
+    ## 1                    10901                     8903                     4382
 
     dfFlux %>% select(contains("data") & contains("fluxCO2")) %>% summarise_each(funs(sum(is.na(.))))
 
+    ## Warning: `funs()` was deprecated in dplyr 0.8.0.
+    ## Please use a list of either functions or lambdas: 
+    ## 
+    ##   # Simple named list: 
+    ##   list(mean = mean, median = median)
+    ## 
+    ##   # Auto named with `tibble::lst()`: 
+    ##   tibble::lst(mean, median)
+    ## 
+    ##   # Using lambdas
+    ##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+
     ##   data.fluxCo2.nsae.flux data.fluxCo2.stor.flux data.fluxCo2.turb.flux
-    ## 1                   3174                   2334                   1366
+    ## 1                   3541                   2508                   1619
 
     dfFlux$data.fluxCo2.turb.flux[(which(dfFlux$qfqm.fluxCo2.turb.qfFinl== 1))] <- NaN
     dfFlux$data.fluxCo2.stor.flux[(which(dfFlux$qfqm.fluxCo2.stor.qfFinl== 1))] <- NaN
@@ -283,12 +300,12 @@ for all the `fluxCo2` data streams, lets remove flagged data from our dataframe.
     dfFlux %>% select(contains("qfqm") & contains("fluxCO2"))  %>% summarise_each(sum)
 
     ##   qfqm.fluxCo2.nsae.qfFinl qfqm.fluxCo2.stor.qfFinl qfqm.fluxCo2.turb.qfFinl
-    ## 1                     9322                     7886                     3526
+    ## 1                    10901                     8903                     4382
 
     dfFlux %>% select(contains("data") & contains("fluxCO2")) %>% summarise_each(funs(sum(is.na(.))))
 
     ##   data.fluxCo2.nsae.flux data.fluxCo2.stor.flux data.fluxCo2.turb.flux
-    ## 1                   9713                   7913                   4343
+    ## 1                  11386                   8948                   5349
 We see from the summary of the `fluxCo2` qfFinal and data NA's, that we have 
 removed all the data from `data.fluxCo2.turb.flux`, `data.fluxCo2.turb.flux`, 
 and `data.fluxCo2.turb.flux`. Now we have a clean data set to begin our diel 
@@ -310,6 +327,10 @@ relatively straightforward using `ggplot` and the boxplot function (`geom_boxplo
     ggplot(dfFlux, aes(x = hour, y = data.fluxCo2.turb.flux, fill = Site)) +
       geom_boxplot() +
       stat_summary(fun = median, geom = 'line', aes(group = Site, colour = Site)) 
+
+    ## Warning: Removed 5349 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 5349 rows containing non-finite values (stat_summary).
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-cycle-1.png)
 
@@ -363,13 +384,13 @@ only grab metadata from one file and apply to both sites.
     ## [1] 6
     ## 
     ## $`Pf$AngEnuXaxs`
-    ## [1] 0.01544
+    ## [1] 0.020097
     ## 
     ## $`Pf$AngEnuYaxs`
-    ## [1] -0.019366
+    ## [1] -0.024191
     ## 
     ## $`Pf$Ofst`
-    ## [1] 0.05764
+    ## [1] 0.016017
     ## 
     ## $TimeDiffUtcLt
     ## [1] -6
@@ -394,20 +415,31 @@ only grab metadata from one file and apply to both sites.
       stat_summary(fun = median, geom = 'line', aes(group = Site, colour = Site)) +
       scale_y_continuous(limits = quantile(dfFlux$data.fluxCo2.turb.flux, c(0.001, 0.999), na.rm = TRUE))
 
+    ## Warning: Removed 5375 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 5375 rows containing non-finite values (stat_summary).
+
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-lst-1.png)
 
 That looks better, now we can clearly see the diel cycle of the turbulent 
-CO<sub>2</sub> flux at our STEI and TREE sites with peak carbon uptake around noon. 
+COsub>2</sub> flux at our STEI and TREE sites with peak carbon uptake around noon. 
 The carbon uptake should align with peak solar angle and incoming 
 photosynthetically active radiation (PAR). The boxplot also provides us information
 about the variability of the fluxes throughout the day across the growing season
 with interquartile range (IQR) represented by the box and the whiskers indicating
-the threshold for outliers (black dots) as 1.5 * IQR subtracted from 1st quantile (`Q1`) 
+the threshold for outliers (black dots) as $ 1.5 x IQR$ subtracted from 1st quantile (`Q1`) 
 and added to 3rd quantile (`Q3`):
 
-Q1 - 1.5 * IQR
+$$
+
+Q1 - 1.5 * IQR 
+
+$$
+$$
 
 Q3 + 1.5 * IQR
+
+$$
 
 In the boxplots above the outlier points were greatly reduced after the qfFinal
 data removal; however, some outliers remained. To focus our attention on the 
@@ -424,6 +456,10 @@ the storage flux and  it's impact on the NSAE flux at STEI and TREE:
       stat_summary(fun = median, geom = 'line', aes(group = Site, colour = Site)) +
       scale_y_continuous(limits = quantile(dfFlux$data.fluxCo2.stor.flux, c(0.001, 0.999), na.rm = TRUE))
 
+    ## Warning: Removed 8966 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 8966 rows containing non-finite values (stat_summary).
+
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-stor-1.png)
 
 The storage flux as expected is quite smaller than the turbulent flux, and is 
@@ -437,6 +473,10 @@ at the TREE site.Let's look how that impacts the overall NSAE flux:
       geom_boxplot() +
       stat_summary(fun = median, geom = 'line', aes(group = Site, colour = Site)) +
       scale_y_continuous(limits = quantile(dfFlux$data.fluxCo2.nsae.flux, c(0.001, 0.999), na.rm = TRUE))
+
+    ## Warning: Removed 11400 rows containing non-finite values (stat_boxplot).
+
+    ## Warning: Removed 11400 rows containing non-finite values (stat_summary).
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-nsae-1.png)
 
@@ -456,8 +496,8 @@ at the TREE site.Let's look how that impacts the overall NSAE flux:
     ## # A tibble: 2 x 4
     ##   Site  data.fluxCo2.nsae.flux data.fluxCo2.stor.flux data.fluxCo2.turb.flux
     ##   <fct>                  <dbl>                  <dbl>                  <dbl>
-    ## 1 STEI                   -2.72                -0.0259                  -3.83
-    ## 2 TREE                   -2.54                -0.0911                  -3.14
+    ## 1 STEI                   -2.18                -0.0216                  -3.19
+    ## 2 TREE                   -2.04                -0.0716                  -2.68
 
 
 As expected from the plots, we see that on average the STEI site takes up more 
