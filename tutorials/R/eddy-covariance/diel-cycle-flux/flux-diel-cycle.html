@@ -19,9 +19,6 @@ window.onload = function() {
 
 
 
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 
 
 <style type="text/css">
@@ -229,7 +226,7 @@ zipsByProduct(dpID=&quot;DP4.00200.001&quot;, package=&quot;basic&quot;,
 <p>There are five levels of data contained in the eddy flux bundle. For full 
 details, refer to the <a href="https://data.neonscience.org/documents/10179/2403599/NEON.DOC.004571vC/4c72353a-35fb-1136-ef9f-cbdc514711ad" target="_blank">NEON algorithm document</a>.</p>
 
-<p>In this tutorial we will only be focusing on Level 4 (<code>dp04</code>) flux data products; however, additional data products from Level 0&#39; (<code>dp0p</code>) calibrated raw data to Level 3 (<code>dp03</code>) spatially interpolated vertical profiles used to derive the storage flux are available in the EC bundled HDF5 files. Information can be found on the <a href="<a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">NEON algorithm document</a>&ldquo; target=&rdquo;_blank&quot;&gt;NEON Bundled data product - eddy covariance</a> webpage. The  <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a> tutorial dives into additional detail regarding the other data product levels, but this tutoiral will focus exclusively on flux data.</p>
+<p>In this tutorial we will only be focusing on Level 4 (<code>dp04</code>) flux data products; however, additional data products from Level 0&#39; (<code>dp0p</code>) calibrated raw data to Level 3 (<code>dp03</code>) spatially interpolated vertical profiles used to derive the storage flux are available in the EC bundled HDF5 files. Information can be found on the <a href="<a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">NEON algorithm document</a> webpage. The  <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a> tutorial dives into additional detail regarding the other data product levels, but this tutoiral will focus exclusively on flux data.</p>
 
 <p>To extract the <code>dp04</code> data from the HDF5 files and merge them into a 
 single table, we&#39;ll use the <code>stackEddy()</code> function. We provide the function to input arguments, <code>filepath</code> and <code>level</code>. The <code>filepath</code> will be the file directory (<code>dirFile</code>) used for the data download via <code>zipsByProduct()</code> combined with the <code>filestoStack00200</code> folder created by the function. To grab just the flux data products <code>level = dp04</code>:</p>
@@ -349,8 +346,6 @@ dfFlux %&gt;%
     geom_point() + 
     scale_color_brewer(palette=&quot;Set2&quot;, name=&quot;qfFinal&quot;) +
     facet_grid(~Site) 
-
-## Warning: Removed 1619 rows containing missing values (geom_point).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-fluxes-1.png" alt=" "/></p>
@@ -416,25 +411,10 @@ for all the <code>fluxCo2</code> data streams, lets remove flagged data from our
 
 <pre><code>dfFlux %&gt;% select(contains(&quot;qfqm&quot;) &amp; contains(&quot;fluxCO2&quot;))  %&gt;% summarise_each(sum)
 
-## Warning: `summarise_each_()` was deprecated in dplyr 0.7.0.
-## Please use `across()` instead.
-
 ##   qfqm.fluxCo2.nsae.qfFinl qfqm.fluxCo2.stor.qfFinl qfqm.fluxCo2.turb.qfFinl
 ## 1                    10901                     8903                     4382
 
 dfFlux %&gt;% select(contains(&quot;data&quot;) &amp; contains(&quot;fluxCO2&quot;)) %&gt;% summarise_each(funs(sum(is.na(.))))
-
-## Warning: `funs()` was deprecated in dplyr 0.8.0.
-## Please use a list of either functions or lambdas: 
-## 
-##   # Simple named list: 
-##   list(mean = mean, median = median)
-## 
-##   # Auto named with `tibble::lst()`: 
-##   tibble::lst(mean, median)
-## 
-##   # Using lambdas
-##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
 
 ##   data.fluxCo2.nsae.flux data.fluxCo2.stor.flux data.fluxCo2.turb.flux
 ## 1                   3541                   2508                   1619
@@ -471,10 +451,6 @@ relatively straightforward using <code>ggplot</code> and the boxplot function (<
 ggplot(dfFlux, aes(x = hour, y = data.fluxCo2.turb.flux, fill = Site)) +
   geom_boxplot() +
   stat_summary(fun = median, geom = &#39;line&#39;, aes(group = Site, colour = Site)) 
-
-## Warning: Removed 5349 rows containing non-finite values (stat_boxplot).
-
-## Warning: Removed 5349 rows containing non-finite values (stat_summary).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-cycle-1.png" alt=" "/></p>
@@ -558,33 +534,22 @@ ggplot(dfFlux, aes(x = hourLst, y = data.fluxCo2.turb.flux, fill = Site)) +
   geom_boxplot() +
   stat_summary(fun = median, geom = &#39;line&#39;, aes(group = Site, colour = Site)) +
   scale_y_continuous(limits = quantile(dfFlux$data.fluxCo2.turb.flux, c(0.001, 0.999), na.rm = TRUE))
-
-## Warning: Removed 5375 rows containing non-finite values (stat_boxplot).
-
-## Warning: Removed 5375 rows containing non-finite values (stat_summary).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-lst-1.png" alt=" "/></p>
 
 <p>That looks better, now we can clearly see the diel cycle of the turbulent 
-COsub&gt;2</sub> flux at our STEI and TREE sites with peak carbon uptake around noon. 
+CO<sub>2</sub> flux at our STEI and TREE sites with peak carbon uptake around noon. 
 The carbon uptake should align with peak solar angle and incoming 
 photosynthetically active radiation (PAR). The boxplot also provides us information
 about the variability of the fluxes throughout the day across the growing season
 with interquartile range (IQR) represented by the box and the whiskers indicating
-the threshold for outliers (black dots) as $ 1.5 x IQR$ subtracted from 1st quantile (<code>Q1</code>) 
+the threshold for outliers (black dots) as 1.5 * IQR subtracted from 1st quantile (<code>Q1</code>) 
 and added to 3rd quantile (<code>Q3</code>):</p>
-
-<p>$$</p>
 
 <p>Q1 - 1.5 * IQR </p>
 
-<p>\[
-\]</p>
-
 <p>Q3 + 1.5 * IQR</p>
-
-<p>$$</p>
 
 <p>In the boxplots above the outlier points were greatly reduced after the qfFinal
 data removal; however, some outliers remained. To focus our attention on the 
@@ -599,10 +564,6 @@ the storage flux and  it&#39;s impact on the NSAE flux at STEI and TREE:</p>
   geom_boxplot() +
   stat_summary(fun = median, geom = &#39;line&#39;, aes(group = Site, colour = Site)) +
   scale_y_continuous(limits = quantile(dfFlux$data.fluxCo2.stor.flux, c(0.001, 0.999), na.rm = TRUE))
-
-## Warning: Removed 8966 rows containing non-finite values (stat_boxplot).
-
-## Warning: Removed 8966 rows containing non-finite values (stat_summary).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-stor-1.png" alt=" "/></p>
@@ -617,10 +578,6 @@ at the TREE site.Let&#39;s look how that impacts the overall NSAE flux:</p>
   geom_boxplot() +
   stat_summary(fun = median, geom = &#39;line&#39;, aes(group = Site, colour = Site)) +
   scale_y_continuous(limits = quantile(dfFlux$data.fluxCo2.nsae.flux, c(0.001, 0.999), na.rm = TRUE))
-
-## Warning: Removed 11400 rows containing non-finite values (stat_boxplot).
-
-## Warning: Removed 11400 rows containing non-finite values (stat_summary).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-nsae-1.png" alt=" "/></p>
