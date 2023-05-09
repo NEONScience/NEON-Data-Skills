@@ -119,7 +119,7 @@ ggplot(Bbprev, aes(fill=taxonID, y=prevalence, x=siteID)) +
        scale_fill_discrete(labels=c('Glaucomys volans (M)', 'Haemaphysalis longicornis (T)', 'Ixodes scapularis (T)', 'Microtus pennsylvanicus (M)', 'Myodes gapperi (M)', 'Napaeozapus insignis (M)', 'Peromyscus leucopus (M)', "Peromyscus leucopis/maniculatus (M)", "Peromyscus maniculatus (M)", "Reithrodontomys humulis (M)", "Zapus hudsonius (M)"))
 ```
 
-The abundance of ticks found at a site likely plays a role in understanding the interplay between environment, hosts and vectors in this complex system.  Here we plot the abundance of 3 life stages of the primary vector, Ixodes scapularis at the three selected sites.
+The abundance of ticks and small mammals found at a site likely plays a role in understanding the interplay between environment, hosts and vectors in this complex system.  Here we plot the abundance of 3 life stages of the primary vector, Ixodes scapularis at the three selected sites.  A more detailed tutorial describing how to get started analyzing and plotting small mammal abundances can be found here: https://www.neonscience.org/resources/learning-hub/tutorials/mammal-data-intro
 
 ```{r plot tick populations, echo=FALSE}
 #Remove data with no sampling:
@@ -143,3 +143,4 @@ ggplot(data = tckdatsum,
   facet_wrap(~siteID, scales = "free") +
   theme(axis.text.x =element_text(angle=90))
 ```
+
