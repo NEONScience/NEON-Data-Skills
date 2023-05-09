@@ -27,7 +27,7 @@ require("ggplot2")
 #Select the dates and sites for data download:
 sd = '2021-01'
 ed = '2022-01'
-sites = c("BLAN", "HARV", "TREE")
+sites = c("SCBI", "HARV", "TREE")
 
 #download ticks sampled using drag cloth
 tckColl <- loadByProduct(
@@ -100,15 +100,46 @@ rptall<-rbind(rptear.j[,-75], rptblood.j[,-80]) #combine the dataframes
 mpp<-rptall %>%
   group_by(siteID.x, testPathogenName, taxonID) %>% 
   summarise(tot.test=n(), tot.pos = sum(testResult=='Positive')) %>%
-  mutate(prevalence = tot.pos/tot.test)
+  mutate(prevalence = tot.pos/tot.test) %>%
+  rename(siteID = siteID.x)
+
 ```
 
-## Including Plots
+## Explore Lyme prevalence across sites and taxa
 
-You can also embed plots, for example:
+There is considerable interest in improving understanding of the factors that contribute to the spread of the bacterial pathogen, Borrelia burgdorferi, which causes Lyme disease.  Here we make a simple barplot of the prevalence of this pathogen in 2021 in small mammals (M) and ticks (T) at 3 different sites.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r plot Borrelia burgdorferi by taxonID and site, echo=FALSE}
+pathall<-rbind(mpp, tpp)
+Bbprev<-pathall %>% filter(testPathogenName %in% 'Borrelia burgdorferi sensu lato')
+
+#Make a plot that groups prevalence by site with each color representing a different taxonID
+ggplot(Bbprev, aes(fill=taxonID, y=prevalence, x=siteID)) + 
+    geom_bar(position="dodge", stat="identity") +
+       scale_fill_discrete(labels=c('Glaucomys volans (M)', 'Haemaphysalis longicornis (T)', 'Ixodes scapularis (T)', 'Microtus pennsylvanicus (M)', 'Myodes gapperi (M)', 'Napaeozapus insignis (M)', 'Peromyscus leucopus (M)', "Peromyscus leucopis/maniculatus (M)", "Peromyscus maniculatus (M)", "Reithrodontomys humulis (M)", "Zapus hudsonius (M)"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The abundance of ticks found at a site likely plays a role in understanding the interplay between environment, hosts and vectors in this complex system.  Here we plot the abundance of 3 life stages of the primary vector, Ixodes scapularis at the three selected sites.
+
+```{r plot tick populations echo=FALSE}
+#Remove data with no sampling:
+tckcol<-tck_fielddata %>% filter(samplingImpractical%in%'OK'|samplingImpractical%in%''| is.na(samplingImpractical))
+
+#Combine the field and taxonomy data:
+tckdat<-left_join(tckcol, tck_taxonomyProcessed, by="sampleID")
+
+tckdatsum<-tckdat %>% mutate(date = as.Date(collectDate.x)) %>%
+  group_by(siteID, date, scientificName, sexOrAge) %>% summarise(tot=sum(individualCount), 
+                                                               area =sum(totalSampledArea))%>%
+  mutate(totzeros = ifelse(is.na(scientificName), 0, tot), 
+         lifesp = paste0(scientificName, sexOrAge)) %>%
+  filter(scientificName %in% "Ixodes scapularis", !sexOrAge%in%'Larva') %>%
+  mutate(PerAreaTicks = (totzeros/area)*100)
+
+ggplot(data = tckdatsum, 
+                 aes(x=date, y=PerAreaTicks, color = lifesp, group = lifesp)) +
+  geom_point() +
+  geom_line()+
+  facet_wrap(~siteID, scales = "free") +
+  theme(axis.text.x =element_text(angle=90))
+```
