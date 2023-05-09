@@ -535,12 +535,18 @@ pos &lt;- soilT$sensor_positions_00041
 
 names(pos)
 
-##  [1] &quot;siteID&quot;               &quot;HOR.VER&quot;              &quot;name&quot;                 &quot;description&quot;         
-##  [5] &quot;start&quot;                &quot;end&quot;                  &quot;referenceName&quot;        &quot;referenceDescription&quot;
-##  [9] &quot;referenceStart&quot;       &quot;referenceEnd&quot;         &quot;xOffset&quot;              &quot;yOffset&quot;             
-## [13] &quot;zOffset&quot;              &quot;pitch&quot;                &quot;roll&quot;                 &quot;azimuth&quot;             
-## [17] &quot;referenceLatitude&quot;    &quot;referenceLongitude&quot;   &quot;referenceElevation&quot;   &quot;eastOffset&quot;          
-## [21] &quot;northOffset&quot;          &quot;xAzimuth&quot;             &quot;yAzimuth&quot;             &quot;publicationDate&quot;
+##  [1] &quot;siteID&quot;                           &quot;HOR.VER&quot;                         
+##  [3] &quot;sensorLocationID&quot;                 &quot;sensorLocationDescription&quot;       
+##  [5] &quot;positionStartDateTime&quot;            &quot;positionEndDateTime&quot;             
+##  [7] &quot;referenceLocationID&quot;              &quot;referenceLocationIDDescription&quot;  
+##  [9] &quot;referenceLocationIDStartDateTime&quot; &quot;referenceLocationIDEndDateTime&quot;  
+## [11] &quot;xOffset&quot;                          &quot;yOffset&quot;                         
+## [13] &quot;zOffset&quot;                          &quot;pitch&quot;                           
+## [15] &quot;roll&quot;                             &quot;azimuth&quot;                         
+## [17] &quot;locationReferenceLatitude&quot;        &quot;locationReferenceLongitude&quot;      
+## [19] &quot;locationReferenceElevation&quot;       &quot;eastOffset&quot;                      
+## [21] &quot;northOffset&quot;                      &quot;xAzimuth&quot;                        
+## [23] &quot;yAzimuth&quot;                         &quot;publicationDate&quot;
 
 # view table
 
@@ -574,7 +580,7 @@ in meters, to the reference latitude, longitude, and elevation in the file. </p>
 <code>verticalPosition</code> and <code>horizontalPosition</code> fields in <code>soilT$ST_30_minute</code>.</p>
 
 <p>Note that there are two sets of position data for soil plot 001, and that 
-one set has an <code>end</code> date in the file. This indicates sensors either 
+one set has a <code>positionEndDateTime</code> date in the file. This indicates sensors either 
 moved or were relocated; in this case there was a frost heave incident. 
 You can read about it in the issue log, which is displayed on the 
 <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Data Product Details</a> page, 
@@ -596,12 +602,12 @@ and also included as a table in the data download:</p>
 <p>Since we&#39;re working with data from July 2018, and the change in 
 sensor locations is dated Nov 2018, we&#39;ll use the original locations. 
 There are a number of ways to drop the later locations from the 
-table; here, we find the rows in which the <code>end</code> field is empty, 
+table; here, we find the rows in which the <code>positionEndDateTime</code> field is empty, 
 indicating no end date, and the rows corresponding to soil plot 001, 
 and drop all the rows that meet both criteria.</p>
 
 <pre><code>pos &lt;- pos[-intersect(grep(&quot;001.&quot;, pos$HOR.VER),
-                      which(pos$end==&quot;&quot;)),]
+                      which(pos$positionEndDateTime==&quot;&quot;)),]
 </code></pre>
 
 <p>Our goal is to plot a time series of temperature, stratified by 
@@ -638,7 +644,7 @@ is its own line:</p>
 
 gg
 
-## Warning: Removed 1488 row(s) containing missing values (geom_path).
+## Warning: Removed 1488 rows containing missing values (`geom_line()`).
 </code></pre>
 
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-1.png" alt="Tiled figure of temperature by depth in each plot"/></p>

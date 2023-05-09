@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Try out BigQuery</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p>NEON is exploring opportunities to make data available via cloud providers. This includes Google Cloud Platform, in association with the move of NEON data storage to <a href="https://www.neonscience.org/data-samples/data-management/neon-google" target="_blank">Google Cloud Storage</a>. In the fall of 2022, NEON loaded two tabular data products to Google&#39;s BigQuery environment, as a pilot project to explore data access and interaction through BigQuery.</p>
+
+<h2>Try out BigQuery</h2>
+
+<p>To demonstrate BigQuery data access, we developed a Jupyter notebook that queries both the pilot datasets and brings them together for a simple analysis. You can run this notebook in the Google Colab environment <a href="https://colab.research.google.com/github/NEONScience/NEON-Data-Skills/blob/main/tutorials/Python/GCP/NEON_discharge_BQ_demo.ipynb" target="_blank">here</a>.</p>
+
+<p>If you prefer to use a different Jupyter environment, you can also access the notebook directly <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/Python/GCP/NEON_discharge_BQ_demo.ipynb" target="_blank">here</a>, and run it in the environment of your choice. In this case, consult the list of code libraries loaded in the first and second code chunks, and make sure you have them installed.</p>
+
+<h2>Tips for success</h2>
+
+<ul>
+<li><p>Section 1 of the notebook contains setup instructions. These are critical! You will need a Google Cloud account, and you will need to link the NEON datasets to a project in your account. The notebook will guide you through these steps.</p></li>
+<li><p>Do not simply open the notebook and run all! Some of the setup steps need to be carried out in Google Cloud, and three of the code chunks require you to enter your project ID.</p></li>
+</ul>
+
+<h2>Future directions</h2>
+
+<p>Stay tuned for further developments in NEON&#39;s cloud compute support. This is an ongoing effort!</p>
+
+</body>
+
+</html>
