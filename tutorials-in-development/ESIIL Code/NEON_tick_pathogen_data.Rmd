@@ -66,7 +66,7 @@ mamPath <- loadByProduct(
   check.size = F)
 ```
 
-```{r convert to df}
+```{r convert to df, results = 'hide'}
 #Separate the downloaded lists into dataframes for ease of accessing data tables:
 list2env(tckColl, envir=.GlobalEnv)
 list2env(tckPath, envir=.GlobalEnv)
@@ -121,7 +121,7 @@ ggplot(Bbprev, aes(fill=taxonID, y=prevalence, x=siteID)) +
 
 The abundance of ticks found at a site likely plays a role in understanding the interplay between environment, hosts and vectors in this complex system.  Here we plot the abundance of 3 life stages of the primary vector, Ixodes scapularis at the three selected sites.
 
-```{r plot tick populations echo=FALSE}
+```{r plot tick populations, echo=FALSE}
 #Remove data with no sampling:
 tckcol<-tck_fielddata %>% filter(samplingImpractical%in%'OK'|samplingImpractical%in%''| is.na(samplingImpractical))
 
