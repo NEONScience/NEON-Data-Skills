@@ -6,81 +6,12 @@ authors: Bobby Hensley
 packagesLibraries: neonUtilities, ggplot2
 ---
 
-This tutorial covers downloading NEON water quality data using the neonUtilities 
-R package.
-
-<div id="ds-objectives" markdown="1">
-
-## Objectives
-
-After completing this activity, you will be able to:
-
-* Download NEON water quality data using the `neonUtilities` package.
-
-## Things You'll Need To Complete This Tutorial
-To complete this tutorial you will need R (version >4.1) and, 
-preferably, RStudio loaded on your computer.
-
-### Install R Packages
-
-* **neonUtilities**: Basic functions for accessing NEON data
-* **ggplot2**: Plotting functions
-
-These packages are on CRAN and can be installed by 
-`install.packages()`.
-
-### Additional Resources
-
-* <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
-
-</div>
-
-## Download Files and Load Directly to R: loadByProduct()
-
-The most popular function in `neonUtilities` is `loadByProduct()`. 
-This function downloads data from the NEON API, merges the site-by-month 
-files, and loads the resulting data tables into the R environment, 
-assigning each data type to the appropriate R class.
-
-We need to install (if not already done) and load the neonUtilities R package, 
-as well as the ggplot packages for plotting some figures. 
-
-```{r set-up-env, eval=F}
-# Install neonUtilities package if you have not yet.
-install.packages("neonUtilities")
-install.packages("ggplot2")
-```
+NEON water quality sondes are deployed at stream sensor sets and lake and river buoys. At stream sites, the sondes are affixed to a post at a static depth relative to the stream bottom. The upstream sensor set #1 (S1) collects specific conductance, dissolved oxygen, pH, chlorophyll, and turbidity, but no fDOM. The downstream sensor set #2 (S2) collects specific conductance, dissolved oxygen, pH, chlorophyll, turbidity and fDOM. The buoy-deployed multisondes collect specific conductance, dissolved oxygen, pH, chlorophyll, turbidity, fDOM, and depth. At all but the Flint River, GA (FLNT) buoys, the water quality multisonde is fixed to a profiling winch to collect data from multiple depths every 4 hours and from 0.5 m parked depth when not profiling. Due to the high velocity of the Flint River (FLNT), one multisonde is deployed at a fixed depth of 0.5 m below the water surface.
 
 ```{r load-packages}
-# Load required packages
 library(neonUtilities)
 library(ggplot2)
 ```
-
-The inputs to `loadByProduct()` control which data to download and how 
-to manage the processing. The following are frequently used inputs: 
-
-* `dpID`: The identifier of the NEON data product to pull, in the form 
-DPL.PRNUM.REV, e.g. DP1.20288.001
-* `site`: Either the string 'all', meaning all available sites, or a character 
-vector of 4-letter NEON site codes, e.g. c('ARIK','BARC'). Defaults to all. 
-* `startdate` and `enddate`: Either NA, meaning all available dates, or a 
-character vector in the form YYYY-MM, e.g. 2017-01. Defaults to NA.
-* `package`: Either basic or expanded data. Expanded data packages generally
-include additional information about data quality such as individual quality 
-flag test results. Not every NEON data product has an expanded package; Defaults
-to basic.
-* `release``: The data release to be downloaded, e.g. 'RELEASE-2021'. To 
-download provisional data, use release='PROVISIONAL'. Defaults to the most 
-recent release.
-* `check.size`: T or F, should the user approve the total file size before 
-downloading? Defaults to T. When working in batch mode, or other 
-non-interactive workflow, use check.size=F.
-* `token`: Allows you to input your NEON API token to obtain faster downloads. 
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
-
-There are additional inputs you can learn about in the 
-<a href="https//:www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
 
 For this example let's download a month of water quality data (DP1.20288.001) 
 from the Flint River site (FLNT) from June 2022 (2022-06).  We'll download the
@@ -88,7 +19,7 @@ basic package and we can skip checking the file size because one month of data
 will not be very large.
 
 ```{r download-data-waq, results='hide'}
-# download data of interest - Water Quality
+
 waq <- loadByProduct(dpID="DP1.20288.001", site="FLNT", 
                      startdate="2022-06", enddate="2022-06", 
                      package="expanded", 
@@ -97,60 +28,22 @@ waq <- loadByProduct(dpID="DP1.20288.001", site="FLNT",
 
 ```
 
-## Files Associated with Downloads
-
-The data we've downloaded comes as an object that is a named list of objects. 
-To work with each of them, select them from the list using the `$` operator. 
-
-```{r loadBy-list}
-# view all components of the list
-names(waq)
-
-```
-
-We can see that there are multiple objects in the downloaded water quality data. 
-One dataframe of data (`waq_instantaneous`) and several metadata files. 
-
-If you'd like you can use the `$` operator to assign an object from an item in 
-the list. If you prefer to extract each table from the list and work with it as 
-independent objects, which we will do, you can use the `list2env()` function. 
 
 ```{r unlist-vars}
-# unlist the variables and add to the global environment
 list2env(waq, .GlobalEnv)
 ```
-
-* **data file(s)**: There will always be one or more dataframes that include the 
-primary data of the data product you downloaded. Multiple dataframes are 
-available when there are related datatables for a single data product.
-* **readme_xxxxx**: The readme file, with the corresponding 5 digits from the 
-data product number, provides you with important information relevant to the 
-data product and the specific instance of downloading the data. Here you can 
-find manual flagging notes for all sites, locations, and time periods.
-* **sensor_postions_xxxxx**: This file contains information about the coordinates
-of each sensor, relative to a reference location. NEON often collects the same 
-data from multiple locations within a site.  For example, water quality is 
-collected at an upstream and downstream location at wadeable stream sites.   
-* **variables_xxxxx**: This file contains all the variables found in the 
-associated data table(s). This includes full definitions, units, and other 
-important information. 
-* **issueLog_xxxxx**: The issue log documents known issues with the data 
-product and corrections that have been made.
-
-
-## Plot Data
 
 Now we can plot the dissolved Oxygen time-series.  For plotting purposes we
 can consider either the `startDateTime`or the `endDateTime` time stamp. From
 the **variables_xxxxx** file we can see that these are the start and end times
 of the interval over which measurements were collected.  Because water quality
 is an instantaneous measurement that is not averaged, these will be the same.
-Note all NEON data is always in UTC time. We will also consider the variable 
+Note all NEON data are always in UTC time. We will also consider the variable 
 `dissolvedOxygen`, which the **variables_xxxxx** file tells us is the 
 concentration in mg/L. 
 
 ```{r plot-wqual}
-# plot
+
 doPlot <- ggplot() +
 	geom_line(data = waq_instantaneous, 
 	          aes(endDateTime, dissolvedOxygen), 
