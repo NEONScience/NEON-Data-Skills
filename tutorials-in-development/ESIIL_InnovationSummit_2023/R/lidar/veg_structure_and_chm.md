@@ -1,4 +1,4 @@
-This data tutorial provides instruction on working with two different NEON data products to estimate tree height: 
+This code snippet provides instruction on working with two different NEON data products to estimate tree height: 
 
 * **DP3.30015.001, Ecosystem structure**, aka Canopy Height Model (CHM) 
 * **DP1.10098.001, Vegetation structure**
@@ -6,6 +6,8 @@ This data tutorial provides instruction on working with two different NEON data 
 The <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the remote sensing platform. 
 The <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">vegetation structure data</a> are collected by by field staff on the ground. We will be using data from the Wind River Experimental Forest NEON field site located in Washington state. The 
 predominant vegetation there are tall evergreen conifers. 
+
+For the full tutorial, which includes a comparison of these two datasets, please refer to [Compare tree height measured from the ground to a Lidar-based Canopy Height Model](https://www.neonscience.org/resources/learning-hub/tutorials/tree-heights-veg-structure-chm).
 
 <div id="ds-objectives" markdown="1">
 
