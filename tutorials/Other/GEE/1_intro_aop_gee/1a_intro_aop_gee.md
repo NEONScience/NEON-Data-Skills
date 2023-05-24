@@ -111,8 +111,8 @@ When you Run the code above (by clicking on the **Run** above the code editor), 
 If you click `Convert`, the line of code will disappear and the variable will be imported into your session directly, and will show up at the top of the code editor. Go ahead and convert the variables for all three lines of code, so you should see the following. Tip: if you type Ctrl-z, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. Generally it is recommended to retain the code that reads in each variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your current code editor, the imported variables will not be saved and any subsequent code referring to this variable will result in an error message.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/imported_sdr.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/imported_sdr.png" alt="Imported AOP Image Collections."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/imported_sdr.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/imported_sdr.png" alt="Imported AOP Image Collections."></a>
 </figure>
 
 Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *version*. 
@@ -120,8 +120,8 @@ Note that each of these imported variables can now be expanded, using the arrow 
 Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link `projects/neon-prod-earthengine/DP3-30006-001`. Below we'll show the window that pops-up when you click on `SDR` and select the **IMAGES** tab. We encourage you to look at all of the datasets similarly. Note: when the GEE datasets become public, you will be able to search for the NEON AOP image collections through the <a href="[https://data.neonscience.org/data-products/explore](https://developers.google.com/earth-engine/datasets)" target="_blank">Earth Engine Data Catalog</a>.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/sdr_asset_details_images.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/sdr_asset_details_images.png" alt="SDR Asset Details Description."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_asset_details_images.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_asset_details_images.png" alt="SDR Asset Details Description."></a>
 </figure>
 
 This allows you to read the full description in a more user-friendly format. Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. For example, note that the reflectance data in GEE is scaled by 100. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
@@ -129,8 +129,8 @@ This allows you to read the full description in a more user-friendly format. Not
 You can also click on the `IMAGES` tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. In the next step, we will show how to use this path to pull in a single file. 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_images.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_images.png" alt="SDR Asset Details Images."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro_aop_gee/sdr_asset_details_images.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro_aop_gee/sdr_asset_details_images.png" alt="SDR Asset Details Images."></a>
 </figure>
 
 ## Filter Datasets by Properties and Plot!
