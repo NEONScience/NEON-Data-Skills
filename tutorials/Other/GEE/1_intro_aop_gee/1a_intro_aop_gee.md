@@ -128,11 +128,6 @@ You can click on the  **IMAGES** tab to explore all the available NEON images fo
 
 Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro_aop_gee/sdr_asset_details_images.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro_aop_gee/sdr_asset_details_images.png" alt="SDR Asset Details Images."></a>
-</figure>
-
 ## Filter Datasets by Properties and Plot!
 
 As a last step, we will explore some filtering options to pull out individual images from an Image Collection.
