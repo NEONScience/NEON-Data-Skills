@@ -46,7 +46,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 AOP has currently added a subset of AOP Level 3 (mosaicked) data products at 8 NEON sites (as of May 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
-The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-nonprod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="[https://developers.google.com/earth-engine/guides/getstarted](https://data.neonscience.org/data-products/explore)" target="_blank"> NEON Data Portal</a>. The tables below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
+The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-nonprod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The tables below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Data Product      | Data Product ID (Prefix) |
 |----------|------------|-------------------------|
@@ -111,17 +111,17 @@ When you Run the code above (by clicking on the **Run** above the code editor), 
 If you click `Convert`, the line of code will disappear and the variable will be imported into your session directly, and will show up at the top of the code editor. Go ahead and convert the variables for all three lines of code, so you should see the following. Tip: if you type Ctrl-z, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. Generally it is recommended to retain the code that reads in each variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your current code editor, the imported variables will not be saved and any subsequent code referring to this variable will result in an error message.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/imported_sdr.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/imported_sdr.png" alt="Imported AOP Image Collections."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/imported_sdr.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/imported_sdr.png" alt="Imported AOP Image Collections."></a>
 </figure>
 
-Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *properties*, which if you expand, shows a *description*. This provides more detailed information about the data product.
+Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *version*. 
 
-Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue `projects/neon/DP3-30006-001_SDR`, as well as `DP3-30010-001_RGB` and`DP3-30024-001_DEM`, respectively. Below we'll show the window that pops-up when you click on `SDR`, but we encourage you to look at all three datasets.
+Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link `projects/neon-prod-earthengine/DP3-30006-001`. Below we'll show the window that pops-up when you click on `SDR` and select the IMAGES tab. We encourage you to look at all of the datasets similarly. Note: when the GEE datasets become public, you will be able to search for the NEON AOP image collections through the <a href="[https://data.neonscience.org/data-products/explore](https://developers.google.com/earth-engine/datasets)" target="_blank">Earth Engine Data Catalog</a>.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_description.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_description.png" alt="SDR Asset Details Description."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/sdr_asset_details_images.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/sdr_asset_details_images.png" alt="SDR Asset Details Description."></a>
 </figure>
 
 This allows you to read the full description in a more user-friendly format. Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. For example, note that the reflectance data in GEE is scaled by 100. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
