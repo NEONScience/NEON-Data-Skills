@@ -133,9 +133,9 @@ You can also click on the `IMAGES` tab to explore all the available NEON images 
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/sdr_asset_details_images.png" alt="SDR Asset Details Images."></a>
 </figure>
 
-## Read AOP Data into GEE using `ee.Image`
+## Filter Datasets by Properties and Plot!
 
-As a last step, we will go ahead and use the path specified in the SDR Asset Details Images table to read in a single image. Pulling in a single image uses almost identical syntax as an image collection, see below:
+As a last step, we will explore some filtering options to pull out individual images from an Image Collection.
 
 ```javascript
 var TALL_2017_SDR = ee.Image('projects/neon/DP3-30006-001_SDR/DP3-30006-001_D08_TALL_SDR_2017')
