@@ -117,7 +117,7 @@ If you click `Convert`, the line of code will disappear and the variable will be
 
 Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *version*. 
 
-Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link `projects/neon-prod-earthengine/DP3-30006-001`. Below we'll show the window that pops-up when you click on `SDR` and select the IMAGES tab. We encourage you to look at all of the datasets similarly. Note: when the GEE datasets become public, you will be able to search for the NEON AOP image collections through the <a href="[https://data.neonscience.org/data-products/explore](https://developers.google.com/earth-engine/datasets)" target="_blank">Earth Engine Data Catalog</a>.
+Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link `projects/neon-prod-earthengine/DP3-30006-001`. Below we'll show the window that pops-up when you click on `SDR` and select the **IMAGES** tab. We encourage you to look at all of the datasets similarly. Note: when the GEE datasets become public, you will be able to search for the NEON AOP image collections through the <a href="[https://data.neonscience.org/data-products/explore](https://developers.google.com/earth-engine/datasets)" target="_blank">Earth Engine Data Catalog</a>.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro/sdr_asset_details_images.png">
