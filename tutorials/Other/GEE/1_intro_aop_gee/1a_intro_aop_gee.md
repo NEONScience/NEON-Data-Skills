@@ -1,5 +1,5 @@
 ---
-syncID: db25e957987343acbbcd49cabbf1d8ec
+syncID: 
 title: "Introduction to AOP Data in Google Earth Engine (GEE)"
 description: "Introductory tutorial on exploring AOP datasets in GEE."
 dateCreated: 2022-04-14
@@ -9,14 +9,14 @@ estimatedTime: 20 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, camera, remote-sensing
 languageTool: GEE
-dataProduct: DP3.30006.001, DP3.30010.001, DP3.30024.001
+dataProduct: DP3.30006.001, DP3.30010.001, DP3.30015.001 DP3.30024.001
 code1: 
-tutorialSeries: aop-gee
-urlTitle: intro-aop-gee-tutorial
+tutorialSeries: 
+urlTitle: intro-aop-gee
 
 ---
 
-Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets that have been uploaded to GEE and demonstrate how to find more information about them.
+Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of May 2023 are being added to Google Earth Engine. NEON is planning to eventually add the full archive of AOP L3 Spectral Reflectance (<a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a>, (<a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>), <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>), and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. We do not currently have a time estimate for when all of the data will be added, but we are planning to ramp up data additions in the second half of 2023. Please stay tuned for a <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank"> Data Notification</a> in June 2023 which will more officially announce the plan for adding AOP data to the Google Earth Engine public datasets.
 
 <div id="ds-objectives" markdown="1">
 
@@ -42,28 +42,30 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 </div>
 
-## AOP GEE Data Availability & Access
+## AOP GEE Data Availability & Access (as of May 2023)
 
-AOP has published a subset of AOP Level 3 (mosaicked) data products at 5 NEON sites (as of Spring 2022) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
+AOP has currently added a subset of AOP Level 3 (mosaicked) data products at 8 NEON sites (as of May 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
-The NEON data products that have been made available on GEE can be accessed through the `projects/neon` folder with an appended prefix of the Data Product ID, matching the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below summarizes the prefixes to use for each data product, and is a useful reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
+The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-nonprod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="[https://developers.google.com/earth-engine/guides/getstarted](https://data.neonscience.org/data-products/explore)" target="_blank"> NEON Data Portal</a>. The tables below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Data Product      | Data Product ID (Prefix) |
 |----------|------------|-------------------------|
-| SDR | Surface Directional Reflectance | DP3-30006-001_SDR |
-| RGB | Red Green Blue (Camera Imagery) | DP3-30010-001_RGB |
-| DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3-30024-001_DEM |
-| CHM | Canopy Height Model | DP3-30015-001_CHM |
+| SDR | Surface Directional Reflectance | DP3-30006-001 |
+| RGB | Red Green Blue (Camera Imagery) | DP3-30010-001 |
+| DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3-30024-001 |
+| CHM | Ecosystem Structure (Canopy Height Model; CHM) | DP3-30015-001 |
 
 The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE.
 
-| Domain | Site | Years      | Data Products        |
+| Domain | Site(s) | Years(s)      | Data Products        |
 |--------|------|------------|----------------------|
-| D08 | TALL | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
-| D11 | CLBJ | 2017, 2019 | SDR, RGB, CHM, DSM, DTM |
-| D14 | SRER | 2017, 2018, 2019, 2021 | SDR, RGB, CHM, DSM, DTM|
-| D16 | WREF | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
-| D17 | TEAK | 2017, 2018 | SDR, RGB, CHM, DSM, DTM |
+| D01 | HARV | 2016, 2019 | SDR, RGB, CHM, DSM, DTM |
+| D07 | GRSM | 2016, 2017 | SDR, RGB, CHM, DSM, DTM |
+| D14 | JORN | 2019, 2021 | SDR, RGB, CHM, DSM, DTM|
+| D10 | CPER | 2020 | SDR, RGB, CHM, DSM, DTM|
+| D16 | ABBY | 2021 | SDR, RGB, CHM, DSM, DTM|
+| D17 | SJER, SOAP | 2019, 2021 | SDR, RGB, CHM, DSM, DTM |
+| D19 | HEAL | 2019, 2021 | SDR, RGB, CHM, DSM, DTM |
 
 ## Get Started with Google Earth Engine
 
@@ -85,11 +87,13 @@ In your code editor, copy and run the following lines of code to create 3 `Image
 ```javascript
 //read in the AOP image collections as variables
 
-var aopSDR = ee.ImageCollection('projects/neon/DP3-30006-001_SDR')
+var aopSDR = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
 
-var aopRGB = ee.ImageCollection('projects/neon/DP3-30010-001_RGB') 
+var aopRGB = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30010-001') 
 
-var aopDEM = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+var aopCHM = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015-001')
+
+var aopDEM = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30024-001')
 ```
 
 A few tips for the Code Editor: 
