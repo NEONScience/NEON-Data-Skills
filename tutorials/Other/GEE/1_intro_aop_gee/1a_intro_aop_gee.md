@@ -101,7 +101,7 @@ A few tips for the Code Editor:
 - If you have an error in your code, a red error message will show up in the Console (in the right panel), which tells you the line that failed.
 - Save your code frequently! If you try to leave your code while it is unsaved, you will be prompted that there are unsaved changes in the editor.
 
-When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code become underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: `<variable> can be converted to an import record. Convert Ignore`. 
+When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code become underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that says: "*variable_name* can be converted to an import record. Convert Ignore." 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/aop_import_record_popup.png">
@@ -145,11 +145,9 @@ Import this variable, and you can see that it pulls in to the Imports at the top
 
 ## A Quick Recap
 
-You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the `ImageCollection` **Asset details** to find the path to an individual `Image`. Lastly, you learned to read in an individual SDR Image, pull the footprint of the data into a Map Layer, and center on that region.
+You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the `ImageCollection` **Asset details** to find the path to an individual `Image`. Lastly, you learned to read in an individual SDR Image, and display a map of a True-Color Image (RGB composite).
 
-It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral data set, which in most other coding environments, is not simple. One of the barriers to working with AOP data (and reflectance data in particular) is it's large data volume, which requires high-performance computing environments to carry out analysis. There are also limited open-source tools for working with the data; many of the software suites for working with hyperspectral data require licenses which can be expensive. In this lesson, we have loaded spectral data covering an entire site, and are ready for data exploration and analysis, in a free geospatial cloud-computing platform. 
-
-In the next tutorials, we will pull in spectral data, visualize RGB and false color image composites, interactively plot spectral signatures of pixels in the image, and carry out some more advanced analysis that is highly simplified by the built in GEE functions. 
+It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral data set, which in most other coding environments, is not as straightforward. One of the major challenges to working with AOP data (and reflectance data in particular) is it's large data volume, which requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with the data; many of the established software suites for working with hyperspectral data require licenses which can be expensive. In this lesson, we have loaded spectral data covering an entire site, and are ready for data exploration and analysis, in a free geospatial cloud-computing platform. 
 
 ## Get Lesson Code
 
