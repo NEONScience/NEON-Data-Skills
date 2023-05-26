@@ -1,6 +1,6 @@
 ---
-syncID: 
-title: "Introduction to AOP Data in Google Earth Engine (GEE)"
+syncID: cd3f3df4c3684bc29cf6feea5cfebe59
+title: "Introduction to AOP Public Datasets in Google Earth Engine (GEE)"
 description: "Introductory tutorial on exploring AOP datasets in GEE."
 dateCreated: 2022-04-14
 authors: Bridget M. Hass, John Musinsky
