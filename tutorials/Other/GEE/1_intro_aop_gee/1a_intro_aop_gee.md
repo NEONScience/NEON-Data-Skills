@@ -80,7 +80,7 @@ Once you have set up your Google Earth Engine account you can navigate to the <a
 
 ## Read AOP Data Collections into GEE using `ee.ImageCollection`
 
-AOP data can be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the four available AOP datasets, or `ImageCollection`s.
+AOP data can currently be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the four available AOP datasets, or `ImageCollections`.
 
 An <a href="https://developers.google.com/earth-engine/guides/ic_creating" target="_blank">ImageCollection</a> is simply a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Data Catalog</a>. Currently, NEON AOP data cannot be discovered in the main GEE data catalog (this is coming soon!), so the following steps will walk you through how to find available AOP data.
 
@@ -157,7 +157,7 @@ You can expand each image by clicking on the arrow to the left of the image name
 </figure>
 
 
-## Filter by Image Properties
+## Filter by Image Properties and Display a True Color Image
 
 Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties using `.filterMetadata`.
 
@@ -169,9 +169,7 @@ var sdrSOAP = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-3000
   .first(); // select the first one to pull out a single image
 ```
 
-## Display True Color Image
-
-Lastly let's plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've just read into the variable `sdrSOAP`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
+Now that we've selected a single image, we can plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've just read into the variable `sdrSOAP`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
 
 ```javascript
 // pull out the red, green, an dblue bands
