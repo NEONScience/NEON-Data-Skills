@@ -1,8 +1,8 @@
 ---
 syncID: cd3f3df4c3684bc29cf6feea5cfebe59
 title: "Introduction to AOP Public Datasets in Google Earth Engine (GEE)"
-description: "Introductory tutorial on exploring AOP datasets in GEE."
-dateCreated: 2022-04-14
+description: "Introductory tutorial on exploring AOP Image Collections in Earth Engine."
+dateCreated: 2023-05-24
 authors: Bridget M. Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 20 minutes
@@ -12,7 +12,7 @@ languageTool: GEE
 dataProduct: DP3.30006.001, DP3.30010.001, DP3.30015.001 DP3.30024.001
 code1: 
 tutorialSeries: 
-urlTitle: intro-aop-gee
+urlTitle: intro-aop-gee-image-collections
 
 ---
 
