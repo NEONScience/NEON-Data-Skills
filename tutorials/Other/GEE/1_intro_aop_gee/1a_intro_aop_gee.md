@@ -187,6 +187,13 @@ Map.setCenter(-119.25, 37.06, 12);
 Map.addLayer(rgb, rgbVis, 'SOAP 2021 RGB Camera Imagery');
 ```
 
+When you run the code you should now see the map!
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/soap_sdr_rgb.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/soap_sdr_rgb.PNG" alt="SOAP SDR RGB."></a>
+</figure>
+
 ## A Quick Recap
 
 You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the `ImageCollection` **Asset details** to find the path to an individual `Image`. Lastly, you learned to read in an individual SDR Image, and display a map of a True-Color Image (RGB composite).
