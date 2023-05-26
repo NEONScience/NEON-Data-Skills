@@ -34,13 +34,13 @@ And you will be able to:
 
 ## Requirements
  * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Select the "Use without a Cloud Project" option, to create a free non-commercial account. For more details, refer to <a href="[https://developers.google.com/earth-engine/guides/getstarted](https://earthengine.google.com/noncommercial/)" target="_blank">Noncommercial Earth Engine</a>
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
- * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine  </a>
- * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
+ * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank">Get Started with Earth-Engine</a>
+ * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank">GEE JavaScript Tutorial</a>
 
 </div>
 
