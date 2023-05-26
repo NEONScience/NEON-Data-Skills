@@ -202,4 +202,4 @@ It doesn't look like we've done much so far, but this is a already great achieve
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/242c2abd066c28fd17777fc8603a3510" target="_blank">Into to AOP GEE Assets</a>
+<a href="[https://code.earthengine.google.com/f55e7d212760d4c79771af26635c0f23" target="_blank">Into to AOP GEE Image Collections</a>
