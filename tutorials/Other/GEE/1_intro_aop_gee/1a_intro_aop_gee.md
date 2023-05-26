@@ -147,6 +147,8 @@ In the **Console** tab to the right of the code, you will see a list of all avai
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG" alt="SDR Image List."></a>
 </figure>
 
+## Explore Image Properties
+
 You can expand each image by clicking on the arrow to the left of the image name to explore the properties. These include additional metadata information about the properties, as well as information about each of the bands.
 
 <figure>
@@ -155,7 +157,7 @@ You can expand each image by clicking on the arrow to the left of the image name
 </figure>
 
 
-## Explore Image Properties and Filter by the Properties
+## Filter by Image Properties
 
 Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties using `.filterMetadata`.
 
@@ -167,7 +169,9 @@ var sdrSOAP = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-3000
   .first(); // select the first one to pull out a single image
 ```
 
-## Create True Color Image
+## Display True Color Image
+
+Lastly let's plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've just read into the variable `sdrSOAP`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
 
 ```javascript
 // pull out the red, green, an dblue bands
