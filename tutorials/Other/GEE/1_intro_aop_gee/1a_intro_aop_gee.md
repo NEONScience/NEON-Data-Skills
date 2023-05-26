@@ -126,7 +126,7 @@ Information about the image collections can also be found in a slightly more use
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_asset_details_images.png" alt="SDR Asset Details Description."></a>
 </figure>
 
-You can click on the  **IMAGES** tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. 
+You can click on the **IMAGES** tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. 
 
 Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
 
@@ -140,11 +140,18 @@ print('Images in the NEON SDR ImageCollection')
 print(sdrCol.toList(20));
 ```
 
-In the Console tab to the right of the code, you will see a list of all available images. Expand the box to see the full path. The names of the images are `YEAR_SITE_VISIT`, so you can identify the site and year of data this way.
+In the **Console** tab to the right of the code, you will see a list of all available images. Expand the box to see the full path. The names of the all the SDR images follow the format `YEAR_SITE_VISIT_SDR`, so you can identify the site and year of data this way. AOP typically visits each site 3 out of every 4 years, so the visit number indicates the number of times AOP has visited that site. In some cases, AOP may re-visit a site twice in the same year.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG" alt="SDR Image List."></a>
+</figure>
+
+You can expand each image by clicking on the arrow to the left of the image name to explore the properties. These include additional metadata information about the properties, as well as information about each of the bands.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_properties_expanded.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_properties_expanded.PNG" alt="SDR Image Properties."></a>
 </figure>
 
 
@@ -160,14 +167,21 @@ var sdrSOAP = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-3000
   .first(); // select the first one to pull out a single image
 ```
 
-Import this variable, and you can see that it pulls in to the Imports at the top, and shows `(426 bands)` at the right. To the right of that you will see blue eye and target icons. If you hover over the eye it displays "Show on Map". Click this eye icon to place a footprint of this data set in the Map display. If you hover over the target icon, you will see the option "Center Map on Record". Click this to center your map on this TALL SDR dataset. You should now see the footprint of the data as a layer in the Google Map.
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/tall_sdr_map.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/tall_sdr_map.png" alt="TALL SDR Show On Map."></a>
-</figure>
-
 ## Create True Color Image
+
+```javascript
+// pull out the red, green, an dblue bands
+var rgb = sdrSOAP.select(['B053', 'B035', 'B019']);
+
+// set visualization parameters
+var rgbVis = {min: 100, max: 2400, gamma: 0.8};
+
+// center the map at the lat / lon of the site, set zoom to 12
+Map.setCenter(-119.25, 37.06, 12);
+
+// add this RGB layer to the Map and give it a title
+Map.addLayer(rgb, rgbVis, 'SOAP 2021 RGB Camera Imagery');
+```
 
 ## A Quick Recap
 
