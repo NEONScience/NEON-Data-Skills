@@ -16,7 +16,9 @@ urlTitle: intro-aop-gee
 
 ---
 
-Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of May 2023 are being added to Google Earth Engine. NEON is planning to eventually add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. We do not currently have a time estimate for when all of the data will be added, but we are planning to ramp up data additions in the second half of 2023. Please stay tuned for a <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank"> Data Notification</a> in June 2023 which will more officially announce the plan for adding AOP data to the Google Earth Engine public datasets.
+<div id="ds-introduction" markdown="1">
+
+Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of May 2023 are being added to Google Earth Engine. NEON is planning to eventually add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. We do not currently have a time estimate for when all of the AOP data will be added to GEE, but we are planning to ramp up data additions in the second half of 2023. Please stay tuned for a <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank"> Data Notification</a> in June 2023 which will more officially announce the plan for adding AOP data to the Google Earth Engine public datasets.
 
 <div id="ds-objectives" markdown="1">
 
@@ -96,7 +98,7 @@ var aopCHM = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015
 var aopDEM = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30024-001')
 ```
 
-A few tips for the Code Editor: 
+A few tips for the working in the Code Editor: 
 - In the left panel of the code editor, there is a **Docs** tab which includes API documentation on built in functions, showing the expected input arguments. We encourage you to refer to this documentation, as well as the <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial</a> to familiarize yourself with GEE and the JavaScript programming language.
 - If you have an error in your code, a red error message will show up in the Console (in the right panel), which tells you the line that failed.
 - Save your code frequently! If you try to leave your code while it is unsaved, you will be prompted that there are unsaved changes in the editor.
@@ -128,12 +130,34 @@ You can click on the  **IMAGES** tab to explore all the available NEON images fo
 
 Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
 
-## Filter Datasets by Properties and Plot!
+## Display All Images in a Collection
 
-As a last step, we will explore some filtering options to pull out individual images from an Image Collection.
+Since we are rolling out the AOP data additions to GEE, the first thing you may want to do is see what datasets are currently available. A quick way to do this is using`.toList()`, as follows:
 
 ```javascript
-var TALL_2017_SDR = ee.Image('projects/neon/DP3-30006-001_SDR/DP3-30006-001_D08_TALL_SDR_2017')
+// list all available images in the NEON Surface Directional Reflectance (SDR) image collection:
+print('Images in the NEON SDR ImageCollection')
+print(sdrCol.toList(20));
+```
+
+In the Console tab to the right of the code, you will see a list of all available images. Expand the box to see the full path. The names of the images are `YEAR_SITE_VISIT`, so you can identify the site and year of data this way.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG" alt="SDR Image List."></a>
+</figure>
+
+
+## Explore Image Properties and Filter by the Properties
+
+Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties using `.filterMetadata`.
+
+```javascript
+// read in a single SDR image at the NEON site SOAP in 2021
+var sdrSOAP = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-30006-001")
+  .filterDate('2021-01-01', '2021-12-31') // filter by date - 2021
+  .filterMetadata('NEON_SITE', 'equals', 'SOAP') // filter by site
+  .first(); // select the first one to pull out a single image
 ```
 
 Import this variable, and you can see that it pulls in to the Imports at the top, and shows `(426 bands)` at the right. To the right of that you will see blue eye and target icons. If you hover over the eye it displays "Show on Map". Click this eye icon to place a footprint of this data set in the Map display. If you hover over the target icon, you will see the option "Center Map on Record". Click this to center your map on this TALL SDR dataset. You should now see the footprint of the data as a layer in the Google Map.
@@ -142,6 +166,8 @@ Import this variable, and you can see that it pulls in to the Imports at the top
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/tall_sdr_map.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/tall_sdr_map.png" alt="TALL SDR Show On Map."></a>
 </figure>
+
+## Create True Color Image
 
 ## A Quick Recap
 
