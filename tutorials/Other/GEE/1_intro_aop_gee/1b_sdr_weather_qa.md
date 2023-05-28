@@ -4,7 +4,7 @@ title: "SDR Pre-processing in GEE: masking out bad weather data"
 description: "Learn how find and use weather quality information from the Reflectance QA band in GEE"
 dateCreated: 2022-05-27
 authors: Bridget M. Hass, John Musinsky
-contributors: Tristan Goulden, Lukas Straube
+contributors: Tristan Goulden
 estimatedTime: 30 minutes
 packagesLibraries: 
 topics: hyperspectral, remote-sensing
@@ -42,7 +42,7 @@ After completing this activity, you will be able to:
 
 ## Read in the AOP SDR 2019 Dataset at SRER
 
-We will start at our ending point of the last tutorial. For this exercise we will only read data from 2021:
+We will start at our ending point of the last tutorial. For this exercise, we will read in data from SOAP collected in 2019:
 
 ```javascript
 // Filter image collection by date and site to pull out a single image
@@ -101,6 +101,11 @@ var soapSDR_RGB = soapSDR_clear.select(['B053', 'B035', 'B019']);
 // Display the SDR image
 Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 ```
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_clear_sdr_weather_map.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_clear_sdr_weather_map.png" alt="GEE Map of SOAP Weather Quality Map and Clear Reflectance Data"></a>
+</figure>
 
 ## Recap
 
