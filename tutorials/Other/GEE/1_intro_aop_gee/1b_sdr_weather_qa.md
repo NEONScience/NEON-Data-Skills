@@ -71,7 +71,7 @@ var soapSDR_clear = soapSDR.updateMask(soapClearWeather);
 
 ## Plot the weather quality band data
 
-For reference, we can plot the weather band data, using AOP's stop-light (red/yellow/green) color schmeme:
+For reference, we can plot the weather band data, using AOP's stop-light (red/yellow/green) color scheme, using with the code below:
 
 ```javascript
 
