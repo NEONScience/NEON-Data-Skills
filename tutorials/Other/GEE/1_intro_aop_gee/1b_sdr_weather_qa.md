@@ -36,20 +36,11 @@ After completing this activity, you will be able to:
 We will start at our ending point of the last tutorial. For this exercise we will only read data from 2021:
 
 ```javascript
-// This script pulls in hyperspectral data over the Santa Rita Experimental Range (SRER)
-// from 2021 and plots RGB 3-band composite of the imagery
-
-// Read in Surface Directional Reflectance (SDR) Images 
-var SRER_SDR2021 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2021");
-
-// Set the visualization parameters so contrast is maximized, and set display to show RGB bands 
-var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band019']};
-
-// Mask layer to only show values > 0 (this hides the no data values of -9999) 
-var SRER_SDR2021mask = SRER_SDR2021.updateMask(SRER_SDR2021.gte(0.0000));
-
-// Add the 2021 SRER SDR data as layers to the Map:
-Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
+// Filter image collection by date and site to pull out a single image
+var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-30006-001")
+  .filterDate('2019-01-01', '2019-12-31')
+  .filterMetadata('NEON_SITE', 'equals', 'SOAP')
+  .first();
 ```
 
 ## Create the wavelengths variable
