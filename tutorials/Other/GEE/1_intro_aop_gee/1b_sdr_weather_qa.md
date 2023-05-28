@@ -56,6 +56,8 @@ var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-3000
 
 From the previous lesson, recall that the SDR images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. 
 
+These next lines of code pull out the `Weather_Quality_Indicator` band, select the "green" weather data from that band, and apply a mask to keep only the clear-weather data, which is saved to the variable `soapSDR_clear`.
+
 ```javascript
 // Extract a single band Weather Quality QA layer
 var soapWeather = soapSDR.select(['Weather_Quality_Indicator']);
@@ -67,61 +69,38 @@ var soapClearWeather = soapWeather.eq(1); // 1 = 0-10% cloud cover
 var soapSDR_clear = soapSDR.updateMask(soapClearWeather);
 ```
 
-## Create the wavelengths variable
+## Plot the weather quality band data
 
-In the last tutorial, we ended by viewing a bar chart of the reflectance values v. band #, but we couldn't see the wavelengths corresponding to those bands. Here we set a wavelengths variable (**var**) that we will apply to generate a spectral plot (wavelengths v. reflectance). To add this wavelength information, we will use the [`ee.List.sequence`](https://developers.google.com/earth-engine/apidocs/ee-list-sequence) function, which is used as follows: `ee.List.sequence(start, end, step, count)` to "generate a sequence of numbers from start to end (inclusive) in increments of step, or in count equally-spaced increments."
-
-```javascript
-// Set wavelength variable for spectral plot
-var wavelengths = ee.List.sequence(381, 2510, 5).getInfo()
-var bands_no =  ee.List.sequence(1, 426).getInfo() 
-```
-
-## [Earth Engine User Interface](https://developers.google.com/earth-engine/guides/ui)
-
-[ui.Panel](https://developers.google.com/earth-engine/apidocs/ui-panel)
+For reference, we can plot the weather band data, using AOP's stop-light (red/yellow/green) color schmeme:
 
 ```javascript
-// Create a panel to hold the spectral signature plot
-var panel = ui.Panel();
-panel.style().set({width: '600px',height: '300px',position: 'top-left'});
-Map.add(panel);
-Map.style().set('cursor', 'crosshair');
+
+// center the map at the lat / lon of the site, set zoom to 12
+Map.setCenter(-119.25, 37.06, 11);
+
+// Define a palette for the weather - to match NEON AOP's weather color conventions
+var gyrPalette = [
+  '00ff00', // green (<10% cloud cover)
+  'ffff00', // yellow (10-50% cloud cover)
+  'ff0000' // red (>50% cloud cover)
+];
+
+// Display the weather band (cloud conditions) with the green-yellow-red palette
+Map.addLayer(soapWeather,
+             {min: 1, max: 3, palette: gyrPalette, opacity: 0.3},
+             'SOAP 2019 Cloud Cover Map');
 ```
 
-## [Map.onClick](https://developers.google.com/earth-engine/apidocs/ui-map-onclick)
+## Plot the clear-weather reflectance data
+Finally, we can plot a true-color image of only the clear-weather data, from `soapSDR_clear` that we created earlier:
 
 ```javascript
-// Create a function to draw a chart when a user clicks on the map.
-Map.onClick(function(coords) {
-  panel.clear();
-  var point = ee.Geometry.Point(coords.lon, coords.lat);
-  var chart = ui.Chart.image.regions(SRER_SDR2021, point, null, 1, 'λ (nm)', wavelengths);
-    chart.setOptions({title: 'SRER 2021 Reflectance',
-                      hAxis: {title: 'Wavelength (nm)', 
-                      vAxis: {title: 'Reflectance'},
-                      gridlines: { count: 5 }}
-                              });
-    // Create and update the location label 
-  var location = 'Longitude: ' + coords.lon.toFixed(2) + ' ' +
-                 'Latitude: ' + coords.lat.toFixed(2);
-  panel.widgets().set(1, ui.Label(location));
-  panel.add(chart);
-});
+// Create a 3-band cloud-free image 
+var soapSDR_RGB = soapSDR_clear.select(['B053', 'B035', 'B019']);
+
+// Display the SDR image
+Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 ```
 
-Finally, we'll add the SRER data layer and center on that layer. Here we use the `Map.centerObject` function to center on our SRER_SDR2021 object.
+## Recap
 
-```javascript
-// Add the 2021 SRER SDR data as a layer to the Map:
-Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
-
-Map.centerObject(SRER_SDR2021,11)
-```
-
-When you run this code, linked [here](https://code.earthengine.google.com/33d1d2b66c81c705c0b48e5d158abc9e), you will see the SRER SDR layer show up in the Map panel, along with a blank figure outline. When you click anywhere in this image, the figure will be populated with the spectral signature of the pixel you clicked on.
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_plot_spectra/srer_spectral_plot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_plot_spectra/srer_spectral_plot.png" alt="SRER Inspector"></a>
-</figure>
