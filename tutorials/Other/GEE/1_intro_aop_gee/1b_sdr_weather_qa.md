@@ -1,18 +1,18 @@
 ---
 syncID: 
-title: "Plot spectral signatures of AOP Reflectance data in GEE"
-description: "Interactively plot the spectral signature of an AOP SDR pixel in GEE"
-dateCreated: 2022-04-15
+title: "SDR Pre-processing in GEE: masking out bad weather data"
+description: "Learn how find and use weather quality information from the Reflectance QA band in GEE"
+dateCreated: 2022-05-27
 authors: Bridget M. Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
-estimatedTime: 45 minutes
+estimatedTime: 30 minutes
 packagesLibraries: 
 topics: hyperspectral, remote-sensing
 languageTool: GEE
 dataProduct: DP3.30006.001
 code1: 
-tutorialSeries: aop-gee
-urlTitle: aop-gee-plot-spectra
+tutorialSeries: 
+urlTitle: aop-sdr-weather-qa-gee
 
 ---
 
@@ -20,9 +20,8 @@ urlTitle: aop-gee-plot-spectra
 
 ## Objectives
 After completing this activity, you will be able to:
-- Read in a single AOP Hyperspectral Reflectance raster data set at the NEON site SOAP
-- Link spectral band #s to wavelength values
-- Create an interactive widget to plot the spectral signature of a given pixel upon clicking
+- Use the weather QA band to pull out good weather data
+- Find and understand the additional QA bands included in the Reflectance data set
 
 ## Requirements
 
@@ -32,7 +31,7 @@ After completing this activity, you will be able to:
 
 </div>
 
-## Read in the AOP SDR 2021 Dataset at SRER
+## Read in the AOP SDR 2019 Dataset at SRER
 
 We will start at our ending point of the last tutorial. For this exercise we will only read data from 2021:
 
