@@ -109,3 +109,6 @@ Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 
 ## Recap
 
+## Get Lesson Code
+
+<a href="https://code.earthengine.google.com/25498471ad233861732bfaa26504194c" target="_blank">AOP GEE SDR Weather Quality</a>
