@@ -18,6 +18,15 @@ urlTitle: aop-sdr-weather-qa-gee
 
 <div id="ds-objectives" markdown="1">
 
+Since reflectance data is collected from a passive energy source (the sun), data that was collected in cloudy sky conditions is not directly comparable to data collected on a clear-sky day, as overhead clouds can obscure the incoming light source. AOP aims to collect data only in optimal (<10% cloud-cover) weather conditions, but cannot always do so due to logistical constraints. The flight operators record the weather conditions during each flight, and this information is passed through to the final data product at the level of the flight line (as cloud conditions can change throughout the day). Cloud conditions are reported as green (<10% cloud cover), yellow (10-50% cloud cover), or red (>50% cloud cover). The figure below shows some examples of what the cloud conditions look like at different flights collected in the three different weather classes (green, yellow, and red).
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.PNG" alt="In-flight cloud photos"></a>
+</figure>
+
+Note that there is an important distinction between airborne and satellite reflectance data. Satellite data is collected in all weather conditions, and the clouds are below the sensor, so algorithms can be generated to filter out cloudy pixels. With aerial data, we have more control over when the data are collected, to a point, but there would never be clouds below the sensor (largely because of the constriants by the active Lidar sensor). However, clouds may be present overhead, if we collect in sub-optimal conditions, often because we are running out of time in a Domain. There is no direct record of this in the actual datasets, 
+
 ## Objectives
 After completing this activity, you will be able to:
 - Use the weather QA band to pull out good weather data
@@ -45,7 +54,7 @@ var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-3000
 
 ## Read in the `Weather_Quality_Indicator` Band
 
-From the previous lesson, recall that the SDR images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. Since reflectance data is collected from a passive energy source (the sun), data that was collected in cloudy sky conditions is not directly comparable to data collected on a clear-sky day, as the cloud obscure the incoming light source. AOP aims to collect data only in optimal (<10% cloud-cover) weather conditions, but cannot always do so due to logistical constraints. The flight operators record the weather conditions during each flight, and this information is passed through to the final data product at the level of the flight line (as cloud conditions can change throughout the day). The figure below shows some examples of what the cloud conditions might look like at different flights collected in the three different weather classes (green, yellow, and red).
+From the previous lesson, recall that the SDR images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. 
 
 ```javascript
 // Extract a single band Weather Quality QA layer
