@@ -1,10 +1,10 @@
 ---
 syncID: 
-title: "Plot spectral signatures of AOP SDR data in GEE"
+title: "Plot spectral signatures of AOP Reflectance data in GEE"
 description: "Interactively plot the spectral signature of an AOP SDR pixel in GEE"
 dateCreated: 2022-04-15
-authors: [Bridget M. Hass]
-contributors: [John Musinsky, Tristan Goulden, Lukas Straube]
+authors: Bridget M. Hass, John Musinsky
+contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 45 minutes
 packagesLibraries: 
 topics: hyperspectral, remote-sensing
@@ -20,16 +20,14 @@ urlTitle: aop-gee-plot-spectra
 
 ## Objectives
 After completing this activity, you will be able to:
-- Read in a single AOP Hyperspectral Reflectance raster data set at the NEON site SRER
+- Read in a single AOP Hyperspectral Reflectance raster data set at the NEON site SOAP
 - Link spectral band #s to wavelength values
-- Gain experience with the Earth Engine User Interface API
-- Create a plot to display the spectral signature of a given pixel upon clicking
+- Create an interactive widget to plot the spectral signature of a given pixel upon clicking
 
 ## Requirements
 
 - Complete the following introductory AOP GEE tutorials:
-    - [Intro to AOP Data in GEE](https://github.com/NEONScience/NEON-Data-Skills/blob/bhass/tutorials-in-development/GEE/01_Intro_AOP_GEE/1a_GEE_AOP_101.md) 
-    - [Intro to AOP Hyperspectral Data in GEE](https://github.com/NEONScience/NEON-Data-Skills/blob/bhass/tutorials-in-development/GEE/02_AOP_Hyperspectral_Lessons/2a_Intro_AOP_Hyperspectral/2a_Intro_AOP_SDR_Rasters.md)
+    - <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-image-collections" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
 - An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the [Intro to Working with Hyperspectral Remote Sensing Data](https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r) tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
 </div>
