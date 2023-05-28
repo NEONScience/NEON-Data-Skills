@@ -43,6 +43,21 @@ var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-3000
   .first();
 ```
 
+## Read in the `Weather_Quality_Indicator` Band
+
+From the previous lesson, recall that the SDR images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. Since reflectance data is collected from a passive energy source (the sun), data that was collected in cloudy sky conditions is not directly comparable to data collected on a clear-sky day, as the cloud obscure the incoming light source. AOP aims to collect data only in optimal (<10% cloud-cover) weather conditions, but cannot always do so due to logistical constraints. The flight operators record the weather conditions during each flight, and this information is passed through to the final data product at the level of the flight line (as cloud conditions can change throughout the day). The figure below shows some examples of what the cloud conditions might look like at different flights collected in the three different weather classes (green, yellow, and red).
+
+```javascript
+// Extract a single band Weather Quality QA layer
+var soapWeather = soapSDR.select(['Weather_Quality_Indicator']);
+
+// Select only the clear weather data (<10% cloud cover)
+var soapClearWeather = soapWeather.eq(1); // 1 = 0-10% cloud cover
+
+// Mask out all cloudy pixels from the SDR image
+var soapSDR_clear = soapSDR.updateMask(soapClearWeather);
+```
+
 ## Create the wavelengths variable
 
 In the last tutorial, we ended by viewing a bar chart of the reflectance values v. band #, but we couldn't see the wavelengths corresponding to those bands. Here we set a wavelengths variable (**var**) that we will apply to generate a spectral plot (wavelengths v. reflectance). To add this wavelength information, we will use the [`ee.List.sequence`](https://developers.google.com/earth-engine/apidocs/ee-list-sequence) function, which is used as follows: `ee.List.sequence(start, end, step, count)` to "generate a sequence of numbers from start to end (inclusive) in increments of step, or in count equally-spaced increments."
