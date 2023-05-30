@@ -1,6 +1,6 @@
 ---
-syncID: 
-title: "SDR Pre-processing in GEE: masking out bad weather data"
+syncID: 5c405525ee9c462aa029b208358a355d
+title: "Reflectance pre-processing: masking out bad weather data in GEE"
 description: "Learn how find and use weather quality information from the Reflectance QA band in GEE"
 dateCreated: 2022-05-27
 authors: Bridget M. Hass, John Musinsky
@@ -132,4 +132,4 @@ Success! In this lesson you learned how to read in Weather Quality Information f
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/25498471ad233861732bfaa26504194c" target="_blank">AOP GEE SDR Weather Quality</a>
+<a href="https://code.earthengine.google.com/6611bdaeb5de6a0f4b68c99da1d280b7" target="_blank">AOP GEE SDR Weather Quality</a>
