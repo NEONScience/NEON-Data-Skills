@@ -128,10 +128,31 @@ Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_clear_sdr_weather_map.PNG" alt="GEE Map of SOAP Weather Quality Map and Clear Reflectance Data"></a>
 </figure>
 
+## Plot acquisition date
+
+We can apply the same concepts to explore another one of the QA bands, this time let's look at the `Acquisition_Date`. This may be useful if you are trying to find the dates that correspond to field data you've collected, or you want to scale up to satellite data, for example. To determine the minimum and maximum dates, you can use `reduceRegion` with the reducer `ee.Reducer.minMax()` as follows. Then use these values in the visualization parameters.
+	
+```javascript	
+// Get the minimum and maximum values of the soapDates band
+var minMaxValues = soapDates.reduceRegion({reducer: ee.Reducer.minMax(),maxPixels: 1e10})
+print('min and max dates', minMaxValues);
+	
+// Extract acquisition dates and map, don't display layer by default
+var soapDates = soapSDR.select(['Acquisition_Date']);
+Map.addLayer(soapDates,
+            {min:20190612, max:20190616, opacity: 0.5},
+            'SOAP 2019 Acquisition Dates',0);
+```
+
 ## Recap
 
-Success! In this lesson you learned how to read in Weather Quality Information from the Surface Directional Reflectance (SDR) QA bands in GEE. You have learned to mask data to keep only data collected in <10% cloud cover, and plot the three weather quality classes. You have also briefly looked at some of the other QA bands, and following a similar approach could explore each of these bands similarly. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for conducting any subsequent data analysis.
+Success! In this lesson you learned how to read in Weather Quality Information from the Surface Directional Reflectance (SDR) QA bands in GEE. You have learned to mask data to keep only data collected in <10% cloud cover, and plot the three weather quality classes. You have also briefly looked at some of the other QA bands, and following a similar approach could explore each of these bands similarly (such as mapping the acquisition dates). Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for conducting any subsequent data analysis.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG" alt="SOAP 2019 Acquisition Dates"></a>
+</figure>
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/6611bdaeb5de6a0f4b68c99da1d280b7" target="_blank">AOP GEE SDR Weather Quality</a>
+<a href="https://code.earthengine.google.com/e3b50f0b78a97cb05669b3a44f6fac95" target="_blank">AOP GEE SDR Weather Quality</a>
