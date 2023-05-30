@@ -29,14 +29,16 @@ Note that there is an important distinction between airborne and satellite refle
 
 ## Objectives
 After completing this activity, you will be able to:
-- Use the weather QA band to pull out good weather data
-- Find and understand the additional QA bands included in the Reflectance data set
+- Extract and plot the weather quality indicator band from the Surface Directional Reflectance dataset
+- Mask reflectance data to pull out only clear-weather data for a given site
+- Explore other QA bands included in the Reflectance data set
 
 ## Requirements
 
 - Complete the following introductory AOP GEE tutorials:
     - <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-image-collections" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
-- An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the [Intro to Working with Hyperspectral Remote Sensing Data](https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r) tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
+- An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with:
+    - <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank"Intro to Working with Hyperspectral Remote Sensing Data in R</a>. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding of NEON's hyperspectral data product.
 
 </div>
 
@@ -71,7 +73,7 @@ var soapSDR_clear = soapSDR.updateMask(soapClearWeather);
 
 ## Plot the weather quality band data
 
-For reference, we can plot the weather band data, using AOP's stop-light (red/yellow/green) color scheme, using with the code below:
+For reference, we can plot the weather band data, using AOP's stop-light (red/yellow/green) color scheme, with the code below:
 
 ```javascript
 
