@@ -53,10 +53,20 @@ var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-3000
   .filterMetadata('NEON_SITE', 'equals', 'SOAP')
   .first();
 ```
+## Display the QA Bands
+
+From the previous lesson, recall that the SDR images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The data bands all follow the naming convetion B001, B002, ..., B426, and the QA bands start with something other than the letter "B", so we can use that information to extract the QA bands.
+
+```javascript
+// Pull out and display only the qa bands (these all start with something other than B)
+// '[^B].*' is a regular expression to pull out bands that don't start with B
+var soapSDR_qa = soapSDR.select('[^B].*') 
+print('QA Bands',soapSDR_qa)
+```
 
 ## Read in the `Weather_Quality_Indicator` Band
 
-From the previous lesson, recall that the SDR images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. 
+The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. 
 
 These next lines of code pull out the `Weather_Quality_Indicator` band, select the "green" weather data from that band, and apply a mask to keep only the clear-weather data, which is saved to the variable `soapSDR_clear`.
 
