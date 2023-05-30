@@ -144,14 +144,14 @@ Map.addLayer(soapDates,
             'SOAP 2019 Acquisition Dates',0);
 ```
 
-## Recap
-
-Success! In this lesson you learned how to read in Weather Quality Information from the Surface Directional Reflectance (SDR) QA bands in GEE. You have learned to mask data to keep only data collected in <10% cloud cover, and plot the three weather quality classes. You have also briefly looked at some of the other QA bands, and following a similar approach could explore each of these bands similarly (such as mapping the acquisition dates). Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for conducting any subsequent data analysis.
-
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG" alt="SOAP 2019 Acquisition Dates"></a>
 </figure>
+	
+## Recap
+
+Success! In this lesson you learned how to read in Weather Quality Information from the Surface Directional Reflectance (SDR) QA bands in GEE. You have learned to mask data to keep only data collected in <10% cloud cover, and plot the three weather quality classes. You have also briefly looked at some of the other QA bands, and following a similar approach could explore each of these bands similarly (such as mapping the acquisition dates). Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for conducting any subsequent data analysis.
 
 ## Get Lesson Code
 
