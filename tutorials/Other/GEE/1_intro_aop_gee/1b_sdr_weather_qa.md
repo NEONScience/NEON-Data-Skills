@@ -64,6 +64,11 @@ var soapSDR_qa = soapSDR.select('[^B].*')
 print('QA Bands',soapSDR_qa)
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG" alt="QA Bands"></a>
+</figure>
+
 ## Read in the `Weather_Quality_Indicator` Band
 
 The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. 
