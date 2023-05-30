@@ -69,6 +69,8 @@ print('QA Bands',soapSDR_qa)
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG" alt="QA Bands"></a>
 </figure>
 
+Most of these QA bands are inputs to and outputs from the Atmospheric Correction (ATCOR). We will expand upon these further, and encourage you to read more details about these data in the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance Algorithm Theoritical Basis Document</a>. For the purposes of this exercise, we will focus on the Weather Quality Indicator band. Note that you can explore each of the QA bands, following similar steps below, just adjusting for the band names and values accordingly.
+
 ## Read in the `Weather_Quality_Indicator` Band
 
 The weather information, called `Weather_Quality_Indicator` is one of the most important pieces of QA information that is collected about the NIS data, as it has a direct impact on the reflectance values. 
@@ -125,6 +127,8 @@ Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 </figure>
 
 ## Recap
+
+Success! In this lesson you learned how to read in Weather Quality Information from the QA bands, mask data to keep only data collected in <10% cloud cover. We have also briefly looked at some of the other QA bands, and learned how to plot the three weather classes. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for conducting any subsequent data analysis.
 
 ## Get Lesson Code
 
