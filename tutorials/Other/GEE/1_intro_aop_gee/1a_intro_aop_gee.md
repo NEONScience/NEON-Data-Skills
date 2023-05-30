@@ -176,7 +176,7 @@ Now that we've selected a single image, we can plot a true color image (red-gree
 var rgb = sdrSOAP.select(['B053', 'B035', 'B019']);
 
 // set visualization parameters
-var rgbVis = {min: 100, max: 2400, gamma: 0.8};
+var rgbVis = {min: 0, max: 1260, gamma: 0.8};
 
 // center the map at the lat / lon of the site, set zoom to 12
 Map.setCenter(-119.25, 37.06, 12);
