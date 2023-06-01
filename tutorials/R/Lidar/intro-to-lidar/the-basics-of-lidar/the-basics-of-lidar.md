@@ -82,7 +82,7 @@ A LiDAR system measures the time it takes for emitted light to travel to the
 ground and back. That time is used to calculate distance traveled. Distance 
 traveled is then converted to elevation. These measurements are made using the 
 key components of a lidar system including a GPS that identifies the X,Y,Z 
-location of the light energy and an Internal Measurement Unit (IMU) that 
+location of the light energy and an Inertial Measurement Unit (IMU) that 
 provides the orientation of the plane in the sky.
 
 
