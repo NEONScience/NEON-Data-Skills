@@ -73,16 +73,8 @@ In this tutorial we will be examining the accuracy of the Neon Imaging Spectrome
 <table><tr>
 <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_close.jpg" width="300"> </td>
 <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_far.jpg" width="300"> </td>
+<td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="300"> </td>
 </table>
-
- 
- <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="400">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="400"></a>
-	<figcaption> The validation tarps, 3% reflectance (black tarp) and 48% reflectance (white tarp), laid out in the field. 
-	Source: National Ecological Observatory Network (NEON)  
-	</figcaption>
-</figure>
 
 To test the accuracy, we will plot reflectance curves from the ASD measurments over the spectral tarps as well as reflectance curves from the NIS over the associated flight line. We can then carry out absolute and relative comparisons. The major error sources in the NIS can be generally categorized into the following components:
 
@@ -161,8 +153,7 @@ def h5refl2array(h5_filename):
     return reflArray, metadata, wavelengths
 ```
 
-Set up the directory where you are storing the data for this lesson. The variable `h5_filename` is the flightline which covers the tarps.
-
+Set up the directory where you are storing the data for this lesson. The variable `h5_filename` is the flightline which covers the tarps. Save the h5 file which you downloaded (see the instructions at the beginning of the tutorial) to your working directory. For this lesson we've set up a subfolder './data' in the current working directory to save all the data. You can save it elsewhere, but just need to update your code to point to the correct directory.
 
 ```python
 ## You will need to change these filepaths according to how you've set up your directory
