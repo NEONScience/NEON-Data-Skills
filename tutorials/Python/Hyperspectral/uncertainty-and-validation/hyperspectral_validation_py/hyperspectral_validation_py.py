@@ -8,8 +8,8 @@
 # dateCreated: 2017-06-21 
 # authors: Tristan Goulden
 # contributors: Donal O'Leary, Bridget Hass
-# estimatedTime: 0.5 hour
-# packagesLibraries: h5py, gdal, requests
+# estimatedTime: 30 minutes
+# packagesLibraries: gdal, h5py, requests
 # topics: hyperspectral-remote-sensing, remote-sensing
 # languagesTool: python
 # dataProduct: 
@@ -26,7 +26,7 @@
 # After completing this tutorial, you will be able to:
 # 
 # * Retrieve reflectance curves from a pre-specified coordinate in a NEON AOP HDF5 file
-# * Retrieve bad band window indices and mask these invalid portions of the reflectance curves
+# * Retrieve bad band window indexes and mask these invalid portions of the reflectance curves
 # * Plot reflectance curves on a graph and save the file
 # * Explain some sources of uncertainty in NEON Image Spectrometry data
 # 
@@ -39,7 +39,7 @@
 # 
 # ### Download Data
 # 
-# To complete this tutorial, you will use data available from the NEON 2017 Data Institute.
+# To complete this tutorial, you will use data from the NEON 2017 Data Institute. You can read in and download all the required data for this lesson as follows, and as described later on.
 # 
 # This tutorial uses the following files:
 # 
@@ -49,24 +49,20 @@
 # <li>NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5 (2.7 GB)</li>
 # </ul>
 # 
-# Which may be downloaded <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fofeb6d6-9ebf-4310-814f-9ae4aea8fbd9" target="_blank">from our ShareFile directory here<a/>.
+# The first two files can be downloaded from: <a href="https://github.com/NEONScience/NEON-Data-Skills/tree/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/data" target="_blank">NEON-Data-Skills GitHub<a/>.
+#     
+# **Download the CHEQ Reflectance File:** 
 # 
-# <a href="https://neondata.sharefile.com/share/view/cdc8242e24ad4517/fofeb6d6-9ebf-4310-814f-9ae4aea8fbd9" class="link--button link--arrow">
-# Download Dataset</a>
-# 
-# The LiDAR and imagery data used to create this raster teaching data subset were collected over the 
+# <a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
+#     
+# Note: The imagery data used to create this raster teaching data subset were collected over the 
 # <a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network</a>'s
 # <a href="http://www.neonscience.org/science-design/field-sites/" target="_blank" >field sites</a> and processed at NEON headquarters.
 # The entire dataset can be accessed on the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 #     
-# **Download the CHEQ Reflectance File:** <a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
-#     
-# These data are a part of the NEON 2017 Remote Sensing Data Institute. The complete archive may be found here -<a href="https://neondata.sharefile.com/d-s11d5c8b9c53426db"> NEON Teaching Data Subset: Data Institute 2017 Data Set</a>
-# 
-# 
 # ### Recommended prerequisites
 # 
-# We recommend you complete the following tutorials prior to this tutorial: 
+# We recommend you complete the following tutorials prior to this lesson: 
 # 
 # 1.  <a href="https://www.neonscience.org/neon-aop-hdf5-py"> *NEON AOP Hyperspectral Data in HDF5 format with Python*</a>
 # 1.  <a href="https://www.neonscience.org/neon-hsi-aop-functions-python"> *Band Stacking, RGB & False Color Images, and Interactive Widgets in Python*</a>
@@ -75,19 +71,17 @@
 # </div>
 # 
 # In this tutorial we will be examining the accuracy of the Neon Imaging Spectrometer (NIS) against targets with known reflectance values. The targets consist of two 10 x 10 m tarps which have been specially designed to have 3% reflectance (black tarp) and 
-# 48% reflectance (white tarp) across all of the wavelengths collected by the NIS (see images below). During the Sept. 12 2016 flight over the Chequamegon-Nicolet National Forest (CHEQ), an area in D05 which is part of Steigerwaldt (STEI) site, these tarps were deployed in a gravel pit. During the airborne overflight, observations were also taken over the tarps with an Analytical Spectral Device (ASD), which is a hand-held field spectrometer. The ASD measurements provide a validation source against the airborne measurements. 
+# 48% reflectance (white tarp) across all of the wavelengths collected by the NIS (see images below). During the Sept. 12 2016 flight over the Chequamegon-Nicolet National Forest (CHEQ), an area in D05 which is part of NEON's <a href="https://www.neonscience.org/field-sites/stei">Steigerwaldt (STEI)</a> site, these tarps were deployed in a gravel pit. During the airborne overflight, observations were also taken over the tarps with an Analytical Spectral Device (ASD), which is a hand-held field spectrometer. The ASD measurements provide a validation source against the airborne measurements. 
 # 
-#  <figure class="half">
-# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_close.jpg">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_close.jpg">
-# 	</a>
-# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_far.jpg">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_far.jpg">
-# 	</a>
-# </figure>  
+# <table><tr>
+# <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_close.jpg" width="300"> </td>
+# <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_far.jpg" width="300"> </td>
+# </table>
+# 
+#  
 #  <figure>
-# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg"></a>
+# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="400">
+# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="400"></a>
 # 	<figcaption> The validation tarps, 3% reflectance (black tarp) and 48% reflectance (white tarp), laid out in the field. 
 # 	Source: National Ecological Observatory Network (NEON)  
 # 	</figcaption>
@@ -107,7 +101,7 @@
 # 
 # ## Get Started
 # 
-# We'll start by importing all of the necessary packages to our python script.
+# We'll start by importing all of the necessary packages to run the Python script.
 
 # In[1]:
 
@@ -121,7 +115,7 @@ import gdal
 import matplotlib.pyplot as plt
 %matplotlib inline
 
-# As well as our function to read the hdf5 reflectance files and associated metadata
+# Define a function to read the hdf5 reflectance files and associated metadata into Python:
 
 # In[2]:
 
@@ -171,7 +165,7 @@ def h5refl2array(h5_filename):
     return reflArray, metadata, wavelengths
 
 
-# Define the directory where you are storing the data for the data institute. The `h5_filename` is the flightline which contains the tarps, and the tarp_48_filename and tarp_03_filename contain the field validated spectra for the white and black tarp respectively, organized by wavelength and reflectance.
+# Set up the directory where you are storing the data for this lesson. The variable `h5_filename` is the flightline which covers the tarps.
 
 # In[3]:
 
@@ -202,6 +196,8 @@ tarp_48_url = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/ma
 url_to_file(tarp_48_url,'./data/CHEQ_Tarp_48_01_refl_bavg.txt')
 url_to_file(tarp_03_url,'./data/CHEQ_Tarp_03_02_refl_bavg.txt')
 
+
+# We can now set the path to these files. The files read into the variables `tarp_48_filename` and `tarp_03_filename` contain the field validated spectra for the white and black tarp respectively, organized by wavelength and reflectance.
 
 # In[6]:
 
@@ -242,7 +238,7 @@ tarp_03_center = np.array([727497,5078970])
 [reflArray,metadata,wavelengths] = h5refl2array(h5_filename)
 
 
-# Within the reflectance curves there are areas with noisy data due to atmospheric windows in the water absorption bands. For this exercise we do not want to plot these areas as they obscure details in the plots due to their anomolous values. The metadata associated with these band locations is contained in the metadata gathered by our function. We will pull out these areas as 'bad band windows' and determine which indices in the reflectance curves encompass these bad bands.
+# Within the reflectance curves there are areas with noisy data due to atmospheric windows in the water absorption bands. For this exercise we do not want to plot these areas as they obscure details in the plots due to their anomolous values. The metadata associated with these band locations is contained in the metadata gathered by our function. We will pull out these areas as 'bad band windows' and determine which indexes in the reflectance curves encompass these bad bands.
 
 # In[9]:
 
@@ -253,27 +249,22 @@ bad_band_window2 = (metadata['bad_band_window2'])
 index_bad_window1 = [i for i, x in enumerate(wavelengths) if x > bad_band_window1[0] and x < bad_band_window1[1]]
 index_bad_window2 = [i for i, x in enumerate(wavelengths) if x > bad_band_window2[0] and x < bad_band_window2[1]]
 
-
-# Now join the list of indexes together into a single variable
-
-# In[10]:
-
-
+# join the lists of indexes into a single variable
 index_bad_windows = index_bad_window1 + index_bad_window2
 
 
-# The reflectance data is saved in files which are 'tab delimited.' We will use a numpy function (genfromtxt) to quickly import the tarp reflectance curves observed with the ASD using the '\t' delimiter to indicate tabs are used.
+# The reflectance data is saved in files which are 'tab delimited.' We will use a numpy function `np.genfromtxt` to read in the tarp reflectance data observed with the ASD using the tab (`'\t'`) delimiter.
 
-# In[11]:
+# In[10]:
 
 
 tarp_48_data = np.genfromtxt(tarp_48_filename, delimiter = '\t')
 tarp_03_data = np.genfromtxt(tarp_03_filename, delimiter = '\t')
 
 
-# Now we'll set all the data inside of those windows to NaNs (not a number) so they will not be included in the plots
+# Now we'll set all the data inside of the bad band windows to NaNs (not a number) so they will not be included in the plots.
 
-# In[12]:
+# In[11]:
 
 
 tarp_48_data[index_bad_windows] = np.nan
@@ -282,7 +273,7 @@ tarp_03_data[index_bad_windows] = np.nan
 
 # The next step is to determine which pixel in the reflectance data belongs to the center of each tarp. To do this, we will subtract the tarp center pixel location from the upper left corner pixels specified in the map info of the H5 file. This information is saved in the metadata dictionary output from our function that reads NEON AOP HDF5 files. The difference between these coordinates gives us the x and y index of the reflectance curve. 
 
-# In[13]:
+# In[12]:
 
 
 x_tarp_48_index = int((tarp_48_center[0] - metadata['ext_dict']['xMin'])/float(metadata['res']['pixelWidth']))
@@ -294,7 +285,7 @@ y_tarp_03_index = int((metadata['ext_dict']['yMax'] - tarp_03_center[1])/float(m
 
 # Next, we will plot both the curve from the airborne data taken at the center of the tarps as well as the curves obtained from the ASD data to provide a visualization of their consistency for both tarps. Once generated, we will also save the figure to a pre-determined location.
 
-# In[14]:
+# In[13]:
 
 
 plt.figure(1)
@@ -314,7 +305,7 @@ plt.plot(wavelengths,tarp_03_reflectance,label = 'Airborne Reflectance')
 plt.plot(wavelengths,tarp_03_data[:,1],label = 'ASD Reflectance')
 plt.title('CHEQ 20160912 3% tarp')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Reflectance (%)')
-plt.legend()
+plt.legend();
 #plt.savefig('CHEQ_20160912_3_tarp.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 
@@ -322,19 +313,19 @@ plt.legend()
 # 
 # Given the 3% reflectance tarp has much lower overall reflectance, it may be more informative to determine what the absolute difference between the two curves are and plot that as well.
 
-# In[15]:
+# In[14]:
 
 
 plt.figure(3)
-plt.plot(wavelengths,tarp_48_reflectance-tarp_48_data[:,1]);
+plt.plot(wavelengths,tarp_48_reflectance-tarp_48_data[:,1])
 plt.title('CHEQ 20160912 48% tarp absolute difference')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Absolute Reflectance Difference (%)')
 #plt.savefig('CHEQ_20160912_48_tarp_absolute_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 plt.figure(4)
-plt.plot(wavelengths,tarp_03_reflectance-tarp_03_data[:,1]);
+plt.plot(wavelengths,tarp_03_reflectance-tarp_03_data[:,1])
 plt.title('CHEQ 20160912 3% tarp absolute difference')
-plt.xlabel('Wavelength (nm)'); plt.ylabel('Absolute Reflectance Difference (%)')
+plt.xlabel('Wavelength (nm)'); plt.ylabel('Absolute Reflectance Difference (%)');
 #plt.savefig('CHEQ_20160912_3_tarp_absolute_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 
@@ -342,13 +333,7 @@ plt.xlabel('Wavelength (nm)'); plt.ylabel('Absolute Reflectance Difference (%)')
 # 
 # Let's now determine the result of the percent difference, which is the metric used by ATCOR to report accuracy. We can do this by calculating the ratio of the absolute difference between curves to the total reflectance 
 
-# In[16]:
-
-
-tarp_48_data[:,1]
-
-
-# In[17]:
+# In[15]:
 
 
 plt.figure(5)
@@ -363,7 +348,7 @@ plt.figure(6)
 plt.plot(wavelengths,100*np.divide(tarp_03_reflectance-tarp_03_data[:,1],tarp_03_data[:,1]));
 plt.title('CHEQ 20160912 3% tarp percent difference')
 plt.xlabel('Wavelength (nm)'); plt.ylabel('Percent Reflectance Difference')
-plt.ylim((-100,150))
+plt.ylim((-100,150));
 #plt.savefig('CHEQ_20160912_3_tarp_relative_diff.png',dpi=300,orientation='landscape',bbox_inches='tight',pad_inches=0.1)
 
 
