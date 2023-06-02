@@ -14638,7 +14638,7 @@ The first two files can be downloaded from: <a href="https://github.com/NEONScie
 
 **Download the CHEQ Reflectance File:** 
 
-<a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
+<a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/2016091215/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
 
 Note: The imagery data used to create this raster teaching data subset were collected over the 
 <a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network</a>'s
@@ -14655,16 +14655,13 @@ We recommend you complete the following tutorials prior to this lesson:
 
 </div><p>In this tutorial we will be examining the accuracy of the Neon Imaging Spectrometer (NIS) against targets with known reflectance values. The targets consist of two 10 x 10 m tarps which have been specially designed to have 3% reflectance (black tarp) and 
 48% reflectance (white tarp) across all of the wavelengths collected by the NIS (see images below). During the Sept. 12 2016 flight over the Chequamegon-Nicolet National Forest (CHEQ), an area in D05 which is part of NEON's <a href="https://www.neonscience.org/field-sites/stei">Steigerwaldt (STEI)</a> site, these tarps were deployed in a gravel pit. During the airborne overflight, observations were also taken over the tarps with an Analytical Spectral Device (ASD), which is a hand-held field spectrometer. The ASD measurements provide a validation source against the airborne measurements.</p>
-<table><tr>
-<td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_close.jpg" width="300"> </td>
-<td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_far.jpg" width="300"> </td>
-</table><figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="400">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="400"></a>
-    <figcaption> The validation tarps, 3% reflectance (black tarp) and 48% reflectance (white tarp), laid out in the field. 
-    Source: National Ecological Observatory Network (NEON)  
-    </figcaption>
-</figure><p>To test the accuracy, we will plot reflectance curves from the ASD measurments over the spectral tarps as well as reflectance curves from the NIS over the associated flight line. We can then carry out absolute and relative comparisons. The major error sources in the NIS can be generally categorized into the following components:</p>
+<p><table><tr></p>
+<p><td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_close.jpg" width="300"> </td></p>
+<p><td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_far.jpg" width="300"> </td>
+    <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="300"> </td>
+&lt;/table&gt;</p>
+<figcaption> The validation tarps, 3% reflectance (black tarp) and 48% reflectance (white tarp), laid out in the field. Source: National Ecological Observatory Network (NEON)  
+</figcaption><p>To test the accuracy, we will plot reflectance curves from the ASD measurments over the spectral tarps as well as reflectance curves from the NIS over the associated flight line. We can then carry out absolute and relative comparisons. The major error sources in the NIS can be generally categorized into the following components:</p>
 <ol>
 <li>Calibration of the sensor</li>
 <li>Quality of ortho-rectification</li>
@@ -14779,7 +14776,7 @@ We recommend you complete the following tutorials prior to this lesson:
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Set up the directory where you are storing the data for this lesson. The variable <code>h5_filename</code> is the flightline which covers the tarps.</p>
+<p>Set up the directory where you are storing the data for this lesson. The variable <code>h5_filename</code> is the flightline which covers the tarps. Save the h5 file which you downloaded (see the <strong>Download Data</strong> instructions at the beginning of the tutorial) to your working directory. For this lesson we've set up a subfolder './data' in the current working directory to save all the data. You can save it elsewhere, but just need to update your code to point to the correct directory.</p>
 
 </div>
 </div>
