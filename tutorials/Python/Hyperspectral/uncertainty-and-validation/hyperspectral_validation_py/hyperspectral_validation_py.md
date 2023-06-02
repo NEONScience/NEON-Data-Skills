@@ -50,7 +50,7 @@ The first two files can be downloaded from: <a href="https://github.com/NEONScie
     
 **Download the CHEQ Reflectance File:** 
 
-<a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/2019091215/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
+<a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/2016091215/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
     
 Note: The imagery data used to create this raster teaching data subset were collected over the 
 <a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network</a>'s
