@@ -51,9 +51,7 @@
 # 
 # The first two files can be downloaded from: <a href="https://github.com/NEONScience/NEON-Data-Skills/tree/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/data" target="_blank">NEON-Data-Skills GitHub<a/>.
 #     
-# **Download the CHEQ Reflectance File:** 
-# 
-# <a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/2016091215/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
+# **Download the CHEQ Reflectance File:** <a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/2016091215/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
 #     
 # Note: The imagery data used to create this raster teaching data subset were collected over the 
 # <a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network</a>'s
@@ -207,10 +205,9 @@ tarp_03_filename = r'./data/CHEQ_Tarp_03_02_refl_bavg.txt'
 # 3% reflectance tarp UTMx: 727497, UTMy: 5078970
 # 
 #  <figure>
-# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg"></a>
-# 	<figcaption> The validation tarps,  3% reflectance (black tarp) and 
-# 48% reflectance (white tarp), laid out in the field. 
+# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg" width="400">
+# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg" width="400"></a>
+# 	<figcaption> The validation tarps,  3% reflectance (black tarp) and 48% reflectance (white tarp), laid out in the field. 
 # 	Source: National Ecological Observatory Network (NEON)  
 # 	</figcaption>
 # </figure>

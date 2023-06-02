@@ -48,9 +48,7 @@ This tutorial uses the following files:
 
 The first two files can be downloaded from: <a href="https://github.com/NEONScience/NEON-Data-Skills/tree/main/tutorials/Python/Hyperspectral/uncertainty-and-validation/hyperspectral_validation_py/data" target="_blank">NEON-Data-Skills GitHub<a/>.
     
-**Download the CHEQ Reflectance File:** 
-
-<a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/2016091215/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
+**Download the CHEQ Reflectance File:** <a href="https://storage.googleapis.com/neon-aop-products/2016/FullSite/D05/2016_CHEQ_2/L1/Spectrometer/ReflectanceH5/2016091215/NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5" class="link--button link--arrow">NEON_D05_CHEQ_DP1_20160912_160540_reflectance.h5</a>
     
 Note: The imagery data used to create this raster teaching data subset were collected over the 
 <a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network</a>'s
@@ -73,8 +71,10 @@ In this tutorial we will be examining the accuracy of the Neon Imaging Spectrome
 <table><tr>
 <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_close.jpg" width="300"> </td>
 <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_far.jpg" width="300"> </td>
-<td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="300"> </td>
+    <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarps_aerial.jpg" width="300"> </td>
 </table>
+<figcaption> The validation tarps, 3% reflectance (black tarp) and 48% reflectance (white tarp), laid out in the field. Source: National Ecological Observatory Network (NEON)  
+</figcaption>
 
 To test the accuracy, we will plot reflectance curves from the ASD measurments over the spectral tarps as well as reflectance curves from the NIS over the associated flight line. We can then carry out absolute and relative comparisons. The major error sources in the NIS can be generally categorized into the following components:
 
@@ -153,7 +153,8 @@ def h5refl2array(h5_filename):
     return reflArray, metadata, wavelengths
 ```
 
-Set up the directory where you are storing the data for this lesson. The variable `h5_filename` is the flightline which covers the tarps. Save the h5 file which you downloaded (see the instructions at the beginning of the tutorial) to your working directory. For this lesson we've set up a subfolder './data' in the current working directory to save all the data. You can save it elsewhere, but just need to update your code to point to the correct directory.
+Set up the directory where you are storing the data for this lesson. The variable `h5_filename` is the flightline which covers the tarps. Save the h5 file which you downloaded (see the **Download Data** instructions at the beginning of the tutorial) to your working directory. For this lesson we've set up a subfolder './data' in the current working directory to save all the data. You can save it elsewhere, but just need to update your code to point to the correct directory.
+
 
 ```python
 ## You will need to change these filepaths according to how you've set up your directory
@@ -196,10 +197,9 @@ We want to pull the spectra from the airborne data from the center of the tarp t
 3% reflectance tarp UTMx: 727497, UTMy: 5078970
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg"></a>
-	<figcaption> The validation tarps,  3% reflectance (black tarp) and 
-48% reflectance (white tarp), laid out in the field. 
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg" width="400">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/tarp_centers.jpg" width="400"></a>
+	<figcaption> The validation tarps,  3% reflectance (black tarp) and 48% reflectance (white tarp), laid out in the field. 
 	Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
