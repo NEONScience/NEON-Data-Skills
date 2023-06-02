@@ -25,11 +25,11 @@ trees in the forest.
 ### Objectives
 After completing this tutorial, you will be able to:
 
-* Learn how to apply a guassian smoothing fernal for high-frequency spatial filtering
+* Learn how to apply a Gaussian smoothing kernel for high-frequency spatial filtering
 * Apply a watershed segmentation algorithm for delineating tree crowns
 * Calculate biomass predictor variables from a CHM
-* Setup training data for Biomass predictions
-* Apply a Random Forest machine learning approach to calculate biomass
+* Set up training data for biomass predictions
+* Apply a Random Forest machine learning model to calculate biomass
 
 
 ### Install Python Packages
