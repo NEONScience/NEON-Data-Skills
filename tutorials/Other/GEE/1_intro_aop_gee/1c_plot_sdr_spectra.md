@@ -142,4 +142,4 @@ In this lesson you learned how to read in wavelength information from the Surfac
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/0bc6632b15a3d29d545c85fbceaa67b7" target="_blank">AOP GEE SDR Weather Quality</a>
+<a href="https://code.earthengine.google.com/ab1f812851ef19eebf871664d865181f" target="_blank">AOP GEE SDR Weather Quality</a>
