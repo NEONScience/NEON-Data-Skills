@@ -66,9 +66,12 @@ var properties = soapSDR.toDictionary()
 // print(properties)
 
 print('data description',properties.select(['DESCRIPTION']).values())
+print('soap sdr data:',ee.Algorithms.Describe(soapSDR_data))
 ```
 
 ## Extract wavelength information from the properties
+
+Similar to the code above, we can use a regular expression to pull out the wavelength information from the properties. The wavelength and Full Width Half Max (FWHM) information is stored in the properties starting with WL_FWHM_B. These are stored as strings, so the nex step is to write a funciton that converts the string to a float, and only pulls out the center wavelength value (by splitting on the "," and pulling out only the first value). This is all we need for now, but if you needed the FWHM information, you could write a similar function. Lastly, we'll apply the function using GEE `.map` to pull out the wavelength information. We an then print some information about what we've extracted
 
 ```javascript
 // Select the WL_FWHM_B*** band properties (using regex)
@@ -89,7 +92,6 @@ var get_wavelengths = function(x) {
 var wavelengths = wl_fwhm_list.map(get_wavelengths)
 print('wavelengths:',wavelengths)
 
-print('soap sdr data:',ee.Algorithms.Describe(soapSDR_data))
 print('# of data bands:',wavelengths.length())
 ```
 
