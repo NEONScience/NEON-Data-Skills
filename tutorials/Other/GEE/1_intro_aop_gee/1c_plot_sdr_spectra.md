@@ -97,6 +97,8 @@ print('# of data bands:',wavelengths.length())
 
 ## Interactively plot the spectral signature of a pixel
 
+Lastly, we'll create a plot in the Map panel, and use the `Map.onClick` function to create a spectral signature of a given pixel that you click on. Most of the code below specifies formatting, figure labels, etc.
+
 ```javascript
 // Create a panel to hold the spectral signature plot
 var panel = ui.Panel();
@@ -131,11 +133,17 @@ Map.onClick(function(coords) {
 });
 ```
 
-When you run this code, linked [here](https://code.earthengine.google.com/33d1d2b66c81c705c0b48e5d158abc9e), you will see the SOAP 2021 SDR layer show up in the Map panel, along with a blank figure outline. When you click anywhere in this image, the figure will be populated with the spectral signature of the pixel you clicked on.
+When you run this code, (linked at the bottom), you will see the SOAP 2021 SDR layer show up in the Map panel, along with a white figure panel. When you click anywhere in the SDR image, the empty figure will be populated with the spectral signature of the pixel you clicked on.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG" alt="SOAP Specral Plot"></a>
 </figure>
 
+## Recap
+
+In this lesson you learned how to read in wavelength information from the Surface Directional Reflectance (SDR) properties in GEE, created functions to convert from one data format to another, and created an interactive plot to visualize the spectral signature of a selected pixel. You can quickly see how GEE is a powerful tool for interactive data visualization and exploratory analysis.
+
 ## Get Lesson Code
+
+<a href="https://code.earthengine.google.com/0bc6632b15a3d29d545c85fbceaa67b7" target="_blank">AOP GEE SDR Weather Quality</a>
