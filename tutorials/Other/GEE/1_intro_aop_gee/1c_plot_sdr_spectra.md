@@ -134,8 +134,8 @@ Map.onClick(function(coords) {
 When you run this code, linked [here](https://code.earthengine.google.com/33d1d2b66c81c705c0b48e5d158abc9e), you will see the SOAP 2021 SDR layer show up in the Map panel, along with a blank figure outline. When you click anywhere in this image, the figure will be populated with the spectral signature of the pixel you clicked on.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.png" alt="SRER Inspector"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG" alt="SOAP Specral Plot"></a>
 </figure>
 
 ## Get Lesson Code
