@@ -32,40 +32,68 @@ After completing this activity, you will be able to:
 
 </div>
 
-## Read in the AOP SDR 2021 Dataset at SRER
+## Read in the AOP SDR 2021 Dataset at SOAP
 
-We will start at our ending point of the last tutorial. For this exercise we will only read data from 2021:
-
-```javascript
-// This script pulls in hyperspectral data over the Santa Rita Experimental Range (SRER)
-// from 2021 and plots RGB 3-band composite of the imagery
-
-// Read in Surface Directional Reflectance (SDR) Images 
-var SRER_SDR2021 = ee.Image("projects/neon/D14_SRER/L3/DP3-30006-001_D14_SRER_SDR_2021");
-
-// Set the visualization parameters so contrast is maximized, and set display to show RGB bands 
-var visParams = {'min':2,'max':20,'gamma':0.9,'bands':['band053','band035','band019']};
-
-// Mask layer to only show values > 0 (this hides the no data values of -9999) 
-var SRER_SDR2021mask = SRER_SDR2021.updateMask(SRER_SDR2021.gte(0.0000));
-
-// Add the 2021 SRER SDR data as layers to the Map:
-Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
-```
-
-## Create the wavelengths variable
-
-In the last tutorial, we ended by viewing a bar chart of the reflectance values v. band #, but we couldn't see the wavelengths corresponding to those bands. Here we set a wavelengths variable (**var**) that we will apply to generate a spectral plot (wavelengths v. reflectance). To add this wavelength information, we will use the [`ee.List.sequence`](https://developers.google.com/earth-engine/apidocs/ee-list-sequence) function, which is used as follows: `ee.List.sequence(start, end, step, count)` to "generate a sequence of numbers from start to end (inclusive) in increments of step, or in count equally-spaced increments."
+We will start at our ending point of the last tutorial. For this exercise we will only read data from SOAP collected in 2021:
 
 ```javascript
-// Set wavelength variable for spectral plot
-var wavelengths = ee.List.sequence(381, 2510, 5).getInfo()
-var bands_no =  ee.List.sequence(1, 426).getInfo() 
+// Filter image collection by date and site
+var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-30006-001")
+  .filterDate('2021-01-01', '2021-12-31')
+  .filterMetadata('NEON_SITE', 'equals', 'SOAP')
+  .first();
+
+// Create a 3-band true-color image 
+var soapSDR_RGB = soapSDR.select(['B053', 'B035', 'B019']);
+
+// Display the SDR image
+Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2021 Reflectance RGB');
+
+// center the map at the lat / lon of the site, set zoom to 12
+Map.setCenter(-119.25, 37.06, 12);
 ```
 
-## [Earth Engine User Interface](https://developers.google.com/earth-engine/guides/ui)
+## Extract data bands
+Next we will extract only the "data" bands in order to plot the spectral information. The SDR data contains 426 data bands, and a number of QA/Metdata bands that provide  additional information that can be useful in interpreting and analyzing the data (such as the Weather Quality Information). For plotting the spectra, we only need the data bands.
 
-[ui.Panel](https://developers.google.com/earth-engine/apidocs/ui-panel)
+```javascript
+// Pull out only the data bands (these all start with B, eg. B001)
+var soapSDR_data = soapSDR.select('B.*')
+print(soapSDR_data)
+
+// Read in the properties as a dictionary
+var properties = soapSDR.toDictionary()
+// print(properties)
+
+print('data description',properties.select(['DESCRIPTION']).values())
+```
+
+## Extract wavelength information from the properties
+
+```javascript
+// Select the WL_FWHM_B*** band properties (using regex)
+var wl_fwhm_dict = properties.select(['WL_FWHM_B+\\d{3}']);
+
+// Pull out the wavelength, fwhm values to a list
+var wl_fwhm_list = wl_fwhm_dict.values()
+print('wavelength full-width-half-max list:',wl_fwhm_list)
+
+// Function to pull out the wavelength values only and convert the string to float
+var get_wavelengths = function(x) {
+  var str_split = ee.String(x).split(',')
+  var first_elem = ee.Number.parse((str_split.get(0)))
+  return first_elem
+}
+
+// apply the function to the wavelength full-width-half-max list
+var wavelengths = wl_fwhm_list.map(get_wavelengths)
+print('wavelengths:',wavelengths)
+
+print('soap sdr data:',ee.Algorithms.Describe(soapSDR_data))
+print('# of data bands:',wavelengths.length())
+```
+
+## Interactively plot the spectral signature of a pixel
 
 ```javascript
 // Create a panel to hold the spectral signature plot
@@ -73,36 +101,32 @@ var panel = ui.Panel();
 panel.style().set({width: '600px',height: '300px',position: 'top-left'});
 Map.add(panel);
 Map.style().set('cursor', 'crosshair');
-```
 
-## [Map.onClick](https://developers.google.com/earth-engine/apidocs/ui-map-onclick)
-
-```javascript
 // Create a function to draw a chart when a user clicks on the map.
 Map.onClick(function(coords) {
   panel.clear();
   var point = ee.Geometry.Point(coords.lon, coords.lat);
-  var chart = ui.Chart.image.regions(SRER_SDR2021, point, null, 1, 'λ (nm)', wavelengths);
-    chart.setOptions({title: 'SRER 2021 Reflectance',
-                      hAxis: {title: 'Wavelength (nm)', 
-                      vAxis: {title: 'Reflectance'},
-                      gridlines: { count: 5 }}
-                              });
+    wavelengths.evaluate(function(wvlnghts) {
+      var chart = ui.Chart.image.regions({
+        image: soapSDR_data, 
+        regions: point, 
+        scale: 1,
+        seriesProperty: 'λ (nm)', 
+        xLabels: wavelengths.getInfo()
+    });
+    chart.setOptions({
+      title: 'Reflectance',
+      hAxis: {title: 'Wavelength (nm)', 
+      vAxis: {title: 'Reflectance'},
+      gridlines: { count: 5 }}
+    });
     // Create and update the location label 
-  var location = 'Longitude: ' + coords.lon.toFixed(2) + ' ' +
-                 'Latitude: ' + coords.lat.toFixed(2);
-  panel.widgets().set(1, ui.Label(location));
-  panel.add(chart);
+    var location = 'Longitude: ' + coords.lon.toFixed(2) + ' ' +
+                   'Latitude: ' + coords.lat.toFixed(2);
+    panel.widgets().set(1, ui.Label(location));
+    panel.add(chart);
+  })
 });
-```
-
-Finally, we'll add the SRER data layer and center on that layer. Here we use the `Map.centerObject` function to center on our SRER_SDR2021 object.
-
-```javascript
-// Add the 2021 SRER SDR data as a layer to the Map:
-Map.addLayer(SRER_SDR2021mask, visParams, 'SRER 2021');
-
-Map.centerObject(SRER_SDR2021,11)
 ```
 
 When you run this code, linked [here](https://code.earthengine.google.com/33d1d2b66c81c705c0b48e5d158abc9e), you will see the SRER SDR layer show up in the Map panel, along with a blank figure outline. When you click anywhere in this image, the figure will be populated with the spectral signature of the pixel you clicked on.
