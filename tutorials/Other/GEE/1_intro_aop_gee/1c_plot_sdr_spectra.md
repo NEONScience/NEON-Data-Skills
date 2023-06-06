@@ -49,7 +49,7 @@ var soapSDR_RGB = soapSDR.select(['B053', 'B035', 'B019']);
 // Display the SDR image
 Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2021 Reflectance RGB');
 
-// center the map at the lat / lon of the site, set zoom to 12
+// Center the map at the lat / lon of the site, set zoom to 12
 Map.setCenter(-119.25, 37.06, 12);
 ```
 
@@ -65,8 +65,8 @@ print(soapSDR_data)
 var properties = soapSDR.toDictionary()
 // print(properties)
 
-print('data description',properties.select(['DESCRIPTION']).values())
-print('soap sdr data:',ee.Algorithms.Describe(soapSDR_data))
+print('Data description',properties.select(['DESCRIPTION']).values())
+print('SOAP SDR data:',ee.Algorithms.Describe(soapSDR_data))
 ```
 
 ## Extract wavelength information from the properties
@@ -79,7 +79,7 @@ var wl_fwhm_dict = properties.select(['WL_FWHM_B+\\d{3}']);
 
 // Pull out the wavelength, fwhm values to a list
 var wl_fwhm_list = wl_fwhm_dict.values()
-print('wavelength full-width-half-max list:',wl_fwhm_list)
+print('Wavelength FWHM list:',wl_fwhm_list)
 
 // Function to pull out the wavelength values only and convert the string to float
 var get_wavelengths = function(x) {
@@ -90,8 +90,8 @@ var get_wavelengths = function(x) {
 
 // apply the function to the wavelength full-width-half-max list
 var wavelengths = wl_fwhm_list.map(get_wavelengths)
-print('wavelengths:',wavelengths)
 
+print('Wavelengths:',wavelengths)
 print('# of data bands:',wavelengths.length())
 ```
 
