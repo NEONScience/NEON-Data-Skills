@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: d2e642ff6bb44f8798ddbe4fd5e45243
 title: "Plot spectral signatures of AOP Reflectance data in GEE"
 description: "Interactively plot the spectral signature of an AOP SDR pixel in GEE"
 dateCreated: 2022-04-15
