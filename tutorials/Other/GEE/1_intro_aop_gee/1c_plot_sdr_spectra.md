@@ -59,14 +59,10 @@ Next we will extract only the "data" bands in order to plot the spectral informa
 ```javascript
 // Pull out only the data bands (these all start with B, eg. B001)
 var soapSDR_data = soapSDR.select('B.*')
-print(soapSDR_data)
+print('SOAP SDR Data',soapSDR_data)
 
 // Read in the properties as a dictionary
 var properties = soapSDR.toDictionary()
-// print(properties)
-
-print('Data description',properties.select(['DESCRIPTION']).values())
-print('SOAP SDR data:',ee.Algorithms.Describe(soapSDR_data))
 ```
 
 ## Extract wavelength information from the properties
