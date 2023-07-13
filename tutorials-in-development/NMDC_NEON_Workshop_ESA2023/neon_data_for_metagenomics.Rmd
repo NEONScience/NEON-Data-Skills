@@ -1,0 +1,131 @@
+---
+title: "Access NEON Data for Metagenomics"
+syncID: TO BE FILLED IN
+description: Using NEON tools to access metadata for metagenomic samples.
+dateCreated: "2023-07-08"
+authors: Hugh Cross
+contributors: null
+estimatedTime: 0.4 hours
+packagesLibraries: dplyr, ggplot2, neonUtilities, docknitr
+topics: Data Analysis, Metadata
+languagesTool: R, Bash
+dataProduct: DP1.10107.001, DP1.20279.001, DP1.20281.001
+code1: null
+tutorialSeries: null
+urlTitle: "neon-data-for-metagenomics"
+---
+
+```{r opts-set, echo=FALSE}
+library(knitr)
+opts_knit$set(global.par = TRUE)
+library(kfigr)
+# add path to graphics 
+wdir<-'/Users/crossh/repos/NEON-Data-Skills/tutorials-in-development/NMDC_NEON_Workshop_ESA2023'
+myPathToGraphics <- paste(wdir,'graphics', sep='/')
+
+```
+
+
+This tutorial is being run in conjunction with the workshop "FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative", to introduce the attendees to the NMDC data portal. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline. 
+
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Access information on NEON data relevant to metagenomic research.
+* Download NEON data for soil and aquatic samples.
+* Process NEON sample data to be able to analyze with metagenomic data
+
+## Things You’ll Need To Complete This Tutorial
+
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+* **neonUtilities**: Basic functions for accessing NEON data
+* **neonOS**: Functions for common data wrangling needs for NEON observational data
+* **tidyverse**: <a href="https://www.tidyverse.org/" target="_blank"> A collection of R packages</a> designed for data science
+
+All of these packages can be installed from CRAN:
+
+```{r packages, eval=FALSE}
+
+install.packages("neonUtilities")
+install.packages("neonOS")
+install.packages("tidyverse")
+
+```
+
+<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
+
+### Example Data Set
+
+I need to determine if we need an example data set
+This tutorial will teach you how to download data directly from the NEON data 
+portal.  This example data set is provided as an optional download and a backup. 
+
+### Working Directory
+This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+## Additional Resources
+This tutorial will provide some basic examples for for finding information and downloading NEON data. For more details on downloading NEON data, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">the "Download and Explore NEON Data" tutorial</a> provides an overview of downloading data using the Data Portal and the neonUtilities R package, and <a href="https://www.neonscience.org/neonDataStackR" target="_blank">this tutorial</a> goes into detail on the neonUtilities package and how the each function works. Most of the examples provided here utilize the R programming language, and NEON provides <a href="https://www.neonscience.org/resources/learning-hub/tutorials/basic-r-skills" target="_blank">a tutorial series on basic R skills to get you started</a>. 
+ 
+</div>
+
+
+
+## The NEON Data Portal 
+
+NEON provides a wealth of data to assist with your research. <a href=https://data.neonscience.org/" target="_blank">The NEON Data Portal </a> is the best place to start looking for the data you want. There is a lot of information on this page. For now, we will have a quick tour. 
+
+
+```{=tex}
+\begin{figure}[H]
+\centering
+\includegraphics {`r paste(myPathToGraphics,'data_portal_front_page.png', sep='/')`}
+\caption{The NEON Data Portal Page}
+\label{fig:dataPortalPage}
+\end{figure}
+```
+
+
+
+
+
+## Trial code chunks
+
+```{bash check_docker, eval=FALSE}
+
+docker run --rm \
+  -v $(pwd):/data \
+  --workdir="/data" \
+  --platform linux/amd64 \
+  quay.io/swordfish/crabs:0.1.4 \
+  crabs db_download -h 
+
+
+```
+
+
+
+## Accessing NEON data with R: neonUtilities
+
+
+
+## Wrangling sample data for metagenomic samples
+
+
+
+## Additional examples for 
+
+
+
