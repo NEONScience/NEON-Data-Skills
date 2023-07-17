@@ -83,25 +83,34 @@ This tutorial will provide some basic examples for for finding information and d
 
 <br/>
 <br/>
-<br/>
+
 
 ## The NEON Data Portal 
 
 NEON provides a wealth of data to assist with your research. <a href="https://data.neonscience.org/" target="_blank">The NEON Data Portal </a> is the best place to start looking for the data you want. There is a lot of information on this page. For now, we will have a quick tour. 
 
 <figure class="half">
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png"
-    alt="RStudio window with default template of a new R Markdown file.">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png"
+    alt="NEON Data Portal Front Page.">
     </a>
     <figcaption></figcaption>
 </figure>  
 
 There are many ways to search the Data Portal, including searching by site. The page includes an interactive map.
 
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_page_map.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_page_map.png"
+    alt="The NEON Data Portal page includes an interactive map.">
+    </a>
+    <figcaption></figcaption>
+</figure>  
+
+
 <br/>
 <br/>
-<br/>
+
 
 ### Explore Data Products
 

@@ -1,4 +1,4 @@
-## ----opts-set, echo=FALSE---------------------------------------------------------------------------------------
+## ----opts-set, echo=FALSE---------------
 library(knitr)
 opts_knit$set(global.par = TRUE)
 # add path to graphics 
@@ -8,7 +8,7 @@ opts_knit$set(global.par = TRUE)
 
 
 
-## ----packages, eval=FALSE---------------------------------------------------------------------------------------
+## ----packages, eval=FALSE---------------
 ## 
 ## install.packages("neonUtilities")
 ## install.packages("neonOS")
@@ -16,7 +16,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----access soil data, eval=FALSE-------------------------------------------------------------------------------
+## ----access soil data, eval=FALSE-------
 ## #
 ## library(neonUtilities)
 ## 
@@ -33,15 +33,15 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----viewSoilChem, eval=FALSE-----------------------------------------------------------------------------------
+## ----viewSoilChem, eval=FALSE-----------
 ## View(soilChem2018$sls_soilChemistry)
 
 
-## ----checkMetaPool, eval=FALSE----------------------------------------------------------------------------------
+## ----checkMetaPool, eval=FALSE----------
 ## View(soilChem2018$sls_metagenomicsPooling)
 
 
-## ----poolListEx, eval=FALSE-------------------------------------------------------------------------------------
+## ----poolListEx, eval=FALSE-------------
 ## soilChem2018$sls_metagenomicsPooling$genomicsPooledIDList[1]
 ## # you can check to confirm the first sample is HARV_033-O-20180709-COMP
 ## soilChem2018$sls_metagenomicsPooling[1,'genomicsSampleID']
