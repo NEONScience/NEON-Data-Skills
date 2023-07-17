@@ -47,7 +47,9 @@ All of these packages can be installed from CRAN:
 
 
     install.packages("neonUtilities")
+
     install.packages("neonOS")
+
     install.packages("tidyverse")
 
 <a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
@@ -72,7 +74,7 @@ This tutorial will provide some basic examples for for finding information and d
 
 <br/>
 <br/>
-<br/>
+
 
 ## The NEON Data Portal 
 
@@ -81,16 +83,25 @@ NEON provides a wealth of data to assist with your research. <a href="https://da
 <figure class="half">
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png"
-    alt="RStudio window with default template of a new R Markdown file.">
+    alt="NEON Data Portal Front Page.">
     </a>
     <figcaption></figcaption>
 </figure>  
 
 There are many ways to search the Data Portal, including searching by site. The page includes an interactive map.
 
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_page_map.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_page_map.png"
+    alt="The NEON Data Portal page includes an interactive map.">
+    </a>
+    <figcaption></figcaption>
+</figure>  
+
+
 <br/>
 <br/>
-<br/>
+
 
 ### Explore Data Products
 
@@ -115,16 +126,27 @@ With the information from the Data Portal, we can download this data product usi
 
 
     #
+
     library(neonUtilities)
+
     
+
     soilTrialSites = c("HARV","SCBI","DSNY","UNDE","WREF")
+
     
+
     soilChem2018 <- loadByProduct(
+
       dpID='DP1.10086.001',
+
       startdate = "2018-01",
+
       enddate = "2018-12",
+
       check.size = FALSE,
+
       site = soilTrialSites,
+
       package='expanded')
 
 For full details on the `loadByProduct()` function, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr" target="_blank">'Use the neonUtilities Package' tutorial</a>. Here we will just note some of the parameters. The `dpID` parameters is taken right from the Data Portal page for that data product. The `startdate` and `enddate` define the time range, and for the `site` parameter, we can enter a list of the four-letter codes for each site. The `check.size` we are leaving as `FALSE`, to prevent the function from warning us before big downloads. If you are going to do a big download, for example, if you do not specify a time range with `startdate/enddate` or define the sites to download using the `site` parameter, it is a good idea to leave this option at `TRUE`. If you are incorporating this code into a script as part of a pipeline, for example, then you should set this at `FALSE`. 
@@ -156,11 +178,17 @@ In this table the list for each composite DNA sample is in the column `genomicsP
 
 
     soilChem2018$sls_metagenomicsPooling$genomicsPooledIDList[1]
+
     # you can check to confirm the first sample is HARV_033-O-20180709-COMP
+
     soilChem2018$sls_metagenomicsPooling[1,'genomicsSampleID']
+
     # then you can get the list:
+
     soilChem2018$sls_metagenomicsPooling[1,'genomicsPooledIDList']
+
     # You can also see them together:
+
     soilChem2018$sls_metagenomicsPooling[1,10:11]
 
 The content of this field is a list demarcated by the pipe symbol ("|"): 

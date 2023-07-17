@@ -3,19 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>The NEON Data Portal</title>
-
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
+<title>Access NEON Data for Metagenomics</title>
 
 
 
@@ -23,138 +11,68 @@ window.onload = function() {
 
 <style type="text/css">
 body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
+  font-family: sans-serif;
+  background-color: white;
+  font-size: 13px;
 }
-
 body {
   max-width: 800px;
   margin: auto;
   padding: 1em;
-  line-height: 20px;
+  line-height: 1.5;
 }
-
 tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+  font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
 }
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
+a:visited { color: #80007f; }
+pre, img { max-width: 100%; }
 code {
   font-size: 92%;
   border: 1px solid #ccc;
 }
-
-code[class] {
-  background-color: #F8F8F8;
+code[class] { background-color: #F8F8F8; }
+code.language-undefined { background-color: inherit; }
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+  border-bottom: 1px solid #666;
 }
-
-table, td, th {
-  border: none;
-}
-
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
 blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+  color:#666;
+  margin:0;
+  padding-left: 1em;
+  border-left: 0.5em #eee solid;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
+hr { border: 1px #ddd dashed; }
 
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+  * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+  }
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  a, a:visited { text-decoration: underline; }
+  hr {
+    visibility: hidden;
+    page-break-before: always;
+  }
+  pre, blockquote {
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page :left { margin: 15mm 20mm 15mm 10mm; }
+  @page :right { margin: 15mm 10mm 15mm 20mm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3 { page-break-after: avoid; }
 }
 </style>
 
@@ -163,163 +81,142 @@ hr {
 </head>
 
 <body>
-<p>This tutorial is being run in conjunction with the workshop &ldquo;FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative&rdquo;, to introduce the attendees to the NMDC data portal. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline. </p>
-
+<p>This tutorial is being run in conjunction with the workshop “FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative”, to introduce the attendees to the NMDC data portal. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline.</p>
 <div id="ds-objectives" markdown="1">
+<h2>Learning Objectives</h2>
+<p>After completing this tutorial you will be able to:</p>
+<ul>
+<li>Access information on NEON data relevant to metagenomic research.</li>
+<li>Download NEON data for soil and aquatic samples.</li>
+<li>Process NEON sample data to be able to analyze with metagenomic data</li>
+</ul>
+<h2>Things You’ll Need To Complete This Tutorial</h2>
+<h3>R Programming Language</h3>
+<p>You will need a current version of R to complete this tutorial. We also recommend
+the RStudio IDE to work with R.</p>
+<h3>R Packages to Install</h3>
+<p>Prior to starting the tutorial ensure that the following packages are installed.</p>
+<ul>
+<li><strong>neonUtilities</strong>: Basic functions for accessing NEON data</li>
+<li><strong>neonOS</strong>: Functions for common data wrangling needs for NEON observational data</li>
+<li><strong>tidyverse</strong>: <a href="https://www.tidyverse.org/" target="_blank"> A collection of R packages</a> designed for data science</li>
+</ul>
+<p>All of these packages can be installed from CRAN:</p>
+<pre><code>install.packages(&quot;neonUtilities&quot;)
 
-## Learning Objectives 
-After completing this tutorial you will be able to: 
+install.packages(&quot;neonOS&quot;)
 
-* Access information on NEON data relevant to metagenomic research.
-* Download NEON data for soil and aquatic samples.
-* Process NEON sample data to be able to analyze with metagenomic data
-
-## Things You’ll Need To Complete This Tutorial
-
-
-### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
-the RStudio IDE to work with R. 
-
-### R Packages to Install
-Prior to starting the tutorial ensure that the following packages are installed. 
-* **neonUtilities**: Basic functions for accessing NEON data
-* **neonOS**: Functions for common data wrangling needs for NEON observational data
-* **tidyverse**: <a href="https://www.tidyverse.org/" target="_blank"> A collection of R packages</a> designed for data science
-
-All of these packages can be installed from CRAN:
-
-
-    install.packages(&ldquo;neonUtilities&rdquo;)
-    install.packages(&ldquo;neonOS&rdquo;)
-    install.packages(&ldquo;tidyverse&rdquo;)
-
-<a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
-
-### Example Data Set
-
-I need to determine if we need an example data set
-This tutorial will teach you how to download data directly from the NEON data 
-portal.  This example data set is provided as an optional download and a backup. 
-
-### Working Directory
-This lesson assumes that you have set your working 
-directory to the location of the downloaded and unzipped data subsets. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
-
-## Additional Resources
-This tutorial will provide some basic examples for for finding information and downloading NEON data. For more details on downloading NEON data, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">the &ldquo;Download and Explore NEON Data&rdquo; tutorial</a> provides an overview of downloading data using the Data Portal and the neonUtilities R package, and <a href="https://www.neonscience.org/neonDataStackR" target="_blank">this tutorial</a> goes into detail on the neonUtilities package and how the each function works. Most of the examples provided here utilize the R programming language, and NEON provides <a href="https://www.neonscience.org/resources/learning-hub/tutorials/basic-r-skills" target="_blank">a tutorial series on basic R skills to get you started</a>. 
- 
+install.packages(&quot;tidyverse&quot;)
+</code></pre>
+<p><a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
+<h3>Example Data Set</h3>
+<p>I need to determine if we need an example data set
+This tutorial will teach you how to download data directly from the NEON data
+portal.  This example data set is provided as an optional download and a backup.</p>
+<h3>Working Directory</h3>
+<p>This lesson assumes that you have set your working
+directory to the location of the downloaded and unzipped data subsets.</p>
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a></p>
+<h2>Additional Resources</h2>
+<p>This tutorial will provide some basic examples for for finding information and downloading NEON data. For more details on downloading NEON data, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">the “Download and Explore NEON Data” tutorial</a> provides an overview of downloading data using the Data Portal and the neonUtilities R package, and <a href="https://www.neonscience.org/neonDataStackR" target="_blank">this tutorial</a> goes into detail on the neonUtilities package and how the each function works. Most of the examples provided here utilize the R programming language, and NEON provides <a href="https://www.neonscience.org/resources/learning-hub/tutorials/basic-r-skills" target="_blank">a tutorial series on basic R skills to get you started</a>.</p>
 </div>
-
-<p><br/>
 <br/>
-<br/></p>
-
+<br/>
 <h2>The NEON Data Portal</h2>
-
-<p>NEON provides a wealth of data to assist with your research. <a href="https://data.neonscience.org/" target="_blank">The NEON Data Portal </a> is the best place to start looking for the data you want. There is a lot of information on this page. For now, we will have a quick tour. </p>
-
+<p>NEON provides a wealth of data to assist with your research. <a href="https://data.neonscience.org/" target="_blank">The NEON Data Portal </a> is the best place to start looking for the data you want. There is a lot of information on this page. For now, we will have a quick tour.</p>
 <figure class="half">
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png"
-    alt="RStudio window with default template of a new R Markdown file.">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png"
+    alt="NEON Data Portal Front Page.">
     </a>
     <figcaption></figcaption>
 </figure>  
-
 <p>There are many ways to search the Data Portal, including searching by site. The page includes an interactive map.</p>
-
-<p><br/>
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_page_map.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_page_map.png"
+    alt="The NEON Data Portal page includes an interactive map.">
+    </a>
+    <figcaption></figcaption>
+</figure>  
 <br/>
-<br/></p>
-
+<br/>
 <h3>Explore Data Products</h3>
-
-<p>From the Data Portal main page, Click on the <strong>EXPLORE</strong> button in the box called &ldquo;Explore Data Products&rdquo;, or just <a href="https://data.neonscience.org/data-products/explore" target="_blank">go to this link</a>, and you can search by key words or data product codes. For example, type &#39;metagenomics&#39; in the Search field, and then scroll down through the results. </p>
-
-<p>Click on the link to <a href="https://data.neonscience.org/data-products/DP1.10107.001" target="_blank">Soil microbe metagenome sequences</a> and the information for this data product will open in a new page. On this page there is a lot of useful information, including a description of the tables are included for the data, links to documents, a Quick Start guide, and much more. You of course are able to download data from this page, and can select specific sites and time ranges in an interactive table. However, in this tutorial we are going to use the neonUtilities R package to access the data. </p>
-
-<p><br/>
-<br/></p>
-
+<p>From the Data Portal main page, Click on the <strong>EXPLORE</strong> button in the box called “Explore Data Products”, or just <a href="https://data.neonscience.org/data-products/explore" target="_blank">go to this link</a>, and you can search by key words or data product codes. For example, type ‘metagenomics’ in the Search field, and then scroll down through the results.</p>
+<p>Click on the link to <a href="https://data.neonscience.org/data-products/DP1.10107.001" target="_blank">Soil microbe metagenome sequences</a> and the information for this data product will open in a new page. On this page there is a lot of useful information, including a description of the tables are included for the data, links to documents, a Quick Start guide, and much more. You of course are able to download data from this page, and can select specific sites and time ranges in an interactive table. However, in this tutorial we are going to use the neonUtilities R package to access the data.</p>
+<br/>
+<br/>
 <h2>NEON metadata for metagenomic data</h2>
-
 <h3>Downloading data with neonUtilities</h3>
-
-<p>The metagenomics data available on the NEON website includes only the raw sequence files. It is more useful to access the data processed through the NMDC Edge pipeline, as we have learned. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The functional and taxonomic information available on the NMDC data portal can be analyzed along with all other NEON data from the soil and aquatic samples. </p>
-
-<p>We will start by accessing some soil chemical and physical measurements using the neonUtilities package. But even though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in &ldquo;Soil physical and chemical properties&rdquo; in the Search bar. Scroll down and click on &ldquo;Soil physical and chemical properties, periodic&rdquo; (DP1.10086.001). </p>
-
-<p>With the information from the Data Portal, we can download this data product using the <strong>neonUtilities</strong> package. We will start with a subset of terrestrial sites. Go ahead and set up the following command in a text file in RStudio or text editor. </p>
-
+<p>The metagenomics data available on the NEON website includes only the raw sequence files. It is more useful to access the data processed through the NMDC Edge pipeline, as we have learned. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The functional and taxonomic information available on the NMDC data portal can be analyzed along with all other NEON data from the soil and aquatic samples.</p>
+<p>We will start by accessing some soil chemical and physical measurements using the neonUtilities package. But even though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in “Soil physical and chemical properties” in the Search bar. Scroll down and click on “Soil physical and chemical properties, periodic” (DP1.10086.001).</p>
+<p>With the information from the Data Portal, we can download this data product using the <strong>neonUtilities</strong> package. We will start with a subset of terrestrial sites. Go ahead and set up the following command in a text file in RStudio or text editor.</p>
 <pre><code>#
+
 library(neonUtilities)
+
+
 
 soilTrialSites = c(&quot;HARV&quot;,&quot;SCBI&quot;,&quot;DSNY&quot;,&quot;UNDE&quot;,&quot;WREF&quot;)
 
+
+
 soilChem2018 &lt;- loadByProduct(
-  dpID=&#39;DP1.10086.001&#39;,
+
+  dpID='DP1.10086.001',
+
   startdate = &quot;2018-01&quot;,
+
   enddate = &quot;2018-12&quot;,
+
   check.size = FALSE,
+
   site = soilTrialSites,
-  package=&#39;expanded&#39;)
+
+  package='expanded')
 </code></pre>
-
-<p>For full details on the <code>loadByProduct()</code> function, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr" target="_blank">&#39;Use the neonUtilities Package&#39; tutorial</a>. Here we will just note some of the parameters. The <code>dpID</code> parameters is taken right from the Data Portal page for that data product. The <code>startdate</code> and <code>enddate</code> define the time range, and for the <code>site</code> parameter, we can enter a list of the four-letter codes for each site. The <code>check.size</code> we are leaving as <code>FALSE</code>, to prevent the function from warning us before big downloads. If you are going to do a big download, for example, if you do not specify a time range with <code>startdate/enddate</code> or define the sites to download using the <code>site</code> parameter, it is a good idea to leave this option at <code>TRUE</code>. If you are incorporating this code into a script as part of a pipeline, for example, then you should set this at <code>FALSE</code>. </p>
-
-<p><br/></p>
-
+<p>For full details on the <code>loadByProduct()</code> function, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr" target="_blank">‘Use the neonUtilities Package’ tutorial</a>. Here we will just note some of the parameters. The <code>dpID</code> parameters is taken right from the Data Portal page for that data product. The <code>startdate</code> and <code>enddate</code> define the time range, and for the <code>site</code> parameter, we can enter a list of the four-letter codes for each site. The <code>check.size</code> we are leaving as <code>FALSE</code>, to prevent the function from warning us before big downloads. If you are going to do a big download, for example, if you do not specify a time range with <code>startdate/enddate</code> or define the sites to download using the <code>site</code> parameter, it is a good idea to leave this option at <code>TRUE</code>. If you are incorporating this code into a script as part of a pipeline, for example, then you should set this at <code>FALSE</code>.</p>
+<br/>
 <h3>Viewing the data</h3>
-
 <p>Once you have run this code and downloaded the data, we can have a look. The object returned by <code>loadByProduct()</code> function is a named list of data frames. To view or access each one, you can select them from the list of data frames using the <code>$</code> operator. For example, if we would like to view the table <code>sls_soilChemistry</code> table in RStudio, then we can use the <code>View()</code> function:</p>
-
 <pre><code>View(soilChem2018$sls_soilChemistry)
 </code></pre>
-
-<p>You will then see a table open in a new tab in RStudio. You can see a lot of information in this table. This table contains multiple measurements of soil chemistry data that could be useful for metagenomics analysis. These include carbon and nitrogen isotopes (<code>organic13C</code>, <code>d15N</code>), percent C and N (<code>organicCPercent</code>, <code>nitrogenPercent</code>), and ratio of carbon to nitrogen (<code>CNratio</code>). </p>
-
+<p>You will then see a table open in a new tab in RStudio. You can see a lot of information in this table. This table contains multiple measurements of soil chemistry data that could be useful for metagenomics analysis. These include carbon and nitrogen isotopes (<code>organic13C</code>, <code>d15N</code>), percent C and N (<code>organicCPercent</code>, <code>nitrogenPercent</code>), and ratio of carbon to nitrogen (<code>CNratio</code>).</p>
 <p>Take some time on your own to explore the other tables with this download.</p>
-
-<p><br/>
-<br/></p>
-
+<br/>
+<br/>
 <h2>Wrangling sample data for metagenomic samples</h2>
-
-<p>Now that you are familiar with downloading and viewing data through the neonUtilities package, we can start to focus on linking the data to the metagenomic samples. For soil samples, the DNA samples for metagenomics are combined from individual soil samples. This is why you will not see any of the chemistry data we just viewed corresponding to any metagenomic DNA sample directly. We need to access the list of samples that were combined to create a soil composite sample, so we can link these data directly. For this we look at the <code>sls_metagenomicsPooling</code> table.   </p>
-
+<p>Now that you are familiar with downloading and viewing data through the neonUtilities package, we can start to focus on linking the data to the metagenomic samples. For soil samples, the DNA samples for metagenomics are combined from individual soil samples. This is why you will not see any of the chemistry data we just viewed corresponding to any metagenomic DNA sample directly. We need to access the list of samples that were combined to create a soil composite sample, so we can link these data directly. For this we look at the <code>sls_metagenomicsPooling</code> table.</p>
 <pre><code>View(soilChem2018$sls_metagenomicsPooling)
 </code></pre>
-
-<p>In this table the list for each composite DNA sample is in the column <code>genomicsPooledIDList</code>. For example, if we want to look at the list of samples used for the first composite sample &#39;HARV_033-O-20180709-COMP&#39; (sample is in the <code>genomicsSampleID</code> field), we can pull up the list:</p>
-
+<p>In this table the list for each composite DNA sample is in the column <code>genomicsPooledIDList</code>. For example, if we want to look at the list of samples used for the first composite sample ‘HARV_033-O-20180709-COMP’ (sample is in the <code>genomicsSampleID</code> field), we can pull up the list:</p>
 <pre><code>soilChem2018$sls_metagenomicsPooling$genomicsPooledIDList[1]
+
 # you can check to confirm the first sample is HARV_033-O-20180709-COMP
-soilChem2018$sls_metagenomicsPooling[1,&#39;genomicsSampleID&#39;]
+
+soilChem2018$sls_metagenomicsPooling[1,'genomicsSampleID']
+
 # then you can get the list:
-soilChem2018$sls_metagenomicsPooling[1,&#39;genomicsPooledIDList&#39;]
+
+soilChem2018$sls_metagenomicsPooling[1,'genomicsPooledIDList']
+
 # You can also see them together:
+
 soilChem2018$sls_metagenomicsPooling[1,10:11]
 </code></pre>
-
-<p>The content of this field is a list demarcated by the pipe symbol (&ldquo;|&rdquo;): </p>
-
-<p>&ldquo;HARV_033-O-6.5-31.5-20180709|HARV_033-O-21-34.5-20180709|HARV_033-O-8.5-15.5-20180709&rdquo;</p>
-
-<p>From the list you can see that there are three samples for the composite sample (there can be anywhere from 1-3 samples for each composite), all from plot <strong>HARV_033</strong> collected on 7/9/2018, and all from the organic horizon. </p>
-
-<p><br/>
-<br/></p>
-
-<h2>Additional examples for accessing data</h2>
-
-<p><br/>
+<p>The content of this field is a list demarcated by the pipe symbol (”|”):</p>
+<p>“HARV_033-O-6.5-31.5-20180709|HARV_033-O-21-34.5-20180709|HARV_033-O-8.5-15.5-20180709”</p>
+<p>From the list you can see that there are three samples for the composite sample (there can be anywhere from 1-3 samples for each composite), all from plot <strong>HARV_033</strong> collected on 7/9/2018, and all from the organic horizon.</p>
 <br/>
-<br/></p>
+<br/>
+<h2>Additional examples for accessing data</h2>
+<br/>
+<br/>
+<br/>
 
+
+<script src="https://cdn.jsdelivr.net/combine/npm/@xiee/utils/js/center-img.min.js" async></script>
 </body>
 
 </html>
