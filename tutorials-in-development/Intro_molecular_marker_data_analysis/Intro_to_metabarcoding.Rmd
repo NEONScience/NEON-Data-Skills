@@ -1,6 +1,6 @@
 ---
-title: "Introduction to Data Analysis of Molecular Marker Data"
-syncID: TO BE FILLED IN
+title: "Introduction to Analysis of Molecular Marker Data"
+syncID: eb676be8189a4e9abfdc4e5f901ac818
 description: Getting started with analysis of metabarcoding data.
 dateCreated: "2023-07-08"
 authors: Hugh Cross
