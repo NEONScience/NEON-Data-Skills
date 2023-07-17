@@ -79,8 +79,8 @@ This tutorial will provide some basic examples for for finding information and d
 NEON provides a wealth of data to assist with your research. <a href="https://data.neonscience.org/" target="_blank">The NEON Data Portal </a> is the best place to start looking for the data you want. There is a lot of information on this page. For now, we will have a quick tour. 
 
 <figure class="half">
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png"
     alt="RStudio window with default template of a new R Markdown file.">
     </a>
     <figcaption></figcaption>
