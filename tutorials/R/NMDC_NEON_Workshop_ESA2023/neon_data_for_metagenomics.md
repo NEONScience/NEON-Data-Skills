@@ -16,7 +16,6 @@ urlTitle: "neon-data-for-metagenomics"
 ---
 
 
-    ## Error in setwd("/Users/crossh/repos/NEON-Data-Skills/tutorials-in-development/NMDC_NEON_Workshop_ESA2023"): cannot change working directory
 
 
 This tutorial is being run in conjunction with the workshop "FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative", to introduce the attendees to the NMDC data portal. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline. 
@@ -79,15 +78,15 @@ This tutorial will provide some basic examples for for finding information and d
 
 NEON provides a wealth of data to assist with your research. <a href="https://data.neonscience.org/" target="_blank">The NEON Data Portal </a> is the best place to start looking for the data you want. There is a lot of information on this page. For now, we will have a quick tour. 
 
-
-
-
-    ## Error in knitr::include_graphics("graphics/data_portal_front_page.png"): Cannot find the file(s): "graphics/data_portal_front_page.png"
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/nmdc_neon/data_portal_front_page.png"
+    alt="RStudio window with default template of a new R Markdown file.">
+    </a>
+    <figcaption></figcaption>
+</figure>  
 
 There are many ways to search the Data Portal, including searching by site. The page includes an interactive map.
-
-
-    ## Error in knitr::include_graphics("graphics/data_portal_page_map.png"): Cannot find the file(s): "graphics/data_portal_page_map.png"
 
 <br/>
 <br/>

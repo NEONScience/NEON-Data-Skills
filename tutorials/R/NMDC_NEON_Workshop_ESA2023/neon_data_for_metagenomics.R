@@ -1,14 +1,14 @@
-## ----opts-set, echo=FALSE---------------------------------------------------------------------------------
+## ----opts-set, echo=FALSE---------------------------------------------------------------------------------------
 library(knitr)
 opts_knit$set(global.par = TRUE)
 # add path to graphics 
 #wdir<-'/Users/crossh/repos/NEON-Data-Skills/tutorials-in-development/NMDC_NEON_Workshop_ESA2023'
-setwd('/Users/crossh/repos/NEON-Data-Skills/tutorials-in-development/NMDC_NEON_Workshop_ESA2023')
+#setwd('/Users/crossh/repos/NEON-Data-Skills/tutorials-in-development/NMDC_NEON_Workshop_ESA2023')
 #myPathToGraphics <- paste(wdir,'graphics', sep='/')
 
 
 
-## ----packages, eval=FALSE---------------------------------------------------------------------------------
+## ----packages, eval=FALSE---------------------------------------------------------------------------------------
 ## 
 ## install.packages("neonUtilities")
 ## install.packages("neonOS")
@@ -16,15 +16,7 @@ setwd('/Users/crossh/repos/NEON-Data-Skills/tutorials-in-development/NMDC_NEON_W
 ## 
 
 
-## ----showDataPortal, echo=FALSE---------------------------------------------------------------------------
-knitr::include_graphics("graphics/data_portal_front_page.png")
-
-
-## ----showDataPortalMap, echo=FALSE------------------------------------------------------------------------
-knitr::include_graphics("graphics/data_portal_page_map.png")
-
-
-## ----access soil data, eval=FALSE-------------------------------------------------------------------------
+## ----access soil data, eval=FALSE-------------------------------------------------------------------------------
 ## #
 ## library(neonUtilities)
 ## 
@@ -41,15 +33,15 @@ knitr::include_graphics("graphics/data_portal_page_map.png")
 ## 
 
 
-## ----viewSoilChem, eval=FALSE-----------------------------------------------------------------------------
+## ----viewSoilChem, eval=FALSE-----------------------------------------------------------------------------------
 ## View(soilChem2018$sls_soilChemistry)
 
 
-## ----checkMetaPool, eval=FALSE----------------------------------------------------------------------------
+## ----checkMetaPool, eval=FALSE----------------------------------------------------------------------------------
 ## View(soilChem2018$sls_metagenomicsPooling)
 
 
-## ----poolListEx, eval=FALSE-------------------------------------------------------------------------------
+## ----poolListEx, eval=FALSE-------------------------------------------------------------------------------------
 ## soilChem2018$sls_metagenomicsPooling$genomicsPooledIDList[1]
 ## # you can check to confirm the first sample is HARV_033-O-20180709-COMP
 ## soilChem2018$sls_metagenomicsPooling[1,'genomicsSampleID']
