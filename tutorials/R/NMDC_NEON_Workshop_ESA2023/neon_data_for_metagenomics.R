@@ -1,4 +1,4 @@
-## ----opts-set, echo=FALSE---------------
+## ----opts-set, echo=FALSE----
 library(knitr)
 opts_knit$set(global.par = TRUE)
 # add path to graphics 
@@ -8,7 +8,7 @@ opts_knit$set(global.par = TRUE)
 
 
 
-## ----packages, eval=FALSE---------------
+## ----packages, eval=FALSE----
 ## 
 ## install.packages("neonUtilities")
 ## install.packages("neonOS")
@@ -16,16 +16,15 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----access soil data, eval=FALSE-------
-## #
+## ----access soil data, eval=FALSE----
 ## library(neonUtilities)
 ## 
-## soilTrialSites = c("HARV","SCBI","DSNY","UNDE","WREF")
+## soilTrialSites = c("BONA","DEJU","HEAL","TOOL","BARR")
 ## 
-## soilChem2018 <- loadByProduct(
+## soilChem <- loadByProduct(
 ##   dpID='DP1.10086.001',
-##   startdate = "2018-01",
-##   enddate = "2018-12",
+##   startdate = "2017-01",
+##   enddate = "2019-12",
 ##   check.size = FALSE,
 ##   site = soilTrialSites,
 ##   package='expanded')
@@ -33,22 +32,59 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----viewSoilChem, eval=FALSE-----------
-## View(soilChem2018$sls_soilChemistry)
+## ----viewSoilChem, eval=FALSE----
+## View(soilChem$sls_soilChemistry)
 
 
-## ----checkMetaPool, eval=FALSE----------
-## View(soilChem2018$sls_metagenomicsPooling)
+## ----checkMetaPool, eval=FALSE----
+## View(soilChem$sls_metagenomicsPooling)
 
 
-## ----poolListEx, eval=FALSE-------------
-## soilChem2018$sls_metagenomicsPooling$genomicsPooledIDList[1]
-## # you can check to confirm the first sample is HARV_033-O-20180709-COMP
-## soilChem2018$sls_metagenomicsPooling[1,'genomicsSampleID']
+## ----poolListEx, eval=FALSE----
+## soilChem$sls_metagenomicsPooling$genomicsPooledIDList[11]
+## # you can check to confirm the first sample is TOOL_043-O-20170719-COMP
+## soilChem$sls_metagenomicsPooling[11,'genomicsSampleID']
 ## # then you can get the list:
-## soilChem2018$sls_metagenomicsPooling[1,'genomicsPooledIDList']
-## # You can also see them together:
-## soilChem2018$sls_metagenomicsPooling[1,10:11]
+## soilChem$sls_metagenomicsPooling[11,'genomicsPooledIDList']
 ## 
+## 
+## 
+
+
+## ----link1sample, eval=FALSE----
+## library(tidyverse)
+## 
+## View(soilChem$sls_soilChemistry %>%
+##   filter(sampleID == "TOOL_043-O-5-7-20170719") %>%
+##   select(sampleID,d15N,organicd13C,CNratio))
+## 
+
+
+## ----splitPool, eval=FALSE----
+## # split up the pooled list into new columns
+## genomicSamples <- soilChem$sls_metagenomicsPooling %>%
+##   tidyr::separate(genomicsPooledIDList, into=c("first","second","third"),sep="\\|",fill="right") %>%
+##   dplyr::select(genomicsSampleID,first,second,third)
+## # now view the table
+## View(genomicSamples)
+
+
+## ----pivotTable, eval=FALSE----
+## genSampleExample <- genomicSamples %>%
+##   tidyr::pivot_longer(cols=c("first","second","third"),values_to = "sampleID") %>%
+##   dplyr::select(sampleID,genomicsSampleID) %>%
+##   drop_na()
+## # now view
+## View(genSampleExample)
+
+
+## ----combTab, eval=FALSE----
+## chemEx <- soilChem$sls_soilChemistry %>%
+##   dplyr::select(sampleID,d15N,organicd13C,nitrogenPercent,organicCPercent)
+## 
+## ## now combine the tables
+## combinedTab <- left_join(genSampleExample,chemEx, by = "sampleID")
+## 
+## View(combinedTab)
 ## 
 
