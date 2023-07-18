@@ -152,23 +152,21 @@ of setting the working directory in R can be found here.</a></p>
 <p>The metagenomics data available on the NEON website includes only the raw sequence files. It is more useful to access the data processed through the NMDC Edge pipeline, as we have learned. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The functional and taxonomic information available on the NMDC data portal can be analyzed along with all other NEON data from the soil and aquatic samples.</p>
 <p>We will start by accessing some soil chemical and physical measurements using the neonUtilities package. But even though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in “Soil physical and chemical properties” in the Search bar. Scroll down and click on “Soil physical and chemical properties, periodic” (DP1.10086.001).</p>
 <p>With the information from the Data Portal, we can download this data product using the <strong>neonUtilities</strong> package. We will start with a subset of terrestrial sites. Go ahead and set up the following command in a text file in RStudio or text editor.</p>
-<pre><code>#
-
-library(neonUtilities)
+<pre><code>library(neonUtilities)
 
 
 
-soilTrialSites = c(&quot;HARV&quot;,&quot;SCBI&quot;,&quot;DSNY&quot;,&quot;UNDE&quot;,&quot;WREF&quot;)
+soilTrialSites = c(&quot;BONA&quot;,&quot;DEJU&quot;,&quot;HEAL&quot;,&quot;TOOL&quot;,&quot;BARR&quot;)
 
 
 
-soilChem2018 &lt;- loadByProduct(
+soilChem &lt;- loadByProduct(
 
   dpID='DP1.10086.001',
 
-  startdate = &quot;2018-01&quot;,
+  startdate = &quot;2017-01&quot;,
 
-  enddate = &quot;2018-12&quot;,
+  enddate = &quot;2019-12&quot;,
 
   check.size = FALSE,
 
@@ -180,7 +178,7 @@ soilChem2018 &lt;- loadByProduct(
 <br/>
 <h3>Viewing the data</h3>
 <p>Once you have run this code and downloaded the data, we can have a look. The object returned by <code>loadByProduct()</code> function is a named list of data frames. To view or access each one, you can select them from the list of data frames using the <code>$</code> operator. For example, if we would like to view the table <code>sls_soilChemistry</code> table in RStudio, then we can use the <code>View()</code> function:</p>
-<pre><code>View(soilChem2018$sls_soilChemistry)
+<pre><code>View(soilChem$sls_soilChemistry)
 </code></pre>
 <p>You will then see a table open in a new tab in RStudio. You can see a lot of information in this table. This table contains multiple measurements of soil chemistry data that could be useful for metagenomics analysis. These include carbon and nitrogen isotopes (<code>organic13C</code>, <code>d15N</code>), percent C and N (<code>organicCPercent</code>, <code>nitrogenPercent</code>), and ratio of carbon to nitrogen (<code>CNratio</code>).</p>
 <p>Take some time on your own to explore the other tables with this download.</p>
@@ -188,26 +186,73 @@ soilChem2018 &lt;- loadByProduct(
 <br/>
 <h2>Wrangling sample data for metagenomic samples</h2>
 <p>Now that you are familiar with downloading and viewing data through the neonUtilities package, we can start to focus on linking the data to the metagenomic samples. For soil samples, the DNA samples for metagenomics are combined from individual soil samples. This is why you will not see any of the chemistry data we just viewed corresponding to any metagenomic DNA sample directly. We need to access the list of samples that were combined to create a soil composite sample, so we can link these data directly. For this we look at the <code>sls_metagenomicsPooling</code> table.</p>
-<pre><code>View(soilChem2018$sls_metagenomicsPooling)
+<pre><code>View(soilChem$sls_metagenomicsPooling)
 </code></pre>
-<p>In this table the list for each composite DNA sample is in the column <code>genomicsPooledIDList</code>. For example, if we want to look at the list of samples used for the first composite sample ‘HARV_033-O-20180709-COMP’ (sample is in the <code>genomicsSampleID</code> field), we can pull up the list:</p>
-<pre><code>soilChem2018$sls_metagenomicsPooling$genomicsPooledIDList[1]
+<p>In this table the list for each composite DNA sample is in the column <code>genomicsPooledIDList</code>. For example, if we want to look at the list of samples used for the composite sample ‘TOOL_043-O-20170719-COMP’ (sample is in the <code>genomicsSampleID</code> field), we can pull up the list for the 11th sample in the table:</p>
+<pre><code>soilChem$sls_metagenomicsPooling$genomicsPooledIDList[11]
 
-# you can check to confirm the first sample is HARV_033-O-20180709-COMP
+# you can check to confirm the first sample is TOOL_043-O-20170719-COMP
 
-soilChem2018$sls_metagenomicsPooling[1,'genomicsSampleID']
+soilChem$sls_metagenomicsPooling[11,'genomicsSampleID']
 
 # then you can get the list:
 
-soilChem2018$sls_metagenomicsPooling[1,'genomicsPooledIDList']
-
-# You can also see them together:
-
-soilChem2018$sls_metagenomicsPooling[1,10:11]
+soilChem$sls_metagenomicsPooling[11,'genomicsPooledIDList']
 </code></pre>
 <p>The content of this field is a list demarcated by the pipe symbol (”|”):</p>
-<p>“HARV_033-O-6.5-31.5-20180709|HARV_033-O-21-34.5-20180709|HARV_033-O-8.5-15.5-20180709”</p>
-<p>From the list you can see that there are three samples for the composite sample (there can be anywhere from 1-3 samples for each composite), all from plot <strong>HARV_033</strong> collected on 7/9/2018, and all from the organic horizon.</p>
+<p><strong>“TOOL_043-O-5-7-20170719|TOOL_043-O-7.5-31-20170719|TOOL_043-O-32.5-27-20170719”</strong></p>
+<p>From the list you can see that there are three samples for the composite sample (there can be anywhere from 1-3 samples for each composite), all from plot <strong>TOOL_043</strong> collected on 7/19/2017, and all from the organic soil horizon. Now we can observe the chemical measurements for those specific samples. We will use tidyverse to help get the fields from the table. Let’s take the first one as an example:</p>
+<pre><code>library(tidyverse)
+
+
+
+View(soilChem$sls_soilChemistry %&gt;%
+
+  filter(sampleID == &quot;TOOL_043-O-5-7-20170719&quot;) %&gt;%
+
+  select(sampleID,d15N,organicd13C,CNratio))
+</code></pre>
+<p>We would like to be able to get these measurements for all the metagenomic samples. For this, we will first have to get the list for each composite sample and create a new table.</p>
+<pre><code># split up the pooled list into new columns
+
+genomicSamples &lt;- soilChem$sls_metagenomicsPooling %&gt;%
+
+  tidyr::separate(genomicsPooledIDList, into=c(&quot;first&quot;,&quot;second&quot;,&quot;third&quot;),sep=&quot;\\|&quot;,fill=&quot;right&quot;) %&gt;%
+
+  dplyr::select(genomicsSampleID,first,second,third)
+
+# now view the table
+
+View(genomicSamples)
+</code></pre>
+<p>Now we will adjust the table so that each sampleID is a row, with the <code>genomicsSampleID</code> listed for each sample:</p>
+<pre><code>genSampleExample &lt;- genomicSamples %&gt;% 
+
+  tidyr::pivot_longer(cols=c(&quot;first&quot;,&quot;second&quot;,&quot;third&quot;),values_to = &quot;sampleID&quot;) %&gt;%
+
+  dplyr::select(sampleID,genomicsSampleID) %&gt;%
+
+  drop_na()
+
+# now view
+
+View(genSampleExample)
+</code></pre>
+<p>Now that you have all samples for each metagenomic sample listed, you can easily combine this table with other tables, using the sampleID. As an example we will go back to the soil chemistry data:</p>
+<pre><code>chemEx &lt;- soilChem$sls_soilChemistry %&gt;%
+
+  dplyr::select(sampleID,d15N,organicd13C,nitrogenPercent,organicCPercent) 
+
+
+
+## now combine the tables 
+
+combinedTab &lt;- left_join(genSampleExample,chemEx, by = &quot;sampleID&quot;) 
+
+
+
+View(combinedTab)
+</code></pre>
 <br/>
 <br/>
 <h2>Additional examples for accessing data</h2>
