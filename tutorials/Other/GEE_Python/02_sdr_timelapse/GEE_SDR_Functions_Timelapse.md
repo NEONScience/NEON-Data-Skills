@@ -90,7 +90,7 @@ Map
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png" alt="GRSM Map Layer"><figcaption>Map Panel with Great Smokey Mountains SDR Data and Cloud Conditions Layers Added</figcaption></a>
 </figure><br>
 
-### Add AOP Reflectance data to the Map
+### Add AOP reflectance data to the map
 Now that we've created the GEE Map, we can add some of our AOP data. First we need to set the NEON <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">NEON field site</a> (4-letter code) and the years of data we want to pull in. 
 
 In this example we will look at the <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountain (GRSM)</a> site. To see all the AOP SDR data that are available in GEE, and the years of data available at GRSM, run the code chunks below.
@@ -245,7 +245,7 @@ for index in range(0, len(years.getInfo())):
     Adding GRSM 2021 Cloud Cover
     
 
-### Read in a full Image Collection
+### Read in an AOP Image Collection
 Now let's add the full image collection (all years) for a different site as a Map Layer. For this example, we'll use the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">Lyndon B. Johnson National Grassland (CLBJ)</a>, as there are 5 years of reflectance data ingested in GEE for that site. This is a nice example for displaying the time-lapse feature in the interactive map.
 
 
