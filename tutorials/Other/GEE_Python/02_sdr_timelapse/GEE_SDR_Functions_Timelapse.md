@@ -28,13 +28,9 @@ After completing this tutorial, you will be able to use Python to:
 ### Requirements
 
 To follow along with this code, you will need to 
-1. Install **Python 3.x** and required packages (see below)
-2. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
-
-This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. This lesson was written in **Jupyter Notebook** so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
-
-* Install required Python packages - note that cartopy and the subsequent packages are only required for the last optional part of the tutorial, to create a time-lapse gif of the reflectance data.
-
+1. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
+2. Install **Python 3.x**
+3. Install required Python packages (cartopy and the subsequent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
     * ee
     * geemap
     * matplotlib
@@ -42,8 +38,10 @@ This tutorial was developed using Python 3.9, so if you are installing Python fo
     * geos
     * shapely
     * pyproj
-    
-Note: if cartopy is not installing using conda or pip install, you may need to find the wheel file specific to your Python version, eg. `pip install Cartopy-0.20.2-cp39-cp39-win_amd64.whl`.
+
+Notes: 
+- This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. This lesson was written in **Jupyter Notebook** so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
+  If cartopy is not installing using `conda install` or `pip install`, you may need to find the wheel file specific to your Python version, eg. `pip install Cartopy-0.20.2-cp39-cp39-win_amd64.whl`.
 
 </div>
 
