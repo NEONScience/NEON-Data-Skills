@@ -373,7 +373,7 @@ cartoee.get_image_collection_gif(
     GIF saved to C:\Users\bhass\Downloads\timelapse\clbj_gee_timelapse.gif
     MP4 saved to C:\Users\bhass\Downloads\timelapse\clbj_gee_timelapse.mp4
 
-    <figure>
+<figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif" alt="CLBJ Timelapse"><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption>Time Lapse of CLBJ</a>
  </figure> 
