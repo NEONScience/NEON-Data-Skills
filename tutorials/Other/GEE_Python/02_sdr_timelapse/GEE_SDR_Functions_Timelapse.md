@@ -77,7 +77,7 @@ ee.Authenticate()
 ee.Initialize()
 ```
 
-The code below creates and displays the GEE interactive `Map` panel. It will then be updated by the subsequent code chunks.
+The code below creates and displays the GEE interactive Map panel. It will then be updated by the subsequent code chunks.
 
 
 ```python
@@ -88,10 +88,7 @@ Map
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png" alt="GRSM Map Layer"><figcaption>Map Panel with Great Smokey Mountains SDR Data and Cloud Conditions Layers Added</figcaption></a>
-</figure> 
-
-
-
+</figure><br>
 
 First we need to set the NEON <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">NEON field site</a> (4-letter code) and the years of data we want to pull in. 
 
