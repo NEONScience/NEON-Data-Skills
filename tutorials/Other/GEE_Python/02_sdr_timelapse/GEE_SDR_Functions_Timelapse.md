@@ -1,8 +1,8 @@
 ---
 syncID: 048ec0a5e30842acb2fbf1144454830e
 title: "Intro to AOP Hyperspectral Data in Google Earth Engine (GEE) using Python geemap"
-description: ""
-dateCreated: 2023-06-
+description: "Use Python to interact with GEE - read in AOP reflectance data, write basic functions, and create a time-series"
+dateCreated: 2023-06-22
 authors: Bridget Hass
 contributors: John Musinsky
 estimatedTime: 30 minutes
