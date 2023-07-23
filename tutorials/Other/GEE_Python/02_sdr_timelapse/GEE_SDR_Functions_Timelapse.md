@@ -51,6 +51,8 @@ The last optional part, to create a time-lapse uses the `cartoee` package in gee
     
 Note: if cartopy is not installing using conda or pip install, you may need to find the wheel file specific to your Python version, eg. `pip install Cartopy-0.20.2-cp39-cp39-win_amd64.whl`.
 
+</div>
+
 
 ```python
 import os
