@@ -85,11 +85,6 @@ Map = geemap.Map()
 Map
 ```
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png" alt="GRSM Map Layer" width="500"><figcaption>Map Panel with Great Smokey Mountains SDR Data and Cloud Conditions Layers Added</figcaption></a>
-</figure><br>
-
 ### Add AOP reflectance data to the map
 Now that we've created the GEE Map, we can add some of our AOP data. First we need to set the NEON <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">NEON field site</a> (4-letter code) and the years of data we want to pull in. 
 
@@ -271,14 +266,6 @@ Map = geemap.Map()
 Map
 ```
 
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_map_layer.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>Map Panel with CLBJ SDR Image Collection Added</figcaption></a>
-</figure> 
-
-
-
 ```python
 # Filter the SDR image collection at that site from all available years
 siteSDR = sdrCol.filterMetadata('NEON_SITE', 'equals', site);
@@ -374,8 +361,3 @@ cartoee.get_image_collection_gif(
     Downloading 5/5: 5.png ...
     GIF saved to C:\Users\bhass\Downloads\timelapse\clbj_gee_timelapse.gif
     MP4 saved to C:\Users\bhass\Downloads\timelapse\clbj_gee_timelapse.mp4
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif" alt="CLBJ Timelapse" width="500"><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption></a>
- </figure> 
