@@ -30,14 +30,11 @@ After completing this tutorial, you will be able to use Python to:
 To follow along with this code, you will need to 
 1. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
 2. Install **Python 3.x**
-3. Install required Python packages (cartopy and the subsequent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
-    * ee
-    * geemap
-    * matplotlib
-    * cartopy 
-    * geos
-    * shapely
-    * pyproj
+3. Install required Python packages (cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
+    - ee
+    - geemap
+    - matplotlib
+    - cartopy (dependencies: geos, shapely, pyproj)
 
 Notes: 
 - This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. This lesson was written in **Jupyter Notebook** so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
