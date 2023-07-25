@@ -1,8 +1,8 @@
 ---
 syncID: 048ec0a5e30842acb2fbf1144454830e
 title: "Intro to AOP Hyperspectral Data in Google Earth Engine (GEE) using Python geemap"
-description: "Use Python to interact with GEE - read in AOP reflectance data, write basic functions, and create a time-series"
-dateCreated: 2023-06-22
+description: ""
+dateCreated: 2023-06-
 authors: Bridget Hass
 contributors: John Musinsky
 estimatedTime: 30 minutes
@@ -15,7 +15,7 @@ tutorialSeries:
 urlTitle: aop-refl-py-geemap
 ---
 
-<div id="ds-objectives" markdown="1">
+div id="ds-objectives" markdown="1">
 
 ### Objectives
 After completing this tutorial, you will be able to use Python to:
@@ -30,19 +30,17 @@ After completing this tutorial, you will be able to use Python to:
 To follow along with this code, you will need to 
 1. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
 2. Install **Python 3.x**
-3. Install required Python packages (cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
-- ee
-- geemap
-- matplotlib
-- cartopy (dependencies: geos, shapely, pyproj)
+3. Install required Python packages (matplotlib, cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
+    - ee
+    - geemap
+    - matplotlib
+    - cartopy (dependencies: geos, shapely, pyproj)
 
 Notes: 
 - This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. This lesson was written in **Jupyter Notebook** so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
   If cartopy is not installing using `conda install` or `pip install`, you may need to find the wheel file specific to your Python version, eg. `pip install Cartopy-0.20.2-cp39-cp39-win_amd64.whl`.
 
 </div>
-
-First, import the required packages:
 
 
 ```python
@@ -59,12 +57,12 @@ ee.Authenticate()
 
 <p>To authorize access needed by Earth Engine, open the following
         URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=Fj0gPkMu5QQZR1WTRDljX1x5t0gppyIM226EZRAlkOk&tc=ZdOoxqN1TX4IAhonkJyPhBmB2mFqbpblApaaANlQGKk&cc=IiF5DP7z_h083aYtYx1NZevFMjIbV749nvX-HhfIA_U>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=Fj0gPkMu5QQZR1WTRDljX1x5t0gppyIM226EZRAlkOk&tc=ZdOoxqN1TX4IAhonkJyPhBmB2mFqbpblApaaANlQGKk&cc=IiF5DP7z_h083aYtYx1NZevFMjIbV749nvX-HhfIA_U</a></p>
+        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=29JTRSw80CEK348TTcwJlPDqaHIdjPXqJeNIac3Eu_o&tc=gq9iVEX5TeTTGio9KmMDjN_8iAoivPJxXr0qQkU3C3k&cc=AZ6BzwLn8DmYhXZKvUEcRrcs0yjmgawOyXEEzdNuigg>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=29JTRSw80CEK348TTcwJlPDqaHIdjPXqJeNIac3Eu_o&tc=gq9iVEX5TeTTGio9KmMDjN_8iAoivPJxXr0qQkU3C3k&cc=AZ6BzwLn8DmYhXZKvUEcRrcs0yjmgawOyXEEzdNuigg</a></p>
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
 
 
-    Enter verification code: 4/1AZEOvhWujEw0KJHQqPGBWhn_cELP0Vb2wKTovKfpaCm1VASHSJM2-6Mb7zE
+    Enter verification code: 4/1AZEOvhUYgtVTPzxjbvezubZmrBl5k9kvaNf7FlpUPGnwEWG_ALIYo58YhRY
     
     Successfully saved authorization token.
     
@@ -74,7 +72,7 @@ ee.Authenticate()
 ee.Initialize()
 ```
 
-The code below creates and displays the GEE interactive Map panel. It will then be updated by the subsequent code chunks.
+The code below creates and displays the GEE interactive `Map` panel. It will then be updated by the subsequent code chunks.
 
 
 ```python
@@ -83,13 +81,10 @@ Map
 ```
 
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png" alt="GRSM Map Layer" width="500"><figcaption>Map Panel with Great Smokey Mountains SDR Data and Cloud Conditions Layers Added</figcaption></a>
-</figure><br>
+    Map(center=[20, 0], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(children=(Togg…
 
-### Add AOP reflectance data to the map
-Now that we've created the GEE Map, we can add some of our AOP data. First we need to set the NEON <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">NEON field site</a> (4-letter code) and the years of data we want to pull in. 
+
+First we need to set the NEON <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">NEON field site</a> (4-letter code) and the years of data we want to pull in. 
 
 In this example we will look at the <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountain (GRSM)</a> site. To see all the AOP SDR data that are available in GEE, and the years of data available at GRSM, run the code chunks below.
 
@@ -138,13 +133,11 @@ print(years.getInfo())
 
     [2016, 2017, 2021]
     
-### Add weather quality data
+
 Next we can write a function that will read in the AOP SDR image collection, filter on a specified site, and then read in the `Weather_Quality_Indicator` band and mask the data to include only the clear weather (<10% cloud cover) data.
 
 
 ```python
-# function to read the AOP SDR image collection
-# selects the data bands and masks to include only the clear-weather data (<10% cloud cover)
 def sdr_clear_weather(year):
 
     # Specify the start and end dates
@@ -217,6 +210,8 @@ def yearly_weather_band(year):
     return weather_quality_band
 ```
 
+Similarly, we will map this function over the list of years, and then add these weather quality images to the Map layer in a loop. For this we can define a color palette that will match AOP's weather stop-light color convention, where green means good weather (<10% cloud cover), yellow is OK (10-50% cloud cover), and red is bad (>50% cloud cover).
+
 
 ```python
 weather_bands = years.map(yearly_weather_band)
@@ -243,7 +238,6 @@ for index in range(0, len(years.getInfo())):
     Adding GRSM 2021 Cloud Cover
     
 
-### Read in an AOP Image Collection
 Now let's add the full image collection (all years) for a different site as a Map Layer. For this example, we'll use the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">Lyndon B. Johnson National Grassland (CLBJ)</a>, as there are 5 years of reflectance data ingested in GEE for that site. This is a nice example for displaying the time-lapse feature in the interactive map.
 
 
@@ -269,10 +263,10 @@ Map = geemap.Map()
 Map
 ```
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_map_layer.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>Map Panel with CLBJ SDR Image Collection Added</figcaption></a>
-</figure> 
+
+    Map(center=[20, 0], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(children=(Togg…
+
+
 
 ```python
 # Filter the SDR image collection at that site from all available years
@@ -300,7 +294,9 @@ siteCenter = ee.Geometry.Point([lon, lat]);
 Map.centerObject(siteCenter, 12);
 ```
 
-### Create a Time-Lapse
+You should now see the Map panel populated with the CLBJ Image Collection and the Weather Quality Band. On your own, explore some of the options by click on the icon in the upper right corner of the map. Some options of interest may be the timelapse (double arrow), ..., and ... 
+
+### Create  a Time-Lapse GIF
 Lastly, optionally, we can create a time-lapse gif of the site over all the collections. This part follows along code from the GeoPython 2021 workshop: https://geemap.org/workshops/GeoPython_2021/#create-timelapse-animations.
 
 
@@ -311,6 +307,7 @@ import matplotlib.pyplot as plt
 
 
 ```python
+# Define width and height (in degrees)
 w = 0.1
 h = 0.1
 
@@ -318,13 +315,13 @@ region = [lon - w, lat - h, lon + w, lat + h]
 
 fig = plt.figure(figsize=(10, 8))
 
-# use cartoee to get a map
+# Use cartoee to get a map
 ax = geemap.cartoee.get_map(image, region=region, vis_params=visParams)
 
-# add gridlines to the map at a specified interval
+# Add gridlines to the map at a specified interval
 geemap.cartoee.add_gridlines(ax, interval=[0.05, 0.05], linestyle=":")
 
-# add scale bar
+# Add scale bar
 scale_bar_dict = {
     "length": 10,
     "xy": (0.1, 0.05),
@@ -341,6 +338,14 @@ ax.set_title(label='CLBJ', fontsize=15)
 
 plt.show()
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/02_sdr_timelapse/GEE_SDR_Functions_Timelapse_files/GEE_SDR_Functions_Timelapse_29_0.png)
+    
+
+
+We can then apply these settings and create the timelaps using `cartoee.get_image_collection_gif` as follows. This will create a "timelapse" subfolder in the Downloads directory.
 
 
 ```python
@@ -363,13 +368,12 @@ cartoee.get_image_collection_gif(
 ```
 
     Downloading 1/5: 1.png ...
-    Downloading 2/5: 2.png ...
-    Downloading 3/5: 3.png ...
-    Downloading 4/5: 4.png ...
-    Downloading 5/5: 5.png ...
-    GIF saved to C:\Users\bhass\Downloads\timelapse\clbj_gee_timelapse.gif
-    MP4 saved to C:\Users\bhass\Downloads\timelapse\clbj_gee_timelapse.mp4
+    
 
 <figure>
   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif">
   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif" alt="CLBJ Timelapse" width="500"><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption></a></figure> 
+
+### Recap
+
+In this lesson we covered how to read in AOP Surface Directional Reflectance (SDR) datasets into GEE using Python with the pacckages `ee` and `geemap`. You learned how to write functions that mask out any data collected in >50% cloud cover conditions, whose reflectance values may differ from reflectance data collected in clear-sky conditions. You also got a chance to explore the interactive mapping tools that are made available as part of geemap. We encourage you to start writing functions and Python code on your own to expand upon these examples!
