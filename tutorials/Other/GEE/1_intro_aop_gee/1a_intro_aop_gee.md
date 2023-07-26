@@ -120,7 +120,7 @@ Note that the images imported into GEE may have some slight differences from the
 
 ## AOP GEE Data Availability
 
-Since we are rolling out the AOP data additions to GEE, the first thing you may want to do is see what datasets are currently available. A quick way to do this is shown below:
+Since we are adding AOP data to GEE on a rolling basis, the first thing you may want to do is see what datasets are currently available. A quick way to do this is shown below:
 
 ```javascript
 // list all available images in the NEON Surface Directional Reflectance (SDR) image collection:
@@ -175,7 +175,7 @@ Map.setCenter(-119.25, 37.06, 12);
 Map.addLayer(rgb, rgbVis, 'SOAP 2021 RGB Camera Imagery');
 ```
 
-When you run the code you should now see the map!
+When you run the code you should now see the true color images on the map! You can zoom in and out and explore some of the other interactive options on your own.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/soap_sdr_rgb.PNG">
@@ -190,4 +190,4 @@ It doesn't look like we've done much so far, but this is a already great achieve
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/2a9d3100d0aba611dcf634e4eca8349c" target="_blank">Into to AOP GEE Image Collections</a>
+<a href="https://code.earthengine.google.com/ecacd918134114189cb68a139bb4d084" target="_blank">Into to AOP GEE Image Collections</a>
