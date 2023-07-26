@@ -44,11 +44,11 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 </div>
 
-## AOP GEE Data Availability & Access (as of May 2023)
+## AOP GEE Data Access
 
 AOP has currently added a subset of AOP Level 3 (mosaicked) data products at 8 NEON sites (as of May 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
-The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-nonprod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The table below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
+The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-prod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The table below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Data Product      | Data Product ID (Prefix) |
 |----------|------------|-------------------------|
@@ -118,14 +118,14 @@ You can click on the **IMAGES** tab to explore all the available NEON images for
 
 Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
 
-## Display All Images in a Collection
+## AOP GEE Data Availability
 
-Since we are rolling out the AOP data additions to GEE, the first thing you may want to do is see what datasets are currently available. A quick way to do this is using`.toList()`, as follows:
+Since we are rolling out the AOP data additions to GEE, the first thing you may want to do is see what datasets are currently available. A quick way to do this is shown below:
 
 ```javascript
 // list all available images in the NEON Surface Directional Reflectance (SDR) image collection:
-print('Images in the NEON SDR ImageCollection')
-print(sdrCol.toList(20));
+print('NEON Images in the SDR Collection',
+      sdrCol.aggregate_array('system:index'))
 ```
 
 In the **Console** tab to the right of the code, you will see a list of all available images. Expand the box to see the full path. The names of the all the SDR images follow the format `YEAR_SITE_VISIT_SDR`, so you can identify the site and year of data this way. AOP typically visits each site 3 out of every 4 years, so the visit number indicates the number of times AOP has visited that site. In some cases, AOP may re-visit a site twice in the same year.
@@ -134,6 +134,8 @@ In the **Console** tab to the right of the code, you will see a list of all avai
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG" alt="SDR Image List."></a>
 </figure>
+
+
 
 ## Explore Image Properties
 
