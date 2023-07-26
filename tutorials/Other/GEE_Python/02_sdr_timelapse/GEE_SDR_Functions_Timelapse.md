@@ -15,7 +15,7 @@ tutorialSeries:
 urlTitle: aop-refl-py-geemap
 ---
 
-div id="ds-objectives" markdown="1">
+<div id="ds-objectives" markdown="1">
 
 ### Objectives
 After completing this tutorial, you will be able to use Python to:
