@@ -10,7 +10,7 @@ packagesLibraries: ee, geemap
 topics:
 languagesTool: Python, Google Earth Engine
 dataProduct: DP3.30006.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/
+code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/02_sdr_timelapse/GEE_SDR_Functions_Timelapse.ipynb
 tutorialSeries: 
 urlTitle: aop-refl-py-geemap
 ---
