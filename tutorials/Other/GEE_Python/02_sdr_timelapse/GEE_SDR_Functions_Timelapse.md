@@ -307,11 +307,11 @@ Map.centerObject(siteCenter, 12);
 You should now see the Map panel populated with the CLBJ Image Collection and the Weather Quality Band. On your own, explore some of the options by click on the icon in the upper right corner of the map. Some options of interest may be the "Plotting", "Create timelapse" and "Activate timeslider". 
 
 ### Create  a Time-Lapse GIF
-Lastly, optionally, we can create a time-lapse gif of the site over all the collections. This part follows along code from the GeoPython 2021 workshop: https://geemap.org/workshops/GeoPython_2021/#create-timelapse-animations.
+Lastly, optionally, we can create a time-lapse gif of the site over all the collections. This part follows along code from the <a href="https://geemap.org/workshops/GeoPython_2021/#create-timelapse-animations" target="_blank">GeoPython 2021 workshop</a>.
 
 
 ```python
-from geemap import cartoee
+from geemap iport cartoee
 import matplotlib.pyplot as plt
 ```
 
