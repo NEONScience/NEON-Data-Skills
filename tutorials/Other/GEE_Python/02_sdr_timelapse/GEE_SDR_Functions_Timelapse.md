@@ -64,7 +64,7 @@ ee.Authenticate()
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="500"><figcaption></figcaption></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="600"><figcaption></figcaption></a>
 </figure><br>
 
 When the token is entered, you should receive the notice: `"Successfully saved authorization token."`
@@ -87,7 +87,7 @@ Map
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png" alt="GRSM Map Layer" width="500"><figcaption>Map Panel with Great Smokey Mountains SDR Data and Cloud Conditions Layers Added</figcaption></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png" alt="GRSM Map Layer" width="600"><figcaption>Map Panel with Great Smokey Mountains SDR Data and Cloud Conditions Layers Added</figcaption></a>
 </figure><br>
 
 
@@ -304,7 +304,7 @@ siteCenter = ee.Geometry.Point([lon, lat]);
 Map.centerObject(siteCenter, 12);
 ```
 
-You should now see the Map panel populated with the CLBJ Image Collection and the Weather Quality Band. On your own, explore some of the options by click on the icon in the upper right corner of the map. Some options of interest may be the timelapse (double arrow), ..., and ... 
+You should now see the Map panel populated with the CLBJ Image Collection and the Weather Quality Band. On your own, explore some of the options by click on the icon in the upper right corner of the map. Some options of interest may be the "Plotting", "Create timelapse" and "Activate timeslider". 
 
 ### Create  a Time-Lapse GIF
 Lastly, optionally, we can create a time-lapse gif of the site over all the collections. This part follows along code from the GeoPython 2021 workshop: https://geemap.org/workshops/GeoPython_2021/#create-timelapse-animations.
