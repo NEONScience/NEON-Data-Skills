@@ -31,7 +31,7 @@ To follow along with this code, you will need to
 1. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
 2. Install **Python 3.x**
 3. Install required Python packages (matplotlib, cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
-    - ee
+    - earthengine-api
     - geemap
     - matplotlib
     - cartopy (dependencies: geos, shapely, pyproj)
@@ -56,13 +56,15 @@ ee.Authenticate()
 
 
 <p>To authorize access needed by Earth Engine, open the following
-        URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=29JTRSw80CEK348TTcwJlPDqaHIdjPXqJeNIac3Eu_o&tc=gq9iVEX5TeTTGio9KmMDjN_8iAoivPJxXr0qQkU3C3k&cc=AZ6BzwLn8DmYhXZKvUEcRrcs0yjmgawOyXEEzdNuigg>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=29JTRSw80CEK348TTcwJlPDqaHIdjPXqJeNIac3Eu_o&tc=gq9iVEX5TeTTGio9KmMDjN_8iAoivPJxXr0qQkU3C3k&cc=AZ6BzwLn8DmYhXZKvUEcRrcs0yjmgawOyXEEzdNuigg</a></p>
+        URL in a web browser and follow the instructions:
+
+        ...
+        
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
 
 
-    Enter verification code: 4/1AZEOvhUYgtVTPzxjbvezubZmrBl5k9kvaNf7FlpUPGnwEWG_ALIYo58YhRY
+    Enter verification code: 
     
     Successfully saved authorization token.
     
@@ -80,8 +82,10 @@ Map = geemap.Map()
 Map
 ```
 
-
-    Map(center=[20, 0], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(children=(Togg…
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/grsm_map_layer.png" alt="GRSM Map Layer" width="500"><figcaption>Map Panel with Great Smokey Mountains SDR Data and Cloud Conditions Layers Added</figcaption></a>
+</figure><br>
 
 
 First we need to set the NEON <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">NEON field site</a> (4-letter code) and the years of data we want to pull in. 
@@ -264,7 +268,10 @@ Map
 ```
 
 
-    Map(center=[20, 0], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(children=(Togg…
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_map_layer.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_map_layer.png" alt="CLBJ Map Layer" width="600"><figcaption>Map Panel with CLBJ SDR Image Collection Added</figcaption></a>
+</figure> 
 
 
 
@@ -340,9 +347,7 @@ plt.show()
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/02_sdr_timelapse/GEE_SDR_Functions_Timelapse_files/GEE_SDR_Functions_Timelapse_29_0.png)
-    
+   
 
 
 We can then apply these settings and create the timelaps using `cartoee.get_image_collection_gif` as follows. This will create a "timelapse" subfolder in the Downloads directory.
@@ -372,7 +377,7 @@ cartoee.get_image_collection_gif(
 
 <figure>
   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif" alt="CLBJ Timelapse" width="500"><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption></a></figure> 
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif" alt="CLBJ Timelapse" width="600"><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption></a></figure> 
 
 ### Recap
 
