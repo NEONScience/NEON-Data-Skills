@@ -384,4 +384,4 @@ cartoee.get_image_collection_gif(
 
 ### Recap
 
-In this lesson we covered how to read in AOP Surface Directional Reflectance (SDR) datasets into GEE using Python with the packages `ee` and `geemap`. You learned how to write functions that mask out any data collected in >50% cloud cover conditions, whose reflectance values may differ from reflectance data collected in clear-sky conditions. You also got a chance to explore the interactive mapping tools that are made available as part of geemap. We encourage you to start writing functions and Python code on your own to expand upon these examples!
+In this lesson we covered how to read in AOP Surface Directional Reflectance (SDR) datasets into GEE using Python with the packages `earthengine-api (ee)` and `geemap`. You learned how to write functions that mask out any data collected in >50% cloud cover conditions, whose reflectance values may differ from reflectance data collected in clear-sky conditions. You also got a chance to explore the interactive mapping tools that are made available as part of `geemap`. We encourage you to start writing Python code and functions on your own to expand upon these examples!
