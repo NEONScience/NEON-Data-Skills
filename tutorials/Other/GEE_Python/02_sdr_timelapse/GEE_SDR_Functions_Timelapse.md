@@ -2,7 +2,7 @@
 syncID: 048ec0a5e30842acb2fbf1144454830e
 title: "Intro to AOP Hyperspectral Data in Google Earth Engine (GEE) using Python geemap"
 description: ""
-dateCreated: 2023-06-
+dateCreated: 2023-06-20
 authors: Bridget Hass
 contributors: John Musinsky
 estimatedTime: 30 minutes
@@ -62,11 +62,12 @@ ee.Authenticate()
         
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="500"><figcaption></figcaption></a>
+</figure><br>
 
-
-    Enter verification code: 
-    
-    Successfully saved authorization token.
+When the token is entered, you should receive the notice: "Successfully saved authorization token."
     
 
 
