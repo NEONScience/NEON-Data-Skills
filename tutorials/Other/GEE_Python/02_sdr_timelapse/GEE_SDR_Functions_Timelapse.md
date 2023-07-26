@@ -67,7 +67,9 @@ ee.Authenticate()
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="500"><figcaption></figcaption></a>
 </figure><br>
 
-When the token is entered, you should receive the notice: "Successfully saved authorization token."
+When the token is entered, you should receive the notice: `"Successfully saved authorization token."`
+
+Next you will need to Initialize, as follows:
     
 
 
