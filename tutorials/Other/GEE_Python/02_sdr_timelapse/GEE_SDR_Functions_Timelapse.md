@@ -31,10 +31,10 @@ To follow along with this code, you will need to
 1. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
 2. Install **Python 3.x**
 3. Install required Python packages (matplotlib, cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
-    - earthengine-api
-    - geemap
-    - matplotlib
-    - cartopy (dependencies: geos, shapely, pyproj)
+- earthengine-api
+- geemap
+- matplotlib
+- cartopy (dependencies: geos, shapely, pyproj)
 
 Notes: 
 - This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. This lesson was written in **Jupyter Notebook** so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
@@ -384,4 +384,4 @@ cartoee.get_image_collection_gif(
 
 ### Recap
 
-In this lesson we covered how to read in AOP Surface Directional Reflectance (SDR) datasets into GEE using Python with the pacckages `ee` and `geemap`. You learned how to write functions that mask out any data collected in >50% cloud cover conditions, whose reflectance values may differ from reflectance data collected in clear-sky conditions. You also got a chance to explore the interactive mapping tools that are made available as part of geemap. We encourage you to start writing functions and Python code on your own to expand upon these examples!
+In this lesson we covered how to read in AOP Surface Directional Reflectance (SDR) datasets into GEE using Python with the packages `ee` and `geemap`. You learned how to write functions that mask out any data collected in >50% cloud cover conditions, whose reflectance values may differ from reflectance data collected in clear-sky conditions. You also got a chance to explore the interactive mapping tools that are made available as part of geemap. We encourage you to start writing functions and Python code on your own to expand upon these examples!
