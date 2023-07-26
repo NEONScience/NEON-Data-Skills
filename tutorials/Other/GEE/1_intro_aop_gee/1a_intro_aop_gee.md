@@ -34,8 +34,8 @@ And you will be able to:
 
 ## Requirements
  * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Select the "Use without a Cloud Project" option, to create a free non-commercial account. For more details, refer to <a href="[https://developers.google.com/earth-engine/guides/getstarted](https://earthengine.google.com/noncommercial/)" target="_blank">Noncommercial Earth Engine</a>
- * A basic understanding of the GEE code editor and the GEE JavaScript API.
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Select the "Use without a Cloud Project" option, to create a free non-commercial account. For more details, refer to <a href="https://earthengine.google.com/noncommercial/" target="_blank">Noncommercial Earth Engine</a>
+ * A basic understanding of the GEE Code Editor and the GEE JavaScript API.
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
@@ -48,7 +48,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 AOP has currently added a subset of AOP Level 3 (mosaicked) data products at 8 NEON sites (as of May 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
-The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-nonprod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The tables below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
+The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-nonprod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The table below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Data Product      | Data Product ID (Prefix) |
 |----------|------------|-------------------------|
@@ -56,18 +56,6 @@ The NEON data products that have been made available on GEE can be currently be 
 | RGB | Red Green Blue (Camera Imagery) | DP3-30010-001 |
 | DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3-30024-001 |
 | CHM | Ecosystem Structure (Canopy Height Model; CHM) | DP3-30015-001 |
-
-The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE.
-
-| Domain | Site(s) | Years(s)      | Data Products        |
-|--------|------|------------|----------------------|
-| D01 | HARV | 2016, 2019 | SDR, RGB, CHM, DSM, DTM |
-| D07 | GRSM | 2016, 2017 | SDR, RGB, CHM, DSM, DTM |
-| D14 | JORN | 2019, 2021 | SDR, RGB, CHM, DSM, DTM|
-| D10 | CPER | 2020 | SDR, RGB, CHM, DSM, DTM|
-| D16 | ABBY | 2021 | SDR, RGB, CHM, DSM, DTM|
-| D17 | SJER, SOAP | 2019, 2021 | SDR, RGB, CHM, DSM, DTM |
-| D19 | HEAL | 2019, 2021 | SDR, RGB, CHM, DSM, DTM |
 
 ## Get Started with Google Earth Engine
 
