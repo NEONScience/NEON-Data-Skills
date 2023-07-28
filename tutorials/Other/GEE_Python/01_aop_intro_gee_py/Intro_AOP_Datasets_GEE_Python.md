@@ -94,15 +94,18 @@ ee.Authenticate()
 
 
 <p>To authorize access needed by Earth Engine, open the following
-        URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=g6ozIH5W88sSaTSBNwaHB49FLPRi2Q6CBQMM2IOG_bI&tc=fRqMaCsjTqmyQYAaZvXXT_2bZqUW6ZzPD4kVICMDcBs&cc=BjWMODT1Kmf3thtSEwaWMF-uyq85K5Mw3D6wzt2XeY4>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=g6ozIH5W88sSaTSBNwaHB49FLPRi2Q6CBQMM2IOG_bI&tc=fRqMaCsjTqmyQYAaZvXXT_2bZqUW6ZzPD4kVICMDcBs&cc=BjWMODT1Kmf3thtSEwaWMF-uyq85K5Mw3D6wzt2XeY4</a></p>
+        URL in a web browser and follow the instructions:
+
+        ...
+        
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="600"><figcaption></figcaption></a>
+</figure><br>
 
-
-    Enter verification code: 4/1AZEOvhXtLesdY776ouvIKT5yOdBgiTFnlaHh8edDWCCeWXGdtkrSHllsDH8
-    
-    Successfully saved authorization token.
+When the token is entered, you should receive the notice: `"Successfully saved authorization token."`
     
 
 
@@ -395,125 +398,10 @@ Map = geemap.Map()
 Map
 ```
 
-
-    Map(center=[20, 0], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(children=(Togg…
-
-
-
-    ---------------------------------------------------------------------------
-
-    TraitError                                Traceback (most recent call last)
-
-    File ~\Anaconda3\lib\site-packages\ipywidgets\widgets\widget.py:676, in Widget._handle_msg(self, msg)
-        674         if 'buffer_paths' in data:
-        675             _put_buffers(state, data['buffer_paths'], msg['buffers'])
-    --> 676         self.set_state(state)
-        678 # Handle a state request.
-        679 elif method == 'request_state':
-    
-
-    File ~\Anaconda3\lib\site-packages\ipywidgets\widgets\widget.py:545, in Widget.set_state(self, sync_data)
-        542 if name in self.keys:
-        543     from_json = self.trait_metadata(name, 'from_json',
-        544                                     self._trait_from_json)
-    --> 545     self.set_trait(name, from_json(sync_data[name], self))
-    
-
-    File ~\Anaconda3\lib\contextlib.py:126, in _GeneratorContextManager.__exit__(self, typ, value, traceback)
-        124 if typ is None:
-        125     try:
-    --> 126         next(self.gen)
-        127     except StopIteration:
-        128         return False
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:1216, in HasTraits.hold_trait_notifications(self)
-       1214 for changes in cache.values():
-       1215     for change in changes:
-    -> 1216         self.notify_change(change)
-    
-
-    File ~\Anaconda3\lib\site-packages\ipywidgets\widgets\widget.py:606, in Widget.notify_change(self, change)
-        603     if name in self.keys and self._should_send_property(name, getattr(self, name)):
-        604         # Send new state to front-end
-        605         self.send_state(key=name)
-    --> 606 super(Widget, self).notify_change(change)
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:1229, in HasTraits.notify_change(self, change)
-       1227 def notify_change(self, change):
-       1228     """Notify observers of a change event"""
-    -> 1229     return self._notify_observers(change)
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:1266, in HasTraits._notify_observers(self, event)
-       1263 elif isinstance(c, EventHandler) and c.name is not None:
-       1264     c = getattr(self, c.name)
-    -> 1266 c(event)
-    
-
-    File ~\Anaconda3\lib\site-packages\geemap\toolbar.py:4949, in layer_manager_gui.<locals>.layers_btn_click.<locals>.layer_vis_on_click(change)
-       4947     m.remove_control(m.vis_control)
-       4948     m.vis_control = None
-    -> 4949 vis_control = ipyleaflet.WidgetControl(
-       4950     widget=m.vis_widget, position="topright"
-       4951 )
-       4952 m.add((vis_control))
-       4953 m.vis_control = vis_control
-    
-
-    File ~\Anaconda3\lib\site-packages\ipywidgets\widgets\widget.py:412, in Widget.__init__(self, **kwargs)
-        410 """Public constructor"""
-        411 self._model_id = kwargs.pop('model_id', None)
-    --> 412 super(Widget, self).__init__(**kwargs)
-        414 Widget._call_widget_constructed(self)
-        415 self.open()
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:1079, in HasTraits.__init__(self, *args, **kwargs)
-       1077 for key, value in kwargs.items():
-       1078     if self.has_trait(key):
-    -> 1079         setattr(self, key, value)
-       1080     else:
-       1081         # passthrough args that don't set traits to super
-       1082         super_kwargs[key] = value
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:606, in TraitType.__set__(self, obj, value)
-        604     raise TraitError('The "%s" trait is read-only.' % self.name)
-        605 else:
-    --> 606     self.set(obj, value)
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:580, in TraitType.set(self, obj, value)
-        579 def set(self, obj, value):
-    --> 580     new_value = self._validate(obj, value)
-        581     try:
-        582         old_value = obj._trait_values[self.name]
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:612, in TraitType._validate(self, obj, value)
-        610     return value
-        611 if hasattr(self, 'validate'):
-    --> 612     value = self.validate(obj, value)
-        613 if obj._cross_validation_lock is False:
-        614     value = self._cross_validate(obj, value)
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:1851, in Instance.validate(self, obj, value)
-       1849     return value
-       1850 else:
-    -> 1851     self.error(obj, value)
-    
-
-    File ~\Anaconda3\lib\site-packages\traitlets\traitlets.py:692, in TraitType.error(self, obj, value, error, info)
-        689 else:
-        690     e = "The '%s' trait expected %s, not %s." % (
-        691         self.name, self.info(), describe("the", value))
-    --> 692 raise TraitError(e)
-    
-
-    TraitError: The 'widget' trait of a WidgetControl instance expected a DOMWidget, not the NoneType None.
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_map_layers.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_map_layers.png" alt="SERC Map Layers" width="600"><figcaption>Map Panel with SERC 2017 RGB and SDR Layers Added</figcaption></a>
+</figure><br>
 
 
 We'll start by reading in an RGB image over the Smithsonian Environmental Research Center (SERC) and adding the layer to the Map.
