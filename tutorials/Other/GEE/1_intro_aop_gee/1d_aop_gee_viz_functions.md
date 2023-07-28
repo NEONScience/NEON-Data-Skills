@@ -93,13 +93,12 @@ NISimages.evaluate(function(NISimages) {
 Map.centerObject(siteCenter, 11);
 ```
 
-Note that the first half of this function is just pulling out relevant information about the site - in order to properly label the layer on the Map display. You should recognize some of the same syntax from the previous tutorial in the last two lines of code in the function, defining the variable `imageRGB`, using `updateMask`, and finally using `Map.addLayer` to add the layer to the Map window. Note that this function is subsetting the SDR image to only pull in the red, green, and blue bands, as opposed to the previous tutorial where we read in the full hyperspectral cube, and then displayed only the RGB composite in the visParam variable. 
+Note that the first half of this function is just pulling out relevant information about the site - in order to properly label the layer on the Map display. 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png" alt="SRER viz function screenshot"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function1.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function1.png" alt="SOAP visualization function output"></a>
 </figure>
-
 
 
 ```javascript
@@ -140,6 +139,11 @@ NISimages.evaluate(function(NISimages) {
   NISimages.features.map(clearNISImages);
 })
 ```
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function2.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function2.png" alt="SOAP clear qa function output"></a>
+</figure>
 
 ## Get Lesson Code
 
