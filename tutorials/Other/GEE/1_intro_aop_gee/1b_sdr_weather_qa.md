@@ -44,9 +44,9 @@ After completing this activity, you will be able to:
 
 </div>
 
-## Read in the AOP SDR 2019 Dataset at SRER
+## Read in the AOP SDR 2019 Dataset at SOAP
 
-We will start at our ending point of the last tutorial. For this exercise, we will read in data from SOAP collected in 2019:
+We will start at our ending point of the last tutorial. For this exercise, we will read in data from the NEON site <a href="https://www.neonscience.org/field-sites/soap" target="_blank">Soaproot Saddle (SOAP)</a> collected in 2019: 
 
 ```javascript
 // Filter image collection by date and site to pull out a single image
