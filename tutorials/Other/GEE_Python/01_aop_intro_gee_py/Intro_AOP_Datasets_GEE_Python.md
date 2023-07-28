@@ -10,8 +10,7 @@ packagesLibraries: earthengine-api, geemap
 topics:
 languagesTool: Python, Google Earth Engine
 dataProducts: DP3.30006.001, DP3.30010.001, DP3.30015.001, DP3.30024.001
-code1: 	
-https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
+code1: https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/Other/GEE_Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
 tutorialSeries: 
 urlTitle: aop-gee-py-intro
 ---
@@ -95,15 +94,14 @@ ee.Authenticate()
 
 
 <p>To authorize access needed by Earth Engine, open the following
-        URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=jK4GLJXeB4Ls9XSgBQcUD1k20j5RCqOm0QYJU9D8qEk&tc=C634hpUi5T9gsiseC3mU6EkWEHgWBAZ29M0FwW5gb_g&cc=_dZaQ8sJDkLd9S2soYji-ArLQGMC-dKIJhogTf1Oe4A>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=jK4GLJXeB4Ls9XSgBQcUD1k20j5RCqOm0QYJU9D8qEk&tc=C634hpUi5T9gsiseC3mU6EkWEHgWBAZ29M0FwW5gb_g&cc=_dZaQ8sJDkLd9S2soYji-ArLQGMC-dKIJhogTf1Oe4A</a></p>
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="600"><figcaption></figcaption></a>
+</figure><br>
 
-
-    Enter verification code: 4/1AZEOvhWkaUKFcjMNkDMR4qpUh--rbigXKdOHwhL2GlRIIRiLhEi1CN3rLq0
-    
-    Successfully saved authorization token.
+When the token is entered, you should receive the notice: `"Successfully saved authorization token."`
     
 
 
@@ -319,8 +317,11 @@ Map = geemap.Map()
 Map
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png" alt="SERC Map Layers" width="600"><figcaption>Map Panel with SERC 2017 RGB and SDR Layers Added</figcaption></a>
+</figure><br>
 
-    Map(center=[20, 0], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(children=(Togg…
 
 
 We'll start by reading in an RGB image over the Smithsonian Environmental Research Center (SERC) and adding the layer to the Map.
