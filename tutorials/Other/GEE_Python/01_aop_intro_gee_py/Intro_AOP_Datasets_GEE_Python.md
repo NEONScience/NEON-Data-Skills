@@ -310,7 +310,7 @@ SERC_RGB_2017 = rgbCol.filterDate(start_date, end_date).filterMetadata('NEON_SIT
 
 ## Add Data Layers to the Map
 
-In order to visualize and interact with the dataset, we can use `geemap.Map()` as follows:
+In order to visualize and interact with the dataset, we can use `geemap.Map()` as follows. This will create a blank Map of the world, and then when you run `geemap` code to add layers, the Map will update - so note this is a little different from standard Jupyter Notebook output, where the figures typically show up below each code chunk.
 
 
 ```python
@@ -319,8 +319,8 @@ Map
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png" alt="SERC Map Layers" width="800"><figcaption>Map Panel with SERC 2017 RGB and SDR Layers Added</figcaption></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_world_map.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_world_map.png" alt="SERC Map Layers" width="800"><figcaption>Map Panel with SERC 2017 RGB and SDR Layers Added</figcaption></a>
 </figure><br>
 
 
@@ -363,6 +363,11 @@ sdrVisParams = {'min':0, 'max':1200, 'gamma':0.9, 'bands':['B053','B035','B019']
 # Add the SERC RGB data as a layer to the Map
 Map.addLayer(sdrData, sdrVisParams, 'SERC 2017 SDR');
 ```
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png" alt="SERC Map Layers" width="800"><figcaption>Map Panel with SERC 2017 RGB and SDR Layers Added</figcaption></a>
+</figure><br>
 
 ### SDR QA Bands
 
