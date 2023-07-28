@@ -100,6 +100,8 @@ Note that the first half of this function is just pulling out relevant informati
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function1.png" alt="SOAP visualization function output"></a>
 </figure>
 
+## Function including pre-processing steps
+Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the SDR data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
 
 ```javascript
 // Define a palette for the weather - to match NEON AOP's weather color conventions
@@ -139,11 +141,12 @@ NISimages.evaluate(function(NISimages) {
   NISimages.features.map(clearNISImages);
 })
 ```
-
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function2.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function2.png" alt="SOAP clear qa function output"></a>
 </figure>
+
+This figure shows the weather quality information at SOAP in 2019. Data was collected in a mix of cloud conditions. Flight operators prioritize flying the area over NEON plots in the best weather conditions when possible.
 
 ## Get Lesson Code
 
