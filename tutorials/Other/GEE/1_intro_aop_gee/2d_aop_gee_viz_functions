@@ -100,10 +100,47 @@ Note that the first half of this function is just pulling out relevant informati
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_sdr_viz_functions/srer_screenshot.png" alt="SRER viz function screenshot"></a>
 </figure>
 
-You can see that the print statements show up in the console, displaying the systemID and fileName for each image in the collection. The fileName is applied to the name of the layers in the Map window.
 
-You could alter this function to include the visualization paramters, to subset by other bands, or modify it to work for a different image collection. We encourage you to do this on your own!
+
+```javascript
+// Define a palette for the weather - to match NEON AOP's weather color conventions
+var gyrPalette = [
+  '00ff00',  // green (<10% cloud cover)
+  'ffff00',  // yellow (10-50% cloud cover)
+  'ff0000']; // red (>50% cloud cover)
+
+// Build upon the function to add a layer of the weather band, and 
+// mask out poor-weather data (>10% cloud cover), keeping only the clear weather (<10% cloud cover)
+function clearNISImages(image) { 
+  // get the system:id and convert to string
+  var imageId = ee.Image(image.id);
+  // get the system:id - this is an object on the server
+  var sysID_serverObj = ee.String(imageId.get("system:id"));
+  // getInfo() converts to string on the server
+  var sysID_serverStr = sysID_serverObj.getInfo()
+  // truncate the string to show only the fileName (NEON domain + site code + product code + year)
+  var fileName = sysID_serverStr.slice(52,100); // optionally print, can uncomment
+  
+  // create a single band Weather Quality QA layer for 2016
+  var weather_qa = imageId.select(['Weather_Quality_Indicator']);
+  // WEATHER QUALITY INDICATOR = 1 is < 10% CLOUD COVER
+  var clear_qa = weather_qa.eq(1);
+  // mask out all cloudy pixels from the SDR image
+  var imageClear = imageId.updateMask(clear_qa);
+
+  // add the weather QA bands to the map with the green-yellow-red palette
+  Map.addLayer(weather_qa, {min: 1, max: 3, palette: gyrPalette, opacity: 0.3}, fileName + ' Weather QA Band')
+
+  // add the clear weather reflectance layer to the map - the 0 means the layer won't be turned on by default
+  Map.addLayer(imageClear, sdrVisParams, fileName + ' Clear',0)
+}
+
+//call the clearNISImages function
+NISimages.evaluate(function(NISimages) {
+  NISimages.features.map(clearNISImages);
+})
+```
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com" target="_blank">Function to display AOP SDR Image Collections in GEE</a>
+<a href="https://code.earthengine.google.com/0a3af7782726a1e4bb6e8c299fb883f2" target="_blank">Functions to display AOP SDR Image Collections in GEE</a>
