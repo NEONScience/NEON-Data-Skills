@@ -431,8 +431,10 @@ Map.addLayer(sdrWeatherQA, weatherVisParams, 'SERC 2017 Weather QA');
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_weather_qa_layer.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_weather_qa_layer.png" alt="SERC Weather QA Layer" width="800"><figcaption>Map Panel Displaying SERC 2017 Weather QA Layer Added</figcaption></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_weather_qa_layer.png" alt="SERC Weather QA Layer" width="800"><figcaption>Map Panel Displaying SERC 2017 Weather QA Layer</figcaption></a>
 </figure><br>
+
+In 2017 most of the SERC site was collected in "green" (<10% cloud cover) sky conditions, with the exception of a small portion on the western side of the flight box. When working with this dataset, we recommend only using this clear-sky portion, where clouds have not obscured the reflectance values.
 
 ## Recap
 
