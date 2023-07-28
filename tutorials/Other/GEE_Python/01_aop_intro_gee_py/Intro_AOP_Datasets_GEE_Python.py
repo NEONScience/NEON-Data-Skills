@@ -167,9 +167,20 @@ print(rgbCol.aggregate_array('system:index').getInfo())
 
 
 props = geemap.image_props(sdrCol.first())
-props
+
+# Optionally display all properties by uncommenting the line below
+# props
 
 
+# In[9]:
+
+
+# Display the property names for the first 15 properties:
+props.keys().getInfo()[:15]
+
+
+# You can also look at all the Image properties by typing `props`. This generates a long output, so we will just show a portion of the output from that:
+# 
 # ```
 # AOP_VISIT_NUMBER:1
 # DESCRIPTION:Orthorectified surface directional reflectance (0-1 unitless, scaled by 10000) ...
@@ -207,7 +218,7 @@ props
 # 
 # One of the most useful aspects of having AOP data ingested in Earth Engine is the ability to filter by properties, such as the site name, dates, sensors, etc. In this next section, we will show how to filter datasets to extract only data of interest. We'll use the NEON's <a href="https://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center (SERC)</a>, in Maryland.
 
-# In[9]:
+# In[10]:
 
 
 # See the years of data available for the specified site:
@@ -221,7 +232,7 @@ print('\nYears of RGB data available in GEE for',site+':')
 print([year_site[0] for year_site in zip(flightYears,sites) if site in year_site])
 
 
-# In[10]:
+# In[11]:
 
 
 # Get the flight year and site information
@@ -232,7 +243,7 @@ print('\nYears of SDR data available in GEE for',site+':')
 print([year_site[0] for year_site in zip(flightYears,sites) if site in year_site])
 
 
-# In[11]:
+# In[12]:
 
 
 # Specify the start and end dates
@@ -248,7 +259,7 @@ SERC_RGB_2017 = rgbCol.filterDate(start_date, end_date).filterMetadata('NEON_SIT
 # 
 # In order to visualize and interact with the dataset, we can use `geemap.Map()` as follows:
 
-# In[12]:
+# In[13]:
 
 
 Map = geemap.Map()
@@ -257,7 +268,7 @@ Map
 
 # We'll start by reading in an RGB image over the Smithsonian Environmental Research Center (SERC) and adding the layer to the Map.
 
-# In[13]:
+# In[14]:
 
 
 # Specify center location of SERC: 38.890131, -76.560014
@@ -280,7 +291,7 @@ Map.centerObject(geo, 12);
 # 
 # ### SDR Data Bands
 
-# In[14]:
+# In[15]:
 
 
 # Read in the first image of the SDR Image Collection
@@ -300,7 +311,7 @@ Map.addLayer(sdrData, sdrVisParams, 'SERC 2017 SDR');
 # 
 # Before we used a regular expression to pull out only the bands starting with "B". We can also take a look at the remaining bands using a similar expression, but this time excluding bands starting with "B". These comprise all of the QA-related bands that provide additional information and context about the data bands. This next chunk of code prints out the IDs of all the QA bands.
 
-# In[15]:
+# In[16]:
 
 
 # Read in only the QA bands, none of which start with "B"
@@ -326,7 +337,7 @@ for i in range(len(sdrQA_band_info['bands'])):
 
 # ### Weather Quality Indicator Band
 
-# In[16]:
+# In[17]:
 
 
 sdrWeatherQA = sdrCol.select(['Weather_Quality_Indicator']);
@@ -345,6 +356,6 @@ Map.addLayer(sdrWeatherQA, weatherVisParams, 'SERC 2017 Weather QA');
 
 # ## Recap
 # 
-# In this lesson, you learned how to access the four NEON datasets that are available in GEE: Surface Directional Reflectance (SDR), Camera (RGB), and LiDAR-derived Digital Elevation (Terrain and Surface) Models (DTM and DSM) and Ecosystem Structure / Canopy Height Model (CHM). You practiced code to determine which datasets are available for a given Image Collection. You explored the image properties and learned how to filter on the metadata to pull out a subset of images from an Image Collection. You learned how to use `geemap` to add data layers to the interactive map panel. You learned how to select and visualize the Weather_Quality_Indicator band, which is a useful first step in working with any reflectance data. 
+# In this lesson, you learned how to access the four NEON datasets that are available in GEE: Surface Directional Reflectance (SDR), Camera (RGB), and LiDAR-derived Digital Elevation (Terrain and Surface) Models (DTM and DSM) and Ecosystem Structure / Canopy Height Model (CHM). You generated code to determine which AOP datasets are available in GEE for a given Image Collection. You explored the SDR image properties and learned how to filter on specified metadata to pull out a subset of Images or a single Image from an Image Collection. You learned how to use `geemap` to add data layers to the interactive map panel. And lastly, you learned how to select and visualize the `Weather_Quality_Indicator` band, which is a useful first step in working with AOP reflectance data. 
 # 
 # This is a great starting point for your own research!
