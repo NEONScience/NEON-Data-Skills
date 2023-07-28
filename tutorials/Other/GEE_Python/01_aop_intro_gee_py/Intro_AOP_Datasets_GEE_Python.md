@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: d14552056cc440549ae3c1bac80eaeb7
 title: "Intro to AOP Datasets in Google Earth Engine (GEE) using Python"
 description: "Explore AOP reflectance, camera, and lidar datasets in GEE"
 dateCreated: 2023-07-25
