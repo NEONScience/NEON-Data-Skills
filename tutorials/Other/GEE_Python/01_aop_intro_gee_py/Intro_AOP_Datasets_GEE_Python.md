@@ -319,8 +319,8 @@ Map
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_world_map.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_world_map.png" alt="SERC Map Layers" width="800"><figcaption>Map Panel with SERC 2017 RGB and SDR Layers Added</figcaption></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_world_map.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_world_map.PNG" alt="Earth Engine Map" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
 </figure><br>
 
 
