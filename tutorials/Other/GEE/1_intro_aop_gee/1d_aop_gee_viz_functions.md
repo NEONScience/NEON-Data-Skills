@@ -1,7 +1,7 @@
 ---
-syncID: 
-title: "Function for Visualizing AOP Image Collections in GEE"
-description: "Load in and visualize SDR data using a function"
+syncID: 0339425fefc541dbaf5ab7f736352374
+title: "Functions in Google Earth Engine (GEE)"
+description: "Write functions to add AOP SDR data as Map layers and apply cloud-masking"
 dateCreated: 2022-07-27
 authors: Bridget M. Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
@@ -11,8 +11,8 @@ topics: hyperspectral, remote-sensing
 languageTool: GEE
 dataProduct: DP3.30006.001
 code1: 
-tutorialSeries: aop-gee
-urlTitle: intro-aop-gee-functions
+tutorialSeries: aop-gee2023
+urlTitle: intro-gee-functions
 
 ---
 ## Writing a Function to Visualize AOP SDR Image Collections
