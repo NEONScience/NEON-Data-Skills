@@ -23,9 +23,9 @@ In the previous <a href="https://www.neonscience.org/resources/learning-hub/tuto
 
 ## Objectives
 After completing this activity, you will be able to:
-- Write and call a function to read in and display an AOP SDR Image Collection
-- Write a function to read in and remove poor weather data from an SDR Image Collection
-- Modify this function to read in other image collections
+- Understand the basic structure of functions in GEE (JavaScript API)
+- Write and call a function to read in and display images from each year in an AOP SDR Image Collection
+- Write a function to add the weather quality layer to the map, and mask out cloudy data from an SDR Image Collection
 
 ## Requirements
  * A gmail (@gmail.com) account
@@ -43,7 +43,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 </div>
 
-Let's get started! First let's take a look at the syntax for writing user-defined functions in GEE. If you are familiar with other programming languages, this should look somewhat familiar. The function requires input arguments `args` and returns an `output`.
+Let's get started! First let's take a look at the syntax for writing user-defined functions in GEE. If you are familiar with other programming languages, this should look somewhat familiar. The function requires input argument(s) `args` and returns an `output`.
 
 ```javascript
 var functionName = function(args) {
@@ -61,7 +61,7 @@ var newVariable = collection.map(myFunction);
 
 For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run. 
 
-For a little more detail on how this function was created, please refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your own GEE code, the Google developers pages and stack overflow are your friends!
+For a little more detail on how this function was created, please refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your own GEE code, the <a href="https://developers.google.com/earth-engine" target="_blank">Google earth-engine developers pages</a> may not always have an example of what you are trying to do, so stack overflow can be a valuable resource.
 
 ```javascript
 // define visualization parameters for the reflectance data, showing a true-color image
