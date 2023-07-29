@@ -94,9 +94,9 @@ Then we can use `.map()` to apply this as follows:
 var sdr_cloudfree = sdr_col.map(clearSDR)
 ```
 
-For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run. 
+For the next example, we will write a function to add a Map Layer for each Image in an Image collection. We'll provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some commented-out print statements in the function, which show the outputs (which would show up in the console tab). 
 
-For a little more detail on how this function was created, please refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your own GEE code, the <a href="https://developers.google.com/earth-engine" target="_blank">Google earth-engine developers pages</a> may not always have an example of what you are trying to do, so stack overflow can be a valuable resource.
+For a little more detail on how this function was applied, refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your own GEE code, the <a href="https://developers.google.com/earth-engine" target="_blank">Google earth-engine developers pages</a> may not always have an example of what you are trying to do, so stack overflow can be a valuable resource.
 
 ```javascript
 // Define visualization parameters for the reflectance data, showing a true-color image
@@ -193,4 +193,4 @@ As explained in <a href="https://developers.google.com/earth-engine/tutorials/tu
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/0a3af7782726a1e4bb6e8c299fb883f2" target="_blank">Functions to display AOP SDR Image Collections in GEE</a>
+<a href="https://code.earthengine.google.com/44a999244a938dd76dd782fb419458c9" target="_blank">Functions to display AOP SDR Image Collections in GEE</a>
