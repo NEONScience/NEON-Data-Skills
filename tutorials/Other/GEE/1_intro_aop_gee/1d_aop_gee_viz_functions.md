@@ -40,6 +40,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
  * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" target="_blank"> Functional Programming in GEE </a>
+ * <a href="https://developers.google.com/earth-engine/guides/best_practices" target="_blank"> EE Guides Best Practices </a>
 
 </div>
 
@@ -146,7 +147,12 @@ NISimages.evaluate(function(NISimages) {
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function2.png" alt="SOAP clear qa function output"></a>
 </figure>
 
-This figure shows the weather quality information at SOAP in 2019. Data was collected in a mix of cloud conditions. Flight operators prioritize flying the area over NEON plots in the best weather conditions when possible.
+This figure shows the weather quality information at SOAP in 2019, where the data were collected in mixed cloud conditions. Flight operators prioritize flying the area over NEON plots in the best weather conditions when possible. As explained in the previous lesson, when working with AOP reflectance data, the weather conditions during the flights are one of the most important quality considerations. 
+
+## Recap
+
+This lesson showed examples of two functions that demonstrate how to use functional programming to add layers to a Map. 
+As explained in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03#introduction-to-functional-programming" target="_blank"> introduction-to-functional-programming</a>, "Earth Engine uses a parallel processing system to carry out computation across a large number of machines...The use of for-loops is discouraged in Earth Engine. The same results can be achieved using a map() operation where you specify a function that can be independently applied to each element. This allows the system to distribute the processing to different machines." The examples presented in this lesson show some examples of how to make use of that map operation in lieu of a for loop.
 
 ## Get Lesson Code
 
