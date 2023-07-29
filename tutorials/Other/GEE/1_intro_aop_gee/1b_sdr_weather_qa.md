@@ -11,7 +11,7 @@ topics: hyperspectral, remote-sensing
 languageTool: GEE
 dataProduct: DP3.30006.001
 code1: 
-tutorialSeries: 
+tutorialSeries: aop-gee2023
 urlTitle: aop-sdr-weather-qa-gee
 
 ---
