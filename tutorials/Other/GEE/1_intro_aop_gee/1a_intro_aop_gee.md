@@ -8,10 +8,10 @@ contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 20 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, camera, remote-sensing
-languageTool: GEE
+languageTool: GEE, JavaScript
 dataProduct: DP3.30006.001, DP3.30010.001, DP3.30015.001 DP3.30024.001
 code1: 
-tutorialSeries: 
+tutorialSeries: aop-gee2023
 urlTitle: intro-aop-gee-image-collections
 
 ---
