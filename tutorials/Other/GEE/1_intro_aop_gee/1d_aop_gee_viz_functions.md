@@ -53,11 +53,45 @@ var functionName = function(args) {
 };
 ```
 
-To call the function for a full image collection, you can use a <a href="https://developers.google.com/earth-engine/guides/getstarted#mapping-what-to-do-instead-of-a-for-loop"> map </a> to iterate over items in a collection. This is shown in the script below.
+To call the function for a full image collection, you can use a <a href="https://developers.google.com/earth-engine/guides/getstarted#mapping-what-to-do-instead-of-a-for-loop" target="_blank"> map </a> to apply the function to all items in a collection. This is shown in the script below.
 
 ```javascript
 // Map the function over the collection.
 var newVariable = collection.map(myFunction);
+```
+
+First, we'll read in the AOP SDR Image Collection at <a href="https://www.neonscience.org/field-sites/soap" target="_blank"> Soaproot Saddle (SOAP)</a>.
+
+```javascript
+// specify center location of SOAP
+var site_center = ee.Geometry.Point([-119.262, 37.033])
+
+// read in the AOP SDR Image Collection
+var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+  .filterBounds(site_center)
+
+print('NEON AOP SDR Image Collection',sdr_col)
+```
+
+Building off the example from the previous tutorial, we can write a simple function to apply cloud-masking to an Image Collection:
+
+```javascript
+// Function to mask out poor-weather data, keeping only the <10% cloud cover weather data
+function clearSDR(image) { 
+  // create a single band Weather Quality QA layer 
+  var weather_qa = image.select(['Weather_Quality_Indicator']);
+  // WEATHER QUALITY INDICATOR = 1 is < 10% CLOUD COVER
+  var clear_qa = weather_qa.eq(1);
+  // mask out all cloudy pixels from the SDR image
+  return image.updateMask(clear_qa);
+}
+```
+
+Then we can use `.map()` to apply this as follows:
+
+```javascript
+// Use map to apply this function on all the NISImages and return a clear-weather collection
+var sdr_cloudfree = sdr_col.map(clearSDR)
 ```
 
 For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run. 
@@ -65,13 +99,13 @@ For this example, we will provide the full script below, including the function 
 For a little more detail on how this function was created, please refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your own GEE code, the <a href="https://developers.google.com/earth-engine" target="_blank">Google earth-engine developers pages</a> may not always have an example of what you are trying to do, so stack overflow can be a valuable resource.
 
 ```javascript
-// define visualization parameters for the reflectance data, showing a true-color image
+// Define visualization parameters for the reflectance data, showing a true-color image
 // B053 ~ 642 nm, B035 ~ 552 nm , B019 ~ 472nm 
-var sdrVisParams = {'min':0, 'max':1200, 'gamma':0.9, 'bands':['B053','B035','B019']};
+var sdr_vis_params = {'min':0, 'max':1200, 'gamma':0.9, 'bands':['B053','B035','B019']};
 
-// Create a function to display each NIS Image in the NEON AOP Image Collection
+// Function to display each NIS Image in the NEON AOP Image Collection
 function addNISImage(image) { 
-// get the system:id and convert to string
+  // get the system:id and convert to string
   var imageId = ee.Image(image.id);
   // get the system:id - this is an object on the server
   var sysID_serverObj = ee.String(imageId.get("system:id"));
@@ -79,22 +113,24 @@ function addNISImage(image) {
   var sysID_serverStr = sysID_serverObj.getInfo()
   // truncate the string to show only the fileName (NEON domain + site code + product code + year)
   var fileName = sysID_serverStr.slice(52,100); 
-  //print("fileName: "+fileName) // optionally print the file name, can uncomment
+  // print("fileName: "+fileName) // optionally print the file name, can uncomment
 
   // add this layer to the map using the true-color (RGB) visualization parameters
-  Map.addLayer(imageId, sdrVisParams, fileName)
+  Map.addLayer(imageId, sdr_vis_params, fileName)
 }
 
 // call the addNISimages function
-NISimages.evaluate(function(NISimages) {
-  NISimages.features.map(addNISImage);
+// see this link for an explanation of what is occurring:
+// https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine
+sdr_col.evaluate(function(sdr_col) {
+  sdr_col.features.map(addNISImage);
 })
 
 // Center the map on site and set zoom level (11)
-Map.centerObject(siteCenter, 11);
+Map.centerObject(site_center, 11);
 ```
 
-Note that the first half of this function is just pulling out relevant information about the site - in order to properly label the layer on the Map display. 
+Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function1.png">
@@ -106,14 +142,15 @@ Next we can build upon this function to include some small pre-processing steps,
 
 ```javascript
 // Define a palette for the weather - to match NEON AOP's weather color conventions
-var gyrPalette = [
+// This will be used in the visualization parameters for the Weather QA layer
+var gyr_palette = [
   '00ff00',  // green (<10% cloud cover)
   'ffff00',  // yellow (10-50% cloud cover)
   'ff0000']; // red (>50% cloud cover)
 
 // Build upon the function to add a layer of the weather band, and 
 // mask out poor-weather data (>10% cloud cover), keeping only the clear weather (<10% cloud cover)
-function clearNISImages(image) { 
+function addClearNISImages(image) { 
   // get the system:id and convert to string
   var imageId = ee.Image(image.id);
   // get the system:id - this is an object on the server
@@ -125,21 +162,21 @@ function clearNISImages(image) {
   
   // create a single band Weather Quality QA layer for 2016
   var weather_qa = imageId.select(['Weather_Quality_Indicator']);
-  // WEATHER QUALITY INDICATOR = 1 is < 10% CLOUD COVER
-  var clear_qa = weather_qa.eq(1);
-  // mask out all cloudy pixels from the SDR image
-  var imageClear = imageId.updateMask(clear_qa);
+
+  // apply the function from the beginning of this script to generate a cloud-free image
+  // you can apply a function directly on a single image in this way
+  var sdr_cloudfree = clearSDR(imageId)
 
   // add the weather QA bands to the map with the green-yellow-red palette
-  Map.addLayer(weather_qa, {min: 1, max: 3, palette: gyrPalette, opacity: 0.3}, fileName + ' Weather QA Band')
+  Map.addLayer(weather_qa, {min: 1, max: 3, palette: gyr_palette, opacity: 0.3}, fileName + ' Weather QA Band')
 
   // add the clear weather reflectance layer to the map - the 0 means the layer won't be turned on by default
-  Map.addLayer(imageClear, sdrVisParams, fileName + ' Clear',0)
+  Map.addLayer(sdr_cloudfree, sdr_vis_params, fileName + ' Clear',0)
 }
 
 //call the clearNISImages function
-NISimages.evaluate(function(NISimages) {
-  NISimages.features.map(clearNISImages);
+sdr_col.evaluate(function(sdr_col) {
+  sdr_col.features.map(addClearNISImages);
 })
 ```
 <figure>
