@@ -61,7 +61,7 @@ var newVariable = collection.map(myFunction);
 
 For this example, we will provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some print statements in this function below, and show the outputs (which would show up in the console tab). Note that these print statements are commented out in the code linked with this tutorial, since they are not required for the function to run. 
 
-For a little more detail on how this function was created, please refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your code, stack overflow is your friend!
+For a little more detail on how this function was created, please refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your own GEE code, the Google developers pages and stack overflow are your friends!
 
 ```javascript
 // define visualization parameters for the reflectance data, showing a true-color image
@@ -100,7 +100,7 @@ Note that the first half of this function is just pulling out relevant informati
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function1.png" alt="SOAP visualization function output"></a>
 </figure>
 
-## Function including pre-processing steps
+## Function including cloud-masking
 Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the SDR data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
 
 ```javascript
