@@ -67,7 +67,7 @@ Next, we'll read in the SDR image collection, and then write a function to mask 
 
 ```javascript
 // Read in the SDR Image Collection at GRSM
-var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+var grsm_sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
   .filterBounds(site_center)
   
 // Function to mask out poor-weather data, keeping only the <10% cloud cover weather data
@@ -81,7 +81,7 @@ function clearSDR(image) {
 }
 
 // Use map to apply the clearSDR function to the SDR collection and return a clear-weather subset of the data
-var sdr_cloudfree = sdr_col.map(clearSDR)
+var grsm_sdr_cloudfree = grsm_sdr_col.map(clearSDR)
 ```
 
 Next let's write a function to display the NIS images from 2016, 2017, and 2021 in GEE. For more details on how this function works, you can refer to 
@@ -91,17 +91,16 @@ the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutoria
 // Function to display individual (yearly) SDR Images
 function addSDRImage(image) { 
   var image_id = ee.Image(image.id); // get the system:id and convert to string
-  var sys_id = ee.String(imageId.get("system:id")).getInfo();  // get the system:id - this is an object on the server
+  var sys_id = ee.String(image_id.get("system:id")).getInfo();  // get the system:id - this is an object on the server
   var filename = sys_id.slice(52,100); // extract the fileName (NEON domain + site code + product code + year)
-  var image_masked = image_id.updateMask(image_id.gte(0.0000)) // mask out no-data values
-  var image_rgb = image_masked.select(['B053', 'B035', 'B019']);  // select only RGB bands for display
+  var image_rgb = image_id.select(['B053', 'B035', 'B019']);  // select only RGB bands for display
   
-  Map.addLayer(image_rgb, {min:220, max:1600}, fileName, 1)   // add RGB composite to the map
+  Map.addLayer(image_rgb, {min:220, max:1600}, filename, 1)   // add RGB composite to the map
 }
 
 // call the addNISimages function to add SDR layers to map
-sdr_col.evaluate(function(sdr_col) {
-  sdr_col.features.map(addSDRImage);
+grsm_sdr_col.evaluate(function(grsm_sdr_col) {
+  grsm_sdr_col.features.map(addSDRImage);
 })
 ```
 
@@ -109,40 +108,36 @@ Next we can create a similar function for reading in the CHM dataset over all th
 
 ```javascript
 // Read in the CHM Image collection at GRSM
-var chm_col =  ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015-001')
+var grsm_chm_col =  ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015-001')
   .filterBounds(site_center)
 
 // Function to display Single Band Images setting display range to linear 2%
 function addSingleBandImage(image) { // display each image in collection
-  var imageId = ee.Image(image.id); // get the system:id and convert to string
-  var sysID = ee.String(imageId.get("system:id")).getInfo(); 
-  var fileName = sysID.slice(52,100); // extract the fileName (NEON domain + site code + product code + year)
-  // print(fileName) // optionally print the filename, this will be the name of the layer
-  
+  var image_id = ee.Image(image.id); // get the system:id and convert to string
+  var sys_id = ee.String(image_id.get("system:id")).getInfo(); 
+  var filename = sys_id.slice(52,100); // extract the fileName (NEON domain + site code + product code + year)
+
   // Dynamically determine the range of data to display
   // Sets color scale to show all but lowest/highest 2% of data
-  var pctClip = imageId.reduceRegion({
+  var pct_clip = image_id.reduceRegion({
     reducer: ee.Reducer.percentile([2, 98]),
     scale: 10,
     maxPixels: 3e7});
 
-  var keys = pctClip.keys();
-  var pct02 = ee.Number(pctClip.get(keys.get(0))).round().getInfo()
-  var pct98 = ee.Number(pctClip.get(keys.get(1))).round().getInfo()
+  var keys = pct_clip.keys();
+  var pct02 = ee.Number(pct_clip.get(keys.get(0))).round().getInfo()
+  var pct98 = ee.Number(pct_clip.get(keys.get(1))).round().getInfo()
     
-  var imageDisplay = imageId.updateMask(imageId.gte(0.0000));
-  Map.addLayer(imageDisplay, {min:pct02, max:pct98}, fileName, 0)
+  Map.addLayer(image_id, {min:pct02, max:pct98, palette: chm_palette}, filename, 0)
 }
 
 // Call the addSingleBandImage function to add CHM layers to map 
-// You could also add all DEM images (DSM/DTM/CHM) but for now let's just add CHM
-chm_col.evaluate(function(chm_col) {
-  chm_col.features.map(addSingleBandImage);
+grsm_chm_col.evaluate(function(grsm_chm_col) {
+  grsm_chm_col.features.map(addSingleBandImage);
 })
 
 // Center the map on GRSM and set zoom level to 12
 Map.setCenter(-83.5, 35.6, 12);
-})
 ```
 
 Now that you've read in these two datasets (SDR and CHM) over all the years of available data, we encourage you to explore the different layers and see what you notice! 
