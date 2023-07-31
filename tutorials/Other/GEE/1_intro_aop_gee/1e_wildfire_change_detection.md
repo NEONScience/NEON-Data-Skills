@@ -16,9 +16,9 @@ urlTitle: aop-gee-wildfire
 
 ---
 
-GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) data, as well as the Ecosystem Structure (Canopy Height Model - CHM) data to look at interannual differences at the NEON site <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountains (GRSM)</a>, where the <a href="https://www.nps.gov/grsm/learn/chimney-tops-2-fire.htm" target="_blank">Chimney Tops 2 Fire</a> broke out in late November 2016. NEON data over the GRSM site collected in June 2016 and October 2017 captures most of the burned area and presents a unique opportunity to study wildfire effects on the ecosystem, and post-wildfire vegetation recovery. In this lesson, we will calculate the difference Normalized Burn Index (dNBR) between 2017 and 2016, and also calculate the CHM difference raster to highlight the burn scar. We will also pull in Landsat Sattelite data and create a time-series of the NDVI data within the burn perimeter to look at annual differences.
+GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) data, as well as the Ecosystem Structure (Canopy Height Model - CHM) data to look at interannual differences at the NEON site <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountains (GRSM)</a>, where the <a href="https://www.nps.gov/grsm/learn/chimney-tops-2-fire.htm" target="_blank">Chimney Tops 2 Fire</a> broke out in late November 2016. NEON data over the GRSM site collected in June 2016 and October 2017 captures most of the burned area and presents a unique opportunity to study wildfire effects on the ecosystem and analysis of post-wildfire vegetation recovery. In this lesson, we will calculate the differenced Normalized Burn Ratio (dNBR) between 2017 and 2016, and also create a CHM difference raster to highlight vegetation structure differences in the burned area. We will also pull in Landsat satellite data and create a time-series of the NBR within the burn perimeter to look at annual differences.
 
-Using remote sensing data to better understand wildfire impacts is an active area of research. In April 2023, Park and Sim published an Open Access paper titled <a href="https://www.frontiersin.org/articles/10.3389/frsen.2023.1096000/full" target="_blank">Characterizing spatial burn severity patterns of 2016 Chimney Tops 2 fire using multi-temporal Landsat and NEON LiDAR data"</a>. We encourage you to read this paper for an example of related research using AOP and satellite data. This lesson provides an introduction to conducting this sort of analysis in Google Earth Engine.
+Using remote sensing data to better understand wildfire impacts is an active area of research. In April 2023, Park and Sim published an Open Access paper titled <a href="https://www.frontiersin.org/articles/10.3389/frsen.2023.1096000/full" target="_blank">Characterizing spatial burn severity patterns of 2016 Chimney Tops 2 fire using multi-temporal Landsat and NEON LiDAR data"</a>. We encourage you to read this paper for an example of wildfire research using AOP remote sensing and satellite data. This lesson provides an introduction to conducting this sort of analysis in Google Earth Engine.
 
 <div id="ds-objectives" markdown="1">
 
@@ -62,7 +62,7 @@ the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutoria
 
 ```
 
-Next we can create a similar function for reading in the CHM dataset over all the years. The main differences between this function and the previous one are that 1) it is set to display a single band image, and 2) instead of hard-coding in the minimum and maximum values to display, we dynamically determine them from the data itself, so it will scale appropriately. Note that we can use the `.filterMetadata` property to select only the CHM data from the DEM image collection, since the CHM is stored in that collection, along with the DTM and DSM. 
+Next we can create a similar function for reading in the CHM dataset over all the years. The main differences between this function and the previous one are that 1) it is set to display a single band image, and 2) instead of hard-coding in the minimum and maximum values to display, we dynamically determine them from the data itself, so it will scale appropriately. 
 
 ```javascript
 // Read in only the CHM Images (using .filterMetadata by Type)
@@ -107,22 +107,10 @@ Now that you've read in these two datasets over all the years, we encourage you 
 
 ## Creating CHM Difference Layers
 
-Next let's create a new raster layer of the difference between the CHMs from 2 different years. We will difference the CHMs from 2018 and 2021 because these years were both collected with the Riegl Q780 system and so have a vertical resolution (CHM height cutoff) of 2/3 m. By contrast the Gemini system (which was used in 2017 and 2020) has a 2m cutoff, so some of the smaller shrubs are not resolved with that sensor. It is important to be aware of factors such as these that may affect the interpretation of the data! We encourage all AOP data users to read the associated metadata pdf documents that are provided with the data products (when downloading from the data portal or using the API). 
+Next let's create a new raster layer of the difference between the CHMs from 2 different years. 
 
-For more information on the vertical resolution, read the footnotes at the end of this lesson. 
+```javascript
 
-```
-var SRER_CHM2018 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
-  .filterDate('2018-01-01', '2018-12-31')
-  .filterBounds(mySite).first(); 
-
-var SRER_CHM2021 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
-  .filterDate('2021-01-01', '2021-12-31')
-  .filterBounds(mySite).first();
-
-var CHMdiff_2021_2018 = SRER_CHM2021.subtract(SRER_CHM2018);
-// print(CHMdiff_2021_2018)
-Map.addLayer(CHMdiff_2021_2018, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']},'CHM diff 2021-2018')
 ```
 
 <figure>
