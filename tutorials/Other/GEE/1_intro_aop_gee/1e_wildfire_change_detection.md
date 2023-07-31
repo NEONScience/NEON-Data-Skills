@@ -16,7 +16,9 @@ urlTitle: aop-gee-wildfire
 
 ---
 
-GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) datasets, as well as the Ecosystem Structure (CHM) data to look at interannual differences at the site SRER. We will discuss some of the acquisition parameters and other factors that affect data quality and interperatation.
+GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) data, as well as the Ecosystem Structure (Canopy Height Model - CHM) data to look at interannual differences at the NEON site <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountains (GRSM)</a>, where the <a href="https://www.nps.gov/grsm/learn/chimney-tops-2-fire.htm" target="_blank">Chimney Tops 2 Fire</a> broke out in late November 2016. NEON data over the GRSM site collected in June 2016 and October 2017 captures most of the burned area and presents a unique opportunity to study wildfire effects on the ecosystem, and post-wildfire vegetation recovery. In this lesson, we will calculate the difference Normalized Burn Index (dNBR) between 2017 and 2016, and also calculate the CHM difference raster to highlight the burn scar. We will also pull in Landsat Sattelite data and create a time-series of the NDVI data within the burn perimeter to look at annual differences.
+
+Using remote sensing data to better understand wildfire impacts is an active area of research. In April 2023, Park and Sim published an Open Access paper titled <a href="https://www.frontiersin.org/articles/10.3389/frsen.2023.1096000/full" target="_blank">Characterizing spatial burn severity patterns of 2016 Chimney Tops 2 fire using multi-temporal Landsat and NEON LiDAR data"</a>. We encourage you to read this paper for an example of related research using AOP and satellite data. This lesson provides an introduction to conducting this sort of analysis in Google Earth Engine.
 
 <div id="ds-objectives" markdown="1">
 
@@ -51,40 +53,13 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## Functions to Read in SDR and CHM Image Collections
 
-Let's get started. In this first chunk of code, we are setting the center location of SRER, reading in the SDR image collection, and then 
-creating a function to display the NIS image in GEE. Optionally, we've included lines of code that also calculate and display NDVI from 
+Let's get started. In this first chunk of code, we are setting the center location of GRSM, reading in the SDR image collection, and then 
+creating a function to display the NIS images from 2016, 2017, and 2021 in GEE. Optionally, we've included lines of code that also calculate and display NBR from 
 the SDR data, so you can uncomment this and run on your own, if you wish. For more details on how this function works, you can refer to 
-the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-functions" target="_blank">Intro to GEE Functions</a>.
+the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-functions" target="_blank">Functions in Google Earth Engine (GEE)</a>.
 
 ```javascript
-// Specify center location of SRER
-var mySite = ee.Geometry.Point([-110.83549, 31.91068])
 
-// Read in the SDR Image Collection
-var NISimages = ee.ImageCollection('projects/neon/DP3-30006-001_SDR')
-  .filterBounds(mySite)
-
-// Function to display NIS Image + NDVI
-function addNISImage(image) { 
-  var imageId = ee.Image(image.id); // get the system:id and convert to string
-  var sysID = ee.String(imageId.get("system:id")).getInfo();  // get the system:id - this is an object on the server
-  var fileName = sysID.slice(46,100); // extract the fileName (NEON domain + site code + product code + year)
-  var imageMasked = imageId.updateMask(imageId.gte(0.0000)) // mask out no-data values
-  var imageRGB = imageMasked.select(['band053', 'band035', 'band019']);  // select only RGB bands for display
-  
-  Map.addLayer(imageRGB, {min:2, max:20}, fileName, 0)   // add RGB composite to the map, 0 means it is deselected initially
-  
-  // uncomment the lines below to calculate NDVI from the SDR and display NDVI
-  // var nisNDVI =imageMasked.normalizedDifference(["band097", "band055"]).rename("ndvi") // band097 = NIR , band055 = red
-  // var ndviViz= {min:0.05, max:.95,palette:['brown','white','green']}
-  
-  // Map.addLayer(nisNDVI, ndviViz, "NDVI "+fileName, 0) // optionally add NDVI to the map
-}
-
-// call the addNISimages function to add SDR and NDVI layers to map
-NISimages.evaluate(function(NISimages) {
-  NISimages.features.map(addNISImage);
-})
 ```
 
 Next we can create a similar function for reading in the CHM dataset over all the years. The main differences between this function and the previous one are that 1) it is set to display a single band image, and 2) instead of hard-coding in the minimum and maximum values to display, we dynamically determine them from the data itself, so it will scale appropriately. Note that we can use the `.filterMetadata` property to select only the CHM data from the DEM image collection, since the CHM is stored in that collection, along with the DTM and DSM. 
