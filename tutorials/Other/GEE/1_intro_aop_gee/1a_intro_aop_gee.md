@@ -8,17 +8,17 @@ contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 20 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, camera, remote-sensing
-languageTool: GEE
+languageTool: GEE, JavaScript
 dataProduct: DP3.30006.001, DP3.30010.001, DP3.30015.001 DP3.30024.001
 code1: 
-tutorialSeries: 
+tutorialSeries: aop-gee2023
 urlTitle: intro-aop-gee-image-collections
 
 ---
 
 <div id="ds-introduction" markdown="1">
 
-Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of Spring 2023 are being added to Google Earth Engine with the plan to make them publicly available datasets. NEON will eventually add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. We do not currently have a time estimate for when all of the AOP data will be added to GEE, but we will be ramping up data additions in the second half of 2023. Please stay tuned for a <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank"> Data Notification</a> in June 2023 which will more officially announce the plan for adding AOP data to the Google Earth Engine public datasets.
+Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of Spring 2023 are being added to Google Earth Engine with the plan to make them publicly available datasets. NEON will eventually add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. We do not currently have a time estimate for when all of the AOP data will be added to GEE, but we will be ramping up data additions in the second half of 2023. Please stay tuned for a <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank"> Data Notification</a> in Summer-Fall 2023 which will more officially announce the plan for adding AOP data to the Google Earth Engine public datasets.
 
 <div id="ds-objectives" markdown="1">
 
@@ -34,8 +34,8 @@ And you will be able to:
 
 ## Requirements
  * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Select the "Use without a Cloud Project" option, to create a free non-commercial account. For more details, refer to <a href="[https://developers.google.com/earth-engine/guides/getstarted](https://earthengine.google.com/noncommercial/)" target="_blank">Noncommercial Earth Engine</a>
- * A basic understanding of the GEE code editor and the GEE JavaScript API.
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Select the "Use without a Cloud Project" option, to create a free non-commercial account. For more details, refer to <a href="https://earthengine.google.com/noncommercial/" target="_blank">Noncommercial Earth Engine</a>
+ * A basic understanding of the GEE Code Editor and the GEE JavaScript API.
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
@@ -44,11 +44,11 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 </div>
 
-## AOP GEE Data Availability & Access (as of May 2023)
+## AOP GEE Data Access
 
-AOP has currently added a subset of AOP Level 3 (mosaicked) data products at 8 NEON sites (as of May 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
+AOP has currently added a subset of AOP Level 3 (tiled) data products at over 10 NEON sites spanning 9 years (as of July 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
 
-The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-nonprod-earthengine` folder with an appended prefix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The tables below summarizes the prefixes to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will see how to access and read in these data products in the next part of this lesson. 
+The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The table below summarizes the IDs to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will learn how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Data Product      | Data Product ID (Prefix) |
 |----------|------------|-------------------------|
@@ -56,18 +56,6 @@ The NEON data products that have been made available on GEE can be currently be 
 | RGB | Red Green Blue (Camera Imagery) | DP3-30010-001 |
 | DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3-30024-001 |
 | CHM | Ecosystem Structure (Canopy Height Model; CHM) | DP3-30015-001 |
-
-The table below summarizes the sites, products, and years of NEON AOP data that can currently be accessed in GEE.
-
-| Domain | Site(s) | Years(s)      | Data Products        |
-|--------|------|------------|----------------------|
-| D01 | HARV | 2016, 2019 | SDR, RGB, CHM, DSM, DTM |
-| D07 | GRSM | 2016, 2017 | SDR, RGB, CHM, DSM, DTM |
-| D14 | JORN | 2019, 2021 | SDR, RGB, CHM, DSM, DTM|
-| D10 | CPER | 2020 | SDR, RGB, CHM, DSM, DTM|
-| D16 | ABBY | 2021 | SDR, RGB, CHM, DSM, DTM|
-| D17 | SJER, SOAP | 2019, 2021 | SDR, RGB, CHM, DSM, DTM |
-| D19 | HEAL | 2019, 2021 | SDR, RGB, CHM, DSM, DTM |
 
 ## Get Started with Google Earth Engine
 
@@ -130,14 +118,14 @@ You can click on the **IMAGES** tab to explore all the available NEON images for
 
 Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
 
-## Display All Images in a Collection
+## AOP GEE Data Availability
 
-Since we are rolling out the AOP data additions to GEE, the first thing you may want to do is see what datasets are currently available. A quick way to do this is using`.toList()`, as follows:
+Since we are adding AOP data to GEE on a rolling basis, the first thing you may want to do is see what datasets are currently available. A quick way to do this is shown below:
 
 ```javascript
 // list all available images in the NEON Surface Directional Reflectance (SDR) image collection:
-print('Images in the NEON SDR ImageCollection')
-print(sdrCol.toList(20));
+print('NEON Images in the SDR Collection',
+      sdrCol.aggregate_array('system:index'))
 ```
 
 In the **Console** tab to the right of the code, you will see a list of all available images. Expand the box to see the full path. The names of the all the SDR images follow the format `YEAR_SITE_VISIT_SDR`, so you can identify the site and year of data this way. AOP typically visits each site 3 out of every 4 years, so the visit number indicates the number of times AOP has visited that site. In some cases, AOP may re-visit a site twice in the same year.
@@ -146,6 +134,8 @@ In the **Console** tab to the right of the code, you will see a list of all avai
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG" alt="SDR Image List."></a>
 </figure>
+
+
 
 ## Explore Image Properties
 
@@ -185,7 +175,7 @@ Map.setCenter(-119.25, 37.06, 12);
 Map.addLayer(rgb, rgbVis, 'SOAP 2021 RGB Camera Imagery');
 ```
 
-When you run the code you should now see the map!
+When you run the code you should now see the true color images on the map! You can zoom in and out and explore some of the other interactive options on your own.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/soap_sdr_rgb.PNG">
@@ -196,8 +186,8 @@ When you run the code you should now see the map!
 
 You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP ImageCollection into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display available Images. Lastly, you learned to read in an individual SDR Image, and display a map of a true color image (RGB composite).
 
-It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is not as straightforward. One of the major challenges to working with AOP reflectance data is it's large data volume, which typcially requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with the data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, we have loaded spectral data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
+It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is not as straightforward. One of the major challenges to working with AOP reflectance data is it's large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/2a9d3100d0aba611dcf634e4eca8349c" target="_blank">Into to AOP GEE Image Collections</a>
+<a href="https://code.earthengine.google.com/ecacd918134114189cb68a139bb4d084" target="_blank">Into to AOP GEE Image Collections</a>
