@@ -194,76 +194,13 @@ print(chm_diff_hist_2021_2016);
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_map.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_map.png" alt="Geometry map"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/.png" alt="Histograms"></a>
 </figure>
 
-When you load in this geometry, you should see the `geometry` variable imported at the top of the code editor window, under Imports. It should look something like this:
+Take a minute to interpret what's going on here. 
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_import.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_import.PNG" alt="Geometry imported variable"></a>
-</figure>
-
-Once you have this geometry polygon variable set, you can run the following code to generate histograms of the CHM differences over this area.
-
-
-```javascript
-
-// read in CHMs from 2019 and 2017
-var SRER_CHM2019 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
-  .filterDate('2019-01-01', '2019-12-31')
-  .filterBounds(mySite).first();
-
-var SRER_CHM2017 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
-  .filterDate('2017-01-01', '2017-12-31')
-  .filterBounds(mySite).first();
-
-// calculate the CHM difference histograms (2021-2019 & 2019-2018)
-var CHMdiff_2021_2019 = SRER_CHM2021.subtract(SRER_CHM2019);
-var CHMdiff_2019_2018 = SRER_CHM2019.subtract(SRER_CHM2018);
-
-// Define the histogram charts for each CHM difference image, print to the console.
-var hist1 =
-    ui.Chart.image.histogram({image: CHMdiff_2021_2019, region: geometry, scale: 50})
-        .setOptions({title: 'CHM Difference Histogram, 2021-2019',
-                    hAxis: {title: 'CHM Difference (m)',titleTextStyle: {italic: false, bold: true},},
-                    vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
-print(hist1);
-
-var hist2 =
-    ui.Chart.image.histogram({image: CHMdiff_2019_2018, region: geometry, scale: 50})
-        .setOptions({title: 'CHM Difference Histogram, 2019-2018',
-                    hAxis: {title: 'CHM Difference (m)',titleTextStyle: {italic: false, bold: true},},
-                    vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
-print(hist2);
-
-var hist3 =
-    ui.Chart.image.histogram({image: CHMdiff_2021_2018, region: geometry, scale: 50})
-        .setOptions({title: 'CHM Difference Histogram, 2021-2018',
-                    hAxis: {title: 'CHM Difference (m)',titleTextStyle: {italic: false, bold: true},},
-                    vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
-print(hist3);
-```
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2019.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2019.png" alt="CHM difference histogram 2021-2019"></a>
-</figure>
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2019_2018.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2019_2018.png" alt="CHM difference histogram 2019-2018"></a>
-</figure>
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2018.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_hist_2021_2018.png" alt="CHM difference histogram 2021-2018"></a>
-</figure>
-
-Let's take a minute to understand what's going on here. In each case, we subtracted the earlier year from the later year. So from 2019 to 2021, it looks like the vegetation grew on average by ~0.6m, but from 2018 to 2019 it shrunk by the same amount. This is because in 2021 there was a lower vertical cutoff, so shrubs of at least 0.67m were resolved, where before anything below 2m was obscured. These low shrubs are likely the dominant source of the change we're seeing. We can see the same pattern, but in reverse between 2018 and 2019. The difference histogram from 2021 to 2018 more accurately represents the change, which is centered around 0, and the map we displayed shows local changes in certain areas, related to actual vegetation growth and ecological drivers. Note that 2021 was a particularly wet year, and AOP's flight was in optimal peak greenness, as you can see when comparing the SDR imagery to earlier years.
-
-## NDVI Time Series
+## Normalized Burn Ratio (NBR)
 
 Last but not least, we can take a quick look at NDVI changes over the four years of data. A quick way to look at the interannual changes are to make a line plot, which we'll do shortly. First let's take a step back and see the weather conditions during the collections. For every mission, the AOP flight operators assess the cloud conditions and note whether the cloud clover is <10% (green), 10-50% (yellow), or >50% (red). This information gets passed through to the reflectance hdf5 data, and is also available in the summary metadata documents, delivered with all the spectrometer data products. The weather conditions have direct implications for data quality, and while we strive to collect data in "green" weather conditions, it is not always possible, so the user must take this into consideration when working with the data.
 
