@@ -89,19 +89,19 @@ the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutoria
 
 ```javascript
 // Function to display individual (yearly) SDR Images
-function addNISImage(image) { 
-  var imageId = ee.Image(image.id); // get the system:id and convert to string
-  var sysID = ee.String(imageId.get("system:id")).getInfo();  // get the system:id - this is an object on the server
-  var fileName = sysID.slice(52,100); // extract the fileName (NEON domain + site code + product code + year)
-  var imageMasked = imageId.updateMask(imageId.gte(0.0000)) // mask out no-data values
-  var imageRGB = imageMasked.select(['B053', 'B035', 'B019']);  // select only RGB bands for display
+function addSDRImage(image) { 
+  var image_id = ee.Image(image.id); // get the system:id and convert to string
+  var sys_id = ee.String(imageId.get("system:id")).getInfo();  // get the system:id - this is an object on the server
+  var filename = sys_id.slice(52,100); // extract the fileName (NEON domain + site code + product code + year)
+  var image_masked = image_id.updateMask(image_id.gte(0.0000)) // mask out no-data values
+  var image_rgb = image_masked.select(['B053', 'B035', 'B019']);  // select only RGB bands for display
   
-  Map.addLayer(imageRGB, {min:220, max:1600}, fileName, 1)   // add RGB composite to the map
+  Map.addLayer(image_rgb, {min:220, max:1600}, fileName, 1)   // add RGB composite to the map
 }
 
 // call the addNISimages function to add SDR layers to map
 sdr_col.evaluate(function(sdr_col) {
-  sdr_col.features.map(addNISImage);
+  sdr_col.features.map(addSDRImage);
 })
 ```
 
