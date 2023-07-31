@@ -53,32 +53,74 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## Functions to Read in SDR and CHM Image Collections
 
-Let's get started. In this first chunk of code, we are setting the center location of GRSM, reading in the SDR image collection, and then 
-creating a function to display the NIS images from 2016, 2017, and 2021 in GEE. Optionally, we've included lines of code that also calculate and display NBR from 
-the SDR data, so you can uncomment this and run on your own, if you wish. For more details on how this function works, you can refer to 
+Let's get started. The code in the beginning of this lesson should look familiar from the previous tutorials in this series. In this first chunk of code, we will the center location of GRSM, and read in the fire perimeter as a FeatureCollection.
+
+```javascript
+// Specify center location and flight box for GRSM (https://www.neonscience.org/field-sites/grsm)
+var site_center = ee.Geometry.Point([-83.5, 35.7])
+
+// Read in the Chimney Tops fire perimeter shapefile
+var ct_fire_boundary = ee.FeatureCollection('projects/neon-sandbox-dataflow-ee/assets/chimney_tops_fire')
+```
+
+Next, we'll read in the SDR image collection, and then write a function to mask out the cloudy weather data, and use the `map` feature to apply this to our SDR collection at GRSM. 
+
+```javascript
+// Read in the SDR Image Collection at GRSM
+var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+  .filterBounds(site_center)
+  
+// Function to mask out poor-weather data, keeping only the <10% cloud cover weather data
+function clearSDR(image) { 
+  // create a single band Weather Quality QA layer 
+  var weather_qa = image.select(['Weather_Quality_Indicator']);
+  // WEATHER QUALITY INDICATOR = 1 is < 10% CLOUD COVER
+  var clear_qa = weather_qa.eq(1);
+  // mask out all cloudy pixels from the SDR image
+  return image.updateMask(clear_qa);
+}
+
+// Use map to apply the clearSDR function to the SDR collection and return a clear-weather subset of the data
+var sdr_cloudfree = sdr_col.map(clearSDR)
+```
+
+Next let's write a function to display the NIS images from 2016, 2017, and 2021 in GEE. For more details on how this function works, you can refer to 
 the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-functions" target="_blank">Functions in Google Earth Engine (GEE)</a>.
 
 ```javascript
+// Function to display individual (yearly) SDR Images
+function addNISImage(image) { 
+  var imageId = ee.Image(image.id); // get the system:id and convert to string
+  var sysID = ee.String(imageId.get("system:id")).getInfo();  // get the system:id - this is an object on the server
+  var fileName = sysID.slice(52,100); // extract the fileName (NEON domain + site code + product code + year)
+  var imageMasked = imageId.updateMask(imageId.gte(0.0000)) // mask out no-data values
+  var imageRGB = imageMasked.select(['B053', 'B035', 'B019']);  // select only RGB bands for display
+  
+  Map.addLayer(imageRGB, {min:220, max:1600}, fileName, 1)   // add RGB composite to the map
+}
 
+// call the addNISimages function to add SDR layers to map
+sdr_col.evaluate(function(sdr_col) {
+  sdr_col.features.map(addNISImage);
+})
 ```
 
 Next we can create a similar function for reading in the CHM dataset over all the years. The main differences between this function and the previous one are that 1) it is set to display a single band image, and 2) instead of hard-coding in the minimum and maximum values to display, we dynamically determine them from the data itself, so it will scale appropriately. 
 
 ```javascript
-// Read in only the CHM Images (using .filterMetadata by Type)
-var CHMimages =  ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
-  .filterBounds(mySite)
-  .filterMetadata('Type','equals','CHM')
+// Read in the CHM Image collection at GRSM
+var chm_col =  ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015-001')
+  .filterBounds(site_center)
 
 // Function to display Single Band Images setting display range to linear 2%
 function addSingleBandImage(image) { // display each image in collection
   var imageId = ee.Image(image.id); // get the system:id and convert to string
   var sysID = ee.String(imageId.get("system:id")).getInfo(); 
-  var fileName = sysID.slice(46,100); // extract the fileName (NEON domain + site code + product code + year)
+  var fileName = sysID.slice(52,100); // extract the fileName (NEON domain + site code + product code + year)
   // print(fileName) // optionally print the filename, this will be the name of the layer
   
-  // dynamically determine the range of data to display
-  // sets color scale to show all but lowest/highest 2% of data
+  // Dynamically determine the range of data to display
+  // Sets color scale to show all but lowest/highest 2% of data
   var pctClip = imageId.reduceRegion({
     reducer: ee.Reducer.percentile([2, 98]),
     scale: 10,
@@ -90,20 +132,20 @@ function addSingleBandImage(image) { // display each image in collection
     
   var imageDisplay = imageId.updateMask(imageId.gte(0.0000));
   Map.addLayer(imageDisplay, {min:pct02, max:pct98}, fileName, 0)
-// print(image)
 }
 
-// call the addSingleBandImage function to add CHM layers to map 
-// you could also add all DEM images (DSM/DTM/CHM) but for now let's just add CHM
-CHMimages.evaluate(function(CHMimages) {
-  CHMimages.features.map(addSingleBandImage);
+// Call the addSingleBandImage function to add CHM layers to map 
+// You could also add all DEM images (DSM/DTM/CHM) but for now let's just add CHM
+chm_col.evaluate(function(chm_col) {
+  chm_col.features.map(addSingleBandImage);
 })
 
-// Center the map on SRER and set zoom level
-Map.setCenter(-110.83549, 31.91068, 11);
+// Center the map on GRSM and set zoom level to 12
+Map.setCenter(-83.5, 35.6, 12);
+})
 ```
 
-Now that you've read in these two datasets over all the years, we encourage you to explore the different layers and see if you notice any patterns! 
+Now that you've read in these two datasets (SDR and CHM) over all the years of available data, we encourage you to explore the different layers and see what you notice! 
 
 ## Creating CHM Difference Layers
 
