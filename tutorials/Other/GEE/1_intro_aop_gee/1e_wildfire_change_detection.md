@@ -139,49 +139,59 @@ grsm_chm_col.evaluate(function(grsm_chm_col) {
 Map.setCenter(-83.5, 35.6, 12);
 ```
 
-Now that you've read in these two datasets (SDR and CHM) over all the years of available data, we encourage you to explore the different layers and see what you notice! 
+Now that you've read in these two datasets (SDR and CHM) over all the years of available data, we encourage you to explore the different layers and see what you notice! Toggle between the layers, play with the opacity. Visual inspection is an important first step in exploratory analysis - see if you can recognize patterns and form new questions based off what you see.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_2017_grsm.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_2017_grsm.png" alt="CHM at GRSM in 2017"></a>
-</figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1f_grsm_wildfire/grsm_chm_2017.png" alt="CHM at GRSM in 2017"></a>
 
-## Creating CHM Difference Layers
+
+## CHM Difference Layers
 
 Next let's create a new raster layer of the difference between the CHMs from 2 different years. 
 
 ```javascript
+// Difference the CHMs from 2017 and 2016 and 2021
+var grsm_chm2021 = grsm_chm_col.filterDate('2021-01-01', '2021-12-31').first();
+var grsm_chm2017 = grsm_chm_col.filterDate('2017-01-01', '2017-12-31').first();
+var grsm_chm2016 = grsm_chm_col.filterDate('2016-01-01', '2016-12-31').first();
 
+// Subtract the CHMs to create difference CHM rasters
+var chm_diff_2017_2016 = grsm_chm2017.subtract(grsm_chm2016);
+var chm_diff_2021_2017 = grsm_chm2021.subtract(grsm_chm2017);
+var chm_diff_2021_2016 = grsm_chm2021.subtract(grsm_chm2016);
+
+// Display the first CHM difference raster (2017-2016) and add as a layer to the Map
+print('CHM Difference 2017-2016',chm_diff_2017_2016)
+
+Map.addLayer(chm_diff_2017_2016, {min: -10, max: 10, palette: dchm_palette}, 'CHM diff 2017-2016');
 ```
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018.png" alt="CHM difference map, 2021-2018"></a>
-</figure>
-
-You can see some broad differences, but there also appear to be some noisy artifacts. We can smooth out some of this noise by using a spatial filter.
-
-```
-// Smooth out the difference raster (filter out high-frequency patterns)
-// Define a boxcar or low-pass kernel.
-var boxcar = ee.Kernel.square({
-  radius: 1.5, units: 'pixels', normalize: true
-});
-
-// Smooth the image by convolving with the boxcar kernel.
-var smooth = CHMdiff_2021_2018.convolve(boxcar);
-Map.addLayer(smooth, {min: -1, max: 1, palette: ['#FF0000','#FFFFFF','#008000']}, 'CHM diff, smoothed');
-```
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/chm_diff_map_2021_2018_smoothed.PNG" alt="CHM difference map, 2021-2018 smoothed"></a>
-</figure>
 
 ## CHM Difference Histograms
 
-Next let's plot histograms of the CHM differences, between 2021-2018 as well as between 2021-2019 and 2019-2018. For this example, we'll just look at the values over a small area of the site. Looking at these 3 sets of years, we will see some of the artifacts related to the lidar sensor used (Riegl Q780 or Optech Gemini). If you didn't know about the differences between the sensors, it would look like the canopy was growing and shrinking from year to year.
+Next let's plot histograms of the CHM differences between the different years.
 
-Before running this chunk of code, you'll need to create a polygon of a region of interest. For this example, I selected a region in the center of the map, shown below, although you can select any region within the site. To create the polygon, select the rectangle out of the shapes in the upper left corner of the map window (hovering over it should say "Draw a rectangle"). Then drag the cursor over the area you wish to cover.
+```javascript
+// Function to create histogram charts for each CHM difference layer, clipped by the chimney tops fire perimeter
+function chmDiffHist(img,years_str) { 
+  var hist =
+      ui.Chart.image.histogram({image: img.clip(ct_fire_boundary), region: ct_fire_boundary, scale: 50})
+          .setOptions({title: 'CHM Difference Histogram ' + years_str,
+                      hAxis: {title: 'CHM Difference (m)',titleTextStyle: {italic: false, bold: true},},
+                      vAxis: {title: 'Count', titleTextStyle: {italic: false, bold: true}},});
+  return hist
+}
+
+// Apply the function to the three CHM difference rasters
+var chm_diff_hist_2017_2016 = chmDiffHist(chm_diff_2017_2016,'2017-2016')
+var chm_diff_hist_2021_2016 = chmDiffHist(chm_diff_2021_2016,'2021-2016')
+var chm_diff_hist_2021_2017 = chmDiffHist(chm_diff_2021_2017,'2021-2017')
+
+// Display the CHM difference histograms charts on the Console
+print(chm_diff_hist_2017_2016);
+print(chm_diff_hist_2021_2017);
+print(chm_diff_hist_2021_2016);
+```
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/geometry_map.png">
