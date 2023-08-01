@@ -191,7 +191,9 @@ print('Mean dCHM 2021-2016',chm_diff_2021_2016.reduceRegion({
       scale: 30}));
 ```
 
-To plot histograms, first write a function to create a histogram given a difference CHM raster (calculated above) and a string of the years that are being differenced, as inputs.
+In the console, if you expand the objects, you can see that from 2016-2017, there was a net loss in canopy height of ~6.6m, and between 2017-2021 there was a net growth of ~3m, suggesting a considerable amount of re-growth in the 5 years after the fire.
+
+We can also look at the histograms of the CHM differences to provide a little more information about the ecosystem structure dynamics immediately after the fire and in the subsequent years. To plot histograms, first write a function to create a histogram given a difference CHM raster (calculated above) and a string of the years that are being differenced, as inputs. The string is just used to include in the histogram chart title.
 
 ```javascript
 // Function to create histogram charts for each CHM difference layer, clipped by the chimney tops fire perimeter
