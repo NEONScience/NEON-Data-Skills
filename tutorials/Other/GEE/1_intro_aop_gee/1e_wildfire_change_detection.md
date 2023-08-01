@@ -224,7 +224,7 @@ Take a minute to interpret what's going on here.
 
 ## Normalized Burn Ratio (NBR)
 
-Last but not least, we can take a quick look at the NBR and dNBR. 
+Last but not least, we can take a quick look at the NBR and dNBR. Refer to the <a href="https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-modis/normalized-burn-index-dNBR" target="_blank">CU Earth Lab dNBR Lesson</a> for a nice explanation of this metric in the context of multispectral satellite data.
 
 ```javascript
 // Read in clear SDR images at GRSM in 2016, 2017, and 2021 
@@ -233,9 +233,7 @@ var grsm_sdr2017_clear = grsm_sdr_cloudfree.filterDate('2017-01-01', '2017-12-31
 var grsm_sdr2021_clear = grsm_sdr_cloudfree.filterDate('2021-01-01', '2021-12-31').first();
   
 //------------------------- Normalized Difference Burn Ratio ----------------------------
-// NBR is a metric to better understand fire extent and severity when used after calculating the difference between pre and post fire conditions.
-// See https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-modis/normalized-burn-index-dNBR for a nice lesson on this.
-// The normalized burn ratio (NBR) is a normalized difference index using the shortwave-infrared (SWIR) and near-infrared (NIR) portions of the electromagnetic spectrum.
+// The normalized burn ratio (NBR) is a normalized difference index using the shortwave-infrared (SWIR) and near-infrared (NIR) portions of the electromagnetic spectrum. dNBR can be used as a metric to map fire extent and burn severity when calculating the difference between pre and post fire conditions.
 
 // calculate NBR for the 3 years
 // B097: B365: 
@@ -262,15 +260,8 @@ Map.addLayer(sdr_dNBR_2016_2017, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR
 Map.addLayer(sdr_dNBR_2016_2021, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR 2016-2021');
 ```
 
-On your own, we encourage you to dig into the code from this tutorial and modify according to your scientific interests. Think of some questions you have about this dataset, and modify these functions or try writing your own function to answer your question. For example, try out a different reducer, repeat the plots for different areas of the site, and see if there are any other datasets that you could bring in to help you with your analysis. You can also pull in satellite data and see how the NEON data compares. This is just the starting point!
+On your own, we encourage you to dig into the code from this tutorial and expand upon it according to your scientific interests. Think of some questions you have about this dataset and think about how you might answer it using GEE. Modify these functions or try writing your own function to answer your question(s). For example, try out different reducers to compile other statistis abou the CHM and NBR differences, or see if there are any other datasets that you could bring in to expand your analysis. This is just the starting point!
 
 ## Get Lesson Code
 
 <a href="https://code.earthengine.google.com/8a8ee1c359d14c6c2413b6483a2b1615" target="_blank">Wildfire Change Analysis</a>
-
-
-### Footnotes
-
-- To download the metadata documentation without downloading all the data products, you can go through the process of downloading the data product, and when you get to the files, select only the ".pdf" extension. The Algorithm Theoretical Basis Documents (ATBDs), which can be downloaded either from the data product information page or from the data portal, also discuss the uncertainty and important information pertaining to the data.
-- The vertical resolution is related to the outgoing pulse width of the lidar system. Optech Gemini has a 10ns outgoing pulse, while the Riegl Q780 and Optech Galaxy Prime sensors have a 3ns outgoing pulse width. At the nominal flying altitude of 1000m AGL, 10ns translates to a range resolution of ~2m, while 3ns corresponds to 2/3m. 
-- From 2021 onward, all NEON lidar collections have the improved vertical resolution of .67m, as NEON started operating the Optech Galaxy Prime, which replaced one of the Optech Gemini sensors. This has a 3ns outgoing pulse width, matching the Riegl Q780 system.
