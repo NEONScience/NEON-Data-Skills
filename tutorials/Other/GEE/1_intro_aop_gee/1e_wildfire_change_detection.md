@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: d98dbad4b55b45a79a62bad1d25333fb
 title: "Wildfire Analysis Using AOP SDR and CHM Data in GEE"
 description: "Explore pre- and post- wildfire imagery at GRSM, looking at differences in canopy height and Normalize Burn Ratio"
 dateCreated: 2023-07-29
