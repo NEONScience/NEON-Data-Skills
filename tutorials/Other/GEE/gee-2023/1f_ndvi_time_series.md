@@ -39,7 +39,6 @@ If this is your first time using GEE, we recommend starting on the Google Develo
  * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine  </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
  * <a href="https://developers.google.com/earth-engine/guides/charts_image_collection" target="_blank"> GEE Charts Image Collection </a>
- * <a href="https://developers.google.com/earth-engine/guides/reducers_intro" target="_blank"> GEE Reducers </a>
 
 </div>
 
@@ -60,4 +59,89 @@ var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-3000
 var l8sr = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
                 .filterBounds(roi)
                 .filter(ee.Filter.calendarRange(2016, 2022, 'year'));
+```
+
+```javascript
+// cloud masking function for Landsat 8 collection 2 is on GitHub under examples
+// https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js 
+function maskL8sr(image) {
+
+  var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
+  var saturationMask = image.select('QA_RADSAT').eq(0);
+
+  // Apply the scaling factors to the appropriate bands.
+  var opticalBands = image.select('SR_B.').multiply(0.0000275).add(-0.2);
+  var thermalBands = image.select('ST_B.*').multiply(0.00341802).add(149.0);
+
+  // Replace the original bands with the scaled ones and apply the masks.
+  return image.addBands(opticalBands, null, true)
+      .addBands(thermalBands, null, true)
+      .updateMask(qaMask)
+      .updateMask(saturationMask);
+}
+
+// Apply the cloud masking function
+l8sr = l8sr.filterBounds(roi).map(maskL8sr)
+```
+
+Next we can do a trick to plot the two datasets on the same chart. This was modified from https://stackoverflow.com/questions/64776217/how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on).
+
+```javascript
+// compute ndvi bands to add to each collection
+var addL8Bands = function(image){
+  var l8_ndvi = image.normalizedDifference(['SR_B5','SR_B4']).rename('l8_ndvi')
+  var aop_ndvi = ee.Image().rename('aop_ndvi') 
+  return image.addBands(l8_ndvi).addBands(aop_ndvi)
+}
+
+var addAOPBands = function(image){
+  var aop_ndvi = image.normalizedDifference(['B097', 'B055']).rename('aop_ndvi')
+  var l8_ndvi = ee.Image().rename('l8_ndvi') 
+  return image.addBands(aop_ndvi).addBands(l8_ndvi)
+}
+
+l8sr = l8sr.map(addL8Bands)
+sdr_col = sdr_col.map(addAOPBands)
+
+print('NIS Images',sdr_col)
+
+// merge the collections
+var merged = l8sr.merge(sdr_col).select(['l8_ndvi', 'aop_ndvi'])
+```
+
+Lastly we can create the time-series chart. Most of this is just setting the chart style.
+
+```javascript
+// Set chart style properties.
+// https://developers.google.com/earth-engine/guides/charts_style
+var chartStyle = {
+  title: 'NDVI at Chimney Tops Fire ROI - AOP + Landsat 8',
+  hAxis: {
+    title: 'Date',
+    titleTextStyle: {italic: false, bold: true},
+    gridlines: {color: 'FFFFFF'}
+  },
+  vAxis: {
+    title: 'Mean NDVI',
+    titleTextStyle: {italic: false, bold: true},
+    gridlines: {color: 'FFFFFF'},
+    format: 'short',
+    baselineColor: 'FFFFFF'
+  },
+  series: {
+    0: {lineWidth: 3, color: 'E37D05', pointSize: 7},
+    1: {lineWidth: 3, color: '1D6B99'}
+  },
+  chartArea: {backgroundColor: 'EBEBEB'}
+};
+
+// Plot the merged (AOP + Landsat 8) Image Collection NDVI Time Series
+var ndvi_timeseries = ui.Chart.image.series({
+  imageCollection: merged,
+  region: roi,
+  reducer: ee.Reducer.mean(),
+  scale: 30 // 	Scale to use with the reducer in meters
+}).setOptions(chartStyle);
+
+print(ndvi_timeseries)
 ```
