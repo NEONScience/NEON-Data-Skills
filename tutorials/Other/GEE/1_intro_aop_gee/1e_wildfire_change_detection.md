@@ -1,10 +1,10 @@
 ---
 syncID: 
-title: "Wildfire Change Detection Using AOP SDR and CHM Data in GEE"
-description: ""
+title: "Wildfire Analysis Using AOP SDR and CHM Data in GEE"
+description: "Explore pre- and post- wildfire imagery at GRSM, looking at differences in canopy height and Normalize Burn Ratio"
 dateCreated: 2023-07-29
-authors: Bridget M. Hass, John Musinsky
-contributors: Tristan Goulden, Lukas Straube
+authors: Bridget M. Hass, John Musinsky, Stepan Bryleev
+contributors: Tristan Goulden
 estimatedTime: 45 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, canopy height, remote-sensing
@@ -267,8 +267,10 @@ Map.addLayer(sdr_dNBR_2016_2021, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_dnbr_2016-2017.png" alt="GRSM dNBR 2016-2017"></a>
 </figure>
 
+The differenced Normalized Burn Ratio (dNBR) does a great job of highlighting the burned areas (in red).
+
 On your own, we encourage you to dig into the code from this tutorial and expand upon it according to your scientific interests. Think of some questions you have about this dataset and think about how you might answer it using GEE. Modify these functions or try writing your own function to answer your question(s). For example, try out different reducers to compile other statistis abou the CHM and NBR differences, or see if there are any other datasets that you could bring in to expand your analysis. This is just the starting point!
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/8a8ee1c359d14c6c2413b6483a2b1615" target="_blank">Wildfire Change Analysis</a>
+<a href="https://code.earthengine.google.com/a22913d3a125580b5a9218e0675c4528" target="_blank">Wildfire Change Analysis</a>
