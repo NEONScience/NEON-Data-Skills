@@ -142,9 +142,9 @@ Map.setCenter(-83.5, 35.6, 12);
 Now that you've read in these two datasets (SDR and CHM) over all the years of available data, we encourage you to explore the different layers and see what you notice! Toggle between the layers, play with the opacity. Visual inspection is an important first step in exploratory analysis - see if you can recognize patterns and form new questions based off what you see.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1f_grsm_wildfire/grsm_chm_2017.png" alt="CHM at GRSM in 2017"></a>
-
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/aop-gee/1f_grsm_wildfire/grsm_chm_2017.png" alt="CHM at GRSM in 2017"></a>
+</figure>
 
 ## CHM Difference Layers
 
@@ -194,8 +194,8 @@ print(chm_diff_hist_2021_2016);
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/.png" alt="Histograms"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG" alt="CHM Difference Histograms"></a>
 </figure>
 
 Take a minute to interpret what's going on here. 
