@@ -145,3 +145,5 @@ var ndvi_timeseries = ui.Chart.image.series({
 
 print(ndvi_timeseries)
 ```
+
+This figure highlights some important points. While the Airborne Observation Platform seeks to collect data in Peak Greenness (when vegetation is most photosynthetically active), this is not always possible due to logistical or other constraints. In this case, one of the collections was in October, past peak-greenness and the leaves already started senescing in some areas. Generating a plot like this can help highlight the data in the context of the larger temporal trends. This brings us to the second point, which is that while AOP data has very high spectral (426 bands) and spatial (1m) resolution, the temporal resolution (annual or bi-annual) may not be sufficient for your research needs. This is where scaling with satellite data - either to look at a larger area, or more frequent sampling - can be very powerful! This is just a short example of one way to do this, but hopefully this demonstrates that GEE makes this sort of scalable analysis much simpler! 
