@@ -218,7 +218,7 @@ print(chm_diff_hist_2021_2016);
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG" alt="CHM Difference Histograms"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG" width=300 alt="CHM Difference Histograms"></a>
 </figure>
 
 Take a minute to interpret what's going on here. 
