@@ -143,7 +143,7 @@ Now that you've read in these two datasets (SDR and CHM) over all the years of a
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1f_grsm_wildfire/grsm_chm_2017.png" alt="CHM at GRSM in 2017"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png" alt="GRSM 2017 CHM with Chimney Tops Fire Perimeter"></a>
 </figure>
 
 ## CHM Difference Layers
