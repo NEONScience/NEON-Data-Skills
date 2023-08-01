@@ -24,14 +24,13 @@ Using remote sensing data to better understand wildfire impacts is an active are
 
 ## Objectives
 After completing this activity, you will be able to:
- * Write GEE functions to display map images of AOP SDR, NDVI, and CHM data.
- * Create chart images (histogram and line graphs) to summarize data over an area.
- * Understand how acquisition parameters may affect the interpretation of data.
- * Understand how weather conditions during acquisition may affect reflectance data quality.
+ * Write GEE functions to display map images of AOP SDR and CHM data.
+ * Use reducers to calculate statistics over an area.
+ * Conduct exploratory analysis in GEE to understand wildfire dynamics.
 
 You will gain familiarity with:
  * User-defined GEE functions
- * The GEE charting functions (<a href="https://developers.google.com/earth-engine/guides/charts_image" target="_blank">ui.Chart.image</a>)
+ * Zonal statistics
 
 ## Requirements
  * A gmail (@gmail.com) account
