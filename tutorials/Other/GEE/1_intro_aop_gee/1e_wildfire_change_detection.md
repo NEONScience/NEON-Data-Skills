@@ -18,7 +18,7 @@ urlTitle: aop-gee-wildfire
 
 GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) data, as well as the Ecosystem Structure (Canopy Height Model - CHM) data to look at interannual differences at the NEON site <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountains (GRSM)</a>, where the <a href="https://www.nps.gov/grsm/learn/chimney-tops-2-fire.htm" target="_blank">Chimney Tops 2 Fire</a> broke out in late November 2016. NEON data over the GRSM site collected in June 2016 and October 2017 captures most of the burned area and presents a unique opportunity to study wildfire effects on the ecosystem and analysis of post-wildfire vegetation recovery. In this lesson, we will calculate the differenced Normalized Burn Ratio (dNBR) between 2017 and 2016, and also create a CHM difference raster to highlight vegetation structure differences in the burned area. We will also pull in Landsat satellite data and create a time-series of the NBR within the burn perimeter to look at annual differences.
 
-Using remote sensing data to better understand wildfire impacts is an active area of research. In April 2023, Park and Sim published an Open Access paper titled <a href="https://www.frontiersin.org/articles/10.3389/frsen.2023.1096000/full" target="_blank">Characterizing spatial burn severity patterns of 2016 Chimney Tops 2 fire using multi-temporal Landsat and NEON LiDAR data"</a>. We encourage you to read this paper for an example of wildfire research using AOP remote sensing and satellite data. This lesson provides an introduction to conducting this sort of analysis in Google Earth Engine.
+Using remote sensing data to better understand wildfire impacts is an active area of research. In April 2023, Park and Sim published an Open Access paper titled "<a href="https://www.frontiersin.org/articles/10.3389/frsen.2023.1096000/full" target="_blank">Characterizing spatial burn severity patterns of 2016 Chimney Tops 2 fire using multi-temporal Landsat and NEON LiDAR data</a>". We encourage you to read this paper for an example of wildfire research using AOP remote sensing and satellite data. This lesson provides an introduction to conducting this sort of analysis in Google Earth Engine.
 
 <div id="ds-objectives" markdown="1">
 
@@ -221,7 +221,7 @@ print(chm_diff_hist_2021_2016);
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG" width=300 alt="CHM Difference Histograms"></a>
 </figure>
 
-Take a minute to interpret what's going on here. 
+On your own, try to interpret what these difference histograms are showing.
 
 ## Normalized Burn Ratio (NBR)
 
