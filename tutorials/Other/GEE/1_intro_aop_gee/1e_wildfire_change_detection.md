@@ -142,8 +142,8 @@ Map.setCenter(-83.5, 35.6, 12);
 Now that you've read in these two datasets (SDR and CHM) over all the years of available data, we encourage you to explore the different layers and see what you notice! Toggle between the layers, play with the opacity. Visual inspection is an important first step in exploratory analysis - see if you can recognize patterns and form new questions based off what you see.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/graphics/aop-gee/1f_grsm_wildfire/grsm_chm_2017.png" alt="CHM at GRSM in 2017"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1f_grsm_wildfire/grsm_chm_2017.png" alt="CHM at GRSM in 2017"></a>
 </figure>
 
 ## CHM Difference Layers
@@ -167,9 +167,31 @@ print('CHM Difference 2017-2016',chm_diff_2017_2016)
 Map.addLayer(chm_diff_2017_2016, {min: -10, max: 10, palette: dchm_palette}, 'CHM diff 2017-2016');
 ```
 
-## CHM Difference Histograms
+### CHM Difference Stats and Histograms
 
-Next let's plot histograms of the CHM differences between the different years.
+Next let's calculate the mean difference in Canopy Height inside the fire perimeter for the various years. We'll also plot histograms of the CHM differences.
+
+```javascript
+// Calculate the mean dCHM between the various years:
+print('Mean dCHM in the Chimney Tops Fire Perimeter')
+
+print('Mean dCHM 2017-2016',chm_diff_2017_2016.reduceRegion({
+      reducer: ee.Reducer.mean(),
+      geometry: ct_fire_boundary,
+      scale: 30}));
+      
+print('Mean dCHM 2021-2017',chm_diff_2021_2017.reduceRegion({
+      reducer: ee.Reducer.mean(),
+      geometry: ct_fire_boundary,
+      scale: 30}));
+      
+print('Mean dCHM 2021-2016',chm_diff_2021_2016.reduceRegion({
+      reducer: ee.Reducer.mean(),
+      geometry: ct_fire_boundary,
+      scale: 30}));
+```
+
+To plot histograms, first write a function to create a histogram given a difference CHM raster (calculated above) and a string of the years that are being differenced, as inputs.
 
 ```javascript
 // Function to create histogram charts for each CHM difference layer, clipped by the chimney tops fire perimeter
@@ -202,52 +224,49 @@ Take a minute to interpret what's going on here.
 
 ## Normalized Burn Ratio (NBR)
 
-Last but not least, we can take a quick look at NDVI changes over the four years of data. A quick way to look at the interannual changes are to make a line plot, which we'll do shortly. First let's take a step back and see the weather conditions during the collections. For every mission, the AOP flight operators assess the cloud conditions and note whether the cloud clover is <10% (green), 10-50% (yellow), or >50% (red). This information gets passed through to the reflectance hdf5 data, and is also available in the summary metadata documents, delivered with all the spectrometer data products. The weather conditions have direct implications for data quality, and while we strive to collect data in "green" weather conditions, it is not always possible, so the user must take this into consideration when working with the data.
-
-The figure below shows the weather conditions at SRER for each of the 4 collections. In 2017 and 2021, the full site was collected in <10% cloud conditions, while in 2018 and 2019 there were mixed weather conditions. However, for all four years, the center of the site was collected in optimal cloud conditions.
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/srer_weather_conditions_2017-2021.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/srer_weather_conditions_2017-2021.PNG" alt="SRER weather conditions 2017-2021"></a>
-</figure>
-
-With this in mind, let's use the same geometry we used before, centered in the middle of the plot, to look at the mean NDVI over the four years in a small part of the site. Here's the GEE code for doing this:
+Last but not least, we can take a quick look at the NBR and dNBR. 
 
 ```javascript
-// calculate NDVI for the geometry
-var ndvi = NISimages.map(function(image) {
-    var ndviClip = image.clip(geometry)
-    return ndviClip.addBands(ndviClip.normalizedDifference(["band097", "band055"]).rename('NDVI'))
-});
+// Read in clear SDR images at GRSM in 2016, 2017, and 2021 
+var grsm_sdr2016_clear = grsm_sdr_cloudfree.filterDate('2016-01-01', '2016-12-31').first()
+var grsm_sdr2017_clear = grsm_sdr_cloudfree.filterDate('2017-01-01', '2017-12-31').first();
+var grsm_sdr2021_clear = grsm_sdr_cloudfree.filterDate('2021-01-01', '2021-12-31').first();
+  
+//------------------------- Normalized Difference Burn Ratio ----------------------------
+// NBR is a metric to better understand fire extent and severity when used after calculating the difference between pre and post fire conditions.
+// See https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-modis/normalized-burn-index-dNBR for a nice lesson on this.
+// The normalized burn ratio (NBR) is a normalized difference index using the shortwave-infrared (SWIR) and near-infrared (NIR) portions of the electromagnetic spectrum.
 
-// Create a time series chart, with image, geometry & median reducer
-var plotNDVI = ui.Chart.image.seriesByRegion(ndvi, geometry, ee.Reducer.median(), 
-              'NDVI', 100, 'system:time_start') // band, scale, x-axis property
-              .setChartType('LineChart').setOptions({
-                title: 'Median NDVI for Selected Geometry',
-                hAxis: {title: 'Date'},
-                vAxis: {title: 'NDVI'},
-                legend: {position: "none"},
-                lineWidth: 1,
-                pointSize: 3
-});
+// calculate NBR for the 3 years
+// B097: B365: 
+var sdr_pre_nbr_2016 = grsm_sdr2016_clear.normalizedDifference(['B097', 'B365']);
+var sdr_post_nbr_2017 = grsm_sdr2017_clear.normalizedDifference(['B097', 'B365']);
+var sdr_post_nbr_2021 = grsm_sdr2021_clear.normalizedDifference(['B097', 'B365']);
 
-// Display the chart
-print(plotNDVI);
+// calculate dNBR 2016-2017 and 2016-2021
+var sdr_dNBR_2016_2017 = sdr_pre_nbr_2016
+                            .subtract(sdr_post_nbr_2017)
+                            .clip(ct_fire_boundary);
+
+var sdr_dNBR_2016_2021 = sdr_pre_nbr_2016
+                            .subtract(sdr_post_nbr_2021)
+                            .clip(ct_fire_boundary);
+
+// Remove comment-symbols (//) below to display pre- and post-fire NBR as layers
+// Map.addLayer(sdr_pre_nbr_2016, {min: -1, max: 1, palette: red_ylw_grn}, 'Pre-fire (June 2016) Normalized Burn Ratio');
+// Map.addLayer(sdr_post_nbr_2017, {min: -1, max: 1, palette: red_ylw_grn}, 'Post-fire (Oct 2017) Normalized Burn Ratio');
+// Map.addLayer(sdr_post_nbr_2021, {min: -1, max: 1, palette: red_ylw_grn}, 'Post-fire (June 2021) Normalized Burn Ratio');
+
+// add dNBR layers
+Map.addLayer(sdr_dNBR_2016_2017, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR 2016-2017');
+Map.addLayer(sdr_dNBR_2016_2021, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR 2016-2021');
 ```
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/ndvi_time_series.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/ndvi_time_series.PNG" alt="NDVI time series"></a>
-</figure>
-
-We can see how much NDVI has increased in 2021 relative to the earlier years, which makes sense when we look at the reflectance RGB composites - it is much greener in 2021! While this line plot doesn't show us a lot of information now, as the AOP data set builds up in years to come, this may become a more interesting figure. 
 
 On your own, we encourage you to dig into the code from this tutorial and modify according to your scientific interests. Think of some questions you have about this dataset, and modify these functions or try writing your own function to answer your question. For example, try out a different reducer, repeat the plots for different areas of the site, and see if there are any other datasets that you could bring in to help you with your analysis. You can also pull in satellite data and see how the NEON data compares. This is just the starting point!
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/8a8ee1c359d14c6c2413b6483a2b1615" target="_blank">AOP GEE Internannual Change Exploratory Analysis</a>
+<a href="https://code.earthengine.google.com/8a8ee1c359d14c6c2413b6483a2b1615" target="_blank">Wildfire Change Analysis</a>
 
 
 ### Footnotes
