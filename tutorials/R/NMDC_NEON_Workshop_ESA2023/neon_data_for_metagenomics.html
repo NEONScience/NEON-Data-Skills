@@ -1,100 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Access NEON Data for Metagenomics</title>
-
-
-
-
-
 <style type="text/css">
-body, td {
-  font-family: sans-serif;
-  background-color: white;
-  font-size: 13px;
-}
 body {
+  font-family: sans-serif;
   max-width: 800px;
   margin: auto;
   padding: 1em;
   line-height: 1.5;
+  box-sizing: border-box;
 }
-tt, code, pre {
-  font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
 }
-a:visited { color: #80007f; }
 pre, img { max-width: 100%; }
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
 }
-code[class] { background-color: #F8F8F8; }
-code.language-undefined { background-color: inherit; }
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
 table {
   margin: auto;
   border-top: 1px solid #666;
-  border-bottom: 1px solid #666;
 }
 table thead th { border-bottom: 1px solid #ddd; }
 th, td { padding: 5px; }
 thead, tfoot, tr:nth-child(even) { background: #eee; }
 blockquote {
-  color:#666;
-  margin:0;
+  color: #666;
+  margin: 0;
   padding-left: 1em;
-  border-left: 0.5em #eee solid;
+  border-left: 0.5em solid #eee;
 }
-hr { border: 1px #ddd dashed; }
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
 
 @media print {
-  * {
-    background: transparent !important;
-    color: black !important;
-    filter:none !important;
-  }
   body {
     font-size: 12pt;
     max-width: 100%;
   }
-  a, a:visited { text-decoration: underline; }
-  hr {
-    visibility: hidden;
-    page-break-before: always;
-  }
-  pre, blockquote {
-    padding-right: 1em;
-    page-break-inside: avoid;
-  }
   tr, img { page-break-inside: avoid; }
-  img { max-width: 100% !important; }
-  @page :left { margin: 15mm 20mm 15mm 10mm; }
-  @page :right { margin: 15mm 10mm 15mm 20mm; }
-  p, h2, h3 { orphans: 3; widows: 3; }
-  h2, h3 { page-break-after: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
 }
 </style>
-
-
-
 </head>
-
 <body>
-<p>This tutorial is being run in conjunction with the workshop “FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative”, to introduce the attendees to the NMDC data portal. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline.</p>
+<div class="include-before">
+</div>
+<div class="frontmatter">
+<div class="title"><h1>Access NEON Data for Metagenomics</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<p>The purpose of this tutorial is to introduce users to accessing NEON data for expanding metagenomic analyses. The tutorial is being run in conjunction with the workshop “FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative”, presented at the annual meeting of the Ecological Society of America. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline.</p>
 <div id="ds-objectives" markdown="1">
-<h2>Learning Objectives</h2>
+<h2 id="learning-objectives">Learning Objectives</h2>
 <p>After completing this tutorial you will be able to:</p>
 <ul>
 <li>Access information on NEON data relevant to metagenomic research.</li>
 <li>Download NEON data for soil and aquatic samples.</li>
 <li>Process NEON sample data to be able to analyze with metagenomic data</li>
 </ul>
-<h2>Things You’ll Need To Complete This Tutorial</h2>
-<h3>R Programming Language</h3>
+<h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<h3 id="r-programming-language">R Programming Language</h3>
 <p>You will need a current version of R to complete this tutorial. We also recommend
 the RStudio IDE to work with R.</p>
-<h3>R Packages to Install</h3>
+<h3 id="r-packages-to-install">R Packages to Install</h3>
 <p>Prior to starting the tutorial ensure that the following packages are installed.</p>
 <ul>
 <li><strong>neonUtilities</strong>: Basic functions for accessing NEON data</li>
@@ -109,21 +110,17 @@ install.packages(&quot;neonOS&quot;)
 install.packages(&quot;tidyverse&quot;)
 </code></pre>
 <p><a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
-<h3>Example Data Set</h3>
-<p>I need to determine if we need an example data set
-This tutorial will teach you how to download data directly from the NEON data
-portal.  This example data set is provided as an optional download and a backup.</p>
-<h3>Working Directory</h3>
+<h3 id="working-directory">Working Directory</h3>
 <p>This lesson assumes that you have set your working
 directory to the location of the downloaded and unzipped data subsets.</p>
 <p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a></p>
-<h2>Additional Resources</h2>
+<h2 id="additional-resources">Additional Resources</h2>
 <p>This tutorial will provide some basic examples for for finding information and downloading NEON data. For more details on downloading NEON data, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">the “Download and Explore NEON Data” tutorial</a> provides an overview of downloading data using the Data Portal and the neonUtilities R package, and <a href="https://www.neonscience.org/neonDataStackR" target="_blank">this tutorial</a> goes into detail on the neonUtilities package and how the each function works. Most of the examples provided here utilize the R programming language, and NEON provides <a href="https://www.neonscience.org/resources/learning-hub/tutorials/basic-r-skills" target="_blank">a tutorial series on basic R skills to get you started</a>.</p>
 </div>
 <br/>
 <br/>
-<h2>The NEON Data Portal</h2>
+<h2 id="the-neon-data-portal">The NEON Data Portal</h2>
 <p>NEON provides a wealth of data to assist with your research. <a href="https://data.neonscience.org/" target="_blank">The NEON Data Portal </a> is the best place to start looking for the data you want. There is a lot of information on this page. For now, we will have a quick tour.</p>
 <figure class="half">
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/data_portal_front_page.png">
@@ -142,14 +139,14 @@ of setting the working directory in R can be found here.</a></p>
 </figure>  
 <br/>
 <br/>
-<h3>Explore Data Products</h3>
+<h3 id="explore-data-products">Explore Data Products</h3>
 <p>From the Data Portal main page, Click on the <strong>EXPLORE</strong> button in the box called “Explore Data Products”, or just <a href="https://data.neonscience.org/data-products/explore" target="_blank">go to this link</a>, and you can search by key words or data product codes. For example, type ‘metagenomics’ in the Search field, and then scroll down through the results.</p>
 <p>Click on the link to <a href="https://data.neonscience.org/data-products/DP1.10107.001" target="_blank">Soil microbe metagenome sequences</a> and the information for this data product will open in a new page. On this page there is a lot of useful information, including a description of the tables are included for the data, links to documents, a Quick Start guide, and much more. You of course are able to download data from this page, and can select specific sites and time ranges in an interactive table. However, in this tutorial we are going to use the neonUtilities R package to access the data.</p>
 <br/>
 <br/>
-<h2>NEON metadata for metagenomic data</h2>
-<h3>Downloading data with neonUtilities</h3>
-<p>The metagenomics data available on the NEON website includes only the raw sequence files. It is more useful to access the data processed through the NMDC Edge pipeline, as we have learned. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The functional and taxonomic information available on the NMDC data portal can be analyzed along with all other NEON data from the soil and aquatic samples.</p>
+<h2 id="neon-metadata-for-metagenomic-data">NEON metadata for metagenomic data</h2>
+<h3 id="downloading-data-with-neonutilities">Downloading data with neonUtilities</h3>
+<p>The metagenomics data available on the NEON website includes only the raw sequence files. The sample data available through the NMDC website have been processed through the NMDC Edge pipeline, and include taxonomic and functional genomic information. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The following examples will help you to annontate the functional and taxonomic information of NEON samples on the NMDC data portal so they can be analyzed along with all other NEON data from the soil and aquatic samples.</p>
 <p>We will start by accessing some soil chemical and physical measurements using the neonUtilities package. But even though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in “Soil physical and chemical properties” in the Search bar. Scroll down and click on “Soil physical and chemical properties, periodic” (DP1.10086.001).</p>
 <p>With the information from the Data Portal, we can download this data product using the <strong>neonUtilities</strong> package. We will start with a subset of terrestrial sites. Go ahead and set up the following command in a text file in RStudio or text editor.</p>
 <pre><code>library(neonUtilities)
@@ -173,10 +170,12 @@ soilChem &lt;- loadByProduct(
   site = soilTrialSites,
 
   package='expanded')
+
+View(soilChem$sls_metagenomicsPooling)
 </code></pre>
 <p>For full details on the <code>loadByProduct()</code> function, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr" target="_blank">‘Use the neonUtilities Package’ tutorial</a>. Here we will just note some of the parameters. The <code>dpID</code> parameters is taken right from the Data Portal page for that data product. The <code>startdate</code> and <code>enddate</code> define the time range, and for the <code>site</code> parameter, we can enter a list of the four-letter codes for each site. The <code>check.size</code> we are leaving as <code>FALSE</code>, to prevent the function from warning us before big downloads. If you are going to do a big download, for example, if you do not specify a time range with <code>startdate/enddate</code> or define the sites to download using the <code>site</code> parameter, it is a good idea to leave this option at <code>TRUE</code>. If you are incorporating this code into a script as part of a pipeline, for example, then you should set this at <code>FALSE</code>.</p>
 <br/>
-<h3>Viewing the data</h3>
+<h3 id="viewing-the-data">Viewing the data</h3>
 <p>Once you have run this code and downloaded the data, we can have a look. The object returned by <code>loadByProduct()</code> function is a named list of data frames. To view or access each one, you can select them from the list of data frames using the <code>$</code> operator. For example, if we would like to view the table <code>sls_soilChemistry</code> table in RStudio, then we can use the <code>View()</code> function:</p>
 <pre><code>View(soilChem$sls_soilChemistry)
 </code></pre>
@@ -184,7 +183,7 @@ soilChem &lt;- loadByProduct(
 <p>Take some time on your own to explore the other tables with this download.</p>
 <br/>
 <br/>
-<h2>Wrangling sample data for metagenomic samples</h2>
+<h2 id="wrangling-sample-data-for-metagenomic-samples">Wrangling sample data for metagenomic samples</h2>
 <p>Now that you are familiar with downloading and viewing data through the neonUtilities package, we can start to focus on linking the data to the metagenomic samples. For soil samples, the DNA samples for metagenomics are combined from individual soil samples. This is why you will not see any of the chemistry data we just viewed corresponding to any metagenomic DNA sample directly. We need to access the list of samples that were combined to create a soil composite sample, so we can link these data directly. For this we look at the <code>sls_metagenomicsPooling</code> table.</p>
 <pre><code>View(soilChem$sls_metagenomicsPooling)
 </code></pre>
@@ -194,10 +193,6 @@ soilChem &lt;- loadByProduct(
 # you can check to confirm the first sample is TOOL_043-O-20170719-COMP
 
 soilChem$sls_metagenomicsPooling[11,'genomicsSampleID']
-
-# then you can get the list:
-
-soilChem$sls_metagenomicsPooling[11,'genomicsPooledIDList']
 </code></pre>
 <p>The content of this field is a list demarcated by the pipe symbol (”|”):</p>
 <p><strong>“TOOL_043-O-5-7-20170719|TOOL_043-O-7.5-31-20170719|TOOL_043-O-32.5-27-20170719”</strong></p>
@@ -212,7 +207,7 @@ View(soilChem$sls_soilChemistry %&gt;%
 
   select(sampleID,d15N,organicd13C,CNratio))
 </code></pre>
-<p>We would like to be able to get these measurements for all the metagenomic samples. For this, we will first have to get the list for each composite sample and create a new table.</p>
+<p>We would like to be able to get these measurements for all the metagenomic subsamples. For this, we will first have to get the list for each composite sample and create a new table.</p>
 <pre><code># split up the pooled list into new columns
 
 genomicSamples &lt;- soilChem$sls_metagenomicsPooling %&gt;%
@@ -241,27 +236,162 @@ View(genSampleExample)
 <p>Now that you have all samples for each metagenomic sample listed, you can easily combine this table with other tables, using the sampleID. As an example we will go back to the soil chemistry data:</p>
 <pre><code>chemEx &lt;- soilChem$sls_soilChemistry %&gt;%
 
-  dplyr::select(sampleID,d15N,organicd13C,nitrogenPercent,organicCPercent) 
+  dplyr::select(sampleID,d15N,organicd13C,nitrogenPercent,organicCPercent)
 
 
 
 ## now combine the tables 
 
-combinedTab &lt;- left_join(genSampleExample,chemEx, by = &quot;sampleID&quot;) 
+combinedTab &lt;- left_join(genSampleExample,chemEx, by = &quot;sampleID&quot;) %&gt;% drop_na()
 
 
 
 View(combinedTab)
 </code></pre>
-<br/>
-<br/>
-<h2>Additional examples for accessing data</h2>
-<br/>
-<br/>
-<br/>
+<h3 id="merging-metadata-around-composite-samples">Merging metadata around composite samples</h3>
+<p>We now have a table that includes the genetic subsamples and their corresponding biogeochemical measurements. However, if we want to compare the biogeochemical data directly with the metagenomic genomic samples, you may want to merge the rows in the table back to a single row for each composite sample. This means we will need to average the chemical measurements across the subsamples for each composite sample. Care must be taken, however, when averaging across certain measurements (see in particular the example for averaging pH, below). Here is a basic example for our table:</p>
+<pre><code>genome_groups &lt;- combinedTab %&gt;%
+
+  group_by(genomicsSampleID) %&gt;%
+
+  summarize_at(c(&quot;d15N&quot;,&quot;organicd13C&quot;,&quot;nitrogenPercent&quot;,&quot;organicCPercent&quot;), mean)
 
 
-<script src="https://cdn.jsdelivr.net/combine/npm/@xiee/utils/js/center-img.min.js" async></script>
+
+View(genome_groups)
+</code></pre>
+<p>You now have a table that you can use to analyze your metagenomic data with some of the biogeochemical data. Hopefully the few examples on this page can help you get started. Please let us know if there is a particular type of data you are interested in analyzing with the metagenomic data and we will add to this page (or similar).</p>
+<br/>
+<br/>
+<h2 id="additional-examples-for-accessing-data">Additional examples for accessing data</h2>
+<p>Here are some other examples to help you get started with NEON metagenomic data</p>
+<h3 id="merging-ph-measurements">Merging pH measurements</h3>
+<p>The example above showing how to merge data works for many straightforward measurements, for which calculating the mean is logical. For pH measures, however, this won’t work. Since pH is a logarithmic scale, averaging them will not work. Fortunately, the R package <a href="https://www.rdocumentation.org/packages/respirometry/versions/1.2.1" target="_blank">respirometry</a> includes the function <a href="https://www.rdocumentation.org/packages/respirometry/versions/1.2.1/topics/mean_pH" target="_blank">mean_pH</a> for averaging pH measurements. This function first converts each pH measure to hydrogen ion concentration [H+], averages the measures, then converts back to the logarithmic scale.</p>
+<p>Below we show an example with the existing data. First we will create a new table with pH measurements, only keeping the samples from our metagenomic set:</p>
+<pre><code>soilpH_Example &lt;- soilChem$sls_soilpH %&gt;%
+
+  dplyr::filter(sampleID %in% combinedTab$sampleID) %&gt;%
+
+  dplyr::select(sampleID,soilInWaterpH,soilInCaClpH)
+
+
+
+# have a look at this table
+
+View(soilpH_Example)
+
+# now join with the existing table
+
+combinedTab_pH &lt;- left_join(combinedTab,soilpH_Example, by = &quot;sampleID&quot;)
+
+# and the final
+
+View(combinedTab_pH)
+</code></pre>
+<p>Now, we can apply the same kind of tidyverse approach as the previous example, only using the <code>mean_pH</code> function:</p>
+<pre><code>library(respirometry)
+
+
+
+genome_groups_pH &lt;- combinedTab_pH %&gt;%
+
+  group_by(genomicsSampleID) %&gt;%
+
+  summarize_at(c(&quot;soilInWaterpH&quot;,&quot;soilInCaClpH&quot;), mean_pH) 
+
+
+
+View(genome_groups_pH)
+</code></pre>
+<p>One thing to note with the previous command is that all the other chemical data was lost when you ran the command. In this example we use two <code>summarize_at</code> commands to apply different functions to the two types of variables, and then <code>left_join</code> will combine them:</p>
+<pre><code>genome_groups_all &lt;- combinedTab_pH %&gt;%
+
+  group_by(genomicsSampleID) %&gt;%
+
+  {left_join(
+
+    summarize_at(.,vars(&quot;d15N&quot;,&quot;organicd13C&quot;,&quot;nitrogenPercent&quot;,&quot;organicCPercent&quot;), mean),
+
+    summarize_at(.,vars(&quot;soilInWaterpH&quot;,&quot;soilInCaClpH&quot;), mean_pH)
+
+  )}
+
+
+
+
+
+View(genome_groups_all)
+</code></pre>
+<br/>
+<h2 id="downloading-raw-neon-metagenome-data">Downloading raw NEON metagenome data</h2>
+<p>If you are interested in accessing raw NEON metagenomic data (not processed as they are in NMDC) in order to run your own analyses, you can use the same <code>neonUtilities</code> package. The following code shows an example of how to download the raw sequence files.</p>
+<pre><code>library(neonUtilities)
+
+library(dplyr)
+
+
+
+#specify sites and/or date ranges depending on your research questions
+
+metaGdata &lt;- loadByProduct(dpID = 'DP1.10107.001',
+
+                          startdate = &quot;2018-01&quot;,
+
+                          enddate = &quot;2019-12&quot;,
+
+                          check.size = FALSE,
+
+                          package = 'expanded') 
+</code></pre>
+<p>The following code will produce a list all of the files in that data product loaded above.</p>
+<pre><code>rawFileInfo &lt;- metaGdata$mms_rawDataFiles
+
+
+
+urls_fordownload &lt;- unique(rawFileInfo$rawDataFilePath)
+</code></pre>
+<p>If you want to only access a subset of those data, there are several options. One option is to use a list of known sample IDs. In the following example we subset around the list of samples from the earlier example in this tutorial. Note here that the <code>dnaSampleID</code> in the rawFileInfo table is different than the <code>genomicsSampleId</code> in the combinedTab table. The first step then is to create that field so we can select from it.</p>
+<pre><code># Option a, create a list of samples from earlier example
+
+targetsamples &lt;- combinedTab$genomicsSampleID
+
+# Create a genomicsSampleID from raw files table, and then subset this to samples
+
+rawfiles_ids &lt;- rawFileInfo %&gt;%
+
+  mutate(genomicsSampleID = gsub(&quot;-DNA[1,2,3]&quot;,&quot;&quot;,dnaSampleID)) %&gt;%
+
+  subset(genomicsSampleID %in% targetsamples) %&gt;% 
+
+  unique()
+
+
+
+urls_fordownload &lt;- unique(rawfiles_ids$rawDataFilePath)
+</code></pre>
+<p>Another option is to download the raw data in chunks:</p>
+<pre><code># Option b
+
+urls_fordownload &lt;- unique(rawFileInfo$rawDataFilePath)[1:20] #for instance, the first 20 rows, and so on
+</code></pre>
+<p>now write the urls to a text file</p>
+<pre><code>#put in whatever working directory you want
+
+file_conn = file(&quot;./NEONmetagenome_downloadIDs.txt&quot;) 
+
+writeLines(unlist(urls_fordownload), file_conn, sep=&quot;\n&quot;)
+
+close(file_conn)
+</code></pre>
+<p>Now go into command line/terminal and navigate to the directory where your text file is and run the following in the terminal:</p>
+<pre><code>wget -i NEONmetagenome_downloadIDs.txt
+</code></pre>
+<p>The gzipped fastq files will download to whichever directory you are in. this will work both locally and on an HPC.</p>
+<br/>
+<br/>
+<br/>
+</div>
+<div class="include-after">
+</div>
 </body>
-
 </html>
