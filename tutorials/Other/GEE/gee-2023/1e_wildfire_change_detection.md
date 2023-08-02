@@ -1,10 +1,10 @@
 ---
-syncID: 
-title: "Wildfire Change Detection Using AOP SDR and CHM Data in GEE"
-description: ""
+syncID: d98dbad4b55b45a79a62bad1d25333fb
+title: "Wildfire Analysis Using AOP SDR and CHM Data in GEE"
+description: "Explore pre- and post- wildfire imagery at GRSM, looking at differences in canopy height and Normalize Burn Ratio"
 dateCreated: 2023-07-29
-authors: Bridget M. Hass, John Musinsky
-contributors: Tristan Goulden, Lukas Straube
+authors: Bridget M. Hass, John Musinsky, Stepan Bryleev
+contributors: Tristan Goulden
 estimatedTime: 45 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, canopy height, remote-sensing
@@ -18,20 +18,19 @@ urlTitle: aop-gee-wildfire
 
 GEE is a great place to conduct exploratory analysis to better understand the datasets you are working with. In this lesson, we will show how to pull in AOP Surface Directional Reflectance (SDR) data, as well as the Ecosystem Structure (Canopy Height Model - CHM) data to look at interannual differences at the NEON site <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountains (GRSM)</a>, where the <a href="https://www.nps.gov/grsm/learn/chimney-tops-2-fire.htm" target="_blank">Chimney Tops 2 Fire</a> broke out in late November 2016. NEON data over the GRSM site collected in June 2016 and October 2017 captures most of the burned area and presents a unique opportunity to study wildfire effects on the ecosystem and analysis of post-wildfire vegetation recovery. In this lesson, we will calculate the differenced Normalized Burn Ratio (dNBR) between 2017 and 2016, and also create a CHM difference raster to highlight vegetation structure differences in the burned area. We will also pull in Landsat satellite data and create a time-series of the NBR within the burn perimeter to look at annual differences.
 
-Using remote sensing data to better understand wildfire impacts is an active area of research. In April 2023, Park and Sim published an Open Access paper titled <a href="https://www.frontiersin.org/articles/10.3389/frsen.2023.1096000/full" target="_blank">Characterizing spatial burn severity patterns of 2016 Chimney Tops 2 fire using multi-temporal Landsat and NEON LiDAR data"</a>. We encourage you to read this paper for an example of wildfire research using AOP remote sensing and satellite data. This lesson provides an introduction to conducting this sort of analysis in Google Earth Engine.
+Using remote sensing data to better understand wildfire impacts is an active area of research. In April 2023, Park and Sim published an Open Access paper titled "<a href="https://www.frontiersin.org/articles/10.3389/frsen.2023.1096000/full" target="_blank">Characterizing spatial burn severity patterns of 2016 Chimney Tops 2 fire using multi-temporal Landsat and NEON LiDAR data</a>". We encourage you to read this paper for an example of wildfire research using AOP remote sensing and satellite data. This lesson provides an introduction to conducting this sort of analysis in Google Earth Engine.
 
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
 After completing this activity, you will be able to:
- * Write GEE functions to display map images of AOP SDR, NDVI, and CHM data.
- * Create chart images (histogram and line graphs) to summarize data over an area.
- * Understand how acquisition parameters may affect the interpretation of data.
- * Understand how weather conditions during acquisition may affect reflectance data quality.
+ * Write GEE functions to display map images of AOP SDR and CHM data.
+ * Use reducers to calculate statistics over an area.
+ * Conduct exploratory analysis in GEE to understand wildfire dynamics.
 
 You will gain familiarity with:
  * User-defined GEE functions
- * The GEE charting functions (<a href="https://developers.google.com/earth-engine/guides/charts_image" target="_blank">ui.Chart.image</a>)
+ * Zonal statistics
 
 ## Requirements
  * A gmail (@gmail.com) account
@@ -39,7 +38,7 @@ You will gain familiarity with:
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)/a>
-    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-gee-functions" target="_blank"Intro to GEE Functions</a>
+    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-gee-functions" target="_blank">Intro to GEE Functions</a>
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
@@ -143,8 +142,8 @@ Now that you've read in these two datasets (SDR and CHM) over all the years of a
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1f_grsm_wildfire/grsm_chm_2017.png" alt="CHM at GRSM in 2017"></a>
-
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png" alt="GRSM 2017 CHM with Chimney Tops Fire Perimeter"></a>
+</figure>
 
 ## CHM Difference Layers
 
@@ -167,9 +166,33 @@ print('CHM Difference 2017-2016',chm_diff_2017_2016)
 Map.addLayer(chm_diff_2017_2016, {min: -10, max: 10, palette: dchm_palette}, 'CHM diff 2017-2016');
 ```
 
-## CHM Difference Histograms
+### CHM Difference Stats and Histograms
 
-Next let's plot histograms of the CHM differences between the different years.
+Next let's calculate the mean difference in Canopy Height inside the fire perimeter for the various years. We'll also plot histograms of the CHM differences.
+
+```javascript
+// Calculate the mean dCHM between the various years:
+print('Mean dCHM in the Chimney Tops Fire Perimeter')
+
+print('Mean dCHM 2017-2016',chm_diff_2017_2016.reduceRegion({
+      reducer: ee.Reducer.mean(),
+      geometry: ct_fire_boundary,
+      scale: 30}));
+      
+print('Mean dCHM 2021-2017',chm_diff_2021_2017.reduceRegion({
+      reducer: ee.Reducer.mean(),
+      geometry: ct_fire_boundary,
+      scale: 30}));
+      
+print('Mean dCHM 2021-2016',chm_diff_2021_2016.reduceRegion({
+      reducer: ee.Reducer.mean(),
+      geometry: ct_fire_boundary,
+      scale: 30}));
+```
+
+In the console, if you expand the objects, you can see that from 2016-2017, there was a net loss in canopy height of ~6.6m, and between 2017-2021 there was a net growth of ~3m, suggesting a considerable amount of re-growth in the 5 years after the fire.
+
+We can also look at the histograms of the CHM differences to provide a little more information about the ecosystem structure dynamics immediately after the fire and in the subsequent years. To plot histograms, first write a function to create a histogram given a difference CHM raster (calculated above) and a string of the years that are being differenced, as inputs. The string is just used to include in the histogram chart title.
 
 ```javascript
 // Function to create histogram charts for each CHM difference layer, clipped by the chimney tops fire perimeter
@@ -194,64 +217,59 @@ print(chm_diff_hist_2021_2016);
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/.png" alt="Histograms"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG" width=300 alt="CHM Difference Histograms"></a>
 </figure>
 
-Take a minute to interpret what's going on here. 
+On your own, try to interpret what these difference histograms are showing.
 
 ## Normalized Burn Ratio (NBR)
 
-Last but not least, we can take a quick look at NDVI changes over the four years of data. A quick way to look at the interannual changes are to make a line plot, which we'll do shortly. First let's take a step back and see the weather conditions during the collections. For every mission, the AOP flight operators assess the cloud conditions and note whether the cloud clover is <10% (green), 10-50% (yellow), or >50% (red). This information gets passed through to the reflectance hdf5 data, and is also available in the summary metadata documents, delivered with all the spectrometer data products. The weather conditions have direct implications for data quality, and while we strive to collect data in "green" weather conditions, it is not always possible, so the user must take this into consideration when working with the data.
-
-The figure below shows the weather conditions at SRER for each of the 4 collections. In 2017 and 2021, the full site was collected in <10% cloud conditions, while in 2018 and 2019 there were mixed weather conditions. However, for all four years, the center of the site was collected in optimal cloud conditions.
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/srer_weather_conditions_2017-2021.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/srer_weather_conditions_2017-2021.PNG" alt="SRER weather conditions 2017-2021"></a>
-</figure>
-
-With this in mind, let's use the same geometry we used before, centered in the middle of the plot, to look at the mean NDVI over the four years in a small part of the site. Here's the GEE code for doing this:
+Last but not least, we can take a quick look at the NBR and dNBR. Refer to the <a href="https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-modis/normalized-burn-index-dNBR" target="_blank">CU Earth Lab dNBR Lesson</a> for a nice explanation of this metric in the context of multispectral satellite data.
 
 ```javascript
-// calculate NDVI for the geometry
-var ndvi = NISimages.map(function(image) {
-    var ndviClip = image.clip(geometry)
-    return ndviClip.addBands(ndviClip.normalizedDifference(["band097", "band055"]).rename('NDVI'))
-});
+// Read in clear SDR images at GRSM in 2016, 2017, and 2021 
+var grsm_sdr2016_clear = grsm_sdr_cloudfree.filterDate('2016-01-01', '2016-12-31').first()
+var grsm_sdr2017_clear = grsm_sdr_cloudfree.filterDate('2017-01-01', '2017-12-31').first();
+var grsm_sdr2021_clear = grsm_sdr_cloudfree.filterDate('2021-01-01', '2021-12-31').first();
+  
+//------------------------- Normalized Difference Burn Ratio ----------------------------
+// The normalized burn ratio (NBR) is a normalized difference index using the shortwave-infrared (SWIR) and near-infrared (NIR) portions of the electromagnetic spectrum. dNBR can be used as a metric to map fire extent and burn severity when calculating the difference between pre and post fire conditions.
 
-// Create a time series chart, with image, geometry & median reducer
-var plotNDVI = ui.Chart.image.seriesByRegion(ndvi, geometry, ee.Reducer.median(), 
-              'NDVI', 100, 'system:time_start') // band, scale, x-axis property
-              .setChartType('LineChart').setOptions({
-                title: 'Median NDVI for Selected Geometry',
-                hAxis: {title: 'Date'},
-                vAxis: {title: 'NDVI'},
-                legend: {position: "none"},
-                lineWidth: 1,
-                pointSize: 3
-});
+// calculate NBR for the 3 years
+// B097: B365: 
+var sdr_pre_nbr_2016 = grsm_sdr2016_clear.normalizedDifference(['B097', 'B365']);
+var sdr_post_nbr_2017 = grsm_sdr2017_clear.normalizedDifference(['B097', 'B365']);
+var sdr_post_nbr_2021 = grsm_sdr2021_clear.normalizedDifference(['B097', 'B365']);
 
-// Display the chart
-print(plotNDVI);
+// calculate dNBR 2016-2017 and 2016-2021
+var sdr_dNBR_2016_2017 = sdr_pre_nbr_2016
+                            .subtract(sdr_post_nbr_2017)
+                            .clip(ct_fire_boundary);
+
+var sdr_dNBR_2016_2021 = sdr_pre_nbr_2016
+                            .subtract(sdr_post_nbr_2021)
+                            .clip(ct_fire_boundary);
+
+// Remove comment-symbols (//) below to display pre- and post-fire NBR as layers
+// Map.addLayer(sdr_pre_nbr_2016, {min: -1, max: 1, palette: red_ylw_grn}, 'Pre-fire (June 2016) Normalized Burn Ratio');
+// Map.addLayer(sdr_post_nbr_2017, {min: -1, max: 1, palette: red_ylw_grn}, 'Post-fire (Oct 2017) Normalized Burn Ratio');
+// Map.addLayer(sdr_post_nbr_2021, {min: -1, max: 1, palette: red_ylw_grn}, 'Post-fire (June 2021) Normalized Burn Ratio');
+
+// add dNBR layers
+Map.addLayer(sdr_dNBR_2016_2017, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR 2016-2017');
+Map.addLayer(sdr_dNBR_2016_2021, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR 2016-2021');
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/ndvi_time_series.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/3a_change_detection/ndvi_time_series.PNG" alt="NDVI time series"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_dnbr_2016-2017.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_dnbr_2016-2017.png" alt="GRSM dNBR 2016-2017"></a>
 </figure>
 
-We can see how much NDVI has increased in 2021 relative to the earlier years, which makes sense when we look at the reflectance RGB composites - it is much greener in 2021! While this line plot doesn't show us a lot of information now, as the AOP data set builds up in years to come, this may become a more interesting figure. 
+The differenced Normalized Burn Ratio (dNBR) does a great job of highlighting the burned areas (in red).
 
-On your own, we encourage you to dig into the code from this tutorial and modify according to your scientific interests. Think of some questions you have about this dataset, and modify these functions or try writing your own function to answer your question. For example, try out a different reducer, repeat the plots for different areas of the site, and see if there are any other datasets that you could bring in to help you with your analysis. You can also pull in satellite data and see how the NEON data compares. This is just the starting point!
+On your own, we encourage you to dig into the code from this tutorial and expand upon it according to your scientific interests. Think of some questions you have about this dataset and think about how you might answer it using GEE. Modify these functions or try writing your own function to answer your question(s). For example, try out different reducers to compile other statistis to summarize the CHM and NBR differences, or see if there are any other datasets that you could bring in to expand your analysis. This is just the starting point!
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/8a8ee1c359d14c6c2413b6483a2b1615" target="_blank">AOP GEE Internannual Change Exploratory Analysis</a>
-
-
-### Footnotes
-
-- To download the metadata documentation without downloading all the data products, you can go through the process of downloading the data product, and when you get to the files, select only the ".pdf" extension. The Algorithm Theoretical Basis Documents (ATBDs), which can be downloaded either from the data product information page or from the data portal, also discuss the uncertainty and important information pertaining to the data.
-- The vertical resolution is related to the outgoing pulse width of the lidar system. Optech Gemini has a 10ns outgoing pulse, while the Riegl Q780 and Optech Galaxy Prime sensors have a 3ns outgoing pulse width. At the nominal flying altitude of 1000m AGL, 10ns translates to a range resolution of ~2m, while 3ns corresponds to 2/3m. 
-- From 2021 onward, all NEON lidar collections have the improved vertical resolution of .67m, as NEON started operating the Optech Galaxy Prime, which replaced one of the Optech Gemini sensors. This has a 3ns outgoing pulse width, matching the Riegl Q780 system.
+<a href="https://code.earthengine.google.com/a22913d3a125580b5a9218e0675c4528" target="_blank">Wildfire Change Analysis</a>
