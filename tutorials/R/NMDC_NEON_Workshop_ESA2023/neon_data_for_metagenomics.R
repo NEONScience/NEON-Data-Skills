@@ -1,4 +1,4 @@
-## ----opts-set, echo=FALSE--------------------
+## ----opts-set, echo=FALSE-----------------------
 library(knitr)
 opts_knit$set(global.par = TRUE)
 # add path to graphics 
@@ -8,7 +8,7 @@ opts_knit$set(global.par = TRUE)
 
 
 
-## ----packages, eval=FALSE--------------------
+## ----packages, eval=FALSE-----------------------
 ## 
 ## install.packages("neonUtilities")
 ## install.packages("neonOS")
@@ -16,7 +16,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----access soil data, eval=FALSE------------
+## ----access soil data, eval=FALSE---------------
 ## library(neonUtilities)
 ## 
 ## soilTrialSites = c("BONA","DEJU","HEAL","TOOL","BARR")
@@ -28,19 +28,19 @@ opts_knit$set(global.par = TRUE)
 ##   check.size = FALSE,
 ##   site = soilTrialSites,
 ##   package='expanded')
-## View(soilChem$sls_metagenomicsPooling)
+## 
 ## 
 
 
-## ----viewSoilChem, eval=FALSE----------------
+## ----viewSoilChem, eval=FALSE-------------------
 ## View(soilChem$sls_soilChemistry)
 
 
-## ----checkMetaPool, eval=FALSE---------------
+## ----checkMetaPool, eval=FALSE------------------
 ## View(soilChem$sls_metagenomicsPooling)
 
 
-## ----poolListEx, eval=FALSE------------------
+## ----poolListEx, eval=FALSE---------------------
 ## soilChem$sls_metagenomicsPooling$genomicsPooledIDList[11]
 ## # you can check to confirm the first sample is TOOL_043-O-20170719-COMP
 ## soilChem$sls_metagenomicsPooling[11,'genomicsSampleID']
@@ -48,7 +48,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----link1sample, eval=FALSE-----------------
+## ----link1sample, eval=FALSE--------------------
 ## library(tidyverse)
 ## 
 ## View(soilChem$sls_soilChemistry %>%
@@ -57,7 +57,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----splitPool, eval=FALSE-------------------
+## ----splitPool, eval=FALSE----------------------
 ## # split up the pooled list into new columns
 ## genomicSamples <- soilChem$sls_metagenomicsPooling %>%
 ##   tidyr::separate(genomicsPooledIDList, into=c("first","second","third"),sep="\\|",fill="right") %>%
@@ -66,7 +66,7 @@ opts_knit$set(global.par = TRUE)
 ## View(genomicSamples)
 
 
-## ----pivotTable, eval=FALSE------------------
+## ----pivotTable, eval=FALSE---------------------
 ## genSampleExample <- genomicSamples %>%
 ##   tidyr::pivot_longer(cols=c("first","second","third"),values_to = "sampleID") %>%
 ##   dplyr::select(sampleID,genomicsSampleID) %>%
@@ -75,7 +75,7 @@ opts_knit$set(global.par = TRUE)
 ## View(genSampleExample)
 
 
-## ----combTab, eval=FALSE---------------------
+## ----combTab, eval=FALSE------------------------
 ## chemEx <- soilChem$sls_soilChemistry %>%
 ##   dplyr::select(sampleID,d15N,organicd13C,nitrogenPercent,organicCPercent)
 ## 
@@ -86,7 +86,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----avgChem, eval=FALSE---------------------
+## ----avgChem, eval=FALSE------------------------
 ## genome_groups <- combinedTab %>%
 ##   group_by(genomicsSampleID) %>%
 ##   summarize_at(c("d15N","organicd13C","nitrogenPercent","organicCPercent"), mean)
@@ -94,7 +94,7 @@ opts_knit$set(global.par = TRUE)
 ## View(genome_groups)
 
 
-## ----pHmeanTab, eval=FALSE-------------------
+## ----pHmeanTab, eval=FALSE----------------------
 ## soilpH_Example <- soilChem$sls_soilpH %>%
 ##   dplyr::filter(sampleID %in% combinedTab$sampleID) %>%
 ##   dplyr::select(sampleID,soilInWaterpH,soilInCaClpH)
@@ -108,7 +108,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----pHmean, eval=FALSE----------------------
+## ----pHmean, eval=FALSE-------------------------
 ## library(respirometry)
 ## 
 ## genome_groups_pH <- combinedTab_pH %>%
@@ -118,7 +118,7 @@ opts_knit$set(global.par = TRUE)
 ## View(genome_groups_pH)
 
 
-## ----multimeans, eval=FALSE------------------
+## ----multimeans, eval=FALSE---------------------
 ## genome_groups_all <- combinedTab_pH %>%
 ##   group_by(genomicsSampleID) %>%
 ##   {left_join(
@@ -131,7 +131,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----dwnRawGet, eval=FALSE-------------------
+## ----dwnRawGet, eval=FALSE----------------------
 ## library(neonUtilities)
 ## library(dplyr)
 ## 
@@ -145,7 +145,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----dwnRawList, eval=FALSE------------------
+## ----dwnRawList, eval=FALSE---------------------
 ## rawFileInfo <- metaGdata$mms_rawDataFiles
 ## 
 ## urls_fordownload <- unique(rawFileInfo$rawDataFilePath)
@@ -153,7 +153,7 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----dwnRawOptA, eval=FALSE------------------
+## ----dwnRawOptA, eval=FALSE---------------------
 ## # Option a, create a list of samples from earlier example
 ## targetsamples <- combinedTab$genomicsSampleID
 ## # Create a genomicsSampleID from raw files table, and then subset this to samples
@@ -166,12 +166,12 @@ opts_knit$set(global.par = TRUE)
 ## 
 
 
-## ----dwnRawOptB, eval=FALSE------------------
+## ----dwnRawOptB, eval=FALSE---------------------
 ## # Option b
 ## urls_fordownload <- unique(rawFileInfo$rawDataFilePath)[1:20] #for instance, the first 20 rows, and so on
 
 
-## ----dwnRawWrt, eval=FALSE-------------------
+## ----dwnRawWrt, eval=FALSE----------------------
 ## #put in whatever working directory you want
 ## file_conn = file("./NEONmetagenome_downloadIDs.txt")
 ## writeLines(unlist(urls_fordownload), file_conn, sep="\n")

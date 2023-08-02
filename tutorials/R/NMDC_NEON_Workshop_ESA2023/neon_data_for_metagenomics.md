@@ -42,6 +42,7 @@ Prior to starting the tutorial ensure that the following packages are installed.
 * **neonUtilities**: Basic functions for accessing NEON data
 * **neonOS**: Functions for common data wrangling needs for NEON observational data
 * **tidyverse**: <a href="https://www.tidyverse.org/" target="_blank"> A collection of R packages</a> designed for data science
+* **respirometry** A package that includes a function to average pH data
 
 All of these packages can be installed from CRAN:
 
@@ -114,7 +115,7 @@ Click on the link to <a href="https://data.neonscience.org/data-products/DP1.101
 
 The metagenomics data available on the NEON website includes only the raw sequence files. The sample data available through the NMDC website have been processed through the NMDC Edge pipeline, and include taxonomic and functional genomic information. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The following examples will help you to annontate the functional and taxonomic information of NEON samples on the NMDC data portal so they can be analyzed along with all other NEON data from the soil and aquatic samples. 
 
-We will start by accessing some soil chemical and physical measurements using the neonUtilities package. But even though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in "Soil physical and chemical properties" in the Search bar. Scroll down and click on "Soil physical and chemical properties, periodic" (DP1.10086.001). 
+We will start by accessing some soil chemical and physical measurements using the neonUtilities package. Though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in "Soil physical and chemical properties" in the Search bar. Scroll down and click on "Soil physical and chemical properties, periodic" (DP1.10086.001). 
 
 With the information from the Data Portal, we can download this data product using the **neonUtilities** package. We will start with a subset of terrestrial sites. Go ahead and set up the following command in a text file in RStudio or text editor. 
 
@@ -142,9 +143,7 @@ With the information from the Data Portal, we can download this data product usi
 
       package='expanded')
 
-    View(soilChem$sls_metagenomicsPooling)
-
-For full details on the `loadByProduct()` function, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr" target="_blank">'Use the neonUtilities Package' tutorial</a>. Here we will just note some of the parameters. The `dpID` parameters is taken right from the Data Portal page for that data product. The `startdate` and `enddate` define the time range, and for the `site` parameter, we can enter a list of the four-letter codes for each site. The `check.size` we are leaving as `FALSE`, to prevent the function from warning us before big downloads. If you are going to do a big download, for example, if you do not specify a time range with `startdate/enddate` or define the sites to download using the `site` parameter, it is a good idea to leave this option at `TRUE`. If you are incorporating this code into a script as part of a pipeline, for example, then you should set this at `FALSE`. 
+For full details on the `loadByProduct()` function, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr" target="_blank">'Use the neonUtilities Package' tutorial</a>. Here we will just note some of the parameters. The `dpID` parameters is taken right from the Data Portal page for that data product. The `startdate` and `enddate` define the time range, and for the `site` parameter, we can enter a list of the four-letter codes for each site. The `check.size` we are leaving as `FALSE`, to prevent the function from warning us before big downloads. For example, if you do not specify a time range with `startdate/enddate` or define the sites to download using the `site` parameter, this will be a much bigger download and it is a good idea to leave this option at `TRUE`. If you are incorporating this code into a script as part of a pipeline, for example, then you should set this at `FALSE`. 
 
 <br/>
 
@@ -244,6 +243,18 @@ Now that you have all samples for each metagenomic sample listed, you can easily
 
     View(combinedTab)
 
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/combinedTab.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/combinedTab.png"
+    alt="">
+    </a>
+    <figcaption></figcaption>
+</figure>
+
+
+
+<br/>
+
 ### Merging metadata around composite samples 
 
 We now have a table that includes the genetic subsamples and their corresponding biogeochemical measurements. However, if we want to compare the biogeochemical data directly with the metagenomic genomic samples, you may want to merge the rows in the table back to a single row for each composite sample. This means we will need to average the chemical measurements across the subsamples for each composite sample. Care must be taken, however, when averaging across certain measurements (see in particular the example for averaging pH, below). Here is a basic example for our table: 
@@ -258,6 +269,14 @@ We now have a table that includes the genetic subsamples and their corresponding
     
 
     View(genome_groups)
+
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/genome_groups.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/nmdc_neon/genome_groups.png"
+    alt="">
+    </a>
+    <figcaption></figcaption>
+</figure>
 
 You now have a table that you can use to analyze your metagenomic data with some of the biogeochemical data. Hopefully the few examples on this page can help you get started. Please let us know if there is a particular type of data you are interested in analyzing with the metagenomic data and we will add to this page (or similar). 
 
@@ -399,7 +418,7 @@ Another option is to download the raw data in chunks:
 
     urls_fordownload <- unique(rawFileInfo$rawDataFilePath)[1:20] #for instance, the first 20 rows, and so on
 
-now write the urls to a text file
+Now write the urls to a text file
 
 
     #put in whatever working directory you want
@@ -410,7 +429,7 @@ now write the urls to a text file
 
     close(file_conn)
 
-Now go into command line/terminal and navigate to the directory where your text file is and run the following in the terminal:
+Now go into command line/terminal (you can use the Terminal tab in RStudio) and navigate to the directory where your text file is and run the following in the terminal:
 
 
     wget -i NEONmetagenome_downloadIDs.txt
