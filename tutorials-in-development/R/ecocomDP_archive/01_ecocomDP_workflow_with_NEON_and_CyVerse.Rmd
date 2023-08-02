@@ -1,7 +1,7 @@
 ---
 title: "Explore NEON biodiversity data using ecocomDP"
 syncID: 19fe7b1f052c478c8a7df52e4e03efbf
-description: Download and explore NEON and LTER aquatic macroinvertebrate data with
+description: Download and explore NEON algae and aquatic macroinvertebrate data with
   the ecocomDP package for R using the CyVerse Discovery Environment
 authors: Eric R. Sokol
 contributors: "Donal O'Leary, Michael Culshaw-Maurer, Sydne Record"
@@ -35,13 +35,10 @@ In ecological synthesis projects, tasks related to finding, accessing, and vetti
 
 "ecocomDP" is both the name of an R package and a data model. 
  
-The data model can be described as "a dataset design pattern for ecological community data to facilitate synthesis and reuse". Because this data model is intended for use with community data, observations are expected to be measures of species abundance, biomass, or similar. However, some ecocomDP datasets report occurrences. The motivation for applying the ecocomDP data pattern to both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research (LTER) Network and Macrosystems Biology projects, is to make these data discoverable and accessible through a single data search tool and to be delivered in a standard format. Functions in the `ecocomDP` package provide tools to maniuplate and visualize ecocomDP formatted data objects in R. We are also in the process of developing tools to easily convert ecocomDP data packages to Darwin Core Archives ([DwC-A, event core](https://rs.gbif.org/core/dwc_event_2022-02-02.xml)) for submission to [GBIF](https://www.gbif.org/) to further facilitate NEON and LTER data discovery.     
+EDI describes the ecocomDP data model as "A dataset design pattern for ecological community data to facilitate synthesis and reuse". Because this data model is intended for use with community data, observations are expected to be measures of species abundance, biomass, or similar. However, some ecocomDP datasets report occurrences. The motivation for applying the ecocomDP data pattern to both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research (LTER) Network and Macrosystems Biology projects, is to make these data discoverable and accessible through a single data search tool and to be delivered in a standard format. Functions in the `ecocomDP` package provide tools to maniuplate and visualize ecocomDP formatted data objects in R. We are also in the process of developing tools to easily convert ecocomDP data packages to Darwin Core Archives ([DwC-A, event core](https://rs.gbif.org/core/dwc_event_2022-02-02.xml)) for submission to [GBIF](https://www.gbif.org/) to further facilitate NEON and LTER data discovery.     
 
-For more information on `ecocomDP`, see:  
-
- * The GitHub repo: [EDIorg/ecocomDP](https://github.com/EDIorg/ecocomDP)
- * The website: [ediorg.github.io/ecocomDP](https://ediorg.github.io/ecocomDP/index.html)
-
+For more information on `ecocomDP`, see the GitHub repo here:
+<a href="https://github.com/EDIorg/ecocomDP ">https://github.com/EDIorg/ecocomDP</a>.
 
 In this lesson, we will learn how to find and access ecological community datasets provided by the [National Ecological Observatory Network (NEON)](https://www.neonscience.org/) and the [Environmental Data Initiative (EDI)](https://edirepository.org/). 
 
@@ -152,6 +149,7 @@ library(ecocomDP)
 library(tidyverse)
 library(neonUtilities)
 library(ecocomDP)
+
 ```
 
 This code chunk also includes two optional lines for clearing out your environment, which will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! 
@@ -162,9 +160,9 @@ Also, consider using a NEON API token. This will allow you increased download sp
 <div id="ds-objectives" markdown="1">
 
 
-## Using your NEON_TOKEN on an interactive clould platform  
+## Using your NEON_TOKEN with the VICE cloud  
 
-1. In your RStudio session on a cloud platform, such as VICE, type the following in the console to create a new .Renviron file:  
+1. In your RStudio session running on the VICE app, type the following in the console to create a new .Renviron file:  
 ```{r create-Renviron, eval=F}
 usethis::edit_r_environ()
 ```
@@ -174,15 +172,14 @@ usethis::edit_r_environ()
 NEON_TOKEN=PASTE YOUR TOKEN HERE
 ```
 
-3. Save the .Renviron file using a path that makes sense for your workflow using "File -> Save As". For example, on the VICE platform you can use the filepath "work > home > YOUR CYVERSE USERNAME" and save your .Renviron file in your personal storage space, which should persist as long as you have an active account. Other platforms may allow you to mount personal storage volumes where you can securely store tokens.    
+3. Go to "File -> Save As" and then navigate to "work > home > YOUR CYVERSE USERNAME" and save your .Renviron file in your personal storage space.   
 
-4. Read your .Renviron variables into your R session:  
+4. Read your .Renviron variables to your R session:  
 ```{r read-Renviron, eval=F}
-# e.g., this would be the path on the VICE platform
 readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 ```
 
-You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables because you wrote the .Renviron file to your persistent storage space on the VICE platform. This approach can be adapted to work on other interactive cloud platforms if they are set up similarly. 
+You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables.  
 
 
 </div>
@@ -328,10 +325,7 @@ table_taxon <- inv_taxonomyProcessed %>%
 # taxon table information for all taxa in 
 # our database can be downloaded here:
 # takes 1-2 minutes
-# full_taxon_table_from_api <- 
-#   neonOS::getTaxonList(
-#     "MACROINVERTEBRATE", 
-#     token = Sys.getenv("NEON_TOKEN"))
+# full_taxon_table_from_api <- neonUtilities::getTaxonTable("MACROINVERTEBRATE", token = NEON_TOKEN)
 
 
 # Make the observation table.
@@ -468,16 +462,6 @@ table_sample_by_taxon_density_wide <- table_sample_by_taxon_density_long %>%
 # check col and row sums -- mins should all be > 0
 colSums(table_sample_by_taxon_density_wide) %>% min()
 rowSums(table_sample_by_taxon_density_wide) %>% min()
-
-# Example: use wide format data with functions in vegan
-# load library
-library(vegan)
-
-# calculate pairwise dissimilarities
-data_dist <- vegdist(table_sample_by_taxon_density_wide, method = "bray")
-
-# view histogram of dissimilarity values in the dataset
-hist(data_dist, xlab = "Bray-Curtis dissimilarity")
 
 ```
 
@@ -696,7 +680,11 @@ Now we will see if we can find a comparable LTER benthic macroinvertebrate datas
 data_ntl_inv <- read_data(id = "edi.290.2")
 
 # flatten the dataset
-flat_ntl_inv <- data_ntl_inv %>% flatten_data()
+flat_ntl_inv <- data_ntl_inv %>%
+  flatten_data() %>%
+  mutate(
+    package_id = data_ntl_inv$id,  # add id so multiple datasets can be stacked
+    taxon_rank = tolower(taxon_rank))  # fix case for plotting
 
 View(flat_ntl_inv)
 
