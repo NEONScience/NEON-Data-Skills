@@ -203,8 +203,7 @@ library(ecocomDP)
 <p>Save the .Renviron file using a path that makes sense for your workflow using “File -&gt; Save As”. For example, on the VICE platform you can use the filepath “work &gt; home &gt; YOUR CYVERSE USERNAME” and save your .Renviron file in your personal storage space, which should persist as long as you have an active account. Other platforms may allow you to mount personal storage volumes where you can securely store tokens.</p>
 </li>
 <li>
-<p>Read your .Renviron variables into your R session:</p>
-<h1>e.g., this would be the path on the VICE platform</h1>
+<p>Read your .Renviron variables into your R session, e.g., this would be the path on the VICE platform:</p>
 <p>readRenviron(”../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron”)</p>
 </li>
 </ol>
@@ -251,9 +250,9 @@ all_tabs_inv &lt;- neonUtilities::loadByProduct(
 
 names(all_tabs_inv)
 
-## [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_RELEASE-2023&quot; &quot;inv_fieldData&quot;               &quot;inv_persample&quot;              
-## [5] &quot;inv_taxonomyProcessed&quot;       &quot;issueLog_20120&quot;              &quot;readme_20120&quot;                &quot;validation_20120&quot;           
-## [9] &quot;variables_20120&quot;
+## [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_RELEASE-2023&quot; &quot;inv_fieldData&quot;              
+## [4] &quot;inv_persample&quot;               &quot;inv_taxonomyProcessed&quot;       &quot;issueLog_20120&quot;             
+## [7] &quot;readme_20120&quot;                &quot;validation_20120&quot;            &quot;variables_20120&quot;
 
 # extract items from list and put in R env. 
 
@@ -671,7 +670,7 @@ data_neon_inv$id
 data_neon_inv$metadata$data_package_info
 
 ## $data_package_id
-## [1] &quot;neon.ecocomdp.20120.001.001.20230802152621&quot;
+## [1] &quot;neon.ecocomdp.20120.001.001.20230803224350&quot;
 ## 
 ## $taxonomic_group
 ## [1] &quot;MACROINVERTEBRATES&quot;
@@ -686,7 +685,7 @@ data_neon_inv$metadata$data_package_info
 ## [1] &quot;original NEON data accessed using neonUtilities v2.3.0&quot;
 ## 
 ## $data_access_date_time
-## [1] &quot;2023-08-02 15:26:22 MDT&quot;
+## [1] &quot;2023-08-03 22:43:51 MDT&quot;
 
 # validation issues? None if returns an empty list
 
@@ -698,35 +697,42 @@ data_neon_inv$validation_issues
 
 data_neon_inv$tables %&gt;% names()
 
-## [1] &quot;location&quot;              &quot;location_ancillary&quot;    &quot;taxon&quot;                 &quot;observation&quot;           &quot;observation_ancillary&quot;
-## [6] &quot;dataset_summary&quot;
+## [1] &quot;location&quot;              &quot;location_ancillary&quot;    &quot;taxon&quot;                
+## [4] &quot;observation&quot;           &quot;observation_ancillary&quot; &quot;dataset_summary&quot;
 
 data_neon_inv$tables$taxon %&gt;% head()
 
-##   taxon_id taxon_rank             taxon_name                                    authority_system authority_taxon_id
-## 1   ABLMAL    species   Ablabesmyia mallochi Epler 2001, and Maschwitz and Cook 2000; Epler 2001               &lt;NA&gt;
-## 2    ABLSP      genus        Ablabesmyia sp.                          Roback 1985 and Epler 2001               &lt;NA&gt;
-## 3   ACASP1   subclass              Acari sp.                               Thorp and Covich 2001               &lt;NA&gt;
-## 4   ACEMAC    species Acerpenna macdunnoughi                          Morihara &amp; McCafferty 1979               &lt;NA&gt;
-## 5   ACEPYG    species      Acerpenna pygmaea           Morihara &amp; McCafferty 1979; Wiersema 2004               &lt;NA&gt;
-## 6    ACESP      genus         Acentrella sp. Merritt and Cummins 2008; Jacobus &amp; McCafferty 2006               &lt;NA&gt;
+##   taxon_id taxon_rank             taxon_name
+## 1   ABLMAL    species   Ablabesmyia mallochi
+## 2    ABLSP      genus        Ablabesmyia sp.
+## 3   ACASP1   subclass              Acari sp.
+## 4   ACEMAC    species Acerpenna macdunnoughi
+## 5   ACEPYG    species      Acerpenna pygmaea
+## 6    ACESP      genus         Acentrella sp.
+##                                      authority_system authority_taxon_id
+## 1 Epler 2001, and Maschwitz and Cook 2000; Epler 2001               &lt;NA&gt;
+## 2                          Roback 1985 and Epler 2001               &lt;NA&gt;
+## 3                               Thorp and Covich 2001               &lt;NA&gt;
+## 4                          Morihara &amp; McCafferty 1979               &lt;NA&gt;
+## 5           Morihara &amp; McCafferty 1979; Wiersema 2004               &lt;NA&gt;
+## 6 Merritt and Cummins 2008; Jacobus &amp; McCafferty 2006               &lt;NA&gt;
 
 data_neon_inv$tables$observation %&gt;% head()
 
-##   observation_id                event_id                                 package_id    location_id            datetime taxon_id
-## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230802152621 COMO.AOS.reach 2017-08-03 15:29:00   ARRSP2
-## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230802152621 COMO.AOS.reach 2017-08-03 15:29:00   BILALG
-## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230802152621 COMO.AOS.reach 2017-08-03 15:29:00    BRISP
-## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230802152621 COMO.AOS.reach 2017-08-03 15:29:00  CERSP10
-## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230802152621 COMO.AOS.reach 2017-08-03 15:29:00  CHESP17
-## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230802152621 COMO.AOS.reach 2017-08-03 15:29:00   CHISP6
-##   variable_name value                   unit
-## 1       density    12 count per square meter
-## 2       density   424 count per square meter
-## 3       density     8 count per square meter
-## 4       density     8 count per square meter
-## 5       density     8 count per square meter
-## 6       density     8 count per square meter
+##   observation_id                event_id                                 package_id
+## 1          obs_1 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230803224350
+## 2          obs_2 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230803224350
+## 3          obs_3 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230803224350
+## 4          obs_4 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230803224350
+## 5          obs_5 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230803224350
+## 6          obs_6 COMO.20170803.KICKNET.1 neon.ecocomdp.20120.001.001.20230803224350
+##      location_id            datetime taxon_id variable_name value                   unit
+## 1 COMO.AOS.reach 2017-08-03 15:29:00   ARRSP2       density    12 count per square meter
+## 2 COMO.AOS.reach 2017-08-03 15:29:00   BILALG       density   424 count per square meter
+## 3 COMO.AOS.reach 2017-08-03 15:29:00    BRISP       density     8 count per square meter
+## 4 COMO.AOS.reach 2017-08-03 15:29:00  CERSP10       density     8 count per square meter
+## 5 COMO.AOS.reach 2017-08-03 15:29:00  CHESP17       density     8 count per square meter
+## 6 COMO.AOS.reach 2017-08-03 15:29:00   CHISP6       density     8 count per square meter
 </code></pre>
 <p>Notice that the records in the observation table are reported as densities standardize per unit effort (i.e., area sampled). All of the data wrangling that we needed to do in the section above is coded into the mapping code used in ecocomDP for this NEON data product. It is important to note that this mapping is a work in progress for ecocomDP datasets. If you have recommendations to improve a dataset mapping to the ecocomDP format, an alternative mapping, or a new dataset that you would like to see mapped to the ecocomDP format, feel free to make a new issue on the <a href="https://github.com/EDIorg/ecocomDP/issues/new/choose">ecocomDP GitHub repo</a>.</p>
 <h3>Built-in tools for quick data vis</h3>
@@ -818,39 +824,39 @@ my_nmds_result &lt;- wide_neon_inv %&gt;% metaMDS()
 ## Square root transformation
 ## Wisconsin double standardization
 ## Run 0 stress 0.1977579 
-## Run 1 stress 0.2371571 
-## Run 2 stress 0.2193124 
-## Run 3 stress 0.2533485 
-## Run 4 stress 0.2507729 
-## Run 5 stress 0.2600166 
-## Run 6 stress 0.2361069 
-## Run 7 stress 0.2377602 
-## Run 8 stress 0.2180579 
-## Run 9 stress 0.2440302 
-## Run 10 stress 0.1977579 
-## ... Procrustes: rmse 5.83756e-06  max resid 4.829729e-05 
-## ... Similar to previous best
-## Run 11 stress 0.2319148 
-## Run 12 stress 0.2033444 
-## Run 13 stress 0.2576416 
-## Run 14 stress 0.2071734 
-## Run 15 stress 0.2426635 
-## Run 16 stress 0.1952459 
+## Run 1 stress 0.2153616 
+## Run 2 stress 0.2298491 
+## Run 3 stress 0.2359556 
+## Run 4 stress 0.2233196 
+## Run 5 stress 0.2090286 
+## Run 6 stress 0.2466269 
+## Run 7 stress 0.1990968 
+## Run 8 stress 0.2382048 
+## Run 9 stress 0.2305114 
+## Run 10 stress 0.1960912 
 ## ... New best solution
-## ... Procrustes: rmse 0.02892631  max resid 0.3231054 
-## Run 17 stress 0.2465781 
-## Run 18 stress 0.1961935 
-## Run 19 stress 0.2423207 
-## Run 20 stress 0.1986369 
+## ... Procrustes: rmse 0.02992648  max resid 0.3227259 
+## Run 11 stress 0.2499347 
+## Run 12 stress 0.2088631 
+## Run 13 stress 0.1952428 
+## ... New best solution
+## ... Procrustes: rmse 0.007730752  max resid 0.08461392 
+## Run 14 stress 0.2098515 
+## Run 15 stress 0.2158888 
+## Run 16 stress 0.1961931 
+## Run 17 stress 0.2492565 
+## Run 18 stress 0.2514713 
+## Run 19 stress 0.2233795 
+## Run 20 stress 0.2134943 
 ## *** Best solution was not repeated -- monoMDS stopping criteria:
-##     15: stress ratio &gt; sratmax
-##      5: scale factor of the gradient &lt; sfgrmin
+##     17: stress ratio &gt; sratmax
+##      3: scale factor of the gradient &lt; sfgrmin
 
 # ordination stress
 
 my_nmds_result$stress
 
-## [1] 0.1952459
+## [1] 0.1952428
 
 # plot ordination
 
@@ -886,7 +892,6 @@ data_neon_inv_allsites &lt;- read_data(
 </li>
 <li>
 <p>If you are not running an in instance of RStudio that has the CyVerse Data Store mounted, you can access the data here via a static URL:</p>
-<h1>reading in the data when not using CyVerse VICE</h1>
 <p>data_neon_inv_allsites &lt;- readRDS(
 file = gzcon(url(“<a href="https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2022/macroinverts_neon.ecocomdp.20120.001.001_release2022.RDS">https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2022/macroinverts_neon.ecocomdp.20120.001.001_release2022.RDS</a>”)))</p>
 </li>
@@ -921,15 +926,18 @@ View(flat_ntl_inv)
 
 flat_neon_inv_allsites %&gt;% names()
 
-##  [1] &quot;observation_id&quot;              &quot;event_id&quot;                    &quot;datetime&quot;                    &quot;variable_name&quot;              
-##  [5] &quot;value&quot;                       &quot;unit&quot;                        &quot;estimatedTotalCount&quot;         &quot;individualCount&quot;            
-##  [9] &quot;subsamplePercent&quot;            &quot;laboratoryName&quot;              &quot;publicationDate&quot;             &quot;release&quot;                    
-## [13] &quot;benthicArea&quot;                 &quot;neon_event_id&quot;               &quot;habitatType&quot;                 &quot;samplerType&quot;                
-## [17] &quot;substratumSizeClass&quot;         &quot;remarks&quot;                     &quot;ponarDepth&quot;                  &quot;snagLength&quot;                 
-## [21] &quot;snagDiameter&quot;                &quot;location_id&quot;                 &quot;location_name&quot;               &quot;siteID&quot;                     
-## [25] &quot;latitude&quot;                    &quot;longitude&quot;                   &quot;elevation&quot;                   &quot;domainID&quot;                   
-## [29] &quot;aquaticSiteType&quot;             &quot;taxon_id&quot;                    &quot;taxon_rank&quot;                  &quot;taxon_name&quot;                 
-## [33] &quot;authority_system&quot;            &quot;package_id&quot;                  &quot;original_package_id&quot;         &quot;length_of_survey_years&quot;     
+##  [1] &quot;observation_id&quot;              &quot;event_id&quot;                    &quot;datetime&quot;                   
+##  [4] &quot;variable_name&quot;               &quot;value&quot;                       &quot;unit&quot;                       
+##  [7] &quot;estimatedTotalCount&quot;         &quot;individualCount&quot;             &quot;subsamplePercent&quot;           
+## [10] &quot;laboratoryName&quot;              &quot;publicationDate&quot;             &quot;release&quot;                    
+## [13] &quot;benthicArea&quot;                 &quot;neon_event_id&quot;               &quot;habitatType&quot;                
+## [16] &quot;samplerType&quot;                 &quot;substratumSizeClass&quot;         &quot;remarks&quot;                    
+## [19] &quot;ponarDepth&quot;                  &quot;snagLength&quot;                  &quot;snagDiameter&quot;               
+## [22] &quot;location_id&quot;                 &quot;location_name&quot;               &quot;siteID&quot;                     
+## [25] &quot;latitude&quot;                    &quot;longitude&quot;                   &quot;elevation&quot;                  
+## [28] &quot;domainID&quot;                    &quot;aquaticSiteType&quot;             &quot;taxon_id&quot;                   
+## [31] &quot;taxon_rank&quot;                  &quot;taxon_name&quot;                  &quot;authority_system&quot;           
+## [34] &quot;package_id&quot;                  &quot;original_package_id&quot;         &quot;length_of_survey_years&quot;     
 ## [37] &quot;number_of_years_sampled&quot;     &quot;std_dev_interval_betw_years&quot; &quot;max_num_taxa&quot;
 
 # what kind of aquaticSiteTypes are in the data?
