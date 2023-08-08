@@ -141,8 +141,8 @@ Map.setCenter(-83.5, 35.6, 12);
 Now that you've read in these two datasets (SDR and CHM) over all the years of available data, we encourage you to explore the different layers and see what you notice! Toggle between the layers, play with the opacity. Visual inspection is an important first step in exploratory analysis - see if you can recognize patterns and form new questions based off what you see.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_chm_2017.png" alt="GRSM 2017 CHM with Chimney Tops Fire Perimeter"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1e_grsm_wildfire/grsm_chm_2017.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1e_grsm_wildfire/grsm_chm_2017.png" alt="GRSM 2017 CHM with Chimney Tops Fire Perimeter"></a>
 </figure>
 
 ## CHM Difference Layers
@@ -217,8 +217,8 @@ print(chm_diff_hist_2021_2016);
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/chm_diff_hists.PNG" width=300 alt="CHM Difference Histograms"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1e_grsm_wildfire/chm_diff_hists.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1e_grsm_wildfire/chm_diff_hists.PNG" width=300 alt="CHM Difference Histograms"></a>
 </figure>
 
 On your own, try to interpret what these difference histograms are showing.
@@ -262,8 +262,8 @@ Map.addLayer(sdr_dNBR_2016_2021, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_dnbr_2016-2017.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_grsm_wildfire/grsm_dnbr_2016-2017.png" alt="GRSM dNBR 2016-2017"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1e_grsm_wildfire/grsm_dnbr_2016-2017.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1e_grsm_wildfire/grsm_dnbr_2016-2017.png" alt="GRSM dNBR 2016-2017"></a>
 </figure>
 
 The differenced Normalized Burn Ratio (dNBR) does a great job of highlighting the burned areas (in red).
