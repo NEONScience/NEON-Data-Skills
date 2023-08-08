@@ -46,6 +46,8 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## Read in AOP and Landsat 8 Surface Reflectance Image Collections
 
+First read in the AOP SDR data and the Landsat 8 data, filtering by the site center point / region of interest, and by date.
+
 ```javascript
 // Specify center location and for GRSM
 var site_center = ee.Geometry.Point([-83.5, 35.7]); 
@@ -65,7 +67,7 @@ var l8sr = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
 
 ## Cloud Mask Function for Landsat 8 Data
 
-Let's create a function to pre-process the Landsat 8 data, mainly applying cloud masking. Don't worry too much about the details here, but the main thing to be aware of is that different sensors handle the QA bands in different way. Landsat (and other sensors) use something called "bitmasking" to store QA information, which is a space-efficient method for storing information. This cloud-masking function can be found on the earthengine-api GitHub examples <a href="https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js" target="_blank">here</a>.
+Next we can create a function to pre-process the Landsat 8 data, which applies scaling and cloud / saturated data masking. Don't worry too much about the details here, but the main thing to be aware of is that different satellite image collections handle the QA information differently. Landsat (and other satellites) often use something called "bitmasking" to store QA information, which is a space-efficient method for storing additional information. This cloud-masking function can be found on the earthengine-api GitHub examples <a href="https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js" target="_blank">here</a>.
 
 ```javascript
 // cloud masking function for Landsat 8 Collection 2 
@@ -159,7 +161,7 @@ print(ndvi_timeseries)
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_ndvi_timeseries/ndvi-time-series.png" alt="NDVI Time Series Landsat 8 + AOP at GRSM 2016-2022"></a>
 </figure>
 
-This figure highlights some important points. While the Airborne Observation Platform seeks to collect data in Peak Greenness (when vegetation is most photosynthetically active), this is not always possible due to logistical or other constraints. In this case, one of the AOP collections was in October, past peak-greenness when the leaves already started senescing in some areas. Generating a time-series plot like this can help highlight the data in the context of the larger temporal trends. This brings us to the second point: while AOP data has very high spectral (426 bands) and spatial (1m) resolution, the temporal resolution (annual or bi-annual) may not fully suffice for your research needs. This is where scaling with satellite data - either to expand your analysis to a larger area, or to achieve a more comprehensive temporal understanding - can be very powerful! This tutorial demonstrates a simple example of scaling up the temporal resolution, but demonstrates how GEE makes this sort of scalable analysis much simpler! 
+This figure highlights some important points. First, we can see that there is good alignment between the mean NDVI calculated from AOP reflectance data and Landsat 8 at these times. While the Airborne Observation Platform seeks to collect data in peak green conditions, this is not always possible due to logistical or other constraints. In this case, one the AOP collection in 2017 was in October, past peak-greenness when the leaves already started senescing in some areas. Generating a time-series plot like this can help highlight the data in the context of the larger temporal trends. In this case we can see strong seasonal trends from the Landsat time series. This brings us to the second point: while AOP data has very high spectral (426 bands) and spatial (1m) resolution, the temporal resolution (annual or bi-annual) may not fully suffice for your research needs. This is where scaling with satellite data - either to expand your analysis to a larger area, or to achieve a more comprehensive temporal understanding - can be very powerful! This tutorial demonstrates a simple example of scaling up the temporal resolution, but demonstrates how GEE makes this sort of scalable analysis much simpler! 
 
 ## Get Lesson Code
 
