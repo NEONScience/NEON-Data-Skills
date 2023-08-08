@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 4f53eb693c6d406e88cc6f481e7e2bac
 title: "NDVI Time Series using AOP Reflectance and Landsat 8 Data in GEE"
 description: ""
 dateCreated: 2023-08-01
