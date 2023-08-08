@@ -16,9 +16,9 @@ urlTitle: aop-gee-ndvi-timeseries
 
 ---
 
-In this lesson, we'll continue to use the Great Smokey Mountains site as an example, this time creating a time series of the mean NDVI within the Chimney Tops 2 Fire perimeter, from 2016-2022. We will plot this along with the NDVI time-series derived from Landsat 8 data, and use this to fill in some more detailed temporal information.
+In this lesson, we'll continue to use the Great Smokey Mountains site as an example, this time creating a time series of the mean NDVI within the Chimney Tops 2 Fire perimeter between 2016-2022. We will plot this along with the NDVI time-series derived from Landsat 8 data, and use this to fill in some more detailed temporal information.
 
-AOP strives to collect every site during peak-greenness, when the predominant vegetation is most photosynthetically active. This is so that when comparing data from year to year, the differences are due to actual changes and not just due to the time of year. 
+AOP strives to collect every site during peak-greenness, when the predominant vegetation is most photosynthetically active. This is so that when comparing data from year to year, the differences are due to actual changes and not just due to the time of year. This is not always possible, so it's important to consider the time of year when you are conducting your analysis.
 
 <div id="ds-objectives" markdown="1">
 
@@ -29,7 +29,7 @@ After completing this activity, you will be able to:
  * Understand the trade-offs in different kinds of resolutions (spatial, spectral, and temporal)
 
 ## Requirements
- * An Earth Engine account. You can register for an Earth Engine account <a href="https://code.earthengine.google.com/register" target="_blank">here</a>
+ * Register for an Earth Engine account <a href="https://code.earthengine.google.com/register" target="_blank">here</a>
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)/a>
@@ -62,7 +62,6 @@ var l8sr = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
                 .filterBounds(roi)
                 .filter(ee.Filter.calendarRange(2016, 2022, 'year'));
 ```
-
 
 Let's create a function to pre-process the Landsat 8 data, mainly applying cloud masking. Don't worry too much about the details here, but the main thing to be aware of is that different sensors handle the QA bands in different way. Landsat (and other sensors) use something called "bitmasking" to store QA information, which is a space-efficient method for storing information. This cloud-masking function can be found on the earthengine-api GitHub examples <a href="https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js" target="_blank">here</a>.
 
@@ -154,7 +153,5 @@ print(ndvi_timeseries)
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_ndvi_timeseries/ndvi-time-series.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_ndvi_timeseries/ndvi-time-series.png" alt="NDVI Time Series Landsat 8 + AOP at GRSM 2016-2022"></a>
 </figure>
-
-"C:\Users\bhass\Documents\GitHubRepos\NEON-Data-Skills\graphics\aop-gee2023\1f_ndvi_timeseries\ndvi-time-series.png"
 
 This figure highlights some important points. While the Airborne Observation Platform seeks to collect data in Peak Greenness (when vegetation is most photosynthetically active), this is not always possible due to logistical or other constraints. In this case, one of the AOP collections was in October, past peak-greenness when the leaves already started senescing in some areas. Generating a time-series plot like this can help highlight the data in the context of the larger temporal trends. This brings us to the second point: while AOP data has very high spectral (426 bands) and spatial (1m) resolution, the temporal resolution (annual or bi-annual) may not fully suffice for your research needs. This is where scaling with satellite data - either to expand your analysis to a larger area, or to achieve a more comprehensive temporal understanding - can be very powerful! This tutorial demonstrates a simple example of scaling up the temporal resolution, but demonstrates how GEE makes this sort of scalable analysis much simpler! 
