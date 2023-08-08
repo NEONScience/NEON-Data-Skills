@@ -27,8 +27,7 @@ After completing this activity, you will be able to:
  * Create an NDVI time series using two sets of data with different timestamps
 
 ## Requirements
- * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * An Earth Engine account. You can register for an Earth Engine account <a href="https://code.earthengine.google.com/register" target="_blank">here</a>
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)/a>
