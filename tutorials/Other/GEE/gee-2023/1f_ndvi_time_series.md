@@ -32,7 +32,7 @@ After completing this activity, you will be able to:
  * Register for an Earth Engine account <a href="https://code.earthengine.google.com/register" target="_blank">here</a>
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
-    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)/a>
+    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-gee-functions" target="_blank">Intro to GEE Functions</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-wildfire" target="_blank">Wildfire Analysis Using AOP Data in GEE</a>
 
@@ -63,6 +63,8 @@ var l8sr = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
                 .filter(ee.Filter.calendarRange(2016, 2022, 'year'));
 ```
 
+## Cloud Mask Function for Landsat 8 Data
+
 Let's create a function to pre-process the Landsat 8 data, mainly applying cloud masking. Don't worry too much about the details here, but the main thing to be aware of is that different sensors handle the QA bands in different way. Landsat (and other sensors) use something called "bitmasking" to store QA information, which is a space-efficient method for storing information. This cloud-masking function can be found on the earthengine-api GitHub examples <a href="https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js" target="_blank">here</a>.
 
 ```javascript
@@ -86,6 +88,8 @@ function maskL8sr(image) {
 // Apply the cloud masking function
 l8sr = l8sr.filterBounds(roi).map(maskL8sr)
 ```
+
+## Merge AOP and Landsat 8 NDVI Collections
 
 Next we can plot the two datasets on the same chart. This code was modified from the Stack Overflow post: <a href="https://stackoverflow.com/questions/64776217/how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on" target="_blank">how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on</a>.
 
@@ -112,6 +116,7 @@ print('NIS Images',sdr_col)
 var merged = l8sr.merge(sdr_col).select(['l8_ndvi', 'aop_ndvi'])
 ```
 
+## Plot NDVI Time Series
 Lastly we can create and plot (print) the time-series chart. Most of this is just setting the chart style.
 
 ```javascript
