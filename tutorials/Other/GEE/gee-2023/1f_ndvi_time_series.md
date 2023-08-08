@@ -160,3 +160,7 @@ print(ndvi_timeseries)
 </figure>
 
 This figure highlights some important points. While the Airborne Observation Platform seeks to collect data in Peak Greenness (when vegetation is most photosynthetically active), this is not always possible due to logistical or other constraints. In this case, one of the AOP collections was in October, past peak-greenness when the leaves already started senescing in some areas. Generating a time-series plot like this can help highlight the data in the context of the larger temporal trends. This brings us to the second point: while AOP data has very high spectral (426 bands) and spatial (1m) resolution, the temporal resolution (annual or bi-annual) may not fully suffice for your research needs. This is where scaling with satellite data - either to expand your analysis to a larger area, or to achieve a more comprehensive temporal understanding - can be very powerful! This tutorial demonstrates a simple example of scaling up the temporal resolution, but demonstrates how GEE makes this sort of scalable analysis much simpler! 
+
+## Get Lesson Code
+
+<a href="https://code.earthengine.google.com/b79904271c8284f92400827fd6557c74" target="_blank">NDVI Time Series</a>
