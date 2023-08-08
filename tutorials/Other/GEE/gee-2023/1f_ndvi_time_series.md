@@ -18,13 +18,15 @@ urlTitle: aop-gee-ndvi-timeseries
 
 In this lesson, we'll continue to use the Great Smokey Mountains site as an example, this time creating a time series of the mean NDVI within the Chimney Tops 2 Fire perimeter, from 2016-2022. We will plot this along with the NDVI time-series derived from Landsat 8 data, and use this to fill in some more detailed temporal information.
 
+AOP strives to collect every site during peak-greenness, when the predominant vegetation is most photosynthetically active. This is so that when comparing data from year to year, the differences are due to actual changes and not just due to the time of year. 
+
 <div id="ds-objectives" markdown="1">
 
 ## Objectives
 After completing this activity, you will be able to:
- * Compare and scale AOP data to Landsat 8 data
- * Understand the difference in temporal resolution between AOP and Landsat data
+ * Compare AOP data to Landsat 8 data
  * Create an NDVI time series using two sets of data with different timestamps
+ * Understand the trade-offs in different kinds of resolutions (spatial, spectral, and temporal)
 
 ## Requirements
  * An Earth Engine account. You can register for an Earth Engine account <a href="https://code.earthengine.google.com/register" target="_blank">here</a>
@@ -36,7 +38,7 @@ After completing this activity, you will be able to:
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
- * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine  </a>
+ * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
  * <a href="https://developers.google.com/earth-engine/guides/charts_image_collection" target="_blank"> GEE Charts Image Collection </a>
 
@@ -61,9 +63,11 @@ var l8sr = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
                 .filter(ee.Filter.calendarRange(2016, 2022, 'year'));
 ```
 
+
+Let's create a function to pre-process the Landsat 8 data, mainly applying cloud masking. Don't worry too much about the details here, but the main thing to be aware of is that different sensors handle the QA bands in different way. Landsat (and other sensors) use something called "bitmasking" to store QA information, which is a space-efficient method for storing information. This cloud-masking function can be found on the earthengine-api GitHub examples <a href="https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js" target="_blank">here</a>.
+
 ```javascript
-// cloud masking function for Landsat 8 collection 2 is on GitHub under examples
-// https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js 
+// cloud masking function for Landsat 8 Collection 2 
 function maskL8sr(image) {
 
   var qaMask = image.select('QA_PIXEL').bitwiseAnd(parseInt('11111', 2)).eq(0);
@@ -84,7 +88,7 @@ function maskL8sr(image) {
 l8sr = l8sr.filterBounds(roi).map(maskL8sr)
 ```
 
-Next we can do a trick to plot the two datasets on the same chart. This was modified from https://stackoverflow.com/questions/64776217/how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on).
+Next we can plot the two datasets on the same chart. This code was modified from the Stack Overflow post: <a href="https://stackoverflow.com/questions/64776217/how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on" target="_blank">how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on</a>.
 
 ```javascript
 // compute ndvi bands to add to each collection
@@ -109,7 +113,7 @@ print('NIS Images',sdr_col)
 var merged = l8sr.merge(sdr_col).select(['l8_ndvi', 'aop_ndvi'])
 ```
 
-Lastly we can create the time-series chart. Most of this is just setting the chart style.
+Lastly we can create and plot (print) the time-series chart. Most of this is just setting the chart style.
 
 ```javascript
 // Set chart style properties.
