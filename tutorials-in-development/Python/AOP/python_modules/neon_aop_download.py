@@ -155,6 +155,7 @@ class AopApiHandler:
                         urllib.request.urlretrieve(files[i]['url'],download_folder + files[i]['name'])
 
     def download_file(self, url, filename):
+
         full_url = self.get_full_data_url(url)
         r = requests.get(full_url)
         with open(filename, 'wb') as f:
@@ -164,6 +165,7 @@ class AopApiHandler:
         return
 
     def list_all_files(self, urls, ext=None):
+
         all_files = []
         for url in urls:
             r = requests.get(url)
@@ -178,6 +180,7 @@ class AopApiHandler:
 
 
     def get_file_size(self, urls, match_string = None, file_list = None):
+        
         size=int(0)
         count=int(0)
         for url in urls:
@@ -285,12 +288,17 @@ class AopApiHandler:
         --------
         Usage:
         --------
-        list_of_files = [']
-        download_aop_file_list('DP3.30015.001','JORN',year='2019',download_folder='./data/JORN_2019/CHM')
+        neon_api = AopApiHandler()
+        list_of_files = ['NEON_D02_SERC_DPQA_364000_4306000_boundary.kml','NEON_D02_SERC_DPQA_363000_4305000_boundary.kml']
+        neon_api.download_aop_file_list(product=dpID,
+                                    site='SERC',
+                                    file_list=laz_boundary_files,
+                                    year='2022',
+                                    download_folder='.\data\laz_boundary',
+                                    check_size = False)
         """
         
         #get a list of the urls for a given data product, site, and year (if included)
-        
         urls = self.list_urls_by_product_site(product, site, year)
         
         #make the download folder if it doesn't already exist
@@ -328,8 +336,8 @@ class AopApiHandler:
     
     def get_aop_file_urls(self, product, site, file_list, year = None):
         """
-        download_aop_file_list downloads a list of NEON AOP files from the API for a given data product, site, and 
-        optional year and download folder
+        get_aop_file_urls lists the urls for NEON AOP files from the API for a given data product, site, 
+        file_list and optional year 
         --------
         Inputs:
             required:
@@ -339,12 +347,11 @@ class AopApiHandler:
             optional:
                 year: year (eg. '2020'); default (None) is all years
                 match_string: subset of data to match, need to use exact pattern for file name
-                check_size: prompt to continue download (y/n) after displaying size; default = True
         --------
         Usage:
         --------
         list_of_files = [']
-        download_aop_file_list('DP3.30015.001','JORN',year='2019',download_folder='./data/JORN_2019/CHM')
+        get_aop_file_urls('DP3.30015.001','JORN',year='2019')
         """
         
         #get a list of the urls for a given data product, site, and year (if included)
