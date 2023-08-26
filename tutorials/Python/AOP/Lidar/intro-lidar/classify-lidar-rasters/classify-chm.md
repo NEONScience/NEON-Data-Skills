@@ -81,13 +81,6 @@ download_url(chm_url,'.\data')
 os.listdir('./data')
 ```
 
-
-
-
-    ['NEON_D17_TEAK_DP3_320000_4092000_CHM.tif']
-
-
-
 ## Open a GeoTIFF with `rasterio`
 
 Let's look at the TEAK Canopy Height Model (CHM) to start. We can open and read this in Python using the ```rasterio.open``` function:
@@ -111,22 +104,6 @@ print('\nspatial extent:\n',chm_dataset.bounds)
 print('\ncoordinate information (crs):\n',chm_dataset.crs)
 ```
 
-    chm_dataset:
-     <open DatasetReader name='.\data\NEON_D17_TEAK_DP3_320000_4092000_CHM.tif' mode='r'>
-    
-    shape:
-     (1000, 1000)
-    
-    no data value:
-     -9999.0
-    
-    spatial extent:
-     BoundingBox(left=320000.0, bottom=4092000.0, right=321000.0, top=4093000.0)
-    
-    coordinate information (crs):
-     PROJCS["WGS 84 / UTM zone 11N",GEOGCS["WGS 84",DATUM["World Geodetic System 1984",SPHEROID["WGS 84",6378137,298.257223563]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-117],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Easting",EAST],AXIS["Northing",NORTH]]
-    
-
 ## Plot the Canopy Height Map and Histogram
 
 We can use rasterio's built-in functions `show` and `show_hist` to plot and visualize the CHM tile. It is often useful to plot a histogram of the geotiff data in order to get a sense of the range and distribution of values. 
@@ -144,12 +121,6 @@ ax2.get_legend().remove()
 plt.show();
 ```
 
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/classify-chm_files/classify-chm_12_0.png)
-    
-
-
 On your own, adjust the number of bins, and range of the y-axis to get a better sense of the distribution of the canopy height values. We can see that a large portion of the values are zero. These correspond to bare ground. Let's look at a  histogram and plot the data without these zero values. To do this, we'll remove all values > 1 m. Due to the vertical range resolution of the lidar sensor, data collected with the Optech Gemini sensor can only resolve the ground to within 2 m, so anything below that height will be rounded down to zero. Our newer sensors (Riegl Q780 and Optech Galaxy) have a higher resolution, so the ground can be resolved to within ~0.7 m.
 
 
@@ -159,12 +130,6 @@ valid_data = chm_data[chm_data>2]
 
 plt.hist(valid_data.flatten(),bins=30);
 ```
-
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/classify-chm_files/classify-chm_14_0.png)
-    
-
 
 From the histogram we can see that the majority of the trees are < 60m. But the taller trees are less common in this tile.
 
@@ -195,19 +160,6 @@ When we look at this variable, we can see that it is now populated with values b
 chm_reclass
 ```
 
-
-
-
-    array([[3., 4., 4., ..., 4., 4., 4.],
-           [4., 4., 4., ..., 4., 4., 5.],
-           [4., 4., 4., ..., 4., 4., 4.],
-           ...,
-           [5., 5., 5., ..., 2., 2., 2.],
-           [4., 5., 5., ..., 2., 2., 2.],
-           [4., 4., 5., ..., 2., 1., 1.]], dtype=float32)
-
-
-
 Lastly we can use matplotlib to display this re-classified CHM. We will define our own colormap to plot these discrete classifications, and create a custom legend to label the classes. First, to include the spatial information in the plot, create a new variable called `ext` that pulls from the rasterio "bounds" field to create the extent in the expected format for plotting.
 
 
@@ -218,13 +170,6 @@ ext = [chm_dataset.bounds.left,
        chm_dataset.bounds.top]
 ext
 ```
-
-
-
-
-    [320000.0, 321000.0, 4092000.0, 4093000.0]
-
-
 
 
 ```python
@@ -247,12 +192,6 @@ class5 = mpatches.Patch(color='red', label='>30 m')
 ax.legend(handles=[class1,class2,class3,class4,class5],
           handlelength=0.7,bbox_to_anchor=(1.05, 0.4),loc='lower left',borderaxespad=0.);
 ```
-
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/classify-chm_files/classify-chm_22_0.png)
-    
-
 
 <div id="ds-challenge" markdown="1">
 
