@@ -8,17 +8,17 @@
 # dateCreated: 2018-07-04 
 # authors: Bridget Hass
 # contributors: Donal O'Leary, Max Burner
-# estimatedTime: 1 hour
+# estimatedTime: 30 minutes
 # packagesLibraries: gdal, rasterio, requests
 # topics: lidar, raster, remote-sensing
 # languagesTool: Python
 # dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
-# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/classify_raster_with_threshold-2018-py/classify_raster_with_threshold-2018-py.ipynb
+# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/classify-chm.ipynb
 # tutorialSeries: intro-lidar-py-series
 # urlTitle: classify-chm-py
 # ---
 
-# In this tutorial, we will learn how to read NEON lidar raster GeoTIFFS (CHM, Slope, and Aspect) into Python `rasterio` object and will classify the CHM into height bins.
+# This tutorial covers how to read in a NEON lidar Canopy Height Model (CHM) geotiff file into a Python `rasterio` object, shows some basic information about the raster data, and then ends with classifying the CHM into height bins.
 # 
 # <div id="ds-objectives" markdown="1">
 # 
@@ -38,17 +38,15 @@
 # 
 # ### Download Data
 # 
-# For this lesson, we will be reading in a Canopy Height Model geotiff file, derived from lidar data collected at NEON's Teakettle (TEAK) site in California
-# 
-# The data used for this lesson will be downloaded in the Python script using the `requests` package.
+# For this lesson, we will read in a Canopy Height Model data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `requests` package.
 # 
 # </div>
 
-# In this tutorial, we will work with the NEON AOP L3 LiDAR ecoysystem structure (Canopy Height Model) data product. For more information about NEON data products and the CHM product DP3.30015.001, see the <a href="http://data.neonscience.org/data-products/DP3.30015.001" target="_blank">NEON Data Product Catalog</a>. 
+# In this tutorial, we will work with the NEON AOP L3 LiDAR ecoysystem structure (Canopy Height Model) data product. For more information about NEON data products and the CHM product DP3.30015.001, see the <a href="http://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem structure</a> data product page on NEON's Data Portal. 
 # 
 # First, let's import the required packages and set our plot display to be in-line:
 
-# In[1]:
+# In[ ]:
 
 
 import os
@@ -60,7 +58,9 @@ from rasterio.plot import show, show_hist
 import matplotlib.pyplot as plt
 %matplotlib inline
 
-# In[2]:
+# Next, let's download a file. For this tutorial, we will use the `requests` package to download a raster file from the public link where the data is stored. For simplicity, we will show how to download to a data folder in the working directory. You can move the data to a different folder, but be sure to update the path to your data accordingly. 
+
+# In[ ]:
 
 
 # function to download data stored on the internet in a public url to a local file
@@ -73,7 +73,7 @@ def download_url(url,download_dir):
     file_object.write(r.content)
 
 
-# In[3]:
+# In[ ]:
 
 
 # public url where the CHM tile is stored
@@ -90,7 +90,7 @@ os.listdir('./data')
 # 
 # Let's look at the TEAK Canopy Height Model (CHM) to start. We can open and read this in Python using the ```rasterio.open``` function:
 
-# In[4]:
+# In[ ]:
 
 
 # read the chm file (including the full path) to the variable chm_dataset
@@ -101,7 +101,7 @@ chm_dataset = rio.open(chm_file)
 
 # Now we can look at a few properties of this dataset to start to get a feel for the rasterio object:
 
-# In[5]:
+# In[ ]:
 
 
 print('chm_dataset:\n',chm_dataset)
@@ -111,11 +111,11 @@ print('\nspatial extent:\n',chm_dataset.bounds)
 print('\ncoordinate information (crs):\n',chm_dataset.crs)
 
 
-# ## Plot Canopy Height Data and Histogram
+# ## Plot the Canopy Height Map and Histogram
 # 
-# We can use one of rasterio's built-in functions to plot and visualize the CHM tile. It is often useful to plot a histogram of the geotiff data in order to get a sense of the range and distribution of values. 
+# We can use rasterio's built-in functions `show` and `show_hist` to plot and visualize the CHM tile. It is often useful to plot a histogram of the geotiff data in order to get a sense of the range and distribution of values. 
 
-# In[6]:
+# In[ ]:
 
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12,5))
@@ -129,9 +129,9 @@ ax2.get_legend().remove()
 plt.show();
 
 
-# On your own, adjust the number of bins, and range of the y-axis to get a good idea of the distribution of the canopy height values. We can see that a large portion of the values are zero. These correspond to bare ground. Let's look at a  histogram and plot the data without these zero values. To do this, we'll remove all values > 1m. Due to the vertical range resolution of the lidar sensor, data collected with the Optech Gemini sensor can only resolve the ground to within 2 m, so anything below that height will be rounded down to zero. Our newer sensors (Riegl Q780 and Optech Galaxy) have a higher resolution, so the ground can be resolved to within ~0.7 m.
+# On your own, adjust the number of bins, and range of the y-axis to get a better sense of the distribution of the canopy height values. We can see that a large portion of the values are zero. These correspond to bare ground. Let's look at a  histogram and plot the data without these zero values. To do this, we'll remove all values > 1 m. Due to the vertical range resolution of the lidar sensor, data collected with the Optech Gemini sensor can only resolve the ground to within 2 m, so anything below that height will be rounded down to zero. Our newer sensors (Riegl Q780 and Optech Galaxy) have a higher resolution, so the ground can be resolved to within ~0.7 m.
 
-# In[7]:
+# In[ ]:
 
 
 chm_data = chm_dataset.read(1)
@@ -152,7 +152,7 @@ plt.hist(valid_data.flatten(),bins=30);
 # 
 # We can use `np.where` to find the indices where the specified criteria is met. 
 
-# In[8]:
+# In[ ]:
 
 
 chm_reclass = chm_data.copy()
@@ -165,7 +165,7 @@ chm_reclass[np.where(chm_data>30)] = 5 # CHM > 30m - Class 5
 
 # When we look at this variable, we can see that it is now populated with values between 1-5:
 
-# In[9]:
+# In[ ]:
 
 
 chm_reclass
@@ -173,7 +173,7 @@ chm_reclass
 
 # Lastly we can use matplotlib to display this re-classified CHM. We will define our own colormap to plot these discrete classifications, and create a custom legend to label the classes. First, to include the spatial information in the plot, create a new variable called `ext` that pulls from the rasterio "bounds" field to create the extent in the expected format for plotting.
 
-# In[10]:
+# In[ ]:
 
 
 ext = [chm_dataset.bounds.left,
@@ -183,7 +183,7 @@ ext = [chm_dataset.bounds.left,
 ext
 
 
-# In[11]:
+# In[ ]:
 
 
 import matplotlib.colors as colors
@@ -212,26 +212,13 @@ ax.legend(handles=[class1,class2,class3,class4,class5],
 # 
 # Create the following threshold classified outputs:
 # 
-# 1. A raster where NDVI values are classified into the following categories:
-#     * Low greenness: NDVI < 0.3
-#     * Medium greenness: 0.3 < NDVI < 0.6
-#     * High greenness: NDVI > 0.6
-# 2. A raster where aspect is classified into North and South facing slopes: 
-#     * North: 0-45 & 315-360 degrees 
-#     * South: 135-225 degrees
+# 1. An NDVI raster where values are classified into the following categories:
+# - Low greenness: NDVI < 0.3
+# - Medium greenness: 0.3 < NDVI < 0.6
+# - High greenness: NDVI > 0.6
 # 
-#  <figure>
-# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NSEWclassification_BozEtAl2015.jpg"></a>
-# 	<figcaption> Reclassification of aspect (azimuth) values: North, 315-45 
-# 	degrees; East, 45-135 degrees; South, 135-225 degrees; West, 225-315 degrees.
-# 	Source: <a href="http://www.aimspress.com/article/10.3934/energy.2015.3.401/fulltext.html"> Boz et al. 2015 </a>
-# 	</figcaption>
-# </figure>
+# 2. A classified aspect raster where the data is grouped into North and South facing slopes (or all four cardinal directions): 
+# - North: 0-45 & 315-360 degrees 
+# - South: 135-225 degrees
 # 
 # </div>
-
-# ## References 
-# 
-# Khosravipour, Anahita & Skidmore, Andrew & Isenburg, Martin & Wang, Tiejun & Hussin, Yousif. (2014). <a href="https://www.researchgate.net/publication/273663100_Generating_Pit-free_Canopy_Height_Models_from_Airborne_Lidar" target="_blank"> Generating Pit-free Canopy Height Models from Airborne Lidar. Photogrammetric Engineering & Remote Sensing</a>. 80. 863-872. 10.14358/PERS.80.9.863. 
-# 
