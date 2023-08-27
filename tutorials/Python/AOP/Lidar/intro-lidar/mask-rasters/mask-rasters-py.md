@@ -42,10 +42,6 @@ For this lesson, we will read in a Canopy Height Model data collected at NEON's 
 
 <img src="http://neon-workwithdata.github.io/neon-data-institute-2016/images/spatialData/raster_masks.jpg" style="width: 750px;"/>
 
-## Lidar Elevation Models
-
-To start, we will open the NEON LiDAR Digital Surface and Digital Terrain Models (DSM and DTM) which are provided in geotiff (.tif) format. For this exercise we will continue working with the TEAK data subset. 
-
 
 ```python
 import os
@@ -64,6 +60,8 @@ import matplotlib.patches as mpatches
 
 ## Read in the datasets
 ### Download Lidar Elevation Models and Vegetation Indices from TEAK
+
+To start, we will download the NEON Lidar Aspect and Spectrometer Vegetation Indices (including the NDVI) which are provided in geotiff (.tif) format. Use the `download_url` function below to download the data directly from the cloud storage location.
 
 
 ```python
@@ -91,14 +89,6 @@ download_url(ndvi_url,'.\data')
 os.listdir('./data')
 ```
 
-
-
-
-    ['NEON_D17_TEAK_DP3_320000_4092000_aspect.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_VegetationIndices.zip']
-
-
-
 We can use `zipfile` to unzip the VegetationIndices folder in order to read the NDVI file (which is included in the zipped folder).
 
 
@@ -112,23 +102,7 @@ with zipfile.ZipFile("./data/NEON_D17_TEAK_DP3_320000_4092000_VegetationIndices.
 os.listdir('./data')
 ```
 
-
-
-
-    ['NEON_D17_TEAK_DP3_320000_4092000_ARVI.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_ARVI_error.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_aspect.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_EVI.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_EVI_error.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_NDVI.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_NDVI_error.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_PRI.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_PRI_error.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_SAVI.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_SAVI_error.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_VegetationIndices.zip']
-
-
+Now that the files are downloaded, we can read them in using `rasterio`.
 
 
 ```python
@@ -140,23 +114,10 @@ aspect_data = aspect_dataset.read(1)
 aspect_data
 ```
 
-
-
-
-    array([[185.33 , 174.211, 171.142, ..., 112.737, 112.449, 112.319],
-           [176.088, 158.061, 153.006, ..., 114.725, 114.9  , 115.011],
-           [167.43 , 158.738, 150.961, ..., 115.534, 116.842, 117.451],
-           ...,
-           [177.703, 177.827, 173.597, ...,  43.394,  43.034,  46.868],
-           [178.709, 179.426, 175.128, ...,  49.758,  49.307,  53.473],
-           [178.857, 178.797, 175.642, ...,  56.611,  57.962,  62.06 ]],
-          dtype=float32)
-
-
+Define and view the spatial extent so we can use this for plotting later on.
 
 
 ```python
-# define and view the spatial extent so we can use this for plotting later on
 ext = [aspect_dataset.bounds.left,
        aspect_dataset.bounds.right,
        aspect_dataset.bounds.bottom,
@@ -164,12 +125,7 @@ ext = [aspect_dataset.bounds.left,
 ext
 ```
 
-
-
-
-    [320000.0, 321000.0, 4092000.0, 4093000.0]
-
-
+Plot the aspect map and histogram.
 
 
 ```python
@@ -187,12 +143,6 @@ ax2.get_legend().remove()
 plt.show();
 ```
 
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_12_0.png)
-    
-
-
 Classify aspect by direction (North and South)
 
 
@@ -206,12 +156,16 @@ aspect_reclass[np.where((aspect_data>=135) & (aspect_data<=225))] = 2 #South - C
 aspect_reclass[np.where(((aspect_data>45) & (aspect_data<135)) | ((aspect_data>225) & (aspect_data<315)))] = np.nan 
 ```
 
+Read in the NDVI data to a rasterio dataset.
+
 
 ```python
 ndvi_file = os.path.join("./data",'NEON_D17_TEAK_DP3_320000_4092000_NDVI.tif')
 ndvi_dataset = rio.open(ndvi_file)
 ndvi_data = ndvi_dataset.read(1)
 ```
+
+Plot the NDVI map and histogram.
 
 
 ```python
@@ -229,11 +183,7 @@ ax2.get_legend().remove()
 plt.show();
 ```
 
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_16_0.png)
-    
-
+Plot the classified aspect map to highlight the north and south facing slopes.
 
 
 ```python
@@ -252,12 +202,6 @@ red_box = mpatches.Patch(facecolor='red', label='South')
 ax.legend(handles=[white_box,blue_box,red_box],handlelength=0.7,bbox_to_anchor=(1.05, 0.45), 
           loc='lower left', borderaxespad=0.);
 ```
-
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_17_0.png)
-    
-
 
 ## Mask Data by Aspect and NDVI
 Now that we have imported and converted the classified aspect and NDVI rasters to arrays, we can use information from these to find create a new raster consisting of pixels are North facing and have an NDVI > 0.4.
@@ -278,12 +222,6 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_19_0.png)
-    
-
-
-
 ```python
 #Now include additional requirement that slope is North-facing (i.e. aspectNS_array = 1)
 ndvi_gtpt4_Nslope = ndvi_gtpt4.copy()
@@ -296,12 +234,6 @@ plt.title('TEAK, North Facing & NDVI > 0.4')
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 ```
-
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_20_0.png)
-    
-
 
 It looks like there aren't that many parts of the North facing slopes where the NDVI > 0.4. Can you think of why this might be? 
 Hint: consider both ecological reasons and how the flight acquisition might affect NDVI.
@@ -320,12 +252,6 @@ plt.title('TEAK, South Facing & NDVI > 0.4')
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 ```
-
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_22_0.png)
-    
-
 
 ## Export Masked Raster to Geotiff
 We can also use rasterio to write out the geotiff file. In this case, we will just copy over the metadata from the NDVI raster so that the projection information and everything else is correct. You could create your own metadata dictionary and change the coordinate system, etc. if you chose, but we will keep it simple for this example.
@@ -347,20 +273,7 @@ show(new_dataset);
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_26_0.png)
-    
-
-
-
 ```python
 # use np.array_equal to check that the contents of the file we read back in is the same as the original array 
 np.array_equal(new_dataset.read(1),ndvi_gtpt4_south,equal_nan=True)
 ```
-
-
-
-
-    True
-
-

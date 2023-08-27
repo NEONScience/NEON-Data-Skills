@@ -45,11 +45,7 @@
 # 
 # <img src="http://neon-workwithdata.github.io/neon-data-institute-2016/images/spatialData/raster_masks.jpg" style="width: 750px;"/>
 
-# ## Lidar Elevation Models
-# 
-# To start, we will open the NEON LiDAR Digital Surface and Digital Terrain Models (DSM and DTM) which are provided in geotiff (.tif) format. For this exercise we will continue working with the TEAK data subset. 
-
-# In[1]:
+# In[ ]:
 
 
 import os
@@ -67,8 +63,10 @@ import matplotlib.patches as mpatches
 
 # ## Read in the datasets
 # ### Download Lidar Elevation Models and Vegetation Indices from TEAK
+# 
+# To start, we will download the NEON Lidar Aspect and Spectrometer Vegetation Indices (including the NDVI) which are provided in geotiff (.tif) format. Use the `download_url` function below to download the data directly from the cloud storage location.
 
-# In[2]:
+# In[ ]:
 
 
 # function to download data stored on the internet in a public url to a local file
@@ -81,7 +79,7 @@ def download_url(url,download_dir):
     file_object.write(r.content)
 
 
-# In[3]:
+# In[ ]:
 
 
 # define the urls for downloading the Aspect and NDVI geotiff tiles
@@ -98,20 +96,22 @@ os.listdir('./data')
 
 # We can use `zipfile` to unzip the VegetationIndices folder in order to read the NDVI file (which is included in the zipped folder).
 
-# In[4]:
+# In[ ]:
 
 
 with zipfile.ZipFile("./data/NEON_D17_TEAK_DP3_320000_4092000_VegetationIndices.zip","r") as zip_ref:
     zip_ref.extractall("./data")
 
 
-# In[5]:
+# In[ ]:
 
 
 os.listdir('./data')
 
 
-# In[6]:
+# Now that the files are downloaded, we can read them in using `rasterio`.
+
+# In[ ]:
 
 
 aspect_file = os.path.join("./data",'NEON_D17_TEAK_DP3_320000_4092000_aspect.tif')
@@ -122,10 +122,11 @@ aspect_data = aspect_dataset.read(1)
 aspect_data
 
 
-# In[7]:
+# Define and view the spatial extent so we can use this for plotting later on.
+
+# In[ ]:
 
 
-# define and view the spatial extent so we can use this for plotting later on
 ext = [aspect_dataset.bounds.left,
        aspect_dataset.bounds.right,
        aspect_dataset.bounds.bottom,
@@ -133,7 +134,9 @@ ext = [aspect_dataset.bounds.left,
 ext
 
 
-# In[8]:
+# Plot the aspect map and histogram.
+
+# In[ ]:
 
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14,6))
@@ -152,7 +155,7 @@ plt.show();
 
 # Classify aspect by direction (North and South)
 
-# In[9]:
+# In[ ]:
 
 
 aspect_reclass = aspect_data.copy()
@@ -164,7 +167,9 @@ aspect_reclass[np.where((aspect_data>=135) & (aspect_data<=225))] = 2 #South - C
 aspect_reclass[np.where(((aspect_data>45) & (aspect_data<135)) | ((aspect_data>225) & (aspect_data<315)))] = np.nan 
 
 
-# In[10]:
+# Read in the NDVI data to a rasterio dataset.
+
+# In[ ]:
 
 
 ndvi_file = os.path.join("./data",'NEON_D17_TEAK_DP3_320000_4092000_NDVI.tif')
@@ -172,7 +177,9 @@ ndvi_dataset = rio.open(ndvi_file)
 ndvi_data = ndvi_dataset.read(1)
 
 
-# In[11]:
+# Plot the NDVI map and histogram.
+
+# In[ ]:
 
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14,6))
@@ -189,7 +196,9 @@ ax2.get_legend().remove()
 plt.show();
 
 
-# In[12]:
+# Plot the classified aspect map to highlight the north and south facing slopes.
+
+# In[ ]:
 
 
 # Plot classified aspect (N-S) array
@@ -211,7 +220,7 @@ ax.legend(handles=[white_box,blue_box,red_box],handlelength=0.7,bbox_to_anchor=(
 # ## Mask Data by Aspect and NDVI
 # Now that we have imported and converted the classified aspect and NDVI rasters to arrays, we can use information from these to find create a new raster consisting of pixels are North facing and have an NDVI > 0.4.
 
-# In[13]:
+# In[ ]:
 
 
 #Mask out pixels that are north facing:
@@ -227,7 +236,7 @@ ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use sc
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 
 
-# In[14]:
+# In[ ]:
 
 
 #Now include additional requirement that slope is North-facing (i.e. aspectNS_array = 1)
@@ -247,7 +256,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 # 
 # Let's also look at where NDVI > 0.4 on south facing slopes.
 
-# In[15]:
+# In[ ]:
 
 
 #Now include additional requirement that slope is Sorth-facing (i.e. aspect_reclass = 2)
@@ -264,7 +273,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 # ## Export Masked Raster to Geotiff
 # We can also use rasterio to write out the geotiff file. In this case, we will just copy over the metadata from the NDVI raster so that the projection information and everything else is correct. You could create your own metadata dictionary and change the coordinate system, etc. if you chose, but we will keep it simple for this example.
 
-# In[16]:
+# In[ ]:
 
 
 out_meta = ndvi_dataset.meta.copy()
@@ -274,7 +283,7 @@ with rio.open('TEAK_NDVIgtpt4_South.tif', 'w', **out_meta) as dst:
 
 # For peace of mind, let's read back in this raster that we generated and confirm that the contents are identical to the array that we used to generate it. We can do this visually, by plotting it, and also with an equality test.
 
-# In[17]:
+# In[ ]:
 
 
 out_file = "TEAK_NDVIgtpt4_South.tif"
@@ -282,7 +291,7 @@ new_dataset = rio.open(out_file)
 show(new_dataset);
 
 
-# In[18]:
+# In[ ]:
 
 
 # use np.array_equal to check that the contents of the file we read back in is the same as the original array 
