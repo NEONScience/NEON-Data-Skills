@@ -1,7 +1,7 @@
 ---
 syncID: c67de95147e9414a88ea876f3fc5252b
-title: "Mask Lidar Rasters in Python"
-description: "Mask rasters by a thershold based on pixel values in Python." 
+title: "Mask Rasters Using Thresholds in Python"
+description: "Mask Lidar Aspect and Spectrometer NDVI rasters by threshold values in Python." 
 dateCreated: 2017-06-21 
 authors: Bridget Hass
 contributors: 
@@ -15,9 +15,30 @@ tutorialSeries: intro-lidar-py-series
 urlTitle: mask-rasters-py
 ---
 
-# Mask a Raster Using Threshold Values in Python
-
 In this tutorial, we demonstrate how to remove parts of a raster based on pixel values using a mask we create. A mask raster layer contains pixel values of either 1 or 0 to where 1 represents pixels that will be used in the analysis and 0 are pixels that are assigned a value of nan (not a number). This can be useful in a number of scenarios, when you are interested in only a certain portion of the data, or need to remove poor-quality data, for example.
+
+<div id="ds-objectives" markdown="1">
+
+### Objectives
+
+After completing this tutorial, you will be able to:
+
+* User rasterio to read in NEON lidar aspect and vegetation indices geotiff files
+* Plot a raster tile and histogram of the data values
+* Create a mask based on values from the aspect and ndvi data
+
+### Install Python Packages
+
+* **gdal** 
+* **rasterio**
+* **requests** 
+* **zipfile**
+
+### Download Data
+
+For this lesson, we will read in a Canopy Height Model data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `requests` package.
+
+</div>
 
 <img src="http://neon-workwithdata.github.io/neon-data-institute-2016/images/spatialData/raster_masks.jpg" style="width: 750px;"/>
 
@@ -168,7 +189,7 @@ plt.show();
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-lidar-rasters/mask-rasters-py_files/mask-rasters-py_12_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_12_0.png)
     
 
 
@@ -210,7 +231,7 @@ plt.show();
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-lidar-rasters/mask-rasters-py_files/mask-rasters-py_16_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_16_0.png)
     
 
 
@@ -234,7 +255,7 @@ ax.legend(handles=[white_box,blue_box,red_box],handlelength=0.7,bbox_to_anchor=(
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-lidar-rasters/mask-rasters-py_files/mask-rasters-py_17_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_17_0.png)
     
 
 
@@ -248,6 +269,7 @@ Now that we have imported and converted the classified aspect and NDVI rasters t
 ndvi_gtpt4 = ndvi_data.copy()
 ndvi_gtpt4[ndvi_data<0.4]=np.nan
 
+fig, ax = plt.subplots(1, 1, figsize=(6,6))
 plt.imshow(ndvi_gtpt4,extent=ext)
 plt.colorbar(); plt.set_cmap('RdYlGn'); 
 plt.title('TEAK NDVI > 0.4')
@@ -257,7 +279,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-lidar-rasters/mask-rasters-py_files/mask-rasters-py_19_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_19_0.png)
     
 
 
@@ -267,6 +289,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 ndvi_gtpt4_Nslope = ndvi_gtpt4.copy()
 ndvi_gtpt4_Nslope[aspect_reclass != 1] = np.nan
 
+fig, ax = plt.subplots(1, 1, figsize=(6,6))
 plt.imshow(ndvi_gtpt4_Nslope,extent=ext)
 plt.colorbar(); plt.set_cmap('RdYlGn'); 
 plt.title('TEAK, North Facing & NDVI > 0.4')
@@ -276,7 +299,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-lidar-rasters/mask-rasters-py_files/mask-rasters-py_20_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_20_0.png)
     
 
 
@@ -300,7 +323,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-lidar-rasters/mask-rasters-py_files/mask-rasters-py_22_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_22_0.png)
     
 
 
@@ -325,7 +348,7 @@ show(new_dataset);
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-lidar-rasters/mask-rasters-py_files/mask-rasters-py_26_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/mask-rasters-py_26_0.png)
     
 
 
