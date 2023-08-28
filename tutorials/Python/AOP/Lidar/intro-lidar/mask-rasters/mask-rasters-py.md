@@ -36,7 +36,7 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-For this lesson, we will read in a Canopy Height Model data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `requests` package.
+For this lesson, we will read in Canopy Height Model data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `requests` package.
 
 </div>
 
@@ -224,11 +224,11 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 ```python
 #Now include additional requirement that slope is North-facing (i.e. aspectNS_array = 1)
-ndvi_gtpt4_Nslope = ndvi_gtpt4.copy()
-ndvi_gtpt4_Nslope[aspect_reclass != 1] = np.nan
+ndvi_gtpt4_north = ndvi_gtpt4.copy()
+ndvi_gtpt4_north[aspect_reclass != 1] = np.nan
 
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
-plt.imshow(ndvi_gtpt4_Nslope,extent=ext)
+plt.imshow(ndvi_gtpt4_north,extent=ext)
 plt.colorbar(); plt.set_cmap('RdYlGn'); 
 plt.title('TEAK, North Facing & NDVI > 0.4')
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
@@ -246,6 +246,7 @@ Let's also look at where NDVI > 0.4 on south facing slopes.
 ndvi_gtpt4_south = ndvi_gtpt4.copy()
 ndvi_gtpt4_south[aspect_reclass != 2] = np.nan
 
+fig, ax = plt.subplots(1, 1, figsize=(6,6))
 plt.imshow(ndvi_gtpt4_south,extent=ext)
 plt.colorbar(); plt.set_cmap('RdYlGn'); 
 plt.title('TEAK, South Facing & NDVI > 0.4')
