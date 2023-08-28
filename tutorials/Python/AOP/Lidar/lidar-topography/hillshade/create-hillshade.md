@@ -10,7 +10,7 @@ packagesLibraries: gdal, rasterio, requests
 topics: lidar, raster, remote-sensing, elevation
 languagesTool: Python
 dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade.ipynb
 tutorialSeries: intro-lidar-py-series
 urlTitle: create-hillshade-py
 ---
@@ -40,7 +40,7 @@ For this lesson, we will read in Digital Terrain Model (DTM) data collected at N
 
 ### Additional Resources
 
-NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a complete understanding of how the Lidar-derived rasters are generated.
+NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a more in-depth understanding of how the Lidar-derived rasters are generated.
 
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002390vB?inline=true" target="_blank">Elevation (DSM and DTM) ATBD</a>
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vB?inline=true" target="_blank">Ecosystem Structure ATBD</a>
@@ -94,14 +94,6 @@ download_url(dsm_url,'.\data')
 os.listdir('./data')
 ```
 
-
-
-
-    ['NEON_D17_TEAK_DP3_320000_4092000_DSM.tif',
-     'NEON_D17_TEAK_DP3_320000_4092000_DTM.tif']
-
-
-
 ###  Calculate Hillshade
 
 Hillshade is used to visualize the hypothetical illumination value (from 0-255) of each pixel on a surface given a specified light source. To calculate hillshade, we need the zenith (altitude) and azimuth of the illumination source, as well as the slope and aspect of the terrain. The formula for hillshade is:
@@ -146,12 +138,6 @@ fig.colorbar(im, label = 'Elevation (m)', ax=ax) # add a colorbar
 ax.ticklabel_format(useOffset=False, style='plain') # turn off scientific notation
 ```
 
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/create-hillshade_9_0.png)
-    
-
-
 Now that we have a function to generate hillshade, we need to read in the DTM raster using rasterio and then calculate hillshade using the `hillshade` function. We can then plot both.
 
 
@@ -172,12 +158,6 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/create-hillshade_12_0.png)
-    
-
-
-
 ```python
 #Overlay transparent hillshade on DTM:
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
@@ -190,17 +170,9 @@ plt.grid('on'); # plt.colorbar();
 plt.title('TEAK Hillshade + DTM');
 ```
 
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/create-hillshade_13_0.png)
-    
-
-
 ### Calculate CHM & Overlay on Top of Hillshade
 
-Canopy Height Model, in it's simplest form is the Digital Surface Model minus the Digital Terrain Model. While NEON's CHM is calculated using a slightly more sophisticated "pit-free" algorithm (see ATBD), in this example, we'll calculate the CHM with the simple difference formula. First, read in the DSM data set, which we previously downloaded into the data folder.
-
-<a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR</a>
+Canopy Height can be simply calculated by subtracting the Digital Terrain Model from the Digital Surface Model. While NEON's CHM is calculated using a slightly more sophisticated "pit-free" algorithm (see the ATBD linked at the top of this tutorial), in this example, we'll calculate the CHM with the simple difference formula. First, read in the DSM data set, which we previously downloaded into the data folder.
 
 
 ```python
@@ -224,12 +196,6 @@ ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use sc
 ax.set_title('Canopy Height Model (DSM-DTM)');
 ```
 
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/create-hillshade_18_0.png)
-    
-
-
 Finally, we can make a plot to bring together all of these visualizations from earlier in the tutorial.
 
 
@@ -248,16 +214,9 @@ im2 = plt.imshow(hs_data,cmap='Greys',alpha=.5,extent=ext);
 #Canopy
 im3 = plt.imshow(chm_data,cmap='Greens',alpha=0.6,extent=ext); 
 cbar2 = plt.colorbar(im3,fraction=0.045,pad=0.04,ax=ax); cbar2.set_label('Canopy Height, m',rotation=270,labelpad=15)
-# plt.colorbar(im,fraction=0.046, pad=0.04)
 
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 plt.grid('on'); # plt.colorbar(); 
 plt.title('Terrain, Hillshade, & Canopy Height');
 ```
-
-
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/create-hillshade_20_0.png)
-    
-

@@ -13,7 +13,7 @@
 # topics: lidar, raster, remote-sensing, elevation
 # languagesTool: Python
 # dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
-# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py.ipynb
+# code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade.ipynb
 # tutorialSeries: intro-lidar-py-series
 # urlTitle: create-hillshade-py
 # ---
@@ -43,7 +43,7 @@
 # 
 # ### Additional Resources
 # 
-# NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a complete understanding of how the Lidar-derived rasters are generated.
+# NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a more in-depth understanding of how the Lidar-derived rasters are generated.
 # 
 # - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002390vB?inline=true" target="_blank">Elevation (DSM and DTM) ATBD</a>
 # - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vB?inline=true" target="_blank">Ecosystem Structure ATBD</a>
@@ -52,7 +52,7 @@
 # 
 # First, let's import the required packages:
 
-# In[1]:
+# In[ ]:
 
 
 import os
@@ -71,7 +71,7 @@ import matplotlib.pyplot as plt
 # 
 # <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR</a>.
 
-# In[2]:
+# In[ ]:
 
 
 # function to download data stored on the internet in a public url to a local file
@@ -84,7 +84,7 @@ def download_url(url,download_dir):
     file_object.write(r.content)
 
 
-# In[3]:
+# In[ ]:
 
 
 # define the urls for downloading the Aspect and NDVI geotiff tiles
@@ -110,7 +110,7 @@ os.listdir('./data')
 # For more information about how hillshades work, refer to the ESRI ArcGIS page 
 # <a href="https://pro.arcgis.com/en/pro-app/3.0/tool-reference/3d-analyst/how-hillshade-works.htm#" target="_blank">How Hillshade Works</a>. 
 
-# In[4]:
+# In[ ]:
 
 
 # function to caluclate hillshade
@@ -128,14 +128,14 @@ def hillshade(array,azimuth,angle_altitude):
     return 255*(shaded + 1)/2
 
 
-# In[5]:
+# In[ ]:
 
 
 dtm_dataset = rio.open(os.path.join('.\data','NEON_D17_TEAK_DP3_320000_4092000_DTM.tif'))
 dtm_data = dtm_dataset.read(1)
 
 
-# In[6]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
@@ -148,14 +148,14 @@ ax.ticklabel_format(useOffset=False, style='plain') # turn off scientific notati
 
 # Now that we have a function to generate hillshade, we need to read in the DTM raster using rasterio and then calculate hillshade using the `hillshade` function. We can then plot both.
 
-# In[7]:
+# In[ ]:
 
 
 # Use hillshade function on the DTM data array
 hs_data = hillshade(dtm_data,225,45)
 
 
-# In[8]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
@@ -167,7 +167,7 @@ ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use sc
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 
 
-# In[9]:
+# In[ ]:
 
 
 #Overlay transparent hillshade on DTM:
@@ -183,18 +183,16 @@ plt.title('TEAK Hillshade + DTM');
 
 # ### Calculate CHM & Overlay on Top of Hillshade
 # 
-# Canopy Height Model, in it's simplest form is the Digital Surface Model minus the Digital Terrain Model. While NEON's CHM is calculated using a slightly more sophisticated "pit-free" algorithm (see ATBD), in this example, we'll calculate the CHM with the simple difference formula. First, read in the DSM data set, which we previously downloaded into the data folder.
-# 
-# <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR</a>
+# Canopy Height can be simply calculated by subtracting the Digital Terrain Model from the Digital Surface Model. While NEON's CHM is calculated using a slightly more sophisticated "pit-free" algorithm (see the ATBD linked at the top of this tutorial), in this example, we'll calculate the CHM with the simple difference formula. First, read in the DSM data set, which we previously downloaded into the data folder.
 
-# In[10]:
+# In[ ]:
 
 
 dsm_dataset = rio.open(os.path.join('.\data','NEON_D17_TEAK_DP3_320000_4092000_DSM.tif'))
 dsm_data = dsm_dataset.read(1)
 
 
-# In[11]:
+# In[ ]:
 
 
 # calculate CHM by differencing the terrain model (DTM) from the surface model (DSM):
@@ -203,7 +201,7 @@ chm_data = dsm_data - dtm_data;
 
 # Plot the Canopy Height Model for reference:
 
-# In[12]:
+# In[ ]:
 
 
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
@@ -214,7 +212,7 @@ ax.set_title('Canopy Height Model (DSM-DTM)');
 
 # Finally, we can make a plot to bring together all of these visualizations from earlier in the tutorial.
 
-# In[13]:
+# In[ ]:
 
 
 #Overlay transparent hillshade on DTM:
@@ -231,7 +229,6 @@ im2 = plt.imshow(hs_data,cmap='Greys',alpha=.5,extent=ext);
 #Canopy
 im3 = plt.imshow(chm_data,cmap='Greens',alpha=0.6,extent=ext); 
 cbar2 = plt.colorbar(im3,fraction=0.045,pad=0.04,ax=ax); cbar2.set_label('Canopy Height, m',rotation=270,labelpad=15)
-# plt.colorbar(im,fraction=0.046, pad=0.04)
 
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
