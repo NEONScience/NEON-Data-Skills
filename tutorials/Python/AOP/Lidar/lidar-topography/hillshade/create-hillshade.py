@@ -9,137 +9,97 @@
 # authors: Bridget Hass
 # contributors: Donal O'Leary
 # estimatedTime: 0.5 hour
-# packagesLibraries: numpy, gdal, matplotlib
-# topics: lidar, raster, remote-sensing
-# languagesTool: python
+# packagesLibraries: gdal, rasterio, requests
+# topics: lidar, raster, remote-sensing, elevation
+# languagesTool: Python
 # dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
 # code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-topography/create_hillshade_from_terrain_raster_py/create_hillshade_from_terrain_raster_py.ipynb
 # tutorialSeries: intro-lidar-py-series
 # urlTitle: create-hillshade-py
 # ---
 
-# # Create a Hillshade from a Terrain Raster in Python 
+# This tutorial covers how to create a hillshade from a terrain raster in Python, and demonstrates a few options for visualizing lidar-derived Digital Elevation Models. 
 # 
-# In this tutorial, we will learn how to create a hillshade from a terrain raster in Python. 
+# <div id="ds-objectives" markdown="1">
 # 
-# First, let's import the required packages and set plot display to inline:
+# ### Objectives
+# 
+# After completing this tutorial, you will be able to:
+# 
+# * Understand how to read in and visualize Lidar elevation models (DTM, DSM) in Python
+# * Plot a contour map of the DTM
+# * Create a hillshade from the DTM
+# * Calculate and plot Canopy Height along with hillshade and elevation
+# 
+# ### Install Python Packages
+# 
+# * **gdal** 
+# * **rasterio**
+# * **requests** 
+# 
+# ### Download Data
+# 
+# For this lesson, we will read in Digital Terrain Model (DTM) data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `requests` package.
+# 
+# ### Additional Resources
+# 
+# NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a complete understanding of how the Lidar-derived rasters are generated.
+# 
+# - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002390vB?inline=true" target="_blank">Elevation (DSM and DTM) ATBD</a>
+# - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vB?inline=true" target="_blank">Ecosystem Structure ATBD</a>
+# 
+# </div>
+# 
+# First, let's import the required packages:
 
 # In[1]:
 
 
-from osgeo import gdal
+import os
 import numpy as np
+import requests
+import rasterio as rio
+from rasterio.plot import show
 import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
-import warnings
-warnings.filterwarnings('ignore')
 
-
-# We also need to import the following functions created in previous lessons:
-# - ```raster2array.py```
-# - ```plotbandarray.py```
+# ## Read in the datasets
+# ### Download Lidar Elevation Models from TEAK
+# 
+# To start, we will download the NEON Elevation Models (DTM and DSM) which are provided in geotiff (.tif) format. Use the `download_url` function below to download the data directly from the cloud storage location.
+# 
+# For more information on these data products, refer to the NEON Data Portal page, linked below:
+# 
+# <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR</a>.
 
 # In[2]:
 
 
-# %load ../neon_aop_python_functions/raster2array.py
-
-# raster2array.py reads in the first band of geotif file and returns an array and associated 
-# metadata dictionary.
-# Input: raster_geotif (eg. 'raster.tif')
-# Outputs:
-# array_rows: # of rows in the array
-# array_cols: # of columns in the array
-# bands: # of bands 
-# driver: (for NEON data this is Geotif)
-# projection: 
-# geotransform: 
-# pixelWidth: width of pixel (for NEON data this = 1)
-# pixelHeight: height of pixel (for NEON data this = -1)
-# ext_dict: dictionary of raster extent, containing the following information 
-#           {'xMin': xMin_value,'xMax': xMax_value, 'yMin': yMin_value, 'yMax': yMax_value}
-#           Note: to extract a value from ext_dict, use the syntax: eg. xMin = metadata['ext_dict']['xMin']
-# extent: raster extent values (xMin, xMax, yMin, yMax)
-# noDataValue: no data value 
-# scaleFactor: scale factor 
-# band_stats: dictionary of statistics for band 1:
-#           {'min': min_value, 'max': max_value, 'mean': mean_value, 'stdev': stdev_value}
-#           Note: to extract a value from band_stats dictionary, use the syntax: 
-#                 eg. array_min = metadata['band_stats']['min']
-
-# Usage: array, metadata = raster2array('raster.tif')
-
-from osgeo import gdal
-import numpy as np
-
-def raster2array(geotif_file):
-    metadata = {}
-    dataset = gdal.Open(geotif_file)
-    metadata['array_rows'] = dataset.RasterYSize
-    metadata['array_cols'] = dataset.RasterXSize
-    metadata['bands'] = dataset.RasterCount
-    metadata['driver'] = dataset.GetDriver().LongName
-    metadata['projection'] = dataset.GetProjection()
-    metadata['geotransform'] = dataset.GetGeoTransform()
-    
-    mapinfo = dataset.GetGeoTransform()
-    metadata['pixelWidth'] = mapinfo[1]
-    metadata['pixelHeight'] = mapinfo[5]
-#     metadata['xMin'] = mapinfo[0]
-#     metadata['yMax'] = mapinfo[3]
-#     metadata['xMax'] = mapinfo[0] + dataset.RasterXSize/mapinfo[1]
-#     metadata['yMin'] = mapinfo[3] + dataset.RasterYSize/mapinfo[5]
-    
-    metadata['ext_dict'] = {}
-    metadata['ext_dict']['xMin'] = mapinfo[0]
-    metadata['ext_dict']['xMax'] = mapinfo[0] + dataset.RasterXSize/mapinfo[1]
-    metadata['ext_dict']['yMin'] = mapinfo[3] + dataset.RasterYSize/mapinfo[5]
-    metadata['ext_dict']['yMax'] = mapinfo[3]
-    
-    metadata['extent'] = (metadata['ext_dict']['xMin'],metadata['ext_dict']['xMax'],
-                          metadata['ext_dict']['yMin'],metadata['ext_dict']['yMax'])
-    
-    if metadata['bands'] == 1:
-        raster = dataset.GetRasterBand(1)
-        metadata['noDataValue'] = raster.GetNoDataValue()
-        metadata['scaleFactor'] = raster.GetScale()
-        
-        # band statistics
-        metadata['bandstats'] = {} #make a nested dictionary to store band stats in same 
-        stats = raster.GetStatistics(True,True)
-        metadata['bandstats']['min'] = round(stats[0],2)
-        metadata['bandstats']['max'] = round(stats[1],2)
-        metadata['bandstats']['mean'] = round(stats[2],2)
-        metadata['bandstats']['stdev'] = round(stats[3],2)
-        
-        array = dataset.GetRasterBand(1).ReadAsArray(0,0,metadata['array_cols'],metadata['array_rows']).astype(np.float)
-        array[array==int(metadata['noDataValue'])]=np.nan
-        array = array/metadata['scaleFactor']
-        return array, metadata
-    
-    elif metadata['bands'] > 1:
-        print('More than one band ... fix function for case of multiple bands')
+# function to download data stored on the internet in a public url to a local file
+def download_url(url,download_dir):
+    if not os.path.isdir(download_dir):
+        os.makedirs(download_dir)
+    filename = url.split('/')[-1]
+    r = requests.get(url, allow_redirects=True)
+    file_object = open(os.path.join(download_dir,filename),'wb')
+    file_object.write(r.content)
 
 
 # In[3]:
 
 
-# %load ../neon_aop_python_functions/plot_band_array.py
+# define the urls for downloading the Aspect and NDVI geotiff tiles
+dtm_url = "https://storage.googleapis.com/neon-aop-products/2021/FullSite/D17/2021_TEAK_5/L3/DiscreteLidar/DTMGtif/NEON_D17_TEAK_DP3_320000_4092000_DTM.tif"
+dsm_url = "https://storage.googleapis.com/neon-aop-products/2021/FullSite/D17/2021_TEAK_5/L3/DiscreteLidar/DSMGtif/NEON_D17_TEAK_DP3_320000_4092000_DSM.tif"
 
-def plot_band_array(band_array,refl_extent,title,cbar_label,colormap='spectral',alpha=1):
-    plt.imshow(band_array,extent=refl_extent,alpha=alpha); 
-    cbar = plt.colorbar(); plt.set_cmap(colormap); 
-    cbar.set_label(cbar_label,rotation=270,labelpad=20)
-    plt.title(title); ax = plt.gca(); 
-    ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation #
-    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degree
+# download the raster data using the download_url function
+download_url(dtm_url,'.\data')
+download_url(dsm_url,'.\data')
+
+# display the contents in the ./data folder to confirm the download completed
+os.listdir('./data')
 
 
 # ###  Calculate Hillshade
-# 
-# <img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade_files/image001.gif" style="width: 250px;"/>
-# <center><font size="2">http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture11/concepts/Hillshade.htm</font></center>
-# 
 # 
 # Hillshade is used to visualize the hypothetical illumination value (from 0-255) of each pixel on a surface given a specified light source. To calculate hillshade, we need the zenith (altitude) and azimuth of the illumination source, as well as the slope and aspect of the terrain. The formula for hillshade is:
 # 
@@ -147,144 +107,134 @@ def plot_band_array(band_array,refl_extent,title,cbar_label,colormap='spectral',
 # 
 # Where all angles are in radians. 
 # 
-# For more information about how hillshades work, refer to the ESRI ArcGIS Help page: http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=How%20Hillshade%20works. 
+# For more information about how hillshades work, refer to the ESRI ArcGIS page 
+# <a href="https://pro.arcgis.com/en/pro-app/3.0/tool-reference/3d-analyst/how-hillshade-works.htm#" target="_blank">How Hillshade Works</a>. 
 
 # In[4]:
 
 
-#https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py
-
+# function to caluclate hillshade
 def hillshade(array,azimuth,angle_altitude):
     azimuth = 360.0 - azimuth 
     
     x, y = np.gradient(array)
     slope = np.pi/2. - np.arctan(np.sqrt(x*x + y*y))
     aspect = np.arctan2(-x, y)
-    azimuthrad = azimuth*np.pi/180.
-    altituderad = angle_altitude*np.pi/180.
+    azm_rad = azimuth*np.pi/180. #azimuth in radians
+    alt_rad = angle_altitude*np.pi/180. #altitude in radians
  
-    shaded = np.sin(altituderad)*np.sin(slope) + np.cos(altituderad)*np.cos(slope)*np.cos((azimuthrad - np.pi/2.) - aspect)
+    shaded = np.sin(alt_rad)*np.sin(slope) + np.cos(alt_rad)*np.cos(slope)*np.cos((azm_rad - np.pi/2.) - aspect)
     
     return 255*(shaded + 1)/2
 
 
-# Now that we have a function to generate hillshade, we need to read in the NEON LiDAR Digital Terrain Model (DTM) geotif using the ```raster2array``` function and then calculate hillshade using the ```hillshade``` function. We can then plot both using the ```plot_band_array``` function. 
-
 # In[5]:
 
 
-# Use raster2array to convert TEAK DTM Geotif to array & plot
-#dtm_array, dtm_metadata = raster2array('2013_TEAK_1_326000_4103000_DTM.tif')
-
-dtm_array, dtm_metadata = raster2array('/Users/olearyd/Git/data/2013_TEAK_1_326000_4103000_DTM.tif')
-plot_band_array(dtm_array,dtm_metadata['extent'],'TEAK DTM','Elevation, m',colormap='gist_earth')
-ax = plt.gca(); plt.grid('on')
+dtm_dataset = rio.open(os.path.join('.\data','NEON_D17_TEAK_DP3_320000_4092000_DTM.tif'))
+dtm_data = dtm_dataset.read(1)
 
 
 # In[6]:
 
 
-# Use hillshade function on a DTM Geotiff
-hs_array = hillshade(dtm_array,225,45)
-plot_band_array(hs_array,dtm_metadata['extent'],'TEAK Hillshade, Aspect=225°',
-                'Hillshade',colormap='Greys',alpha=0.8)
-ax = plt.gca(); plt.grid('on') 
+fig, ax = plt.subplots(1, 1, figsize=(6,6))
+dtm_map = show(dtm_dataset,title='Digital Terrain Model',ax=ax);
+show(dtm_dataset,contour=True, ax=ax); #overlay the contours
+im = dtm_map.get_images()[0]
+fig.colorbar(im, label = 'Elevation (m)', ax=ax) # add a colorbar
+ax.ticklabel_format(useOffset=False, style='plain') # turn off scientific notation
 
+
+# Now that we have a function to generate hillshade, we need to read in the DTM raster using rasterio and then calculate hillshade using the `hillshade` function. We can then plot both.
 
 # In[7]:
 
 
-#Overlay transparent hillshade on DTM:
-fig = plt.figure(frameon=False)
-im1 = plt.imshow(dtm_array,cmap='terrain_r',extent=dtm_metadata['extent']); 
-cbar = plt.colorbar(); cbar.set_label('Elevation, m',rotation=270,labelpad=20)
-im2 = plt.imshow(hs_array,cmap='Greys',alpha=0.8,extent=dtm_metadata['extent']); #plt.colorbar()
-ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
-rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
-plt.grid('on'); # plt.colorbar(); 
-plt.title('TEAK Hillshade + DTM')
+# Use hillshade function on the DTM data array
+hs_data = hillshade(dtm_data,225,45)
 
-
-# ### Calculate CHM & Overlay on Top of Hillshade
 
 # In[8]:
 
 
-#Calculate CHM from DSM & DTM:
-dsm_array, dsm_metadata = raster2array('/Users/olearyd/Git/data/2013_TEAK_1_326000_4103000_DSM.tif')
-teak_chm = dsm_array - dtm_array;
-
-plot_band_array(teak_chm,dtm_metadata['extent'],'TEAK Canopy Height Model','Canopy Height, m',colormap='Greens')
-ax = plt.gca(); plt.grid('on')
+fig, ax = plt.subplots(1, 1, figsize=(6,6))
+ext = [dtm_dataset.bounds.left, dtm_dataset.bounds.right, dtm_dataset.bounds.bottom, dtm_dataset.bounds.top]
+plt.imshow(hs_data,extent=ext)
+plt.colorbar(); plt.set_cmap('RdYlGn'); 
+plt.title('TEAK Hillshade')
+ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
+rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 
 
 # In[9]:
 
 
 #Overlay transparent hillshade on DTM:
-fig = plt.figure(frameon=False)
-
-#Terrain
-im1 = plt.imshow(dtm_array,cmap='YlOrBr',extent=dtm_metadata['extent']); 
-cbar1 = plt.colorbar(); cbar1.set_label('Elevation, m',rotation=270,labelpad=20)
-
-#Hillshade
-im2 = plt.imshow(hs_array,cmap='Greys',alpha=.5,extent=dtm_metadata['extent']); #plt.colorbar()
-
-#Canopy
-im3 = plt.imshow(teak_chm,cmap='Greens',alpha=0.6,extent=dtm_metadata['extent']); 
-cbar2 = plt.colorbar(); cbar2.set_label('Canopy Height, m',rotation=270,labelpad=20)
-
+fig, ax = plt.subplots(1, 1, figsize=(6,6))
+im1 = plt.imshow(dtm_data,cmap='terrain_r',extent=ext); 
+cbar = plt.colorbar(); cbar.set_label('Elevation, m',rotation=270,labelpad=20)
+im2 = plt.imshow(hs_data,cmap='Greys',alpha=0.8,extent=ext); #plt.colorbar()
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 plt.grid('on'); # plt.colorbar(); 
-plt.title('TEAK 2013 \n Terrain, Hillshade, & Canopy Height')
+plt.title('TEAK Hillshade + DTM');
 
 
-# ## Links to Tutorials on Creating Hillshades:
+# ### Calculate CHM & Overlay on Top of Hillshade
 # 
-# **Python Hillshade:**
-# - http://geoexamples.blogspot.com/2014/03/shaded-relief-images-using-gdal-python.html
-# - http://pangea.stanford.edu/~samuelj/musings/dems-in-python-pt-3-slope-and-hillshades-.html
+# Canopy Height Model, in it's simplest form is the Digital Surface Model minus the Digital Terrain Model. While NEON's CHM is calculated using a slightly more sophisticated "pit-free" algorithm (see ATBD), in this example, we'll calculate the CHM with the simple difference formula. First, read in the DSM data set, which we previously downloaded into the data folder.
 # 
-# **ESRI ArcGIS Hillshade Algorithm:**
-# - http://webhelp.esri.com/arcgisdesktop/9.2/index.cfm?TopicName=How%20Hillshade%20works
-# 
-# **GitHub Hillshade Functions/Tutorials:**
-# - https://github.com/rveciana/introduccion-python-geoespacial/blob/master/hillshade.py
-# - https://github.com/clhenrick/gdal_hillshade_tutorial
-# 
-# **GDAL Hillshade:**
-# - http://www.gdal.org/gdaldem.html
-# - http://gis.stackexchange.com/questions/144535/how-to-create-transparent-hillshade/144700
-
-# ## Scratch Code
+# <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR</a>
 
 # In[10]:
 
 
-#Importing the TEAK CHM Geotiff resulted in v. sparse data ?
-chm_array, chm_metadata = raster2array('/Users/olearyd/Git/data/2013_TEAK_1_326000_4103000_pit_free_CHM.tif')
-
-print('TEAK CHM Array\n:',chm_array)
-# print(chm_metadata)
-
-#print metadata in alphabetical order
-for item in sorted(chm_metadata):
-    print(item + ':', chm_metadata[item])
-    
-# print(chm_metadata['extent'])
-
-import copy
-chm_nonzero_array = copy.copy(chm_array)
-chm_nonzero_array[chm_array==0]=np.nan
-print('TEAK CHM nonzero array:\n',chm_nonzero_array)
-print(np.nanmin(chm_nonzero_array))
-print(np.nanmax(chm_nonzero_array))
+dsm_dataset = rio.open(os.path.join('.\data','NEON_D17_TEAK_DP3_320000_4092000_DSM.tif'))
+dsm_data = dsm_dataset.read(1)
 
 
-# In[ ]:
+# In[11]:
 
 
+# calculate CHM by differencing the terrain model (DTM) from the surface model (DSM):
+chm_data = dsm_data - dtm_data;
 
+
+# Plot the Canopy Height Model for reference:
+
+# In[12]:
+
+
+fig, ax = plt.subplots(1, 1, figsize=(6,6))
+im1 = plt.imshow(chm_data,cmap='Greens',extent=ext); 
+ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
+ax.set_title('Canopy Height Model (DSM-DTM)');
+
+
+# Finally, we can make a plot to bring together all of these visualizations from earlier in the tutorial.
+
+# In[13]:
+
+
+#Overlay transparent hillshade on DTM:
+fig, ax = plt.subplots(1, 1, figsize=(10,10))
+
+#Terrain
+im1 = plt.imshow(dtm_data,cmap='terrain',extent=ext); 
+cbar1 = plt.colorbar(im1,fraction=0.04,pad=0.08,ax=ax); 
+cbar1.set_label('Elevation, m',rotation=270,labelpad=20)
+
+#Hillshade
+im2 = plt.imshow(hs_data,cmap='Greys',alpha=.5,extent=ext); 
+
+#Canopy
+im3 = plt.imshow(chm_data,cmap='Greens',alpha=0.6,extent=ext); 
+cbar2 = plt.colorbar(im3,fraction=0.045,pad=0.04,ax=ax); cbar2.set_label('Canopy Height, m',rotation=270,labelpad=15)
+# plt.colorbar(im,fraction=0.046, pad=0.04)
+
+ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
+rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
+plt.grid('on'); # plt.colorbar(); 
+plt.title('Terrain, Hillshade, & Canopy Height');
 
