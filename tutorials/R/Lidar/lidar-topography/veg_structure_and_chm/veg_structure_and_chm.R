@@ -1,18 +1,16 @@
-## ----install_packages, eval=FALSE---------------------------------------------------------------------------
+## ----install_packages, eval=FALSE--------------------------------------------------------------------------
 ## 
 ## install.packages("neonUtilities")
 ## install.packages("neonOS")
-## install.packages("sp")
-## install.packages("raster")
+## install.packages("terra")
 ## install.packages("devtools")
 ## devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 ## 
 
 
-## ----load-packages, results="hide"--------------------------------------------------------------------------
+## ----load-packages, results="hide"-------------------------------------------------------------------------
 
-library(sp)
-library(raster)
+library(terra)
 library(neonUtilities)
 library(neonOS)
 library(geoNEON)
@@ -26,7 +24,7 @@ setwd(wd)
 
 
 
-## ----veglist, results="hide"--------------------------------------------------------------------------------
+## ----veglist, results="hide"-------------------------------------------------------------------------------
 
 veglist <- loadByProduct(dpID="DP1.10098.001", 
                          site="WREF", 
@@ -35,14 +33,14 @@ veglist <- loadByProduct(dpID="DP1.10098.001",
 
 
 
-## ----vegmap, results="hide"---------------------------------------------------------------------------------
+## ----vegmap, results="hide"--------------------------------------------------------------------------------
 
 vegmap <- getLocTOS(veglist$vst_mappingandtagging, 
                           "vst_mappingandtagging")
 
 
 
-## ----veg_merge----------------------------------------------------------------------------------------------
+## ----veg_merge---------------------------------------------------------------------------------------------
 
 veg <- joinTableNEON(veglist$vst_apparentindividual, 
                      vegmap, 
@@ -51,7 +49,7 @@ veg <- joinTableNEON(veglist$vst_apparentindividual,
 
 
 
-## ----plot-1-------------------------------------------------------------------------------------------------
+## ----plot-1------------------------------------------------------------------------------------------------
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
@@ -60,7 +58,7 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 
 
 
-## ----plot-2-------------------------------------------------------------------------------------------------
+## ----plot-2------------------------------------------------------------------------------------------------
 
 symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
         veg$adjNorthing[which(veg$plotID=="WREF_075")], 
@@ -73,53 +71,53 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 
 
 
-## ----get-chm, results="hide"--------------------------------------------------------------------------------
+## ----get-chm, results="hide"-------------------------------------------------------------------------------
 
 byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
           easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
           northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
           check.size=FALSE, savepath=wd)
 
-chm <- raster(paste0(wd, "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
+chm <- rast(paste0(wd, "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
 
 
 
-## ----plot-chm-----------------------------------------------------------------------------------------------
+## ----plot-chm----------------------------------------------------------------------------------------------
 
 plot(chm, col=topo.colors(5))
 
 
 
-## ----vegsub-------------------------------------------------------------------------------------------------
+## ----vegsub------------------------------------------------------------------------------------------------
 
-vegsub <- veg[which(veg$adjEasting >= extent(chm)[1] &
-                      veg$adjEasting <= extent(chm)[2] &
-                      veg$adjNorthing >= extent(chm)[3] & 
-                      veg$adjNorthing <= extent(chm)[4]),]
+vegsub <- veg[which(veg$adjEasting >= ext(chm)[1] &
+                      veg$adjEasting <= ext(chm)[2] &
+                      veg$adjNorthing >= ext(chm)[3] & 
+                      veg$adjNorthing <= ext(chm)[4]),]
 
 
 
-## ----buffer-chm---------------------------------------------------------------------------------------------
+## ----buffer-chm--------------------------------------------------------------------------------------------
 
-bufferCHM <- extract(chm, 
-                     cbind(vegsub$adjEasting,
-                           vegsub$adjNorthing),
-                     buffer=vegsub$adjCoordinateUncertainty, 
-                     fun=max)
+valCHM <- extract(chm, 
+                  cbind(vegsub$adjEasting,
+                  vegsub$adjNorthing))
 
-plot(bufferCHM~vegsub$height, pch=20, xlab="Height", 
+plot(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegsub$height, pch=20, xlab="Height", 
      ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----corr-buffer--------------------------------------------------------------------------------------------
+## ----corr-buffer-------------------------------------------------------------------------------------------
 
-cor(bufferCHM, vegsub$height, use="complete")
+cor(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegsub$height, use="complete")
 
 
 
-## ----round-x-y----------------------------------------------------------------------------------------------
+## ----round-x-y---------------------------------------------------------------------------------------------
 
 easting10 <- 10*floor(vegsub$adjEasting/10)
 northing10 <- 10*floor(vegsub$adjNorthing/10)
@@ -127,7 +125,7 @@ vegsub <- cbind(vegsub, easting10, northing10)
 
 
 
-## ----vegbin-------------------------------------------------------------------------------------------------
+## ----vegbin------------------------------------------------------------------------------------------------
 
 vegbin <- stats::aggregate(vegsub, 
                            by=list(vegsub$easting10, 
@@ -136,39 +134,41 @@ vegbin <- stats::aggregate(vegsub,
 
 
 
-## ----CHM-10-------------------------------------------------------------------------------------------------
+## ----CHM-10------------------------------------------------------------------------------------------------
 
-CHM10 <- raster::aggregate(chm, fact=10, fun=max)
+CHM10 <- terra::aggregate(chm, fact=10, fun=max)
 plot(CHM10, col=topo.colors(5))
 
 
 
-## ----adj-tree-coord-----------------------------------------------------------------------------------------
+## ----adj-tree-coord----------------------------------------------------------------------------------------
 
 vegbin$easting10 <- vegbin$easting10 + 5
 vegbin$northing10 <- vegbin$northing10 + 5
 binCHM <- extract(CHM10, cbind(vegbin$easting10, 
                                vegbin$northing10))
-plot(binCHM~vegbin$height, pch=20, 
+plot(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegbin$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----cor-2--------------------------------------------------------------------------------------------------
+## ----cor-2-------------------------------------------------------------------------------------------------
 
-cor(binCHM, vegbin$height, use="complete")
+cor(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegbin$height, use="complete")
 
 
 
-## ----vegsub-2-----------------------------------------------------------------------------------------------
+## ----vegsub-2----------------------------------------------------------------------------------------------
 
 vegsub <- vegsub[order(vegsub$height, 
                        decreasing=T),]
 
 
 
-## ----vegfil-------------------------------------------------------------------------------------------------
+## ----vegfil------------------------------------------------------------------------------------------------
 
 vegfil <- vegsub
 for(i in 1:nrow(vegsub)) {
@@ -184,35 +184,41 @@ vegfil <- vegfil[which(!is.na(vegfil$height)),]
 
 
 
-## ----filter-chm---------------------------------------------------------------------------------------------
+## ----filter-chm--------------------------------------------------------------------------------------------
 
-filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
-                         buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
-plot(filterCHM~vegfil$height, pch=20, 
+filterCHM <- extract(chm, 
+                     cbind(vegfil$adjEasting, 
+                           vegfil$adjNorthing))
+plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegfil$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----cor-3--------------------------------------------------------------------------------------------------
+## ----cor-3-------------------------------------------------------------------------------------------------
 
-cor(filterCHM,vegfil$height)
+cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
+    vegfil$height)
 
 
 
-## ----live-trees---------------------------------------------------------------------------------------------
+## ----live-trees--------------------------------------------------------------------------------------------
 
 vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
-filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
-                         buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
-plot(filterCHM~vegfil$height, pch=20, 
+filterCHM <- extract(chm, 
+                     cbind(vegfil$adjEasting, 
+                           vegfil$adjNorthing))
+plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegfil$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
 
 
-## ----cor-4--------------------------------------------------------------------------------------------------
+## ----cor-4-------------------------------------------------------------------------------------------------
 
-cor(filterCHM,vegfil$height)
+cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
+    vegfil$height)
 
 
