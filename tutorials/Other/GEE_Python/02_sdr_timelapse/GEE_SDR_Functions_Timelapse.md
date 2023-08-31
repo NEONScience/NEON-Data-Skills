@@ -42,6 +42,8 @@ Notes:
 
 </div>
 
+First, import the required packages:
+
 
 ```python
 import os

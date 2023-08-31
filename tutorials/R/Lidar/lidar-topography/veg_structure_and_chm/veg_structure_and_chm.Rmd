@@ -6,7 +6,7 @@ dateCreated: 2019-5-21
 authors: Claire K. Lunch
 contributors: Kelley A. McCahill
 estimatedTime: 1 hour
-packagesLibraries: neonUtilities, raster
+packagesLibraries: neonUtilities, terra
 topics: vegetation-structure, ecosystem-structure, canopy-height-model
 languagesTool: R
 dataProduct: DP1.10098.001, DP3.30015.001
@@ -49,8 +49,7 @@ Installation can be run once, then periodically to get package updates.
 
 install.packages("neonUtilities")
 install.packages("neonOS")
-install.packages("sp")
-install.packages("raster")
+install.packages("terra")
 install.packages("devtools")
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
@@ -61,8 +60,7 @@ We'll also set a working directory for data downloads.
 
 ```{r load-packages, results="hide"}
 
-library(sp)
-library(raster)
+library(terra)
 library(neonUtilities)
 library(neonOS)
 library(geoNEON)
@@ -173,7 +171,7 @@ WREF\_075 crossed tile boundaries, this code would download all
 relevant tiles).
 
 The download will include several metadata files as well as the data 
-tile. Load the data tile into the environment using the `raster` package.
+tile. Load the data tile into the environment using the `terra` package.
 
 ```{r get-chm, results="hide"}
 
@@ -182,7 +180,7 @@ byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017",
           northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
           check.size=FALSE, savepath=wd)
 
-chm <- raster(paste0(wd, "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
+chm <- rast(paste0(wd, "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
 
 ```
 
@@ -202,35 +200,32 @@ are many different ways to make a comparison between these two
 datasets! This section will walk through three different approaches.
 
 First, subset the vegetation structure data to only the trees that fall 
-within this tile, using the `extent()` function from the `raster` package.
+within this tile, using the `ext()` function from the `terra` package.
 
 This step isn't strictly necessary, but it will make the processing faster.
 
 ```{r vegsub}
 
-vegsub <- veg[which(veg$adjEasting >= extent(chm)[1] &
-                      veg$adjEasting <= extent(chm)[2] &
-                      veg$adjNorthing >= extent(chm)[3] & 
-                      veg$adjNorthing <= extent(chm)[4]),]
+vegsub <- veg[which(veg$adjEasting >= ext(chm)[1] &
+                      veg$adjEasting <= ext(chm)[2] &
+                      veg$adjNorthing >= ext(chm)[3] & 
+                      veg$adjNorthing <= ext(chm)[4]),]
 
 ```
 
 Starting with a very simple first pass: use the `extract()` function 
-from the `raster` package to get the CHM value matching the coordinates 
-of each mapped plant. Include a buffer equal to the uncertainty in the 
-plant's location, and extract the highest CHM value within the buffer. 
-Then make a scatter plot of each tree's height vs. the CHM value at its 
-location.
+from the `terra` package to get the CHM value matching the coordinates 
+of each mapped plant. Then make a scatter plot of each tree's height 
+vs. the CHM value at its location.
 
 ```{r buffer-chm}
 
-bufferCHM <- extract(chm, 
-                     cbind(vegsub$adjEasting,
-                           vegsub$adjNorthing),
-                     buffer=vegsub$adjCoordinateUncertainty, 
-                     fun=max)
+valCHM <- extract(chm, 
+                  cbind(vegsub$adjEasting,
+                  vegsub$adjNorthing))
 
-plot(bufferCHM~vegsub$height, pch=20, xlab="Height", 
+plot(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegsub$height, pch=20, xlab="Height", 
      ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
@@ -241,7 +236,8 @@ measurements?
 
 ```{r corr-buffer}
 
-cor(bufferCHM, vegsub$height, use="complete")
+cor(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegsub$height, use="complete")
 
 ```
 
@@ -284,20 +280,19 @@ vegbin <- stats::aggregate(vegsub,
 
 ```
 
-To get the CHM values for the 10m bins, use the `raster` package version 
+To get the CHM values for the 10m bins, use the `terra` package version 
 of the `aggregate()` function. Let's take a look at the lower-resolution 
 image we get as a result.
 
 ```{r CHM-10}
 
-CHM10 <- raster::aggregate(chm, fact=10, fun=max)
+CHM10 <- terra::aggregate(chm, fact=10, fun=max)
 plot(CHM10, col=topo.colors(5))
 
 ```
 
-Use the `extract()` function again to get the values from each pixel. We 
-don't need a buffer this time, since we've put both datasets onto the same 
-grid. But our grids are numbered by the corners, so add 5 to each tree 
+Use the `extract()` function again to get the values from each pixel. 
+Our grids are numbered by the corners, so add 5 to each tree 
 coordinate to make sure it's in the correct pixel.
 
 ```{r adj-tree-coord}
@@ -306,7 +301,8 @@ vegbin$easting10 <- vegbin$easting10 + 5
 vegbin$northing10 <- vegbin$northing10 + 5
 binCHM <- extract(CHM10, cbind(vegbin$easting10, 
                                vegbin$northing10))
-plot(binCHM~vegbin$height, pch=20, 
+plot(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegbin$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
@@ -314,7 +310,8 @@ lines(c(0,50), c(0,50), col="grey")
 
 ```{r cor-2}
 
-cor(binCHM, vegbin$height, use="complete")
+cor(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegbin$height, use="complete")
 
 ```
 
@@ -360,15 +357,15 @@ vegfil <- vegfil[which(!is.na(vegfil$height)),]
 
 ```
 
-Now extract the raster values, as above. Let's also increase the buffer size 
-a bit, to better account for the uncertainty in the Lidar data as well as 
-the uncertainty in the ground locations.
+Now extract the raster values, as above.
 
 ```{r filter-chm}
 
-filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
-                         buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
-plot(filterCHM~vegfil$height, pch=20, 
+filterCHM <- extract(chm, 
+                     cbind(vegfil$adjEasting, 
+                           vegfil$adjNorthing))
+plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegfil$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
@@ -376,7 +373,8 @@ lines(c(0,50), c(0,50), col="grey")
 
 ```{r cor-3}
 
-cor(filterCHM,vegfil$height)
+cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
+    vegfil$height)
 
 ```
 
@@ -393,9 +391,11 @@ trees that aren't alive:
 ```{r live-trees}
 
 vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
-filterCHM <- extract(chm, cbind(vegfil$adjEasting, vegfil$adjNorthing),
-                         buffer=vegfil$adjCoordinateUncertainty+1, fun=max)
-plot(filterCHM~vegfil$height, pch=20, 
+filterCHM <- extract(chm, 
+                     cbind(vegfil$adjEasting, 
+                           vegfil$adjNorthing))
+plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegfil$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
 lines(c(0,50), c(0,50), col="grey")
 
@@ -403,7 +403,8 @@ lines(c(0,50), c(0,50), col="grey")
 
 ```{r cor-4}
 
-cor(filterCHM,vegfil$height)
+cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
+    vegfil$height)
 
 ```
 
