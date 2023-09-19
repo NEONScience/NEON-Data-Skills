@@ -121,6 +121,8 @@ We can use rasterio's built-in functions `show` to plot the CHM tile.
 show(rgb_dataset);
 ```
 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/RGB-camera/plot-aop-camera/plot-neon-rgb-camera-data_files/plot-neon-rgb-camera-data_13_0.png)
+
 ## Plot each band of the RGB image 
 
 We can also plot each band (red, green, and blue) individually as follows:
@@ -133,5 +135,7 @@ show((rgb_dataset, 2), ax=axg, cmap='Greens', title='green channel')
 show((rgb_dataset, 3), ax=axb, cmap='Blues', title='blue channel')
 plt.show()
 ```
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/RGB-camera/plot-aop-camera/plot-neon-rgb-camera-data_files/plot-neon-rgb-camera-data_15_0.png)
 
 That's all for this example! Most of the other AOP raster data are all single band images, but `rasterio` is a handy Python package for working with any geotiff files. You can download and visualize the lidar and spectrometer derived raster images similarly.
