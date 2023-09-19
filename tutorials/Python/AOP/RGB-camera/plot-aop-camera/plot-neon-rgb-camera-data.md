@@ -38,8 +38,6 @@ collected over the Smithsonian Environmental Research Station (SERC) NEON field 
 
 You don't have to download from the link above; the tutorial will demonstrate how to download the data directly from Python into your working directory, but we recommend re-organizing in a way that makes sense for you.
 
-</div>
-
 ### Background
 
 As part of the 
@@ -53,6 +51,8 @@ suite of remote sensing instruments, the digital camera producing high-resolutio
 In this lesson we will keep it simple and show how to read in and plot a single camera file (1km x 1km ortho-mosaicked tile) - a first step in any research incorporating the AOP camera data (in Python).
 
 **Tip:** To run a code chunk (cell) in Jupyter Notebook you can either select `Cell > Run Cells` with your cursor placed in the cell you want to run, or use the shortcut key `Shift + Enter`. For more handy shortcuts, refer to the tab `Help > Keyboard Shortcuts`. 
+
+</div>
 
 ### Import required packages
 First let's import the packages that we'll be using in this lesson.
