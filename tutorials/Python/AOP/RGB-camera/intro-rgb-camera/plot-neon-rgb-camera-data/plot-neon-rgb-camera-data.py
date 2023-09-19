@@ -18,13 +18,13 @@
 # urlTitle: plot-neon-rgb-py
 # ---
 
-# This tutorial introduces NEON RGB camera images (<a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">Data Product DP3.30010.001</a>) and uses the Python package `rasterio` to read in and plot the camera data in Python. In this lesson, we will read in an RGB camera tile collected over the NEON Smithsonian Environmental Research Center (SERC) site and plot the mutliband image, as well as the individual bands. This lesson was adapted from the <a href="https://rasterio.readthedocs.io/en/stable/topics/plotting.html" target="_blank">rasterio plotting documentation</a>.
+# This tutorial introduces NEON RGB camera images (<a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">Data Product DP3.30010.001</a>) and uses the Python package `rasterio` to read in and plot the camera data in Python. In this lesson, we will read in an RGB camera tile collected over the NEON Smithsonian Environmental Research Center (<a href="https://www.neonscience.org/field-sites/serc" target="_blank">SERC</a>) site and plot the mutliband image, as well as the individual bands. This lesson was adapted from the <a href="https://rasterio.readthedocs.io/en/stable/topics/plotting.html" target="_blank">rasterio plotting documentation</a>.
 # 
 # ### Objectives
 # 
 # After completing this tutorial, you will be able to: 
 # 
-# * Plot a NEON RGB Camera Tile (<a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">Data Product DP3.30010.001</a>) in Python using `rasterio`
+# * Plot a NEON RGB camera geotiff tile in Python using `rasterio`
 # 
 # ### Package Requirements
 # This tutorial was run in Python version 3.9, using the following packages:
@@ -34,11 +34,11 @@
 # 
 # ### Download the Data 
 # 
-# Download the NEON GeoTiFF file of the 
+# Download the NEON
 # <a href="https://storage.googleapis.com/neon-aop-products/2021/FullSite/D02/2021_SERC_5/L3/Camera/Mosaic/2021_SERC_5_368000_4306000_image.tif">camera (RGB) imagery tile</a>
 # collected over the Smithsonian Environmental Research Station (SERC) NEON field site in 2021. Move this data to a desired folder on your local workstation. You will need to know the file path to this data.  
 # 
-# Note, the tutorial will also demonstrate how to download the data directly from Python into your working directory, but we recommend re-organizing in a way that makes sense for you.
+# You don't have to download from the link above; the tutorial will demonstrate how to download the data directly from Python into your working directory, but we recommend re-organizing in a way that makes sense for you.
 # 
 # ### Background
 # 
@@ -50,7 +50,7 @@
 # - <a href="https://elifesciences.org/articles/62922" target="_blank">A remote sensing derived data set of 100 million individual tree crowns for the National Ecological Observatory Network</a>
 # - <a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13472" target="_blank">DeepForest: A Python package for RGB deep learning tree crown delineation</a>
 # 
-# In this lesson we will keep it simple and just show how to read in and plot a single camera RGB tile - a first step in any research incorporating the AOP camera data (in Python).
+# In this lesson we will keep it simple and show how to read in and plot a single camera file (1km x 1km ortho-mosaicked tile) - a first step in any research incorporating the AOP camera data (in Python).
 # 
 # **Tip:** To run a code chunk (cell) in Jupyter Notebook you can either select `Cell > Run Cells` with your cursor placed in the cell you want to run, or use the shortcut key `Shift + Enter`. For more handy shortcuts, refer to the tab `Help > Keyboard Shortcuts`. 
 
