@@ -48,6 +48,13 @@ suite of remote sensing instruments, the digital camera producing high-resolutio
 - <a href="https://elifesciences.org/articles/62922" target="_blank">A remote sensing derived data set of 100 million individual tree crowns for the National Ecological Observatory Network</a>
 - <a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13472" target="_blank">DeepForest: A Python package for RGB deep learning tree crown delineation</a>
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/graphics/py-figs/plot-neon-rgb-camera-data/tree-crown-paper-fig-2021.jpg">
+	<img src="[https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/get-api-token-button.png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/graphics/py-figs/plot-neon-rgb-camera-data/tree-crown-paper-fig-2021.jpg)" alt="Locations of 37 NEON sites included in the NEON crowns data set and examples of tree predictions shown with RGB imagery for six sites."></a>
+</figure>
+
+Reference: Ben G Weinstein, Sergio Marconi, Stephanie A Bohlman, Alina Zare, Aditya Singh, Sarah J Graves, Ethan P White (2021) A remote sensing derived data set of 100 million individual tree crowns for the National Ecological Observatory Network eLife 10:e62922. https://doi.org/10.7554/eLife.62922
+
 In this lesson we will keep it simple and show how to read in and plot a single camera file (1km x 1km ortho-mosaicked tile) - a first step in any research incorporating the AOP camera data (in Python).
 
 **Tip:** To run a code chunk (cell) in Jupyter Notebook you can either select `Cell > Run Cells` with your cursor placed in the cell you want to run, or use the shortcut key `Shift + Enter`. For more handy shortcuts, refer to the tab `Help > Keyboard Shortcuts`. 
