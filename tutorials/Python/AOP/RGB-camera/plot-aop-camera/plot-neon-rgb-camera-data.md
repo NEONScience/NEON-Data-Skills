@@ -17,6 +17,7 @@ urlTitle: plot-neon-rgb-py
 
 This tutorial introduces NEON RGB camera images (<a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">Data Product DP3.30010.001</a>) and uses the Python package `rasterio` to read in and plot the camera data in Python. In this lesson, we will read in an RGB camera tile collected over the NEON Smithsonian Environmental Research Center (<a href="https://www.neonscience.org/field-sites/serc" target="_blank">SERC</a>) site and plot the mutliband image, as well as the individual bands. This lesson was adapted from the <a href="https://rasterio.readthedocs.io/en/stable/topics/plotting.html" target="_blank">rasterio plotting documentation</a>.
 
+<div id="ds-objectives" markdown="1">
 ### Objectives
 
 After completing this tutorial, you will be able to: 
@@ -36,6 +37,8 @@ Download the NEON
 collected over the Smithsonian Environmental Research Station (SERC) NEON field site in 2021. Move this data to a desired folder on your local workstation. You will need to know the file path to this data.  
 
 You don't have to download from the link above; the tutorial will demonstrate how to download the data directly from Python into your working directory, but we recommend re-organizing in a way that makes sense for you.
+
+</div>
 
 ### Background
 
