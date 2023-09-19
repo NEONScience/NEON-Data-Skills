@@ -10,7 +10,7 @@ packagesLibraries: os, sys, numpy, matplotlib, gdal, scipy, scikit-learn, scikit
 topics: lidar, remote-sensing
 languagesTool: python
 dataProduct: DP1.10098.001, DP3.30015.001 
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py.ipynb
 tutorialSeries: intro-lidar-py-series
 urlTitle: calc-biomass-py
 ---
@@ -52,7 +52,7 @@ If you have already downloaded the data set for the Data Institute, you have the
 data for this tutorial within the SJER directory. If you would like to just 
 download the data for this tutorial use the following links. 
 
-**Download the Training Data:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/SJER_Biomass_Training.csv" class="link--button link--arrow">SJER_Biomass_Training.csv</a>
+**Download the Training Data:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/SJER_Biomass_Training.csv" class="link--button link--arrow">SJER_Biomass_Training.csv</a>
 
 **Download the SJER Canopy Height Model Tile:** <a href="https://storage.googleapis.com/neon-aop-products/2018/FullSite/D17/2018_SJER_3/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D17_SJER_DP3_256000_4106000_CHM.tif" class="link--button link--arrow">NEON_D17_SJER_DP3_256000_4106000_CHM.tif</a>
 
@@ -288,7 +288,7 @@ plt.savefig(os.path.join(data_path,chm_name.replace('.tif','.png')),dpi=300,orie
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_25_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_25_0.png)
     
 
 
@@ -394,7 +394,7 @@ array2raster(data_path+'maximum.tif',
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_37_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_37_0.png)
     
 
 
@@ -469,7 +469,7 @@ array2raster(data_path+'labels.tif',
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_44_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_44_0.png)
     
 
 
@@ -597,6 +597,6 @@ array2raster(os.path.join(data_path,chm_name.replace('CHM.tif','Biomass.tif')),
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_59_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_59_1.png)
     
 
