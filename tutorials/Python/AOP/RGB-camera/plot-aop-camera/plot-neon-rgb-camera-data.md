@@ -10,7 +10,7 @@ packagesLibraries: gdal, rasterio, matplotlib
 topics: data-analysis, data-visualization, spatial-data-gis 
 languagesTool: Python
 dataProduct: DP3.30010.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/RGB-camera/intro-rgb-camera/plot-neon-rgb-camera-data/plot-neon-rgb-camera-data.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/RGB-camera/plot-aop-camera/plot-neon-rgb-camera-data.ipynb
 tutorialSeries:
 urlTitle: plot-neon-rgb-py
 ---
