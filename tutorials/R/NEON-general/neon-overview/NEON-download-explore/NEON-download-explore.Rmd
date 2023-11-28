@@ -324,7 +324,7 @@ As we saw above, the object returned by `loadByProduct()` is a named list of
 data frames. Let's check out what's the same and what's different from the IS 
 data tables.
 
-```{r loadBy-list, eval=F}
+```{r loadBy-list, eval=T}
 
 names(apchem)
 

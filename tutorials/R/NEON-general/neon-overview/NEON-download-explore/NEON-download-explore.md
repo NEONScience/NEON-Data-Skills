@@ -313,6 +313,13 @@ data tables.
 
     names(apchem)
 
+    ##  [1] "apl_biomass"                       "apl_clipHarvest"                  
+    ##  [3] "apl_plantExternalLabDataPerSample" "apl_plantExternalLabQA"           
+    ##  [5] "asi_externalLabPOMSummaryData"     "categoricalCodes_20063"           
+    ##  [7] "citation_20063_RELEASE-2023"       "issueLog_20063"                   
+    ##  [9] "readme_20063"                      "validation_20063"                 
+    ## [11] "variables_20063"
+
 As with the sensor data, we have some data tables and some metadata tables. 
 Most of the metadata files are the same as the sensor data: **readme**, 
 **variables**, **issueLog**, and **citation**. These files contain the same 
