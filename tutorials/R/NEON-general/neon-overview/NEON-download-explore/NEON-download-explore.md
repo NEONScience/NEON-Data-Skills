@@ -7,7 +7,7 @@ dataProducts: DP1.00024.001, DP1.20063.001, DP3.30015.001
 authors: Claire K. Lunch
 contributors: Christine Laney, Megan A. Jones, Donal O'Leary
 estimatedTime: 1 - 2 hours
-packagesLibraries: devtools, neonUtilities, raster
+packagesLibraries: neonUtilities, neonOS, terra
 topics: data-management, rep-sci
 languageTool: R, API
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore.R
@@ -20,7 +20,8 @@ urlTitle: download-explore-neon-data
 This tutorial covers downloading NEON data, using the Data Portal and 
 the neonUtilities R package, as well as basic instruction in beginning to 
 explore and work with the downloaded data, including guidance in 
-navigating data documentation.
+navigating data documentation. We will explore data of 3 different types, 
+and make a simple figure from each.
 
 ## NEON data
 There are 3 basic categories of NEON data:
@@ -54,24 +55,23 @@ preferably, RStudio loaded on your computer.
 
 * **neonUtilities**: Basic functions for accessing NEON data
 * **neonOS**: Functions for common data wrangling needs for NEON observational data
-* **raster**: Raster package; needed for remote sensing data
+* **terra**: Spatial data package; needed for remote sensing data
 
-Both of these packages can be installed from CRAN:
+These packages can be installed from CRAN:
 
 
     install.packages("neonUtilities")
 
     install.packages("neonOS")
 
-    install.packages("raster")
+    install.packages("terra")
 
 
 ### Additional Resources
 
-* <a href="https://www.neonscience.org/neonDataStackR" target="_blank">Tutorial for neonUtilities.</a> Some overlap with this tutorial but goes into more detail about the neonUtilities package.
 * <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Tutorial for using neonUtilities from a Python environment.</a>
 * <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
-* <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users.
+* <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users.
 
 </div>
 
@@ -79,15 +79,18 @@ Both of these packages can be installed from CRAN:
 
 Go to the 
 <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a> 
-and download some data! Almost any IS or OS data product can be used for this 
-section of the tutorial, but we will proceed assuming you've downloaded 
-Photosynthetically Active Radiation (PAR) (DP1.00024.001) data. For optimal 
-results, download three months of data from one site. The downloaded file 
-should be a zip file named NEON_par.zip. For this tutorial, we will be using 
-PAR data from the Wind River Experimental Forest (WREF) in Washington state 
-from September-November 2019.
+and download some data! To follow the tutorial exactly, download 
+Photosynthetically active radiation (PAR) (DP1.00024.001) data from 
+September-November 2019 at Wind River Experimental Forest (WREF). The 
+downloaded file should be a zip file named NEON_par.zip.
 
-Now switch over to R and load all the packages installed above.
+If you prefer to explore a different data product, you can still follow this 
+tutorial. But it will be easier to understand the steps in the tutorial, 
+particularly the data navigation, if you choose a sensor data product for 
+this section.
+
+Once you've downloaded a zip file of data from the portal, switch over to R 
+and load all the packages installed above.
 
 
     # load packages
@@ -96,11 +99,15 @@ Now switch over to R and load all the packages installed above.
 
     library(neonOS)
 
-    library(raster)
+    library(terra)
 
     
 
-    # Set global option to NOT convert all character variables to factors
+    # Set global option to NOT convert all character variables to factors.
+
+    # If you are working in R version 4 or higher (recommended), this is 
+
+    # already the default setting.
 
     options(stringsAsFactors=F)
 
@@ -117,33 +124,132 @@ downloaded zip file.
 
 In the same directory as the zipped file, you should now have an unzipped 
 folder of the same name. When you open this you will see a new folder 
-called **stackedFiles**, which should contain five files: 
+called **stackedFiles**, which should contain at least seven files: 
 **PARPAR_30min.csv**, **PARPAR_1min.csv**, **sensor_positions.csv**, 
-**variables.csv**, and **readme.txt**.
+**variables_00024.csv**, **readme_00024.txt**, **issueLog_00024.csv**, 
+and **citation\_00024\_RELEASE-202X.txt**.
 
-We'll look at these files in more detail below.
+## Navigate data downloads: IS
+
+Let's start with a brief description of each file. This set of files is 
+typical of a NEON IS data product.
+
+* **PARPAR_30min.csv**: PAR data at 30-minute averaging intervals
+* **PARPAR_1min.csv**: PAR data at 1-minute averaging intervals
+* **sensor_positions.csv**: The physical location of each sensor collecting PAR measurements. There is a PAR sensor at each level of the WREF tower, and this table lets you connect the tower level index to the height of the sensor in meters.
+* **variables_00024.csv**: Definitions and units for each data field in the PARPAR_#min tables.
+* **readme_00024.txt**: Basic information about the PAR data product.
+* **issueLog_00024.csv**: A record of known issues associated with PAR data.
+* **citation\_00024\_RELEASE-202X.txt**: The citation to use when you publish a paper using these data, in BibTeX format.
+
+We'll explore the 30-minute data. To read the file into R, use the function 
+`readTableNEON()`, which uses the variables file to assign data types to each 
+column of data:
+
+
+    par30 <- readTableNEON(
+      dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
+      varFile="~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
+
+    View(par30)
+
+The first four columns are added by `stackByTable()` when it merges 
+files across sites, months, and tower heights. The column 
+`publicationDate` is the date-time stamp indicating when the data 
+were published, and the `release` column indicates which NEON data release 
+the data belong to. For more information about NEON data releases, see the 
+<a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Data Product Revisions and Releases</a> page.
+
+Information about each data column can be found in the variables file:
+
+
+    parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
+
+    View(parvar)
+
+Here you can see definitions and units for each column of data.
+
+Now that we know what we're looking at, let's plot PAR from the top 
+tower level. We'll use the mean PAR from each averaging interval, and we 
+can see from the sensor positions file that the vertical index 080 
+corresponds to the highest tower level. To explore the sensor positions 
+data in more depth, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-spatial-data-basics" target="_blank">spatial data</a> tutorial.
+
+
+    plot(PARMean~startDateTime, 
+         data=par30[which(par30$verticalPosition=="080"),],
+         type="l")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-par-1.png)
+
+Looks good! The sun comes up and goes down every day, and some days 
+are cloudy.
+
+To see another layer of data, add PAR from a lower tower level to the 
+plot.
+
+
+    plot(PARMean~startDateTime, 
+         data=par30[which(par30$verticalPosition=="080"),],
+         type="l")
+
+    
+
+    lines(PARMean~startDateTime, 
+         data=par30[which(par30$verticalPosition=="020"),],
+         col="blue")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-par-lower-1.png)
+
+We can see there is a lot of light attenuation through the canopy.
 
 ## Download files and load directly to R: loadByProduct()
 
-In the section above, we downloaded a .zip file from the data portal to
-our downloads folder, then used the stackByTable() function to transform
-those data into a usable format. However, there is a faster way to load
-data directly into the R Global Environment using `loadByProduct()`.
+At the start of this tutorial, we downloaded data from the NEON data portal. 
+NEON also provides an API, and the `neonUtilities` packages provides methods 
+for downloading programmatically in R.
 
-The most popular function in `neonUtilities` is `loadByProduct()`. 
+The steps we carried out above - downloading from the portal, stacking the 
+downloaded files, and reading in to R - can all be carried out in one step by 
+the neonUtilities function `loadByProduct()`.
+
+To get the same PAR data we worked with above, we would run this line of code 
+using `loadByProduct()`:
+
+
+    parlist <- loadByProduct(dpID="DP1.00024.001", 
+                             site="WREF", 
+                             startdate="2019-09",
+                             enddate="2019-11")
+
+The object returned by `loadByProduct()` is a named list. The objects in the 
+list are the same set of tables we ended with after stacking the data from 
+the portal above. You can see this by checking the names of the tables in 
+`parlist`:
+
+
+    names(parlist)
+
+    ## [1] "citation_00024_RELEASE-2023" "issueLog_00024"              "PARPAR_1min"                
+    ## [4] "PARPAR_30min"                "readme_00024"                "sensor_positions_00024"     
+    ## [7] "variables_00024"
+
+Now let's walk through the details of the inputs and options in 
+`loadByProduct()`.
+
 This function downloads data from the NEON API, merges the site-by-month 
 files, and loads the resulting data tables into the R environment, 
 assigning each data type to the appropriate R class. This is a popular 
-choice because it ensures you're always working with the latest data, 
-and it ends with ready-to-use tables in R. However, if you use it in
-a workflow you run repeatedly, keep in mind it will re-download the 
-data every time.
+choice for NEON data users because it ensures you're always working with 
+the latest data, and it ends with ready-to-use tables in R. However, if 
+you use it in a workflow you run repeatedly, keep in mind it will re-download 
+the data every time. See below for suggestions on saving the data locally.
 
 `loadByProduct()` works on most observational (OS) and sensor (IS) data, 
 but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
 data, and some of the data tables in the microbial data products. For 
-functions that download AOP data, see the `byFileAOP()` and `byTileAOP()` 
-sections in this tutorial. For functions that work with SAE data, see 
+functions that download AOP data, see the final 
+section in this tutorial. For functions that work with SAE data, see 
 the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>.
 
 The inputs to `loadByProduct()` control which data to download and how 
@@ -167,8 +273,10 @@ downloaded.
 * `timeIndex`: defaults to "all", to download all data; or the 
 number of minutes in the averaging interval. Only applicable to IS 
 data.
-* `savepath`: the file path you want to download to; defaults to the 
-working directory.
+* `include.provisional`: T or F: should Provisional data be included in 
+the download? Defaults to F to return only Released data, which are 
+citable by a DOI and do not change over time. Provisional data are 
+subject to change.
 * `check.size`: T or F: should the function pause before downloading 
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
@@ -184,8 +292,8 @@ download. The DPID can be found on the
 Explore Data Products page</a>.
 It will be in the form DP#.#####.###
 
-Here, we'll download aquatic plant chemistry data from 
-three lake sites: Prairie Lake (PRLA), Suggs Lake (SUGG), 
+To explore observational data, we'll download aquatic plant chemistry data 
+(DP1.20063.001) from three lake sites: Prairie Lake (PRLA), Suggs Lake (SUGG), 
 and Toolik Lake (TOOK).
 
 
@@ -196,61 +304,140 @@ and Toolik Lake (TOOK).
                       package="expanded", check.size=T)
 
 
-The object returned by `loadByProduct()` is a named list of data 
-frames. To work with each of them, select them from the list 
-using the `$` operator.
+## Navigate data downloads: OS
+
+As we saw above, the object returned by `loadByProduct()` is a named list of 
+data frames. Let's check out what's the same and what's different from the IS 
+data tables.
 
 
     names(apchem)
 
-    View(apchem$apl_plantExternalLabDataPerSample)
+As with the sensor data, we have some data tables and some metadata tables. 
+Most of the metadata files are the same as the sensor data: **readme**, 
+**variables**, **issueLog**, and **citation**. These files contain the same 
+type of metadata here that they did in the IS data product. Let's look at the 
+other files:
 
-If you prefer to extract each table from the list and work 
-with it as an independent object, you can use the 
-`list2env()` function:
+* **apl_clipHarvest**: Data from the clip harvest collection of aquatic plants
+* **apl_biomass**: Biomass data from the collected plants
+* **apl_plantExternalLabDataPerSample**: Chemistry data from the collected plants
+* **apl_plantExternalLabQA**: Quality assurance data from the chemistry analyses
+* **asi_externalLabPOMSummaryData**: Quality metrics from the chemistry lab
+* **validation_20063**: For observational data, a major method for ensuring data quality is to control data entry. This file contains information about the data ingest rules applied to each input data field.
+* **categoricalCodes_20063**: Definitions of each value for categorical data, such as growth form and sample condition
+
+You can work with these tables from the named list object, but many people find 
+it easier to extract each table from the list and work with it as an 
+independent object. To do this, use the `list2env()` function:
 
 
     list2env(apchem, .GlobalEnv)
 
     ## <environment: R_GlobalEnv>
 
-If you want to be able to close R and come back to these data without 
-re-downloading, you'll want to save the tables locally. We recommend 
-also saving the variables file, both so you'll have it to refer to, and 
-so you can use it with `readTableNEON()` (see below).
+Keep in mind that using `loadByProduct()` will re-download the data every 
+time you run your code. In some cases this may be desirable, but it can be 
+a waste of time and compute resources. To come back to these data without 
+re-downloading, you'll want to save the tables locally. The most efficient 
+option is to save the named list as an R object.
 
 
-    write.csv(apl_clipHarvest, 
+    saveRDS(apchem, 
 
-              "~/Downloads/apl_clipHarvest.csv", 
+            "~/Downloads/aqu_plant_chem.rds")
 
-              row.names=F)
+Then you can re-load the object to an R environment any time.
 
-    write.csv(apl_biomass, 
+Other options for saving data locally:
 
-              "~/Downloads/apl_biomass.csv", 
+1. Use `zipsByProduct()` and `stackByTable()` 
+instead of `loadByProduct()`. With this option, use the function 
+`readTableNEON()` to read the files into R, to get the same column type 
+assignment that `loadByProduct()` carries out. Details
+can be found in our <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>.
+2. Try out the community-developed `neonstore` package, which is designed for 
+maintaining a local store of the NEON data you use. The `neonUtilities` 
+function `stackFromStore()` works with files downloaded by `neonstore`. See 
+the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neonstore-stackfromstore-tutorial" target="_blank">neonstore tutorial</a> 
+for more information.
 
-              row.names=F)
+Now let's explore the aquatic plant data. OS data products 
+are simple in that the data generally tabular, and data volumes are 
+lower than the other NEON data types, but they are complex in that 
+almost all consist of multiple tables containing information collected 
+at different times in different ways. For example, samples collected 
+in the field may be shipped to a laboratory for analysis. Data 
+associated with the field collection will appear in one data table, 
+and the analytical results will appear in another. Complexity in 
+working with OS data usually involves bringing data together from 
+multiple measurements or scales of analysis.
 
-    write.csv(apl_plantExternalLabDataPerSample, 
+As with the IS data, the variables file can tell you more about 
+the data.
 
-              "~/Downloads/apl_plantExternalLabDataPerSample.csv", 
 
-              row.names=F)
+    View(variables_20063)
 
-    write.csv(variables_20063, 
+OS data products each come with a Data Product User Guide, 
+which can be downloaded with the data, or accessed from the 
+document library on the Data Portal, or the <a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
+page for the data product. The User Guide is designed to give 
+a basic introduction to the data product, including a brief 
+summary of the protocol and descriptions of data format and 
+structure.
 
-              "~/Downloads/variables_20063.csv", 
+To get started with the aquatic plant chemistry data, let's 
+take a look at carbon isotope ratios in plants across the three 
+sites we downloaded. The chemical analytes are reported in the 
+`apl_plantExternalLabDataPerSample` table, and the table is in 
+long format, with one record per sample per analyte, so we'll 
+subset to only the carbon isotope analyte:
 
-              row.names=F)
 
-But, if you want to save files locally and load them into R (or another 
-platform) each time you run a script, instead of downloading from the API 
-every time, you may prefer to use `zipsByProduct()` and `stackByTable()` 
-instead of `loadByProduct()`, as we did in the first section above. Details
-can be found in our <a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>. You can also try out the 
-community-developed `neonstore` package, which is designed for 
-maintaining a local store of the NEON data you use.
+    boxplot(analyteConcentration~siteID, 
+            data=apl_plantExternalLabDataPerSample, 
+            subset=analyte=="d13C",
+            xlab="Site", ylab="d13C")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/13C-by-site-1.png)
+
+We see plants at Suggs and Toolik are quite low in 13C, with more 
+spread at Toolik than Suggs, and plants at Prairie Lake are relatively 
+enriched. Clearly the next question is what species these data represent. 
+But taxonomic data aren't present in the `apl_plantExternalLabDataPerSample` 
+table, they're in the `apl_biomass` table. We'll need to join the two 
+tables to get chemistry by taxon.
+
+Every NEON data product has a Quick Start Guide (QSG), and for OS 
+products it includes a section describing how to join the tables in the 
+data product. Since it's a pdf file, `loadByProduct()` doesn't bring it in, 
+but you can view the Aquatic plant chemistry QSG on the 
+<a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
+page. The `neonOS` package uses the information from the QSGs to provide 
+an automated table-joining function, `joinTableNEON()`.
+
+
+    apct <- joinTableNEON(apl_biomass, 
+                apl_plantExternalLabDataPerSample)
+
+Using the merged data, now we can plot carbon isotope ratio 
+for each taxon.
+
+
+
+
+    boxplot(analyteConcentration~scientificName, 
+            data=apct, subset=analyte=="d13C", 
+            xlab=NA, ylab="d13C", 
+            las=2, cex.axis=0.7)
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-13C-by-tax-1.png)
+
+And now we can see most of the sampled plants have carbon 
+isotope ratios around -30, with just two species accounting 
+for most of the more enriched samples.
+
 
 ## Download remote sensing data: byFileAOP() and byTileAOP()
 
@@ -285,156 +472,23 @@ Model) (DP3.30015.001) from WREF in 2017.
 
               easting=580000, northing=5075000, savepath="~/Downloads")
 
+
 In the directory indicated in `savepath`, you should now have a folder 
 named `DP3.30015.001` with several nested subfolders, leading to a tif 
-file of a canopy height model tile. We'll look at this in more detail 
-below.
+file of a canopy height model tile.
 
-## Navigate data downloads: IS
-
-Let's take a look at the PAR data we downloaded earlier. We'll 
-read in the 30-minute file using the function `readTableNEON()`, 
-which uses the `variables.csv` file to assign data types to each 
-column of data:
-
-
-    par30 <- readTableNEON(
-      dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
-      varFile="~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
-
-    View(par30)
-
-The first four columns are added by `stackByTable()` when it merges 
-files across sites, months, and tower heights. The column 
-`publicationDate` is the date-time stamp indicating when the data 
-were published. This can be used as an indicator for whether data 
-have been updated since the last time you downloaded them.
-
-The remaining columns are described by the variables file:
-
-
-    parvar <- read.csv("~/Downloads/NEON_par/stackedFiles/variables_00024.csv")
-
-    View(parvar)
-
-The variables file shows you the definition and units for each column 
-of data.
-
-The Quick Start Guide is a pdf file, and it contains basic information 
-to get you started using this data product, such as the data quality 
-information provided and common calculations many user will want to 
-make.
-
-Now that we know what we're looking at, let's plot PAR from the top 
-tower level:
-
-
-    plot(PARMean~startDateTime, 
-         data=par30[which(par30$verticalPosition=="080"),],
-         type="l")
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-par-1.png)
-
-Looks good! The sun comes up and goes down every day, and some days 
-are cloudy. If you want to dig in a little deeper, try plotting PAR 
-from lower tower levels on the same axes to see light attenuation 
-through the canopy.
-
-## Navigate data downloads: OS
-
-Let's take a look at the aquatic plant data. OS data products 
-are simple in that the data generally tabular, and data volumes are 
-lower than the other NEON data types, but they are complex in that 
-almost all consist of multiple tables containing information collected 
-at different times in different ways. For example, samples collected 
-in the field may be shipped to a laboratory for analysis. Data 
-associated with the field collection will appear in one data table, 
-and the analytical results will appear in another. Complexity in 
-working with OS data usually involves bringing data together from 
-multiple measurements or scales of analysis.
-
-As with the IS data, the variables file can tell you more about 
-the data. OS data also come with a validation file, which contains 
-information about the validation and controlled data entry that 
-were applied to the data:
-
-
-    View(variables_20063)
-
-    
-
-    View(validation_20063)
-
-OS data products each come with a Data Product User Guide, 
-which can be downloaded with the data, or accessed from the 
-document library on the Data Portal, or the <a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
-page for the data product. The User Guide is designed to give 
-a basic introduction to the data product, including a brief 
-summary of the protocol and descriptions of data format and 
-structure.
-
-To get started with the aquatic plant chemistry data, let's 
-take a look at carbon isotope ratios in plants across the three 
-sites we downloaded. The chemical analytes are reported in the 
-`apl_plantExternalLabDataPerSample` table, and the table is in 
-long format, with one record per sample per analyte, so we'll 
-subset to only the carbon isotope analyte:
-
-
-    boxplot(analyteConcentration~siteID, 
-            data=apl_plantExternalLabDataPerSample, 
-            subset=analyte=="d13C",
-            xlab="Site", ylab="d13C")
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/13C-by-site-1.png)
-
-We see plants at Suggs and Toolik are quite low in 13C, with more 
-spread at Toolik than Suggs, and plants at Prairie Lake are relatively 
-enriched. Clearly the next question is what species these data represent. 
-But taxonomic data aren't present in the `apl_plantExternalLabDataPerSample` 
-table, they're in the `apl_biomass` table. We'll need to join the two 
-tables to get chemistry by taxon.
-
-As mentioned above, each data product has a Quick Start Guide, and for OS 
-products it includes a section describing how to join the tables in the 
-data product. Since it's a pdf file, `loadByProduct()` doesn't bring it in, 
-but you can view the Aquatic plant chemistry QSG on the 
-<a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
-page. The `neonOS` package uses the information from the QSGs to provide 
-an automated table-joining function, `joinTableNEON()`.
-
-
-    apct <- joinTableNEON(apl_biomass, 
-                apl_plantExternalLabDataPerSample)
-
-Using the merged data, now we can plot carbon isotope ratio 
-for each taxon.
-
-
-
-
-    boxplot(analyteConcentration~scientificName, 
-            data=apct, subset=analyte=="d13C", 
-            xlab=NA, ylab="d13C", 
-            las=2, cex.axis=0.7)
-
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/rfigs/plot-13C-by-tax-1.png)
-
-And now we can see most of the sampled plants have carbon 
-isotope ratios around -30, with just two species accounting 
-for most of the more enriched samples.
 
 ## Navigate data downloads: AOP
 
-To work with AOP data, the best bet is the `raster` package. 
+To work with AOP data, the best bet is the `terra` package. 
 It has functionality for most analyses you might want to do.
 
 We'll use it to read in the tile we downloaded:
 
 
-    chm <- raster("~/Downloads/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+    chm <- rast("~/Downloads/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
 
-The `raster` package includes plotting functions:
+The `terra` package includes plotting functions:
 
 
 
@@ -446,5 +500,16 @@ The `raster` package includes plotting functions:
 Now we can see canopy height across the downloaded tile; 
 the tallest trees are over 60 meters, not surprising in 
 the Pacific Northwest. There is a clearing or clear 
-cut in the lower right corner.
+cut in the lower right quadrant.
+
+## Next steps
+
+Now that you've learned the basics of downloading and understanding NEON data, 
+where should you go to learn more? There are many more NEON tutorials to 
+explore, including how to align remote sensing and ground-based measurements, 
+a deep dive into the data quality flagging in the sensor data products, and 
+much more. For a recommended suite of tutorials for new users, check out 
+the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/get-started-neon-data-series-data-tutorials" target="_blank">Getting Started with NEON Data</a> 
+tutorial series.
+
 
