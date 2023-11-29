@@ -3,8 +3,8 @@ syncID: d98dbad4b55b45a79a62bad1d25333fb
 title: "Wildfire Change Analysis Using AOP Reflectance and Canopy Height Data in GEE"
 description: "Explore pre- and post- wildfire imagery at GRSM, looking at differences in canopy height and Normalize Burn Ratio"
 dateCreated: 2023-07-29
-authors: John Musinsky, Stepan Bryleev
-contributors: Bridget Hass
+authors: John Musinsky, Stepan Bryleev, Bridget Hass
+contributors: 
 estimatedTime: 45 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, canopy height, remote-sensing
@@ -37,7 +37,7 @@ You will gain familiarity with:
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
-    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)/a>
+    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-gee-functions" target="_blank">Intro to GEE Functions</a>
 
 ## Additional Resources
