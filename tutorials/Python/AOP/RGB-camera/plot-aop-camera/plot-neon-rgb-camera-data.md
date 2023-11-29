@@ -18,6 +18,7 @@ urlTitle: plot-neon-rgb-py
 This tutorial introduces NEON RGB camera images (<a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">Data Product DP3.30010.001</a>) and uses the Python package `rasterio` to read in and plot the camera data in Python. In this lesson, we will read in an RGB camera tile collected over the NEON Smithsonian Environmental Research Center (<a href="https://www.neonscience.org/field-sites/serc" target="_blank">SERC</a>) site and plot the mutliband image, as well as the individual bands. This lesson was adapted from the <a href="https://rasterio.readthedocs.io/en/stable/topics/plotting.html" target="_blank">rasterio plotting documentation</a>.
 
 <div id="ds-objectives" markdown="1">
+
 ### Objectives
 
 After completing this tutorial, you will be able to: 
@@ -49,15 +50,13 @@ suite of remote sensing instruments, the digital camera producing high-resolutio
 - <a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13472" target="_blank">DeepForest: A Python package for RGB deep learning tree crown delineation</a>
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/graphics/py-figs/plot-neon-rgb-camera-data/tree-crown-paper-fig-2021.jpg">
-	<img src="[https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/get-api-token-button.png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/graphics/py-figs/plot-neon-rgb-camera-data/tree-crown-paper-fig-2021.jpg)" alt="Locations of 37 NEON sites included in the NEON crowns data set and examples of tree predictions shown with RGB imagery for six sites."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/plot-neon-rgb-camera-data/tree-crown-paper-fig-2021.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/plot-neon-rgb-camera-data/tree-crown-paper-fig-2021.jpg" alt="Locations of 37 NEON sites included in the NEON crowns data set and examples of tree predictions shown with RGB imagery for six sites. (Weinstein et al 2021)"></a>
 </figure>
 
-Reference: Ben G Weinstein, Sergio Marconi, Stephanie A Bohlman, Alina Zare, Aditya Singh, Sarah J Graves, Ethan P White (2021) A remote sensing derived data set of 100 million individual tree crowns for the National Ecological Observatory Network eLife 10:e62922. https://doi.org/10.7554/eLife.62922
+**Reference:** Ben G Weinstein, Sergio Marconi, Stephanie A Bohlman, Alina Zare, Aditya Singh, Sarah J Graves, Ethan P White (2021) A remote sensing derived data set of 100 million individual tree crowns for the National Ecological Observatory Network eLife 10:e62922. https://doi.org/10.7554/eLife.62922
 
 In this lesson we will keep it simple and show how to read in and plot a single camera file (1km x 1km ortho-mosaicked tile) - a first step in any research incorporating the AOP camera data (in Python).
-
-**Tip:** To run a code chunk (cell) in Jupyter Notebook you can either select `Cell > Run Cells` with your cursor placed in the cell you want to run, or use the shortcut key `Shift + Enter`. For more handy shortcuts, refer to the tab `Help > Keyboard Shortcuts`. 
 
 </div>
 
