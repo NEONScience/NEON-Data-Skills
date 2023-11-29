@@ -178,8 +178,8 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
     # plot Pre-flood w/ hillshade
     plot(DTM_pre_hillshade,
             col=grey(1:90/100),  # create a color ramp of grey colors for hillshade
-            legend=FALSE,         # no legend, we don't care about the grey of the hillshade
-            main="Pre-Flood Four Mile Canyon, Boulder County",
+            legend=FALSE,         # no legend, we don't care about the values of the hillshade
+            main="Pre-Flood DEM: Four Mile Canyon, Boulder County",
             axes=FALSE)           # makes for a cleaner plot, if the coordinates aren't necessary
     
     plot(DTM_pre, 
@@ -187,14 +187,13 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
             alpha=0.3,   # sets how transparent the object will be (0=transparent, 1=not transparent)
             add=TRUE)  # add=TRUE (or T), add plot to the previous plotting frame
 
-![Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-1.png)
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-1.png" title="Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot." alt="Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot." style="display: block; margin: auto auto auto 0;" />
 
     # plot Post-flood w/ hillshade
-    # note, no add=T in this code, so new plotting frame. 
     plot(DTM_post_hillshade,
             col=grey(1:90/100),  
             legend=FALSE,
-            main="Post-Flood Four Mile Canyon, Boulder County",
+            main="Post-Flood DEM: Four Mile Canyon, Boulder County",
             axes=FALSE)
     
     plot(DTM_post, 
@@ -202,7 +201,7 @@ through the second (DTM) plot, we also set a value between 0 (transparent) and 1
             alpha=0.3,
             add=T)
 
-![Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-2.png)
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-rasters-2.png" title="Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot." alt="Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot." style="display: block; margin: auto auto auto 0;" />
 
 #### Questions? 
 
@@ -225,7 +224,7 @@ DTMs.
             main="Digital Elevation Model (DEM) Difference",
             axes=FALSE)
 
-![Digital Elevation Model of Difference showing the difference between digital elevation models (DTM).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/create-difference-model-1.png)
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/create-difference-model-1.png" title="Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)." alt="Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)." style="display: block; margin: auto auto auto 0;" />
 
 Here we have our DoD, but it is a bit hard to read. What does the scale bar tell
 us?  
@@ -278,7 +277,7 @@ Let's now implement these two changes in our code.
     plot(DTM_post_hillshade,
             col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
-            main="Elevation Change Post-Flood Four Mile Canyon, Boulder County",
+            main="Elevation Change Post-Flood: Four Mile Canyon, Boulder County",
             axes=FALSE)
     
     # add the DoD to it with specified breaks & colors
@@ -289,7 +288,7 @@ Let's now implement these two changes in our code.
             alpha=0.3,
             add =T)
 
-![Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/pretty-diff-model-1.png)
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/pretty-diff-model-1.png" title="Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks)." alt="Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks)." style="display: block; margin: auto auto auto 0;" />
 
 #### Question
 Do you think this is the best color scheme or set point for the breaks? Create
@@ -310,7 +309,7 @@ by manually drawing a box.
     plot(DTM_post_hillshade,
             col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
-            main="Pre-Flood Four Mile Canyon, Boulder County",
+            main="Pre-Flood Elevation: Four Mile Canyon, Boulder County",
             axes=FALSE)
     
     plot(DoD,
@@ -332,7 +331,7 @@ by manually drawing a box.
 
 After executing the `draw()` function, we now physically click on the plot
 at the two opposite corners of the box you want to crop to. You should see a 
-box drawn on the plot at this point.
+red bordered polygon display on the raster at this point.
 
 When we call this new object, we can view the new extent. 
 
@@ -343,19 +342,19 @@ When we call this new object, we can view the new extent.
     ## [1]  473814  474982 4434537 4435390
 
 It is a good idea to write this new extent down, so that you can use the extent
-again the next time you use the script. 
+again the next time you run the script. 
 
 #### Method 2: Define the cropbox
 
 If you know the desired extent of the object you can also use it to crop the box, 
-by creating an object that is a vector of the x min, x max, y min, and y max of
-the desired area. 
+by creating an object that is a vector containing the four vertices (x min, 
+x max, y min, and y max) of the polygon.
 
 
     # desired coordinates of the box
     cropbox2 <- c(473792.6,474999,4434526,4435453)
 
-Once you have the crop box defined, either by manually clicking or by defining 
+Once you have the crop box defined, either by manually clicking or by setting 
 the coordinates, you can crop the desired layer to the crop box. 
 
 
@@ -370,9 +369,9 @@ the coordinates, you can crop the desired layer to the crop box.
     
     # PRE-FLOOD (w/ hillshade)
     plot(DTMpre_hill_crop,
-            col=grey(1:90/100),  # create a color ramp of grey colors
+            col=grey(1:90/100),  # create a color ramp of grey colors:
             legend=FALSE,
-            main="Pre-Flood Four Mile Canyon, Boulder County ",
+            main="Pre-Flood Elevation: Four Mile Canyon, Boulder County ",
             axes=FALSE)
     
     plot(DTM_pre_crop, 
@@ -380,13 +379,13 @@ the coordinates, you can crop the desired layer to the crop box.
             alpha=0.3,
             add=T)
 
-![Raster Plot of the cropped section of Four Mile Creek, Boulder County.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-1.png)
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-1.png" title="Raster Plot of the cropped section of Four Mile Creek, Boulder County." alt="Raster Plot of the cropped section of Four Mile Creek, Boulder County." style="display: block; margin: auto auto auto 0;" />
 
     # POST-FLOOD (w/ hillshade)
     plot(DTMpost_hill_crop,
             col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
-            main="Post-Flood Four Mile Canyon, Boulder County",
+            main="Post-Flood Elevation: Four Mile Canyon, Boulder County",
             axes=FALSE)
     
     plot(DTM_post_crop, 
@@ -394,13 +393,13 @@ the coordinates, you can crop the desired layer to the crop box.
             alpha=0.3,
             add=T)
 
-![Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-2.png)
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-2.png" title="Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood." alt="Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood." style="display: block; margin: auto auto auto 0;" />
 
     # ELEVATION CHANGE - DEM Difference
     plot(DTMpost_hill_crop,
             col=grey(1:90/100),  # create a color ramp of grey colors
             legend=FALSE,
-            main="Elevation Change Post Flood Four Mile Canyon, Boulder County",
+            main="Post-Flood Elevation Change: Four Mile Canyon, Boulder County",
             axes=FALSE)
     
     plot(DoD_crop,
@@ -410,7 +409,7 @@ the coordinates, you can crop the desired layer to the crop box.
             alpha=0.3,
             add =T)
 
-![Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-3.png)
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/NEON-Boulder-Flood-LiDAR-in-R/rfigs/plot-crop-raster-3.png" title="Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks)." alt="Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks)." style="display: block; margin: auto auto auto 0;" />
 
 Now you have a graphic of your particular area of interest. 
 

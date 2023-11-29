@@ -34,13 +34,13 @@ DTM_post_hillshade <- shade(DTM_post_slope, DTM_post_aspect)
 
 
 
-## ----plot-rasters, fig.cap=c("Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot.","Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot.")----
+## ----plot-rasters, fig.dim = c(7, 6), fig.align = 'left', fig.cap=c("Raster Plot of Four Mile Creek, Boulder County, Pre-Flood. This figure combines the DTM and hillshade raster objects into one plot.","Raster Plot of Four Mile Creek, Boulder County, Post-Flood. This figure combines the DTM and hillshade raster objects into one plot.")----
 
 # plot Pre-flood w/ hillshade
 plot(DTM_pre_hillshade,
         col=grey(1:90/100),  # create a color ramp of grey colors for hillshade
-        legend=FALSE,         # no legend, we don't care about the grey of the hillshade
-        main="Pre-Flood Four Mile Canyon, Boulder County",
+        legend=FALSE,         # no legend, we don't care about the values of the hillshade
+        main="Pre-Flood DEM: Four Mile Canyon, Boulder County",
         axes=FALSE)           # makes for a cleaner plot, if the coordinates aren't necessary
 
 plot(DTM_pre, 
@@ -49,11 +49,10 @@ plot(DTM_pre,
         add=TRUE)  # add=TRUE (or T), add plot to the previous plotting frame
 
 # plot Post-flood w/ hillshade
-# note, no add=T in this code, so new plotting frame. 
 plot(DTM_post_hillshade,
         col=grey(1:90/100),  
         legend=FALSE,
-        main="Post-Flood Four Mile Canyon, Boulder County",
+        main="Post-Flood DEM: Four Mile Canyon, Boulder County",
         axes=FALSE)
 
 plot(DTM_post, 
@@ -63,7 +62,7 @@ plot(DTM_post,
 
 
 
-## ----create-difference-model, fig.cap= "Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)."----------
+## ----create-difference-model, fig.dim = c(7, 6), fig.align = 'left', fig.cap= "Digital Elevation Model of Difference showing the difference between digital elevation models (DTM)."----
 # DoD: erosion to be neg, deposition to be positive, therefore post - pre
 DoD <- DTM_post-DTM_pre
 
@@ -79,7 +78,7 @@ hist(DoD)
 
 
 
-## ----pretty-diff-model, fig.cap= "Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks)."----
+## ----pretty-diff-model, fig.dim = c(7.5, 6), fig.align = 'left', fig.cap= "Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks)."----
 # Color palette for 5 categories
 difCol5 = c("#d7191c","#fdae61","#ffffbf","#abd9e9","#2c7bb6")
 
@@ -90,7 +89,7 @@ difCol5 = c("#d7191c","#fdae61","#ffffbf","#abd9e9","#2c7bb6")
 plot(DTM_post_hillshade,
         col=grey(1:90/100),  # create a color ramp of grey colors
         legend=FALSE,
-        main="Elevation Change Post-Flood Four Mile Canyon, Boulder County",
+        main="Elevation Change Post-Flood: Four Mile Canyon, Boulder County",
         axes=FALSE)
 
 # add the DoD to it with specified breaks & colors
@@ -103,12 +102,12 @@ plot(DoD,
 
 
 
-## ----crop-raster-man,fig.cap= "Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County. Figure also includes crop window inlay around the area of interest.", eval=FALSE, comment=NA----
+## ----crop-raster-man, fig.dim = c(7, 6), fig.align = 'left', fig.cap= "Plot of the Elevation change Post-flood in Four Mile Canyon Creek, Boulder County. Figure also includes crop window inlay around the area of interest.", eval=FALSE, comment=NA----
 # plot the rasters you want to crop from 
 plot(DTM_post_hillshade,
         col=grey(1:90/100),  # create a color ramp of grey colors
         legend=FALSE,
-        main="Pre-Flood Four Mile Canyon, Boulder County",
+        main="Pre-Flood Elevation: Four Mile Canyon, Boulder County",
         axes=FALSE)
 
 plot(DoD,
@@ -135,7 +134,7 @@ cropbox1
 cropbox2 <- c(473792.6,474999,4434526,4435453)
 
 
-## ----plot-crop-raster, fig.cap=c("Raster Plot of the cropped section of Four Mile Creek, Boulder County.","Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.","Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).")----
+## ----plot-crop-raster, fig.dim = c(9, 6), fig.align = 'left', fig.cap=c("Raster Plot of the cropped section of Four Mile Creek, Boulder County.","Raster Plot of the cropped section of Four Mile Creek, Boulder County, Post-Flood.","Plot of the Elevation change, Post-flood, in the cropped section of Four Mile Canyon Creek, Boulder County with elevation change represented in categories (breaks).")----
 
 # crop desired layers to the cropbox2 extent
 DTM_pre_crop <- crop(DTM_pre, cropbox2)
@@ -148,9 +147,9 @@ DoD_crop <- crop(DoD, cropbox2)
 
 # PRE-FLOOD (w/ hillshade)
 plot(DTMpre_hill_crop,
-        col=grey(1:90/100),  # create a color ramp of grey colors
+        col=grey(1:90/100),  # create a color ramp of grey colors:
         legend=FALSE,
-        main="Pre-Flood Four Mile Canyon, Boulder County ",
+        main="Pre-Flood Elevation: Four Mile Canyon, Boulder County ",
         axes=FALSE)
 
 plot(DTM_pre_crop, 
@@ -162,7 +161,7 @@ plot(DTM_pre_crop,
 plot(DTMpost_hill_crop,
         col=grey(1:90/100),  # create a color ramp of grey colors
         legend=FALSE,
-        main="Post-Flood Four Mile Canyon, Boulder County",
+        main="Post-Flood Elevation: Four Mile Canyon, Boulder County",
         axes=FALSE)
 
 plot(DTM_post_crop, 
@@ -174,7 +173,7 @@ plot(DTM_post_crop,
 plot(DTMpost_hill_crop,
         col=grey(1:90/100),  # create a color ramp of grey colors
         legend=FALSE,
-        main="Elevation Change Post Flood Four Mile Canyon, Boulder County",
+        main="Post-Flood Elevation Change: Four Mile Canyon, Boulder County",
         axes=FALSE)
 
 plot(DoD_crop,
