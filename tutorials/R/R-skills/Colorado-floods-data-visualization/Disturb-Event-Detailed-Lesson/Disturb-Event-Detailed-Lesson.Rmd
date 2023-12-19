@@ -1,6 +1,5 @@
 ---
-title: Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013
-  Colorado Floods
+title: Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013 Colorado Floods
 code1: 
 contributors: Donal O'Leary
 dataProduct: DP3.30024.001
