@@ -31,10 +31,7 @@ After completing this activity, you will be able to integrate NEON airborne (AOP
  * A gmail (@gmail.com) account
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
  * An understanding of the GEE code editor and the GEE JavaScript API.
- * Optionally, complete the previous GEE tutorials in this tutorial series: 
-    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
-    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a>
-    * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-functions" target="_blank">Intro to GEE Functions</a>
+ * Optionally, complete the first three GEE tutorials in this tutorial series: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-image-collections" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
 
 ## Additional Resources
 The links below to the earth engine guides may assist you as you work through this lesson.
