@@ -14,11 +14,11 @@ tutorialSeries:
 urlTitle: explore-neon-ais-data
 ---
 
-This tutorial covers downloading NEON Aquatic Instrument System (AIS) data, 
-using the neonUtilities R package, as well as basic instruction in beginning to 
-explore and work with the downloaded data, including guidance in navigating 
-data documentation, separating data using the horizontalPosition variable and 
-interpreting quality flags. 
+This tutorial covers downloading NEON Aquatic Instrument System (AIS) data 
+using the neonUtilities R package, as well as basic instruction in exploring
+and working with the downloaded data.You will learn how to navigate data
+documentation, separate data using the horizontalPosition variable, and 
+interpret quality flags. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -27,8 +27,8 @@ interpreting quality flags.
 After completing this activity, you will be able to:
 
 * Download NEON AIS data using the `neonUtilities` package.
-* Understand how data sets are formatted and load them into R for analyses.
-* Separate data collected at different sensor locations using the HOR variable.
+* Understand how data sets are formatted and load them into R for analysis.
+* Separate data collected at different sensor locations using the horizontalPosition (`HOR`) variable.
 * Understand and filter data using quality flags.
 
 ## Things You'll Need To Complete This Tutorial
