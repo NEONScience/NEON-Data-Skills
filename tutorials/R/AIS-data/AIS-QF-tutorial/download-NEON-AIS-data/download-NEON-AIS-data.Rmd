@@ -9,7 +9,7 @@ estimatedTime: 1.5 hours
 packagesLibraries: neonUtilities, ggplot2
 topics: data-management, rep-sci
 languageTool: R, API
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/download-NEON-AIS-data.md
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/download-NEON-AIS-data.R
 tutorialSeries:
 urlTitle: explore-neon-ais-data
 ---
@@ -28,7 +28,7 @@ After completing this activity, you will be able to:
 
 * Download NEON AIS data using the `neonUtilities` package.
 * Understand how data sets are formatted and load them into R for analysis.
-* Separate data collected at different sensor locations using the horizontalPosition (`HOR`) variable.
+* Separate data collected at different sensor locations using the horizontalPosition variable.
 * Understand and filter data using quality flags.
 
 ## Things You'll Need To Complete This Tutorial

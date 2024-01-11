@@ -9,7 +9,7 @@ estimatedTime: 1.5 hours
 packagesLibraries: neonUtilities, ggplot2
 topics: data-management, rep-sci
 languageTool: R, API
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/download-NEON-AIS-data.md
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/download-NEON-AIS-data.R
 tutorialSeries:
 urlTitle: explore-neon-ais-data
 ---
@@ -28,7 +28,7 @@ After completing this activity, you will be able to:
 
 * Download NEON AIS data using the `neonUtilities` package.
 * Understand how data sets are formatted and load them into R for analysis.
-* Separate data collected at different sensor locations using the horizontalPosition (`HOR`) variable.
+* Separate data collected at different sensor locations using the horizontalPosition variable.
 * Understand and filter data using quality flags.
 
 ## Things You'll Need To Complete This Tutorial
@@ -186,9 +186,8 @@ The data we've downloaded comes as a list of objects.
 
     names(waq)
 
-    ##  [1] "ais_maintenance"             "ais_multisondeCleanCal"      "categoricalCodes_20288"      "citation_20288_RELEASE-2023"
-    ##  [5] "issueLog_20288"              "readme_20288"                "science_review_flags_20288"  "sensor_positions_20288"     
-    ##  [9] "variables_20288"             "waq_instantaneous"
+    ##  [1] "ais_maintenance"             "ais_multisondeCleanCal"      "categoricalCodes_20288"      "citation_20288_RELEASE-2023" "issueLog_20288"             
+    ##  [6] "readme_20288"                "science_review_flags_20288"  "sensor_positions_20288"      "variables_20288"             "waq_instantaneous"
 
 We can see that there are multiple objects in the downloaded water quality data. 
 One dataframe of data (`waq_instantaneous`) and multiple metadata files. 

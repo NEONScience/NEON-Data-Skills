@@ -91,7 +91,7 @@ interpret quality flags.</p>
 <ul>
 <li>Download NEON AIS data using the <code>neonUtilities</code> package.</li>
 <li>Understand how data sets are formatted and load them into R for analysis.</li>
-<li>Separate data collected at different sensor locations using the horizontalPosition (<code>HOR</code>) variable.</li>
+<li>Separate data collected at different sensor locations using the horizontalPosition variable.</li>
 <li>Understand and filter data using quality flags.</li>
 </ul>
 <h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
@@ -234,9 +234,8 @@ waq &lt;- loadByProduct(dpID=&quot;DP1.20288.001&quot;, site=&quot;PRIN&quot;,
 
 names(waq)
 
-##  [1] &quot;ais_maintenance&quot;             &quot;ais_multisondeCleanCal&quot;      &quot;categoricalCodes_20288&quot;      &quot;citation_20288_RELEASE-2023&quot;
-##  [5] &quot;issueLog_20288&quot;              &quot;readme_20288&quot;                &quot;science_review_flags_20288&quot;  &quot;sensor_positions_20288&quot;     
-##  [9] &quot;variables_20288&quot;             &quot;waq_instantaneous&quot;
+##  [1] &quot;ais_maintenance&quot;             &quot;ais_multisondeCleanCal&quot;      &quot;categoricalCodes_20288&quot;      &quot;citation_20288_RELEASE-2023&quot; &quot;issueLog_20288&quot;             
+##  [6] &quot;readme_20288&quot;                &quot;science_review_flags_20288&quot;  &quot;sensor_positions_20288&quot;      &quot;variables_20288&quot;             &quot;waq_instantaneous&quot;
 </code></pre>
 <p>We can see that there are multiple objects in the downloaded water quality data.
 One dataframe of data (<code>waq_instantaneous</code>) and multiple metadata files.</p>
