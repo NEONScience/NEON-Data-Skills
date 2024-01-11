@@ -1,7 +1,7 @@
 ---
 syncID: 317ecab8e00b4a959a76dba181bb33b8
 title: "Download and work with NEON Aquatic Instrument Data"
-description: "Tutorial for downloading NEON AIS data using the neonUtilities package and then exploring and understanding the downloaded data"
+description: "Download NEON AIS data using the neonUtilities package and explore and interpret the downloaded data"
 dateUpdates: 2024-01-08
 authors: Bobby Hensley
 contributors: Guy Litt
@@ -27,7 +27,7 @@ interpreting quality flags.
 After completing this activity, you will be able to:
 
 * Download NEON AIS data using the `neonUtilities` package.
-* Understand how data sets and formatted and load them into R for analyses.
+* Understand how data sets are formatted and load them into R for analyses.
 * Separate data collected at different sensor locations using the HOR variable.
 * Understand and filter data using quality flags.
 
@@ -37,7 +37,7 @@ preferably, RStudio loaded on your computer.
 
 ### Install R Packages
 
-* **neonUtilities**: Basic functions for accessing NEON data
+* **neonUtilities**: Basic functions for accessing and working with NEON data
 * **ggplot2**: Plotting functions
 
 These packages are on CRAN and can be installed by 
@@ -61,7 +61,7 @@ a workflow you run repeatedly, keep in mind it will re-download the
 data every time.
 
 Before we get the NEON data, we need to install (if not already done) and load 
-the neonUtilities R package, as well as other packages we will use in the 
+the `neonUtilities` R package, as well as other packages we will use in the 
 analysis. 
 
 ```{r set-up-env, eval=F}
@@ -102,7 +102,8 @@ data and warn you about the size of your download? Defaults to T; if
 you are using this function within a script or batch process you 
 will want to set this to F.
 * `token`: this allows you to input your NEON API token to obtain faster 
-downloads. 
+downloads.
+
 Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
 
 There are additional inputs you can learn about in the 
@@ -232,7 +233,7 @@ because provisional data is non-static.
 # which release is the data from?
 unique(waq_instantaneous$release)
 ```
-Learn more about data versioning and appropriately reuse of NEON data on the <a href="https://www.neonscience.org/data-samples/guidelines-policies" target="_blank">**NEON Data Guidelines and Policy** page</a>. 
+Learn more about data versioning and appropriately reuse of NEON data on the <a href="https://www.neonscience.org/data-samples/guidelines-policies" target="_blank">**NEON Data Guidelines and Policy**</a> page. 
 
 ## Data from Different Sensor Locations 
 
@@ -414,7 +415,7 @@ download.
 Note that the automated quality flag algorithms are not perfect, and suspect 
 data points may occasionally pass the quality tests.  Other times potentially 
 useful data may get quality flagged.  Ultimately it is up to the user to decide 
-which data they are comfortable using, which is why we recomend using the
+which data they are comfortable using, which is why we recommend using the
 expanded data package to better understand why data are being flagged.
 
 ## Replot, with quality flags filtered by color
@@ -435,7 +436,7 @@ doPlot
 
 ## Apply what we've learned Part 1 - Temperature of Surface Water
 
-Applying what we've leaned, let's look at a different data product,Temperature 
+Applying what we've learned, let's look at a different data product,Temperature 
 of Surface Water (DP1.20053.001).  Can you download for the same site and month
 that we just looked at for water quality?
 

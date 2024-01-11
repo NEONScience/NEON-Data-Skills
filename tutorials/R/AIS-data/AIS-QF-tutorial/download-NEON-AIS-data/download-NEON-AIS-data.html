@@ -90,7 +90,7 @@ interpreting quality flags.</p>
 <p>After completing this activity, you will be able to:</p>
 <ul>
 <li>Download NEON AIS data using the <code>neonUtilities</code> package.</li>
-<li>Understand how data sets and formatted and load them into R for analyses.</li>
+<li>Understand how data sets are formatted and load them into R for analyses.</li>
 <li>Separate data collected at different sensor locations using the HOR variable.</li>
 <li>Understand and filter data using quality flags.</li>
 </ul>
@@ -99,7 +99,7 @@ interpreting quality flags.</p>
 preferably, RStudio loaded on your computer.</p>
 <h3 id="install-r-packages">Install R Packages</h3>
 <ul>
-<li><strong>neonUtilities</strong>: Basic functions for accessing NEON data</li>
+<li><strong>neonUtilities</strong>: Basic functions for accessing and working with NEON data</li>
 <li><strong>ggplot2</strong>: Plotting functions</li>
 </ul>
 <p>These packages are on CRAN and can be installed by
@@ -119,7 +119,7 @@ and it ends with ready-to-use tables in R. However, if you use it in
 a workflow you run repeatedly, keep in mind it will re-download the
 data every time.</p>
 <p>Before we get the NEON data, we need to install (if not already done) and load
-the neonUtilities R package, as well as other packages we will use in the
+the <code>neonUtilities</code> R package, as well as other packages we will use in the
 analysis.</p>
 <pre><code># Install neonUtilities package if you have not yet.
 
@@ -163,9 +163,9 @@ data and warn you about the size of your download? Defaults to T; if
 you are using this function within a script or batch process you
 will want to set this to F.</li>
 <li><code>token</code>: this allows you to input your NEON API token to obtain faster
-downloads.
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank"><strong>Using an API Token when Accessing NEON Data with neonUtilities</strong> tutorial</a>.</li>
+downloads.</li>
 </ul>
+<p>Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank"><strong>Using an API Token when Accessing NEON Data with neonUtilities</strong> tutorial</a>.</p>
 <p>There are additional inputs you can learn about in the
 <a href="https//:www.neonscience.org/neonDataStackR" target="_blank"><strong>Use the neonUtilities R Package to Access NEON Data</strong> tutorial</a>.</p>
 <p>The <code>dpID</code> is the data product identifier of the data you want to
@@ -285,7 +285,7 @@ unique(waq_instantaneous$release)
 
 ## [1] &quot;RELEASE-2023&quot;
 </code></pre>
-<p>Learn more about data versioning and appropriately reuse of NEON data on the <a href="https://www.neonscience.org/data-samples/guidelines-policies" target="_blank"><strong>NEON Data Guidelines and Policy</strong> page</a>.</p>
+<p>Learn more about data versioning and appropriately reuse of NEON data on the <a href="https://www.neonscience.org/data-samples/guidelines-policies" target="_blank"><strong>NEON Data Guidelines and Policy</strong></a> page.</p>
 <h2 id="data-from-different-sensor-locations">Data from Different Sensor Locations</h2>
 <p>NEON often collects the same type of data from sensors in different locations.
 These data are delivered together but you will frequently want to plot the data
@@ -529,7 +529,7 @@ download.</p>
 <p>Note that the automated quality flag algorithms are not perfect, and suspect
 data points may occasionally pass the quality tests.  Other times potentially
 useful data may get quality flagged.  Ultimately it is up to the user to decide
-which data they are comfortable using, which is why we recomend using the
+which data they are comfortable using, which is why we recommend using the
 expanded data package to better understand why data are being flagged.</p>
 <h2 id="replot-with-quality-flags-filtered-by-color">Replot, with quality flags filtered by color</h2>
 <p>Let’s replot the data with any quality flagged measurements set to a different
@@ -548,7 +548,7 @@ doPlot
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-waq-do-flags-1.png" alt=" " /></p>
 <h2 id="apply-what-we-ve-learned-part-1-temperature-of-surface-water">Apply what we’ve learned Part 1 - Temperature of Surface Water</h2>
-<p>Applying what we’ve leaned, let’s look at a different data product,Temperature
+<p>Applying what we’ve learned, let’s look at a different data product,Temperature
 of Surface Water (DP1.20053.001).  Can you download for the same site and month
 that we just looked at for water quality?</p>
 <pre><code># download continuous discharge data
