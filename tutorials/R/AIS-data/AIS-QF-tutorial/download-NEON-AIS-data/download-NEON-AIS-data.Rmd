@@ -9,14 +9,14 @@ estimatedTime: 1.5 hours
 packagesLibraries: neonUtilities, ggplot2
 topics: data-management, rep-sci
 languageTool: R, API
-code1: R/download-ais-data/download-NEON-AIS-data.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/download-NEON-AIS-data.md
 tutorialSeries:
 urlTitle: explore-neon-ais-data
 ---
 
 This tutorial covers downloading NEON Aquatic Instrument System (AIS) data 
 using the neonUtilities R package, as well as basic instruction in exploring
-and working with the downloaded data.You will learn how to navigate data
+and working with the downloaded data. You will learn how to navigate data
 documentation, separate data using the horizontalPosition variable, and 
 interpret quality flags. 
 
