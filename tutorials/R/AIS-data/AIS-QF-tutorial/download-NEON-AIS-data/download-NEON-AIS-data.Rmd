@@ -214,7 +214,7 @@ information related to cleaning and calibration of sensors.
 
 Let's take a look at a couple of these. 
 
-```{r view-meta-files}
+```{r view-meta-files, eval=F}
 # which sensor locations exist in the water quality dataset we just downloaded?
 View(waq_instantaneous)
 View(sensor_positions_20288)
@@ -295,7 +295,9 @@ dissolved oxygen data:
 ```{r column-names}
 # One option is to view column names in the data frame
 colnames(waq_instantaneous)
+```
 
+```{r column-names-view, eval=F}
 # Alternatively, view the variables object corresponding to the data product for more information
 View(variables_20288)
 ```
@@ -493,7 +495,7 @@ csdPlot
 
 ## Apply what we've learned Part 2 - Continuous discharge
 
-Applying what we've leaned, let's look at a different data product,
+Applying what we've learned, let's look at a different data product,
 Continuous discharge (DP4.00130.001).  Can you download for the same site and
 month that we just looked at for water quality?
 

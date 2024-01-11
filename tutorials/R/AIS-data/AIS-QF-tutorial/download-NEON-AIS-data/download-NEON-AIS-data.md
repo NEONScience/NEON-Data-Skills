@@ -84,8 +84,6 @@ analysis.
 
     library(ggplot2)
 
-    ## Error in library(ggplot2): there is no package called 'ggplot2'
-
 The inputs to `loadByProduct()` control which data to download and how 
 to manage the processing. The following are frequently used inputs: 
 
@@ -352,6 +350,7 @@ dissolved oxygen data:
     ## [145] "fDOMAbsQF"                     "fDOMFinalQF"                   "fDOMFinalQFSciRvw"             "buoyNAFlag"                   
     ## [149] "spectrumCount"                 "publicationDate"               "release"
 
+
     # Alternatively, view the variables object corresponding to the data product for more information
 
     View(variables_20288)
@@ -376,11 +375,11 @@ The data columns we would like to plot are `dissolvedOxygen` and
                   alpha = 0.4, fill = "grey25") +
     	ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + ggtitle("PRIN Downstream DO with Uncertainty Bounds") 
 
-    ## Error in ggplot(): could not find function "ggplot"
+    
 
     doPlot
 
-    ## Error in eval(expr, envir, enclos): object 'doPlot' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-waq-do-1.png)
 
 ## Examine Quality Flagged Data
 
@@ -533,11 +532,11 @@ color.
       scale_color_manual(values = c("0" = "blue","1"="red")) +
       ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + ggtitle("PRIN Downstream DO filtered by FinalQF") 
 
-    ## Error in ggplot(): could not find function "ggplot"
+      
 
     doPlot
 
-    ## Error in eval(expr, envir, enclos): object 'doPlot' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-waq-do-flags-1.png)
 
 ## Apply what we've learned Part 1 - Temperature of Surface Water
 
@@ -597,15 +596,15 @@ Can you plot the data?
                   alpha = 0.4, fill = "grey25") +
     	ylim(2, 16) + ylab("Temp (C)") + xlab("Date") + ggtitle("PRIN Downstream Temp with Uncertainty Bounds") 
 
-    ## Error in ggplot(): could not find function "ggplot"
+    
 
     csdPlot
 
-    ## Error in eval(expr, envir, enclos): object 'csdPlot' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-tsw-1.png)
 
 ## Apply what we've learned Part 2 - Continuous discharge
 
-Applying what we've leaned, let's look at a different data product,
+Applying what we've learned, let's look at a different data product,
 Continuous discharge (DP4.00130.001).  Can you download for the same site and
 month that we just looked at for water quality?
 
@@ -641,11 +640,11 @@ Can you plot the discharge data?
                   alpha = 0.4, fill = "grey25") +
     	ylim(0, 4000) + ylab("Q (L/s)") + xlab("Date") + ggtitle("PRIN Discharge with Uncertainty Bounds") 
 
-    ## Error in ggplot(): could not find function "ggplot"
+    
 
     csdPlot
 
-    ## Error in eval(expr, envir, enclos): object 'csdPlot' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-q-1.png)
 
 Note: The developers of the Bayesian discharge model used by NEON recommend the 
 maxpostDischarge, which is the mode of the posterior distribution (means and

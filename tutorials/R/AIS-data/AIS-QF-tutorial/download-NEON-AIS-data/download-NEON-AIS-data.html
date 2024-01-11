@@ -139,8 +139,6 @@ options(stringsAsFactors=F)
 library(neonUtilities)
 
 library(ggplot2)
-
-## Error in library(ggplot2): there is no package called 'ggplot2'
 </code></pre>
 <p>The inputs to <code>loadByProduct()</code> control which data to download and how
 to manage the processing. The following are frequently used inputs:</p>
@@ -383,6 +381,7 @@ colnames(waq_instantaneous)
 ## [145] &quot;fDOMAbsQF&quot;                     &quot;fDOMFinalQF&quot;                   &quot;fDOMFinalQFSciRvw&quot;             &quot;buoyNAFlag&quot;                   
 ## [149] &quot;spectrumCount&quot;                 &quot;publicationDate&quot;               &quot;release&quot;
 
+
 # Alternatively, view the variables object corresponding to the data product for more information
 
 View(variables_20288)
@@ -404,12 +403,11 @@ doPlot &lt;- ggplot() +
               alpha = 0.4, fill = &quot;grey25&quot;) +
 	ylim(8, 15) + ylab(&quot;DO (mg/L)&quot;) + xlab(&quot;Date&quot;) + ggtitle(&quot;PRIN Downstream DO with Uncertainty Bounds&quot;) 
 
-## Error in ggplot(): could not find function &quot;ggplot&quot;
+
 
 doPlot
-
-## Error in eval(expr, envir, enclos): object 'doPlot' not found
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-waq-do-1.png" alt=" " /></p>
 <h2 id="examine-quality-flagged-data">Examine Quality Flagged Data</h2>
 <p>Data product quality flags fall under two distinct types:</p>
 <ul>
@@ -544,12 +542,11 @@ doPlot &lt;- ggplot() +
   scale_color_manual(values = c(&quot;0&quot; = &quot;blue&quot;,&quot;1&quot;=&quot;red&quot;)) +
   ylim(8, 15) + ylab(&quot;DO (mg/L)&quot;) + xlab(&quot;Date&quot;) + ggtitle(&quot;PRIN Downstream DO filtered by FinalQF&quot;) 
 
-## Error in ggplot(): could not find function &quot;ggplot&quot;
+  
 
 doPlot
-
-## Error in eval(expr, envir, enclos): object 'doPlot' not found
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-waq-do-flags-1.png" alt=" " /></p>
 <h2 id="apply-what-we-ve-learned-part-1-temperature-of-surface-water">Apply what we’ve learned Part 1 - Temperature of Surface Water</h2>
 <p>Applying what we’ve leaned, let’s look at a different data product,Temperature
 of Surface Water (DP1.20053.001).  Can you download for the same site and month
@@ -596,14 +593,13 @@ csdPlot &lt;- ggplot() +
               alpha = 0.4, fill = &quot;grey25&quot;) +
 	ylim(2, 16) + ylab(&quot;Temp (C)&quot;) + xlab(&quot;Date&quot;) + ggtitle(&quot;PRIN Downstream Temp with Uncertainty Bounds&quot;) 
 
-## Error in ggplot(): could not find function &quot;ggplot&quot;
+
 
 csdPlot
-
-## Error in eval(expr, envir, enclos): object 'csdPlot' not found
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-tsw-1.png" alt=" " /></p>
 <h2 id="apply-what-we-ve-learned-part-2-continuous-discharge">Apply what we’ve learned Part 2 - Continuous discharge</h2>
-<p>Applying what we’ve leaned, let’s look at a different data product,
+<p>Applying what we’ve learned, let’s look at a different data product,
 Continuous discharge (DP4.00130.001).  Can you download for the same site and
 month that we just looked at for water quality?</p>
 <pre><code># download continuous discharge data
@@ -633,12 +629,11 @@ csdPlot &lt;- ggplot() +
               alpha = 0.4, fill = &quot;grey25&quot;) +
 	ylim(0, 4000) + ylab(&quot;Q (L/s)&quot;) + xlab(&quot;Date&quot;) + ggtitle(&quot;PRIN Discharge with Uncertainty Bounds&quot;) 
 
-## Error in ggplot(): could not find function &quot;ggplot&quot;
+
 
 csdPlot
-
-## Error in eval(expr, envir, enclos): object 'csdPlot' not found
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-q-1.png" alt=" " /></p>
 <p>Note: The developers of the Bayesian discharge model used by NEON recommend the
 maxpostDischarge, which is the mode of the posterior distribution (means and
 medians are also provided).</p>

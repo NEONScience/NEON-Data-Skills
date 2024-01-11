@@ -33,11 +33,11 @@ names(waq)
 list2env(waq, .GlobalEnv)
 
 
-## ----view-meta-files-------------------------------------------------------------------------------------------------------------------------
-# which sensor locations exist in the water quality dataset we just downloaded?
-View(waq_instantaneous)
-View(sensor_positions_20288)
-View(variables_20288)
+## ----view-meta-files, eval=F-----------------------------------------------------------------------------------------------------------------
+## # which sensor locations exist in the water quality dataset we just downloaded?
+## View(waq_instantaneous)
+## View(sensor_positions_20288)
+## View(variables_20288)
 
 
 ## ----check-release---------------------------------------------------------------------------------------------------------------------------
@@ -62,8 +62,10 @@ waq_down <-
 # One option is to view column names in the data frame
 colnames(waq_instantaneous)
 
-# Alternatively, view the variables object corresponding to the data product for more information
-View(variables_20288)
+
+## ----column-names-view, eval=F---------------------------------------------------------------------------------------------------------------
+## # Alternatively, view the variables object corresponding to the data product for more information
+## View(variables_20288)
 
 
 ## ----plot-waq-do-----------------------------------------------------------------------------------------------------------------------------
