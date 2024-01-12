@@ -86,20 +86,23 @@ We'll also set a working directory for data downloads.
 ## 2. Vegetation structure data
 
 Download the vegetation structure data using the `loadByProduct()` function in
-the `neonUtilities` package. Inputs needed to the function are:
+the `neonUtilities` package. Inputs to the function are:
 
 * `dpID`: data product ID; woody vegetation structure = DP1.10098.001
 * `site`: (vector of) 4-letter site codes; Wind River = WREF
 * `package`: basic or expanded; we'll download basic here
+* `release`: which data release to download; we'll use RELEASE-2023
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
 
 Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
-for the `neonUtilities` package for more details if desired.
+for the `neonUtilities` package for more details and the complete index of 
+possible function inputs.
 
 
     veglist <- loadByProduct(dpID="DP1.10098.001", 
                              site="WREF", 
                              package="basic", 
+                             release="RELEASE-2023",
                              check.size = FALSE)
 
 Use the `getLocTOS()` function in the `geoNEON` package to get 
@@ -224,7 +227,7 @@ vs. the CHM value at its location.
 
     lines(c(0,50), c(0,50), col="grey")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/no-buffer-chm-1.png)
 
 How strong is the correlation between the ground and lidar 
 measurements?
@@ -233,14 +236,50 @@ measurements?
     cor(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
         vegsub$height, use="complete")
 
-    ## [1] 0.3775402
+    ## [1] 0.3824467
+
+Now we remember there is uncertainty in the location of each tree, so the 
+precise pixel it corresponds to might not be the right one. Let's try 
+adding a buffer to the extraction function, to get the tallest tree within 
+the uncertainty of the location of each tree.
+
+
+    valCHMbuff <- extract(chm, 
+                      buffer(vect(cbind(vegsub$adjEasting,
+                      vegsub$adjNorthing)),
+                      width=vegsub$adjCoordinateUncertainty),
+                      fun=max)
+
+    
+
+    plot(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM~
+           vegsub$height, pch=20, xlab="Height", 
+         ylab="Canopy height model")
+
+    lines(c(0,50), c(0,50), col="grey")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-1.png)
+
+
+    cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+        vegsub$height, use="complete")
+
+    ## [1] 0.3698753
+
+Adding the buffer has actually made our correlation slightly worse. Let's 
+think about the data.
 
 There are a lot of points clustered on the 1-1 line, but there is also a 
 cloud of points above the line, where the measured height is lower than 
 the canopy height model at the same coordinates. This makes sense, because 
-we made no attempt to filter out the understory. There are likely many 
+the tree height data include the understory. There are many 
 plants measured in the vegetation structure data that are not at the top 
 of the canopy, and the CHM sees only the top surface of the canopy.
+
+This also explains why the buffer didn't improve things. Finding the 
+highest CHM value within the uncertainty of a tree should improve the fit 
+for the tallest trees, but it's likely to make the fit worse for the 
+understory trees.
 
 How to exclude understory plants from this analysis? Again, there are many 
 possible approaches. We'll try out two, one map-centric and one 
@@ -305,7 +344,7 @@ coordinate to make sure it's in the correct pixel.
     cor(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
         vegbin$height, use="complete")
 
-    ## [1] 0.2275314
+    ## [1] 0.2244228
 
 The understory points are thinned out substantially, but so are the rest. 
 We've lost a lot of data by going to a lower resolution.
@@ -365,7 +404,7 @@ Now extract the raster values, as above.
     cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
         vegfil$height)
 
-    ## [1] 0.7833395
+    ## [1] 0.8070586
 
 This is quite a bit better! There are still several understory points we 
 failed to exclude, but we were able to filter out most of the understory 
@@ -396,7 +435,7 @@ trees that aren't alive:
     cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
         vegfil$height)
 
-    ## [1] 0.9000654
+    ## [1] 0.9057883
 
 Nice!
 
