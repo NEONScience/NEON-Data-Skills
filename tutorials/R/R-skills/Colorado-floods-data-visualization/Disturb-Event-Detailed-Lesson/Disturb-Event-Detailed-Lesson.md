@@ -50,10 +50,12 @@ completely different yard and driveway!
 ## Introduction to Disturbance Events
 
 <div id="ds-dataTip" markdown="1">
+
 **Definition:**  In ecology, a **disturbance event** 
 is a temporary change in environmental conditions that causes a pronounced 
 change in the ecosystem. Common disturbance events include floods, fires, 
 earthquakes, and tsunamis. 
+
 </div>
 
 
