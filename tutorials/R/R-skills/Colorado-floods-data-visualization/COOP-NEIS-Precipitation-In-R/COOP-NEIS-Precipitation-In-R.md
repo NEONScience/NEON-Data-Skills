@@ -490,8 +490,10 @@ Now we can plot the daily data.
 Compare this plot to the plot we created using the first method. Are they the same? 
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i>**R Tip:** This manipulation, or aggregation, of data
 can also be done with the package `plyr` using the `summarize()` function.
+
 </div>
 
 ## Subset the Data 
@@ -528,8 +530,10 @@ scale on the x-axis with `scale_x_date()`.
 Now we can easily see the dramatic rainfall event in mid-September! 
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i>**R Tip:** If you are using a date-time class, instead
 of just a date class, you need to use `scale_x_datetime()`.
+
 </div>
 
 #### Subset The Data

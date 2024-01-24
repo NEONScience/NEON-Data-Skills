@@ -150,8 +150,10 @@ The plots below were generated using R code that harnesses the power of the
 
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i>**Data Tip** Are you a Python user? Use `matplotlib` 
 to create and publish visualizations.
+
 </div>
 
 
