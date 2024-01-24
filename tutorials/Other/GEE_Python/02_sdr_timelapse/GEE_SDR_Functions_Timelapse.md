@@ -15,6 +15,9 @@ tutorialSeries:
 urlTitle: aop-refl-py-geemap
 ---
 
+
+In this tutorial, we learn how to use Python geemap to work with NEON AOP Surface Directional Reflectance datasets in Google Earth Engine.
+
 <div id="ds-objectives" markdown="1">
 
 ### Objectives
