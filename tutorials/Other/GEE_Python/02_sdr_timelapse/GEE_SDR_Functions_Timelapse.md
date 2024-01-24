@@ -16,7 +16,7 @@ urlTitle: aop-refl-py-geemap
 ---
 
 
-In this tutorial, we learn how to use Python geemap to work with NEON AOP Surface Directional Reflectance datasets in Google Earth Engine.
+In this tutorial, we demonstrate how to use Python geemap to work with NEON AOP Surface Directional Reflectance datasets in Google Earth Engine.
 
 <div id="ds-objectives" markdown="1">
 
@@ -26,7 +26,7 @@ After completing this tutorial, you will be able to use Python to:
 * Determine the available AOP Surface Directional Reflectance (SDR) datasets in Google Earth Engine
 * Use functions to read in SDR data sets and mask out bad weather data (>10% cloud cover)
 * Explore the interactive mapping features in geemap
-* Create a time-lapse animation of a site
+* Create a time-lapse animation of a NEON site
 
 ### Requirements
 
