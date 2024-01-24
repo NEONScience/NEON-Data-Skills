@@ -432,6 +432,7 @@ If you are using the downloaded dataset accompanying this lesson,  this data can
 </div>
 
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Do different measures show the same pattern?
 
 The nCLIMDIV dataset includes not only the Palmer Drought Severity Index 

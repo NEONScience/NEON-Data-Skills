@@ -87,8 +87,7 @@ For more on stream discharge by USGS.</a>
 
 <figure>
 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif">
-alt = "Scatter plot of stream discharge data for USGS Stream station 06730200.The X-axis is the Date and the Y-axis is annual peak streamflow in cubic feet."
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif"></a>
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/USGS-Peak-discharge.gif" alt="Scatter plot of stream discharge data for USGS Stream station 06730200.The X-axis is the Date and the Y-axis is annual peak streamflow in cubic feet."></a>
 <figcaption>
 The USGS tracks stream discharge through time at locations across the United 
 States. Note the pattern observed in the plot above. The peak recorded discharge
@@ -102,7 +101,7 @@ Source: <a href="http://nwis.waterdata.usgs.gov/usa/nwis/peak/?site_no=06730200"
 
 This next section explains how to find and locate data through the USGS's 
 <a href="http://waterdata.usgs.gov/nwis" target="_blank"> National Water Information System portal</a>.
-If you want to use the pre-compiled dataset downloaded above, you can skip this 
+If you want to use the pre-compiled dataset at the FigShare link above, you can skip this 
 section and start again at the Work With Stream Gauge Data header.
 
 #### Step 1: Search for the data
@@ -149,7 +148,7 @@ library(ggplot2) # create efficient, professional plots
 library(plotly) # create cool interactive plots
 
 ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+wd <- "~/data/" # This will depend on your local environment
 setwd(wd)
 
 ```
@@ -166,7 +165,7 @@ The first 24 lines are descriptive text and not actual data. Also notice that th
 When we use `read.csv()`, we need to define several attributes of the file 
 including:
 
-1. The data are tab delimited. We will this tell R to use the `"/t"` 
+1. The data are tab delimited. We will this tell R to use the `"\\t"` 
 **sep**arator, which defines a tab delimited separation.
 2. The first group of 24 lines in the file are not data; we will tell R to skip
 those lines when it imports the data using `skip=25`.
@@ -184,7 +183,10 @@ Data Structure** section).
 ```{r import-discharge-2}
 
 #import data
-discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), sep= "\t",skip=24, header=TRUE,stringsAsFactors = FALSE)
+discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), 
+                      sep= "\t", skip=24, 
+                      header=TRUE,
+                      stringsAsFactors = FALSE)
 
 #view first few lines
 head(discharge)
@@ -320,7 +322,7 @@ ggplot(discharge, aes(datetime, disValue)) +
 #### Questions: 
 
 1. What patterns do you see in the data?  
-1. Why might there be an increase in discharge during that time of year? 
+1. Why might there be an increase in discharge during a particular time of year? 
 
 
 ## Plot Data Time Subsets With ggplot 
@@ -396,7 +398,7 @@ You can now display your interactive plot in R using the following command:
 ggplotly(disPlot.plotly)
 ```
 
-If you are satisfied with your plot you can now publish it to your Plotly account. 
+If you are satisfied with your plot you can now publish it to your Plotly account, if desired. 
 
 ``` {r pub-plotly, eval=FALSE, comment=NA}
 # set username
