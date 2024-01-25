@@ -176,10 +176,12 @@ Let’s start by calling the needed packages and reading in our NEON HDF5 file.<
 library(terra)
 
 library(rhdf5)
-
-
-
-# set working directory to ensure R can find the file we wish to import and where
+</code></pre>
+<div id="ds-dataTip" markdown="1">
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> To update all packages installed in
+R, use <code>update.packages()</code>.</p>
+</div>
+<pre><code># set working directory to ensure R can find the file we wish to import and where
 
 # we want to save our files. Be sure to move the download into your working directory!
 
@@ -188,15 +190,11 @@ wd &lt;- &quot;~/data/&quot; #This will depend on your local environment
 setwd(wd)
 
 
-
-# Define the file name to be opened
+# Define the h5 file name to be opened
 
 f &lt;- paste0(wd,&quot;NEON_hyperspectral_tutorial_example_subset.h5&quot;)
 </code></pre>
-<div id="ds-dataTip" markdown="1">
-<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> To update all packages installed in
-R, use <code>update.packages()</code>.</p>
-</div>
+<p>You can use <code>h5ls</code> and/or <code>View(h5ls(...))</code> to look at the contents of the hdf5 file, as follows:</p>
 <pre><code># look at the HDF5 file structure 
 
 View(h5ls(f,all=T))

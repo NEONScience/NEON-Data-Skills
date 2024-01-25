@@ -145,7 +145,13 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 
     library(rhdf5)
 
-    
+<div id="ds-dataTip" markdown="1">
+
+<i class="fa fa-star"></i> **Data Tip:** To update all packages installed in 
+R, use `update.packages()`.
+
+</div>
+
 
     # set working directory to ensure R can find the file we wish to import and where
 
@@ -155,18 +161,12 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 
     setwd(wd)
 
-    
 
-    # Define the file name to be opened
+    # Define the h5 file name to be opened
 
     f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
-<div id="ds-dataTip" markdown="1">
-
-<i class="fa fa-star"></i> **Data Tip:** To update all packages installed in 
-R, use `update.packages()`.
-
-</div>
+You can use `h5ls` and/or `View(h5ls(...))` to look at the contents of the hdf5 file, as follows:
 
 
     # look at the HDF5 file structure 
