@@ -1,13 +1,13 @@
 ---
 syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.R
-contributors: Felipe Sanchez
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.R
+contributors: Felipe Sanchez, Bridget Hass
 dataProduct: DP3.30006.001
 dateCreated: 2014-11-26 20:49:52
 description: Open up and explore a hyperspectral dataset stored in HDF5 format in
   R. Learn about the power of data slicing in HDF5. Slice our band subsets of the
-  data and create and visualize one band.
+  data to create and visualize one band.
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
 packagesLibraries: rhdf5, raster, rgdal
@@ -16,6 +16,7 @@ topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: intro-hsi-r-series
 urlTitle: hsi-hdf5-r
 ---
+
 
 In this tutorial, we will explore reading and extracting spatial raster data 
 stored within a HDF5 file using R. 
@@ -41,8 +42,7 @@ preferably, RStudio loaded on your computer.
 ### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
-* **raster**: `install.packages('raster')`
-* **rgdal**: `install.packages('rgdal')`
+* **terra**: `install.packages('terra')`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
@@ -140,14 +140,13 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 
 ```{r install-load-library, results="hide" }
 
-# Load `raster` and `rhdf5` packages and read NIS data into R
+# Load `terra`, `rhdf5`, and `rgdal` packages and read NIS data into R
 library(raster)
 library(rhdf5)
-library(rgdal)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
-wd <- "~/Documents/data/" #This will depend on your local environment
+wd <- "~/data/" #This will depend on your local environment
 setwd(wd)
 
 # Define the file name to be opened
@@ -544,7 +543,7 @@ myCRS <- crs(paste0("+init=epsg:",myEPSG))
 # define final raster with projection info 
 # note that capitalization will throw errors on a MAC.
 # if UTM is all caps it might cause an error!
-b9r <- raster(b9, 
+b9r <- rast(b9, 
         crs=myCRS)
 
 # view the raster attributes
@@ -573,11 +572,11 @@ yMin <- reflInfo$Spatial_Extent_meters[3]
 yMax <- reflInfo$Spatial_Extent_meters[4]
 
 # define the extent (left, right, top, bottom)
-rasExt <- extent(xMin,xMax,yMin,yMax)
+rasExt <- ext(xMin,xMax,yMin,yMax)
 rasExt
 
 # assign the spatial extent to the raster
-extent(b9r) <- rasExt
+ext(b9r) <- rasExt
 
 # look at raster attributes
 b9r
@@ -622,7 +621,6 @@ as a raster, using the `writeRaster` command.
 # write out the raster as a geotiff
 writeRaster(b9r,
             file=paste0(wd,"band9.tif"),
-            format="GTiff",
             overwrite=TRUE)
 
 # It's always good practice to close the H5 connection before moving on!
