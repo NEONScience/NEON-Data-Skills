@@ -141,7 +141,7 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 
     # Load `terra`, `rhdf5`, and `rgdal` packages and read NIS data into R
 
-    library(raster)
+    library(terra)
 
     library(rhdf5)
 
