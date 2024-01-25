@@ -171,9 +171,18 @@ contains hyperspectral data for the
 Let’s start by calling the needed packages and reading in our NEON HDF5 file.</p>
 <p>Please be sure that you have <em>at least</em> version 2.10 of <code>rhdf5</code> installed. Use:
 <code>packageVersion(&quot;rhdf5&quot;)</code> to check the package version.</p>
-<pre><code># Load `terra`, `rhdf5`, and `rgdal` packages and read NIS data into R
+<pre><code># Load `terra` and `rhdf5` packages to read NIS data into R
 
 library(terra)
+
+## terra 1.7.55
+
+## 
+## Attaching package: 'terra'
+
+## The following object is masked from 'package:knitr':
+## 
+##     spin
 
 library(rhdf5)
 

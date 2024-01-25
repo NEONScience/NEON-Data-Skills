@@ -139,9 +139,18 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 `packageVersion("rhdf5")` to check the package version. 
 
 
-    # Load `terra`, `rhdf5`, and `rgdal` packages and read NIS data into R
+    # Load `terra` and `rhdf5` packages to read NIS data into R
 
     library(terra)
+
+    ## terra 1.7.55
+
+    ## 
+    ## Attaching package: 'terra'
+
+    ## The following object is masked from 'package:knitr':
+    ## 
+    ##     spin
 
     library(rhdf5)
 

@@ -140,7 +140,7 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 
 ```{r install-load-library, results="hide" }
 
-# Load `terra`, `rhdf5`, and `rgdal` packages and read NIS data into R
+# Load `terra` and `rhdf5` packages to read NIS data into R
 library(terra)
 library(rhdf5)
 
