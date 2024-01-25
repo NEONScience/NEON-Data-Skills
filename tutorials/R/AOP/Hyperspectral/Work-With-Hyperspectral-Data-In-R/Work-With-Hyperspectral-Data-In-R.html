@@ -149,8 +149,8 @@ here only has 1 out of every 4 bands included in a full NEON hyperspectral datas
 we will note the band numbers for this example dataset, which may be different
 from NEON production data.</p>
 <figure>
-  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/DataCube.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/DataCube.png"
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/DataCube.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/DataCube.png"
   alt="Data cube graphic of NEON hyperspectral data. Each layer in the cube represents a band.">
   </a>
 	<figcaption>A data cube of NEON hyperspectral data. Each layer in the cube 
@@ -194,8 +194,8 @@ setwd(wd)
 f &lt;- paste0(wd,&quot;NEON_hyperspectral_tutorial_example_subset.h5&quot;)
 </code></pre>
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** To update all packages installed in 
-R, use `update.packages()`.
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> To update all packages installed in
+R, use <code>update.packages()</code>.</p>
 </div>
 <pre><code># look at the HDF5 file structure 
 
@@ -224,12 +224,12 @@ metadata and important concepts associated with multi-band (multi and
 hyperspectral) rasters.</li>
 </ul>
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Data Tip - HDF5 Structure:** Note that the structure
+<p><i class="fa fa-star"></i><strong>Data Tip - HDF5 Structure:</strong> Note that the structure
 of individual HDF5 files may vary depending on who produced the data. In this
-case, the Wavelength and reflectance data within the file are both datasets.
+case, the Wavelength and reflectance data within the file are both h5 warndatasets.
 However, the spatial information is contained within a group. Data downloaded from
-another organization like NASA, may look different. This is why it's important to
-explore the data before diving into using it!
+another organization (like NASA) may look different. This is why it’s important to
+explore the data as a first step!</p>
 </div>
 <p>We can use the <code>h5readAttributes()</code> function to read and extract metadata from the
 HDF5 file. Let’s start by learning about the wavelengths described within this file.</p>
@@ -264,8 +264,8 @@ tail(wavelengths)
 vector that we just imported and check out the data located at index 6 -
 <code>wavelengths[6]</code>).</p>
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/bluelight_EMSpectrum.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/bluelight_EMSpectrum.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/bluelight_EMSpectrum.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/bluelight_EMSpectrum.png"
     alt="Graphical representation showing where the 482nm wavelength falls within the blue portion of the visible light region of the electromagnetic spectrum.">
     </a>
     <figcaption>482 nanometers falls within the blue portion of the electromagnetic spectrum. Source: National Ecological Observatory Network </figcaption>
@@ -285,8 +285,8 @@ This value represents the spread of the band around that center point. So, a ban
 that covers 800 nm-805 nm might have a FWHM of 5 nm and a wavelength value of
 802.5 nm.</p>
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrumZoomed.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/spectrumZoomed.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrumZoomed.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrumZoomed.png"
     alt="Graphical representation showing how bands represent a range of values within the electromagnetic spectrum. The graphic shows wavelengths 675nm through 700nm split into five different bands, labeled bands A through E. Values for each band are often represented as the center point value of each band.">
     </a>
     <figcaption>Bands represent a range of values (types of light) within the 
@@ -460,10 +460,10 @@ making a 4 x 3 x 30 array (this dataset has more than 2 dimensions). More on R o
 types <a href="http://www.statmethods.net/input/datatypes.html">here</a>
 (links to external site, DataCamp).</p>
 <figure class="half">
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/matrix.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/matrix.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/matrix.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/matrix.png"
     alt=""Graphic showing a two-dimensional matrix containing only columns, and rows.">
     </a>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/array.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/r-skills/array.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/array.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/array.png"
     alt="Graphic showing an array, which in contrast to a matrix, has more than two dimensions. In this graphic, additional dimensions are represented in the z direction, and labeled a through d.">
     </a>
     <figcaption>Left: a matrix has only 2 dimensions. Right: an array has more than 2 dimensions.</figcaption>
@@ -753,8 +753,8 @@ b9r
 ## max value   :  9210
 </code></pre>
 <figure>
-		<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_lat_lon.png">
-		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/sat_image_lat_lon.png"
+		<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/sat_image_lat_lon.png">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/sat_image_lat_lon.png"
 		alt="Image showing how the extent of a raster image represents the spatial location of each corner. The coordinate units are determined by the spatial projection/coordinate reference system that are assigned to the data.">
 		</a>
 		<figcaption>The extent of a raster represents the spatial location of each 
