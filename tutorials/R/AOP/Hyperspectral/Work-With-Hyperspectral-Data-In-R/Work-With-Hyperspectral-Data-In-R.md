@@ -1,7 +1,7 @@
 ---
 syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.Rmd
 contributors: Felipe Sanchez, Bridget Hass
 dataProduct: DP3.30006.001
 dateCreated: 2014-11-26 20:49:52
@@ -142,15 +142,6 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
     # Load `terra` and `rhdf5` packages to read NIS data into R
 
     library(terra)
-
-    ## terra 1.7.55
-
-    ## 
-    ## Attaching package: 'terra'
-
-    ## The following object is masked from 'package:knitr':
-    ## 
-    ##     spin
 
     library(rhdf5)
 
@@ -829,6 +820,7 @@ as a raster, using the `writeRaster` command.
 
 
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Work with Rasters
 
 Try these three extensions on your own: 
