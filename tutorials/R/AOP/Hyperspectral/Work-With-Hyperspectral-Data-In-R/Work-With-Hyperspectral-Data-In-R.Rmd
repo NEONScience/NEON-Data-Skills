@@ -10,7 +10,7 @@ description: Open up and explore a hyperspectral dataset stored in HDF5 format i
   data to create and visualize one band.
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
-packagesLibraries: rhdf5, raster, rgdal
+packagesLibraries: rhdf5, terra
 authors: Leah A. Wasser, Edmund Hart, Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: intro-hsi-r-series
@@ -42,7 +42,7 @@ preferably, RStudio loaded on your computer.
 ### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
-* **terra**: `install.packages('terra')`
+* **terra**: `install.packages("terra")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
@@ -468,20 +468,19 @@ image(log(b9))
 ```
 
 The log applied to our image increases the contrast making it look more like an 
-image. However, look at the images below. The top one is what our log adjusted 
-image looks like when plotted. The bottom on is an RGB version of the same image. 
-Notice a difference? 
+image. However, look at the images below. The top one is an RGB image as the 
+image should look. The bottom one is our log-adjusted image. Notice a difference? 
 
 <figure class="half">
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"
-    alt="RGB image of the SJER field site. At the top right of the image, there is dark, brakish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot.">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"
+    alt="RGB image of the SJER field site. At the top right of the image, there is dark, brackish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot.">
     </a>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/SJER_Flipped.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/SJER_Flipped.png"
-    alt="Plot of log transformed reflectance values for the b9 image previously plotted. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by doing whats called an image stretch. The log transformed image appears flipped because when R reads in the dataset, it reads them as: Columns x Bands x Rows, as opposed to the RGB image on the left which has dimensions as Bands x Rows x Columns.">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SJER_Flipped.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SJER_Flipped.png"
+    alt="Plot of log transformed reflectance values for the b9 image previously plotted. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by applying an image stretch. The log transformed image appears flipped because when R reads in the dataset, it reads them as: Columns x Bands x Rows, as opposed to the RGB image on the left which has dimensions as Bands x Rows x Columns.">
     </a>
-    <figcaption>LEFT: The image as it should look. RIGHT: the image that we outputted from the code above. Notice a difference?</figcaption>
+    <figcaption>Top: The image as it should look. Bottom: the image that we outputted from the code above. Notice a difference?</figcaption>
 </figure>
 
 
