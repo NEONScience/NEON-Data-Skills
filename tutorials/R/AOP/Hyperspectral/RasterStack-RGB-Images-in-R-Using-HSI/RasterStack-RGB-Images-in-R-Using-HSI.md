@@ -116,10 +116,13 @@ on the ground.
 </figure>
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i>**Data Tip - Band Combinations:** The Biodiversity 
 Informatics group created a great interactive tool that lets you explore band 
 combinations. Check it out. Learn more about band combinations 
-<a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">using a great online tool from the American Museum of Natural History!</a> (The tool requires Flash player.) </div>
+<a href="http://biodiversityinformatics.amnh.org/interactives/bandcombination.php" target="_blank">using a great online tool from the American Museum of Natural History!</a> (The tool requires Flash player.) 
+
+</div>
 
 
 ## Create a Raster Stack in R
@@ -136,8 +139,6 @@ the file structure.
 First, let's load the required R packages, `terra` and `rhdf5`.
 
 ```{r load-libraries}
-
-# Load required packages
 library(terra)
 library(rhdf5)
 ```
@@ -146,8 +147,8 @@ Next set the working directory to ensure R can find the file we wish to import.
 Be sure to move the download into your working directory!
 
 ```{r set-wd}
-# set working directory
-wd <- "~/data/" # This will depend on your local environment
+# set working directory (this will depend on your local environment)
+wd <- "~/data/"
 setwd(wd)
 
 # create path to file name
@@ -157,9 +158,7 @@ f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
 As in the last lesson, let's use `View(h5ls)` to look at this hdf5 dataset:
 ```{r view-file-structure, eval=FALSE, comment=NA}
-# View HDF5 file structure 
 View(h5ls(f,all=T))
-
 ```
 
 To spatially locate our raster data, we need a few key attributes:
@@ -254,10 +253,12 @@ combination. We will use bands 14, 9, and 4 (bands 58, 34, and 19 in a full
 NEON hyperspectral dataset).
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i>**Data Tip - wavelengths and bands:** Remember that 
 you can look at the wavelengths dataset in the HDF5 file to determine the center 
 wavelength value for each band. Keep in mind that this data subset only includes
 every fourth band that is available in a full NEON hyperspectral dataset!
+
 </div>
 
 
@@ -314,11 +315,8 @@ rgbStack
 # scale the data as specified in the reflInfo$Scale Factor
 rgbStack <- rgbStack/as.integer(reflInfo$Scale_Factor)
 
-#Band_14_Scaled <- rgbStack$Band_14/as.integer(reflInfo$Scale_Factor)
-
 # plot one raster in the stack to make sure things look OK.
 plot(rgbStack$Band_14, main="Band 14")
-	
 ```
 
 We can play with the color ramps too if we want:
@@ -359,7 +357,6 @@ Once you've created your raster, you can export it as a GeoTIFF using `writeRast
 You can bring this GeoTIFF into any GIS software, such as QGIS or ArcGIS.
 
 ```{r save-raster-geotiff, eval=FALSE, comment=NA}
-
 # Write out final raster	
 # Note: if you set overwrite to TRUE, then you will overwrite (and lose) any 
 # older version of the tif file! Keep this in mind.
