@@ -4,9 +4,9 @@ title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 dateCreated: 2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
-contributors: Felipe Sanchez
+contributors: Felipe Sanchez, Bridget Hass
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, raster, maps
+packagesLibraries: rhdf5, terra
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
 dataProudct: DP3.30006.001
@@ -38,8 +38,7 @@ preferably, RStudio loaded on your computer.
 ### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
-* **terra**: `install.packages('raster')`
-* **maps**: `install.packages('maps')`
+* **terra**: `install.packages("terra")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
@@ -69,11 +68,6 @@ this example dataset, which are different from NEON production data. To convert
 a band number (b) from this example data subset to the equivalent band in a full 
 NEON hyperspectral file (b'), use the following equation: b' = 1+4*(b-1).
 
-
-
-
-
-***
 **Set Working Directory:** This lesson assumes that you have set your working 
 directory to the location of the downloaded and unzipped data subsets. 
 
@@ -191,10 +185,10 @@ yMin <- reflInfo$Spatial_Extent_meters[3]
 yMax <- reflInfo$Spatial_Extent_meters[4]
 
 # define the extent (left, right, top, bottom)
-rasExt <- ext(xMin,xMax,yMin,yMax)
+rastExt <- ext(xMin,xMax,yMin,yMax)
 
 # view the extent to make sure that it looks right
-rasExt
+rastExt
 
 # Finally, define the no data value for later
 h5NoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
@@ -213,17 +207,17 @@ the specified band.
 
 The function requires the following variables:
 
-* file: the file
-* band: the band number we wish to extract
-* noDataValue: the noDataValue for the raster
-* extent: a raster `Extent` object .
-* crs: the Coordinate Reference System for the raster
+* **file**: the hdf5 reflectance file
+* **band**: the band number we wish to extract
+* **noDataValue**: the noDataValue for the raster
+* **extent**: a terra spatial extent (`SpatExtent`) object .
+* **crs**: the Coordinate Reference System for the raster
 
-The function output is a spatially referenced, R raster object.
+The function output is a spatially referenced, R terra object.
 
 ```{r function-read-refl-data }
 
-# file: the hdf file
+# file: the hdf5 file
 # band: the band you want to process
 # returns: a matrix containing the reflectance data for the specific band
 
@@ -238,7 +232,7 @@ band2Raster <- function(file, band, noDataValue, extent, CRS){
 	  out <- t(out)
     # assign data ignore values to NA
     # note, you might chose to assign values of 15000 to NA
-    out[out == myNoDataValue] <- NA
+    out[out == noDataValue] <- NA
 	  
     # turn the out object into a raster
     outr <- rast(out,crs=CRS)
@@ -246,7 +240,7 @@ band2Raster <- function(file, band, noDataValue, extent, CRS){
     # assign the extents to the raster
     ext(outr) <- extent
    
-    # return the raster object
+    # return the terra raster object
     return(outr)
 }
 
@@ -275,7 +269,7 @@ rgb <- list(14,9,4) #list(58,34,19) when using full NEON hyperspectral dataset
 # lapply tells R to apply the function to each element in the list
 rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
                    noDataValue=h5NoDataValue, 
-                   ext=rasExt,
+                   ext=rastExt,
                    CRS=h5CRS)
 ```
 
@@ -374,12 +368,15 @@ writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_st
 ```
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i>**Data Tip - False color and near infrared images:** 
 Use the band combinations listed at the top of this page to modify the raster list.
 What type of image do you get when you change the band values?
+
 </div>
 
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Other band combinations
 
 Use different band combinations to create other "RGB" images. Suggested band 
@@ -390,7 +387,6 @@ the nearest whole number):
 * Color Infrared/False Color: rgb (90,34,19)
 * SWIR, NIR, Red Band: rgb (152,90,58)
 * False Color: rgb (363,246,55)
-
 
 </div>
 
@@ -416,21 +412,21 @@ ndviBands <- c(16,24) #bands c(58,90) in full NEON hyperspectral dataset
 # create raster list and then a stack using those two bands
 ndviRast <- lapply(ndviBands,FUN=band2Raster, file = f,
                    noDataValue=h5NoDataValue, 
-                   ext=rasExt, CRS=h5CRS)
+                   ext=rastExt, CRS=h5CRS)
 ndviStack <- rast(ndviRast)
 
 # make the names pretty
-bandNDVINames <- paste("Band_",unlist(ndvi_bands),sep="")
-names(ndvi_stack) <- bandNDVINames
+bandNDVINames <- paste("Band_",unlist(ndviBands),sep="")
+names(ndviStack) <- bandNDVINames
 
 # view the properties of the new raster stack
-cat('NDVI stack:',ndviStack)
+ndviStack
 
 #calculate NDVI
 NDVI <- function(x) {
 	  (x[,2]-x[,1])/(x[,2]+x[,1])
 }
-ndviCalc <- app(ndvi_stack,NDVI)
+ndviCalc <- app(ndviStack,NDVI)
 plot(ndviCalc, main="NDVI for the NEON SJER Field Site")
 
 # Now, play with breaks and colors to create a meaningful map
