@@ -2,13 +2,13 @@
 syncID: 79f902f6c0264f16a9be13f50560860a
 title: "Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Plot-Hyperspectral-Spectra/Plot-Hyperspectral-Spectra.R
-contributors: null
+contributors: Felipe Sanchez
 dateCreated: 2015-08-08 20:49:52
 description: Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral signature.
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
-dataProduct: null
-packagesLibraries: rhdf5, raster, rgdal, plyr
+dataProduct: DP3.30006.001
+packagesLibraries: rhdf5, terra, plyr
 authors: Leah A. Wasser, Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: null
@@ -93,77 +93,45 @@ before moving on to this tutorial.
 Everything on our planet reflects electromagnetic radiation from the Sun, and 
 different types of land cover often have dramatically different refelectance 
 properties across the spectrum. One of the most powerful aspects of the NEON 
-Imaging Spectrometer (a.k.a. NEON's hyperspectral imager) is that it can 
+Imaging Spectrometer (NIS, or hyperspectral sensor) is that it can 
 accurately measure these reflectance properties at a very high spectral resolution. 
 When you plot the reflectance values across the observed spectrum, you will see 
 that different land cover types (vegetation, pavement, bare soils, etc.) have 
-distinct patterns in their reflectance values, a feature that we call the 
+distinct patterns in their reflectance values, a property that we call the 
 'spectral signature' of a particular land cover class. 
 
-In this tutorial, we will extract a single pixel's worth of reflectance 
-values to plot a spectral signature for that pixel. In order to plot the 
-spectral signature for a given pixel in this hyperspectral dataset, we will 
-need to extract the reflectance values for that pixel, and pair those with the 
-wavelengths that are represented in those measurements. We will also need to 
+In this tutorial, we will extract the reflectance values for all bands of a
+single pixel to plot a spectral signature for that pixel. In order to do this, 
+we need to pair the reflectance values for that pixel with the wavelength values 
+of the bands that are represented in those measurements. We will also need to 
 adjust the reflectance values by the scaling factor that is saved as an 
 'attribute' in the HDF5 file. First, let's start by defining the working 
 directory and reading in the example dataset.
 
+```{r call-libraries, results="hide" }
 
-    # Call required packages
-    library(rhdf5)
-    library(plyr)
-    library(ggplot2)
-    
-    # set working directory to ensure R can find the file we wish to import and where
-    # we want to save our files. Be sure to move the download into your working directory!
-    wd <- "~/Documents/data/" #This will depend on your local environment
-    setwd(wd)
+# Call required packages
+library(rhdf5)
+library(plyr)
+library(ggplot2)
 
-Now, we need to access the H5 file.
+# set working directory to ensure R can find the file we wish to import and where
+# we want to save our files. Be sure to move the download into your working directory!
+wd <- "~/data/" #This will depend on your local environment
+setwd(wd)
 
+```
 
-    # Define the file name to be opened
-    f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
-    # look at the HDF5 file structure 
-    h5ls(f,all=T) 
+Now, we can look at the contents of the H5 file as follows:
 
-    ##                                           group                     name         ltype
-    ## 0                                             /                     SJER H5L_TYPE_HARD
-    ## 1                                         /SJER              Reflectance H5L_TYPE_HARD
-    ## 2                             /SJER/Reflectance                 Metadata H5L_TYPE_HARD
-    ## 3                    /SJER/Reflectance/Metadata        Coordinate_System H5L_TYPE_HARD
-    ## 4  /SJER/Reflectance/Metadata/Coordinate_System Coordinate_System_String H5L_TYPE_HARD
-    ## 5  /SJER/Reflectance/Metadata/Coordinate_System                EPSG Code H5L_TYPE_HARD
-    ## 6  /SJER/Reflectance/Metadata/Coordinate_System                 Map_Info H5L_TYPE_HARD
-    ## 7  /SJER/Reflectance/Metadata/Coordinate_System                    Proj4 H5L_TYPE_HARD
-    ## 8                    /SJER/Reflectance/Metadata            Spectral_Data H5L_TYPE_HARD
-    ## 9      /SJER/Reflectance/Metadata/Spectral_Data               Wavelength H5L_TYPE_HARD
-    ## 10                            /SJER/Reflectance         Reflectance_Data H5L_TYPE_HARD
-    ##    corder_valid corder cset       otype num_attrs  dclass          dtype  stype rank
-    ## 0         FALSE      0    0   H5I_GROUP         0                                  0
-    ## 1         FALSE      0    0   H5I_GROUP         5                                  0
-    ## 2         FALSE      0    0   H5I_GROUP         0                                  0
-    ## 3         FALSE      0    0   H5I_GROUP         0                                  0
-    ## 4         FALSE      0    0 H5I_DATASET         0  STRING     H5T_STRING SIMPLE    1
-    ## 5         FALSE      0    0 H5I_DATASET         0  STRING     H5T_STRING SIMPLE    1
-    ## 6         FALSE      0    0 H5I_DATASET         1  STRING     H5T_STRING SIMPLE    1
-    ## 7         FALSE      0    0 H5I_DATASET         0  STRING     H5T_STRING SIMPLE    1
-    ## 8         FALSE      0    0   H5I_GROUP         0                                  0
-    ## 9         FALSE      0    0 H5I_DATASET         3   FLOAT H5T_IEEE_F64LE SIMPLE    1
-    ## 10        FALSE      0    0 H5I_DATASET        13 INTEGER  H5T_STD_I32LE SIMPLE    3
-    ##                dim          maxdim
-    ## 0                                 
-    ## 1                                 
-    ## 2                                 
-    ## 3                                 
-    ## 4                1               1
-    ## 5                1               1
-    ## 6                1               1
-    ## 7                1               1
-    ## 8                                 
-    ## 9              107             107
-    ## 10 107 x 500 x 500 107 x 500 x 500
+```{r open-H5-file }
+
+# Define the file name to be opened
+f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+# look at the HDF5 file structure 
+h5ls(f,all=T) 
+
+```
 
 
 ## Read Wavelength Values
@@ -172,9 +140,12 @@ Next, let's read in the wavelength center associated with each band in the HDF5
 file. We will later match these with the reflectance values and show both in 
 our final spectral signature plot.
 
+```{r read-band-wavelengths }
 
-    # read in the wavelength information from the HDF5 file
-    wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+# read in the wavelength information from the HDF5 file
+wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
+
+```
 
 
 ## Extract Z-dimension data slice
@@ -184,29 +155,24 @@ spectral signature or profile of the pixel. To do that, we'll use the `h5read()`
 function. Here we pick an arbitrary pixel at `(100,35)`, and use the `NULL` 
 value to select *all* bands from that location.
 
+```{r extract-spectra }
 
-    # extract all bands from a single pixel
-    aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35))
-    
-    # The line above generates a vector of reflectance values.
-    # Next, we reshape the data and turn them into a dataframe
-    b <- adply(aPixel,c(1))
-    
-    # create clean data frame
-    aPixeldf <- b[2]
-    
-    # add wavelength data to matrix
-    aPixeldf$Wavelength <- wavelengths
-    
-    head(aPixeldf)
+# extract all bands from a single pixel
+aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35))
 
-    ##    V1 Wavelength
-    ## 1 720   381.5437
-    ## 2 337   401.5756
-    ## 3 336   421.6075
-    ## 4 399   441.6394
-    ## 5 406   461.6713
-    ## 6 426   481.7032
+# The line above generates a vector of reflectance values.
+# Next, we reshape the data and turn them into a dataframe
+b <- adply(aPixel,c(1))
+
+# create clean data frame
+aPixeldf <- b[2]
+
+# add wavelength data to matrix
+aPixeldf$Wavelength <- wavelengths
+
+head(aPixeldf)
+
+```
 
 ## Scale Factor
 
@@ -216,36 +182,32 @@ However, floating point data consume more space (yield a larger file size) compa
 to integer values. Thus, to keep the file sizes smaller, the data will be scaled
 by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the data attributes.
 
+```{r pull-scale-factor }
 
-    # grab scale factor from the Reflectance attributes
-    reflectanceAttr <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
-    
-    scaleFact <- reflectanceAttr$Scale_Factor
-    
-    # add scaled data column to DF
-    aPixeldf$scaled <- (aPixeldf$V1/as.vector(scaleFact))
-    
-    # make nice column names
-    names(aPixeldf) <- c('Reflectance','Wavelength','ScaledReflectance')
-    head(aPixeldf)
+# grab scale factor from the Reflectance attributes
+reflectanceAttr <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
 
-    ##   Reflectance Wavelength ScaledReflectance
-    ## 1         720   381.5437            0.0720
-    ## 2         337   401.5756            0.0337
-    ## 3         336   421.6075            0.0336
-    ## 4         399   441.6394            0.0399
-    ## 5         406   461.6713            0.0406
-    ## 6         426   481.7032            0.0426
+scaleFact <- reflectanceAttr$Scale_Factor
+
+# add scaled data column to DF
+aPixeldf$scaled <- (aPixeldf$V1/as.vector(scaleFact))
+
+# make nice column names
+names(aPixeldf) <- c('Reflectance','Wavelength','ScaledReflectance')
+head(aPixeldf)
+
+```
 
 ## Plot Spectral Signature
 
 Now we're ready to plot our spectral signature!
 
+```{r plot-spectra, fig.width=9, fig.height=6, fig.cap="Spectral signature plot with wavelength in nanometers on the x-axis and reflectance on the y-axis."}
 
-    ggplot(data=aPixeldf)+
-       geom_line(aes(x=Wavelength, y=ScaledReflectance))+
-       xlab("Wavelength (nm)")+
-       ylab("Reflectance")
+ggplot(data=aPixeldf)+
+   geom_line(aes(x=Wavelength, y=ScaledReflectance))+
+   xlab("Wavelength (nm)")+
+   ylab("Reflectance")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Plot-Hyperspectral-Spectra/rfigs/plot-spectra-1.png)
+```
 

@@ -8,7 +8,7 @@ description: Extract a single pixel's worth of spectra from a hyperspectral data
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
 dataProduct: DP3.30006.001
-packagesLibraries: rhdf5, raster, rgdal, plyr
+packagesLibraries: rhdf5, terra, plyr
 authors: Leah A. Wasser, Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: null
@@ -93,18 +93,17 @@ before moving on to this tutorial.
 Everything on our planet reflects electromagnetic radiation from the Sun, and 
 different types of land cover often have dramatically different refelectance 
 properties across the spectrum. One of the most powerful aspects of the NEON 
-Imaging Spectrometer (a.k.a. NEON's hyperspectral imager) is that it can 
+Imaging Spectrometer (NIS, or hyperspectral sensor) is that it can 
 accurately measure these reflectance properties at a very high spectral resolution. 
 When you plot the reflectance values across the observed spectrum, you will see 
 that different land cover types (vegetation, pavement, bare soils, etc.) have 
-distinct patterns in their reflectance values, a feature that we call the 
+distinct patterns in their reflectance values, a property that we call the 
 'spectral signature' of a particular land cover class. 
 
-In this tutorial, we will extract a single pixel's worth of reflectance 
-values to plot a spectral signature for that pixel. In order to plot the 
-spectral signature for a given pixel in this hyperspectral dataset, we will 
-need to extract the reflectance values for that pixel, and pair those with the 
-wavelengths that are represented in those measurements. We will also need to 
+In this tutorial, we will extract the reflectance values for all bands of a
+single pixel to plot a spectral signature for that pixel. In order to do this, 
+we need to pair the reflectance values for that pixel with the wavelength values 
+of the bands that are represented in those measurements. We will also need to 
 adjust the reflectance values by the scaling factor that is saved as an 
 'attribute' in the HDF5 file. First, let's start by defining the working 
 directory and reading in the example dataset.
@@ -118,12 +117,12 @@ library(ggplot2)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
-wd <- "~/Documents/data/" #This will depend on your local environment
+wd <- "~/data/" #This will depend on your local environment
 setwd(wd)
 
 ```
 
-Now, we need to access the H5 file.
+Now, we can look at the contents of the H5 file as follows:
 
 ```{r open-H5-file }
 
