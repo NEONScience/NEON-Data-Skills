@@ -4,13 +4,13 @@ title: "Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R"
 description: "Open up and explore hyperspectral imagery in HDF format R. Combine multiple bands to create a raster stack. Use these steps to create various band combinations such as RGB, Color-Infrared and False color images."
 dateCreated: 2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
-contributors: 
+contributors: Felipe Sanchez
 estimatedTime: 1.0 - 1.5 Hours
 packagesLibraries: rhdf5, raster, maps
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
-dataProudct:
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
+dataProudct: DP3.30006.001
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
 tutorialSeries:
 urlTitle: create-raster-stack-hsi-hdf5-r
 ---
@@ -38,8 +38,7 @@ preferably, RStudio loaded on your computer.
 ### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
-* **raster**: `install.packages('raster')`
-* **rgdal**: `install.packages('rgdal')`
+* **terra**: `install.packages('raster')`
 * **maps**: `install.packages('maps')`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
@@ -109,12 +108,16 @@ emphasize vegetation and help us classify or identify where vegetation is locate
 on the ground.
 
 <figure >
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"
+    alt="An image showing portion of the San Joaquin Experimental Range field site using red, green and blue bands. The example dataset bands are 14,9,4; bands 58,34,19 in the full NEON dataset.">
+    </a>
 <figcaption> A portion of the SJER field site using red, green and blue (example dataset bands 14,9,4; bands 58,34,19 in the full NEON dataset).</figcaption>
 </figure>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/NIR_G_B.png"
+    alt="Image showing the same portion of the San Joaquin Experimental Range field site mentioned above, but using near infrared, green and blue bands to create an infrared image. The example dataset bands are 22,9,4; bands 90,34,19 in the full NEON dataset.">
+    </a>
 <figcaption> Here is the same section of SJER but with other bands highlighted to create a colored infrared image – near infrared, green and blue (example dataset bands 22, 9, 4; bands 90, 34, 19 in the full NEON dataset).</figcaption>
 </figure>
 
@@ -136,21 +139,35 @@ bands. We will follow many of the steps we followed in the
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
+First, let's load the required R packages, `terra` and `rhdf5`.
+
 
     # Load required packages
-    library(raster)
+
+    library(terra)
+
     library(rhdf5)
-    
-    # set working directory to ensure R can find the file we wish to import and where
-    # we want to save our files. Be sure to move the download into your working directory!
-    wd <- "~/Documents/data/" # This will depend on your local environment
+
+Next set the working directory to ensure R can find the file we wish to import. 
+Be sure to move the download into your working directory!
+
+
+    # set working directory
+
+    wd <- "~/data/" # This will depend on your local environment
+
     setwd(wd)
+
     
+
     # create path to file name
+
     f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
+As in the last lesson, let's use `View(h5ls)` to look at this hdf5 dataset:
 
     # View HDF5 file structure 
+
     View(h5ls(f,all=T))
 
 To spatially locate our raster data, we need a few key attributes:
@@ -162,44 +179,60 @@ We'll begin by grabbing these key attributes from the H5 file.
 
 
     # define coordinate reference system from the EPSG code provided in the HDF5 file
-    myEPSG <- h5read(f,"/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code" )
-    myCRS <- crs(paste0("+init=epsg:",myEPSG))
+
+    h5EPSG <- h5read(f,"/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code" )
+
+    h5CRS <- crs(paste0("+init=epsg:",h5EPSG))
+
     
+
     # get the Reflectance_Data attributes
+
     reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+
     
+
     # Grab the UTM coordinates of the spatial extent
+
     xMin <- reflInfo$Spatial_Extent_meters[1]
+
     xMax <- reflInfo$Spatial_Extent_meters[2]
+
     yMin <- reflInfo$Spatial_Extent_meters[3]
+
     yMax <- reflInfo$Spatial_Extent_meters[4]
+
     
+
     # define the extent (left, right, top, bottom)
-    rasExt <- extent(xMin,xMax,yMin,yMax)
+
+    rasExt <- ext(xMin,xMax,yMin,yMax)
+
     
+
     # view the extent to make sure that it looks right
+
     rasExt
 
-    ## class      : Extent 
-    ## xmin       : 257500 
-    ## xmax       : 258000 
-    ## ymin       : 4112500 
-    ## ymax       : 4113000
+    ## SpatExtent : 257500, 258000, 4112500, 4113000 (xmin, xmax, ymin, ymax)
 
     # Finally, define the no data value for later
-    myNoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
-    myNoDataValue
 
-    ## [1] -9999
+    h5NoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
+
+    cat('No Data Value:',h5NoDataValue)
+
+    ## No Data Value: -9999
 
 Next, we'll write a function that will perform the processing that we did step by 
 step in the 
 <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a>.
 This will allow us to process multiple bands in bulk.
 
-The function `band2Rast` slices a band of data from the HDF5 file, and
-extracts the reflectance. It them converts the data to a matrix, converts it to
-a raster and returns a spatially corrected raster for the specified band. 
+The function `band2Rast` slices a band of data from the HDF5 file, and extracts 
+the reflectance array for that band. It then converts the data into a matrix, 
+converts it to a raster, and finally returns a spatially corrected raster for 
+the specified band. 
 
 The function requires the following variables:
 
@@ -213,9 +246,13 @@ The function output is a spatially referenced, R raster object.
 
 
     # file: the hdf file
+
     # band: the band you want to process
+
     # returns: a matrix containing the reflectance data for the specific band
+
     
+
     band2Raster <- function(file, band, noDataValue, extent, CRS){
         # first, read in the raster
         out <- h5read(file,"/SJER/Reflectance/Reflectance_Data",index=list(band,NULL,NULL))
@@ -230,10 +267,10 @@ The function output is a spatially referenced, R raster object.
         out[out == myNoDataValue] <- NA
     	  
         # turn the out object into a raster
-        outr <- raster(out,crs=CRS)
+        outr <- rast(out,crs=CRS)
        
         # assign the extents to the raster
-        extent(outr) <- extent
+        ext(outr) <- extent
        
         # return the raster object
         return(outr)
@@ -256,52 +293,34 @@ every fourth band that is available in a full NEON hyperspectral dataset!
 
 
     # create a list of the bands we want in our stack
+
     rgb <- list(14,9,4) #list(58,34,19) when using full NEON hyperspectral dataset
+
     
+
     # lapply tells R to apply the function to each element in the list
+
     rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
-                       noDataValue=myNoDataValue, 
-                       extent=rasExt,
-                       CRS=myCRS)
-    
-    # check out the properties or rgb_rast
-    # note that it displays properties of 3 rasters.
+                       noDataValue=h5NoDataValue, 
+                       ext=rasExt,
+                       CRS=h5CRS)
+
+    ## Error in FUN(X[[i]], ...): object 'myNoDataValue' not found
+
+Check out the properties or rgb_rast
+
+
     rgb_rast
 
-    ## [[1]]
-    ## class      : RasterLayer 
-    ## dimensions : 500, 500, 250000  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
-    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : memory
-    ## names      : layer 
-    ## values     : 0, 9418  (min, max)
-    ## 
-    ## 
-    ## [[2]]
-    ## class      : RasterLayer 
-    ## dimensions : 500, 500, 250000  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
-    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : memory
-    ## names      : layer 
-    ## values     : 0, 9210  (min, max)
-    ## 
-    ## 
-    ## [[3]]
-    ## class      : RasterLayer 
-    ## dimensions : 500, 500, 250000  (nrow, ncol, ncell)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
-    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## source     : memory
-    ## names      : layer 
-    ## values     : 0, 9704  (min, max)
+    ## Error in eval(expr, envir, enclos): object 'rgb_rast' not found
 
-    # finally, create a raster stack from our list of rasters
-    rgbStack <- stack(rgb_rast)
+Note that it displays properties of 3 rasters. Finally, we can create a raster 
+stack from our list of rasters as follows:
+
+
+    rgbStack <- rast(rgb_rast)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'rgb_rast' not found
 
 In the code chunk above, we used the `lapply()` function, which is a powerful,
 flexible way to apply a function (in this case, our `band2Raster()` fucntion)
@@ -316,51 +335,64 @@ the bands in the list.
 
 
     # Create a list of band names
+
     bandNames <- paste("Band_",unlist(rgb),sep="")
+
     
+
     # set the rasterStack's names equal to the list of bandNames created above
+
     names(rgbStack) <- bandNames
-    
+
+    ## Error: object 'rgbStack' not found
+
     # check properties of the raster list - note the band names
+
     rgbStack
 
-    ## class      : RasterStack 
-    ## dimensions : 500, 500, 250000, 3  (nrow, ncol, ncell, nlayers)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
-    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## names      : Band_14, Band_9, Band_4 
-    ## min values :       0,      0,      0 
-    ## max values :    9418,   9210,   9704
+    ## Error in eval(expr, envir, enclos): object 'rgbStack' not found
+
 
     # scale the data as specified in the reflInfo$Scale Factor
+
     rgbStack <- rgbStack/as.integer(reflInfo$Scale_Factor)
+
+    ## Error in eval(expr, envir, enclos): object 'rgbStack' not found
+
+    #Band_14_Scaled <- rgbStack$Band_14/as.integer(reflInfo$Scale_Factor)
+
     
+
     # plot one raster in the stack to make sure things look OK.
+
     plot(rgbStack$Band_14, main="Band 14")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-raster-stack-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'rgbStack' not found
 
 We can play with the color ramps too if we want:
 
 
     # change the colors of our raster 
-    myCol <- terrain.colors(25)
-    image(rgbStack$Band_14, main="Band 14", col=myCol)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-1.png)
+    colors1 <- terrain.colors(25)
+
+    image(rgbStack$Band_14, main="Band 14", col=colors1)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'rgbStack' not found
 
     # adjust the zlims or the stretch of the image
-    myCol <- terrain.colors(25)
-    image(rgbStack$Band_14, main="Band 14", col=myCol, zlim = c(0,.5))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-2.png)
+    image(rgbStack$Band_14, main="Band 14", col=colors1, zlim = c(0,.5))
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'rgbStack' not found
 
     # try a different color palette
-    myCol <- topo.colors(15, alpha = 1)
-    image(rgbStack$Band_14, main="Band 14", col=myCol, zlim=c(0,.5))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-3.png)
+    colors2 <- topo.colors(15, alpha = 1)
+
+    image(rgbStack$Band_14, main="Band 14", col=colors2, zlim=c(0,.5))
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'rgbStack' not found
 
 
 The `plotRGB` function allows you to combine three bands to create an image. 
@@ -368,25 +400,29 @@ The `plotRGB` function allows you to combine three bands to create an image.
 
 
     # create a 3 band RGB image
+
     plotRGB(rgbStack,
             r=1,g=2,b=3,
             stretch = "lin")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-RGB-Image-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'rgbStack' not found
 
 <i class="fa fa-star"></i>**A note about image stretching:** Notice that we use the argument
 `stretch="lin"` in this plotting function, which automatically stretches the 
 brightness values for us to produce a natural-looking image.
 
 
-Once you've created your raster, you can export it as a GeoTIFF. You can bring 
-this GeoTIFF into any GIS program!
+Once you've created your raster, you can export it as a GeoTIFF using `writeRaster`. 
+You can bring this GeoTIFF into any GIS software, such as QGIS or ArcGIS.
 
 
-    # write out final raster	
-    # note: if you set overwrite to TRUE, then you will overwite or lose the older
-    # version of the tif file! Keep this in mind.
-    writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"), format="GTiff", overwrite=TRUE)
+    # Write out final raster	
+
+    # Note: if you set overwrite to TRUE, then you will overwrite (and lose) any 
+
+    # older version of the tif file! Keep this in mind.
+
+    writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"), overwrite=TRUE)
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Data Tip - False color and near infrared images:** 
@@ -424,53 +460,76 @@ the best way to calculate NDVI from hyperspectral data!
 
 
     # Calculate NDVI
-    # select bands to use in calculation (red, NIR)
-    ndvi_bands <- c(16,24) #bands c(58,90) in full NEON hyperspectral dataset
-    
-    # create raster list and then a stack using those two bands
-    ndvi_rast <- lapply(ndvi_bands,FUN=band2Raster, file = f,
-                       noDataValue=myNoDataValue, 
-                       extent=rasExt, CRS=myCRS)
-    ndvi_stack <- stack(ndvi_rast)
-    
-    # make the names pretty
-    bandNDVINames <- paste("Band_",unlist(ndvi_bands),sep="")
-    names(ndvi_stack) <- bandNDVINames
-    
-    # view the properties of the new raster stack
-    ndvi_stack
 
-    ## class      : RasterStack 
-    ## dimensions : 500, 500, 250000, 2  (nrow, ncol, ncell, nlayers)
-    ## resolution : 1, 1  (x, y)
-    ## extent     : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
-    ## crs        : +init=epsg:32611 +proj=utm +zone=11 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0 
-    ## names      : Band_16, Band_24 
-    ## min values :       0,       0 
-    ## max values :    9386,    9424
+    # select bands to use in calculation (red, NIR)
+
+    ndviBands <- c(16,24) #bands c(58,90) in full NEON hyperspectral dataset
+
+    
+
+    # create raster list and then a stack using those two bands
+
+    ndviRast <- lapply(ndviBands,FUN=band2Raster, file = f,
+                       noDataValue=h5NoDataValue, 
+                       ext=rasExt, CRS=h5CRS)
+
+    ## Error in FUN(X[[i]], ...): object 'myNoDataValue' not found
+
+    ndviStack <- rast(ndviRast)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'ndviRast' not found
+
+    # make the names pretty
+
+    bandNDVINames <- paste("Band_",unlist(ndvi_bands),sep="")
+
+    ## Error in eval(expr, envir, enclos): object 'ndvi_bands' not found
+
+    names(ndvi_stack) <- bandNDVINames
+
+    ## Error in eval(expr, envir, enclos): object 'bandNDVINames' not found
+
+    # view the properties of the new raster stack
+
+    cat('NDVI stack:',ndviStack)
+
+    ## Error in eval(expr, envir, enclos): object 'ndviStack' not found
 
     #calculate NDVI
+
     NDVI <- function(x) {
     	  (x[,2]-x[,1])/(x[,2]+x[,1])
     }
-    ndvi_calc <- calc(ndvi_stack,NDVI)
-    plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-1.png)
+    ndviCalc <- app(ndvi_stack,NDVI)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'app': object 'ndvi_stack' not found
+
+    plot(ndviCalc, main="NDVI for the NEON SJER Field Site")
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'ndviCalc' not found
 
     # Now, play with breaks and colors to create a meaningful map
-    # add a color map with 4 colors
-    myCol <- rev(terrain.colors(4)) # use the 'rev()' function to put green as the highest NDVI value
-    # add breaks to the colormap, including lowest and highest values (4 breaks = 3 segments)
-    brk <- c(0, .25, .5, .75, 1)
-    
-    # plot the image using breaks
-    plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-2.png)
+    # add a color map with 4 colors
+
+    myCol <- rev(terrain.colors(4)) # use the 'rev()' function to put green as the highest NDVI value
+
+    # add breaks to the colormap, including lowest and highest values (4 breaks = 3 segments)
+
+    brk <- c(0, .25, .5, .75, 1)
+
+    
+
+    # plot the image using breaks
+
+    plot(ndviCalc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'ndviCalc' not found
 
 	
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Work with Indices
 
 Try the following:

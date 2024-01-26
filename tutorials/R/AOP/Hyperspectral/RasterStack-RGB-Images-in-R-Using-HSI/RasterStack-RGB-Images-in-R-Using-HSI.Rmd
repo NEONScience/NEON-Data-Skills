@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, raster, maps
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
 dataProudct: DP3.30006.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
 tutorialSeries:
 urlTitle: create-raster-stack-hsi-hdf5-r
 ---
@@ -38,8 +38,7 @@ preferably, RStudio loaded on your computer.
 ### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
-* **raster**: `install.packages('raster')`
-* **rgdal**: `install.packages('rgdal')`
+* **terra**: `install.packages('raster')`
 * **maps**: `install.packages('maps')`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
@@ -109,15 +108,15 @@ emphasize vegetation and help us classify or identify where vegetation is locate
 on the ground.
 
 <figure >
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/RGBImage_2.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"
     alt="An image showing portion of the San Joaquin Experimental Range field site using red, green and blue bands. The example dataset bands are 14,9,4; bands 58,34,19 in the full NEON dataset.">
     </a>
 <figcaption> A portion of the SJER field site using red, green and blue (example dataset bands 14,9,4; bands 58,34,19 in the full NEON dataset).</figcaption>
 </figure>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/NIR_G_B.png"
-    alt="Image showing the same portion of the San Joaquin Experimental Range field site mentioned above, but using near infrared, green and blue bands to create an infra red image. The example dataset bands are 22,9,4; bands 90,34,19 in the full NEON dataset.">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/NIR_G_B.png"
+    alt="Image showing the same portion of the San Joaquin Experimental Range field site mentioned above, but using near infrared, green and blue bands to create an infrared image. The example dataset bands are 22,9,4; bands 90,34,19 in the full NEON dataset.">
     </a>
 <figcaption> Here is the same section of SJER but with other bands highlighted to create a colored infrared image – near infrared, green and blue (example dataset bands 22, 9, 4; bands 90, 34, 19 in the full NEON dataset).</figcaption>
 </figure>
@@ -140,15 +139,21 @@ bands. We will follow many of the steps we followed in the
 These steps included loading required packages, reading in our file and viewing 
 the file structure.
 
+First, let's load the required R packages, `terra` and `rhdf5`.
+
 ```{r load-libraries}
 
 # Load required packages
-library(raster)
+library(terra)
 library(rhdf5)
+```
 
-# set working directory to ensure R can find the file we wish to import and where
-# we want to save our files. Be sure to move the download into your working directory!
-wd <- "~/Documents/data/" # This will depend on your local environment
+Next set the working directory to ensure R can find the file we wish to import. 
+Be sure to move the download into your working directory!
+
+```{r set-wd}
+# set working directory
+wd <- "~/data/" # This will depend on your local environment
 setwd(wd)
 
 # create path to file name
@@ -156,6 +161,7 @@ f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 
 ```
 
+As in the last lesson, let's use `View(h5ls)` to look at this hdf5 dataset:
 ```{r view-file-structure, eval=FALSE, comment=NA}
 # View HDF5 file structure 
 View(h5ls(f,all=T))
@@ -172,8 +178,8 @@ We'll begin by grabbing these key attributes from the H5 file.
 ```{r get-spatial-attributes }
 
 # define coordinate reference system from the EPSG code provided in the HDF5 file
-myEPSG <- h5read(f,"/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code" )
-myCRS <- crs(paste0("+init=epsg:",myEPSG))
+h5EPSG <- h5read(f,"/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code" )
+h5CRS <- crs(paste0("+init=epsg:",h5EPSG))
 
 # get the Reflectance_Data attributes
 reflInfo <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
@@ -185,14 +191,14 @@ yMin <- reflInfo$Spatial_Extent_meters[3]
 yMax <- reflInfo$Spatial_Extent_meters[4]
 
 # define the extent (left, right, top, bottom)
-rasExt <- extent(xMin,xMax,yMin,yMax)
+rasExt <- ext(xMin,xMax,yMin,yMax)
 
 # view the extent to make sure that it looks right
 rasExt
 
 # Finally, define the no data value for later
-myNoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
-myNoDataValue
+h5NoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
+cat('No Data Value:',h5NoDataValue)
 ```
 
 Next, we'll write a function that will perform the processing that we did step by 
@@ -200,9 +206,10 @@ step in the
 <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a>.
 This will allow us to process multiple bands in bulk.
 
-The function `band2Rast` slices a band of data from the HDF5 file, and
-extracts the reflectance. It then converts the data into a matrix, converts it to
-a raster, and finally returns a spatially corrected raster for the specified band. 
+The function `band2Rast` slices a band of data from the HDF5 file, and extracts 
+the reflectance array for that band. It then converts the data into a matrix, 
+converts it to a raster, and finally returns a spatially corrected raster for 
+the specified band. 
 
 The function requires the following variables:
 
@@ -234,10 +241,10 @@ band2Raster <- function(file, band, noDataValue, extent, CRS){
     out[out == myNoDataValue] <- NA
 	  
     # turn the out object into a raster
-    outr <- raster(out,crs=CRS)
+    outr <- rast(out,crs=CRS)
    
     # assign the extents to the raster
-    extent(outr) <- extent
+    ext(outr) <- extent
    
     # return the raster object
     return(outr)
@@ -260,23 +267,29 @@ every fourth band that is available in a full NEON hyperspectral dataset!
 </div>
 
 
-```{r create-raster-stack }
+```{r create-raster-list}
 
 # create a list of the bands we want in our stack
 rgb <- list(14,9,4) #list(58,34,19) when using full NEON hyperspectral dataset
 
 # lapply tells R to apply the function to each element in the list
 rgb_rast <- lapply(rgb,FUN=band2Raster, file = f,
-                   noDataValue=myNoDataValue, 
-                   extent=rasExt,
-                   CRS=myCRS)
+                   noDataValue=h5NoDataValue, 
+                   ext=rasExt,
+                   CRS=h5CRS)
+```
 
-# check out the properties or rgb_rast
-# note that it displays properties of 3 rasters.
+Check out the properties or rgb_rast
+
+```{r rgb-rast-properties}
 rgb_rast
+```
 
-# finally, create a raster stack from our list of rasters
-rgbStack <- stack(rgb_rast)
+Note that it displays properties of 3 rasters. Finally, we can create a raster 
+stack from our list of rasters as follows:
+
+```{r raster-stack}
+rgbStack <- rast(rgb_rast)
 
 ```
 
@@ -301,13 +314,16 @@ names(rgbStack) <- bandNames
 
 # check properties of the raster list - note the band names
 rgbStack
+```
 
+```{r scale-plot-refl}
 # scale the data as specified in the reflInfo$Scale Factor
 rgbStack <- rgbStack/as.integer(reflInfo$Scale_Factor)
 
+#Band_14_Scaled <- rgbStack$Band_14/as.integer(reflInfo$Scale_Factor)
+
 # plot one raster in the stack to make sure things look OK.
 plot(rgbStack$Band_14, main="Band 14")
-
 	
 ```
 
@@ -316,16 +332,15 @@ We can play with the color ramps too if we want:
 ```{r plot-HSI-raster, fig.cap=c("Raster plot of band 14 from the raster stack created using different colors available from the terrain.colors funtion. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.","Raster plot of band 14 from the raster stack created with a 0.5 adjustment of the z plane, which causes the image to be stretched. The x-axis and y-axis values represent the extent, which range from 257500 to 25800 meters easting, and 4112500 to 4113000 meters northing, respectively. The plot legend depicts the range of reflectance values, which go from 0 to 0.8.","Raster plot of band 14 from the raster stack created using a different color palette. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.")}
 
 # change the colors of our raster 
-myCol <- terrain.colors(25)
-image(rgbStack$Band_14, main="Band 14", col=myCol)
+colors1 <- terrain.colors(25)
+image(rgbStack$Band_14, main="Band 14", col=colors1)
 
 # adjust the zlims or the stretch of the image
-myCol <- terrain.colors(25)
-image(rgbStack$Band_14, main="Band 14", col=myCol, zlim = c(0,.5))
+image(rgbStack$Band_14, main="Band 14", col=colors1, zlim = c(0,.5))
 
 # try a different color palette
-myCol <- topo.colors(15, alpha = 1)
-image(rgbStack$Band_14, main="Band 14", col=myCol, zlim=c(0,.5))
+colors2 <- topo.colors(15, alpha = 1)
+image(rgbStack$Band_14, main="Band 14", col=colors2, zlim=c(0,.5))
 
 ```
 
@@ -346,15 +361,15 @@ plotRGB(rgbStack,
 brightness values for us to produce a natural-looking image.
 
 
-Once you've created your raster, you can export it as a GeoTIFF. You can bring 
-this GeoTIFF into any GIS program!
+Once you've created your raster, you can export it as a GeoTIFF using `writeRaster`. 
+You can bring this GeoTIFF into any GIS software, such as QGIS or ArcGIS.
 
 ```{r save-raster-geotiff, eval=FALSE, comment=NA}
 
-# write out final raster	
-# note: if you set overwrite to TRUE, then you will overwite or lose the older
-# version of the tif file! Keep this in mind.
-writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"), format="GTiff", overwrite=TRUE)
+# Write out final raster	
+# Note: if you set overwrite to TRUE, then you will overwrite (and lose) any 
+# older version of the tif file! Keep this in mind.
+writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_stack_image.tif"), overwrite=TRUE)
 
 ```
 
@@ -396,27 +411,27 @@ the best way to calculate NDVI from hyperspectral data!
 
 # Calculate NDVI
 # select bands to use in calculation (red, NIR)
-ndvi_bands <- c(16,24) #bands c(58,90) in full NEON hyperspectral dataset
+ndviBands <- c(16,24) #bands c(58,90) in full NEON hyperspectral dataset
 
 # create raster list and then a stack using those two bands
-ndvi_rast <- lapply(ndvi_bands,FUN=band2Raster, file = f,
-                   noDataValue=myNoDataValue, 
-                   extent=rasExt, CRS=myCRS)
-ndvi_stack <- stack(ndvi_rast)
+ndviRast <- lapply(ndviBands,FUN=band2Raster, file = f,
+                   noDataValue=h5NoDataValue, 
+                   ext=rasExt, CRS=h5CRS)
+ndviStack <- rast(ndviRast)
 
 # make the names pretty
 bandNDVINames <- paste("Band_",unlist(ndvi_bands),sep="")
 names(ndvi_stack) <- bandNDVINames
 
 # view the properties of the new raster stack
-ndvi_stack
+cat('NDVI stack:',ndviStack)
 
 #calculate NDVI
 NDVI <- function(x) {
 	  (x[,2]-x[,1])/(x[,2]+x[,1])
 }
-ndvi_calc <- calc(ndvi_stack,NDVI)
-plot(ndvi_calc, main="NDVI for the NEON SJER Field Site")
+ndviCalc <- app(ndvi_stack,NDVI)
+plot(ndviCalc, main="NDVI for the NEON SJER Field Site")
 
 # Now, play with breaks and colors to create a meaningful map
 # add a color map with 4 colors
@@ -425,12 +440,13 @@ myCol <- rev(terrain.colors(4)) # use the 'rev()' function to put green as the h
 brk <- c(0, .25, .5, .75, 1)
 
 # plot the image using breaks
-plot(ndvi_calc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
+plot(ndviCalc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
 ```
 
 	
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Work with Indices
 
 Try the following:
