@@ -1,0 +1,258 @@
+---
+syncID: FILL IN
+title: "Understanding Released and Provisional Data"
+description: "Access, work with, and navigate data from NEON data releases and provisional data."
+dateCreated: 2024-01-29
+authors: [Claire K. Lunch]
+contributors: 
+estimatedTime: 40 minutes
+packagesLibraries: neonUtilities
+topics: data-management, rep-sci
+languageTool: R
+dataProduct: 
+code1: FILL IN
+tutorialSeries:
+urlTitle: release-provisional-tutorial
+
+---
+
+
+## What is a data release?
+
+A NEON data Release is a fixed set of data that do not change over time. Each 
+data product in a Release is associated with a Digital Object Identifier (DOI) 
+that can be used for data citation. Since the data in a Release do not change, 
+analyses performed on those data are traceable and reproducible.
+
+NEON data are initially published under a Provisional status, meaning that data may be updated on an as-needed basis, without guarantee of reproducibility. Publishing Provisional data allows NEON to publish data rapidly, while retaining the ability to make corrections or additions as they are identified.
+
+After initial publication, a lag time occurs before the data are formally Released. During this lag time, extra quality control (QC) procedures, which are described in data product specific documentation, may be performed. This lag time also ensures all data from laboratory analyses are available before a data Release.
+
+Although data within a Release do not change, NEON may discover errors or needed 
+updates to data after publication of a Release. For this reason, NEON generates 
+a Release annually; each Release represents the best data available at the 
+time of publication. Changes to data between Releases are documented on the 
+web page for each Release, and in the issue log for each data product.
+
+### Data citation
+
+Each data product within a Release is associated with a DOI for reference and citation. DOI URLs will always resolve back to their corresponding data product Release’s landing webpage and are thus ideal for citing NEON data in publications and applications.
+
+For more details about NEON data Releases, see the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Data Product Revisions and Releases</a> web page.
+
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+After completing this activity, you will be able to:
+
+ * Download data from a specific NEON data Release
+ * Download Provisional NEON data
+ * Use appropriate citation information for both Released and Provisional data
+
+## Things You’ll Need To Complete This Tutorial
+You will need a version of R (4.0 or higher. This code may work with 
+earlier versions but it hasn't been tested) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities:** `install.packages("neonUtilities")`
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://www.neonscience.org/resources/code-hub" target="_blank">NEON Code Hub</a>
+
+</div>
+
+## Set Up R Environment
+
+First install and load the necessary packages.
+
+```{r setup, eval=FALSE}
+
+# install packages. can skip this step if 
+# the packages are already installed
+install.packages("neonUtilities")
+
+# load packages
+library(neonUtilities)
+
+```
+
+```{r libraries, include=FALSE}
+library(neonUtilities)
+```
+
+## Find data of interest
+
+We'll start with the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products</a> page on the NEON Data Portal, 
+which has visual interfaces to allow you to select a particular Release, 
+and show you which data are included in it.
+
+On the lefthand menu bar, the dropdown menu of Releases shows the available 
+releases and the default display, which is the latest Release plus Provisional 
+data.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-menu.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-menu.png" alt="Menu bar on Explore NEON Data page showing Release menu."></a>
+</figure>
+
+Stay on the default menu option for now. Navigate to quantum line 
+PAR, DP1.00066.001. Expand the data availability chart by clicking on 
+View By: SITE.
+
+What you see will probably not look exactly like this, but similar. This is 
+a screenshot from January 2024; more data and possibly more Release may have 
+been published by the time you follow this tutorial.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-availability.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-availability.png" alt="Data availability chart for PAR quantum line."></a>
+</figure>
+
+Here we can consult the key and see that data up to June 2023 are in a Release 
+and data collected since June 2023 are Provisional. There are no 2024 data 
+available yet. 
+
+Now click on the Product Details button to go to the <a href="https://data.neonscience.org/data-products/DP1.00066.001" target="_blank">DP1.00066.001</a> web page.
+
+This page contains details and documentation about the data product, including 
+citation information for publications using these data.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-citation.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-citation.png" alt="Provisional and RELEASE-2024 citations for PAR quantum line."></a>
+</figure>
+
+Note that the citation guidance is different for Provisional and Released 
+data. The Release citation includes a direct link to a DOI. Since Provisional 
+data are subject to change without notice, the data you download today may not 
+match data you download tomorrow. Because of this, the recommended workflow is 
+to archive the version of Provisional data you used in your analyses, and 
+provide a DOI to that archived version for citation. Guidance in doing this is 
+available on the <a href="https://www.neonscience.org/data-samples/guidelines-policies/publishing-research-outputs" target="_blank">Publishing Research Outputs</a> web page.
+
+
+
+If you're not familiar with the `neonUtilities` package and how to use 
+it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
+tutorial as well.
+
+``` {r load-data, results="hide"}
+
+veg <- loadByProduct(dpID="DP1.10098.001", 
+                     site="RMNP", 
+                     release="RELEASE-2022",
+                     check.size=F)
+
+rpt <- loadByProduct(dpID="DP1.10064.002",
+                     release="RELEASE-2022",
+                     check.size=F)
+
+```
+
+## Find Related Samples
+
+Of course both of these datasets contain many samples. Let's check out 
+the tagged plant with `individualID = NEON.PLA.D10.RMNP.03623`.
+
+``` {r view-vst}
+
+veg$vst_mappingandtagging[which(veg$vst_mappingandtagging$individualID==
+                                  "NEON.PLA.D10.RMNP.03623"),]
+
+```
+
+We see from the data that this is a quaking aspen (Populus tremuloides). 
+Now use the `getSampleTree()` function from the `neonOS` package to find 
+all samples related to this particular sample.
+
+``` {r query-taggedPlant}
+
+potr.samp <- getSampleTree("NEON.PLA.D10.RMNP.03623")
+
+```
+
+Let's take a look at the table this function returns:
+
+``` {r view-potr}
+
+potr.samp
+
+```
+
+There are 10 columns. The first 5 are:
+
+* sampleUuid: Unique identifier for the sample in the NEON database
+* sampleTag: Identifier for the sample. Frequently human-readable, may be non-unique across sampleClasses.
+* barcode: Identifier in scannable barcode on the sample. Unique within NEON.
+* archiveGuid: Globally unique identifier for an archived sample.
+* sampleClass: Category or type of sample. Used within NEON to classify samples at different levels in the hierarchy, and define expectations for sample handling.
+
+For each row, we describe the sample identified in these 5 columns as the 
+focal sample. The next 5 columns contain the same identifiers and 
+descriptors, but for the parent sample of the focal sample on each row. Note 
+that each parent sample identified in the table will also be a focal sample 
+in at least one row.
+
+Because samples can have multiple parents, and parents can have multiple 
+children, there may be rows with the sample focal sample but different 
+parents, and rows with different focal samples but the same parents. In 
+the case of the sample hierarchy for `NEON.PLA.D10.RMNP.03623`, most of 
+the samples are children of the sample with barcode A00000125509. This is 
+a foliar sample, which is taken from the tree and then split into 
+subsamples for various analyses.
+
+It's usually much easier to understand these relationships visually than in 
+a table. The parent-child relationships create a 
+<a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph" target="_blank">directed acyclic graph</a>, and there are many tools available for viewing such graphs. Here, 
+we'll use the `visNetwork` package.
+
+To be understood by the `visNetwork` package, we need to define the "nodes" 
+and "edges" of the graph - that is, the samples and their relationships.
+
+``` {r plant-network}
+
+potr.samp$id <- potr.samp$sampleUuid
+
+edges <- potr.samp[,c("sampleUuid","parentSampleUuid")]
+colnames(edges) <- c("to", "from")
+
+visNetwork(nodes=potr.samp,
+           edges=edges) %>%
+  visEdges(arrows="to")
+
+```
+
+This graph displays the relationships, but we don't know which sample 
+is which. It helps to add the sampleClass as a label:
+
+``` {r plant-network-with-labels}
+
+potr.samp$label <- potr.samp$sampleClass
+
+visNetwork(nodes=potr.samp,
+           edges=edges) %>%
+  visNodes(shape="ellipse", font=list(size=10)) %>%
+  visEdges(arrows="to")
+
+```
+
+Now we have a clearer picture. There is one sample with no parents, in 
+the class `taggedPlant`. Referring back to the table, we can see this is 
+the tree itself, that we initially queried, `NEON.PLA.D10.RMNP.03623`. It 
+has two children, one of which is the foliar sample that has many 
+subsamples (children) of its own. If you're familiar with the Foliar traits 
+data product (DP1.10026.001), you'll be able to identify these subsamples 
+easily, as the samples for analysis of lignin, carbon and nitrogen, etc.
+
+There is also one sample with a class label indicating archive, and we can 
+see in the table that it has an `archiveGuid` identifier. You can look up 
+this sample at the NEON Biorepository, where it is stored: 
+<a href="https://biorepo.neonscience.org/portal/collections/individual/index.php?occid=737499&clid=0" target="_blank">barcode A00000134072</a>
+
+TO DO: Example from rodent pathogens? How to conclude? How should people use this info?
+
