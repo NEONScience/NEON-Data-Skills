@@ -1,7 +1,7 @@
 ---
 syncID: c1cd91f1343b430c9c37497c52cf98ac
 title: "Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.Rmd
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/Work-With-Hyperspectral-Data-In-R.R
 contributors: Felipe Sanchez, Bridget Hass
 dataProduct: DP3.30006.001
 dateCreated: 2014-11-26 20:49:52
@@ -152,16 +152,22 @@ R, use `update.packages()`.
 
 </div>
 
-```{r set-wd, eval=FALSE, results="hide" }
+```{r set-wd, results="hide" }
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. Be sure to move the download into your working directory!
 wd <- "~/data/" #This will depend on your local environment
 setwd(wd)
 ```
 
+
 ```{r define-h5, results="hide" }
 # Define the h5 file name to be opened
 f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
+```
+
+```{r define-h5-hardcoded, results="hide" }
+# Define the h5 file name to be opened
+f <- file.path("C:/Users/bhass/Documents/data/NEON_hyperspectral_tutorial_example_subset.h5")
 ```
 
 You can use `h5ls` and/or `View(h5ls(...))` to look at the contents of the hdf5 file, as follows:
