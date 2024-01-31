@@ -175,6 +175,15 @@ Let’s start by calling the needed packages and reading in our NEON HDF5 file.<
 
 library(terra)
 
+## terra 1.7.55
+
+## 
+## Attaching package: 'terra'
+
+## The following object is masked from 'package:knitr':
+## 
+##     spin
+
 library(rhdf5)
 </code></pre>
 <div id="ds-dataTip" markdown="1">
@@ -193,6 +202,8 @@ setwd(wd)
 # Define the h5 file name to be opened
 
 f &lt;- paste0(wd,&quot;NEON_hyperspectral_tutorial_example_subset.h5&quot;)
+
+## Error in eval(expr, envir, enclos): object 'wd' not found
 </code></pre>
 <p>You can use <code>h5ls</code> and/or <code>View(h5ls(...))</code> to look at the contents of the hdf5 file, as follows:</p>
 <pre><code># look at the HDF5 file structure 
@@ -235,13 +246,11 @@ HDF5 file. Let’s start by learning about the wavelengths described within this
 
 wavelengthInfo &lt;- h5readAttributes(f,&quot;/SJER/Reflectance/Metadata/Spectral_Data/Wavelength&quot;)
 
+## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
+
 wavelengthInfo
 
-## $Description
-## [1] &quot;Central wavelength of the reflectance bands.&quot;
-## 
-## $Units
-## [1] &quot;nanometers&quot;
+## Error in eval(expr, envir, enclos): object 'wavelengthInfo' not found
 </code></pre>
 <p>Next, we can use the <code>h5read</code> function to read the data contained within the
 HDF5 file. Let’s read in the wavelengths of the band centers:</p>
@@ -249,13 +258,15 @@ HDF5 file. Let’s read in the wavelengths of the band centers:</p>
 
 wavelengths &lt;- h5read(f,&quot;/SJER/Reflectance/Metadata/Spectral_Data/Wavelength&quot;)
 
+## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
+
 head(wavelengths)
 
-## [1] 381.5437 401.5756 421.6075 441.6394 461.6713 481.7032
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'head': object 'wavelengths' not found
 
 tail(wavelengths)
 
-## [1] 2404.764 2424.796 2444.828 2464.860 2484.892 2504.924
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'tail': object 'wavelengths' not found
 </code></pre>
 <p>Which wavelength is band 6 associated with?</p>
 <p>(Hint: look at the wavelengths
@@ -314,46 +325,11 @@ reflectance metadata stored as <em>attributes</em> in the “Reflectance_Data”
 
 reflInfo &lt;- h5readAttributes(f, &quot;/SJER/Reflectance/Reflectance_Data&quot;)
 
+## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
+
 reflInfo
 
-## $Cloud_conditions
-## [1] &quot;For cloud conditions information see Weather Quality Index dataset.&quot;
-## 
-## $Cloud_type
-## [1] &quot;Cloud type may have been selected from multiple flight trajectories.&quot;
-## 
-## $Data_Ignore_Value
-## [1] -9999
-## 
-## $Description
-## [1] &quot;Atmospherically corrected reflectance.&quot;
-## 
-## $Dimension_Labels
-## [1] &quot;Line, Sample, Wavelength&quot;
-## 
-## $Dimensions
-## [1] 500 500 107
-## 
-## $Interleave
-## [1] &quot;BSQ&quot;
-## 
-## $Scale_Factor
-## [1] 10000
-## 
-## $Spatial_Extent_meters
-## [1]  257500  258000 4112500 4113000
-## 
-## $Spatial_Resolution_X_Y
-## [1] 1 1
-## 
-## $Units
-## [1] &quot;Unitless.&quot;
-## 
-## $Units_Valid_range
-## [1]     0 10000
-## 
-## $dim
-## [1] 107 500 500
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
 
 # Next, we read the different dimensions
 
@@ -361,23 +337,27 @@ reflInfo
 
 nRows &lt;- reflInfo$Dimensions[1]
 
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
+
 nCols &lt;- reflInfo$Dimensions[2]
+
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
 
 nBands &lt;- reflInfo$Dimensions[3]
 
-
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
 
 nRows
 
-## [1] 500
+## Error in eval(expr, envir, enclos): object 'nRows' not found
 
 nCols
 
-## [1] 500
+## Error in eval(expr, envir, enclos): object 'nCols' not found
 
 nBands
 
-## [1] 107
+## Error in eval(expr, envir, enclos): object 'nBands' not found
 </code></pre>
 <p>The HDF5 read function reads data in the order: Bands, Cols, Rows. This is
 different from how R reads data. We’ll adjust for this later.</p>
@@ -385,13 +365,13 @@ different from how R reads data. We’ll adjust for this later.</p>
 
 b9 &lt;- h5read(f,&quot;/SJER/Reflectance/Reflectance_Data&quot;,index=list(9,1:nCols,1:nRows)) 
 
-
+## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
 
 # what type of object is b9?
 
 class(b9)
 
-## [1] &quot;array&quot;
+## Error in eval(expr, envir, enclos): object 'b9' not found
 </code></pre>
 <h3 id="a-note-about-data-slicing-in-hdf5">A Note About Data Slicing in HDF5</h3>
 <p>Data slicing allows us to extract and work with subsets of the data rather than
@@ -404,13 +384,13 @@ to slice large datasets makes HDF5 ideal for working with big data.</p>
 
 b9 &lt;- b9[1,,]
 
-
+## Error in eval(expr, envir, enclos): object 'b9' not found
 
 # check it
 
 class(b9)
 
-## [1] &quot;matrix&quot; &quot;array&quot;
+## Error in eval(expr, envir, enclos): object 'b9' not found
 </code></pre>
 <h3 id="arrays-vs-matrices">Arrays vs. Matrices</h3>
 <p>Arrays are matrices with more than 2 dimensions. When we say dimension, we are
@@ -474,57 +454,22 @@ make sure processing is being performed correctly and all is well with the image
 
 h5readAttributes(f,&quot;/SJER/Reflectance/Reflectance_Data&quot;)
 
-## $Cloud_conditions
-## [1] &quot;For cloud conditions information see Weather Quality Index dataset.&quot;
-## 
-## $Cloud_type
-## [1] &quot;Cloud type may have been selected from multiple flight trajectories.&quot;
-## 
-## $Data_Ignore_Value
-## [1] -9999
-## 
-## $Description
-## [1] &quot;Atmospherically corrected reflectance.&quot;
-## 
-## $Dimension_Labels
-## [1] &quot;Line, Sample, Wavelength&quot;
-## 
-## $Dimensions
-## [1] 500 500 107
-## 
-## $Interleave
-## [1] &quot;BSQ&quot;
-## 
-## $Scale_Factor
-## [1] 10000
-## 
-## $Spatial_Extent_meters
-## [1]  257500  258000 4112500 4113000
-## 
-## $Spatial_Resolution_X_Y
-## [1] 1 1
-## 
-## $Units
-## [1] &quot;Unitless.&quot;
-## 
-## $Units_Valid_range
-## [1]     0 10000
-## 
-## $dim
-## [1] 107 500 500
+## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
 
 # plot the image
 
 image(b9)
-</code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/read-attributes-plot-1.png" alt="Plot of reflectance values for band 9 data. This plot shows a very washed out image lacking any detail." /></p>
-<pre><code># oh, that is hard to visually interpret.
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'b9' not found
+
+# oh, that is hard to visually interpret.
 
 # what happens if we plot a log of the data?
 
 image(log(b9))
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'b9' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/read-attributes-plot-2.png" alt="Plot of log transformed reflectance values for band 9 data. Log transformation improved the visibility of details in the image, but it is still not great." /></p>
 <p>What do you notice about the first image? It’s washed out and lacking any detail. What
 could be causing this? It got better when plotting the log of the values, but
 still not great.</p>
@@ -535,18 +480,21 @@ our data to figure out what is going on.</p>
 # and distribution of values.
 
 hist(b9,breaks=40,col=&quot;darkmagenta&quot;)
-</code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-1.png" alt="Histogram of reflectance values for band 9. The x-axis represents the reflectance values and ranges from 0 to 8000. The frequency of these values is on the y-axis. The histogram shows reflectance values are skewed to the right, where the majority of the values lie between 0 and 1000. We can conclude that reflectance values are not equally distributed across the range of reflectance values, resulting in a washed out image." /></p>
-<pre><code># View values between 0 and 5000
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'hist': object 'b9' not found
+
+# View values between 0 and 5000
 
 hist(b9,breaks=40,col=&quot;darkmagenta&quot;,xlim = c(0, 5000))
-</code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-2.png" alt="Histogram of reflectance values between 0 and 5000 for band 9. Reflectance values are on the x-axis, and the frequency is on the y-axis. The x-axis limit has been set 5000 in order to better visualize the distribution of reflectance values. We can confirm that the majority of the values are indeed within the 0 to 4000 range." /></p>
-<pre><code># View higher values
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'hist': object 'b9' not found
+
+# View higher values
 
 hist(b9, breaks=40,col=&quot;darkmagenta&quot;,xlim = c(5000, 15000),ylim=c(0,100))
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'hist': object 'b9' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-3.png" alt="Histogram of reflectance values between 5000 and 15000 for band 9. Reflectance values are on the x-axis, and the frequency is on the y-axis. Plot shows that a very few number of pixels have reflectance values larger than 5,000. These values are skewing how the image is being rendered and heavily impacting the way the image is drawn on our monitor." /></p>
 <p>As you’re examining the histograms above, keep in mind that reflectance values
 range between 0-1. The <strong>data scale factor</strong> in the metadata tells us to divide
 all reflectance values by 10,000. Thus, a value of 5,000 equates to a reflectance
@@ -569,21 +517,24 @@ image or to processing results which yield null values.</p>
 
 myNoDataValue &lt;- as.numeric(reflInfo$Data_Ignore_Value)
 
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
+
 myNoDataValue
 
-## [1] -9999
+## Error in eval(expr, envir, enclos): object 'myNoDataValue' not found
 
 # set all values equal to -9999 to NA
 
 b9[b9 == myNoDataValue] &lt;- NA
 
-
+## Error: object 'b9' not found
 
 # plot the image now
 
 image(b9)
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'b9' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/set-values-NA-1.png" alt="Plot of reflectance values for band 9 data with values equal to -9999 set to NA. Image data in raster format will often contain no data values, which may be attributed to the sensor not collecting data in that area of the image or to processing results which yield null values. Reflectance datasets designate -9999 as data ignore values. As such, we will reassign -9999 values to NA so R won’t try to render these pixels." /></p>
 <h3 id="reflectance-values-and-image-stretch">Reflectance Values and Image Stretch</h3>
 <p>Our image still looks dark because R is trying to render all reflectance values
 between 0 and 14999 as if they were distributed equally in the histogram. However
@@ -603,8 +554,9 @@ what’s called an <code>image stretch</code>. We will learn how to stretch our 
 later. For now, let’s plot the values as the log function on the pixel
 reflectance values to factor out those larger values.</p>
 <pre><code>image(log(b9))
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'b9' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-log-1.png" alt="Plot of log transformed reflectance values for the previous b9 image. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by doing whats called an image stretch." /></p>
 <p>The log applied to our image increases the contrast making it look more like an
 image. However, look at the images below. The top one is an RGB image as the
 image should look. The bottom one is our log-adjusted image. Notice a difference?</p>
@@ -636,9 +588,12 @@ as other GIS and imaging processing software like QGIS and ENVI do.</p>
 
 b9 &lt;- t(b9)
 
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': object 'b9' not found
+
 image(log(b9), main=&quot;Transposed Image&quot;)
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'b9' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/transpose-data-1.png" alt="Plot showing the transposed image of the log transformed reflectance values of b9. The orientation of the image is rotated in our log transformed image, because R reads in the matrices starting from the upper left hand corner." /></p>
 <h2 id="create-a-georeferenced-raster">Create a Georeferenced Raster</h2>
 <p>Next, we will create a proper raster using the <code>b9</code> matrix. The raster
 format will allow us to define and manage:</p>
@@ -662,13 +617,13 @@ EPSG to a CRS string. Then we can assign that CRS to the raster object.</p>
 
 myEPSG &lt;- h5read(f, &quot;/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code&quot;)
 
-
+## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
 
 # convert the EPSG code to a CRS string
 
 myCRS &lt;- crs(paste0(&quot;+init=epsg:&quot;,myEPSG))
 
-
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'crs': object 'myEPSG' not found
 
 # define final raster with projection info 
 
@@ -679,21 +634,13 @@ myCRS &lt;- crs(paste0(&quot;+init=epsg:&quot;,myEPSG))
 b9r &lt;- rast(b9, 
         crs=myCRS)
 
-
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'b9' not found
 
 # view the raster attributes
 
 b9r
 
-## class       : SpatRaster 
-## dimensions  : 500, 500, 1  (nrow, ncol, nlyr)
-## resolution  : 1, 1  (x, y)
-## extent      : 0, 500, 0, 500  (xmin, xmax, ymin, ymax)
-## coord. ref. : WGS 84 / UTM zone 11N 
-## source(s)   : memory
-## name        : lyr.1 
-## min value   :     0 
-## max value   :  9210
+## Error in eval(expr, envir, enclos): object 'b9r' not found
 
 # let's have a look at our properly oriented raster. Take note of the 
 
@@ -705,8 +652,9 @@ image(log(b9r),
       xlab = &quot;UTM Easting&quot;, 
       ylab = &quot;UTM Northing&quot;,
       main = &quot;Properly Oriented Raster&quot;)
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'b9r' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/define-CRS-1.png" alt="Plot of the properly oriented raster image of the band 9 data. In order to orient the image correctly, the coordinate reference system was defined and assigned to the raster object. X-axis represents the UTM Easting values, and the Y-axis represents the Northing values." /></p>
 <p>Next we define the extents of our raster. The extents will be used to calculate
 the raster’s resolution. Fortunately, the spatial extent is provided in the
 HDF5 file “Reflectance_Data” group attributes that we saved before as <code>reflInfo</code>.</p>
@@ -714,41 +662,41 @@ HDF5 file “Reflectance_Data” group attributes that we saved before as <code>
 
 xMin &lt;- reflInfo$Spatial_Extent_meters[1]
 
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
+
 xMax &lt;- reflInfo$Spatial_Extent_meters[2]
+
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
 
 yMin &lt;- reflInfo$Spatial_Extent_meters[3]
 
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
+
 yMax &lt;- reflInfo$Spatial_Extent_meters[4]
 
-
+## Error in eval(expr, envir, enclos): object 'reflInfo' not found
 
 # define the extent (left, right, top, bottom)
 
 rasExt &lt;- ext(xMin,xMax,yMin,yMax)
 
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'ext': object 'xMin' not found
+
 rasExt
 
-## SpatExtent : 257500, 258000, 4112500, 4113000 (xmin, xmax, ymin, ymax)
+## Error in eval(expr, envir, enclos): object 'rasExt' not found
 
 # assign the spatial extent to the raster
 
 ext(b9r) &lt;- rasExt
 
-
+## Error in eval(expr, envir, enclos): object 'rasExt' not found
 
 # look at raster attributes
 
 b9r
 
-## class       : SpatRaster 
-## dimensions  : 500, 500, 1  (nrow, ncol, nlyr)
-## resolution  : 1, 1  (x, y)
-## extent      : 257500, 258000, 4112500, 4113000  (xmin, xmax, ymin, ymax)
-## coord. ref. : WGS 84 / UTM zone 11N 
-## source(s)   : memory
-## name        : lyr.1 
-## min value   :     0 
-## max value   :  9210
+## Error in eval(expr, envir, enclos): object 'b9r' not found
 </code></pre>
 <figure>
 		<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/sat_image_lat_lon.png">
@@ -774,8 +722,9 @@ image(b9r,
       main= &quot;Raster w Custom Colors&quot;,
       col=col, 
       zlim=c(0,3000))
+
+## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'image': object 'b9r' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main//tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-colors-raster-1.png" alt="Plot of the properly oriented raster image of B9 with custom colors. We can adjust the colors of the image by adjusting the z limits, which in this case makes the highly reflective surfaces more vibrant. This color adjustment is more apparent in the bottom left of the image, where the parking lot, buildings and bare surfaces are located. X-axis represents the UTM Easting values, and the Y-axis represents the Northing values." /></p>
 <p>We’ve now created a raster from band 9 reflectance data. We can export the data
 as a raster, using the <code>writeRaster</code> command.</p>
 <pre><code># write out the raster as a geotiff
