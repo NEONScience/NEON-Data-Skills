@@ -67,14 +67,14 @@ We often want to generate a 3 band image from multi or hyperspectral data. The m
 
 <figure >
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"
-    alt="An image showing portion of the San Joaquin Experimental Range field site using red, green and blue bands (58,34,19)." width=600>
+    alt="An image showing portion of the San Joaquin Experimental Range field site using red, green and blue bands (58,34,19)." width=400>
     </a>
 <figcaption> A portion of the SJER field site using red, green and blue (bands 58, 34, and 19).</figcaption>
 </figure>
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/NIR_G_B.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/NIR_G_B.png"
-    alt="Image showing the same portion of the San Joaquin Experimental Range field site mentioned above, but using near infrared, green and blue bands (bands 90, 34, and 19) to create an infrared image." width=600>
+    alt="Image showing the same portion of the San Joaquin Experimental Range field site mentioned above, but using near infrared, green and blue bands (bands 90, 34, and 19) to create an infrared image." width=400>
     </a>
 <figcaption>Here is the same section of SJER but with other bands highlighted to create a colored infrared image – near infrared, green and blue (bands 90, 34, and 19).</figcaption>
 </figure>

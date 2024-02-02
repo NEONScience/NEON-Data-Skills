@@ -108,26 +108,22 @@ Set the working directory to ensure R can find the file we are importing, and we
 
     setwd(wd)
 
-We can use the `neonUtilities` function `byTileAOP` to download a single reflectance tile. You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000,4112000).
+We can use the `neonUtilities` function `byTileAOP` to download a single reflectance tile. You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000,4112000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~672.7 MB, so make sure you have enough space on your local drive. You can set `check.size=FALSE` if you want to download without a prompt.
 
 
-    byTileAOP(
+    byTileAOP(dpID='DP3.30006.001',
 
-      'DP3.30006.001',
+              site='SJER',
 
-      'SJER',
+              year='2021',
 
-      '2021',
+              easting=257500,
 
-      257500,
+              northing=4112500,
 
-      4112500,
+              check.size=TRUE, # can set to FALSE if you don't want to enter y/n
 
-      buffer = 0,
-
-      check.size = TRUE,
-
-      savepath = wd)
+              savepath = wd)
 
 This file will be downloaded into a nested subdirectory under the `~/data` folder, inside a folder named `DP3.30006.001` (the Data Product ID). The file should show up in this location:  `~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5`.
 
@@ -201,7 +197,7 @@ Which wavelength is band 21 associated with?
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/bluelight_EMSpectrum.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/bluelight_EMSpectrum.png"
-    alt="Graphical representation showing where the 482 nm wavelength falls within the blue portion of the visible light region of the electromagnetic spectrum."></a>
+    alt="Graphical representation showing where the 482 nm wavelength falls within the blue portion of the visible light region of the electromagnetic spectrum." width=400></a>
     <figcaption>482 nanometers falls within the blue portion of the electromagnetic spectrum. Source: National Ecological Observatory Network</figcaption>
 </figure>
 
@@ -214,7 +210,7 @@ A *band* represents a group of wavelengths. For example, the wavelength values b
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrumZoomed.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrumZoomed.png"
-    alt="Graphical representation showing how bands represent a range of values within the electromagnetic spectrum. The graphic shows wavelengths 675 nm through 700 nm split into five different bands, labeled bands A through E. Values for each band are often represented as the center point value of each band."></a>
+    alt="Graphical representation showing how bands represent a range of values within the electromagnetic spectrum. The graphic shows wavelengths 675 nm through 700 nm split into five different bands, labeled bands A through E. Values for each band are often represented as the center point value of each band." width=400></a>
     <figcaption>Bands represent a range of values (types of light) within the electromagnetic spectrum. Values for each band are often represented as the center point value of each band. Source: National Ecological Observatory Network (NEON)</figcaption>
 </figure>
 
@@ -489,11 +485,11 @@ The log applied to our image increases the contrast making it look more like an 
 <figure class="half">
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"
-    alt="RGB image of the SJER field site. At the top right of the image, there is dark, brackish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot.">
+    alt="RGB image of the SJER field site. At the top right of the image, there is dark, brackish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot." width=400>
     </a>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SJER_Flipped.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SJER_Flipped.png"
-    alt="Plot of log transformed reflectance values for the b34 image previously plotted. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by applying an image stretch. The log transformed image appears flipped because when R reads in the dataset, it reads them as: Columns x Bands x Rows, as opposed to the RGB image on the left which has dimensions as Bands x Rows x Columns.">
+    alt="Plot of log transformed reflectance values for the b34 image previously plotted. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by applying an image stretch. The log transformed image appears flipped because when R reads in the dataset, it reads them as: Columns x Bands x Rows, as opposed to the RGB image on the left which has dimensions as Bands x Rows x Columns." width=400>
     </a>
     <figcaption>Top: The image as it should look. Bottom: the image that we outputted from the code above. Notice a difference?</figcaption>
 </figure>

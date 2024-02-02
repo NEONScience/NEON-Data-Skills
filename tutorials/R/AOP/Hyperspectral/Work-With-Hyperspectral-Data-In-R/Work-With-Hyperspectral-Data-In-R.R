@@ -13,15 +13,13 @@ setwd(wd)
 
 
 ## ----download-refl, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------
-## byTileAOP(
-##   'DP3.30006.001',
-##   'SJER',
-##   '2021',
-##   257500,
-##   4112500,
-##   buffer = 0,
-##   check.size = TRUE,
-##   savepath = wd)
+## byTileAOP(dpID='DP3.30006.001',
+##           site='SJER',
+##           year='2021',
+##           easting=257500,
+##           northing=4112500,
+##           check.size=TRUE, # can set to FALSE if you don't want to enter y/n
+##           savepath = wd)
 
 
 ## ----define-h5, results="hide"-----------------------------------------------------------------------------------------------------------------------------
