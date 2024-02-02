@@ -73,8 +73,6 @@ directory and reading in the example dataset.
 
     library(ggplot2)
 
-    ## Learn more about the underlying theory at https://ggplot2-book.org/
-
     library(neonUtilities)
 
     
@@ -110,128 +108,68 @@ Now we can read in the file and look at the contents using `h5ls`. You can move 
 
     # look at the HDF5 file structure 
 
-    h5ls(h5_file,all=T) 
+    h5ls(h5_file) #optionally specify all=True if you want to see all of the information
 
-    ##                                           group                                 name         ltype cset       otype num_attrs  dclass          dtype  stype
-    ## 0                                             /                                 SJER H5L_TYPE_HARD    0   H5I_GROUP         3                              
-    ## 1                                         /SJER                          Reflectance H5L_TYPE_HARD    0   H5I_GROUP         5                              
-    ## 2                             /SJER/Reflectance                             Metadata H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 3                    /SJER/Reflectance/Metadata                    Ancillary_Imagery H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 4  /SJER/Reflectance/Metadata/Ancillary_Imagery                Aerosol_Optical_Depth H5L_TYPE_HARD    0 H5I_DATASET         5 INTEGER  H5T_STD_I16LE SIMPLE
-    ## 5  /SJER/Reflectance/Metadata/Ancillary_Imagery                               Aspect H5L_TYPE_HARD    0 H5I_DATASET         5   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 6  /SJER/Reflectance/Metadata/Ancillary_Imagery                          Cast_Shadow H5L_TYPE_HARD    0 H5I_DATASET         5 INTEGER   H5T_STD_U8LE SIMPLE
-    ## 7  /SJER/Reflectance/Metadata/Ancillary_Imagery Dark_Dense_Vegetation_Classification H5L_TYPE_HARD    0 H5I_DATASET         9 INTEGER   H5T_STD_U8LE SIMPLE
-    ## 8  /SJER/Reflectance/Metadata/Ancillary_Imagery                 Data_Selection_Index H5L_TYPE_HARD    0 H5I_DATASET         2 INTEGER  H5T_STD_I32LE SIMPLE
-    ## 9  /SJER/Reflectance/Metadata/Ancillary_Imagery                 Haze_Cloud_Water_Map H5L_TYPE_HARD    0 H5I_DATASET         9 INTEGER   H5T_STD_U8LE SIMPLE
-    ## 10 /SJER/Reflectance/Metadata/Ancillary_Imagery                  Illumination_Factor H5L_TYPE_HARD    0 H5I_DATASET         5 INTEGER   H5T_STD_U8LE SIMPLE
-    ## 11 /SJER/Reflectance/Metadata/Ancillary_Imagery                          Path_Length H5L_TYPE_HARD    0 H5I_DATASET         5   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 12 /SJER/Reflectance/Metadata/Ancillary_Imagery                      Sky_View_Factor H5L_TYPE_HARD    0 H5I_DATASET         5 INTEGER   H5T_STD_U8LE SIMPLE
-    ## 13 /SJER/Reflectance/Metadata/Ancillary_Imagery                                Slope H5L_TYPE_HARD    0 H5I_DATASET         5   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 14 /SJER/Reflectance/Metadata/Ancillary_Imagery             Smooth_Surface_Elevation H5L_TYPE_HARD    0 H5I_DATASET         5   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 15 /SJER/Reflectance/Metadata/Ancillary_Imagery                 Visibility_Index_Map H5L_TYPE_HARD    0 H5I_DATASET         5 INTEGER   H5T_STD_U8LE SIMPLE
-    ## 16 /SJER/Reflectance/Metadata/Ancillary_Imagery                   Water_Vapor_Column H5L_TYPE_HARD    0 H5I_DATASET         5   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 17 /SJER/Reflectance/Metadata/Ancillary_Imagery            Weather_Quality_Indicator H5L_TYPE_HARD    0 H5I_DATASET         1 INTEGER   H5T_STD_U8LE SIMPLE
-    ## 18                   /SJER/Reflectance/Metadata                    Coordinate_System H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 19 /SJER/Reflectance/Metadata/Coordinate_System             Coordinate_System_String H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 20 /SJER/Reflectance/Metadata/Coordinate_System                            EPSG Code H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 21 /SJER/Reflectance/Metadata/Coordinate_System                             Map_Info H5L_TYPE_HARD    0 H5I_DATASET         1  STRING     H5T_STRING SCALAR
-    ## 22 /SJER/Reflectance/Metadata/Coordinate_System                                Proj4 H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 23                   /SJER/Reflectance/Metadata                    Flight_Trajectory H5L_TYPE_HARD    0   H5I_GROUP         1                              
-    ## 24                   /SJER/Reflectance/Metadata                                 Logs H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 25              /SJER/Reflectance/Metadata/Logs                               195724 H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 26       /SJER/Reflectance/Metadata/Logs/195724                     ATCOR_Input_file H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 27       /SJER/Reflectance/Metadata/Logs/195724                 ATCOR_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 28       /SJER/Reflectance/Metadata/Logs/195724                Shadow_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 29       /SJER/Reflectance/Metadata/Logs/195724               Skyview_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 30       /SJER/Reflectance/Metadata/Logs/195724                  Solar_Azimuth_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 31       /SJER/Reflectance/Metadata/Logs/195724                   Solar_Zenith_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 32              /SJER/Reflectance/Metadata/Logs                               200251 H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 33       /SJER/Reflectance/Metadata/Logs/200251                     ATCOR_Input_file H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 34       /SJER/Reflectance/Metadata/Logs/200251                 ATCOR_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 35       /SJER/Reflectance/Metadata/Logs/200251                Shadow_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 36       /SJER/Reflectance/Metadata/Logs/200251               Skyview_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 37       /SJER/Reflectance/Metadata/Logs/200251                  Solar_Azimuth_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 38       /SJER/Reflectance/Metadata/Logs/200251                   Solar_Zenith_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 39              /SJER/Reflectance/Metadata/Logs                               200812 H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 40       /SJER/Reflectance/Metadata/Logs/200812                     ATCOR_Input_file H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 41       /SJER/Reflectance/Metadata/Logs/200812                 ATCOR_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 42       /SJER/Reflectance/Metadata/Logs/200812                Shadow_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 43       /SJER/Reflectance/Metadata/Logs/200812               Skyview_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 44       /SJER/Reflectance/Metadata/Logs/200812                  Solar_Azimuth_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 45       /SJER/Reflectance/Metadata/Logs/200812                   Solar_Zenith_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 46              /SJER/Reflectance/Metadata/Logs                               201441 H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 47       /SJER/Reflectance/Metadata/Logs/201441                     ATCOR_Input_file H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 48       /SJER/Reflectance/Metadata/Logs/201441                 ATCOR_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 49       /SJER/Reflectance/Metadata/Logs/201441                Shadow_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 50       /SJER/Reflectance/Metadata/Logs/201441               Skyview_Processing_Log H5L_TYPE_HARD    0 H5I_DATASET         0  STRING     H5T_STRING SCALAR
-    ## 51       /SJER/Reflectance/Metadata/Logs/201441                  Solar_Azimuth_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 52       /SJER/Reflectance/Metadata/Logs/201441                   Solar_Zenith_Angle H5L_TYPE_HARD    0 H5I_DATASET         0   FLOAT H5T_IEEE_F32LE SCALAR
-    ## 53                   /SJER/Reflectance/Metadata                        Spectral_Data H5L_TYPE_HARD    0   H5I_GROUP         0                              
-    ## 54     /SJER/Reflectance/Metadata/Spectral_Data                                 FWHM H5L_TYPE_HARD    0 H5I_DATASET         2   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 55     /SJER/Reflectance/Metadata/Spectral_Data                           Wavelength H5L_TYPE_HARD    0 H5I_DATASET         2   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 56                   /SJER/Reflectance/Metadata              to-sensor_azimuth_angle H5L_TYPE_HARD    0 H5I_DATASET         5   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 57                   /SJER/Reflectance/Metadata               to-sensor_zenith_angle H5L_TYPE_HARD    0 H5I_DATASET         5   FLOAT H5T_IEEE_F32LE SIMPLE
-    ## 58                            /SJER/Reflectance                     Reflectance_Data H5L_TYPE_HARD    0 H5I_DATASET        12 INTEGER  H5T_STD_I16LE SIMPLE
-    ##    rank               dim            maxdim
-    ## 0     0                                    
-    ## 1     0                                    
-    ## 2     0                                    
-    ## 3     0                                    
-    ## 4     2       1000 x 1000       1000 x 1000
-    ## 5     2       1000 x 1000       1000 x 1000
-    ## 6     2       1000 x 1000       1000 x 1000
-    ## 7     2       1000 x 1000       1000 x 1000
-    ## 8     2       1000 x 1000       1000 x 1000
-    ## 9     2       1000 x 1000       1000 x 1000
-    ## 10    2       1000 x 1000       1000 x 1000
-    ## 11    2       1000 x 1000       1000 x 1000
-    ## 12    2       1000 x 1000       1000 x 1000
-    ## 13    2       1000 x 1000       1000 x 1000
-    ## 14    2       1000 x 1000       1000 x 1000
-    ## 15    2       1000 x 1000       1000 x 1000
-    ## 16    2       1000 x 1000       1000 x 1000
-    ## 17    3   3 x 1000 x 1000   3 x 1000 x 1000
-    ## 18    0                                    
-    ## 19    0             ( 0 )             ( 0 )
-    ## 20    0             ( 0 )             ( 0 )
-    ## 21    0             ( 0 )             ( 0 )
-    ## 22    0             ( 0 )             ( 0 )
-    ## 23    0                                    
-    ## 24    0                                    
-    ## 25    0                                    
-    ## 26    0             ( 0 )             ( 0 )
-    ## 27    0             ( 0 )             ( 0 )
-    ## 28    0             ( 0 )             ( 0 )
-    ## 29    0             ( 0 )             ( 0 )
-    ## 30    0             ( 0 )             ( 0 )
-    ## 31    0             ( 0 )             ( 0 )
-    ## 32    0                                    
-    ## 33    0             ( 0 )             ( 0 )
-    ## 34    0             ( 0 )             ( 0 )
-    ## 35    0             ( 0 )             ( 0 )
-    ## 36    0             ( 0 )             ( 0 )
-    ## 37    0             ( 0 )             ( 0 )
-    ## 38    0             ( 0 )             ( 0 )
-    ## 39    0                                    
-    ## 40    0             ( 0 )             ( 0 )
-    ## 41    0             ( 0 )             ( 0 )
-    ## 42    0             ( 0 )             ( 0 )
-    ## 43    0             ( 0 )             ( 0 )
-    ## 44    0             ( 0 )             ( 0 )
-    ## 45    0             ( 0 )             ( 0 )
-    ## 46    0                                    
-    ## 47    0             ( 0 )             ( 0 )
-    ## 48    0             ( 0 )             ( 0 )
-    ## 49    0             ( 0 )             ( 0 )
-    ## 50    0             ( 0 )             ( 0 )
-    ## 51    0             ( 0 )             ( 0 )
-    ## 52    0             ( 0 )             ( 0 )
-    ## 53    0                                    
-    ## 54    1               426               426
-    ## 55    1               426               426
-    ## 56    2       1000 x 1000       1000 x 1000
-    ## 57    2       1000 x 1000       1000 x 1000
-    ## 58    3 426 x 1000 x 1000 426 x 1000 x 1000
+    ##                                           group                                 name       otype  dclass               dim
+    ## 0                                             /                                 SJER   H5I_GROUP                          
+    ## 1                                         /SJER                          Reflectance   H5I_GROUP                          
+    ## 2                             /SJER/Reflectance                             Metadata   H5I_GROUP                          
+    ## 3                    /SJER/Reflectance/Metadata                    Ancillary_Imagery   H5I_GROUP                          
+    ## 4  /SJER/Reflectance/Metadata/Ancillary_Imagery                Aerosol_Optical_Depth H5I_DATASET INTEGER       1000 x 1000
+    ## 5  /SJER/Reflectance/Metadata/Ancillary_Imagery                               Aspect H5I_DATASET   FLOAT       1000 x 1000
+    ## 6  /SJER/Reflectance/Metadata/Ancillary_Imagery                          Cast_Shadow H5I_DATASET INTEGER       1000 x 1000
+    ## 7  /SJER/Reflectance/Metadata/Ancillary_Imagery Dark_Dense_Vegetation_Classification H5I_DATASET INTEGER       1000 x 1000
+    ## 8  /SJER/Reflectance/Metadata/Ancillary_Imagery                 Data_Selection_Index H5I_DATASET INTEGER       1000 x 1000
+    ## 9  /SJER/Reflectance/Metadata/Ancillary_Imagery                 Haze_Cloud_Water_Map H5I_DATASET INTEGER       1000 x 1000
+    ## 10 /SJER/Reflectance/Metadata/Ancillary_Imagery                  Illumination_Factor H5I_DATASET INTEGER       1000 x 1000
+    ## 11 /SJER/Reflectance/Metadata/Ancillary_Imagery                          Path_Length H5I_DATASET   FLOAT       1000 x 1000
+    ## 12 /SJER/Reflectance/Metadata/Ancillary_Imagery                      Sky_View_Factor H5I_DATASET INTEGER       1000 x 1000
+    ## 13 /SJER/Reflectance/Metadata/Ancillary_Imagery                                Slope H5I_DATASET   FLOAT       1000 x 1000
+    ## 14 /SJER/Reflectance/Metadata/Ancillary_Imagery             Smooth_Surface_Elevation H5I_DATASET   FLOAT       1000 x 1000
+    ## 15 /SJER/Reflectance/Metadata/Ancillary_Imagery                 Visibility_Index_Map H5I_DATASET INTEGER       1000 x 1000
+    ## 16 /SJER/Reflectance/Metadata/Ancillary_Imagery                   Water_Vapor_Column H5I_DATASET   FLOAT       1000 x 1000
+    ## 17 /SJER/Reflectance/Metadata/Ancillary_Imagery            Weather_Quality_Indicator H5I_DATASET INTEGER   3 x 1000 x 1000
+    ## 18                   /SJER/Reflectance/Metadata                    Coordinate_System   H5I_GROUP                          
+    ## 19 /SJER/Reflectance/Metadata/Coordinate_System             Coordinate_System_String H5I_DATASET  STRING             ( 0 )
+    ## 20 /SJER/Reflectance/Metadata/Coordinate_System                            EPSG Code H5I_DATASET  STRING             ( 0 )
+    ## 21 /SJER/Reflectance/Metadata/Coordinate_System                             Map_Info H5I_DATASET  STRING             ( 0 )
+    ## 22 /SJER/Reflectance/Metadata/Coordinate_System                                Proj4 H5I_DATASET  STRING             ( 0 )
+    ## 23                   /SJER/Reflectance/Metadata                    Flight_Trajectory   H5I_GROUP                          
+    ## 24                   /SJER/Reflectance/Metadata                                 Logs   H5I_GROUP                          
+    ## 25              /SJER/Reflectance/Metadata/Logs                               195724   H5I_GROUP                          
+    ## 26       /SJER/Reflectance/Metadata/Logs/195724                     ATCOR_Input_file H5I_DATASET  STRING             ( 0 )
+    ## 27       /SJER/Reflectance/Metadata/Logs/195724                 ATCOR_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 28       /SJER/Reflectance/Metadata/Logs/195724                Shadow_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 29       /SJER/Reflectance/Metadata/Logs/195724               Skyview_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 30       /SJER/Reflectance/Metadata/Logs/195724                  Solar_Azimuth_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 31       /SJER/Reflectance/Metadata/Logs/195724                   Solar_Zenith_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 32              /SJER/Reflectance/Metadata/Logs                               200251   H5I_GROUP                          
+    ## 33       /SJER/Reflectance/Metadata/Logs/200251                     ATCOR_Input_file H5I_DATASET  STRING             ( 0 )
+    ## 34       /SJER/Reflectance/Metadata/Logs/200251                 ATCOR_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 35       /SJER/Reflectance/Metadata/Logs/200251                Shadow_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 36       /SJER/Reflectance/Metadata/Logs/200251               Skyview_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 37       /SJER/Reflectance/Metadata/Logs/200251                  Solar_Azimuth_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 38       /SJER/Reflectance/Metadata/Logs/200251                   Solar_Zenith_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 39              /SJER/Reflectance/Metadata/Logs                               200812   H5I_GROUP                          
+    ## 40       /SJER/Reflectance/Metadata/Logs/200812                     ATCOR_Input_file H5I_DATASET  STRING             ( 0 )
+    ## 41       /SJER/Reflectance/Metadata/Logs/200812                 ATCOR_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 42       /SJER/Reflectance/Metadata/Logs/200812                Shadow_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 43       /SJER/Reflectance/Metadata/Logs/200812               Skyview_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 44       /SJER/Reflectance/Metadata/Logs/200812                  Solar_Azimuth_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 45       /SJER/Reflectance/Metadata/Logs/200812                   Solar_Zenith_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 46              /SJER/Reflectance/Metadata/Logs                               201441   H5I_GROUP                          
+    ## 47       /SJER/Reflectance/Metadata/Logs/201441                     ATCOR_Input_file H5I_DATASET  STRING             ( 0 )
+    ## 48       /SJER/Reflectance/Metadata/Logs/201441                 ATCOR_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 49       /SJER/Reflectance/Metadata/Logs/201441                Shadow_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 50       /SJER/Reflectance/Metadata/Logs/201441               Skyview_Processing_Log H5I_DATASET  STRING             ( 0 )
+    ## 51       /SJER/Reflectance/Metadata/Logs/201441                  Solar_Azimuth_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 52       /SJER/Reflectance/Metadata/Logs/201441                   Solar_Zenith_Angle H5I_DATASET   FLOAT             ( 0 )
+    ## 53                   /SJER/Reflectance/Metadata                        Spectral_Data   H5I_GROUP                          
+    ## 54     /SJER/Reflectance/Metadata/Spectral_Data                                 FWHM H5I_DATASET   FLOAT               426
+    ## 55     /SJER/Reflectance/Metadata/Spectral_Data                           Wavelength H5I_DATASET   FLOAT               426
+    ## 56                   /SJER/Reflectance/Metadata              to-sensor_azimuth_angle H5I_DATASET   FLOAT       1000 x 1000
+    ## 57                   /SJER/Reflectance/Metadata               to-sensor_zenith_angle H5I_DATASET   FLOAT       1000 x 1000
+    ## 58                            /SJER/Reflectance                     Reflectance_Data H5I_DATASET INTEGER 426 x 1000 x 1000
 
 
 ## Read Wavelength Values
@@ -292,35 +230,33 @@ Then, we can pull the spatial attributes that we'll need to adjust the reflectan
 
     # grab scale factor from the Reflectance attributes
 
-    reflectanceAttr <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+    reflectanceAttr <- h5readAttributes(h5_file,"/SJER/Reflectance/Reflectance_Data" )
 
-    ## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
+    
 
     scaleFact <- reflectanceAttr$Scale_Factor
 
-    ## Error in eval(expr, envir, enclos): object 'reflectanceAttr' not found
+    
 
     # add scaled data column to DF
 
     aPixeldf$scaled <- (aPixeldf$V1/as.vector(scaleFact))
 
-    ## Error in eval(expr, envir, enclos): object 'scaleFact' not found
+    
 
     # make nice column names
 
     names(aPixeldf) <- c('Reflectance','Wavelength','ScaledReflectance')
 
-    ## Error in names(aPixeldf) <- c("Reflectance", "Wavelength", "ScaledReflectance"): 'names' attribute [3] must be the same length as the vector [2]
-
     head(aPixeldf)
 
-    ##    V1 Wavelength
-    ## 1 206   381.6035
-    ## 2 266   386.6132
-    ## 3 274   391.6229
-    ## 4 297   396.6327
-    ## 5 236   401.6424
-    ## 6 236   406.6522
+    ##   Reflectance Wavelength ScaledReflectance
+    ## 1         206   381.6035            0.0206
+    ## 2         266   386.6132            0.0266
+    ## 3         274   391.6229            0.0274
+    ## 4         297   396.6327            0.0297
+    ## 5         236   401.6424            0.0236
+    ## 6         236   406.6522            0.0236
 
 ## Plot Spectral Signature
 
@@ -332,9 +268,5 @@ Now we're ready to plot our spectral signature!
        xlab("Wavelength (nm)")+
        ylab("Reflectance")
 
-    ## Error in `geom_line()`:
-    ## ! Problem while computing aesthetics.
-    ## ℹ Error occurred in the 1st layer.
-    ## Caused by error:
-    ## ! object 'ScaledReflectance' not found
+![Spectral signature plot with wavelength in nanometers on the x-axis and reflectance on the y-axis.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Plot-Hyperspectral-Spectra/rfigs/plot-spectra-1.png)
 

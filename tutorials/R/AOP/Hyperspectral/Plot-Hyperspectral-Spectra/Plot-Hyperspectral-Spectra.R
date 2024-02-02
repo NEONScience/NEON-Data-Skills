@@ -24,7 +24,7 @@ setwd(wd)
 h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 # look at the HDF5 file structure 
-h5ls(h5_file,all=T) 
+h5ls(h5_file) #optionally specify all=True if you want to see all of the information
 
 
 ## ----read-band-wavelengths---------------------------------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ head(aPixeldf)
 ## ----pull-scale-factor-------------------------------------------------------------------------------------------------------------------------------------
 
 # grab scale factor from the Reflectance attributes
-reflectanceAttr <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+reflectanceAttr <- h5readAttributes(h5_file,"/SJER/Reflectance/Reflectance_Data" )
 
 scaleFact <- reflectanceAttr$Scale_Factor
 
