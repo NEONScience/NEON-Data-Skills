@@ -6,12 +6,12 @@ dateCreated: 2014-11-26 20:49:52
 authors: Edmund Hart, Leah A. Wasser, Donal O'Leary
 contributors: Felipe Sanchez, Bridget Hass
 estimatedTime: 1.0 - 1.5 Hours
-packagesLibraries: rhdf5, terra
+packagesLibraries: rhdf5, terra, neonUtilities
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
 dataProudct: DP3.30006.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
-tutorialSeries:
+tutorialSeries: intro-hsi-r-series
 urlTitle: create-raster-stack-hsi-hdf5-r
 ---
 
@@ -386,13 +386,14 @@ plot(ndviCalc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
 ### Challenge: Work with Indices
 
-Try the following:
-
+Try the following on your own:
 
 
 1. Calculate the Normalized Difference Nitrogen Index (NDNI) using the following equation: 
-log(1/p1510)-log(1/p1680)/ log(1/p1510)+log(1/p1680)
 
+$$
+\frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
+$$
 2. Calculate the Enhanced Vegetation Index (EVI). Hint: Look up the formula, and apply the appropriate NEON bands. Hint: You can look at satellite datasets, such as <a href="https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index" target="_blank">USGS Landsat EVI.</a>  
 
 3. Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple Red and NIR bands and then calculate NDVI?

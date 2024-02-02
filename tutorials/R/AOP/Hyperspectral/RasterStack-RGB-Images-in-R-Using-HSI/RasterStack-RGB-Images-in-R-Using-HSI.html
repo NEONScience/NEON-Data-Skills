@@ -488,18 +488,16 @@ plot(ndviCalc, main=&quot;NDVI for the NEON SJER Field Site&quot;, col=myCol, br
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-2.png" alt="Raster plot of a portion of the SJER field site showing calculated NDVI values with predefined breaks at 0, 0.25, 0.5, 05, and 1. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. Plot legend goes from 0 to 1." /></p>
 <div id="ds-challenge" markdown="1">
 <h3 id="challenge-work-with-indices">Challenge: Work with Indices</h3>
-<p>Try the following:</p>
+<p>Try the following on your own:</p>
 <ol>
-<li>
-<p>Calculate the Normalized Difference Nitrogen Index (NDNI) using the following equation:
-log(1/p1510)-log(1/p1680)/ log(1/p1510)+log(1/p1680)</p>
-</li>
-<li>
-<p>Calculate the Enhanced Vegetation Index (EVI). Hint: Look up the formula, and apply the appropriate NEON bands. Hint: You can look at satellite datasets, such as <a href="https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index" target="_blank">USGS Landsat EVI.</a></p>
-</li>
-<li>
-<p>Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple Red and NIR bands and then calculate NDVI?</p>
-</li>
+<li>Calculate the Normalized Difference Nitrogen Index (NDNI) using the following equation:</li>
+</ol>
+<p>$$
+\frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
+$$
+2. Calculate the Enhanced Vegetation Index (EVI). Hint: Look up the formula, and apply the appropriate NEON bands. Hint: You can look at satellite datasets, such as <a href="https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index" target="_blank">USGS Landsat EVI.</a></p>
+<ol start="3">
+<li>Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple Red and NIR bands and then calculate NDVI?</li>
 </ol>
 </div>
 </div>
