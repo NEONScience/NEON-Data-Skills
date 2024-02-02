@@ -1,4 +1,4 @@
-## ----install-load-library, results="hide"---------------------------------------------------------------------------------------------------
+## ----install-load-library, results="hide"------------------------------------------------------------------------------------------------------------------
 
 # Load `terra` and `rhdf5` packages to read NIS data into R
 library(terra)
@@ -6,13 +6,13 @@ library(rhdf5)
 library(neonUtilities)
 
 
-## ----set-wd, results="hide"-----------------------------------------------------------------------------------------------------------------
+## ----set-wd, results="hide"--------------------------------------------------------------------------------------------------------------------------------
 
 wd <- "~/data/" #This will depend on your local environment
 setwd(wd)
 
 
-## ----download-refl, eval=FALSE--------------------------------------------------------------------------------------------------------------
+## ----download-refl, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------
 ## byTileAOP(
 ##   'DP3.30006.001',
 ##   'SJER',
@@ -24,17 +24,17 @@ setwd(wd)
 ##   savepath = wd)
 
 
-## ----define-h5, results="hide"--------------------------------------------------------------------------------------------------------------
+## ----define-h5, results="hide"-----------------------------------------------------------------------------------------------------------------------------
 # Define the h5 file name to be opened
 h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 
-## ----view-file-strux, eval=FALSE, comment=NA------------------------------------------------------------------------------------------------
+## ----view-file-strux, eval=FALSE, comment=NA---------------------------------------------------------------------------------------------------------------
 # look at the HDF5 file structure 
 View(h5ls(h5_file,all=T))
 
 
-## ----read-band-wavelength-attributes--------------------------------------------------------------------------------------------------------
+## ----read-band-wavelength-attributes-----------------------------------------------------------------------------------------------------------------------
 
 # get information about the wavelengths of this dataset
 wavelengthInfo <- h5readAttributes(h5_file,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
@@ -42,7 +42,7 @@ wavelengthInfo
 
 
 
-## ----read-band-wavelengths------------------------------------------------------------------------------------------------------------------
+## ----read-band-wavelengths---------------------------------------------------------------------------------------------------------------------------------
 # read in the wavelength information from the HDF5 file
 wavelengths <- h5read(h5_file,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 head(wavelengths)
@@ -50,7 +50,7 @@ tail(wavelengths)
 
 
 
-## ----get-reflectance-shape------------------------------------------------------------------------------------------------------------------
+## ----get-reflectance-shape---------------------------------------------------------------------------------------------------------------------------------
 
 # First, we need to extract the reflectance metadata:
 reflInfo <- h5readAttributes(h5_file, "/SJER/Reflectance/Reflectance_Data")
@@ -68,7 +68,7 @@ nBands
 
 
 
-## ----get-reflectance-shape-2----------------------------------------------------------------------------------------------------------------
+## ----get-reflectance-shape-2-------------------------------------------------------------------------------------------------------------------------------
 # Extract or "slice" data for band 34 from the HDF5 file
 b34 <- h5read(h5_file,"/SJER/Reflectance/Reflectance_Data",index=list(34,1:nCols,1:nRows)) 
 
@@ -77,7 +77,7 @@ class(b34)
 
 
 
-## ----convert-to-matrix----------------------------------------------------------------------------------------------------------------------
+## ----convert-to-matrix-------------------------------------------------------------------------------------------------------------------------------------
 
 # convert from array to matrix by selecting only the first band
 b34 <- b34[1,,]
@@ -97,7 +97,7 @@ image(b34)
 
 
 
-## ----plot-log-b34---------------------------------------------------------------------------------------------------------------------------
+## ----plot-log-b34------------------------------------------------------------------------------------------------------------------------------------------
 # this is a little hard to visually interpret - what happens if we plot a log of the data?
 image(log(b34))
 
@@ -170,7 +170,7 @@ image(log(b34r),
 
 
 
-## ----define-extent--------------------------------------------------------------------------------------------------------------------------
+## ----define-extent-----------------------------------------------------------------------------------------------------------------------------------------
 # Grab the UTM coordinates of the spatial extent
 xMin <- reflInfo$Spatial_Extent_meters[1]
 xMax <- reflInfo$Spatial_Extent_meters[2]
@@ -203,7 +203,7 @@ image(b34r,
 
 
 
-## ----write-raster,  eval=FALSE, comment=NA--------------------------------------------------------------------------------------------------
+## ----write-raster,  eval=FALSE, comment=NA-----------------------------------------------------------------------------------------------------------------
 
 # write out the raster as a geotiff
 writeRaster(b34r,

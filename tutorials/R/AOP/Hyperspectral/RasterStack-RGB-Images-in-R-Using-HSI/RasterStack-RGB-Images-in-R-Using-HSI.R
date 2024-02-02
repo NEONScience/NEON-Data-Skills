@@ -1,16 +1,16 @@
-## ----load-libraries----------------------------------------------------------------------------------------------------------
+## ----load-libraries----------------------------------------------------------------------------------------------------------------------------------------
 library(terra)
 library(rhdf5)
 library(neonUtilities)
 
 
-## ----set-wd------------------------------------------------------------------------------------------------------------------
+## ----set-wd------------------------------------------------------------------------------------------------------------------------------------------------
 # set working directory (this will depend on your local environment)
 wd <- "~/data/"
 setwd(wd)
 
 
-## ----download-refl, eval=FALSE-----------------------------------------------------------------------------------------------
+## ----download-refl, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------
 ## byTileAOP(dpID = 'DP3.30006.001',
 ##           site = 'SJER',
 ##           year = '2021',
@@ -19,16 +19,16 @@ setwd(wd)
 ##           savepath = wd)
 
 
-## ----define-h5, results="hide"-----------------------------------------------------------------------------------------------
+## ----define-h5, results="hide"-----------------------------------------------------------------------------------------------------------------------------
 # Define the h5 file name to be opened
 h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 
-## ----view-file-structure, eval=FALSE, comment=NA-----------------------------------------------------------------------------
+## ----view-file-structure, eval=FALSE, comment=NA-----------------------------------------------------------------------------------------------------------
 View(h5ls(h5_file,all=T))
 
 
-## ----get-spatial-attributes--------------------------------------------------------------------------------------------------
+## ----get-spatial-attributes--------------------------------------------------------------------------------------------------------------------------------
 
 # define coordinate reference system from the EPSG code provided in the HDF5 file
 h5EPSG <- h5read(h5_file,"/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code" )
@@ -54,7 +54,7 @@ h5NoDataValue <- as.integer(reflInfo$Data_Ignore_Value)
 cat('No Data Value:',h5NoDataValue)
 
 
-## ----function-read-refl-data-------------------------------------------------------------------------------------------------
+## ----function-read-refl-data-------------------------------------------------------------------------------------------------------------------------------
 
 # file: the hdf5 file
 # band: the band you want to process
@@ -85,7 +85,7 @@ band2Raster <- function(file, band, noDataValue, extent, CRS){
 
 
 
-## ----create-raster-list------------------------------------------------------------------------------------------------------
+## ----create-raster-list------------------------------------------------------------------------------------------------------------------------------------
 
 # create a list of the bands (R,G,B) we want to include in our stack
 rgb <- list(58,34,19)
@@ -97,11 +97,11 @@ rgb_rast <- lapply(rgb,FUN=band2Raster, file = h5_file,
                    CRS=h5CRS)
 
 
-## ----rgb-rast-properties-----------------------------------------------------------------------------------------------------
+## ----rgb-rast-properties-----------------------------------------------------------------------------------------------------------------------------------
 rgb_rast
 
 
-## ----raster-stack------------------------------------------------------------------------------------------------------------
+## ----raster-stack------------------------------------------------------------------------------------------------------------------------------------------
 rgbStack <- rast(rgb_rast)
 
 
@@ -117,7 +117,7 @@ names(rgbStack) <- bandNames
 rgbStack
 
 
-## ----scale-plot-refl---------------------------------------------------------------------------------------------------------
+## ----scale-plot-refl---------------------------------------------------------------------------------------------------------------------------------------
 # scale the data as specified in the reflInfo$Scale Factor
 rgbStack <- rgbStack/as.integer(reflInfo$Scale_Factor)
 
@@ -147,7 +147,7 @@ plotRGB(rgbStack,
         stretch = "lin")
 
 
-## ----save-raster-geotiff, eval=FALSE, comment=NA-----------------------------------------------------------------------------
+## ----save-raster-geotiff, eval=FALSE, comment=NA-----------------------------------------------------------------------------------------------------------
 # Write out final raster	
 # Note: if you set overwrite to TRUE, then you will overwrite (and lose) any older version of the tif file! 
 writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_image.tif"), overwrite=TRUE)
