@@ -1,7 +1,7 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Hyperspectral/Intro-hyperspectral/Select-Pixels-Compare-Spectral-Signatures/Select-Pixels-Compare-Spectral-Signatures.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/Select-Pixels-Compare-Spectral-Signatures.R
 contributors: Megan Jones, Felipe Sanchez
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
@@ -161,22 +161,24 @@ As shown here:
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/Click_points.png"
     alt="RGB image of a portion of the SJER field site using 3 bands from the raster stack. Also displayed are points labeled with numbers one through six, representing six land cover types selected using the interactive click function from the raster package. These are: 1. Water, 2. Tree Canopy, 3. Grass, 4. Soil (Baseball Diamond), 5. Building Roof, and 6. Road. Plotting parameters have been changed to enhance visibility.">
     </a>
-<figcaption> Six different land cover types chosen for this study (magenta dots) in the order listed above (red numbers).</figcaption>
+<figcaption>Six different land cover types chosen for this study in the order listed above (red numbers). This image is displayed with a histogram stretch.</figcaption>
 </figure>
+
 
 
 <div id="ds-dataTip" markdown="1">
 
-<i class="fa fa-star"></i> **Data Tip:** Note from the `terra::click` Description (which you can see by typing `help("click")`: "This does not work well on the default RStudio plotting device. To work around that, you can first run `dev.new(noRStudioGD = TRUE)` which will create a separate window for plotting, then use `plot()` followed by `click()` and click on the map."
+<i class="fa fa-star"></i> **Data Tip:** Note from the `terra::click` Description (which you can read by typing `help("click")`: `click` "does not work well on the default RStudio plotting device. To work around that, you can first run `dev.new(noRStudioGD = TRUE)` which will create a separate window for plotting, then use `plot()` followed by `click()` and click on the map."
 
 </div>
 
-For this next part, if you are following along in RStudio, you will need to enter these lines directly in the Console. `dev.new(noRStudioGD = TRUE)` will open up a separate window for plotting, where you will also run the `click` command.
+
+For this next part, if you are following along in RStudio, you will need to enter these line below directly in the Console. `dev.new(noRStudioGD = TRUE)` will open up a separate window for plotting, where you will also run the `click` command.
 
 
     dev.new(noRStudioGD = TRUE)
 
-Now we can create our RGB plot, and start clicking on this new Graphics window.
+Now we can create our RGB plot, and start clicking on this in the pop-out Graphics window.
 
 
     # change plotting parameters to better see the points and numbers generated from clicking

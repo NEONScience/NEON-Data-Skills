@@ -199,15 +199,15 @@ plotRGB(rgbStack,
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/Click_points.png"
     alt="RGB image of a portion of the SJER field site using 3 bands from the raster stack. Also displayed are points labeled with numbers one through six, representing six land cover types selected using the interactive click function from the raster package. These are: 1. Water, 2. Tree Canopy, 3. Grass, 4. Soil (Baseball Diamond), 5. Building Roof, and 6. Road. Plotting parameters have been changed to enhance visibility.">
     </a>
-<figcaption> Six different land cover types chosen for this study (magenta dots) in the order listed above (red numbers).</figcaption>
+<figcaption>Six different land cover types chosen for this study in the order listed above (red numbers). This image is displayed with a histogram stretch.</figcaption>
 </figure>
 <div id="ds-dataTip" markdown="1">
-<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> Note from the <code>terra::click</code> Description (which you can see by typing <code>help(&quot;click&quot;)</code>: “This does not work well on the default RStudio plotting device. To work around that, you can first run <code>dev.new(noRStudioGD = TRUE)</code> which will create a separate window for plotting, then use <code>plot()</code> followed by <code>click()</code> and click on the map.”</p>
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> Note from the <code>terra::click</code> Description (which you can read by typing <code>help(&quot;click&quot;)</code>: <code>click</code> “does not work well on the default RStudio plotting device. To work around that, you can first run <code>dev.new(noRStudioGD = TRUE)</code> which will create a separate window for plotting, then use <code>plot()</code> followed by <code>click()</code> and click on the map.”</p>
 </div>
-<p>For this next part, if you are following along in RStudio, you will need to enter these lines directly in the Console. <code>dev.new(noRStudioGD = TRUE)</code> will open up a separate window for plotting, where you will also run the <code>click</code> command.</p>
+<p>For this next part, if you are following along in RStudio, you will need to enter these line below directly in the Console. <code>dev.new(noRStudioGD = TRUE)</code> will open up a separate window for plotting, where you will also run the <code>click</code> command.</p>
 <pre><code>dev.new(noRStudioGD = TRUE)
 </code></pre>
-<p>Now we can create our RGB plot, and start clicking on this new Graphics window.</p>
+<p>Now we can create our RGB plot, and start clicking on this in the pop-out Graphics window.</p>
 <pre><code># change plotting parameters to better see the points and numbers generated from clicking
 
 par(col=&quot;red&quot;, cex=2)
