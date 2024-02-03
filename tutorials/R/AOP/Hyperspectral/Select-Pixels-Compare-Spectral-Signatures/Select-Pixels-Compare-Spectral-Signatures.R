@@ -1,4 +1,4 @@
-## ----load-libraries, message=FALSE, warning=FALSE-------------------------------------------------------------------------------------------
+## ----load-libraries, message=FALSE, warning=FALSE------------------------------------------------------------------------------------------------------------------------
 
 # load required packages
 library(rhdf5)
@@ -13,7 +13,7 @@ wd <- "~/data/"
 setwd(wd)
 
 
-## ----download-h5, eval=FALSE----------------------------------------------------------------------------------------------------------------
+## ----download-h5, eval=FALSE---------------------------------------------------------------------------------------------------------------------------------------------
 ## byTileAOP(dpID = 'DP3.30006.001',
 ##           site = 'SJER',
 ##           year = '2021',
@@ -22,7 +22,7 @@ setwd(wd)
 ##           savepath = wd)
 
 
-## ----read-h5--------------------------------------------------------------------------------------------------------------------------------
+## ----read-h5-------------------------------------------------------------------------------------------------------------------------------------------------------------
 # define filepath to the hyperspectral dataset
 h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
@@ -46,11 +46,11 @@ plotRGB(rgbStack,
         stretch = "lin")
 
 
-## ----dev-new, eval=FALSE--------------------------------------------------------------------------------------------------------------------
+## ----dev-new, eval=FALSE-------------------------------------------------------------------------------------------------------------------------------------------------
 ## dev.new(noRStudioGD = TRUE)
 
 
-## ----click-to-select, eval=FALSE, comment=NA------------------------------------------------------------------------------------------------
+## ----click-to-select, eval=FALSE, comment=NA-----------------------------------------------------------------------------------------------------------------------------
 
 # change plotting parameters to better see the points and numbers generated from clicking
 par(col="red", cex=2)
@@ -65,21 +65,20 @@ c <- click(rgbStack, n = 7, id=TRUE, xy=TRUE, cell=TRUE, type="p", pch=16, col="
 
 
 
-## ----convert-cell-to-row-column-------------------------------------------------------------------------------------------------------------
+## ----convert-cell-to-row-column------------------------------------------------------------------------------------------------------------------------------------------
 # convert raster cell number into row and column (used to extract spectral signature below)
 c$row <- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
 c$col <- c$cell%%ncol(rgbStack)
 
 
-## ----extract-spectral-signaures-------------------------------------------------------------------------------------------------------------
+## ----extract-spectral-signaures------------------------------------------------------------------------------------------------------------------------------------------
 
-# create a new dataframe from the band wavelengths so that we can add
-# the reflectance values for each cover type
+# create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
 pixel_df <- as.data.frame(wavelengths)
 
 # loop through each of the cells that we selected
 for(i in 1:length(c$cell)){
-# extract Spectra from a single pixel
+# extract spectral values from a single pixel
 aPixel <- h5read(h5_file,"/SJER/Reflectance/Reflectance_Data",
                  index=list(NULL,c$col[i],c$row[i]))
 
@@ -106,7 +105,7 @@ pixel.melt <- reshape2::melt(pixel_df, id.vars = "wavelengths", value.name = "Re
 ggplot()+
   geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
   scale_colour_manual(values = c("blue3","green4","green2","tan4","grey50","black"),
-                      labels = c("Water", "Tree", "Grass","Soil","Roof","Road"))+
+                      labels = c("Water","Tree","Grass","Soil","Roof","Road"))+
   labs(color = "Cover Type")+
   ggtitle("Land cover spectral signatures")+
   theme(plot.title = element_text(hjust = 0.5, size=20))+
@@ -116,7 +115,7 @@ ggplot()+
 ## ----mask-atmospheric-absorption-bands, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. Added to the plot are two greyed-out rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. The x-axis is wavelength in nanometers and the y-axis is reflectance."----
 
 # grab reflectance metadata (which contains absorption band limits)
-reflMetadata <- h5readAttributes(fhs,"/SJER/Reflectance" )
+reflMetadata <- h5readAttributes(h5_file,"/SJER/Reflectance" )
 
 ab1 <- reflMetadata$Band_Window_1_Nanometers
 ab2 <- reflMetadata$Band_Window_2_Nanometers
@@ -155,7 +154,7 @@ ggplot()+
 
 
 
-## ----challenge-answer, echo=FALSE, eval=FALSE-----------------------------------------------------------------------------------------------
+## ----challenge-answer, echo=FALSE, eval=FALSE----------------------------------------------------------------------------------------------------------------------------
 ## 
 ## # Challenge Answers - These challenge problems will depend on the specific
 ## # pixels that you select, but here we answer these questions generally.

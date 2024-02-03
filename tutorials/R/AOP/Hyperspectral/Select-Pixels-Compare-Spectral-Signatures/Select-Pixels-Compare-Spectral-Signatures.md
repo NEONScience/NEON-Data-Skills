@@ -195,7 +195,7 @@ Now we can create our RGB plot, and start clicking on this new Graphics window.
 
     c <- click(rgbStack, n = 7, id=TRUE, xy=TRUE, cell=TRUE, type="p", pch=16, col="red", col.lab="red")
 
-Once you have clicked your six points, the graphics window should close. If you want to choose new points, or make a mistake in the step, run the `plotRGB()` function again to start over.
+Once you have clicked your six points, the graphics window should close. If you want to choose new points, or if you accidentally clicked something you didn't want to in the step, run the previous chunk of code again to start over.
 
 
 
@@ -209,12 +209,10 @@ The `click()` function identifies the cell number that you clicked, but in order
     c$col <- c$cell%%ncol(rgbStack)
 
 ## Extract Spectral Signatures from HDF5 file
-Next, we loop through each of the cells that we selected to use the `h5read()` function to extract the reflectance values of all bands from the given row and column. 
+Next, we will loop through each of the cells that and use the `h5read()` function to extract the reflectance values of all bands from the given pixel (row and column). 
 
 
-    # create a new dataframe from the band wavelengths so that we can add
-
-    # the reflectance values for each cover type
+    # create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
 
     pixel_df <- as.data.frame(wavelengths)
 
@@ -223,7 +221,7 @@ Next, we loop through each of the cells that we selected to use the `h5read()` f
     # loop through each of the cells that we selected
 
     for(i in 1:length(c$cell)){
-    # extract Spectra from a single pixel
+    # extract spectral values from a single pixel
     aPixel <- h5read(h5_file,"/SJER/Reflectance/Reflectance_Data",
                      index=list(NULL,c$col[i],c$row[i]))
     
@@ -262,7 +260,7 @@ Finally, we have everything that we need to plot the spectral signatures for eac
     ggplot()+
       geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
       scale_colour_manual(values = c("blue3","green4","green2","tan4","grey50","black"),
-                          labels = c("Water", "Tree", "Grass","Soil","Roof","Road"))+
+                          labels = c("Water","Tree","Grass","Soil","Roof","Road"))+
       labs(color = "Cover Type")+
       ggtitle("Land cover spectral signatures")+
       theme(plot.title = element_text(hjust = 0.5, size=20))+
@@ -278,17 +276,15 @@ Those irregularities around 1400nm and 1850 nm are two major atmospheric absorpt
 
     # grab reflectance metadata (which contains absorption band limits)
 
-    reflMetadata <- h5readAttributes(fhs,"/SJER/Reflectance" )
+    reflMetadata <- h5readAttributes(h5_file,"/SJER/Reflectance" )
 
-    ## Error in eval(expr, envir, enclos): object 'fhs' not found
+    
 
     ab1 <- reflMetadata$Band_Window_1_Nanometers
 
-    ## Error in eval(expr, envir, enclos): object 'reflMetadata' not found
-
     ab2 <- reflMetadata$Band_Window_2_Nanometers
 
-    ## Error in eval(expr, envir, enclos): object 'reflMetadata' not found
+    
 
     # Plot spectral signatures again with rectangles showing the absorption bands
 
@@ -303,11 +299,7 @@ Those irregularities around 1400nm and 1850 nm are two major atmospheric absorpt
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-    ## Error in `geom_rect()`:
-    ## ! Problem while computing aesthetics.
-    ## ℹ Error occurred in the 2nd layer.
-    ## Caused by error:
-    ## ! object 'ab1' not found
+![Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. Added to the plot are two greyed-out rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. The x-axis is wavelength in nanometers and the y-axis is reflectance.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorption-bands-1.png)
 
 Now we can clearly see that the noisy sections of each spectral signature are within the atmospheric absorption bands. For our final step, let's take all reflectance values from within each absorption band and set them to `NA` to remove the noisiest sections from the plot.
 
@@ -322,11 +314,9 @@ Now we can clearly see that the noisy sections of each spectral signature are wi
 
     pixel.melt.masked[pixel.melt.masked$wavelengths>ab1[1]&pixel.melt.masked$wavelengths<ab1[2],]$Reflectance <- NA
 
-    ## Error in eval(expr, envir, enclos): object 'ab1' not found
-
     pixel.melt.masked[pixel.melt.masked$wavelengths>ab2[1]&pixel.melt.masked$wavelengths<ab2[2],]$Reflectance <- NA
 
-    ## Error in eval(expr, envir, enclos): object 'ab2' not found
+    
 
     # Plot the masked spectral signatures
 

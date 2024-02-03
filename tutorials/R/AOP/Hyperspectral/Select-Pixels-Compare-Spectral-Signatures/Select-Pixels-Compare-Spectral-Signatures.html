@@ -224,7 +224,7 @@ plotRGB(rgbStack, r=1, g=2, b=3, scale=300, stretch = &quot;hist&quot;)
 
 c &lt;- click(rgbStack, n = 7, id=TRUE, xy=TRUE, cell=TRUE, type=&quot;p&quot;, pch=16, col=&quot;red&quot;, col.lab=&quot;red&quot;)
 </code></pre>
-<p>Once you have clicked your six points, the graphics window should close. If you want to choose new points, or make a mistake in the step, run the <code>plotRGB()</code> function again to start over.</p>
+<p>Once you have clicked your six points, the graphics window should close. If you want to choose new points, or if you accidentally clicked something you didn’t want to in the step, run the previous chunk of code again to start over.</p>
 <p>The <code>click()</code> function identifies the cell number that you clicked, but in order to extract spectral signatures, we need to convert that cell number into a row and column, as shown here:</p>
 <pre><code># convert raster cell number into row and column (used to extract spectral signature below)
 
@@ -233,10 +233,8 @@ c$row &lt;- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
 c$col &lt;- c$cell%%ncol(rgbStack)
 </code></pre>
 <h2 id="extract-spectral-signatures-from-hdf5-file">Extract Spectral Signatures from HDF5 file</h2>
-<p>Next, we loop through each of the cells that we selected to use the <code>h5read()</code> function to extract the reflectance values of all bands from the given row and column.</p>
-<pre><code># create a new dataframe from the band wavelengths so that we can add
-
-# the reflectance values for each cover type
+<p>Next, we will loop through each of the cells that and use the <code>h5read()</code> function to extract the reflectance values of all bands from the given pixel (row and column).</p>
+<pre><code># create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
 
 pixel_df &lt;- as.data.frame(wavelengths)
 
@@ -245,7 +243,7 @@ pixel_df &lt;- as.data.frame(wavelengths)
 # loop through each of the cells that we selected
 
 for(i in 1:length(c$cell)){
-# extract Spectra from a single pixel
+# extract spectral values from a single pixel
 aPixel &lt;- h5read(h5_file,&quot;/SJER/Reflectance/Reflectance_Data&quot;,
                  index=list(NULL,c$col[i],c$row[i]))
 
@@ -288,7 +286,7 @@ pixel_df &lt;- cbind(pixel_df,b[2])
 <p>ggplot()+
 geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
 scale_colour_manual(values = c(“blue3”,“green4”,“green2”,“tan4”,“grey50”,“black”),
-labels = c(“Water”, “Tree”, “Grass”,“Soil”,“Roof”,“Road”))+
+labels = c(“Water”,“Tree”,“Grass”,“Soil”,“Roof”,“Road”))+
 labs(color = “Cover Type”)+
 ggtitle(“Land cover spectral signatures”)+
 theme(plot.title = element_text(hjust = 0.5, size=20))+
@@ -301,17 +299,15 @@ xlab(“Wavelength”)</p>
 <p>Those irregularities around 1400nm and 1850 nm are two major atmospheric absorption bands - regions where gasses in the atmosphere (primarily carbon dioxide and water vapor) absorb radiation, and therefore, obscure the reflected radiation that the imaging spectrometer measures. Fortunately, the lower and upper bound of each of those atmospheric absorption bands is specified in the HDF5 file. Let’s read those bands and plot rectangles where the reflectance measurements are obscured by atmospheric absorption.</p>
 <pre><code># grab reflectance metadata (which contains absorption band limits)
 
-reflMetadata &lt;- h5readAttributes(fhs,&quot;/SJER/Reflectance&quot; )
+reflMetadata &lt;- h5readAttributes(h5_file,&quot;/SJER/Reflectance&quot; )
 
-## Error in eval(expr, envir, enclos): object 'fhs' not found
+
 
 ab1 &lt;- reflMetadata$Band_Window_1_Nanometers
 
-## Error in eval(expr, envir, enclos): object 'reflMetadata' not found
-
 ab2 &lt;- reflMetadata$Band_Window_2_Nanometers
 
-## Error in eval(expr, envir, enclos): object 'reflMetadata' not found
+
 
 # Plot spectral signatures again with rectangles showing the absorption bands
 
@@ -325,13 +321,8 @@ ggplot()+
   ggtitle(&quot;Land cover spectral signatures&quot;)+
   theme(plot.title = element_text(hjust = 0.5, size=20))+
   xlab(&quot;Wavelength&quot;)
-
-## Error in `geom_rect()`:
-## ! Problem while computing aesthetics.
-## ℹ Error occurred in the 2nd layer.
-## Caused by error:
-## ! object 'ab1' not found
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorption-bands-1.png" alt="Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. Added to the plot are two greyed-out rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. The x-axis is wavelength in nanometers and the y-axis is reflectance." /></p>
 <p>Now we can clearly see that the noisy sections of each spectral signature are within the atmospheric absorption bands. For our final step, let’s take all reflectance values from within each absorption band and set them to <code>NA</code> to remove the noisiest sections from the plot.</p>
 <pre><code># Duplicate the spectral signatures into a new data.frame
 
@@ -343,11 +334,9 @@ pixel.melt.masked &lt;- pixel.melt
 
 pixel.melt.masked[pixel.melt.masked$wavelengths&gt;ab1[1]&amp;pixel.melt.masked$wavelengths&lt;ab1[2],]$Reflectance &lt;- NA
 
-## Error in eval(expr, envir, enclos): object 'ab1' not found
-
 pixel.melt.masked[pixel.melt.masked$wavelengths&gt;ab2[1]&amp;pixel.melt.masked$wavelengths&lt;ab2[2],]$Reflectance &lt;- NA
 
-## Error in eval(expr, envir, enclos): object 'ab2' not found
+
 
 # Plot the masked spectral signatures
 

@@ -168,7 +168,7 @@ c <- click(rgbStack, n = 7, id=TRUE, xy=TRUE, cell=TRUE, type="p", pch=16, col="
 
 ```
 
-Once you have clicked your six points, the graphics window should close. If you want to choose new points, or make a mistake in the step, run the `plotRGB()` function again to start over.
+Once you have clicked your six points, the graphics window should close. If you want to choose new points, or if you accidentally clicked something you didn't want to in the step, run the previous chunk of code again to start over.
 
 ```{r create-c-hidden, include=FALSE, purl=FALSE}
 c <- read.csv("./click_df.csv")
@@ -183,17 +183,16 @@ c$col <- c$cell%%ncol(rgbStack)
 ```
 
 ## Extract Spectral Signatures from HDF5 file
-Next, we loop through each of the cells that we selected to use the `h5read()` function to extract the reflectance values of all bands from the given row and column. 
+Next, we will loop through each of the cells that and use the `h5read()` function to extract the reflectance values of all bands from the given pixel (row and column). 
 
 ```{r extract-spectral-signaures}
 
-# create a new dataframe from the band wavelengths so that we can add
-# the reflectance values for each cover type
+# create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
 pixel_df <- as.data.frame(wavelengths)
 
 # loop through each of the cells that we selected
 for(i in 1:length(c$cell)){
-# extract Spectra from a single pixel
+# extract spectral values from a single pixel
 aPixel <- h5read(h5_file,"/SJER/Reflectance/Reflectance_Data",
                  index=list(NULL,c$col[i],c$row[i]))
 
@@ -230,7 +229,7 @@ pixel.melt <- reshape2::melt(pixel_df, id.vars = "wavelengths", value.name = "Re
 ggplot()+
   geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
   scale_colour_manual(values = c("blue3","green4","green2","tan4","grey50","black"),
-                      labels = c("Water", "Tree", "Grass","Soil","Roof","Road"))+
+                      labels = c("Water","Tree","Grass","Soil","Roof","Road"))+
   labs(color = "Cover Type")+
   ggtitle("Land cover spectral signatures")+
   theme(plot.title = element_text(hjust = 0.5, size=20))+
@@ -245,7 +244,7 @@ Those irregularities around 1400nm and 1850 nm are two major atmospheric absorpt
 ```{r mask-atmospheric-absorption-bands, fig.width=9, fig.height=6, fig.cap="Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. Added to the plot are two greyed-out rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. The x-axis is wavelength in nanometers and the y-axis is reflectance."}
 
 # grab reflectance metadata (which contains absorption band limits)
-reflMetadata <- h5readAttributes(fhs,"/SJER/Reflectance" )
+reflMetadata <- h5readAttributes(h5_file,"/SJER/Reflectance" )
 
 ab1 <- reflMetadata$Band_Window_1_Nanometers
 ab2 <- reflMetadata$Band_Window_2_Nanometers
