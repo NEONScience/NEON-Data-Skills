@@ -173,7 +173,7 @@ As shown here:
 </div>
 
 
-For this next part, if you are following along in RStudio, you will need to enter these line below directly in the Console. `dev.new(noRStudioGD = TRUE)` will open up a separate window for plotting, where you will also run the `click` command.
+For this next part, if you are following along in RStudio, you will need to enter these line below directly in the Console. `dev.new(noRStudioGD = TRUE)` will open up a separate window for plotting, which is where you will click the pixels to extract spectra, using the `terra::click` functionality.
 
 
     dev.new(noRStudioGD = TRUE)
@@ -195,9 +195,9 @@ Now we can create our RGB plot, and start clicking on this in the pop-out Graphi
 
     # use the 'click' function
 
-    c <- click(rgbStack, n = 7, id=TRUE, xy=TRUE, cell=TRUE, type="p", pch=16, col="red", col.lab="red")
+    c <- click(rgbStack, n = 6, id=TRUE, xy=TRUE, cell=TRUE, type="p", pch=16, col="red", col.lab="red")
 
-Once you have clicked your six points, the graphics window should close. If you want to choose new points, or if you accidentally clicked something you didn't want to in the step, run the previous chunk of code again to start over.
+Once you have clicked your six points, the graphics window should close. If you want to choose new points, or if you accidentally clicked a point that you didn't intend to, run the previous 2 chunks of code again to re-start.
 
 
 
@@ -217,8 +217,6 @@ Next, we will loop through each of the cells that and use the `h5read()` functio
     # create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
 
     pixel_df <- as.data.frame(wavelengths)
-
-    
 
     # loop through each of the cells that we selected
 
@@ -243,21 +241,12 @@ Next, we will loop through each of the cells that and use the `h5read()` functio
 ## Plot Spectral signatures using ggplot2
 Finally, we have everything that we need to plot the spectral signatures for each of the pixels that we clicked. In order to color our lines by the different land cover types, we will first reshape our data using the `melt()` function, then plot the spectral signatures.
 
-1. Water
-2. Tree canopy (avoid the shaded northwestern side of the tree)
-3. Irrigated grass
-4. Bare soil (baseball diamond infield)
-5. Building roof (blue)
-6. Road
-
 
     # Use the melt() function to reshape the dataframe into a format that ggplot prefers
 
     pixel.melt <- reshape2::melt(pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
-    
-
-    # Now, let's plot some spectral signatures!
+    # Now, let's plot the spectral signatures!
 
     ggplot()+
       geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
@@ -280,15 +269,11 @@ Those irregularities around 1400nm and 1850 nm are two major atmospheric absorpt
 
     reflMetadata <- h5readAttributes(h5_file,"/SJER/Reflectance" )
 
-    
-
     ab1 <- reflMetadata$Band_Window_1_Nanometers
 
     ab2 <- reflMetadata$Band_Window_2_Nanometers
 
-    
-
-    # Plot spectral signatures again with rectangles showing the absorption bands
+    # Plot spectral signatures again with grey rectangles highlighting the absorption bands
 
     ggplot()+
       geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
@@ -297,11 +282,11 @@ Those irregularities around 1400nm and 1850 nm are two major atmospheric absorpt
       scale_colour_manual(values = c("blue3","green4","green2","tan4","grey50","black"),
                           labels = c("Water","Tree","Grass","Soil","Roof","Road"))+
       labs(color = "Cover Type")+
-      ggtitle("Land cover spectral signatures")+
+      ggtitle("Land cover spectral signatures with\n atmospheric absorption bands greyed out")+
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. Added to the plot are two greyed-out rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. The x-axis is wavelength in nanometers and the y-axis is reflectance.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorption-bands-1.png)
+![Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. This plot includes two greyed-out rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. The x-axis is wavelength in nanometers and the y-axis is reflectance.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorption-bands-1.png)
 
 Now we can clearly see that the noisy sections of each spectral signature are within the atmospheric absorption bands. For our final step, let's take all reflectance values from within each absorption band and set them to `NA` to remove the noisiest sections from the plot.
 
@@ -309,8 +294,6 @@ Now we can clearly see that the noisy sections of each spectral signature are wi
     # Duplicate the spectral signatures into a new data.frame
 
     pixel.melt.masked <- pixel.melt
-
-    
 
     # Mask out all values within each of the two atmospheric absorption bands
 
@@ -327,13 +310,13 @@ Now we can clearly see that the noisy sections of each spectral signature are wi
       scale_colour_manual(values = c("blue3","green4","green2","tan4","grey50","black"),
                           labels = c("Water","Tree","Grass","Soil","Roof","Road"))+
       labs(color = "Cover Type")+
-      ggtitle("Land cover spectral signatures")+
+      ggtitle("Land cover spectral signatures with\n atmospheric absorption bands removed")+
       theme(plot.title = element_text(hjust = 0.5, size=20))+
       xlab("Wavelength")
 
-![Plot of spectral signatures for the six different land cover types. Values falling within the two rectangles from the previous image have been set to NA and ommited from the plot. The x-axis is wavelength in nanometers and the y-axis is reflectance.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/remove-absorption-band-reflectances-1.png)
+![Plot of spectral signatures for the six different land cover types. Values falling within the atmospheric absorption bands have been set to NA and ommited from the plot. The x-axis is wavelength in nanometers and the y-axis is reflectance.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/remove-absorption-band-reflectances-1.png)
 
-There you have it, spectral signatures for six different land cover types, with the readings from the atmospheric absorption bands removed.
+There you have it, spectral signatures for six different land cover types, with the regions from the atmospheric absorption bands removed.
 
 <div id="ds-challenge" markdown="1">
 
