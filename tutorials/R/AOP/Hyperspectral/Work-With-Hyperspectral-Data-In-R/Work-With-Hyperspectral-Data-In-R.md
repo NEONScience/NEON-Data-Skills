@@ -121,7 +121,7 @@ We can use the `neonUtilities` function `byTileAOP` to download a single reflect
 
               northing=4112500,
 
-              check.size=TRUE, # can set to FALSE if you don't want to enter y/n
+              check.size=TRUE, # set to FALSE if you don't want to enter y/n
 
               savepath = wd)
 
@@ -129,7 +129,7 @@ This file will be downloaded into a nested subdirectory under the `~/data` folde
 
 <div id="ds-dataTip" markdown="1">
 
-<i class="fa fa-star"></i> **Data Tip:** You can look in the `~/data` folder an navigate to where the .h5 file is saved, or use the R command `list.files(path=wd,pattern="\\.h5$",recursive=TRUE,full.names=TRUE)` to display the full path of the .h5 file. Note, if you have any other .h5 files downloaded in this folder, it will display all of the h5 files.
+<i class="fa fa-star"></i> **Data Tip:** To make sure you are pointing to the correct path, look in the `~/data` folder and navigate to where the .h5 file is saved, or use the R command `list.files(path=wd,pattern="\\.h5$",recursive=TRUE,full.names=TRUE)` to display the full path of the .h5 file. Note, if you have any other .h5 files downloaded in this folder, it will display all of the hdf5 files.
 
 </div>
 

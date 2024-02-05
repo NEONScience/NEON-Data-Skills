@@ -153,13 +153,13 @@ setwd(wd)
 
           northing=4112500,
 
-          check.size=TRUE, # can set to FALSE if you don't want to enter y/n
+          check.size=TRUE, # set to FALSE if you don't want to enter y/n
 
           savepath = wd)
 </code></pre>
 <p>This file will be downloaded into a nested subdirectory under the <code>~/data</code> folder, inside a folder named <code>DP3.30006.001</code> (the Data Product ID). The file should show up in this location:  <code>~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5</code>.</p>
 <div id="ds-dataTip" markdown="1">
-<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> You can look in the <code>~/data</code> folder an navigate to where the .h5 file is saved, or use the R command <code>list.files(path=wd,pattern=&quot;\\.h5$&quot;,recursive=TRUE,full.names=TRUE)</code> to display the full path of the .h5 file. Note, if you have any other .h5 files downloaded in this folder, it will display all of the h5 files.</p>
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> To make sure you are pointing to the correct path, look in the <code>~/data</code> folder and navigate to where the .h5 file is saved, or use the R command <code>list.files(path=wd,pattern=&quot;\\.h5$&quot;,recursive=TRUE,full.names=TRUE)</code> to display the full path of the .h5 file. Note, if you have any other .h5 files downloaded in this folder, it will display all of the hdf5 files.</p>
 </div>
 <pre><code># Define the h5 file name to be opened
 
