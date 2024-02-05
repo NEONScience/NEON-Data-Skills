@@ -1,7 +1,7 @@
 ---
 syncID: 79f902f6c0264f16a9be13f50560860a
 title: "Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/AOP/Hyperspectral/Plot-Hyperspectral-Spectra/Plot-Hyperspectral-Spectra.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Plot-Hyperspectral-Spectra/Plot-Hyperspectral-Spectra.R
 contributors: Felipe Sanchez, Bridget Hass
 dateCreated: 2015-08-08 20:49:52
 description: Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral signature.
