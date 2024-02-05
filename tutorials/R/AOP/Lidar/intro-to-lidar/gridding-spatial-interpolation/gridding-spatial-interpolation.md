@@ -100,9 +100,7 @@ cell.
 </figure>
 
 
-We can create a raster from points through a process called gridding. 
-Gridding is the process of taking a set of points and using them to create a 
-surface composed of a regular grid. 
+We can create a raster from points through a process called gridding. Gridding is the process of taking a set of points and using them to create a surface composed of a regular grid. 
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/gridding.gif" target="_blank">
@@ -193,7 +191,6 @@ data(e.g. east to west, elevational, etc).
     <figcaption>IDW interpolation looks at the linear distance between the unknown value and surrounding points. Source: J. Abrecht, CUNY </figcaption>
 </figure>
 
-
 #### Power
 
 The power value changes the "weighting" of the IDW interpolation by specifying 
@@ -205,12 +202,9 @@ the cell impact it's value more. A smaller power value produces a more averaged
 result where sample points further away from the cell have a greater impact on 
 the cell's calculated value.
 
-<figure>
-	 <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif" target="_blank"> <img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted_files/image003.gif">
-	 </a>
-	<figcaption> The solid line represents greater power and the dashed line represents lower power. The greater the power, the more localized an affect a sample point's value has on the resulting surface. A smaller power value yields a smoothed or more averaged surface. Source: J. Abrecht, CUNY 
-	</figcaption>
-</figure>
+For visualizations of IDW interpolation, see Jochen Albrecht's <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Inverse%20Distance%20Weighted.htm
+" target="_blank">*Inverse Distance Weighted 3D Concepts Lecture*</a>. 
+
 
 The impacts of power:
 
@@ -261,14 +255,9 @@ bumps and valleys. Unlike IDW, spline can estimate values above and below the
 min and max values of your sample points. Thus it is good for estimating high 
 and low values not already represented in your data.
  
-<figure>
-    <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif" target="_blank">
-	<img src="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif">
-    </a>
-    <figcaption>
-	Spline interpolation fits a surface between the sample points of known values to estimate a value for the unknown cell. Source: <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline_files/image001.gif" target="_blank"> J. Abrecht, CUNY</a>
-    </figcaption>
-</figure>
+
+For visualizations of Spline interpolation, see Jochen Albrecht's <a href="http://www.geography.hunter.cuny.edu/~jochen/GTECH361/lectures/lecture10/3Dconcepts/Spline.htm" target="_blank">*Spline 3D Concepts Lecture*</a>. 
+
 
 
 #### Regularized & Tension Spline
