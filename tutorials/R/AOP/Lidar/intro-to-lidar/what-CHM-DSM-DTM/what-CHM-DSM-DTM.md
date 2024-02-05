@@ -11,7 +11,7 @@ topics: lidar, remote-sensing
 languagesTool: R
 dataProduct:
 code1:
-tutorialSeries: [intro-lidar-r-series]
+tutorialSeries: intro-lidar-r-series
 urlTitle: chm-dsm-dtm-gridded-lidar-data
 ---
 
@@ -21,8 +21,8 @@ points may be located anywhere in space are not aligned within any particular
 grid.
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_points.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_points.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/Lidar_points.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/Lidar_points.png"></a>
 	<figcaption> Representative point cloud data. Source: National Ecological 
 	Observatory Network (NEON)  
 	</figcaption>
@@ -41,15 +41,29 @@ surfaces at that point. Imagine draping
 a sheet over the canopy of a forest, the Digital Elevation Model (DEM) contours with
 the heights of the trees where there are trees but the elevation of the ground when
 there is a clearing in the forest. 
-* <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/DSM-DTM.png"
-target="_blank">DSM and DTM</a>
+
+ <figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/DSM-DTM.png" target="_blank">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/DSM-DTM.png">
+	</a>
+	<figcaption>
+		DSM and DTM Visualizations
+	</figcaption>
+</figure>
+
 
 The Canopy height model represents the difference between a Digital Terrain Model and a
 Digital Surface Model (DSM - DTM = CHM) and gives you the height of the objects (in a
 forest, the trees) that are on the surface of the earth.
-*<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png"
-target="_blank">DSM, DTM and CHM</a>
 
+ <figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/lidarTree-height.png" target="_blank">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/DSM-DTM.png">
+	</a>
+	<figcaption>
+		DSM, DTM, and CHM
+	</figcaption>
+</figure>
 
 ### Free Point Cloud Viewers for LiDAR Point Clouds
 - <a href="http://www.fs.fed.us/eng/rsac/fusion/" target="_blank">Fusion: US Forest
@@ -72,19 +86,13 @@ available through RStudio,
 
 Click on the images to view interactive 3D models of <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER">San Juaquin Experimental Range site.</a>
 
-<figure class="third">
-    <a href="https://www.neonscience.org/3d/SJER_DTM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dem.png"></a>
-    DTM
-    <a href="https://www.neonscience.org/3d/SJER_DSM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/dsm.png"></a>
-    DSM
-    <a href="https://www.neonscience.org/3d/SJER_CHM_3d.html" target="_blank"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/chm.png"></a>
-    CHM
-    
-    <figcaption> 3D models of a LiDAR-derived Digital Terrain Model (DTM;top), 
-     Digital Surface Model (DSM; middle), and Canopy Height Model (CHM; bottom).
-    </figcaption>
-</figure>
-
+<table><tr>
+<td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/dem.png" width="300"> </td>
+<td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/dsm.png" width="300"> </td>
+<td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/chm.png" width="300"> </td>
+</table>
+<figcaption> 3D models derived from LiDAR Data. Left: Digital Terrain Model (DTM), Middle: Digital Surface Model (DSM), Right: Canopy Height Model (CHM). Source: National Ecological Observatory Network (NEON)  
+</figcaption>
 
 ### Gridded, or Raster, LiDAR Data Products
 LiDAR data products are most often worked within a gridded or raster data format. 
@@ -100,8 +108,8 @@ means that each pixel represents a 1m by 1m area on the ground.
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png"></a>
 	<figcaption> Raster or “gridded” data are stored as a grid of values which 
 	are rendered on a map as pixels. Each pixel value represents an area on the 
 	Earth’s surface.  Source: National Ecological Observatory Network (NEON)  
@@ -166,7 +174,7 @@ process our raster in this way.
 
 <figure>
     <a href="https://www.neonscience.org/gridding-interpolation-spatial-data-gif" target="_blank">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/gridding.gif"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/gridding.gif"></a>
     <figcaption> Animation showing the general process of taking LiDAR point 
     clouds and converting them to a raster format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  
