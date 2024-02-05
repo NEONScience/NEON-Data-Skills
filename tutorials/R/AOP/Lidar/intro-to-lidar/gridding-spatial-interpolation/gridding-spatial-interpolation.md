@@ -46,8 +46,8 @@ A raster is a dataset made up of cells or pixels. Each pixel represents a value
 associated with a region on the earth’s surface. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/pixelDetail.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/pixelDetail.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/pixelDetail.png"></a>
     <figcaption>The spatial resolution of a raster refers the size of each cell 
     in meters. This size in turn relates to the area on the ground that the pixel 
     represents. Source: National Ecological Observatory Network </figcaption>
@@ -72,8 +72,8 @@ Interpolation can be done in a number of different ways, some of which are
 deterministic and some are probabilistic. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridding_approaches.png" target=_"blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridding_approaches.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/gridding_approaches.png" target=_"blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/gridding_approaches.png"></a>
     <figcaption>When converting a set of sample points to a grid, there are many
 	different approaches that should be considered. Source: National Ecological
     Observatory Network </figcaption>
@@ -91,8 +91,8 @@ distributed with at least one data point within the spatial coverage of each ras
 cell.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridded.png" target="_blank">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridded.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/gridded.png" target="_blank">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/gridded.png"></a>
     <figcaption>When you directly grid a dataset, values will only be calculated
 	for cells that overlap with data points. Thus, data gaps will not be filled. 
 	Source: National Ecological Observatory Network 
@@ -105,8 +105,8 @@ Gridding is the process of taking a set of points and using them to create a
 surface composed of a regular grid. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/gridding.gif" target="_blank">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/gridding.gif"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/gridding.gif" target="_blank">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/gridding.gif"></a>
     <figcaption>Animation showing the general process of taking lidar point 
     clouds and converting them to a raster format. Source: Tristan Goulden, 
     National Ecological Observatory Network
@@ -124,8 +124,8 @@ However this general assumption is applied differently across different
 interpolation functions.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/grid.png" target="_blank">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/grid.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/grid.png" target="_blank">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/grid.png"></a>
     <figcaption>Interpolation methods will estimate values for cells where no known values exist.
 	</figcaption>
 </figure>
@@ -145,8 +145,8 @@ Different methods of interpolation are better for different datasets. This table
 lays out the strengths of some of the more common interpolation methods. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridMethod_FeaturesTbl.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/gridMethod_FeaturesTbl.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/gridMethod_FeaturesTbl.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/gridMethod_FeaturesTbl.png"></a>
     <figcaption>Abbreviations: TIN=Triangulated Irregular Network, IDW=Inverse 
     Distance Weighted interpolation.  Source: National Ecological Observatory Network </figcaption>
 </figure>
@@ -165,8 +165,8 @@ point (a cell with an unknown value) using a linearly weighted combination of va
 from nearby points. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/idw_interpolation_QGIS.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/idw_interpolation_QGIS.png"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/idw_interpolation_QGIS.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/idw_interpolation_QGIS.png"></a>
     <figcaption>
 	IDW interpolation calculates the value of an unknown cell center value (a 
 	query point) using surrounding points with the assumption that closest points 
@@ -291,17 +291,16 @@ to the known sample points.
 and below the known sample points.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/reg_ten_Spline.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/reg_ten_Spline.png">
-	</a>
-    
-    <figcaption>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/reg_ten_Spline.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/reg_ten_Spline.png">
+    </a>
+<figcaption>
 	Regular vs tension spline.
-	</figcaption>
+</figcaption>	
 </figure>
 
 For more on spline interpolation, see ESRI's 
-<a href="http://help.arcgis.com/EN/arcgisdesktop/10.0/help/index.html#//009z00000078000000.htm" target="_blank">*How Splines Work* background materials.</a>
+<a href="https://pro.arcgis.com/en/pro-app/latest/tool-reference/3d-analyst/how-spline-works.htm" target="_blank">*How Splines Work* background materials.</a>
 
 
 #### Spline Take Home Points
@@ -313,11 +312,8 @@ Spline is good for:
 
 Spline is not so good for:
 
-* Points that are close together and have large value differences. Slope 
-calculations can yield over and underestimation.
-* Data with large, sudden changes in values that need to be represented (e.g., fault
-lines, extreme vertical topographic changes, etc). NOTE: some tools like ArcGIS 
-have introduces a spline with barriers function in recent years.
+* Points that are close together and have large value differences. Slope calculations can yield over and underestimation.
+* Data with large, sudden changes in values that need to be represented (e.g., fault lines, extreme vertical topographic changes, etc). NOTE: some tools like ArcGIS have introduced a spline with barriers function in recent years.
 
 
 ### Natural Neighbor Interpolation
@@ -327,23 +323,19 @@ query point of interest. It then applies weights to those points to calculate an
 average estimated value based upon their proportionate areas derived from their 
 corresponding 
 <a href="https://en.wikipedia.org/wiki/Voronoi_diagram" target="_blank"> Voronoi polygons</a> 
-(or see figure below for definition). The natural neighbor interpolator adapts 
+(see figure below for definition). The natural neighbor interpolator adapts 
 locally to the input data using points surrounding the query point of interest. 
 Thus there is no radius, number of points or other settings needed when using 
 this approach.
 
-This interpolation method works equally well on regular and irregularly spaced 
-data.
+This interpolation method works equally well on regular and irregularly spaced data.
 
 <figure>
     <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/2000px-Euclidean_Voronoi_diagram.svg.png" target="_blank">
 	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Euclidean_Voronoi_diagram.svg/2000px-Euclidean_Voronoi_diagram.svg.png">
-	</a>
-    <figcaption>
-	A Voronoi diagram is created by taking pairs of points that are close together 
-	and drawing a line that is equidistant between them and perpendicular to the 
-	line connecting them. 
-	Source: Wikipedia </figcaption>
+    </a>
+    <figcaption> A Voronoi diagram is created by taking pairs of points that are close together and drawing a line that is equidistant between them and perpendicular to the line connecting them. Source: Wikipedia 
+    </figcaption>
 </figure>
 
 Natural neighbor interpolation uses the area of each Voronoi polygon associated 
@@ -355,35 +347,36 @@ is created using the immediately neighboring points and mapped on top of the
 original Voronoi diagram created using the known sample points (image below).
 
 <figure>
-    <a href="http://resources.esri.com/help/9.3/arcgisdesktop/com/gp_toolref/spatial_analyst_tools/sa_interp_natneigh_hiw_voroni.png" target="_blank">
-	<img src="http://resources.esri.com/help/9.3/arcgisdesktop/com/gp_toolref/spatial_analyst_tools/sa_interp_natneigh_hiw_voroni.png"></a>
+    <a href="https://pro.arcgis.com/en/pro-app/latest/tool-reference/3d-analyst/GUID-1A48FEF2-2EC0-4087-B454-F5EF0C6B8126-web.png" target="_blank">
+	<img src="https://pro.arcgis.com/en/pro-app/latest/tool-reference/3d-analyst/GUID-1A48FEF2-2EC0-4087-B454-F5EF0C6B8126-web.png"></a>
     <figcaption>
-	A secondary Voronoi diagram is created using the immediately neighboring 
-	points and mapped on top of the original Voronoi diagram created using the 
+	A secondary Voronoi diagram is created using the immediately neighboring points and mapped on top of the original Voronoi diagram created using the 
 	known sample points to created a weighted Natural neighbor interpolated raster.
 	Image Source: ESRI
 	</figcaption>
 </figure>
 
+For more on natural neighbor interpolation, see ESRI's 
+<a href="https://pro.arcgis.com/en/pro-app/latest/tool-reference/3d-analyst/how-natural-neighbor-works.htm" target="_blank">*How Natural Neighbor Works* documentation.</a>
+
+
 #### Natural Neighbor Take Home Points
 
 
-Natural Neighbor is good for:
+Natural Neighbor Interpolation is good for:
 
 * Data where spatial distribution is variable (and data that are equally distributed).
 * Categorical data.
 * Providing a smoother output raster.
 
-Natural Neighbor is not as good for:
+Natural Neighbor Interpolation is not as good for:
 
-* Data where the interpolation needs to be spatially constrained (to a particular
-number of points of distance). 
-* Data where sample points further away from or beyond the immediate "neighbor 
-points" need to be considered in the estimation.
+* Data where the interpolation needs to be spatially constrained (to a particular number of points of distance). 
+* Data where sample points further away from or beyond the immediate "neighbor points" need to be considered in the estimation.
 
 Other features:
 
-* Good as a local Interpolator
+* Good as a local interpolator
 * Interpolated values fall within the range of values of the sample data
 * Surface passes through input samples; not above or below
 * Supports breaklines
@@ -396,8 +389,8 @@ The TIN format remains the most true to the point distribution, density and
 spacing of a dataset. It also may yield the largest file size!
 
  <figure>
-	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/tin.png" target="_blank">
-	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/geospatial-skills/tin.png"></a>
+	 <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/tin.png" target="_blank">
+	 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/tin.png"></a>
 	 <figcaption>A TIN creating from LiDAR data collected by the NEON AOP over 
 	the NEON San Joaquin (SJER) field site.</figcaption>
  </figure>
@@ -409,8 +402,7 @@ spacing of a dataset. It also may yield the largest file size!
 
 ## Interpolation in R, GrassGIS, or QGIS
 
-These additional resources point to tools and information for gridding in R, 
-`GRASS GIS` and `QGIS`.
+These additional resources point to tools and information for gridding in R, `GRASS GIS` and `QGIS`.
 
 ### R functions
 
