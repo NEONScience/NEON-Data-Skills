@@ -37,12 +37,14 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
-* **raster:** `install.packages("terra")`
+* **terra:** `install.packages("terra")`
 * **neonUtilities:** `install.packages("neonUtilities")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a>
 
 ## Download Data
+
+Lidar elevation raster data are downloaded using the R `neonUtilities::byTileAOP` function in the script.
 
 These remote sensing data files provide information on the vegetation at the 
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
@@ -51,9 +53,6 @@ and
 <a href="https://www.neonscience.org/field-sites/SOAP" target="_blank"> Soaproot Saddle</a> 
 field sites. The entire datasets can be accessed from the 
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
-
-<a href="https://ndownloader.figshare.com/files/7907590" class="link--button link--arrow">
-Download Dataset</a>
 
 
 This tutorial is designed for you to set your working directory to the directory
@@ -67,9 +66,9 @@ directory before downloading the datasets from neonUtilities.
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a>
 
-**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
-learned skills. If available, the code for challenge solutions is found in the
-downloadable R script of the entire lesson, available in the footer of each lesson page.
+**R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce 
+skills. If available, the code for challenge solutions is found in the downloadable R 
+script of the entire lesson, available in the footer of each lesson page.
 
 
 ***

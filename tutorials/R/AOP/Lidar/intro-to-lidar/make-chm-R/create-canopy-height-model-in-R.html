@@ -96,11 +96,12 @@ dive into the basics of working with raster formatted lidar data in R!</p>
 on your computer to complete this tutorial.</p>
 <h3 id="install-r-packages">Install R Packages</h3>
 <ul>
-<li><strong>raster:</strong> <code>install.packages(&quot;terra&quot;)</code></li>
+<li><strong>terra:</strong> <code>install.packages(&quot;terra&quot;)</code></li>
 <li><strong>neonUtilities:</strong> <code>install.packages(&quot;neonUtilities&quot;)</code></li>
 </ul>
 <p><a href="https://www.neonscience.org/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a></p>
 <h2 id="download-data">Download Data</h2>
+<p>Lidar elevation raster data are downloaded using the R <code>neonUtilities::byTileAOP</code> function in the script.</p>
 <p>These remote sensing data files provide information on the vegetation at the
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network’s</a>
 <a href="https://www.neonscience.org/field-sites/SJER" target="_blank"> San Joaquin Experimental Range</a>
@@ -108,8 +109,6 @@ and
 <a href="https://www.neonscience.org/field-sites/SOAP" target="_blank"> Soaproot Saddle</a>
 field sites. The entire datasets can be accessed from the
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.</p>
-<a href="https://ndownloader.figshare.com/files/7907590" class="link--button link--arrow">
-Download Dataset</a>
 <p>This tutorial is designed for you to set your working directory to the directory
 created by unzipping this file.</p>
 <hr />
@@ -117,9 +116,9 @@ created by unzipping this file.</p>
 directory before downloading the datasets from neonUtilities.</p>
 <p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a></p>
-<p><strong>R Script &amp; Challenge Code:</strong> NEON data lessons often contain challenges that reinforce
-learned skills. If available, the code for challenge solutions is found in the
-downloadable R script of the entire lesson, available in the footer of each lesson page.</p>
+<p><strong>R Script &amp; Challenge Code:</strong> NEON data lessons often contain challenges to reinforce
+skills. If available, the code for challenge solutions is found in the downloadable R
+script of the entire lesson, available in the footer of each lesson page.</p>
 <hr />
 <h2 id="recommended-reading">Recommended Reading</h2>
 <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">
