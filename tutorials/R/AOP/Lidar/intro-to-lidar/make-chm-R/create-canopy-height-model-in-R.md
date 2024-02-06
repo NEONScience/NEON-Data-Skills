@@ -75,7 +75,7 @@ script of the entire lesson, available in the footer of each lesson page.
 
 ## Recommended Reading
 <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">
-What is a CHM, DSM and DTM? About Gridded, Raster lidar Data</a>
+What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 
 </div>
 
@@ -230,9 +230,7 @@ canopy cover at this location in the San Joaquin Experimental Range?
 <div id="ds-challenge" markdown="1">
 
 ### Challenge: Basic Raster Math 
-
-Convert the CHM from meters to feet. Plot it.
-
+Convert the CHM from meters to feet and plot it.
 </div>
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm-R/rfigs/challenge-code-raster-math-1.png)
@@ -242,15 +240,14 @@ We can write out the CHM as a GeoTiff using the `writeRaster()` function.
 
     # write out the CHM in tiff format. 
 
-    writeRaster(chm,paste0(wd,"chm_SJER.tif"),"GTiff")
+    writeRaster(chm,paste0(wd,"CHM_SJER.tif"),"GTiff")
 
 We've now successfully created a canopy height model using basic raster math -- in 
-R! We can bring the `chm_SJER.tif` file into QGIS (or any GIS program) and look 
+R! We can bring the `CHM_SJER.tif` file into QGIS (or any GIS program) and look 
 at it. 
 
 ***
 
-Consider going onto the next tutorial 
-<a href="https://www.neonscience.org/extract-values-rasters-r/" target="_blank">*Extract Values from a Raster in R*</a>
-to compare this lidar-derived CHM with ground-based observations!
+Consider checking out the tutorial 
+<a href="https://www.neonscience.org/tree-heights-veg-structure-chm/" target="_blank">*Compare tree height measured from the ground to a Lidar-based Canopy Height Model*</a> to compare a LiDAR-derived CHM with ground-based observations!
 

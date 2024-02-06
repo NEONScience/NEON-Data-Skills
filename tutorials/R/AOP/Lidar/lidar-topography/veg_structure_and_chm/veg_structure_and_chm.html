@@ -55,7 +55,7 @@ table, .body h2 { border-bottom: 1px solid #666; }
 .body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
 .footnote-ref a::before { content: "["; }
 .footnote-ref a::after { content: "]"; }
-.footnotes::before {
+section.footnotes::before {
   content: "";
   display: block;
   max-width: 20em;
@@ -74,8 +74,6 @@ table, .body h2 { border-bottom: 1px solid #666; }
 </style>
 </head>
 <body>
-<div class="include-before">
-</div>
 <div class="frontmatter">
 <div class="title"><h1>Compare tree height measured from the ground to a Lidar-based Canopy Height Model</h1></div>
 <div class="author"><h2></h2></div>
@@ -185,7 +183,7 @@ so we also need to divide by 100 to get the scale right.</p>
         circles=veg$stemDiameter[which(veg$plotID==&quot;WREF_075&quot;)]/100/2, 
         inches=F, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-1-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-1-1.png" alt=" " /></p>
 <p>And now overlay the estimated uncertainty in the location of each stem,
 in blue:</p>
 <pre><code>symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
@@ -198,7 +196,7 @@ symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)],
         circles=veg$adjCoordinateUncertainty[which(veg$plotID==&quot;WREF_075&quot;)], 
         inches=F, add=T, fg=&quot;lightblue&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-2-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-2-1.png" alt=" " /></p>
 <h2 id="3-canopy-height-model-data">3. Canopy height model data</h2>
 <p>Now we’ll download the CHM tile covering plot WREF_075. Several
 other plots are also covered by this tile. We could download all tiles
@@ -224,7 +222,7 @@ chm &lt;- rast(paste0(wd, &quot;/DP3.30015.001/neon-aop-products/2017/FullSite/D
 <p>Let’s view the tile.</p>
 <pre><code>plot(chm, col=topo.colors(5))
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-chm-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-chm-1.png" alt=" " /></p>
 <h2 id="4-comparing-the-two-datasets">4. Comparing the two datasets</h2>
 <p>Now we have the heights of individual trees measured from the ground, and
 the height of the top surface of the canopy, measured from the air. There
@@ -254,7 +252,7 @@ plot(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
 
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/no-buffer-chm-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/no-buffer-chm-1.png" alt=" " /></p>
 <p>How strong is the correlation between the ground and lidar
 measurements?</p>
 <pre><code>cor(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
@@ -280,7 +278,7 @@ plot(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM~
 
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-1.png" alt=" " /></p>
 <pre><code>cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM, 
     vegsub$height, use=&quot;complete&quot;)
 
@@ -327,7 +325,7 @@ image we get as a result.</p>
 
 plot(CHM10, col=topo.colors(5))
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/CHM-10-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/CHM-10-1.png" alt=" " /></p>
 <p>Use the <code>extract()</code> function again to get the values from each pixel.
 Our grids are numbered by the corners, so add 5 to each tree
 coordinate to make sure it’s in the correct pixel.</p>
@@ -344,7 +342,7 @@ plot(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
 
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/adj-tree-coord-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/adj-tree-coord-1.png" alt=" " /></p>
 <pre><code>cor(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
     vegbin$height, use=&quot;complete&quot;)
 
@@ -395,7 +393,7 @@ plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
 
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/filter-chm-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/filter-chm-1.png" alt=" " /></p>
 <pre><code>cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
     vegfil$height)
 
@@ -421,7 +419,7 @@ plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
 
 lines(c(0,50), c(0,50), col=&quot;grey&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/rfigs/live-trees-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/live-trees-1.png" alt=" " /></p>
 <pre><code>cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
     vegfil$height)
 
@@ -439,8 +437,6 @@ represents the highest return, but the highest return may slightly
 miss the actual tallest point on a given tree. This is especially
 likely to happen with conifers, which are the top-of-canopy trees at
 Wind River.</p>
-</div>
-<div class="include-after">
 </div>
 </body>
 </html>

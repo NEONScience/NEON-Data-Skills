@@ -6,11 +6,11 @@ dateCreated: 2019-5-21
 authors: Claire K. Lunch
 contributors: Kelley A. McCahill
 estimatedTime: 1 hour
-packagesLibraries: neonUtilities, terra
+packagesLibraries: terra, neonUtilities, neonOS, geoNEON
 topics: vegetation-structure, ecosystem-structure, canopy-height-model
 languagesTool: R
 dataProduct: DP1.10098.001, DP3.30015.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm.R
 tutorialSeries: 
 urlTitle: tree-heights-veg-structure-chm
 ---

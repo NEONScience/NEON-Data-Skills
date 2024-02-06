@@ -122,7 +122,7 @@ script of the entire lesson, available in the footer of each lesson page.</p>
 <hr />
 <h2 id="recommended-reading">Recommended Reading</h2>
 <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">
-What is a CHM, DSM and DTM? About Gridded, Raster lidar Data</a>
+What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 </div>
 <h2 id="create-a-lidar-derived-canopy-height-model-chm">Create a lidar-derived Canopy Height Model (CHM)</h2>
 <p>The National Ecological Observatory Network (NEON) will provide lidar-derived
@@ -247,21 +247,20 @@ plot(chm, main=&quot;Lidar CHM - SJER, California&quot;)
 canopy cover at this location in the San Joaquin Experimental Range?</p>
 <div id="ds-challenge" markdown="1">
 <h3 id="challenge-basic-raster-math">Challenge: Basic Raster Math</h3>
-<p>Convert the CHM from meters to feet. Plot it.</p>
+<p>Convert the CHM from meters to feet and plot it.</p>
 </div>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm-R/rfigs/challenge-code-raster-math-1.png" alt=" " /></p>
 <p>We can write out the CHM as a GeoTiff using the <code>writeRaster()</code> function.</p>
 <pre><code># write out the CHM in tiff format. 
 
-writeRaster(chm,paste0(wd,&quot;chm_SJER.tif&quot;),&quot;GTiff&quot;)
+writeRaster(chm,paste0(wd,&quot;CHM_SJER.tif&quot;),&quot;GTiff&quot;)
 </code></pre>
 <p>We’ve now successfully created a canopy height model using basic raster math – in
-R! We can bring the <code>chm_SJER.tif</code> file into QGIS (or any GIS program) and look
+R! We can bring the <code>CHM_SJER.tif</code> file into QGIS (or any GIS program) and look
 at it.</p>
 <hr />
-<p>Consider going onto the next tutorial
-<a href="https://www.neonscience.org/extract-values-rasters-r/" target="_blank"><em>Extract Values from a Raster in R</em></a>
-to compare this lidar-derived CHM with ground-based observations!</p>
+<p>Consider checking out the tutorial
+<a href="https://www.neonscience.org/tree-heights-veg-structure-chm/" target="_blank"><em>Compare tree height measured from the ground to a Lidar-based Canopy Height Model</em></a> to compare a LiDAR-derived CHM with ground-based observations!</p>
 </div>
 </body>
 </html>

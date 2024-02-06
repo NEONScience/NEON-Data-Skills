@@ -69,9 +69,8 @@ chm_ft <- chm*3.28084
 plot(chm_ft, main="Lidar Canopy Height Model (in feet)")
 
 
-
 ## ----write-raster-to-geotiff, eval=FALSE, comment=NA-------------------------------------------------------------------------------------------------------------------------
 # write out the CHM in tiff format. 
-writeRaster(chm,paste0(wd,"chm_SJER.tif"),"GTiff")
+writeRaster(chm,paste0(wd,"CHM_SJER.tif"),"GTiff")
 
 
