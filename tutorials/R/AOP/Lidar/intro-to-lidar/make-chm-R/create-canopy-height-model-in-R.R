@@ -1,19 +1,36 @@
-## ----set-up, message=FALSE, warning=FALSE----------------------------------------------
+## ----load-libraries, message=FALSE, warning=FALSE----------------------------------------------------------------------------------------------------------------------------
 
 # Load needed packages
-library(raster)
-library(rgdal)
+library(terra)
+library(neonUtilities)
 
-# set working directory to ensure R can find the file we wish to import and where
-# we want to save our files. Be sure to move the download into your working directory!
-wd="~/Git/data/" #This will depend on your local environment
+
+## ----set-working-directory---------------------------------------------------------------------------------------------------------------------------------------------------
+
+wd="~/data/" #This will depend on your local environment
 setwd(wd)
 
 
-## ----import-dsm------------------------------------------------------------------------
+## ----download-refl, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------------------------
+## byTileAOP(dpID='DP3.30024.001',
+##           site='SJER',
+##           year='2021',
+##           easting=257500,
+##           northing=4112500,
+##           check.size=TRUE, # set to FALSE if you don't want to enter y/n
+##           savepath = wd)
+
+
+## ----define-h5, results="hide"-----------------------------------------------------------------------------------------------------------------------------------------------
+# Define the DSM and DTM file names, including the full path
+dsm_file <- paste0(wd,"DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DSMGtif/NEON_D17_SJER_DP3_257000_4112000_DSM.tif")
+dtm_file <- paste0(wd,"DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DTMGtif/NEON_D17_SJER_DP3_257000_4112000_DTM.tif")
+
+
+## ----import-dsm--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # assign raster to object
-dsm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalSurfaceModel/SJER2013_DSM.tif"))
+dsm <- rast(dsm_file)
 
 # view info about the raster.
 dsm
@@ -23,16 +40,16 @@ plot(dsm, main="Lidar Digital Surface Model \n SJER, California")
 
 
 
-## ----plot-DTM--------------------------------------------------------------------------
+## ----plot-DTM----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # import the digital terrain model
-dtm <- raster(paste0(wd,"NEON-DS-Field-Site-Spatial-Data/SJER/DigitalTerrainModel/SJER2013_DTM.tif"))
+dtm <- rast(dtm_file)
 
 plot(dtm, main="Lidar Digital Terrain Model \n SJER, California")
 
 
 
-## ----calculate-plot-CHM----------------------------------------------------------------
+## ----calculate-plot-CHM------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # use raster math to create CHM
 chm <- dsm - dtm
@@ -40,37 +57,20 @@ chm <- dsm - dtm
 # view CHM attributes
 chm
 
-plot(chm, main="Lidar Canopy Height Model \n SJER, California")
+plot(chm, main="Lidar CHM - SJER, California")
 
 
 
-## ----challenge-code-raster-math, include=TRUE, results="hide", echo=FALSE--------------
+## ----challenge-code-raster-math, include=TRUE, results="hide", echo=FALSE----------------------------------------------------------------------------------------------------
 # conversion 1m = 3.28084 ft
 chm_ft <- chm*3.28084
 
 # plot 
-plot(chm_ft, main="Lidar Canopy Height Model \n in feet")
+plot(chm_ft, main="Lidar Canopy Height Model (in feet)")
 
 
 
-## ----canopy-function-------------------------------------------------------------------
-# Create a function that subtracts one raster from another
-# 
-canopyCalc <- function(DTM, DSM) {
-  return(DSM -DTM)
-  }
-    
-# use the function to create the final CHM
-chm2 <- canopyCalc(dsm,dtm)
-chm2
-
-# or use the overlay function
-chm3 <- overlay(dsm,dtm,fun = canopyCalc) 
-chm3 
-
-
-
-## ----write-raster-to-geotiff, eval=FALSE, comment=NA-----------------------------------
+## ----write-raster-to-geotiff, eval=FALSE, comment=NA-------------------------------------------------------------------------------------------------------------------------
 # write out the CHM in tiff format. 
 writeRaster(chm,paste0(wd,"chm_SJER.tif"),"GTiff")
 
