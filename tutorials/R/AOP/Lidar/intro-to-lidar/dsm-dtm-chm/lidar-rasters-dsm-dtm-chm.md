@@ -67,19 +67,13 @@ forest, the trees) that are on the surface of the earth.
 
 
 ### Free Point Cloud Viewers for LiDAR Point Clouds
-- <a href="http://www.fs.fed.us/eng/rsac/fusion/" target="_blank">Fusion: US Forest
-Service RSAC</a>
+- <a href="https://www.fs.usda.gov/research/pnw/products/dataandtools/tools/fusion/ldv-lidar-processing-and-visualization-software-version-4.40" target="_blank">Fusion: US Forest Service</a>
 - <a href="http://www.danielgm.net/cc/" target="_blank">Cloud compare</a>
 - <a href="http://plas.io" target="_blank">Plas.io website</a>
 
-For more on viewing LiDAR point cloud data using the Plas.io online
-viewer, see our tutorial 
-<a href="https://www.neonscience.org/plasio-view-pointclouds" target="_blank">
-*Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
+For more on viewing LiDAR point cloud data using the Plas.io online viewer, see our tutorial <a href="https://www.neonscience.org/plasio-view-pointclouds" target="_blank">*Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
 
-Check out our Structural Diversity tutorial for another useful LiDAR point cloud viewer
-available through RStudio,
-<a href="https://www.neonscience.org/structural-diversity-discrete-return">
+Check out our Structural Diversity tutorial for another useful LiDAR point cloud viewer available through RStudio, <a href="https://www.neonscience.org/structural-diversity-discrete-return">
 *Calculating Forest Structural Diversity Metrics from NEON LiDAR Data* </a>
 
 
