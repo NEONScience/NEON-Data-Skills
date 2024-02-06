@@ -58,12 +58,13 @@ forest, the trees) that are on the surface of the earth.
 
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/lidarTree-height.png" target="_blank">
-		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/DSM-DTM.png">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/lidarTree-height.png">
 	</a>
 	<figcaption>
 		DSM, DTM, and CHM
 	</figcaption>
 </figure>
+
 
 ### Free Point Cloud Viewers for LiDAR Point Clouds
 - <a href="http://www.fs.fed.us/eng/rsac/fusion/" target="_blank">Fusion: US Forest
@@ -110,9 +111,8 @@ means that each pixel represents a 1m by 1m area on the ground.
  <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png" target="_blank">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png"></a>
-	<figcaption> Raster or “gridded” data are stored as a grid of values which 
-	are rendered on a map as pixels. Each pixel value represents an area on the 
-	Earth’s surface.  Source: National Ecological Observatory Network (NEON)  
+	<figcaption> Raster or “gridded” data are stored as a grid of values which are rendered on a map as pixels. Each pixel value represents an area on the 
+	Earth’s surface. Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
 
@@ -175,8 +175,7 @@ process our raster in this way.
 <figure>
     <a href="https://www.neonscience.org/gridding-interpolation-spatial-data-gif" target="_blank">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/gridding.gif"></a>
-    <figcaption> Animation showing the general process of taking LiDAR point 
-    clouds and converting them to a raster format. 
+    <figcaption> Animation showing the general process of taking LiDAR point clouds and converting them to a raster format. 
     Source: Tristan Goulden, National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
