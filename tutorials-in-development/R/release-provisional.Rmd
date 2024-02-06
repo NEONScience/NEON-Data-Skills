@@ -78,6 +78,7 @@ install.packages("neonUtilities")
 
 # load packages
 library(neonUtilities)
+library(ggplot2)
 
 # set working directory
 # modify for your computer
@@ -87,6 +88,7 @@ setwd("~/data")
 
 ```{r libraries, include=FALSE}
 library(neonUtilities)
+library(ggplot2)
 ```
 
 ## Find data of interest
@@ -187,23 +189,76 @@ you're not familiar with the `neonUtilities` package and how to use
 it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
 tutorial as well as this one, for a more complete introduction.
 
-Let's download the same data we selected on the Data Portal above: BARR and 
-BONA, January 2023 - December 2023.
+Let's download a full year of data for two sites, as we did on the Data 
+Portal above: TOOL and BONA, January 2023 - December 2023.
+
+(Note: To see the code behavior below, if you are following this tutorial in 
+2025 or later, you may need to adjust the dates. In general, use the most 
+recent full year of data.)
 
 ``` {r load-data, results="hide"}
 
 qpr <- loadByProduct(dpID="DP1.00066.001", 
-                     site=c("BARR", "BONA"),
+                     site=c("TOOL", "BONA"),
                      startdate="2023-01",
                      enddate="2023-12",
                      check.size=F)
 
 ```
 
+In the messages output as this function runs, you will see:
+
+```
+
+Provisional data were excluded from available files list. To download provisional data, use input parameter include.provisional=TRUE.
+
+```
+
+Just like on the Data Portal, you need to opt in to download Provisional data.
+
+First, let's take a look at the data we downloaded:
+
+```{r plot-release}
+
+gg <- ggplot(qpr$PARQL_30min, 
+             aes(endDateTime, linePARMean)) +
+  geom_line() +
+  facet_wrap(~siteID)
+gg
+
+```
+
+As we can see, we downloaded only the data from the first half of 2023, 
+the data included in RELEASE-2024.
+
+Now let's download the Provisional data as well:
+
+``` {r load-prov, results="hide"}
+
+qpr <- loadByProduct(dpID="DP1.00066.001", 
+                     site=c("TOOL", "BONA"),
+                     startdate="2023-01",
+                     enddate="2023-12",
+                     include.provisional=T,
+                     check.size=F)
+
+```
+
+And now plot the full year of data:
+
+```{r plot-release}
+
+gg <- ggplot(qpr$PARQL_30min, 
+             aes(endDateTime, linePARMean)) +
+  geom_line() +
+  facet_wrap(~siteID)
+gg
+
+```
+
 Next sections: 
-Provisional data excluded
-How to include provisional data
 Look, provisional data are no different
+Data citation info
 Data management:
 Understand which functions download data fresh each time and which don't
 See cheat sheet
