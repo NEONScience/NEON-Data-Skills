@@ -83,9 +83,9 @@ available through RStudio,
 *Calculating Forest Structural Diversity Metrics from NEON LiDAR Data* </a>
 
 
-## 3D Models of NEON Site: SJER (San Juaquin Experimental Range) 
+## 3D Models of NEON Site: SJER (San Joaquin Experimental Range) 
 
-Click on the images to view interactive 3D models of <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER">San Juaquin Experimental Range site.</a>
+Click on the images to view interactive 3D models of <a href="https://www.neonscience.org/field-sites/SJER">San Joaquin Experimental Range site.</a>
 
 <table><tr>
 <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/dem.png" width="300"> </td>
@@ -195,6 +195,6 @@ predictions which is useful to know, if you are doing research.
 
 ***
 
-For learning more on how to work with LiDAR data, consider going through the 
-<a href="https://www.neonscience.org/raster-data-series" target="_blank">*Introduction to Working With Raster Data in R*</a> 
-tutorial series.  
+For learning more on how to work with LiDAR and Raster data more generally in R, please refer to the Data Carpentry's
+<a href="https://datacarpentry.org/r-raster-vector-geospatial/" target="_blank">*Introduction to Geospatial Raster and Vector Data with R*</a> 
+lessons.  
