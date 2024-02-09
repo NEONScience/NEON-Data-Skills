@@ -1,14 +1,14 @@
 ---
 syncID: 79f902f6c0264f16a9be13f50560860a
 title: "Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/AOP/Hyperspectral/Plot-Hyperspectral-Spectra/Plot-Hyperspectral-Spectra.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Plot-Hyperspectral-Spectra/Plot-Hyperspectral-Spectra.R
 contributors: Felipe Sanchez, Bridget Hass
 dateCreated: 2015-08-08 20:49:52
 description: Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral signature.
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
 dataProduct: DP3.30006.001
-packagesLibraries: rhdf5, plyr, ggplot2
+packagesLibraries: rhdf5, plyr, ggplot2, neonUtilties
 authors: Leah A. Wasser, Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
 tutorialSeries: null
@@ -33,79 +33,35 @@ preferably, RStudio loaded on your computer.
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
 * **plyr**: `install.packages('plyr')`
 * **ggplot2**: `install.packages('ggplot2')`
+* **neonUtilities**: `install.packages('neonUtilities')`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
  R - Adapted from Software Carpentry.</a>
 
 
-### Data to Download
-<h3><a href="https://ndownloader.figshare.com/files/21754221">
-Download NEON Teaching Data Subset: Imaging Spectrometer Data - HDF5 </a></h3>
+### Data
 
-These hyperspectral remote sensing data provide information on the
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin 
-Exerimental Range field site</a> in March of 2019.
-The data were collected over the San Joaquin field site located in California 
-(Domain 17) and processed at NEON headquarters. This data subset is derived from 
-the mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. 
-The entire dataset can be accessed by request from the 
-<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
-
-<a href="https://ndownloader.figshare.com/files/21754221" class="link--button link--arrow">
-Download Dataset</a>
-
-**Remember** that the example dataset linked here only has 1 out of every 4 bands
-included in a full NEON hyperspectral dataset (this substantially reduces the file 
-size!). When we refer to bands in this tutorial, we will note the band numbers for 
-this example dataset, which are different from NEON production data. To convert 
-a band number (b) from this example data subset to the equivalent band in a full 
-NEON hyperspectral file (b'), use the following equation: b' = 1+4*(b-1).
+These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
 
+**Set Working Directory:** This lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
 
-
-***
-**Set Working Directory:** This lesson assumes that you have set your working 
-directory to the location of the downloaded and unzipped data subsets. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
-
-**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
-learned skills. If available, the code for challenge solutions is found in the
-downloadable R script of the entire lesson, available in the footer of each lesson page.
-
-
-***
 ### Recommended Skills
 
-For this tutorial, you should be comfortable reading data from a HDF5 file and 
-have a general familiarity with hyperspectral data. If you aren't familiar with 
-these steps already, we highly recommend you work through the 
-<a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> 
-*Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a>
-before moving on to this tutorial.
+For this tutorial, you should be comfortable reading data from a HDF5 file and have a general familiarity with hyperspectral data. If you aren't familiar with these steps already, we highly recommend you work through the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> 
+*Introduction to Working with Hyperspectral Data in HDF5 Format in R* tutorial</a> before moving on to this tutorial.
 
 </div> 
 
-Everything on our planet reflects electromagnetic radiation from the Sun, and 
-different types of land cover often have dramatically different refelectance 
-properties across the spectrum. One of the most powerful aspects of the NEON 
-Imaging Spectrometer (NIS, or hyperspectral sensor) is that it can 
-accurately measure these reflectance properties at a very high spectral resolution. 
-When you plot the reflectance values across the observed spectrum, you will see 
-that different land cover types (vegetation, pavement, bare soils, etc.) have 
-distinct patterns in their reflectance values, a property that we call the 
+Everything on our planet reflects electromagnetic radiation from the Sun, and different types of land cover often have dramatically different reflectance properties across the spectrum. One of the most powerful aspects of the NEON Imaging Spectrometer (NIS, or hyperspectral sensor) is that it can accurately measure these reflectance properties at a very high spectral resolution. When you plot the reflectance values across the observed spectrum, you will see 
+that different land cover types (vegetation, pavement, bare soils, etc.) have distinct patterns in their reflectance values, a property that we call the 
 'spectral signature' of a particular land cover class. 
 
-In this tutorial, we will extract the reflectance values for all bands of a
-single pixel to plot a spectral signature for that pixel. In order to do this, 
-we need to pair the reflectance values for that pixel with the wavelength values 
-of the bands that are represented in those measurements. We will also need to 
-adjust the reflectance values by the scaling factor that is saved as an 
-'attribute' in the HDF5 file. First, let's start by defining the working 
+In this tutorial, we will extract the reflectance values for all bands of a single pixel to plot a spectral signature for that pixel. In order to do this,
+we need to pair the reflectance values for that pixel with the wavelength values of the bands that are represented in those measurements. We will also need to adjust the reflectance values by the scaling factor that is saved as an 'attribute' in the HDF5 file. First, let's start by defining the working 
 directory and reading in the example dataset.
 
 ```{r call-libraries, results="hide" }
@@ -114,51 +70,52 @@ directory and reading in the example dataset.
 library(rhdf5)
 library(plyr)
 library(ggplot2)
+library(neonUtilities)
 
-# set working directory to ensure R can find the file we wish to import and where
-# we want to save our files. Be sure to move the download into your working directory!
 wd <- "~/data/" #This will depend on your local environment
 setwd(wd)
+```
+If you haven't already downloaded the hyperspectral data tile (in one of the previous tutorials in this series), you can use the `neonUtilities` function `byTileAOP` to download a single reflectance tile. You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000, 4112000).
 
+```{r download-refl, eval=FALSE}
+byTileAOP(dpID = 'DP3.30006.001',
+          site = 'SJER',
+          year = '2021',
+          easting = 257500,
+          northing = 4112500,
+          savepath = wd)
 ```
 
-Now, we can look at the contents of the H5 file as follows:
+This file will be downloaded into a nested subdirectory under the `~/data` folder (your working directory), inside a folder named `DP3.30006.001` (the Data Product ID). The file should show up in this location: `~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5`.
+
+Now we can read in the file and look at the contents using `h5ls`. You can move this file to a different location, but make sure to change the path accordingly.
 
 ```{r open-H5-file }
+# define the h5 file name (specify the full path)
+h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
-# Define the file name to be opened
-f <- paste0(wd,"NEON_hyperspectral_tutorial_example_subset.h5")
 # look at the HDF5 file structure 
-h5ls(f,all=T) 
-
+h5ls(h5_file) #optionally specify all=True if you want to see all of the information
 ```
 
 
 ## Read Wavelength Values
 
-Next, let's read in the wavelength center associated with each band in the HDF5 
-file. We will later match these with the reflectance values and show both in 
-our final spectral signature plot.
+Next, let's read in the wavelength center associated with each band in the HDF5 file. We will later match these with the reflectance values and show both in our final spectral signature plot.
 
 ```{r read-band-wavelengths }
-
 # read in the wavelength information from the HDF5 file
-wavelengths <- h5read(f,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
-
+wavelengths <- h5read(h5_file,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 ```
 
 
 ## Extract Z-dimension data slice
 
-Next, we will extract all reflectance values for one pixel. This makes up the 
-spectral signature or profile of the pixel. To do that, we'll use the `h5read()` 
-function. Here we pick an arbitrary pixel at `(100,35)`, and use the `NULL` 
-value to select *all* bands from that location.
+Next, we will extract all reflectance values for one pixel. This makes up the spectral signature or profile of the pixel. To do that, we'll use the `h5read()` function. Here we pick an arbitrary pixel at `(100,35)`, and use the `NULL` value to select *all* bands from that location.
 
 ```{r extract-spectra }
-
 # extract all bands from a single pixel
-aPixel <- h5read(f,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35))
+aPixel <- h5read(h5_file,"/SJER/Reflectance/Reflectance_Data",index=list(NULL,100,35))
 
 # The line above generates a vector of reflectance values.
 # Next, we reshape the data and turn them into a dataframe
@@ -171,21 +128,16 @@ aPixeldf <- b[2]
 aPixeldf$Wavelength <- wavelengths
 
 head(aPixeldf)
-
 ```
 
 ## Scale Factor
 
-Then, we can pull the spatial attributes that we'll need to adjust the reflectance 
-values. Often, large raster data contain floating point (values with decimals) information.
-However, floating point data consume more space (yield a larger file size) compared
-to integer values. Thus, to keep the file sizes smaller, the data will be scaled
-by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the data attributes.
+Then, we can pull the spatial attributes that we'll need to adjust the reflectance values. Often, large raster data contain floating point (values with decimals) information. However, floating point data consume more space (yield a larger file size) compared to integer values. Thus, to keep the file sizes smaller, the data will be scaled by a factor of 10, 100, 10000, etc. This `scale factor` will be noted in the data attributes.
 
 ```{r pull-scale-factor }
 
 # grab scale factor from the Reflectance attributes
-reflectanceAttr <- h5readAttributes(f,"/SJER/Reflectance/Reflectance_Data" )
+reflectanceAttr <- h5readAttributes(h5_file,"/SJER/Reflectance/Reflectance_Data" )
 
 scaleFact <- reflectanceAttr$Scale_Factor
 

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Compare tree height measured from the ground to a Lidar-based Canopy Height Model</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Compare tree height measured from the ground to a Lidar-based Canopy Height Model</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<p>This data tutorial provides instruction on working with two different NEON
+data products to estimate tree height:</p>
+<ul>
+<li><strong>DP3.30015.001, Ecosystem structure</strong>, aka Canopy Height Model (CHM)</li>
+<li><strong>DP1.10098.001, Vegetation structure</strong></li>
+</ul>
+<p>The <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the remote sensing platform.
+The <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">vegetation structure data</a> are collected by by field staff on the ground. We will be using data from the Wind River Experimental Forest NEON field site located in Washington state. The
+predominant vegetation there are tall evergreen conifers.</p>
+<p>If you are coming to this exercise after following tutorials on data
+download and formatting, and therefore already have the needed data,
+skip ahead to section 4.</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<p>You will need the most current version of R loaded on your computer to complete this tutorial.</p>
+</div>
+<h2 id="1-setup">1. Setup</h2>
+<p>Start by installing and loading packages (if necessary) and setting
+options. One of the packages we’ll be using, <code>geoNEON</code>, is only
+available via GitHub, so it’s installed using the <code>devtools</code> package.
+The other packages can be installed directly from CRAN.</p>
+<p>Installation can be run once, then periodically to get package updates.</p>
+<pre><code>install.packages(&quot;neonUtilities&quot;)
+
+install.packages(&quot;neonOS&quot;)
+
+install.packages(&quot;terra&quot;)
+
+install.packages(&quot;devtools&quot;)
+
+devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
+</code></pre>
+<p>Now load packages. This needs to be done every time you run code.
+We’ll also set a working directory for data downloads.</p>
+<pre><code>library(terra)
+
+library(neonUtilities)
+
+library(neonOS)
+
+library(geoNEON)
+
+
+
+options(stringsAsFactors=F)
+
+
+
+# set working directory
+
+# adapt directory path for your system
+
+wd &lt;- &quot;~/data&quot;
+
+setwd(wd)
+</code></pre>
+<h2 id="2-vegetation-structure-data">2. Vegetation structure data</h2>
+<p>Download the vegetation structure data using the <code>loadByProduct()</code> function in
+the <code>neonUtilities</code> package. Inputs to the function are:</p>
+<ul>
+<li><code>dpID</code>: data product ID; woody vegetation structure = DP1.10098.001</li>
+<li><code>site</code>: (vector of) 4-letter site codes; Wind River = WREF</li>
+<li><code>package</code>: basic or expanded; we’ll download basic here</li>
+<li><code>release</code>: which data release to download; we’ll use RELEASE-2023</li>
+<li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>TRUE</code> when downloading a dataset for the first time.</li>
+</ul>
+<p>Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
+for the <code>neonUtilities</code> package for more details and the complete index of
+possible function inputs.</p>
+<pre><code>veglist &lt;- loadByProduct(dpID=&quot;DP1.10098.001&quot;, 
+                         site=&quot;WREF&quot;, 
+                         package=&quot;basic&quot;, 
+                         release=&quot;RELEASE-2023&quot;,
+                         check.size = FALSE)
+</code></pre>
+<p>Use the <code>getLocTOS()</code> function in the <code>geoNEON</code> package to get
+precise locations for the tagged plants. Refer to the package
+documentation for more details.</p>
+<pre><code>vegmap &lt;- getLocTOS(veglist$vst_mappingandtagging, 
+                          &quot;vst_mappingandtagging&quot;)
+</code></pre>
+<p>Now we have the mapped locations of individuals in the <code>vst_mappingandtagging</code>
+table, and the annual measurements of tree dimensions such as height and
+diameter in the <code>vst_apparentindividual</code> table. To bring these measurements
+together, join the two tables, using the <code>joinTableNEON()</code> function from the
+<code>neonOS</code> package. Refer to the <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">Quick Start Guide</a>
+for Vegetation structure for more information about the data tables and the
+joining instructions <code>joinTableNEON()</code> is using.</p>
+<pre><code>veg &lt;- joinTableNEON(veglist$vst_apparentindividual, 
+                     vegmap, 
+                     name1=&quot;vst_apparentindividual&quot;,
+                     name2=&quot;vst_mappingandtagging&quot;)
+</code></pre>
+<p>Let’s see what the data look like! Make a stem map of the plants in
+plot WREF_075. Note that the <code>circles</code> argument of the <code>symbols()</code> function expects a radius, but
+<code>stemDiameter</code> is just that, a diameter, so we will need to divide by two.
+And <code>stemDiameter</code> is in centimeters, but the mapping scale is in meters,
+so we also need to divide by 100 to get the scale right.</p>
+<pre><code>symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
+        veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)], 
+        circles=veg$stemDiameter[which(veg$plotID==&quot;WREF_075&quot;)]/100/2, 
+        inches=F, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-1-1.png" alt=" " /></p>
+<p>And now overlay the estimated uncertainty in the location of each stem,
+in blue:</p>
+<pre><code>symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
+        veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)], 
+        circles=veg$stemDiameter[which(veg$plotID==&quot;WREF_075&quot;)]/100/2, 
+        inches=F, xlab=&quot;Easting&quot;, ylab=&quot;Northing&quot;)
+
+symbols(veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
+        veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)], 
+        circles=veg$adjCoordinateUncertainty[which(veg$plotID==&quot;WREF_075&quot;)], 
+        inches=F, add=T, fg=&quot;lightblue&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-2-1.png" alt=" " /></p>
+<h2 id="3-canopy-height-model-data">3. Canopy height model data</h2>
+<p>Now we’ll download the CHM tile covering plot WREF_075. Several
+other plots are also covered by this tile. We could download all tiles
+that contain vegetation structure plots, but in this exercise we’re
+sticking to one tile to limit download size and processing time.</p>
+<p>The <code>tileByAOP()</code> function in the <code>neonUtilities</code> package allows for
+download of remote sensing tiles based on easting and northing
+coordinates, so we’ll give it the coordinates of all the trees in
+plot WREF_075 and the data product ID, DP3.30015.001 (note that if
+WREF_075 crossed tile boundaries, this code would download all
+relevant tiles).</p>
+<p>The download will include several metadata files as well as the data
+tile. Load the data tile into the environment using the <code>terra</code> package.</p>
+<pre><code>byTileAOP(dpID=&quot;DP3.30015.001&quot;, site=&quot;WREF&quot;, year=&quot;2017&quot;, 
+          easting=veg$adjEasting[which(veg$plotID==&quot;WREF_075&quot;)], 
+          northing=veg$adjNorthing[which(veg$plotID==&quot;WREF_075&quot;)],
+          check.size=FALSE, savepath=wd)
+
+
+
+chm &lt;- rast(paste0(wd, &quot;/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif&quot;))
+</code></pre>
+<p>Let’s view the tile.</p>
+<pre><code>plot(chm, col=topo.colors(5))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-chm-1.png" alt=" " /></p>
+<h2 id="4-comparing-the-two-datasets">4. Comparing the two datasets</h2>
+<p>Now we have the heights of individual trees measured from the ground, and
+the height of the top surface of the canopy, measured from the air. There
+are many different ways to make a comparison between these two
+datasets! This section will walk through three different approaches.</p>
+<p>First, subset the vegetation structure data to only the trees that fall
+within this tile, using the <code>ext()</code> function from the <code>terra</code> package.</p>
+<p>This step isn’t strictly necessary, but it will make the processing faster.</p>
+<pre><code>vegsub &lt;- veg[which(veg$adjEasting &gt;= ext(chm)[1] &amp;
+                      veg$adjEasting &lt;= ext(chm)[2] &amp;
+                      veg$adjNorthing &gt;= ext(chm)[3] &amp; 
+                      veg$adjNorthing &lt;= ext(chm)[4]),]
+</code></pre>
+<p>Starting with a very simple first pass: use the <code>extract()</code> function
+from the <code>terra</code> package to get the CHM value matching the coordinates
+of each mapped plant. Then make a scatter plot of each tree’s height
+vs. the CHM value at its location.</p>
+<pre><code>valCHM &lt;- extract(chm, 
+                  cbind(vegsub$adjEasting,
+                  vegsub$adjNorthing))
+
+
+
+plot(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegsub$height, pch=20, xlab=&quot;Height&quot;, 
+     ylab=&quot;Canopy height model&quot;)
+
+lines(c(0,50), c(0,50), col=&quot;grey&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/no-buffer-chm-1.png" alt=" " /></p>
+<p>How strong is the correlation between the ground and lidar
+measurements?</p>
+<pre><code>cor(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegsub$height, use=&quot;complete&quot;)
+
+## [1] 0.3824467
+</code></pre>
+<p>Now we remember there is uncertainty in the location of each tree, so the
+precise pixel it corresponds to might not be the right one. Let’s try
+adding a buffer to the extraction function, to get the tallest tree within
+the uncertainty of the location of each tree.</p>
+<pre><code>valCHMbuff &lt;- extract(chm, 
+                  buffer(vect(cbind(vegsub$adjEasting,
+                  vegsub$adjNorthing)),
+                  width=vegsub$adjCoordinateUncertainty),
+                  fun=max)
+
+
+
+plot(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegsub$height, pch=20, xlab=&quot;Height&quot;, 
+     ylab=&quot;Canopy height model&quot;)
+
+lines(c(0,50), c(0,50), col=&quot;grey&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-1.png" alt=" " /></p>
+<pre><code>cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegsub$height, use=&quot;complete&quot;)
+
+## [1] 0.3698753
+</code></pre>
+<p>Adding the buffer has actually made our correlation slightly worse. Let’s
+think about the data.</p>
+<p>There are a lot of points clustered on the 1-1 line, but there is also a
+cloud of points above the line, where the measured height is lower than
+the canopy height model at the same coordinates. This makes sense, because
+the tree height data include the understory. There are many
+plants measured in the vegetation structure data that are not at the top
+of the canopy, and the CHM sees only the top surface of the canopy.</p>
+<p>This also explains why the buffer didn’t improve things. Finding the
+highest CHM value within the uncertainty of a tree should improve the fit
+for the tallest trees, but it’s likely to make the fit worse for the
+understory trees.</p>
+<p>How to exclude understory plants from this analysis? Again, there are many
+possible approaches. We’ll try out two, one map-centric and one
+tree-centric.</p>
+<p>Starting with the map-centric approach: select a pixel size, and aggregate
+both the vegetation structure data and the CHM data to find the tallest point
+in each pixel. Let’s try this with 10m pixels.</p>
+<p>Start by rounding the coordinates of the vegetation structure data, to create
+10m bins. Use <code>floor()</code> instead of <code>round()</code> so each tree ends up in the pixel
+with the same numbering as the raster pixels (the rasters/pixels are
+numbered by their southwest corners).</p>
+<pre><code>easting10 &lt;- 10*floor(vegsub$adjEasting/10)
+
+northing10 &lt;- 10*floor(vegsub$adjNorthing/10)
+
+vegsub &lt;- cbind(vegsub, easting10, northing10)
+</code></pre>
+<p>Use the <code>aggregate()</code> function to get the tallest tree in each 10m bin.</p>
+<pre><code>vegbin &lt;- stats::aggregate(vegsub, 
+                           by=list(vegsub$easting10, 
+                                   vegsub$northing10), 
+                           FUN=max)
+</code></pre>
+<p>To get the CHM values for the 10m bins, use the <code>terra</code> package version
+of the <code>aggregate()</code> function. Let’s take a look at the lower-resolution
+image we get as a result.</p>
+<pre><code>CHM10 &lt;- terra::aggregate(chm, fact=10, fun=max)
+
+plot(CHM10, col=topo.colors(5))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/CHM-10-1.png" alt=" " /></p>
+<p>Use the <code>extract()</code> function again to get the values from each pixel.
+Our grids are numbered by the corners, so add 5 to each tree
+coordinate to make sure it’s in the correct pixel.</p>
+<pre><code>vegbin$easting10 &lt;- vegbin$easting10 + 5
+
+vegbin$northing10 &lt;- vegbin$northing10 + 5
+
+binCHM &lt;- extract(CHM10, cbind(vegbin$easting10, 
+                               vegbin$northing10))
+
+plot(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegbin$height, pch=20, 
+     xlab=&quot;Height&quot;, ylab=&quot;Canopy height model&quot;)
+
+lines(c(0,50), c(0,50), col=&quot;grey&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/adj-tree-coord-1.png" alt=" " /></p>
+<pre><code>cor(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegbin$height, use=&quot;complete&quot;)
+
+## [1] 0.2244228
+</code></pre>
+<p>The understory points are thinned out substantially, but so are the rest.
+We’ve lost a lot of data by going to a lower resolution.</p>
+<p>Let’s try and see if we can identify the tallest trees by another approach,
+using the trees as the starting point instead of map area. Start by sorting
+the veg structure data by height.</p>
+<pre><code>vegsub &lt;- vegsub[order(vegsub$height, 
+                       decreasing=T),]
+</code></pre>
+<p>Now, for each tree, let’s estimate which nearby trees might be beneath
+its canopy, and discard those points. To do this:</p>
+<ol>
+<li>Calculate the distance of each tree from the target tree.</li>
+<li>Pick a reasonable estimate for canopy size, and discard shorter trees
+within that radius. The radius I used is 0.3 times the height, based on
+some rudimentary googling about Douglas fir allometry. It could definitely
+be improved on!</li>
+<li>Iterate over all trees.</li>
+</ol>
+<p>We’ll use a simple <code>for</code> loop to do this:</p>
+<pre><code>vegfil &lt;- vegsub
+
+for(i in 1:nrow(vegsub)) {
+    if(is.na(vegfil$height[i]))
+        next
+    dist &lt;- sqrt((vegsub$adjEasting[i]-vegsub$adjEasting)^2 + 
+                (vegsub$adjNorthing[i]-vegsub$adjNorthing)^2)
+    vegfil$height[which(dist&lt;0.3*vegsub$height[i] &amp; 
+                        vegsub$height&lt;vegsub$height[i])] &lt;- NA
+}
+
+
+
+vegfil &lt;- vegfil[which(!is.na(vegfil$height)),]
+</code></pre>
+<p>Now extract the raster values, as above.</p>
+<pre><code>filterCHM &lt;- extract(chm, 
+                     cbind(vegfil$adjEasting, 
+                           vegfil$adjNorthing))
+
+plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegfil$height, pch=20, 
+     xlab=&quot;Height&quot;, ylab=&quot;Canopy height model&quot;)
+
+lines(c(0,50), c(0,50), col=&quot;grey&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/filter-chm-1.png" alt=" " /></p>
+<pre><code>cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
+    vegfil$height)
+
+## [1] 0.8070586
+</code></pre>
+<p>This is quite a bit better! There are still several understory points we
+failed to exclude, but we were able to filter out most of the understory
+without losing so many overstory points.</p>
+<p>Let’s try one last thing. The <code>plantStatus</code> field in the veg structure data
+indicates whether a plant is dead, broken, or otherwise damaged. In theory,
+a dead or broken tree can still be the tallest thing around, but it’s less
+likely, and it’s also less likely to get a good Lidar return. Exclude all
+trees that aren’t alive:</p>
+<pre><code>vegfil &lt;- vegfil[which(vegfil$plantStatus==&quot;Live&quot;),]
+
+filterCHM &lt;- extract(chm, 
+                     cbind(vegfil$adjEasting, 
+                           vegfil$adjNorthing))
+
+plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegfil$height, pch=20, 
+     xlab=&quot;Height&quot;, ylab=&quot;Canopy height model&quot;)
+
+lines(c(0,50), c(0,50), col=&quot;grey&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/live-trees-1.png" alt=" " /></p>
+<pre><code>cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
+    vegfil$height)
+
+## [1] 0.9057883
+</code></pre>
+<p>Nice!</p>
+<p>One final note: however we slice the data, there is a noticeable bias
+even in the strongly correlated values. The CHM heights are generally a
+bit shorter than the ground-based estimates of tree height. There are
+two biases in the CHM data that contribute to this. (1) Lidar returns
+from short-statured vegetation are difficult to distinguish from the
+ground, so the “ground” estimated by Lidar is generally a bit higher
+than the true ground surface, and (2) the height estimate from Lidar
+represents the highest return, but the highest return may slightly
+miss the actual tallest point on a given tree. This is especially
+likely to happen with conifers, which are the top-of-canopy trees at
+Wind River.</p>
+</div>
+</body>
+</html>
