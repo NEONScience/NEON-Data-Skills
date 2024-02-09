@@ -3,7 +3,7 @@ syncID: 2900c272e09d4c71a86a2d4dffb92713
 title: "Understanding Releases and Provisional Data"
 description: "Access, work with, and navigate data from NEON data releases and provisional data."
 dateCreated: 2024-01-29
-authors: [Claire K. Lunch]
+authors: Claire K. Lunch
 contributors: 
 estimatedTime: 40 minutes
 packagesLibraries: neonUtilities
@@ -103,7 +103,7 @@ data.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-menu.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-menu.png" alt="Menu bar on Explore NEON Data page showing Release menu."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-menu.png" alt="Menu bar on Explore NEON Data page showing Release menu." style="width:50%" height="auto"></a>
 </figure>
 
 Stay on the default menu option for now. Navigate to quantum line 
@@ -116,7 +116,7 @@ been published by the time you follow this tutorial.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-availability.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-availability.png" alt="Data availability chart for PAR quantum line."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-availability.png" alt="Data availability chart for PAR quantum line." style="width:75%" height="auto"></a>
 </figure>
 
 Here we can consult the key and see that data up to June 2023 are in a Release 
@@ -130,7 +130,7 @@ citation information for publications using these data.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-citation.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-citation.png" alt="Provisional and RELEASE-2024 citations for PAR quantum line."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/quantum-line-citation.png" alt="Provisional and RELEASE-2024 citations for PAR quantum line." style="width:50%" height="auto"></a>
 </figure>
 
 Note that the citation guidance is different for Provisional and Released 
@@ -151,7 +151,7 @@ Click Next.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/include-provisional-menu.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/include-provisional-menu.png" alt="Radio buttons to select whether to include or exclude Provisional data from download."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/include-provisional-menu.png" alt="Radio buttons to select whether to include or exclude Provisional data from download." style="width:50%" height="auto"></a>
 </figure>
 
 This page in the download process asks whether you want to download 
@@ -170,7 +170,7 @@ RELEASE-2023.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-2023-menu.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-2023-menu.png" alt="RELEASE-2023 selected in explore data products menu."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-2023-menu.png" alt="RELEASE-2023 selected in explore data products menu." style="width:50%" height="auto"></a>
 </figure>
 
 Now, in the data availability chart, we can see there are no hatched boxes, 
@@ -179,7 +179,7 @@ extends only through June 2022, the end date for sensor data in RELEASE-2023.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-2023-availability.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-2023-availability.png" alt="Data availability chart for PAR quantum line in RELEASE-2023."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/release-2023-availability.png" alt="Data availability chart for PAR quantum line in RELEASE-2023." style="width:90%" height="auto"></a>
 </figure>
 
 ## Downloading data using neonUtilities
