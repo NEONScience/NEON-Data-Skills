@@ -1,6 +1,6 @@
 ---
-syncID: FILL IN
-title: "Understanding Released and Provisional Data"
+syncID: 2900c272e09d4c71a86a2d4dffb92713
+title: "Understanding Releases and Provisional Data"
 description: "Access, work with, and navigate data from NEON data releases and provisional data."
 dateCreated: 2024-01-29
 authors: [Claire K. Lunch]
@@ -10,7 +10,7 @@ packagesLibraries: neonUtilities
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: 
-code1: FILL IN
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/release-provisional.R
 tutorialSeries:
 urlTitle: release-provisional-tutorial
 
@@ -70,26 +70,30 @@ loaded on your computer to complete this tutorial.
 
 First install and load the necessary packages.
 
-```{r setup, eval=FALSE}
 
-# install packages. can skip this step if 
-# the packages are already installed
-install.packages("neonUtilities")
+    # install packages. can skip this step if 
 
-# load packages
-library(neonUtilities)
-library(ggplot2)
+    # the packages are already installed
 
-# set working directory
-# modify for your computer
-setwd("~/data")
+    install.packages("neonUtilities")
 
-```
+    
 
-```{r libraries, include=FALSE}
-library(neonUtilities)
-library(ggplot2)
-```
+    # load packages
+
+    library(neonUtilities)
+
+    library(ggplot2)
+
+    
+
+    # set working directory
+
+    # modify for your computer
+
+    setwd("~/data")
+
+
 
 ## Find data of interest
 
@@ -197,15 +201,12 @@ Portal above. Here we'll download data from HEAL (Healy) and GUAN
 2025 or later, you may need to adjust the dates. In general, use the most 
 recent full year of data.)
 
-``` {r load-data, results="hide"}
 
-qpr <- loadByProduct(dpID="DP1.00066.001", 
-                     site=c("HEAL", "GUAN"),
-                     startdate="2023-01",
-                     enddate="2023-12",
-                     check.size=F)
-
-```
+    qpr <- loadByProduct(dpID="DP1.00066.001", 
+                         site=c("HEAL", "GUAN"),
+                         startdate="2023-01",
+                         enddate="2023-12",
+                         check.size=F)
 
 In the messages output as this function runs, you will see:
 
@@ -218,43 +219,40 @@ Provisional data were excluded from available files list. To download provisiona
 Just like on the Data Portal, you need to opt in to download Provisional data. 
 We'll do that below. But first, let's take a look at the data we downloaded:
 
-```{r plot-release}
 
-gg <- ggplot(qpr$PARQL_30min, 
-             aes(endDateTime, linePARMean)) +
-  geom_line() +
-  facet_wrap(~siteID)
-gg
+    gg <- ggplot(qpr$PARQL_30min, 
+                 aes(endDateTime, linePARMean)) +
+      geom_line() +
+      facet_wrap(~siteID)
 
-```
+    gg
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-release-1.png)
 
 As we can see, we have data from the first half of 2023, 
 the data included in RELEASE-2024.
 
 Now let's download the Provisional data as well:
 
-``` {r load-prov, results="hide"}
 
-qpr <- loadByProduct(dpID="DP1.00066.001", 
-                     site=c("HEAL", "GUAN"),
-                     startdate="2023-01",
-                     enddate="2023-12",
-                     include.provisional=T,
-                     check.size=F)
-
-```
+    qpr <- loadByProduct(dpID="DP1.00066.001", 
+                         site=c("HEAL", "GUAN"),
+                         startdate="2023-01",
+                         enddate="2023-12",
+                         include.provisional=T,
+                         check.size=F)
 
 And now plot the full year of data:
 
-```{r plot-release}
 
-gg <- ggplot(qpr$PARQL_30min, 
-             aes(endDateTime, linePARMean)) +
-  geom_line() +
-  facet_wrap(~siteID)
-gg
+    gg <- ggplot(qpr$PARQL_30min, 
+                 aes(endDateTime, linePARMean)) +
+      geom_line() +
+      facet_wrap(~siteID)
 
-```
+    gg
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-all-1.png)
 
 So, what is different about Release vs. Provisional data? As we can 
 see, both are giving us reliable information about light availability 
@@ -265,18 +263,18 @@ Let's take a look at quality flags in the data. We'll look at just one
 soil plot, and add red tags along the x axis to see time stamps that are 
 flagged.
 
-```{r plot-release-quality}
 
-gg <- ggplot(qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001"),], 
-             aes(endDateTime, linePARMean)) +
-  geom_line() +
-  facet_wrap(~siteID) + 
-  geom_rug(data=qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001" 
-                                      & qpr$PARQL_30min$finalQF==1),], 
-             color="red", sides="b")
-gg
+    gg <- ggplot(qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001"),], 
+                 aes(endDateTime, linePARMean)) +
+      geom_line() +
+      facet_wrap(~siteID) + 
+      geom_rug(data=qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001" 
+                                          & qpr$PARQL_30min$finalQF==1),], 
+                 color="red", sides="b")
 
-```
+    gg
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-all-quality-1.png)
 
 There are flagged data in both Released and Provisional data. However, if you 
 use this tutorial anytime after January 2024, you may see different data flagged 
@@ -294,19 +292,35 @@ citations in BibTeX.
 
 Provisional:
 
-```{r cite-prov}
 
-writeLines(qpr$citation_00066_PROVISIONAL)
+    writeLines(qpr$citation_00066_PROVISIONAL)
 
-```
+    ## @misc{DP1.00066.001/provisional,
+    ##   doi = {},
+    ##   url = {https://data.neonscience.org/data-products/DP1.00066.001},
+    ##   author = {{National Ecological Observatory Network (NEON)}},
+    ##   language = {en},
+    ##   title = {Photosynthetically active radiation (quantum line) (DP1.00066.001)},
+    ##   publisher = {National Ecological Observatory Network (NEON)},
+    ##   year = {2024}
+    ## }
 
 RELEASE-2024:
 
-```{r cite-rel}
 
-writeLines(qpr$`citation_00066_RELEASE-2024`)
+    writeLines(qpr$`citation_00066_RELEASE-2024`)
 
-```
+    ## @misc{https://doi.org/10.48443/8r8b-0789,
+    ##   doi = {10.48443/8R8B-0789},
+    ##   url = {https://data.neonscience.org/data-products/DP1.00066.001/RELEASE-2024},
+    ##   author = {{National Ecological Observatory Network (NEON)}},
+    ##   keywords = {solar radiation, soil surface radiation, photosynthetically active radiation (PAR), photosynthetic photon flux density (PPFD), quantum line sensor},
+    ##   language = {en},
+    ##   title = {Photosynthetically active radiation (quantum line) (DP1.00066.001)},
+    ##   publisher = {National Ecological Observatory Network (NEON)},
+    ##   year = {2024},
+    ##   copyright = {Creative Commons Zero v1.0 Universal}
+    ## }
 
 These can be adapted as needed for other formatting conventions.
 
@@ -339,29 +353,27 @@ working with data in a Release, it can be convenient to save the
 downloaded data as an R object and re-load it the next time you 
 work on your analysis, rather than downloading again.
 
-``` {r load-tick-data, results="hide"}
 
-tick <- loadByProduct(dpID="DP1.10093.001", 
-                     site=c("GUAN"),
-                     release="RELEASE-2024",
-                     check.size=F)
+    tick <- loadByProduct(dpID="DP1.10093.001", 
+                         site=c("GUAN"),
+                         release="RELEASE-2024",
+                         check.size=F)
 
-saveRDS(tick, paste0(getwd(), "/NEON_tick_data.rds"))
+    
 
-```
+    saveRDS(tick, paste0(getwd(), "/NEON_tick_data.rds"))
 
 And the next time you start work:
 
-``` {r reload-tick-data, results="hide"}
 
-tick <- readRDS(paste0(getwd(), "/NEON_tick_data.rds"))
-
-```
+    tick <- readRDS(paste0(getwd(), "/NEON_tick_data.rds"))
 
 When working with Provisional data, you can run 
 `loadByProduct()` every time to get the most recent data, but 
 be sure to save and archive the final version you use in a 
-publication, for citation and reproducibility.
+publication, for citation and reproducibility. Guidelines for 
+archiving a dataset can be found on the 
+<a href="https://www.neonscience.org/data-samples/guidelines-policies/publishing-research-outputs" target="_blank">Publishing Research Outputs</a> webpage.
 
 ### Eddy covariance or atmospheric isotopes (SAE)
 
@@ -372,41 +384,50 @@ same way on files downloaded from the Data Portal or by
 and then use `stackEddy()` every time you need to access any of the 
 file contents.
 
-``` {r download-sae, results="hide"}
 
-zipsByProduct(dpID="DP4.00200.001", 
-              site=c("TEAK"),
-              startdate="2023-05",
-              enddate="2023-06",
-              release="RELEASE-2024",
-              savepath=getwd(),
-              check.size=F)
+    zipsByProduct(dpID="DP4.00200.001", 
+                  site=c("TEAK"),
+                  startdate="2023-05",
+                  enddate="2023-06",
+                  release="RELEASE-2024",
+                  savepath=getwd(),
+                  check.size=F)
 
-flux <- stackEddy(paste0(getwd(), "/filesToStack00200"),
-                  level="dp04")
+    
 
-```
+    flux <- stackEddy(paste0(getwd(), "/filesToStack00200"),
+                      level="dp04")
 
 The next time you need to work with these data, you can skip the 
 `zipsByProduct()` line and go straight to `stackEddy()`. And if you 
 come back later and decide you want to work with the isotope data 
 instead of the flux data, still no need to re-download:
 
-``` {r download-sae, results="hide"}
 
-iso <- stackEddy(paste0(getwd(), "/filesToStack00200"),
-                level="dp01", var="isoCo2", avg=6)
-
-```
+    iso <- stackEddy(paste0(getwd(), "/filesToStack00200"),
+                    level="dp01", var="isoCo2", avg=6)
 
 If you're working with Provisional SAE data, you may be thinking 
 you'll need to re-download regularly. But SAE data are rarely 
-re-processed during the year, due to the large computational 
-demands of SAE processing. Each month, you can download newly 
-published Provisional data that were collected the previous month, 
+re-processed outside of the annual release schedule, due to the large 
+computational demands of SAE processing. Each month, you can download 
+newly published Provisional data that were collected the previous month, 
 but you won't need to re-download older months.
 
 ### Remote sensing (AOP)
+
+Data Releases are handled a bit differently for AOP than the other data 
+systems. Due to the very large volume of data, past Releases of AOP data 
+are not available for download. Only the most recent Release and 
+Provisional data can be downloaded at any given time.
+
+DOIs for past Releases of AOP data remain available, and can be used to 
+cite the data in perpetuity. Their DOI status is set to "tombstone", the 
+term used to denote a dataset that is citable but no longer accessible.
+
+See the Large Data Packages section on the 
+<a href="https://www.neonscience.org/data-samples/guidelines-policies/publishing-research-outputs" target="_blank">Publishing Research Outputs</a> page for 
+suggestions about archiving large datasets.
 
 
 
