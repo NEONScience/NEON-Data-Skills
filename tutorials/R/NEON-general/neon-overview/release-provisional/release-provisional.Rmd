@@ -51,13 +51,15 @@ After completing this activity, you will be able to:
  * Use appropriate citation information for both Released and Provisional data
 
 ## Things You’ll Need To Complete This Tutorial
-Most of this tutorial can be completed without writing any code. You 
-can learn about Releases and Provisional data and explore them on the 
-Data Portal, and view figures from the data downloads.
+Most of this tutorial can be completed with nothing but an internet 
+browser, without writing any code. You can learn about Releases and 
+Provisional data and explore them on the Data Portal, and view 
+figures from the data downloads.
 
-To complete the full tutorial, you will need a version of R 
-(4.0 or higher) and, preferably, RStudio loaded on your computer. 
-This code may work with earlier versions but it hasn't been tested.
+To complete the full tutorial, including the coding sections, you will 
+need a version of R (4.0 or higher) and, preferably, RStudio loaded on 
+your computer. This code may work with earlier versions but it hasn't 
+been tested.
 
 ### Install R Packages
 
@@ -268,11 +270,11 @@ gg
 ### Downloading by Release
 
 To download a specific Release, add the input parameter `release=`. 
-Let's download the collection year 2021 data from RELEASE-2023.
+Let's download the data from collection year 2021 in RELEASE-2023.
 
-```{r load-release-2023, results="hide}
+```{r load-release-2023, results="hide"}
 
-qpr <- loadByProduct(dpID="DP1.00066.001", 
+qpr23 <- loadByProduct(dpID="DP1.00066.001", 
                      site=c("HEAL", "GUAN"),
                      startdate="2021-01",
                      enddate="2021-12",
@@ -282,7 +284,74 @@ qpr <- loadByProduct(dpID="DP1.00066.001",
 ```
 
 What types of differences might there be in data from different 
-Releases? 
+Releases? Let's look at the same data set in RELEASE-2024.
+
+```{r load-release-2024, results="hide"}
+
+qpr24 <- loadByProduct(dpID="DP1.00066.001", 
+                     site=c("HEAL", "GUAN"),
+                     startdate="2021-01",
+                     enddate="2021-12",
+                     release="RELEASE-2024",
+                     check.size=F)
+
+```
+
+Plot mean PAR from each release. This time we'll only use data from 
+soil plot 001, to simplify the figure. We'll plot RELEASE-2023 in black 
+and RELEASE-2024 in partially transparent blue, to see differences 
+where they're overlaid.
+
+```{r plot-release-compare}
+
+gg <- ggplot(qpr23$PARQL_30min
+             [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
+             aes(endDateTime, linePARMean)) +
+  geom_line() +
+  facet_wrap(~siteID) +
+  geom_line(data=qpr24$PARQL_30min
+            [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+            color="blue", alpha=0.3)
+gg
+
+```
+
+The blue and black lines are basically identical; the mean PAR data 
+have not changed between the two releases. We can consult the issue 
+log to see if there are any changes recorded for other variables in 
+the data.
+
+```{r get-issues}
+
+tail(qpr24$issueLog_00066)
+
+```
+
+The final issue noted in the table was reported and resolved in January 
+2024. It tells us that the data were reprocessed for the 2024 Release, and 
+the algorithms for the skewness and kurtosis statistics were updated. Let's 
+take a look at the kurtosis statistics from the two Releases.
+
+```{r plot-release-compare-k}
+
+gg <- ggplot(qpr23$PARQL_30min
+             [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
+             aes(endDateTime, linePARKurtosis)) +
+  geom_line() +
+  facet_wrap(~siteID) +
+  geom_line(data=qpr24$PARQL_30min
+            [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+            color="blue", alpha=0.3)
+gg
+
+```
+
+Here, we can see the kurtosis values have shifted slightly higher in 
+RELEASE-2024, relative to their values in RELEASE-2023. This is a 
+metric of the distribution of PAR observations within the averaging 
+interval; if this aspect of variability is important for your analysis, 
+you would now be able to incorporate these improved estimates into your 
+work.
 
 ## Data citation
 
