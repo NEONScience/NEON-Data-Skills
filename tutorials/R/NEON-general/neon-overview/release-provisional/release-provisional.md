@@ -51,9 +51,15 @@ After completing this activity, you will be able to:
  * Use appropriate citation information for both Released and Provisional data
 
 ## Things You’ll Need To Complete This Tutorial
-You will need a version of R (4.0 or higher. This code may work with 
-earlier versions but it hasn't been tested) and, preferably, `RStudio` 
-loaded on your computer to complete this tutorial.
+Most of this tutorial can be completed with nothing but an internet 
+browser, without writing any code. You can learn about Releases and 
+Provisional data and explore them on the Data Portal, and view 
+figures from the data downloads.
+
+To complete the full tutorial, including the coding sections, you will 
+need a version of R (4.0 or higher) and, preferably, RStudio loaded on 
+your computer. This code may work with earlier versions but it hasn't 
+been tested.
 
 ### Install R Packages
 
@@ -158,15 +164,17 @@ Click Next.
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/include-provisional-menu.png" alt="Radio buttons to select whether to include or exclude Provisional data from download." style="width:50%" height="auto"></a>
 </figure>
 
-This page in the download process asks whether you want to download 
-provisional data. By default it is set to Exclude, and will only download 
-data from the latest Release.
+By default, the download options are set to access the latest Release and 
+exclude Provisional data, even if they are available in the sites and dates 
+you selected. To download Provisional data, select the radio button for 
+Include in the interface.
+
 
 ### Download by Release
 
-But let's say you don't want the most recently updated data. You're replicating 
-a colleague's analysis, and want to download the precise version of data they 
-used. In that case, you need to download the Release they used.
+But let's say you're not looking for the most recently updated data. You're 
+replicating a colleague's analysis, and want to download the precise version 
+of data they used. In that case, you need to download the Release they used.
 
 Go back to the Explore Data Products page, and select the Release you need from 
 the Release menu on the lefthand bar. For this example, let's use 
@@ -192,6 +200,8 @@ NEON data can also be downloaded in R, using the `neonUtilities` package. If
 you're not familiar with the `neonUtilities` package and how to use 
 it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
 tutorial as well as this one, for a more complete introduction.
+
+### Downloading the latest Release and Provisional
 
 Let's download a full year of data for two sites, as we did on the Data 
 Portal above. Here we'll download data from HEAL (Healy) and GUAN 
@@ -229,8 +239,9 @@ We'll do that below. But first, let's take a look at the data we downloaded:
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-release-1.png)
 
-As we can see, we have data from the first half of 2023, 
-the data included in RELEASE-2024.
+As we can see, the only data present from 2023 are from the first 
+half of the year, the data included in RELEASE-2024. Provisional 
+data from July 2023 onward were omitted.
 
 Now let's download the Provisional data as well:
 
@@ -254,35 +265,115 @@ And now plot the full year of data:
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-all-1.png)
 
-So, what is different about Release vs. Provisional data? As we can 
-see, both are giving us reliable information about light availability 
-at HEAL and GUAN, and we can easily see the difference in light profile 
-between the boreal and subtropical sites.
+### Downloading by Release
 
-Let's take a look at quality flags in the data. We'll look at just one 
-soil plot, and add red tags along the x axis to see time stamps that are 
-flagged.
+To download a specific Release, add the input parameter `release=`. 
+Let's download the data from collection year 2021 in RELEASE-2023.
 
 
-    gg <- ggplot(qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001"),], 
+    qpr23 <- loadByProduct(dpID="DP1.00066.001", 
+                         site=c("HEAL", "GUAN"),
+                         startdate="2021-01",
+                         enddate="2021-12",
+                         release="RELEASE-2023",
+                         check.size=F)
+
+What types of differences might there be in data from different 
+Releases? Let's look at the same data set in RELEASE-2024.
+
+
+    qpr24 <- loadByProduct(dpID="DP1.00066.001", 
+                         site=c("HEAL", "GUAN"),
+                         startdate="2021-01",
+                         enddate="2021-12",
+                         release="RELEASE-2024",
+                         check.size=F)
+
+Plot mean PAR from each release. This time we'll only use data from 
+soil plot 001, to simplify the figure. We'll plot RELEASE-2023 in black 
+and RELEASE-2024 in partially transparent blue, to see differences 
+where they're overlaid.
+
+
+    gg <- ggplot(qpr23$PARQL_30min
+                 [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
                  aes(endDateTime, linePARMean)) +
       geom_line() +
-      facet_wrap(~siteID) + 
-      geom_rug(data=qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001" 
-                                          & qpr$PARQL_30min$finalQF==1),], 
-                 color="red", sides="b")
+      facet_wrap(~siteID) +
+      geom_line(data=qpr24$PARQL_30min
+                [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+                color="blue", alpha=0.3)
 
     gg
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-all-quality-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-release-compare-1.png)
 
-There are flagged data in both Released and Provisional data. However, if you 
-use this tutorial anytime after January 2024, you may see different data flagged 
-in the second of 2023, in the Provisional period, than what appears in the figure 
-above. During data quality review, flags may be resolved, or alternatively, 
-issues at the site may be identified that weren't captured by the automatic 
-quality flagging algorithms, and manual flags may be added.
+The blue and black lines are basically identical; the mean PAR data 
+have not changed between the two releases. We can consult the issue 
+log to see if there are any changes recorded for other variables in 
+the data.
 
+
+    tail(qpr24$issueLog_00066)
+
+    ##       id parentIssueID            issueDate         resolvedDate       dateRangeStart
+    ##    <int>         <int>               <char>               <char>               <char>
+    ## 1: 45613            NA 2022-01-18T00:00:00Z 2022-01-01T00:00:00Z 2013-01-01T00:00:00Z
+    ## 2: 60104            NA 2022-07-05T00:00:00Z 2022-10-19T00:00:00Z 2021-10-15T00:00:00Z
+    ## 3: 66607            NA 2022-09-12T00:00:00Z 2022-10-31T00:00:00Z 2022-06-12T00:00:00Z
+    ## 4: 78006            NA 2023-03-02T00:00:00Z 2023-11-03T00:00:00Z 2023-03-02T00:00:00Z
+    ## 5: 78310            NA 2023-03-16T00:00:00Z 2023-03-31T00:00:00Z 2014-02-18T00:00:00Z
+    ## 6: 85004            NA 2024-01-04T00:00:00Z 2024-01-04T00:00:00Z 2013-12-01T00:00:00Z
+    ##            dateRangeEnd                                       locationAffected
+    ##                  <char>                                                 <char>
+    ## 1: 2021-10-01T00:00:00Z                                                    All
+    ## 2: 2022-10-19T00:00:00Z                    WREF soil plot 3 (HOR.VER: 003.000)
+    ## 3: 2022-10-31T00:00:00Z                                                   YELL
+    ## 4: 2023-11-03T00:00:00Z                                                    All
+    ## 5: 2023-03-01T00:00:00Z All CPER soil plots (HOR: 001, 002, 003, 004, and 005)
+    ## 6: 2023-12-31T00:00:00Z                                  All terrestrial sites
+    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             issue
+    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <char>
+    ## 1:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Data were reprocessed to incorporate minor and/or isolated corrections to quality control thresholds, sensor installation periods, geolocation data, and manual quality flags.
+    ## 2:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Sensor malfunction indicated by positive nighttime radiation
+    ## 3:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Severe flooding destroyed several roads into Yellowstone National Park in June 2022, making the YELL and BLDE sites inaccessible to NEON staff. Preventive and corrective maintenance were not able to be performed, nor was the annual exchange of sensors for calibration and validation. While automated quality control routines are likely to detect and flag most issues, users are advised to review data carefully.
+    ## 4:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Photosynthetically active radiation (quantum line) measurement height (zOffset) incorrectly shown as 0 m in the sensor positions file in the download package. The actual measurement height is 3+ cm above the soil surface.
+    ## 5:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Two different soil plot reference corner records were created for each CPER soil plot, which resulted in two partially different sets of sensor location data being reported in the sensor_positions file. Affected variables were referenceLatitude, referenceLongitude, referenceElevation, eastOffset, northOffset, xAzimuth, and yAzimuth. Other sensor location metadata, including sensor height/depth (zOffset), were unaffected but were still reported twice for each sensor.
+    ## 6: Photosynthetically active radiation (quantum line) (DP1.00066.001) has been reprocessed using NEON’s new instrument processing pipeline. Computation of skewness and kurtosis statistics has been updated in the new pipeline. Previously, these statistics were computed with the Apache Commons Mathematics Library, version 3.6.1, which uses special unbiased formulations and not those described in the Algorithm Theoretical Basis Document (ATBD), which cites the standard formulations. Differences in data values between previous and reprocessed data for the skewness statistic are typically < 1% for 30-min averages and < 10% for 1-min averages. Differences for the kurtosis statistic are much larger, as the previous version reported excess kurtosis which subtracts a value of three so that a normal distribution is equal to zero. Thus, new values for kurtosis are typically greater by 3 ± 1% for 30-min averages and 3 ± 10% for 1-min averages.
+    ##                                                                                                                                                                                                                                                                                                                                                                                 resolution
+    ##                                                                                                                                                                                                                                                                                                                                                                                     <char>
+    ## 1:                                                                                                                                                                                                                                 Reprocessed provisional data are available now. Reprocessed data previously included in RELEASE-2021 will become available when RELEASE-2022 is issued.
+    ## 2:                                                                                                                                                                                                                                                                                                                                                 Data flagged and sensor cable replaced.
+    ## 3:                     Normal operations resumed on October 31, 2022, when the National Park Service opened a newly constructed road from Gardiner, MT to Mammoth, WY with minimal restrictions. For more details about data impacts, see Data Notification https://www.neonscience.org/impact/observatory-blog/data-impacts-neons-yellowstone-sites-yell-blde-due-catastrophic-flooding-0
+    ## 4: Measurement heights have been added and data republication has been requested, which should be completed within a few weeks. Heights will be available from July 2022 onwards once data republication is complete and will be available for all data once RELEASE-2024 data are published (expected January 2024). The issue will persist in RELEASE-2023 data and prior data releases.
+    ## 5:                                                                                          The erroneous reference corner record was deleted and data were scheduled for republication. This issue will persist in data from June 2022 and earlier until the RELEASE-2024 data is published (approximately January 2024). It will also persist in RELEASE-2023 and earlier data releases.
+    ## 6:                                                                                                                                                                                                                              All provisional data have been updated, and data for all time and all sites will be updated in RELEASE-2024 (expected to be issued in late January, 2024).
+
+The final issue noted in the table was reported and resolved in January 
+2024. It tells us that the data were reprocessed for the 2024 Release, and 
+the algorithms for the skewness and kurtosis statistics were updated. Let's 
+take a look at the kurtosis statistics from the two Releases.
+
+
+    gg <- ggplot(qpr23$PARQL_30min
+                 [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
+                 aes(endDateTime, linePARKurtosis)) +
+      geom_line() +
+      facet_wrap(~siteID) +
+      geom_line(data=qpr24$PARQL_30min
+                [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+                color="blue", alpha=0.3)
+
+    gg
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-release-compare-k-1.png)
+
+Here, we can see the kurtosis values have shifted slightly higher in 
+RELEASE-2024, relative to their values in RELEASE-2023. This is a 
+metric of the distribution of PAR observations within the averaging 
+interval; if this aspect of variability is important for your analysis, 
+you would now be able to incorporate these improved estimates into your 
+work.
 
 ## Data citation
 
