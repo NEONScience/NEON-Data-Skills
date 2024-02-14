@@ -51,9 +51,13 @@ After completing this activity, you will be able to:
  * Use appropriate citation information for both Released and Provisional data
 
 ## Things You’ll Need To Complete This Tutorial
-You will need a version of R (4.0 or higher. This code may work with 
-earlier versions but it hasn't been tested) and, preferably, `RStudio` 
-loaded on your computer to complete this tutorial.
+Most of this tutorial can be completed without writing any code. You 
+can learn about Releases and Provisional data and explore them on the 
+Data Portal, and view figures from the data downloads.
+
+To complete the full tutorial, you will need a version of R 
+(4.0 or higher) and, preferably, RStudio loaded on your computer. 
+This code may work with earlier versions but it hasn't been tested.
 
 ### Install R Packages
 
@@ -154,15 +158,17 @@ Click Next.
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/release-provisional/include-provisional-menu.png" alt="Radio buttons to select whether to include or exclude Provisional data from download." style="width:50%" height="auto"></a>
 </figure>
 
-This page in the download process asks whether you want to download 
-provisional data. By default it is set to Exclude, and will only download 
-data from the latest Release.
+By default, the download options are set to access the latest Release and 
+exclude Provisional data, even if they are available in the sites and dates 
+you selected. To download Provisional data, select the radio button for 
+Include in the interface.
+
 
 ### Download by Release
 
-But let's say you don't want the most recently updated data. You're replicating 
-a colleague's analysis, and want to download the precise version of data they 
-used. In that case, you need to download the Release they used.
+But let's say you're not looking for the most recently updated data. You're 
+replicating a colleague's analysis, and want to download the precise version 
+of data they used. In that case, you need to download the Release they used.
 
 Go back to the Explore Data Products page, and select the Release you need from 
 the Release menu on the lefthand bar. For this example, let's use 
@@ -188,6 +194,8 @@ NEON data can also be downloaded in R, using the `neonUtilities` package. If
 you're not familiar with the `neonUtilities` package and how to use 
 it to access NEON data, we recommend you follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> 
 tutorial as well as this one, for a more complete introduction.
+
+### Downloading the latest Release and Provisional
 
 Let's download a full year of data for two sites, as we did on the Data 
 Portal above. Here we'll download data from HEAL (Healy) and GUAN 
@@ -228,8 +236,9 @@ gg
 
 ```
 
-As we can see, we have data from the first half of 2023, 
-the data included in RELEASE-2024.
+As we can see, the only data present from 2023 are from the first 
+half of the year, the data included in RELEASE-2024. Provisional 
+data from July 2023 onward were omitted.
 
 Now let's download the Provisional data as well:
 
@@ -256,35 +265,24 @@ gg
 
 ```
 
-So, what is different about Release vs. Provisional data? As we can 
-see, both are giving us reliable information about light availability 
-at HEAL and GUAN, and we can easily see the difference in light profile 
-between the boreal and subtropical sites.
+### Downloading by Release
 
-Let's take a look at quality flags in the data. We'll look at just one 
-soil plot, and add red tags along the x axis to see time stamps that are 
-flagged.
+To download a specific Release, add the input parameter `release=`. 
+Let's download the collection year 2021 data from RELEASE-2023.
 
-```{r plot-all-quality}
+```{r load-release-2023, results="hide}
 
-gg <- ggplot(qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001"),], 
-             aes(endDateTime, linePARMean)) +
-  geom_line() +
-  facet_wrap(~siteID) + 
-  geom_rug(data=qpr$PARQL_30min[which(qpr$PARQL_30min$horizontalPosition=="001" 
-                                      & qpr$PARQL_30min$finalQF==1),], 
-             color="red", sides="b")
-gg
+qpr <- loadByProduct(dpID="DP1.00066.001", 
+                     site=c("HEAL", "GUAN"),
+                     startdate="2021-01",
+                     enddate="2021-12",
+                     release="RELEASE-2023",
+                     check.size=F)
 
 ```
 
-There are flagged data in both Released and Provisional data. However, if you 
-use this tutorial anytime after January 2024, you may see different data flagged 
-in the second of 2023, in the Provisional period, than what appears in the figure 
-above. During data quality review, flags may be resolved, or alternatively, 
-issues at the site may be identified that weren't captured by the automatic 
-quality flagging algorithms, and manual flags may be added.
-
+What types of differences might there be in data from different 
+Releases? 
 
 ## Data citation
 
