@@ -433,7 +433,13 @@ In this last part, we will calculate some vegetation indices using raster math i
 
 ### About NDVI
 
-NDVI is  a ratio between the near infrared (NIR) portion of the electromagnetic spectrum and the red portion of the spectrum. Please keep in mind that there are different ways to aggregate bands when using hyperspectral data. This example is using individual bands to perform the NDVI calculation. Using individual bands is not necessarily the best way to calculate NDVI from hyperspectral data! 
+NDVI is  a ratio between the near infrared (NIR) portion of the electromagnetic spectrum and the red portion of the spectrum. 
+
+$$
+NDVI = \frac{NIR-RED}{NIR+RED}
+$$
+
+Please keep in mind that there are different ways to aggregate bands when using hyperspectral data. This example is using individual bands to perform the NDVI calculation. Using individual bands is not necessarily the best way to calculate NDVI from hyperspectral data.
 
 
     # Calculate NDVI
@@ -517,7 +523,7 @@ Try the following on your own:
 1. Calculate the Normalized Difference Nitrogen Index (NDNI) using the following equation: 
 
 $$
-\frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
+NDNI = \frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
 $$
 2. Calculate the Enhanced Vegetation Index (EVI). Hint: Look up the formula, and apply the appropriate NEON bands. Hint: You can look at satellite datasets, such as <a href="https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index" target="_blank">USGS Landsat EVI.</a>  
 

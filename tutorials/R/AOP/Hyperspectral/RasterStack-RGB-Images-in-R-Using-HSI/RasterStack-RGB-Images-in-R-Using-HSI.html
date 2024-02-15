@@ -417,7 +417,11 @@ What type of image do you get when you change the band values?</p>
 <h2 id="raster-math-creating-ndvi-and-other-vegetation-indices-in-r">Raster Math - Creating NDVI and other Vegetation Indices in R</h2>
 <p>In this last part, we will calculate some vegetation indices using raster math in R! We will start by creating NDVI or Normalized Difference Vegetation Index.</p>
 <h3 id="about-ndvi">About NDVI</h3>
-<p>NDVI is  a ratio between the near infrared (NIR) portion of the electromagnetic spectrum and the red portion of the spectrum. Please keep in mind that there are different ways to aggregate bands when using hyperspectral data. This example is using individual bands to perform the NDVI calculation. Using individual bands is not necessarily the best way to calculate NDVI from hyperspectral data!</p>
+<p>NDVI is  a ratio between the near infrared (NIR) portion of the electromagnetic spectrum and the red portion of the spectrum.</p>
+<p>$$
+NDVI = \frac{NIR-RED}{NIR+RED}
+$$</p>
+<p>Please keep in mind that there are different ways to aggregate bands when using hyperspectral data. This example is using individual bands to perform the NDVI calculation. Using individual bands is not necessarily the best way to calculate NDVI from hyperspectral data.</p>
 <pre><code># Calculate NDVI
 
 # select bands to use in calculation (red, NIR)
@@ -493,7 +497,7 @@ plot(ndviCalc, main=&quot;NDVI for the NEON SJER Field Site&quot;, col=myCol, br
 <li>Calculate the Normalized Difference Nitrogen Index (NDNI) using the following equation:</li>
 </ol>
 <p>$$
-\frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
+NDNI = \frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
 $$
 2. Calculate the Enhanced Vegetation Index (EVI). Hint: Look up the formula, and apply the appropriate NEON bands. Hint: You can look at satellite datasets, such as <a href="https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index" target="_blank">USGS Landsat EVI.</a></p>
 <ol start="3">
