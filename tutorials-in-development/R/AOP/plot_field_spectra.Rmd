@@ -1,0 +1,295 @@
+---
+syncID: 
+title: "Intro to Field Spectra Data"
+description: "Explore the field spectra data product, understand data and metadata."
+dateCreated: 2024-02-12
+authors: Bridget Hass
+contributors: 
+estimatedTime: 1 Hour
+packagesLibraries: neonUtilities, ggplot2, reshape2, data.table
+topics: hyperspectral
+languagesTool: R
+dataProduct: DP1.30012.001, DP1.10026.001, DP3.30006.001
+code1: 
+tutorialSeries: 
+urlTitle: intro-field-spectra
+---
+
+Compare Field Spectra with Aerial Hyperspectral (Surface Directional Reflectance) & Foliar Trait Data
+
+This tutorial is intended to include the following components:
+1. Reading in and plotting field spectra data (DP1.30012.001)
+2. Reading in geolocation information from plant foliar trait data (DP1.10026.001)
+3. comparing field spectra to aerial spectra data (DP3.30006.001)
+4. Basic exploration comparing field spectra and foliar chemistry data.
+
+Spectral Libraries
+https://speclib.jpl.nasa.gov/
+https://speclib.jpl.nasa.gov/library
+https://www.usgs.gov/centers/gggsc/science/usgs-high-resolution-spectral-library
+
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives
+After completing this activity, you will be able to:
+
+* Determine the available field spectra data sets
+* Load and plot field spectra data for a given site
+* Understand the data and metadata associated with the field spectra data product
+* Plot leaf cleap spetral signatures by taxon ID
+* Understand uncertainty associated with the foliar spectra data
+* Link field spectra data to foliar trait data to determine the precise location of the leaf samples
+* Compare field spectra from leaf clip samples to airborne surface reflectance data
+ 
+## Things You’ll Need To Complete This Tutorial
+You will need the most current version of R and, preferably, `RStudio` loaded 
+on your computer to complete this tutorial.
+
+### Install R Packages
+
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **geoNEON:** install.packages("devtools"), devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+* **ggplot2:** `install.packages("ggplot2")`
+* **reshape2:** `install.packages("reshape2")`
+* **data.table:** `install.packages("data.table")`
+
+</div>
+
+
+
+First, load the required libraries.
+
+```{r import-libraries results="hide"}
+library(neonUtilities)
+library(ggplot2)
+library(reshape2)
+library(data.table)
+```
+Before downloading the data, we can explore the data product using the `neonUtilities::getProductInfo`. Let's take a look at the field spectra data product as follows:
+
+```{r field-spectra-info}
+field_spectra_info <- neonUtilities::getProductInfo('DP1.30012.001')
+View(field_spectra_info$siteCodes)
+field_spectra_info$siteCodes$availableDataUrls
+```
+
+Now that we know what data are available, let's take a look at one of the sites. Guanica (GUAN) in Puerto Rico has a higher number of field samples, just by nature of the higher biodiversity in the more tropical climate. We'll use this to demonstrate some exploratory analysis you might do when starting to work with the field spectral data. To load this dataset directly into R, you can use the neonUtilities `loadByProduct` function, specifying the data product ID (dpID) and site. Since this product is collected fairly infrequently, to date there is only one collection of this data per site, so specifying the year-month is not necessary.
+
+```{r load-field-spectra}
+guan_spectra <- loadByProduct(dpID='DP1.30012.001',
+                              site='GUAN',
+                              package="expanded")
+names(guan_spectra)
+```
+Next, we can merge the data and metadata into a single table as follows. Then use `View` to take a look, or alternatively you could just print the variable name. We'll just show the head (or first 6 rows) of this data frame here, to keep it short.
+
+```{r merge-data-metadata}
+guan_spectra_merge <- merge(guan_spectra$fsp_spectralData,guan_spectra$fsp_sampleMetadata,by="spectralSampleID") 
+head(guan_spectra_merge)
+```
+
+```{r guan_spectra_merge-colnames}
+colnames(guan_spectra_merge)
+```
+
+As we can see from viewing the dataset, one of the columns is "downloadFileUrl". This is where the actual spectral data is stored. We can use the R function `read.csv` to read this data into a data frame directly, for example:
+
+``` {r read-single-csv}
+fsp_guan_20221017 <- read.csv("https://storage.neonscience.org/neon-os-data/data-frame/FSP_GUAN_20221017_093220230314T193833.925Z.csv")
+```
+
+This data is mainly composed of 3 columns: `wavelength`, `reflectanceCondition`, and `reflectance`. What is the `reflectanceCondition`? Let's look at the unique values represented:
+
+``` {r read-single-csv}
+unique(fsp_guan_20221017$reflectanceCondition)
+```
+This `reflectanceCondition` describes what exactly is being measured. As stated in the Field spectral data Quick Start Guide (on the NEON Data Portal) and explained in more detail in the <a href="https://data.neonscience.org/api/v0/documents/NEON_fieldSpectra_userGuide_vC?inline=true" target="_blank">
+NEON Field Spectra User Guide</a>:
+
+"Spectral reflectance of both the front and back of the sample is measured against a reflective white spectralon reference panel. A black spectralon reference is then measured, followed by spectral transmittance measurements of the front and back of the sample. Reference measurements of the white reference are taken between each leaf measurement."
+
+When considering NEON's airborne spectral dataset (DP3.30006.001), the `top of foliage (sunward) on black reference` is the most direct comparison. For this lesson, we will just focus on this reflectance condition. Let's take a look at the spectra for the single csv we read in:
+
+``` {r plot-reflectance-conditions, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+refl_conditions_plot <- ggplot(fsp_guan_20221017,             
+               aes(x = wavelength, 
+                   y = reflectance, 
+                   color = reflectanceCondition)) + geom_line() 
+print(refl_conditions_plot + ggtitle("fsp_guan_20221017 - all reflectance conditions"))
+```
+
+``` {r plot-single-spectra}
+
+fsp_guan_20221017_refl <- fsp_guan_20221017[which(fsp_guan_20221017$reflectanceCondition == "top of foliage (sunward) on black reference"), c("reflectance","wavelength")]
+
+spectra_plot <- ggplot(fsp_guan_20221017_refl,
+                       aes(x = wavelength, 
+                           y = reflectance)) + geom_line() 
+print(spectra_plot + ggtitle("fsp_guan_20221017"))
+```
+
+So ... how can we read the spectral data in for all of the samples collected at GUAN? The code chunk below runs a loop that will create a new data frame comprised of the taxonID and the reflectance values only of the top of the leaf on the black reference. 
+
+Note, this may take a minute or two to run through the loop.
+
+``` {r create-refl-df}
+spectra_list <- list()
+for (i in 1:nrow(guan_spectra_merge)) {
+  taxonID <- guan_spectra_merge$taxonID[i] # get the taxonID
+  url <- guan_spectra_merge$downloadFileUrl[i] # get the data download URL
+  refl_data <- read.csv(url) # read the data csv into a dataframe
+  # filter to select only the `top on black` reflectanceCondition and keep the reflectance data only
+  refl <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("reflectance")]
+  spectra_list[[i]] <- refl
+}
+# get the wavelength values corresponding to the subset we selected for each of the spectra
+wavelengths <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")]
+spectra_df <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
+# assign the taxonID + fspID to the column names to make unique column names
+taxonIDs <- paste0(guan_spectra_merge$taxonID,substr(guan_spectra_merge$spectralSampleID,9,22))
+colnames(spectra_df) <- taxonIDs
+# assign the wavelength values to a new column
+spectra_df$wavelength <- wavelengths
+```
+
+In order to plot this, we need to rearrange the data frame so that it contains the data in 3 columns: `wavelength`, `variable`, and `value`. We can do this using `melt` as follows:
+
+``` {r plot-taxon-spectra, fig.align="center", echo = FALSE, fig.width = 14, fig.height = 4.5}
+data_long <- melt(spectra_df, id = "wavelength",value.name="reflectance",variable.name="taxonID")
+all_spectra_plot <- ggplot(data_long,             
+               aes(x = wavelength, 
+                   y = reflectance, 
+                   color = taxonID)) + geom_line() 
+print(all_spectra_plot + ggtitle("Spectra of all Taxon IDs collected at GUAN"))
+```
+``` {r count-taxon}
+guan_spectra_merged %>% count(taxonID, sort = TRUE)
+```
+
+``` {r plot-taxon-spectra}
+#spectra_subset <- spectra_df[, c(head(names(spectra_df), 3), tail(names(spectra_df), 1))]
+spectra_df2 <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
+# assign the taxonIDs to the column names
+taxonIDs <- guan_spectra_merge$taxonID 
+colnames(spectra_df2) <- taxonIDs
+spectra_df2$wavelength <- wavelengths
+data_long2 <- melt(as.data.table(spectra_df2), id = "wavelength")
+all_spectra_plot <- ggplot(data_long2,             
+               aes(x = wavelength, 
+                   y = value, 
+                   color = variable)) + geom_line() 
+print(all_spectra_plot + ggtitle("Spectra of all Taxon IDs collected at GUAN"))
+```
+Let's dig in a a little more into some of the taxonIDs which have multiple samples. We can start with <a href="https://plants.sc.egov.usda.gov/home/plantProfile?symbol=BUBU" target="_blank">BUBU</a>, or Bucida buceras L.(Gregorywood).
+
+``` {r plot-bubu-spectra}
+spectra_data_table <- as.data.table(spectra_df)
+bubu_data_table <- spectra_data_table[, grep("wavelength|BUBU", names(spectra_data_table)), with = FALSE]
+bubu_data <- melt(bubu_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
+bubu_spectra_plot <- ggplot(bubu_data,
+                            aes(x = wavelength, 
+                                y = reflectance, 
+                                color = taxon_fsp_ID)) + geom_line() 
+print(bubu_spectra_plot + ggtitle("Spectra of BUBU samples collected at GUAN"))
+```
+What do you notice about these spectra? It looks like there is some considerable variation betwen some of the samples, particularly in the visible portion of the spectrum. Let's go back to the original `guan_spectra_merge` dataframe to see if we can determine more information about these individual samples. The code below pulls out some particularly relevant information from the data frame which may explain some of the variation we're seeing.
+
+``` {r view-bubu-metadata}
+guan_spectra_merge[which(guan_spectra_merge$taxonID == "BUBU"), c("taxonID","spectralSampleID","plantStatus","leafStatus","leafAge","leafExposure","leafSamplePosition","targetType","targetStatus","measurementVenue","remarks.y")]
+```
+On your own, run this same visualization and exploratory analysis on the <a href="https://plants.sc.egov.usda.gov/home/plantProfile?symbol=GYLU" target="_blank">GYLU</a>, plant (or Gymnanthes lucida Sw. (Oysterwood)), which also has 5 unique samples. What do you observe?
+
+
+``` {r plot-gylu-spectra}
+gylu_data_table <- spectra_data_table[, grep("wavelength|GYLU", names(spectra_data_table)), with = FALSE]
+gylu_data <- melt(gylu_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
+gylu_spectra_plot <- ggplot(gylu_data,
+                            aes(x = wavelength, 
+                                y = reflectance, 
+                                color = taxon_fsp_ID)) + geom_line() 
+print(gylu_spectra_plot + ggtitle("Spectra of GYLU samples collected at GUAN"))
+```
+
+``` {r view-gylu-metadata}
+guan_spectra_merge[which(guan_spectra_merge$taxonID == "GYLU"), c("taxonID","spectralSampleID","plantStatus","leafStatus","leafAge","leafExposure","leafSamplePosition","targetType","targetStatus","measurementVenue","remarks.y")]
+```
+
+Here, we can see that all the plants have an "OK" status, and all the leaves have a "healthy" status, but we are still seeing some variation in the spectral signatures. This is also to be expected. Note that it appears the absolute values of reflectance vary quite a bit, but the relative reflectance differences, for example between the near infrared (NIR) and visible portions of the spectrum, may be fairly consistent. Let's test this qualitative observation by computing the NDVI (Normalized Difference Vegetation Index, a normalized ratio between the NIR and red portions of the spectrum) and comparing this index across all samples. 
+
+$$
+NDVI = \frac{NIR-RED}{NIR+RED}
+$$
+You can refer to this tutorial for how you would calculate NDVI from the aerial reflectance data: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/create-raster-stack-hsi-hdf5-r#raster-math-creating-ndvi-and-other-vegetation-indices-in-r" target="_blank">Raster Math - Creating NDVI and Other Vegetation Indices in R</a>.
+
+
+``` {r ndvi-calculation}
+nir <- spectra_df[which.min(abs(750-spectra_df$wavelength)),]
+red <- spectra_df[which.min(abs(650-spectra_df$wavelength)),]
+ndvi = (nir - red) / (nir + red) 
+ndvi = ndvi[1:(length(ndvi)-1)]
+```
+
+``` {r ndvi-plot, fig.align="right", echo = FALSE, fig.width = 16, fig.height = 5}}
+gylu_ndvi <- select(ndvi,contains("GYLU"))
+barplot(unlist(gylu_ndvi), cex.names=.5) 
+title(main = "GYLU NDVI",
+      xlab = "sample", ylab = "NDVI")
+```
+
+``` {r ndvi-plot, fig.align="right", echo = FALSE, fig.width = 16, fig.height = 5}}
+bubu_ndvi <- select(ndvi,contains("BUBU"))
+barplot(unlist(bubu_ndvi), cex.names=.5) 
+title(main = "BUBU NDVI",
+      xlab = "sample", ylab = "NDVI")
+```
+
+``` {r plot-gylu-spectra0}
+gylu_spectra <- spectra_df[c("wavelengths","GYLU","GYLU.1","GYLU.2","GYLU.3","GYLU.4")]
+#data_long <- melt(spectra_subset, id = "wavelengths")
+gylu_data <- melt(gylu_spectra, id = "wavelengths")
+gylu_spectra_plot <- ggplot(gylu_data,
+                            aes(x = wavelengths, 
+                                y = value, 
+                                color = variable)) + geom_line() 
+gylu_spectra_plot
+```
+
+
+```{r foliar-trait-info}
+foliar_trait_info <- neonUtilities::getProductInfo('DP1.10026.001')
+View(foliar_trait_info$siteCodes)
+View(foliar_trait_info$siteCodes$availableDataUrls)
+foliar_trait_info$siteCodes$availableDataUrls[[13]] #view the GUAN foliar trait available data urls
+```
+Here we can see that the foliar trait data is available from 2018 (in April and May) as well as in October 2022. Foliar trait data are collected every 4-5 years (?). Let's download the data foliar trait data from 2022 at GUAN to obtain the precise location information of the foliar spectra samples.
+
+
+```{r load-foliar-trait, eval=FALSE}
+guan_foliar_traits_2022 <- loadByProduct(dpID='DP1.10026.001',
+                                         site='GUAN',
+                                         startdate='2022-10',
+                                         package="expanded",
+                                         check.size=FALSE)
+names(guan_foliar_traits_2022)
+```
+
+``` {r get-loc}
+library(geoNEON)
+vst.loc <- getLocTOS(data=guan_foliar_traits_2022$vst_mappingandtagging,
+                     dataProd="vst_mappingandtagging")
+```
+
+``` {r merge-foliar-trait-tables}
+foliar_traits_loc <- merge(guan_foliar_traits_2022$cfc_fieldData,vst.loc,by="individualID")
+#foliar_traits_merged <- merge(guan_foliar_traits_2022$cfc_fieldData,guan_foliar_traits_2022$vst_mappingandtagging,by="individualID")
+```
+
+``` {r spectra-traits}
+spectra_traits <- merge(guan_spectra_merge,foliar_traits_loc,by="sampleID")
+spectra_traits[c("sampleID","spectralSampleID","locationID.x","vstTag","tagID","taxonID.x","stemDistance","stemAzimuth","crownPolygonID","adjEasting","adjNorthing")]
+```
+
+``` {r download-reflectance}
+
+```
