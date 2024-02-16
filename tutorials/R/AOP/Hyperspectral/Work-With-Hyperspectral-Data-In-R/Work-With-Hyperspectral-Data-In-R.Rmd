@@ -80,7 +80,7 @@ The HDF5 data model natively compresses data stored within it (makes it smaller)
 In this tutorial we will demonstrate how to read and extract spatial raster data stored within an HDF5 file using R. 
 
 ##  Read HDF5 data into R
-We will use the `raster` and `rhdf5` packages to read in the HDF5 file that contains hyperspectral data for the 
+We will use the `terra` and `rhdf5` packages to read in the HDF5 file that contains hyperspectral data for the 
 <a href="https://www.neonscience.org/field-sites/SJER" target="_blank">NEON San Joaquin (SJER) field site</a>. 
 Let's start by calling the needed packages and reading in our NEON HDF5 file.  
 
