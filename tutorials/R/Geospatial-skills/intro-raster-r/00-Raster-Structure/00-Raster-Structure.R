@@ -1,4 +1,4 @@
-## ----load-libraries, results="hide"------------------------------------------------------------------------------------------------------------------------------------------------
+## ----load-libraries, results="hide"----------------------------------------------------------------------------------------------------------------
 library(terra)
 
 # set working directory, you can change this if desired
@@ -6,7 +6,7 @@ wd <- "~/data/"
 setwd(wd)
 
 
-## ----download-dsm-data, eval=FALSE-------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-dsm-data, eval=FALSE-----------------------------------------------------------------------------------------------------------------
 ## byTileAOP(dpID='DP3.30024.001', # lidar elevation
 ##           site='HARV',
 ##           year='2022',
@@ -16,7 +16,7 @@ setwd(wd)
 ##           savepath = wd)
 
 
-## ----open-raster, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest"------------------------------------------------------------------------------
+## ----open-raster, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest"----------------------------------------------
 # Load raster into R
 dsm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif")
 DSM_HARV <- rast(dsm_harv_file)
@@ -29,7 +29,7 @@ plot(DSM_HARV, main="Digital Surface Model - HARV")
 
 
 
-## ----classified-elevation-map, fig.cap="Classified elevation map of NEON's site Harvard Forest", fig.width=10----------------------------------------------------------------------
+## ----classified-elevation-map, fig.cap="Classified elevation map of NEON's site Harvard Forest", fig.width=10--------------------------------------
 # add a color map with 5 colors
 col=terrain.colors(3)
 # add breaks to the colormap (4 breaks = 3 segments)
@@ -53,7 +53,7 @@ legend( 733100, 4713700,
         fill = rev(col))
 
 
-## ----view-crs----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-crs--------------------------------------------------------------------------------------------------------------------------------------
 # view crs description
 crs(DSM_HARV,describe=TRUE)
 
@@ -62,20 +62,20 @@ harvCRS <- crs(DSM_HARV)
 
 
 
-## ----show-ext----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----show-ext--------------------------------------------------------------------------------------------------------------------------------------
 ext(DSM_HARV)
 
 
-## ----resolution-units--------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----resolution-units------------------------------------------------------------------------------------------------------------------------------
 crs(DSM_HARV,proj=TRUE)
 
 
-## ----view-min-max------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-min-max----------------------------------------------------------------------------------------------------------------------------------
 # view the min and max values
 min(DSM_HARV)
 
 
-## ----download-rgb-data, eval=FALSE-------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-rgb-data, eval=FALSE-----------------------------------------------------------------------------------------------------------------
 ## byTileAOP(dpID='DP3.30010.001',
 ##           site='HARV',
 ##           year='2022',
@@ -85,7 +85,7 @@ min(DSM_HARV)
 ##           savepath = wd)
 
 
-## ----demonstrate-no-data-black, fig.cap="Colorized raster image with NoDataValues around the edge rendered in black"---------------------------------------------------------------
+## ----demonstrate-no-data-black, fig.cap="Colorized raster image with NoDataValues around the edge rendered in black"-------------------------------
 # Use rast function to read in all bands
 RGB_HARV <- 
   rast(paste0(wd,"DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif"))
@@ -96,7 +96,7 @@ plotRGB(RGB_HARV, r = 1, g = 2, b = 3, axes=TRUE)
 
 
 
-## ----demonstrate-no-data, fig.cap="Colorized raster image with NoDataValues around the edge removed"-------------------------------------------------------------------------------
+## ----demonstrate-no-data, fig.cap="Colorized raster image with NoDataValues around the edge removed"-----------------------------------------------
 # reassign cells with 0,0,0 to NA
 func <- function(x) {
   x[rowSums(x == 0) == 3, ] <- NA
@@ -110,7 +110,7 @@ plotRGB(newRGBImage, r = 1, g = 2, b = 3, axis=TRUE)
  
 
 
-## ----view-raster-histogram, fig.cap="Histogram showing the distribution of digital surface model values"---------------------------------------------------------------------------
+## ----view-raster-histogram, fig.cap="Histogram showing the distribution of digital surface model values"-------------------------------------------
 
 # view histogram of data
 hist(DSM_HARV,
@@ -121,34 +121,34 @@ hist(DSM_HARV,
 
 
 
-## ----view-dsm-bands----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-dsm-bands--------------------------------------------------------------------------------------------------------------------------------
 
 # view number of bands in the Lidar DSM raster
 nlyr(DSM_HARV)
 
 
-## ----view-rgb-bands----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-rgb-bands--------------------------------------------------------------------------------------------------------------------------------
 
 # view number of bands in the RGB Camera raster
 nlyr(RGB_HARV)
 
 
 
-## ----describe-meta-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----describe-meta---------------------------------------------------------------------------------------------------------------------------------
 
 # view metadata attributes before opening the file
 describe(path.expand(dsm_harv_file),meta=TRUE)
 
 
 
-## ----describe-stats----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----describe-stats--------------------------------------------------------------------------------------------------------------------------------
 
 # view summary statistics before opening the file
 describe(path.expand(dsm_harv_file),options=c("stats"))
 
 
 
-## ----challenge-code-attributes, eval=FALSE, echo=FALSE-----------------------------------------------------------------------------------------------------------------------------
+## ----challenge-code-attributes, eval=FALSE, echo=FALSE---------------------------------------------------------------------------------------------
 ## dtm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DTMGtif/NEON_D01_HARV_DP3_732000_4713000_DTM.tif")
 ## describe(path.expand(dtm_harv_file))
 ## 

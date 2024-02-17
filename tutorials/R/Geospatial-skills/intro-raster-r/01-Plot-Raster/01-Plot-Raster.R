@@ -1,4 +1,4 @@
-## ----load-libraries----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----load-libraries--------------------------------------------------------------------------------------------------------------------------------
 library(terra)
 
 # set working directory
@@ -10,13 +10,13 @@ dsm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2
 DSM_HARV <- rast(dsm_harv_file)
 
 
-## ----hist-raster, fig.cap="Digital surface model showing the continuous elevation of NEON's site Harvard Forest"-------------------------------------------------------------------
+## ----hist-raster, fig.cap="Digital surface model showing the continuous elevation of NEON's site Harvard Forest"-----------------------------------
 # Plot raster object
 plot(DSM_HARV, main="Digital Surface Model - HARV")
 
 
 
-## ----create-histogram-breaks, fig.cap="Histogram of digital surface model showing the distribution of the elevation of NEON's site Harvard Forest"---------------------------------
+## ----create-histogram-breaks, fig.cap="Histogram of digital surface model showing the distribution of the elevation of NEON's site Harvard Forest"----
 # Plot distribution of raster values 
 DSMhist<-hist(DSM_HARV,
      breaks=3,
@@ -30,7 +30,7 @@ DSMhist$counts
 
 
 
-## ----plot-with-breaks, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with three breaks"-------------------------------------------------------
+## ----plot-with-breaks, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with three breaks"-----------------------
 # plot using breaks.
 plot(DSM_HARV, 
      breaks = c(300, 350, 400, 450), 
@@ -52,7 +52,7 @@ plot(DSM_HARV,
      ylab = "UTM Northing (m)")
 
 
-## ----turn-off-axes,fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with no axes"----------------------------------------------------------------
+## ----turn-off-axes,fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest with no axes"--------------------------------
 # or we can turn off the axis altogether
 plot(DSM_HARV, 
      breaks = c(300, 350, 400, 450), 
@@ -62,7 +62,7 @@ plot(DSM_HARV,
 
 
 
-## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE-------------------------------------------------------------------------------------------------------------
+## ----challenge-code-plotting, include=TRUE, results="hide", echo=FALSE-----------------------------------------------------------------------------
 # Find min & max
 min(DSM_HARV)
 
@@ -77,7 +77,7 @@ plot(DSM_HARV,
 
 
 
-## ----slope-aspect-hill-------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----slope-aspect-hill-----------------------------------------------------------------------------------------------------------------------------
 slope <- terrain(DSM_HARV, "slope", unit="radians")
 aspect <- terrain(DSM_HARV, "aspect", unit="radians")
 hill <- shade(slope, aspect, 45, 270)
