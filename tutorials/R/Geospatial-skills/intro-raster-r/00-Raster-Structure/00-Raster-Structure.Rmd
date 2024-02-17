@@ -48,11 +48,12 @@ on your computer to complete this tutorial.
 
 Data required for this tutorial will be downloaded using `neonUtilities` in the lesson.
 
-The LiDAR and imagery data used to create this raster teaching data set
-were collected over the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> and 
-<a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a>
-field sites and processed at NEON headquarters. The entire dataset can be accessed from the 
+The LiDAR and imagery data used in this lesson were collected over the 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> 
+field site. 
+
+The entire dataset can be accessed from the 
 <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
 
@@ -65,7 +66,7 @@ of setting the working directory in R can be found here.</a>
 
 ****
 
-* <a href="https://cran.r-project.org/web/packages/terra/terra.pdff" target="_blank">
+* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
 Read more about the `terra` package in R.</a>
 * <a href="https://www.neonscience.org/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
 * <a href="https://www.neonscience.org/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
