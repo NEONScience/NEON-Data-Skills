@@ -18,17 +18,14 @@ setwd(wd)
 
 ## ----open-raster, fig.cap="Digital surface model showing the elevation of NEON's site Harvard Forest"----------------------------------------------
 # Load raster into R
-
 dsm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif")
 DSM_HARV <- rast(dsm_harv_file)
 
 # View raster structure
 DSM_HARV 
 
-# plot raster
-# note \n in the title forces a line break in the title
-plot(DSM_HARV, 
-     main="Digital Surface Model - HARV")
+# plot raster 
+plot(DSM_HARV, main="Digital Surface Model - HARV")
 
 
 

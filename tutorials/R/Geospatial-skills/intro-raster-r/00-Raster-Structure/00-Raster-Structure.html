@@ -173,16 +173,14 @@ setwd(wd)
 </code></pre>
 <p>This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30024.001 (the Data Product ID). The file should show up in this location: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.</p>
 <h2 id="open-a-raster-in-r">Open a Raster in R</h2>
-<p>We can use the <code>terra(&quot;path-to-raster-here&quot;)</code> function to open a raster in R.</p>
+<p>We can use <code>terra</code>’s <code>rast(&quot;path-to-raster-here&quot;)</code> function to open a raster in R.</p>
 <div id="ds-dataTip" markdown="1">
-<p><i class="fa fa-star"></i> <strong>Data Tip:</strong>  OBJECT NAMES! To improve code
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong>  VARIABLE NAMES! To improve code
 readability, file and object names should be used that make it clear what is in
-the file. The data for this tutorial were collected over from Harvard Forest so
-we’ll use a naming convention of <code>datatype_HARV</code>.</p>
+the file. The data for this tutorial were collected over from Harvard Forest (HARV),
+sowe’ll use the naming convention of <code>DATATYPE_HARV</code>.</p>
 </div>
 <pre><code># Load raster into R
-
-
 
 dsm_harv_file &lt;- paste0(wd, &quot;DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif&quot;)
 
@@ -204,12 +202,9 @@ DSM_HARV
 ## min value   :                               317.91 
 ## max value   :                               433.94
 
-# plot raster
+# plot raster 
 
-# note \n in the title forces a line break in the title
-
-plot(DSM_HARV, 
-     main=&quot;Digital Surface Model - HARV&quot;)
+plot(DSM_HARV, main=&quot;Digital Surface Model - HARV&quot;)
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png" alt="Digital surface model showing the elevation of NEON’s site Harvard Forest" /></p>
 <h2 id="types-of-data-stored-in-raster-format">Types of Data Stored in Raster Format</h2>
@@ -365,8 +360,7 @@ harvCRS &lt;- crs(DSM_HARV)
 </figure>
 <p>The CRS in this case is in a <code>char</code> format. This means that the projection
 information is strung together as a series of text elements.</p>
-<p><code>+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0</code></p>
-<p>We’ll focus on the first few components of the CRS in this tutorial.</p>
+<p>We’ll focus on the first few components of the CRS, as described above.</p>
 <ul>
 <li><code>name</code>: The projection of the dataset. Our data are in WGS84 (World Geodetic System 1984) / UTM (Universal Transverse Mercator) zone 18N. WGS84 is the datum. The UTM projection divides up the world into zones, this element tells you which zone the data are in. Harvard Forest is in Zone 18.</li>
 <li><code>authority</code>: EPSG (European Petroleum Survey Group) - organization that maintains a geodetic parameter database with standard codes</li>
