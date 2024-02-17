@@ -65,6 +65,10 @@ harvCRS <- crs(DSM_HARV)
 
 
 
+## ----show-ext--------------------------------------------------------------------------------------------------------------------------------------
+ext(DSM_HARV)
+
+
 ## ----resolution-units------------------------------------------------------------------------------------------------------------------------------
 crs(DSM_HARV,proj=TRUE)
 
@@ -91,8 +95,7 @@ RGB_HARV <-
 
 # Create an RGB image from the raster
 par(col.axis="white",col.lab="white",tck=0)
-plotRGB(RGB_HARV, r = 1, g = 2, b = 3, 
-        axes=TRUE, main="Raster With NoData Values Rendered in Black")
+plotRGB(RGB_HARV, r = 1, g = 2, b = 3, axes=TRUE)
 
 
 
@@ -106,16 +109,15 @@ newRGBImage <- app(RGB_HARV, func)
 
 par(col.axis="white",col.lab="white",tck=0)
 # Create an RGB image from the raster stack
-plotRGB(newRGBImage, r = 1, g = 2, b = 3,
-        axes=TRUE, main="Raster With No Data Values\nNoDataValue= NA")
+plotRGB(newRGBImage, r = 1, g = 2, b = 3, axis=TRUE)
  
 
 
-## ----view-raster-histogram, fig.cap="Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000"----
+## ----view-raster-histogram, fig.cap="Histogram showing the distribution of digital surface model values"-------------------------------------------
 
 # view histogram of data
 hist(DSM_HARV,
-     main="Distribution of Digital Surface Model Values\n Histogram Default: 100,000 pixels\n NEON Harvard Forest",
+     main="Distribution of Digital Surface Model Values\n NEON Harvard Forest (HARV)",
      xlab="DSM Elevation Value (m)",
      ylab="Frequency",
      col="lightblue")

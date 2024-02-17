@@ -312,7 +312,13 @@ The spatial extent is the geographic area that the raster data covers.
 
 The spatial extent of an R spatial object represents the geographic "edge" or 
 location that is the furthest north, south, east and west. In other words, `extent` 
-represents the overall geographic coverage of the spatial object.
+represents the overall geographic coverage of the spatial object. 
+
+You can see the spatial extent using `terra::ext`:
+
+``` {r show-ext}
+ext(DSM_HARV)
+```
 
 ## Resolution
 A raster has horizontal (x and y) resolution. This resolution represents the 
@@ -335,15 +341,15 @@ The best way to view resolution units is to look at the coordinate reference sys
 crs(DSM_HARV,proj=TRUE)
 ```
 
-## Calculate Raster Min and Max Values
+## Display Raster Min and Max Values
 
-It is useful to know the minimum or maximum values of a raster dataset. In
+It can be useful to know the minimum or maximum values of a raster dataset. In
 this case, given we are working with elevation data, these values represent the 
 min/max elevation range at our site.
 
-Raster statistics are often calculated and embedded in a `geotiff` for us. 
+Raster statistics are often calculated and embedded in a `Geotiff` for us. 
 However if they weren't already calculated, we can calculate them using the
-`setMinMax()` function.
+`min()` or `max()` functions.
 
 ```{r view-min-max }
 # view the min and max values
@@ -386,8 +392,7 @@ RGB_HARV <-
 
 # Create an RGB image from the raster
 par(col.axis="white",col.lab="white",tck=0)
-plotRGB(RGB_HARV, r = 1, g = 2, b = 3, 
-        axes=TRUE, main="Raster With NoData Values Rendered in Black")
+plotRGB(RGB_HARV, r = 1, g = 2, b = 3, axes=TRUE)
 
 ```
 
@@ -405,8 +410,7 @@ newRGBImage <- app(RGB_HARV, func)
 
 par(col.axis="white",col.lab="white",tck=0)
 # Create an RGB image from the raster stack
-plotRGB(newRGBImage, r = 1, g = 2, b = 3,
-        axes=TRUE, main="Raster With No Data Values\nNoDataValue= NA")
+plotRGB(newRGBImage, r = 1, g = 2, b = 3, axis=TRUE)
  
 ```
 
@@ -452,11 +456,11 @@ We can explore the distribution of values contained within our raster using the
 `hist()` function which produces a histogram. Histograms are often useful in 
 identifying outliers and bad data values in our raster data.
 
-```{r view-raster-histogram, fig.cap="Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000"}
+```{r view-raster-histogram, fig.cap="Histogram showing the distribution of digital surface model values"}
 
 # view histogram of data
 hist(DSM_HARV,
-     main="Distribution of Digital Surface Model Values\n Histogram Default: 100,000 pixels\n NEON Harvard Forest",
+     main="Distribution of Digital Surface Model Values\n NEON Harvard Forest (HARV)",
      xlab="DSM Elevation Value (m)",
      ylab="Frequency",
      col="lightblue")

@@ -359,7 +359,14 @@ The spatial extent is the geographic area that the raster data covers.
 
 The spatial extent of an R spatial object represents the geographic "edge" or 
 location that is the furthest north, south, east and west. In other words, `extent` 
-represents the overall geographic coverage of the spatial object.
+represents the overall geographic coverage of the spatial object. 
+
+You can see the spatial extent using `terra::ext`:
+
+
+    ext(DSM_HARV)
+
+    ## SpatExtent : 732000, 733000, 4713000, 4714000 (xmin, xmax, ymin, ymax)
 
 ## Resolution
 A raster has horizontal (x and y) resolution. This resolution represents the 
@@ -383,15 +390,15 @@ The best way to view resolution units is to look at the coordinate reference sys
 
     ## [1] "+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs"
 
-## Calculate Raster Min and Max Values
+## Display Raster Min and Max Values
 
-It is useful to know the minimum or maximum values of a raster dataset. In
+It can be useful to know the minimum or maximum values of a raster dataset. In
 this case, given we are working with elevation data, these values represent the 
 min/max elevation range at our site.
 
-Raster statistics are often calculated and embedded in a `geotiff` for us. 
+Raster statistics are often calculated and embedded in a `Geotiff` for us. 
 However if they weren't already calculated, we can calculate them using the
-`setMinMax()` function.
+`min()` or `max()` functions.
 
 
     # view the min and max values
@@ -455,8 +462,7 @@ In the image below, the pixels that are black have `NoDataValue`s. The camera di
 
     par(col.axis="white",col.lab="white",tck=0)
 
-    plotRGB(RGB_HARV, r = 1, g = 2, b = 3, 
-            axes=TRUE, main="Raster With NoData Values Rendered in Black")
+    plotRGB(RGB_HARV, r = 1, g = 2, b = 3, axes=TRUE)
 
 ![Colorized raster image with NoDataValues around the edge rendered in black](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png)
 
@@ -481,8 +487,14 @@ with the `NoDataValue` as `NA`.
 
     # Create an RGB image from the raster stack
 
-    plotRGB(newRGBImage, r = 1, g = 2, b = 3,
-            axes=TRUE, main="Raster With No Data Values\nNoDataValue= NA")
+    plotRGB(newRGBImage, r = 1, g = 2, b = 3, axis=TRUE)
+
+    ## Warning in plot.window(...): "axis" is not a graphical parameter
+
+    ## Warning in plot.xy(xy, type, ...): "axis" is not a graphical parameter
+
+    ## Warning in title(...): "axis" is not a graphical parameter
+
 
 ![Colorized raster image with NoDataValues around the edge removed](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png)
 
@@ -532,12 +544,12 @@ identifying outliers and bad data values in our raster data.
     # view histogram of data
 
     hist(DSM_HARV,
-         main="Distribution of Digital Surface Model Values\n Histogram Default: 100,000 pixels\n NEON Harvard Forest",
+         main="Distribution of Digital Surface Model Values\n NEON Harvard Forest (HARV)",
          xlab="DSM Elevation Value (m)",
          ylab="Frequency",
          col="lightblue")
 
-![Histogram showing the distribution of digital surface model values that has a default maximum pixels value of 100,000](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
+![Histogram showing the distribution of digital surface model values](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png)
 
 The distribution of elevation values for our `Digital Surface Model (DSM)` looks 
 reasonable. It is likely there are no bad data values in this particular raster.
