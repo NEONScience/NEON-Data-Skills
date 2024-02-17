@@ -131,15 +131,13 @@ tool to explore raster values. And render categorical plots, using the <code>bre
 argument to get bins that are meaningful representations of our data.</p>
 <p>We will use the <code>terra</code> package in this tutorial. If you do not
 have the <code>DSM_HARV</code> variable as defined in the pervious tutorial, <a href="https://www.neonscience.org/dc-raster-data-r" target="_blank"> <em>Intro To Raster In R</em></a>, please download it using <code>neonUtilities</code>, as shown in the previous tutorial.</p>
-<pre><code># if they are not already loaded
-
-library(terra)
+<pre><code>library(terra)
 
 
 
 # set working directory
 
-wd &lt;- &quot;~/data/&quot; # this will depend on your local environment environment
+wd &lt;- &quot;~/data/&quot;
 
 setwd(wd)
 
@@ -155,8 +153,7 @@ DSM_HARV &lt;- rast(dsm_harv_file)
 <code>plot()</code> function. We add a title using the argument <code>main=&quot;title&quot;</code>.</p>
 <pre><code># Plot raster object
 
-plot(DSM_HARV,
-     main=&quot;Digital Surface Model\nNEON Harvard Forest Field Site&quot;)
+plot(DSM_HARV, main=&quot;Digital Surface Model - HARV&quot;)
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hist-raster-1.png" alt="Digital surface model showing the continuous elevation of NEON’s site Harvard Forest" /></p>
 <h2 id="plotting-data-using-breaks">Plotting Data Using Breaks</h2>

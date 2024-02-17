@@ -1,12 +1,12 @@
 ---
 syncID: cdeed1d7546a4a179c0cd83b17a4938c
 title: "Raster 01: Plot Raster Data in R"	
-description: "This tutorial explains how to plot a raster in R using R's base plot function. It also covers how to layer a raster on top of a hillshade to produce  an eloquent map."	
+description: "This tutorial explains how to plot a raster in R using R's base plot function. It also shows how to create a hillshade and layer a DSM raster on top of a hillshade to produce an eloquent map."	
 dateCreated: 2015-10-2
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	Jason Brown
+contributors:	Jason Brown, Bridget Hass
 estimatedTime: 30 minutes
-packagesLibraries: raster, rgdal
+packagesLibraries: terra
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
 dataProduct: DP3.30024.001
@@ -81,15 +81,13 @@ We will use the `terra` package in this tutorial. If you do not
 have the `DSM_HARV` variable as defined in the pervious tutorial, <a href="https://www.neonscience.org/dc-raster-data-r" target="_blank"> *Intro To Raster In R*</a>, please download it using `neonUtilities`, as shown in the previous tutorial.  
 
 
-    # if they are not already loaded
-
     library(terra)
 
     
 
     # set working directory
 
-    wd <- "~/data/" # this will depend on your local environment environment
+    wd <- "~/data/"
 
     setwd(wd)
 
@@ -107,8 +105,7 @@ First, let's plot our Digital Surface Model object (`DSM_HARV`) using the
 
     # Plot raster object
 
-    plot(DSM_HARV,
-         main="Digital Surface Model\nNEON Harvard Forest Field Site")
+    plot(DSM_HARV, main="Digital Surface Model - HARV")
 
 ![Digital surface model showing the continuous elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hist-raster-1.png)
 

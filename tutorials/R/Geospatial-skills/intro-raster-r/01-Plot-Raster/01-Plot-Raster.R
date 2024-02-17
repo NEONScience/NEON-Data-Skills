@@ -1,9 +1,8 @@
 ## ----load-libraries----------------------------------------------------------------------------------------------------------------------------------------------------------------
-# if they are not already loaded
 library(terra)
 
 # set working directory
-wd <- "~/data/" # this will depend on your local environment environment
+wd <- "~/data/"
 setwd(wd)
 
 # import raster into R
@@ -13,8 +12,7 @@ DSM_HARV <- rast(dsm_harv_file)
 
 ## ----hist-raster, fig.cap="Digital surface model showing the continuous elevation of NEON's site Harvard Forest"-------------------------------------------------------------------
 # Plot raster object
-plot(DSM_HARV,
-     main="Digital Surface Model\nNEON Harvard Forest Field Site")
+plot(DSM_HARV, main="Digital Surface Model - HARV")
 
 
 
