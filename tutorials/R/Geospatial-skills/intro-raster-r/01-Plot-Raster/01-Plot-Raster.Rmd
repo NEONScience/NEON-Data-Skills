@@ -12,7 +12,7 @@ languagesTool: R
 dataProduct: DP3.30024.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/01-Plot-Raster.R
 tutorialSeries: raster-data-series
-urlTitle: dc-plot-raster-data-r
+urlTitle: plot-raster-data-r
 ---
 
 
