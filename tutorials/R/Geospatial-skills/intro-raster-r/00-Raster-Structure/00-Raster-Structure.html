@@ -136,8 +136,8 @@ of setting the working directory in R can be found here.</a></p>
 <p>Raster or “gridded” data are stored as a grid of values which are rendered on a
 map as pixels. Each pixel value represents an area on the Earth’s surface.</p>
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png"
     alt="Satellite (raster) image with an inset map of a smaller extent. The inset map's structure is further shown as a grid of numeric values represented by colors on a the legend." >
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
@@ -167,7 +167,7 @@ setwd(wd)
 
           northing=4713500,
 
-          check.size=FALSE, # set to TRUE or can leave out if you want to check the size before downloading
+          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
 
           savepath = wd)
 </code></pre>
@@ -247,11 +247,7 @@ maps include:</p>
 </figure>
 <h4 id="categorical-elevation-map-of-the-neon-harvard-forest-site">Categorical Elevation Map of the NEON Harvard Forest Site</h4>
 <p>The legend of this map shows the colors representing each discrete class.</p>
-<pre><code># Demonstration image for the tutorial
-
-
-
-# add a color map with 5 colors
+<pre><code># add a color map with 5 colors
 
 col=terrain.colors(3)
 
@@ -449,27 +445,25 @@ region.</p>
 
           northing=4701500,
 
-          check.size=FALSE, # set to TRUE or can leave out if you want to check the size before downloading
+          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
 
           savepath = wd)
 </code></pre>
 <p>This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30010.001 (the Camera Data Product ID). The file should show up in this location: ~/data/DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif.</p>
 <p>In the image below, the pixels that are black have <code>NoDataValue</code>s. The camera did not collect data in these areas.</p>
-<pre><code># no data demonstration code - not being taught 
-
-# Use stack function to read in all bands
+<pre><code># Use rast function to read in all bands
 
 RGB_HARV &lt;- 
   rast(paste0(wd,&quot;DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif&quot;))
 
 
 
-# Create an RGB image from the raster stack
+# Create an RGB image from the raster
 
 par(col.axis=&quot;white&quot;,col.lab=&quot;white&quot;,tck=0)
 
 plotRGB(RGB_HARV, r = 1, g = 2, b = 3, 
-        axes=TRUE, main=&quot;Raster With NoData Values\nRendered in Black&quot;)
+        axes=TRUE, main=&quot;Raster With NoData Values Rendered in Black&quot;)
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png" alt="Colorized raster image with NoDataValues around the edge rendered in black" /></p>
 <p>In the next image, the black edges have been assigned <code>NoDataValue</code>. R doesn’t
@@ -514,10 +508,11 @@ that fall outside of the applicable range of a dataset.</p>
 <li>The normalized difference vegetation index (NDVI), which is a measure of
 greenness, has a valid range of -1 to 1. Any value outside of that range would
 be considered a “bad” value.</li>
-<li>Reflectance data in an image will often range from 0-1 or 0-10,000 depending
-upon how the data are scaled. Thus a value greater than 1 or greater than 10,000
+<li>Reflectance data in an image should range from 0-1 (or 0-10,000 depending
+upon how the data are scaled). Thus a value greater than 1 or greater than 10,000
 is likely caused by an error in either data collection or processing. These
-erroneous values can occur, for example, in water vapor absorption bands.</li>
+erroneous values can occur, for example, in water vapor absorption bands, which
+contain invalid data, and are meant to be disregarded.</li>
 </ul>
 <h3 id="find-bad-data-values">Find Bad Data Values</h3>
 <p>Sometimes a raster’s metadata will tell us the range of expected values for a

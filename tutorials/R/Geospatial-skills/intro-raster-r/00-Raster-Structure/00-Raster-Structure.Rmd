@@ -4,10 +4,10 @@ title: "Raster 00: Intro to Raster Data in R"
 description: "This tutorial reviews the fundamental principles, packages and metadata/raster attributes that are needed to work with raster data in R. It covers the three core metadata elements that we need to understand to work with rasters in R: CRS, Extent and Resolution. It also explores missing and bad data values as stored in a raster and how R handles these elements. Finally, it introduces the GeoTiff file format."	
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	Jason Brown
+contributors:	Jason Brown, Bridget Hass
 estimatedTime: 1 hour
 packagesLibraries: neonUtilities, terra
-topics: raster, spatial-data-gis, lidar
+topics: raster, spatial-data-gis, lidar, camera
 languagesTool: R
 dataProduct: DP3.30024.001, DP3.30010.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/00-Raster-Structure.R
@@ -77,8 +77,8 @@ Raster or "gridded" data are stored as a grid of values which are rendered on a
 map as pixels. Each pixel value represents an area on the Earth's surface.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/raster-general/raster_concept.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png"
     alt="Satellite (raster) image with an inset map of a smaller extent. The inset map's structure is further shown as a grid of numeric values represented by colors on a the legend." >
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
@@ -107,7 +107,7 @@ byTileAOP(dpID='DP3.30024.001', # lidar elevation
           year='2022',
           easting=732000,
           northing=4713500,
-          check.size=FALSE, # set to TRUE or can leave out if you want to check the size before downloading
+          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
           savepath = wd)
 ```
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30024.001 (the Data Product ID). The file should show up in this location: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.
@@ -180,8 +180,6 @@ maps include:
 The legend of this map shows the colors representing each discrete class. 
 
 ```{r classified-elevation-map, fig.cap="Classified elevation map of NEON's site Harvard Forest", fig.width=10}
-# Demonstration image for the tutorial
-
 # add a color map with 5 colors
 col=terrain.colors(3)
 # add breaks to the colormap (4 breaks = 3 segments)
@@ -373,7 +371,7 @@ byTileAOP(dpID='DP3.30010.001',
           year='2022',
           easting=737500,
           northing=4701500,
-          check.size=FALSE, # set to TRUE or can leave out if you want to check the size before downloading
+          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
           savepath = wd)
 ```
 
@@ -382,15 +380,14 @@ This file will be downloaded into a nested subdirectory under the ~/data folder,
 In the image below, the pixels that are black have `NoDataValue`s. The camera did not collect data in these areas. 
 
 ```{r demonstrate-no-data-black, fig.cap="Colorized raster image with NoDataValues around the edge rendered in black"}
-# no data demonstration code - not being taught 
-# Use stack function to read in all bands
+# Use rast function to read in all bands
 RGB_HARV <- 
   rast(paste0(wd,"DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif"))
 
-# Create an RGB image from the raster stack
+# Create an RGB image from the raster
 par(col.axis="white",col.lab="white",tck=0)
 plotRGB(RGB_HARV, r = 1, g = 2, b = 3, 
-        axes=TRUE, main="Raster With NoData Values\nRendered in Black")
+        axes=TRUE, main="Raster With NoData Values Rendered in Black")
 
 ```
 
@@ -405,7 +402,6 @@ func <- function(x) {
   x}
 
 newRGBImage <- app(RGB_HARV, func)
-
 
 par(col.axis="white",col.lab="white",tck=0)
 # Create an RGB image from the raster stack
@@ -437,10 +433,11 @@ Examples of Bad Data Values:
 * The normalized difference vegetation index (NDVI), which is a measure of 
 greenness, has a valid range of -1 to 1. Any value outside of that range would 
 be considered a "bad" value.
-* Reflectance data in an image will often range from 0-1 or 0-10,000 depending 
-upon how the data are scaled. Thus a value greater than 1 or greater than 10,000
+* Reflectance data in an image should range from 0-1 (or 0-10,000 depending 
+upon how the data are scaled). Thus a value greater than 1 or greater than 10,000
 is likely caused by an error in either data collection or processing. These 
-erroneous values can occur, for example, in water vapor absorption bands.
+erroneous values can occur, for example, in water vapor absorption bands, which 
+contain invalid data, and are meant to be disregarded.
 
 ### Find Bad Data Values
 Sometimes a raster's metadata will tell us the range of expected values for a

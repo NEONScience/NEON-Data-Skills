@@ -12,7 +12,7 @@ setwd(wd)
 ##           year='2022',
 ##           easting=732000,
 ##           northing=4713500,
-##           check.size=FALSE, # set to TRUE or can leave out if you want to check the size before downloading
+##           check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
 ##           savepath = wd)
 
 
@@ -33,8 +33,6 @@ plot(DSM_HARV,
 
 
 ## ----classified-elevation-map, fig.cap="Classified elevation map of NEON's site Harvard Forest", fig.width=10--------------------------------------
-# Demonstration image for the tutorial
-
 # add a color map with 5 colors
 col=terrain.colors(3)
 # add breaks to the colormap (4 breaks = 3 segments)
@@ -82,20 +80,19 @@ min(DSM_HARV)
 ##           year='2022',
 ##           easting=737500,
 ##           northing=4701500,
-##           check.size=FALSE, # set to TRUE or can leave out if you want to check the size before downloading
+##           check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
 ##           savepath = wd)
 
 
 ## ----demonstrate-no-data-black, fig.cap="Colorized raster image with NoDataValues around the edge rendered in black"-------------------------------
-# no data demonstration code - not being taught 
-# Use stack function to read in all bands
+# Use rast function to read in all bands
 RGB_HARV <- 
   rast(paste0(wd,"DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif"))
 
-# Create an RGB image from the raster stack
+# Create an RGB image from the raster
 par(col.axis="white",col.lab="white",tck=0)
 plotRGB(RGB_HARV, r = 1, g = 2, b = 3, 
-        axes=TRUE, main="Raster With NoData Values\nRendered in Black")
+        axes=TRUE, main="Raster With NoData Values Rendered in Black")
 
 
 
@@ -106,7 +103,6 @@ func <- function(x) {
   x}
 
 newRGBImage <- app(RGB_HARV, func)
-
 
 par(col.axis="white",col.lab="white",tck=0)
 # Create an RGB image from the raster stack
