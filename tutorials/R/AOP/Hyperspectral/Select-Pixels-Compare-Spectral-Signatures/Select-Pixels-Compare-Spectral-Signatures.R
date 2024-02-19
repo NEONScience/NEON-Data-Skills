@@ -1,4 +1,4 @@
-## ----load-libraries, message=FALSE, warning=FALSE----------------------------------------------------------------------------------------------------------------------------
+## ----load-libraries, message=FALSE, warning=FALSE-------------------------------------------------------------------------------------------------------------
 
 # load required packages
 library(rhdf5)
@@ -13,7 +13,7 @@ wd <- "~/data/"
 setwd(wd)
 
 
-## ----download-h5, eval=FALSE-------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-h5, eval=FALSE----------------------------------------------------------------------------------------------------------------------------------
 ## byTileAOP(dpID = 'DP3.30006.001',
 ##           site = 'SJER',
 ##           year = '2021',
@@ -22,7 +22,7 @@ setwd(wd)
 ##           savepath = wd)
 
 
-## ----read-h5-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----read-h5--------------------------------------------------------------------------------------------------------------------------------------------------
 # define filepath to the hyperspectral dataset
 h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
@@ -46,11 +46,11 @@ plotRGB(rgbStack,
         stretch = "lin")
 
 
-## ----dev-new, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------------------------------
+## ----dev-new, eval=FALSE--------------------------------------------------------------------------------------------------------------------------------------
 ## dev.new(noRStudioGD = TRUE)
 
 
-## ----click-to-select, eval=FALSE, comment=NA---------------------------------------------------------------------------------------------------------------------------------
+## ----click-to-select, eval=FALSE, comment=NA------------------------------------------------------------------------------------------------------------------
 
 # change plotting parameters to better see the points and numbers generated from clicking
 par(col="red", cex=2)
@@ -65,13 +65,13 @@ c <- click(rgbStack, n = 6, id=TRUE, xy=TRUE, cell=TRUE, type="p", pch=16, col="
 
 
 
-## ----convert-cell-to-row-column----------------------------------------------------------------------------------------------------------------------------------------------
+## ----convert-cell-to-row-column-------------------------------------------------------------------------------------------------------------------------------
 # convert raster cell number into row and column (used to extract spectral signature below)
 c$row <- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
 c$col <- c$cell%%ncol(rgbStack)
 
 
-## ----extract-spectral-signatures---------------------------------------------------------------------------------------------------------------------------------------------
+## ----extract-spectral-signatures------------------------------------------------------------------------------------------------------------------------------
 
 # create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
 pixel_df <- as.data.frame(wavelengths)
@@ -147,7 +147,7 @@ ggplot()+
   xlab("Wavelength")
 
 
-## ----challenge-answer, echo=FALSE, eval=FALSE--------------------------------------------------------------------------------------------------------------------------------
+## ----challenge-answer, echo=FALSE, eval=FALSE-----------------------------------------------------------------------------------------------------------------
 ## 
 ## # Challenge Answers - These challenge problems will depend on the specific
 ## # pixels that you select, but here we answer these questions generally.

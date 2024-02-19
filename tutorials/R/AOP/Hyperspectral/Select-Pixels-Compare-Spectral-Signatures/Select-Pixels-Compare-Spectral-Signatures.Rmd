@@ -17,8 +17,8 @@ urlTitle: select-pixels-compare-spectral-signatures-r
 
 
 In this tutorial, we will learn how to plot spectral signatures of several
-different land cover types using an interactive clicking feature of the 
-`raster` package.
+different land cover types using an interactive `click` feature of the 
+`terra` package.
 
 <div id="ds-objectives" markdown="1">
 
@@ -28,7 +28,7 @@ After completing this activity, you will be able to:
 
 * Extract and plot spectra from an HDF5 file.
 * Work with groups and datasets within an HDF5 file.
-* Use the `raster::click()` function to interact with an RGB raster image
+* Use the `terra::click()` function to interact with an RGB raster image
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, 
