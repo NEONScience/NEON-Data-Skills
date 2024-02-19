@@ -525,6 +525,7 @@ Try the following on your own:
 $$
 NDNI = \frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
 $$
+
 2. Calculate the Enhanced Vegetation Index (EVI). Hint: Look up the formula, and apply the appropriate NEON bands. Hint: You can look at satellite datasets, such as <a href="https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index" target="_blank">USGS Landsat EVI.</a>  
 
 3. Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple Red and NIR bands and then calculate NDVI?
