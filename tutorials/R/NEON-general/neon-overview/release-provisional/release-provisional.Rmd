@@ -19,20 +19,13 @@ urlTitle: release-provisional-tutorial
 
 ## What is a data release?
 
-A NEON data Release is a fixed set of data that do not change over time. Each 
-data product in a Release is associated with a Digital Object Identifier (DOI) 
-that can be used for data citation. Since the data in a Release do not change, 
-analyses performed on those data are traceable and reproducible.
+A NEON data Release is a fixed set of data that does not change over time. Each data product in a Release is associated with a unique Digital Object Identifier (DOI) that can be used for data citation. Since the data in a Release do not change, analyses performed on those data are traceable and reproducible.
 
-NEON data are initially published under a Provisional status, meaning that data may be updated on an as-needed basis, without guarantee of reproducibility. Publishing Provisional data allows NEON to publish data rapidly, while retaining the ability to make corrections or additions as they are identified.
+NEON data are initially published under a Provisional status, meaning that data may be updated on an as-needed basis, without guarantee of reproducibility. Publishing Provisional data allows NEON to publish data rapidly while retaining the ability to make corrections or additions as they are identified.
 
-After initial publication, a lag time occurs before the data are formally Released. During this lag time, extra quality control (QC) procedures, which are described in data product specific documentation, may be performed. This lag time also ensures all data from laboratory analyses are available before a data Release.
+After initial publication, a lag time occurs before the data are formally Released. During this lag time, extra quality control (QC) procedures, which are described in data product-specific documentation, may be performed. This lag time also ensures all data from laboratory analyses that complement existing field data are available before a data Release.
 
-Although data within a Release do not change, NEON may discover errors or needed 
-updates to data after publication of a Release. For this reason, NEON generates 
-a Release annually; each Release represents the best data available at the 
-time of publication. Changes to data between Releases are documented on the 
-web page for each Release, and in the issue log for each data product.
+Although data within a Release do not change, NEON may discover errors or needed updates to data after the publication of a Release. For this reason, NEON generates a Release annually; each Release represents the best data available at the time of publication. Changes to data between Releases are documented on the web page for each Release and in the issue log for each data product.
 
 ### Data citation
 
