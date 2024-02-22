@@ -238,7 +238,7 @@ ndvi = ndvi[1:(length(ndvi)-1)]
 
 Let's plot NDVI for all of the samples.
 
-``` {r ndvi-plot, fig.align="right", echo = FALSE, fig.width = 16, fig.height = 5}
+``` {r ndvi-plot, fig.align="right", echo = FALSE, fig.width = 14, fig.height = 5}
 pigl_ndvi <- select(ndvi,contains("PICOL"))
 barplot(unlist(pigl_ndvi), cex.names=1) 
 title(main = "PICOL NDVI",
@@ -341,7 +341,7 @@ Finally, we can merge this `foliar_traits_loc` data frame with the `spectra_merg
 
 ``` {r spectra-traits}
 spectra_traits <- merge(spectra_merge,foliar_traits_loc,by="sampleID")
-spectra_traits[c("sampleID","spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")]
+head(spectra_traits[c("spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")])
 ```
 
 Great, now we have the field spectra data and the corresponding locations of the leaf-clip samples. For the final part of this lesson, we will download the airborne reflectance data, and use some pre-defined functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means we will need to enter `y` in order to continue the download.
@@ -387,7 +387,7 @@ h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMN
 Now we can use some pre-defined functions for working with the airborne reflectance data. For more details, please refer to the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data" target="_blank">Introduction to Hyperspectral Remote Sensing</a> tutorial series.
 
 
-``` {r get-h5-metadata}
+``` {r h5-functions}
 geth5metadata <- function(h5_file){
   # get the site name
   site <- h5ls(h5_file)$group[2]
@@ -401,53 +401,36 @@ geth5metadata <- function(h5_file){
   # get the Reflectance_Data attributes
   refl_attrs <- h5readAttributes(h5_file,paste0(site,"/Reflectance/Reflectance_Data"))
   
-  # Grab the UTM coordinates of the spatial extent
+  # grab the UTM coordinates of the spatial extent
   xMin <- refl_attrs$Spatial_Extent_meters[1]
   xMax <- refl_attrs$Spatial_Extent_meters[2]
   yMin <- refl_attrs$Spatial_Extent_meters[3]
   yMax <- refl_attrs$Spatial_Extent_meters[4]
   
-  # define the extent (left, right, top, bottom)
-  ext <- ext(xMin,xMax,yMin,yMax)
-  
-  # define the no data value
-  no_data <- as.integer(refl_attrs$Data_Ignore_Value)
-  
+  ext <- ext(xMin,xMax,yMin,yMax) # define the extent (left, right, top, bottom)
+
+  no_data <- as.integer(refl_attrs$Data_Ignore_Value)  # define the no data value
   meta_list <- list("wavelengths" = wavelengths, "crs" = crs, "raster_ext" = ext, "no_data_value" = no_data)
-  
-  h5closeAll()
+  h5closeAll() # cloes all open h5 instances
   
   return(meta_list)
-}
 
-```
 
-``` {r h5refl-to-raster}
-band2Raster <- function(h5_file, band, extent, crs, no_data_value){
-    # extract the site info
-    site <- h5ls(h5_file)$group[2]
-    # first, read in the raster, this will be an array
+  band2Raster <- function(h5_file, band, extent, crs, no_data_value){
+    site <- h5ls(h5_file)$group[2] # extract the site info
+    # read in the raster for the band specified, this will be an array
     refl_array <- h5read(h5_file,paste0(site,"/Reflectance/Reflectance_Data"),index=list(band,NULL,NULL))
-	  # Convert from array to matrix
-	  refl_matrix <- (refl_array[1,,])
-	  # transpose data to fix flipped row and column order
-	  refl_matrix <- t(refl_matrix)
-    # assign data ignore values to NA
-    refl_matrix[refl_matrix == no_data_value] <- NA
-	  
-    # turn the out object into a raster
-    refl_out <- rast(refl_matrix,crs=crs)
-   
-    # assign the extents to the raster
-    ext(refl_out) <- extent
-    
-    # close all open h5 instances
-    h5closeAll()
-   
-    # return the terra raster object
-    return(refl_out)
+	  refl_matrix <- (refl_array[1,,]) # convert from array to matrix
+	  refl_matrix <- t(refl_matrix) # transpose data to fix flipped row and column order
+    refl_matrix[refl_matrix == no_data_value] <- NA     # assign data ignore values to NA
+    refl_out <- rast(refl_matrix,crs=crs) # write out as a raster
+    ext(refl_out) <- extent # assign the extents to the raster
+    h5closeAll() # close all open h5 instances
+    return(refl_out) # return the terra raster object
 }
 ```
+
+Now that we've defined these functions, we can run `lapply` on the band2Raster function, using all the bands:
 
 ``` {r refl-to-rast}
 # get the relevant metadata using the geth5metadata function
@@ -478,7 +461,7 @@ m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
 plot(m, add = T)
 ```
 
-And we can zoom in on the sample location ... 
+And we can zoom in on the sample location.
 
 ``` {r plot-band58-zoom}
 x_sub = c(455100, 455200)
@@ -565,7 +548,7 @@ Why is there a difference between the leaf-clip spectra and the remotely-sensed 
 
 Each reflectance pixel represents a 1m x 1m area, so it contains an average spectra of all the vegetation and non-vegetation that are contained in that area. For example, a single pixel could contain the reflectance of a mix of leaves as well as branches, and any gaps in the tree canopy (eg. the ground under the tree). This averaging is called "spectral mixing" and you can perform "spectral un-mixing" to decompose an average spectra into it's component parts. These leaf clip spectra can be used as "end-members", in classification applications, for example. 
 
-Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There may also be some uncertainty in the data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform is typically able to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).
+Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform is typically able to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).
 
 ### Next Steps
 

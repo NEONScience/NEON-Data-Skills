@@ -372,7 +372,7 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
     ## Copied the most recent publication of categoricalCodes file to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 14 data tables and 4 metadata tables!
-    ## Stacking took 0.595633 secs
+    ## Stacking took 1.011186 secs
 
     names(foliar_traits)
 
@@ -398,34 +398,15 @@ Finally, we can merge this `foliar_traits_loc` data frame with the `spectra_merg
 
     spectra_traits <- merge(spectra_merge,foliar_traits_loc,by="sampleID")
 
-    spectra_traits[c("sampleID","spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")]
+    head(spectra_traits[c("spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")])
 
-    ##                                        sampleID       spectralSampleID          locationID.x tagID taxonID stemDistance stemAzimuth adjEasting adjNorthing
-    ## 1  pbg8g17+dIoArlSiw1ROPXGnIZqlsN4htuazkQgt1Qc= FSP_RMNP_20200716_1215 RMNP_009.basePlot.cfc  3861   POTR5         10.4        28.3   459058.0     4450439
-    ## 2  pbg8g17+dIon1xBNkOqUZ3wgwT4kS8nFS2hWurbyLk8= FSP_RMNP_20200714_0910 RMNP_019.basePlot.cfc  4352   PIFL2          5.8       143.5   458176.5     4449625
-    ## 3  pbg8g17+dIp3UynaVDsbUH7cqezkCPUzMGNmDb4B5X0= FSP_RMNP_20200716_1149 RMNP_009.basePlot.cfc  3832   PIFL2         16.9        14.0   459046.8     4450436
-    ## 4  pbg8g17+dIp5EAEaN5AcVGCQcrgPXRCk8Q2QVjTiRFo= FSP_RMNP_20200709_2050 RMNP_041.basePlot.cfc  2496   PICOL         17.6       278.2   453521.1     4458506
-    ## 5  pbg8g17+dIp6705ag9pa0lUooCzfvWWeJWkfNMWWx2U= FSP_RMNP_20200706_2120 RMNP_004.basePlot.cfc  3472   PICOL          5.8        83.0   453949.4     4448624
-    ## 6  pbg8g17+dIpFIdxBMMAh1n+eNlqg7zRCejgddeoto30= FSP_RMNP_20200709_2104 RMNP_041.basePlot.cfc  2510   POTR5         15.0       335.8   453532.4     4458517
-    ## 7  pbg8g17+dIpVatTZUVb9WdltQJEZLImiaQcA976KyuE= FSP_RMNP_20200709_2037 RMNP_044.basePlot.cfc  2898    PIEN         11.2       325.1   453558.6     4458691
-    ## 8  pbg8g17+dIpyD/Cgm1K6f8vOUY8cY4L9b+f4u8zqXvQ= FSP_RMNP_20200720_1238 RMNP_005.basePlot.cfc  4033    PSME          9.6       141.1   455181.1     4446533
-    ## 9  pbg8g17+dIpZpz3KRWPziPM1SrwiC3JL9fO1RHUlNYc= FSP_RMNP_20200713_1134 RMNP_020.basePlot.cfc  3623   POTR5          2.0        50.0   460123.7     4449762
-    ## 10 pbg8g17+dIq8kK9yxxEDhdX9Rp0AvKGQCH4qEIAn/jo= FSP_RMNP_20200709_2016 RMNP_044.basePlot.cfc  2875   POTR5         12.1       347.1   453582.6     4458674
-    ## 11 pbg8g17+dIqE87crrzpmB+ZAP+7HIKVi73wg0Ksb9pg= FSP_RMNP_20200721_1230 RMNP_006.basePlot.cfc  5230    PIEN          8.5       129.3   453707.2     4445454
-    ## 12 pbg8g17+dIqis1ydkc3J2pv1y+p+RhX/6y8ib+yLWbA= FSP_RMNP_20200723_1526 RMNP_016.basePlot.cfc  3698   PIPOS         22.2       328.2   459502.2     4445010
-    ## 13 pbg8g17+dIqJHkI1mLtu9s4aAs51j9S900Sw8XpM9Os= FSP_RMNP_20200716_1134 RMNP_009.basePlot.cfc  3823   PIPOS         11.1        51.5   459051.4     4450427
-    ## 14 pbg8g17+dIqQ8pN5Eah6OFRdiXdB7+aVFoUgLB+XBQQ= FSP_RMNP_20200706_2043 RMNP_004.basePlot.cfc  3511   POTR5          6.7        93.2   453949.4     4448643
-    ## 15 pbg8g17+dIqUveYTUfYbEV6Nfy2KZf7sCNFNHoc6U10= FSP_RMNP_20200721_1243 RMNP_006.basePlot.cfc  5247   PICOL          3.6       235.9   453718.4     4445458
-    ## 16 pbg8g17+dIqXOQvcgub1nXZxtxgENpTsu/56N3eVQ7k= FSP_RMNP_20200714_0927 RMNP_019.basePlot.cfc  4348   PIPOS         15.8       326.9   458184.2     4449622
-    ## 17 pbg8g17+dIr3DkbFeZO4OIGkHUVDkAdAPSNytIPhCT8= FSP_RMNP_20200720_1304 RMNP_005.basePlot.cfc  4015   PICOL          9.2        49.7   455181.6     4446526
-    ## 18 pbg8g17+dIr7e1AmzqwUH7PLRuOMGARr4Pv8HGUxmZs= FSP_RMNP_20200706_2107 RMNP_004.basePlot.cfc  3507    PIEN          7.6       140.0   453947.6     4448637
-    ## 19 pbg8g17+dIrchAHlRFL4YS78CrskwuQBhVE1jWZJbCc= FSP_RMNP_20200720_1203 RMNP_005.basePlot.cfc  4021   PIFL2          6.0       329.1   455190.8     4446525
-    ## 20 pbg8g17+dIrK1XGZ5YcJ7nfg+afU4P1iVJEVbKKEWCg= FSP_RMNP_20200707_2038 RMNP_011.basePlot.cfc  3880    PSME         18.8       268.5   456373.2     4450501
-    ## 21 pbg8g17+dIrKHcoZh3PX2J0j6e9En17qCIeH8HoPEqY= FSP_RMNP_20200721_1214 RMNP_006.basePlot.cfc  4893   ABLAL          6.4       299.6   453715.4     4445443
-    ## 22 pbg8g17+dIrlMynaCaoSq6N/F/Ibdk+YgPq4fwPVCrk= FSP_RMNP_20200720_1218 RMNP_005.basePlot.cfc  4022   PIPOS          7.5       299.0   455187.3     4446524
-    ## 23 pbg8g17+dIrmZk1x6mlUMUkZvixu+SxqxohUypHW1Q0= FSP_RMNP_20200707_2058 RMNP_011.basePlot.cfc  3868   PIPOS          7.4        73.0   456379.8     4450485
-    ## 24 pbg8g17+dIrT4/Od5jlg8W8R2Huj5dEFrTRlhETj9hY= FSP_RMNP_20200716_1202 RMNP_009.basePlot.cfc  3836    PSME         16.4       338.2   459056.9     4450435
-    ## 25 pbg8g17+dIrzX4S/5+jgXBn/rXvkyJUcNbprHXI5lXw= FSP_RMNP_20200713_1117 RMNP_020.basePlot.cfc  3626   PICOL          9.3        25.4   460126.2     4449769
+    ##         spectralSampleID          locationID.x tagID taxonID stemDistance stemAzimuth adjEasting adjNorthing
+    ## 1 FSP_RMNP_20200716_1215 RMNP_009.basePlot.cfc  3861   POTR5         10.4        28.3   459058.0     4450439
+    ## 2 FSP_RMNP_20200714_0910 RMNP_019.basePlot.cfc  4352   PIFL2          5.8       143.5   458176.5     4449625
+    ## 3 FSP_RMNP_20200716_1149 RMNP_009.basePlot.cfc  3832   PIFL2         16.9        14.0   459046.8     4450436
+    ## 4 FSP_RMNP_20200709_2050 RMNP_041.basePlot.cfc  2496   PICOL         17.6       278.2   453521.1     4458506
+    ## 5 FSP_RMNP_20200706_2120 RMNP_004.basePlot.cfc  3472   PICOL          5.8        83.0   453949.4     4448624
+    ## 6 FSP_RMNP_20200709_2104 RMNP_041.basePlot.cfc  2510   POTR5         15.0       335.8   453532.4     4458517
 
 Great, now we have the field spectra data and the corresponding locations of the leaf-clip samples. For the final part of this lesson, we will download the airborne reflectance data, and use some pre-defined functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means we will need to enter `y` in order to continue the download.
 
@@ -493,50 +474,40 @@ Now we can use some pre-defined functions for working with the airborne reflecta
       # get the Reflectance_Data attributes
       refl_attrs <- h5readAttributes(h5_file,paste0(site,"/Reflectance/Reflectance_Data"))
       
-      # Grab the UTM coordinates of the spatial extent
+      # grab the UTM coordinates of the spatial extent
       xMin <- refl_attrs$Spatial_Extent_meters[1]
       xMax <- refl_attrs$Spatial_Extent_meters[2]
       yMin <- refl_attrs$Spatial_Extent_meters[3]
       yMax <- refl_attrs$Spatial_Extent_meters[4]
       
-      # define the extent (left, right, top, bottom)
-      ext <- ext(xMin,xMax,yMin,yMax)
-      
-      # define the no data value
-      no_data <- as.integer(refl_attrs$Data_Ignore_Value)
-      
+      ext <- ext(xMin,xMax,yMin,yMax) # define the extent (left, right, top, bottom)
+    
+      no_data <- as.integer(refl_attrs$Data_Ignore_Value)  # define the no data value
       meta_list <- list("wavelengths" = wavelengths, "crs" = crs, "raster_ext" = ext, "no_data_value" = no_data)
-      
-      h5closeAll()
+      h5closeAll() # cloes all open h5 instances
       
       return(meta_list)
-    }
-
-
-    band2Raster <- function(h5_file, band, extent, crs, no_data_value){
-        # extract the site info
-        site <- h5ls(h5_file)$group[2]
-        # first, read in the raster, this will be an array
+    
+    
+      band2Raster <- function(h5_file, band, extent, crs, no_data_value){
+        site <- h5ls(h5_file)$group[2] # extract the site info
+        # read in the raster for the band specified, this will be an array
         refl_array <- h5read(h5_file,paste0(site,"/Reflectance/Reflectance_Data"),index=list(band,NULL,NULL))
-    	  # Convert from array to matrix
-    	  refl_matrix <- (refl_array[1,,])
-    	  # transpose data to fix flipped row and column order
-    	  refl_matrix <- t(refl_matrix)
-        # assign data ignore values to NA
-        refl_matrix[refl_matrix == no_data_value] <- NA
-    	  
-        # turn the out object into a raster
-        refl_out <- rast(refl_matrix,crs=crs)
-       
-        # assign the extents to the raster
-        ext(refl_out) <- extent
-        
-        # close all open h5 instances
-        h5closeAll()
-       
-        # return the terra raster object
-        return(refl_out)
+    	  refl_matrix <- (refl_array[1,,]) # convert from array to matrix
+    	  refl_matrix <- t(refl_matrix) # transpose data to fix flipped row and column order
+        refl_matrix[refl_matrix == no_data_value] <- NA     # assign data ignore values to NA
+        refl_out <- rast(refl_matrix,crs=crs) # write out as a raster
+        ext(refl_out) <- extent # assign the extents to the raster
+        h5closeAll() # close all open h5 instances
+        return(refl_out) # return the terra raster object
     }
+
+    ## Error: <text>:41:0: unexpected end of input
+    ## 39:     return(refl_out) # return the terra raster object
+    ## 40: }
+    ##    ^
+
+Now that we've defined these functions, we can run `lapply` on the band2Raster function, using all the bands:
 
 
     # get the relevant metadata using the geth5metadata function
@@ -569,20 +540,18 @@ Let's plot a single band (in the red wavelength) of the reflectance tile, for re
 
     plot(refl_rast[[58]])
 
-    
-
     #convert the data frame into a shape file (vector)
 
     m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
                     FSP_RMNP_PICOL$adjNorthing), crs=h5_meta$crs)
 
-    
+    # plot
 
     plot(m, add = T)
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-band58-1.png)
 
-And we can zoom in on the sample location ... 
+And we can zoom in on the sample location.
 
 
     x_sub = c(455100, 455200)
@@ -590,8 +559,6 @@ And we can zoom in on the sample location ...
     y_sub = c(4446500, 4446600)
 
     plot(refl_rast[[58]],xlim=x_sub,ylim=y_sub)
-
-    
 
     plot(m, add = T)
 
@@ -626,6 +593,8 @@ Plot the RGB of the entire 1km x 1km tile, as well as zoomed in on the sample lo
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-refl-rgb-1.png)
 
+    #zoom in
+
     plotRGB(rgb_rast,stretch='lin',xlim=x_sub,ylim=y_sub)
 
     plot(m, col="red", add = T)
@@ -657,7 +626,7 @@ Why is there a difference between the leaf-clip spectra and the remotely-sensed 
 
 Each reflectance pixel represents a 1m x 1m area, so it contains an average spectra of all the vegetation and non-vegetation that are contained in that area. For example, a single pixel could contain the reflectance of a mix of leaves as well as branches, and any gaps in the tree canopy (eg. the ground under the tree). This averaging is called "spectral mixing" and you can perform "spectral un-mixing" to decompose an average spectra into it's component parts. These leaf clip spectra can be used as "end-members", in classification applications, for example. 
 
-Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There may also be some uncertainty in the data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform is typically able to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).
+Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform is typically able to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).
 
 ### Next Steps
 

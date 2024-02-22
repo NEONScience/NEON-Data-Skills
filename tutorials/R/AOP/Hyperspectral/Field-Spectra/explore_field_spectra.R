@@ -135,7 +135,7 @@ ndvi = (nir - red) / (nir + red)
 ndvi = ndvi[1:(length(ndvi)-1)]
 
 
-## ----ndvi-plot, fig.align="right", echo = FALSE, fig.width = 16, fig.height = 5---------------------------------------------------------------------------------------
+## ----ndvi-plot, fig.align="right", echo = FALSE, fig.width = 14, fig.height = 5---------------------------------------------------------------------------------------
 pigl_ndvi <- select(ndvi,contains("PICOL"))
 barplot(unlist(pigl_ndvi), cex.names=1) 
 title(main = "PICOL NDVI",
@@ -207,7 +207,7 @@ foliar_traits_loc <- merge(foliar_traits$cfc_fieldData,vst.loc,by="individualID"
 
 ## ----spectra-traits---------------------------------------------------------------------------------------------------------------------------------------------------
 spectra_traits <- merge(spectra_merge,foliar_traits_loc,by="sampleID")
-spectra_traits[c("sampleID","spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")]
+head(spectra_traits[c("spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")])
 
 
 ## ----set-wd-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ FSP_RMNP_PICOL$taxonID
 h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMNP_3/L3/Spectrometer/Reflectance/NEON_D10_RMNP_DP3_455000_4446000_reflectance.h5")
 
 
-## ----get-h5-metadata--------------------------------------------------------------------------------------------------------------------------------------------------
+## ----h5-functions-----------------------------------------------------------------------------------------------------------------------------------------------------
 geth5metadata <- function(h5_file){
   # get the site name
   site <- h5ls(h5_file)$group[2]
@@ -254,51 +254,32 @@ geth5metadata <- function(h5_file){
   # get the Reflectance_Data attributes
   refl_attrs <- h5readAttributes(h5_file,paste0(site,"/Reflectance/Reflectance_Data"))
   
-  # Grab the UTM coordinates of the spatial extent
+  # grab the UTM coordinates of the spatial extent
   xMin <- refl_attrs$Spatial_Extent_meters[1]
   xMax <- refl_attrs$Spatial_Extent_meters[2]
   yMin <- refl_attrs$Spatial_Extent_meters[3]
   yMax <- refl_attrs$Spatial_Extent_meters[4]
   
-  # define the extent (left, right, top, bottom)
-  ext <- ext(xMin,xMax,yMin,yMax)
-  
-  # define the no data value
-  no_data <- as.integer(refl_attrs$Data_Ignore_Value)
-  
+  ext <- ext(xMin,xMax,yMin,yMax) # define the extent (left, right, top, bottom)
+
+  no_data <- as.integer(refl_attrs$Data_Ignore_Value)  # define the no data value
   meta_list <- list("wavelengths" = wavelengths, "crs" = crs, "raster_ext" = ext, "no_data_value" = no_data)
-  
-  h5closeAll()
+  h5closeAll() # cloes all open h5 instances
   
   return(meta_list)
-}
 
 
-
-## ----h5refl-to-raster-------------------------------------------------------------------------------------------------------------------------------------------------
-band2Raster <- function(h5_file, band, extent, crs, no_data_value){
-    # extract the site info
-    site <- h5ls(h5_file)$group[2]
-    # first, read in the raster, this will be an array
+  band2Raster <- function(h5_file, band, extent, crs, no_data_value){
+    site <- h5ls(h5_file)$group[2] # extract the site info
+    # read in the raster for the band specified, this will be an array
     refl_array <- h5read(h5_file,paste0(site,"/Reflectance/Reflectance_Data"),index=list(band,NULL,NULL))
-	  # Convert from array to matrix
-	  refl_matrix <- (refl_array[1,,])
-	  # transpose data to fix flipped row and column order
-	  refl_matrix <- t(refl_matrix)
-    # assign data ignore values to NA
-    refl_matrix[refl_matrix == no_data_value] <- NA
-	  
-    # turn the out object into a raster
-    refl_out <- rast(refl_matrix,crs=crs)
-   
-    # assign the extents to the raster
-    ext(refl_out) <- extent
-    
-    # close all open h5 instances
-    h5closeAll()
-   
-    # return the terra raster object
-    return(refl_out)
+	  refl_matrix <- (refl_array[1,,]) # convert from array to matrix
+	  refl_matrix <- t(refl_matrix) # transpose data to fix flipped row and column order
+    refl_matrix[refl_matrix == no_data_value] <- NA     # assign data ignore values to NA
+    refl_out <- rast(refl_matrix,crs=crs) # write out as a raster
+    ext(refl_out) <- extent # assign the extents to the raster
+    h5closeAll() # close all open h5 instances
+    return(refl_out) # return the terra raster object
 }
 
 
@@ -322,11 +303,10 @@ refl_rast <- rast(refl_list)
 
 ## ----plot-band58------------------------------------------------------------------------------------------------------------------------------------------------------
 plot(refl_rast[[58]])
-
 #convert the data frame into a shape file (vector)
 m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
                 FSP_RMNP_PICOL$adjNorthing), crs=h5_meta$crs)
-
+# plot
 plot(m, add = T)
 
 
@@ -334,7 +314,6 @@ plot(m, add = T)
 x_sub = c(455100, 455200)
 y_sub = c(4446500, 4446600)
 plot(refl_rast[[58]],xlim=x_sub,ylim=y_sub)
-
 plot(m, add = T)
 
 
@@ -356,7 +335,7 @@ rgb_rast <- rast(rgb_list)
 ## ----plot-refl-rgb----------------------------------------------------------------------------------------------------------------------------------------------------
 plotRGB(rgb_rast,stretch='lin',axes=TRUE)
 plot(m, col="red", add = T)
-
+#zoom in
 plotRGB(rgb_rast,stretch='lin',xlim=x_sub,ylim=y_sub)
 plot(m, col="red", add = T)
 
