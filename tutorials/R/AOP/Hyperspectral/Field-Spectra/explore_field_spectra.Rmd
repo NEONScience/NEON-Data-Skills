@@ -147,11 +147,11 @@ for (i in 1:nrow(spectra_merge)) {
   # get the reflectance data for this spectralSampleID from per_sample
   refl_data <- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID==ssID),]
   # filter to select only the `top on black` reflectanceCondition and keep the reflectance data only
-  refl <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("reflectance")]
+  refl <- as.numeric(refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("reflectance")])
   spectra_list[[i]] <- refl
 }
 # get the wavelength values corresponding to the subset we selected for each of the spectra
-wavelengths <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")]
+wavelengths <- as.numeric(refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")])
 spectra_df <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
 # assign the taxonID + fspID to the column names to make unique column names
 taxonIDs <- paste0(spectra_merge$taxonID,substr(spectra_merge$spectralSampleID,9,22))

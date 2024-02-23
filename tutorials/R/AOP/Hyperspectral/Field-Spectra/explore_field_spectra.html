@@ -143,8 +143,9 @@ field_spectra_info$siteCodes$siteCode
 <p>Let’s take a look at all the associated data contained in this product, using the <code>names</code> function:</p>
 <pre><code>names(field_spectra)
 
-##  [1] &quot;categoricalCodes_30012&quot;      &quot;citation_30012_RELEASE-2024&quot; &quot;fsp_boutMetadata&quot;            &quot;fsp_sampleMetadata&quot;          &quot;fsp_spectralData&quot;           
-##  [6] &quot;issueLog_30012&quot;              &quot;per_sample&quot;                  &quot;readme_30012&quot;                &quot;validation_30012&quot;            &quot;variables_30012&quot;
+##  [1] &quot;categoricalCodes_30012&quot;      &quot;citation_30012_RELEASE-2024&quot; &quot;fsp_boutMetadata&quot;            &quot;fsp_sampleMetadata&quot;         
+##  [5] &quot;fsp_spectralData&quot;            &quot;issueLog_30012&quot;              &quot;per_sample&quot;                  &quot;readme_30012&quot;               
+##  [9] &quot;validation_30012&quot;            &quot;variables_30012&quot;
 </code></pre>
 <p>We encourage looking at all of these variables to learn more about the data product, but you can find the actual data stored in the variables: <code>fsp_boutMetadata</code> (contains metadata information about this sampling bout), <code>fsp_sampleMetadata</code> (contains relevant metadata about the individual samples), and <code>fsp_spectralData</code> (contains information about the individual sample data), and <code>per_sample</code> (contains the wavelength and reflectance data). Next, we can merge the data and metadata into a single table as follows.</p>
 <pre><code>spectra_merge &lt;- merge(field_spectra$fsp_spectralData,field_spectra$fsp_sampleMetadata,by=&quot;spectralSampleID&quot;) 
@@ -180,8 +181,9 @@ head(spectra_merge[c(&quot;spectralSampleID&quot;,&quot;taxonID&quot;,&quot;scie
 <p>This data is mainly composed of 3 columns: <code>wavelength</code>, <code>reflectanceCondition</code>, and <code>reflectance</code>. What is the <code>reflectanceCondition</code>? Let’s look at the unique values represented:</p>
 <pre><code>unique(FSP_RMNP_20200706_2043$reflectanceCondition)
 
-## [1] &quot;top of foliage (sunward) on white reference&quot;     &quot;bottom of foliage (downward) on white reference&quot; &quot;black reference&quot;                                
-## [4] &quot;top of foliage (sunward) on black reference&quot;     &quot;bottom of foliage (downward) on black reference&quot;
+## [1] &quot;top of foliage (sunward) on white reference&quot;     &quot;bottom of foliage (downward) on white reference&quot;
+## [3] &quot;black reference&quot;                                 &quot;top of foliage (sunward) on black reference&quot;    
+## [5] &quot;bottom of foliage (downward) on black reference&quot;
 </code></pre>
 <p>This <code>reflectanceCondition</code> describes what exactly is being measured. As stated in the Field spectral data Quick Start Guide on the NEON Data Portal <a href="https://data.neonscience.org/data-products/DP1.30012.001" target="_blank">Field spectral data (DP1.30012.001)</a> page, and explained in more detail in the <a href="https://data.neonscience.org/api/v0/documents/NEON_fieldSpectra_userGuide_vC?inline=true" target="_blank">NEON Field Spectra User Guide</a>:</p>
 <blockquote>
@@ -229,13 +231,13 @@ for (i in 1:nrow(spectra_merge)) {
   # get the reflectance data for this spectralSampleID from per_sample
   refl_data &lt;- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID==ssID),]
   # filter to select only the `top on black` reflectanceCondition and keep the reflectance data only
-  refl &lt;- refl_data[which(refl_data$reflectanceCondition == &quot;top of foliage (sunward) on black reference&quot;), c(&quot;reflectance&quot;)]
+  refl &lt;- as.numeric(refl_data[which(refl_data$reflectanceCondition == &quot;top of foliage (sunward) on black reference&quot;), c(&quot;reflectance&quot;)])
   spectra_list[[i]] &lt;- refl
 }
 
 # get the wavelength values corresponding to the subset we selected for each of the spectra
 
-wavelengths &lt;- refl_data[which(refl_data$reflectanceCondition == &quot;top of foliage (sunward) on black reference&quot;), c(&quot;wavelength&quot;)]
+wavelengths &lt;- as.numeric(refl_data[which(refl_data$reflectanceCondition == &quot;top of foliage (sunward) on black reference&quot;), c(&quot;wavelength&quot;)])
 
 spectra_df &lt;- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
 
@@ -258,9 +260,6 @@ all_spectra_plot &lt;- ggplot(data_long,
                    color = taxonID)) + geom_line() 
 
 print(all_spectra_plot + ggtitle(&quot;Spectra of all Taxon IDs collected at RMNP&quot;))
-
-## `geom_line()`: Each group consists of only one observation.
-## ℹ Do you need to adjust the group aesthetic?
 </code></pre>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-taxon-spectra-1.png" alt=" "  />
@@ -285,9 +284,6 @@ all_spectra_plot &lt;- ggplot(data_long2,
                    color = variable)) + geom_line(alpha=0.5) 
 
 print(all_spectra_plot + ggtitle(&quot;Spectra of all Taxon IDs collected at RMNP&quot;))
-
-## `geom_line()`: Each group consists of only one observation.
-## ℹ Do you need to adjust the group aesthetic?
 </code></pre>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-taxon-spectra2-1.png" alt=" "  />
@@ -318,9 +314,6 @@ picol_spectra_plot &lt;- ggplot(picol_data,
                                 color = taxon_fsp_ID)) + geom_line() 
 
 print(picol_spectra_plot + ggtitle(&quot;Spectra of PICOL samples collected at RMNP&quot;))
-
-## `geom_line()`: Each group consists of only one observation.
-## ℹ Do you need to adjust the group aesthetic?
 </code></pre>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-1.png" alt=" "  />
@@ -329,12 +322,18 @@ print(picol_spectra_plot + ggtitle(&quot;Spectra of PICOL samples collected at R
 <p>What do you notice about these spectra? It looks like there is some variation between some of the samples, particularly in the visible portion of the spectrum. Let’s go back to the original <code>spectra_merge</code> dataframe to see if we can determine more information about these individual samples. The code below pulls out some relevant columns from the data frame which may explain some of the variation we’re seeing.</p>
 <pre><code>spectra_merge[which(spectra_merge$taxonID == &quot;PICOL&quot;), c(&quot;taxonID&quot;,&quot;spectralSampleID&quot;,&quot;plantStatus&quot;,&quot;leafStatus&quot;,&quot;leafAge&quot;,&quot;leafExposure&quot;,&quot;leafSamplePosition&quot;,&quot;targetType&quot;,&quot;targetStatus&quot;,&quot;measurementVenue&quot;,&quot;remarks.y&quot;)]
 
-##    taxonID       spectralSampleID plantStatus leafStatus leafAge leafExposure leafSamplePosition   targetType targetStatus measurementVenue          remarks.y
-## 3    PICOL FSP_RMNP_20200706_2120          OK    healthy  mature     part-sun             middle pure foliage        fresh       laboratory               &lt;NA&gt;
-## 8    PICOL FSP_RMNP_20200709_2050          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory               &lt;NA&gt;
-## 10   PICOL FSP_RMNP_20200713_1117          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory Sampled in AOP lab
-## 21   PICOL FSP_RMNP_20200720_1304          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory Sampled in AOP lab
-## 24   PICOL FSP_RMNP_20200721_1243          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory               &lt;NA&gt;
+##    taxonID       spectralSampleID plantStatus leafStatus leafAge leafExposure leafSamplePosition   targetType targetStatus measurementVenue
+## 3    PICOL FSP_RMNP_20200706_2120          OK    healthy  mature     part-sun             middle pure foliage        fresh       laboratory
+## 8    PICOL FSP_RMNP_20200709_2050          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory
+## 10   PICOL FSP_RMNP_20200713_1117          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory
+## 21   PICOL FSP_RMNP_20200720_1304          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory
+## 24   PICOL FSP_RMNP_20200721_1243          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory
+##             remarks.y
+## 3                &lt;NA&gt;
+## 8                &lt;NA&gt;
+## 10 Sampled in AOP lab
+## 21 Sampled in AOP lab
+## 24               &lt;NA&gt;
 </code></pre>
 <p>Here, we can see that all the plants have an “OK” status, and all the leaves have a “healthy” status, but we are still seeing some variation in the spectral signatures. This is expected, as there is uncertainty associated with any measurement, due to the properties of the leaf being sample, and the measurements themselves. Note that it appears the absolute values of reflectance vary quite a bit, but the relative reflectance differences, for example between the near infrared (NIR) and visible portions of the spectrum, may be fairly consistent. Let’s test this qualitative observation by computing the NDVI (Normalized Difference Vegetation Index, a normalized ratio between the NIR and red portions of the spectrum) and comparing this index across all samples.</p>
 <p>$$
@@ -343,42 +342,32 @@ $$
 You can refer to this tutorial for how you would calculate NDVI from the aerial reflectance data: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/create-raster-stack-hsi-hdf5-r#raster-math-creating-ndvi-and-other-vegetation-indices-in-r" target="_blank">Raster Math - Creating NDVI and Other Vegetation Indices in R</a>.</p>
 <pre><code>nir &lt;- spectra_df[which.min(abs(750-spectra_df$wavelength)),]
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'which.min': non-numeric argument to binary operator
-
 red &lt;- spectra_df[which.min(abs(650-spectra_df$wavelength)),]
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'which.min': non-numeric argument to binary operator
 
 ndvi = (nir - red) / (nir + red) 
 
-## Error in eval(expr, envir, enclos): object 'nir' not found
-
 ndvi = ndvi[1:(length(ndvi)-1)]
-
-## Error in eval(expr, envir, enclos): object 'ndvi' not found
 </code></pre>
 <p>Let’s plot NDVI for all of the samples.</p>
 <pre><code>pigl_ndvi &lt;- select(ndvi,contains(&quot;PICOL&quot;))
 
-## Error in eval(expr, envir, enclos): object 'ndvi' not found
-
 barplot(unlist(pigl_ndvi), cex.names=1) 
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'height' in selecting a method for function 'barplot': object 'pigl_ndvi' not found
-
 title(main = &quot;PICOL NDVI&quot;, xlab = &quot;sample&quot;, ylab = &quot;NDVI&quot;)
-
-## Error in title(main = &quot;PICOL NDVI&quot;, xlab = &quot;sample&quot;, ylab = &quot;NDVI&quot;): plot.new has not been called yet
 </code></pre>
-<p>We can also make a boxplot.</p>
+<div class="figure" style="text-align: right">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/ndvi-barplot-1.png" alt=" "  />
+<p class="caption"> </p>
+</div>
+We can also make a boxplot.
 <pre><code>boxplot(unlist(pigl_ndvi), cex.names=1) 
 
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'boxplot': object 'pigl_ndvi' not found
-
 title(main = &quot;PICOL NDVI Boxplot&quot;, xlab = &quot;sample&quot;, ylab = &quot;NDVI&quot;)
-
-## Error in title(main = &quot;PICOL NDVI Boxplot&quot;, xlab = &quot;sample&quot;, ylab = &quot;NDVI&quot;): plot.new has not been called yet
 </code></pre>
+<div class="figure" style="text-align: right">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/ndvi-boxplot-1.png" alt=" "  />
+<p class="caption"> </p>
+</div>
 <p>As we can see, the NDVI doesn’t vary too much between the various samples. NDVI is a nice proxy for vegetation health, and could potentially be used in training models using this reflectance data, for example.</p>
 <p>Let’s also plot the spectra of the other more common Rocky Mountain species: <a href="https://plants.sc.egov.usda.gov/home/plantProfile?symbol=PIPO" target="_blank">PIPOS (Ponderosa Pine)</a> and <a href="https://plants.sc.egov.usda.gov/home/plantProfile?symbol=POTR5" target="_blank">POTR5 (Quaking Aspen)</a>, to explore some of the typical variation you might see in the spectral signatures of a single species.</p>
 <p>First, start with PIPOS (Ponderosa Pine):</p>
@@ -394,9 +383,6 @@ pipos_spectra_plot &lt;- ggplot(pipos_data,
                                 color = taxon_fsp_ID)) + geom_line() 
 
 print(pipos_spectra_plot + ggtitle(&quot;Spectra of Ponderosa Pine (PIPOS) samples at RMNP&quot;))
-
-## `geom_line()`: Each group consists of only one observation.
-## ℹ Do you need to adjust the group aesthetic?
 </code></pre>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-pipos-spectra-1.png" alt=" "  />
@@ -415,9 +401,6 @@ potr5_spectra_plot &lt;- ggplot(potr5_data,
                                 color = taxon_fsp_ID)) + geom_line() 
 
 print(picol_spectra_plot + ggtitle(&quot;Spectra of Aspen (POTR5) samples @ RMNP&quot;))
-
-## `geom_line()`: Each group consists of only one observation.
-## ℹ Do you need to adjust the group aesthetic?
 </code></pre>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-potr5-spectra-1.png" alt=" "  />
@@ -438,9 +421,6 @@ picol_potr5_spectra_plot &lt;- ggplot(picol_potr5_data,
                                 color = taxonID)) + geom_line(alpha=0.5) 
 
 print(picol_potr5_spectra_plot + ggtitle(&quot;Spectra of Lodgepole (PICOL) and Aspen (POTR5) samples @ RMNP&quot;))
-
-## `geom_line()`: Each group consists of only one observation.
-## ℹ Do you need to adjust the group aesthetic?
 </code></pre>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-potr5-spectra-1.png" alt=" "  />
@@ -699,9 +679,6 @@ picol_leafclip_plot &lt;- ggplot(picol_data,
                                  y = reflectance)) + geom_line() 
 
 print(picol_leafclip_plot + ggtitle(&quot;Leaf-Clip Spectra of PICOL FSP_RMNP_20200720_1304&quot;))
-
-## `geom_line()`: Each group consists of only one observation.
-## ℹ Do you need to adjust the group aesthetic?
 </code></pre>
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-leafclip-1.png" alt=" "  />
@@ -727,10 +704,11 @@ spectra_plot &lt;- ggplot() +
 
 
 print(spectra_plot + ggtitle(&quot;Spectra of PICOL Leaf Clip &amp; Corresponding Airborne Pixel at RMNP&quot;))
-
-## Error in `train_continuous()`:
-## ! Discrete value supplied to a continuous scale
 </code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-both-1.png" alt=" "  />
+<p class="caption"> </p>
+</div>
 <p>Why is there a difference between the leaf-clip spectra and the remotely-sensed spectra of the corresponding pixel? Here are a few things to consider …</p>
 <p>Each reflectance pixel represents a 1m x 1m area, so it contains an average spectra of all the vegetation and non-vegetation that are contained in that area. For example, a single pixel could contain the reflectance of a mix of leaves as well as branches, and any gaps in the tree canopy (eg. the ground under the tree). This averaging is called “spectral mixing” and you can perform “spectral un-mixing” to decompose an average spectra into it’s component parts. These leaf clip spectra can be used as “end-members”, in classification applications, for example.</p>
 <p>Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform is typically able to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).</p>
@@ -753,7 +731,7 @@ print(spectra_plot + ggtitle(&quot;Spectra of PICOL Leaf Clip &amp; Correspondin
                           check.size=F)
 </code></pre>
 </div>
-<p>The foliar trait data is also a key data set for scaling - for example, a common ecological application would be to develop foliar trait models from the airborne reflectance data, using the in-situ foliar trait data to train the model, eg.<a href="https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.16711" target="_blank">Foliar functional traits from imaging spectroscopy across biomes in eastern North America (Wang et al. 2020)</a>. NEON is currently developing foliar trait data products following this method. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis using NEON data would be the same.</p>
+<p>The foliar trait data is also a key data set for scaling - for example, a common ecological application would be to develop foliar trait models from the airborne reflectance data, using the in-situ foliar trait data to train the model, eg. <a href="https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.16711" target="_blank">Foliar functional traits from imaging spectroscopy across biomes in eastern North America (Wang et al. 2020)</a>. NEON is currently developing foliar trait data products following this method. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis using NEON data would be the same.</p>
 </div>
 </body>
 </html>

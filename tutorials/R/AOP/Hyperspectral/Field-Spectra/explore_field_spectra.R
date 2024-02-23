@@ -1,4 +1,4 @@
-## ----import-libraries, results="hide"------------------------------------------------------------------------------------------------------------------------------
+## ----import-libraries, results="hide"------------------------------------------------------------------------------------------------------------
 library(neonUtilities)
 library(geoNEON)
 library(ggplot2)
@@ -8,42 +8,42 @@ library(rhdf5)
 library(terra)
 
 
-## ----field-spectra-info--------------------------------------------------------------------------------------------------------------------------------------------
+## ----field-spectra-info--------------------------------------------------------------------------------------------------------------------------
 field_spectra_info <- neonUtilities::getProductInfo('DP1.30012.001')
 field_spectra_info$siteCodes$siteCode
 #View(field_spectra_info$siteCodes)
 #View(field_spectra_info$siteCodes$availableDataUrls)
 
 
-## ----load-field-spectra, results="hide"----------------------------------------------------------------------------------------------------------------------------
+## ----load-field-spectra, results="hide"----------------------------------------------------------------------------------------------------------
 field_spectra <- loadByProduct(dpID='DP1.30012.001',
                               site='RMNP',
                               package="expanded",
                               check.size=FALSE)
 
 
-## ----field-spectra-names-------------------------------------------------------------------------------------------------------------------------------------------
+## ----field-spectra-names-------------------------------------------------------------------------------------------------------------------------
 names(field_spectra)
 
 
-## ----merge-data-metadata-------------------------------------------------------------------------------------------------------------------------------------------
+## ----merge-data-metadata-------------------------------------------------------------------------------------------------------------------------
 spectra_merge <- merge(field_spectra$fsp_spectralData,field_spectra$fsp_sampleMetadata,by="spectralSampleID") 
 
 
-## ----spectra_merge-colnames----------------------------------------------------------------------------------------------------------------------------------------
+## ----spectra_merge-colnames----------------------------------------------------------------------------------------------------------------------
 colnames(spectra_merge)
 head(spectra_merge[c("spectralSampleID","taxonID","scientificName","plantStatus")])
 
 
-## ----show-data-url-------------------------------------------------------------------------------------------------------------------------------------------------
+## ----show-data-url-------------------------------------------------------------------------------------------------------------------------------
 FSP_RMNP_20200706_2043 <- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID=="FSP_RMNP_20200706_2043"),]
 
 
-## ----unique-refl-conditions----------------------------------------------------------------------------------------------------------------------------------------
+## ----unique-refl-conditions----------------------------------------------------------------------------------------------------------------------
 unique(FSP_RMNP_20200706_2043$reflectanceCondition)
 
 
-## ----plot-reflectance-conditions, fig.align="center", fig.width = 12, fig.height = 4.5-----------------------------------------------------------------------------
+## ----plot-reflectance-conditions, fig.align="center", fig.width = 12, fig.height = 4.5-----------------------------------------------------------
 refl_conditions_plot <- ggplot(FSP_RMNP_20200706_2043,             
                aes(x = wavelength, 
                    y = reflectance, 
@@ -51,7 +51,7 @@ refl_conditions_plot <- ggplot(FSP_RMNP_20200706_2043,
 print(refl_conditions_plot + ggtitle("FSP_RMNP_20200706_2043 - all reflectance conditions"))
 
 
-## ----plot-single-spectra, fig.align="center", fig.width = 12, fig.height = 4.5-------------------------------------------------------------------------------------
+## ----plot-single-spectra, fig.align="center", fig.width = 12, fig.height = 4.5-------------------------------------------------------------------
 FSP_RMNP_20200706_2043_REFL <- FSP_RMNP_20200706_2043[FSP_RMNP_20200706_2043$reflectanceCondition == "top of foliage (sunward) on black reference", c("reflectance","wavelength")]
 
 spectra_plot <- ggplot(FSP_RMNP_20200706_2043_REFL,
@@ -60,7 +60,7 @@ spectra_plot <- ggplot(FSP_RMNP_20200706_2043_REFL,
 print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Black Reference"))
 
 
-## ----create-refl-df------------------------------------------------------------------------------------------------------------------------------------------------
+## ----create-refl-df------------------------------------------------------------------------------------------------------------------------------
 spectra_list <- list()
 for (i in 1:nrow(spectra_merge)) {
   taxonID <- spectra_merge$taxonID[i] # get the taxonID
@@ -68,11 +68,11 @@ for (i in 1:nrow(spectra_merge)) {
   # get the reflectance data for this spectralSampleID from per_sample
   refl_data <- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID==ssID),]
   # filter to select only the `top on black` reflectanceCondition and keep the reflectance data only
-  refl <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("reflectance")]
+  refl <- as.numeric(refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("reflectance")])
   spectra_list[[i]] <- refl
 }
 # get the wavelength values corresponding to the subset we selected for each of the spectra
-wavelengths <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")]
+wavelengths <- as.numeric(refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")])
 spectra_df <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
 # assign the taxonID + fspID to the column names to make unique column names
 taxonIDs <- paste0(spectra_merge$taxonID,substr(spectra_merge$spectralSampleID,9,22))
@@ -81,7 +81,7 @@ colnames(spectra_df) <- taxonIDs
 spectra_df$wavelength <- wavelengths
 
 
-## ----plot-taxon-spectra, fig.align="center", warning = FALSE, fig.width = 14, fig.height = 5-----------------------------------------------------------------------
+## ----plot-taxon-spectra, fig.align="center", warning = FALSE, fig.width = 14, fig.height = 5-----------------------------------------------------
 data_long <- melt(spectra_df, id = "wavelength",value.name="reflectance",variable.name="taxonID")
 all_spectra_plot <- ggplot(data_long,             
                aes(x = wavelength, 
@@ -90,7 +90,7 @@ all_spectra_plot <- ggplot(data_long,
 print(all_spectra_plot + ggtitle("Spectra of all Taxon IDs collected at RMNP"))
 
 
-## ----plot-taxon-spectra2, fig.align="center", fig.width = 12, fig.height = 4.5-------------------------------------------------------------------------------------
+## ----plot-taxon-spectra2, fig.align="center", fig.width = 12, fig.height = 4.5-------------------------------------------------------------------
 spectra_df2 <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
 # assign the taxonIDs to the column names
 taxonIDs <- spectra_merge$taxonID 
@@ -104,11 +104,11 @@ all_spectra_plot <- ggplot(data_long2,
 print(all_spectra_plot + ggtitle("Spectra of all Taxon IDs collected at RMNP"))
 
 
-## ----count-taxon---------------------------------------------------------------------------------------------------------------------------------------------------
+## ----count-taxon---------------------------------------------------------------------------------------------------------------------------------
 spectra_merge %>% count(taxonID, sort = TRUE)
 
 
-## ----plot-picol-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------------------------
+## ----plot-picol-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------
 spectra_data_table <- as.data.table(spectra_df)
 picol_data_table <- spectra_data_table[, grep("wavelength|PICOL", names(spectra_data_table)), with = FALSE]
 picol_data <- melt(picol_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -119,29 +119,29 @@ picol_spectra_plot <- ggplot(picol_data,
 print(picol_spectra_plot + ggtitle("Spectra of PICOL samples collected at RMNP"))
 
 
-## ----view-picol-metadata-------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-picol-metadata-------------------------------------------------------------------------------------------------------------------------
 spectra_merge[which(spectra_merge$taxonID == "PICOL"), c("taxonID","spectralSampleID","plantStatus","leafStatus","leafAge","leafExposure","leafSamplePosition","targetType","targetStatus","measurementVenue","remarks.y")]
 
 
-## ----ndvi-calculation----------------------------------------------------------------------------------------------------------------------------------------------
+## ----ndvi-calculation----------------------------------------------------------------------------------------------------------------------------
 nir <- spectra_df[which.min(abs(750-spectra_df$wavelength)),]
 red <- spectra_df[which.min(abs(650-spectra_df$wavelength)),]
 ndvi = (nir - red) / (nir + red) 
 ndvi = ndvi[1:(length(ndvi)-1)]
 
 
-## ----ndvi-barplot, fig.align="right", fig.width = 12, fig.height = 5-----------------------------------------------------------------------------------------------
+## ----ndvi-barplot, fig.align="right", fig.width = 12, fig.height = 5-----------------------------------------------------------------------------
 pigl_ndvi <- select(ndvi,contains("PICOL"))
 barplot(unlist(pigl_ndvi), cex.names=1) 
 title(main = "PICOL NDVI", xlab = "sample", ylab = "NDVI")
 
 
-## ----ndvi-boxplot, fig.align="right", fig.width = 5, fig.height = 5------------------------------------------------------------------------------------------------
+## ----ndvi-boxplot, fig.align="right", fig.width = 5, fig.height = 5------------------------------------------------------------------------------
 boxplot(unlist(pigl_ndvi), cex.names=1) 
 title(main = "PICOL NDVI Boxplot", xlab = "sample", ylab = "NDVI")
 
 
-## ----plot-pipos-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------------------------
+## ----plot-pipos-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------
 spectra_data_table <- as.data.table(spectra_df)
 pipos_data_table <- spectra_data_table[, grep("wavelength|PIPOS", names(spectra_data_table)), with = FALSE]
 pipos_data <- melt(pipos_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -152,7 +152,7 @@ pipos_spectra_plot <- ggplot(pipos_data,
 print(pipos_spectra_plot + ggtitle("Spectra of Ponderosa Pine (PIPOS) samples at RMNP"))
 
 
-## ----plot-potr5-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------------------------
+## ----plot-potr5-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------
 spectra_data_table <- as.data.table(spectra_df)
 potr5_data_table <- spectra_data_table[, grep("wavelength|POTR5", names(spectra_data_table)), with = FALSE]
 potr5_data <- melt(potr5_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -163,7 +163,7 @@ potr5_spectra_plot <- ggplot(potr5_data,
 print(picol_spectra_plot + ggtitle("Spectra of Aspen (POTR5) samples @ RMNP"))
 
 
-## ----plot-picol-potr5-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------------------
+## ----plot-picol-potr5-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------
 spectra_data_table2 <- as.data.table(spectra_df2)
 picol_potr5_data_table <- spectra_data_table2[, grep("wavelength|PICOL|POTR5", names(spectra_data_table2)), with = FALSE]
 
@@ -175,18 +175,18 @@ picol_potr5_spectra_plot <- ggplot(picol_potr5_data,
 print(picol_potr5_spectra_plot + ggtitle("Spectra of Lodgepole (PICOL) and Aspen (POTR5) samples @ RMNP"))
 
 
-## ----foliar-trait-info---------------------------------------------------------------------------------------------------------------------------------------------
+## ----foliar-trait-info---------------------------------------------------------------------------------------------------------------------------
 foliar_trait_info <- neonUtilities::getProductInfo('DP1.10026.001')
 #View(foliar_trait_info$siteCodes)
 #View(foliar_trait_info$siteCodes$availableDataUrls)
 
 
-## ----rmnp-foliar-trait-urls----------------------------------------------------------------------------------------------------------------------------------------
+## ----rmnp-foliar-trait-urls----------------------------------------------------------------------------------------------------------------------
 # view the RMNP foliar trait available data urls
 foliar_trait_info$siteCodes[which(foliar_trait_info$siteCodes$siteCode == 'RMNP'),c("availableDataUrls")]
 
 
-## ----load-foliar-trait, results="hide"-----------------------------------------------------------------------------------------------------------------------------
+## ----load-foliar-trait, results="hide"-----------------------------------------------------------------------------------------------------------
 foliar_traits <- loadByProduct(dpID='DP1.10026.001',
                                site='RMNP',
                                startdate='2020-07',
@@ -195,36 +195,36 @@ foliar_traits <- loadByProduct(dpID='DP1.10026.001',
 names(foliar_traits)
 
 
-## ----get-foliar-trait-locs, results="hide"-------------------------------------------------------------------------------------------------------------------------
+## ----get-foliar-trait-locs, results="hide"-------------------------------------------------------------------------------------------------------
 vst.loc <- getLocTOS(data=foliar_traits$vst_mappingandtagging,
                      dataProd="vst_mappingandtagging")
 
 
-## ----merge-foliar-trait-tables-------------------------------------------------------------------------------------------------------------------------------------
+## ----merge-foliar-trait-tables-------------------------------------------------------------------------------------------------------------------
 foliar_traits_loc <- merge(foliar_traits$cfc_fieldData,vst.loc,by="individualID")
 
 
-## ----spectra-traits------------------------------------------------------------------------------------------------------------------------------------------------
+## ----spectra-traits------------------------------------------------------------------------------------------------------------------------------
 spectra_traits <- merge(spectra_merge,foliar_traits_loc,by="sampleID")
 head(spectra_traits[c("spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")])
 
 
-## ----set-wd--------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----set-wd--------------------------------------------------------------------------------------------------------------------------------------
 # set working directory (this will depend on your local environment)
 wd <- "~/data/"
 setwd(wd)
 
 
-## ----single-picol-spectra------------------------------------------------------------------------------------------------------------------------------------------
+## ----single-picol-spectra------------------------------------------------------------------------------------------------------------------------
 FSP_RMNP_PICOL <- spectra_traits[spectra_traits$spectralSampleID == "FSP_RMNP_20200720_1304",]
 
 
-## ----show-spectral-taxon-ids---------------------------------------------------------------------------------------------------------------------------------------
+## ----show-spectral-taxon-ids---------------------------------------------------------------------------------------------------------------------
 FSP_RMNP_PICOL$spectralSampleID
 FSP_RMNP_PICOL$taxonID
 
 
-## ----download-reflectance, eval=FALSE------------------------------------------------------------------------------------------------------------------------------
+## ----download-reflectance, eval=FALSE------------------------------------------------------------------------------------------------------------
 ## byTileAOP(dpID='DP3.30006.001',
 ##           site='RMNP',
 ##           year=2020,
@@ -234,12 +234,12 @@ FSP_RMNP_PICOL$taxonID
 ##           savepath=wd)
 
 
-## ----read-h5-file--------------------------------------------------------------------------------------------------------------------------------------------------
+## ----read-h5-file--------------------------------------------------------------------------------------------------------------------------------
 # Define the h5 file name to be opened
 h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMNP_3/L3/Spectrometer/Reflectance/NEON_D10_RMNP_DP3_455000_4446000_reflectance.h5")
 
 
-## ----h5-functions--------------------------------------------------------------------------------------------------------------------------------------------------
+## ----h5-functions--------------------------------------------------------------------------------------------------------------------------------
 geth5metadata <- function(h5_file){
   # get the site name
   site <- h5ls(h5_file)$group[2]
@@ -282,7 +282,7 @@ geth5metadata <- function(h5_file){
 }
 
 
-## ----refl-to-rast--------------------------------------------------------------------------------------------------------------------------------------------------
+## ----refl-to-rast--------------------------------------------------------------------------------------------------------------------------------
 # get the relevant metadata using the geth5metadata function
 h5_meta <- geth5metadata(h5_file)
 
@@ -300,7 +300,7 @@ refl_list <- lapply(all_bands,
 refl_rast <- rast(refl_list)
 
 
-## ----plot-band58---------------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-band58---------------------------------------------------------------------------------------------------------------------------------
 plot(refl_rast[[58]])
 #convert the data frame into a shape file (vector)
 m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
@@ -309,14 +309,14 @@ m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
 plot(m, add = T)
 
 
-## ----plot-band58-zoom----------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-band58-zoom----------------------------------------------------------------------------------------------------------------------------
 x_sub = c(455100, 455200)
 y_sub = c(4446500, 4446600)
 plot(refl_rast[[58]],xlim=x_sub,ylim=y_sub)
 plot(m, add = T)
 
 
-## ----refl-to-rgb-rast----------------------------------------------------------------------------------------------------------------------------------------------
+## ----refl-to-rgb-rast----------------------------------------------------------------------------------------------------------------------------
 
 rgb <- list(58,34,19)
 
@@ -331,7 +331,7 @@ rgb_list <- lapply(rgb,
 rgb_rast <- rast(rgb_list)
 
 
-## ----plot-refl-rgb-------------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-refl-rgb-------------------------------------------------------------------------------------------------------------------------------
 plotRGB(rgb_rast,stretch='lin',axes=TRUE)
 plot(m, col="red", add = T)
 #zoom in
@@ -339,7 +339,7 @@ plotRGB(rgb_rast,stretch='lin',xlim=x_sub,ylim=y_sub)
 plot(m, col="red", add = T)
 
 
-## ----extract-air-refl-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------------------------
+## ----extract-air-refl-spectra, fig.align="center", fig.width = 12, fig.height = 4.5--------------------------------------------------------------
 refl_air <- extract(refl_rast, 
                     cbind(FSP_RMNP_PICOL$adjEasting,
                           FSP_RMNP_PICOL$adjNorthing))
@@ -354,7 +354,7 @@ picol_air_plot <- ggplot(refl_air_df,
 print(picol_air_plot + ggtitle("Airborne Reflectance Spectra of PICOL @ RMNP"))
 
 
-## ----plot-picol-spectra-leafclip, fig.align="center", fig.width = 12, fig.height = 4.5-----------------------------------------------------------------------------
+## ----plot-picol-spectra-leafclip, fig.align="center", fig.width = 12, fig.height = 4.5-----------------------------------------------------------
 spectra_data_table <- as.data.table(spectra_df)
 picol_data_table <- spectra_data_table[, grep("wavelength|PICOL_20200720_1304", names(spectra_data_table)), with = FALSE]
 picol_data <- melt(picol_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -364,7 +364,7 @@ picol_leafclip_plot <- ggplot(picol_data,
 print(picol_leafclip_plot + ggtitle("Leaf-Clip Spectra of PICOL FSP_RMNP_20200720_1304"))
 
 
-## ----plot-picol-spectra-both, fig.align="center", fig.width = 12, fig.height = 4.5---------------------------------------------------------------------------------
+## ----plot-picol-spectra-both, fig.align="center", fig.width = 12, fig.height = 4.5---------------------------------------------------------------
 # scale the airborne reflectance by the scale factor
 refl_air_df$scaled <- (refl_air_df$reflectance/as.vector(10000))
 
