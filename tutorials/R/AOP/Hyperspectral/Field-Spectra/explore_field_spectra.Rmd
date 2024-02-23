@@ -4,7 +4,7 @@ title: "Explore Field Spectra Data - Scaling Ground and Airborne Observations"
 description: "Explore the field spectra data product, link field spectra to airborne surface reflectance data."
 dateCreated: 2024-02-12
 authors: Bridget Hass
-contributors: 
+contributors: Claire Lunch
 estimatedTime: 1 - 1.5 Hours
 packagesLibraries: neonUtilities, geoNEON, terra, rhdf5, ggplot2, data.table, dplyr, 
 topics: hyperspectral, foliar traits
@@ -88,30 +88,23 @@ Let's take a look at all the associated data contained in this product, using th
 ```{r field-spectra-names}
 names(field_spectra)
 ```
-We encourage looking at all of these variables to learn more about the data product, but you can find the actual data stored in the variables: `fsp_boutMetadata` (contains metadata information about this sampling bout), `fsp_sampleMetadata` (contains relevant metadata about the individual sample), and `fsp_spectralData` (contains information about the individual sample data), and `per_sample` (contains the actual wavelength and reflectance data). Next, we can merge the data and metadata into a single table as follows. 
+We encourage looking at all of these variables to learn more about the data product, but you can find the actual data stored in the variables: `fsp_boutMetadata` (contains metadata information about this sampling bout), `fsp_sampleMetadata` (contains relevant metadata about the individual samples), and `fsp_spectralData` (contains information about the individual sample data), and `per_sample` (contains the wavelength and reflectance data). Next, we can merge the data and metadata into a single table as follows. 
 
 ```{r merge-data-metadata}
 spectra_merge <- merge(field_spectra$fsp_spectralData,field_spectra$fsp_sampleMetadata,by="spectralSampleID") 
 ```
 
-You can use `View(spectra_merge)` to see the contents of this dataframe, or alternatively you could just print the variable name. The code below displays all the column names of this dataframe. We'll just show the head (or first 6 rows) of this data frame here, including a subset of the columns.
+You can use `View(spectra_merge)` to see the contents of this dataframe, or alternatively you could just print the variable name. The code below displays all the column names of this dataframe. We'll just show the head (or first 6 rows) of this data frame here, including a few of the columns.
 
 ```{r spectra_merge-colnames}
 colnames(spectra_merge)
-head(spectra_merge[c("spectralSampleID","downloadFileUrl")])
+head(spectra_merge[c("spectralSampleID","taxonID","scientificName","plantStatus")])
 ```
 
-The `downloadFileUrl` column is where the actual spectral measurements are stored. We can use the R function `read.csv` to read this data into a data frame directly, for example, we can find some information about the first sample in this data frame as follows:
+The `per_sample` table is where the actual spectral measurements are stored. We can use the following code to extract the spectral data from the first sample in this data set.
 
 ``` {r show-data-url}
-spectra_merge[1,]$spectralSampleID
-spectra_merge[1,]$downloadFileUrl
-spectra_merge[1,]$taxonID
-```
-To start, we can read in a single field spectral sample, which has the `spectralSampleID` of FSP_RMNP_20200706_2043.
-
-``` {r read-single-csv}
-FSP_RMNP_20200706_2043 <- read.csv("https://storage.neonscience.org/neon-os-data/data-frame/FSP_RMNP_20200706_204320201221T201729.461Z.csv")
+FSP_RMNP_20200706_2043 <- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID=="FSP_RMNP_20200706_2043"),]
 ```
 
 This data is mainly composed of 3 columns: `wavelength`, `reflectanceCondition`, and `reflectance`. What is the `reflectanceCondition`? Let's look at the unique values represented:
@@ -122,7 +115,7 @@ unique(FSP_RMNP_20200706_2043$reflectanceCondition)
 
 This `reflectanceCondition` describes what exactly is being measured. As stated in the Field spectral data Quick Start Guide on the NEON Data Portal <a href="https://data.neonscience.org/data-products/DP1.30012.001" target="_blank">Field spectral data (DP1.30012.001)</a> page, and explained in more detail in the <a href="https://data.neonscience.org/api/v0/documents/NEON_fieldSpectra_userGuide_vC?inline=true" target="_blank">NEON Field Spectra User Guide</a>:
 
-"Spectral reflectance of both the front and back of the sample is measured against a reflective white spectralon reference panel. A black spectralon reference is then measured, followed by spectral transmittance measurements of the front and back of the sample. Reference measurements of the white reference are taken between each leaf measurement."
+> "Spectral reflectance of both the front and back of the sample is measured against a reflective white spectralon reference panel. A black spectralon reference is then measured, followed by spectral transmittance measurements of the front and back of the sample. Reference measurements of the white reference are taken between each leaf measurement."
 
 When linking with NEON's airborne spectral dataset (DP3.30006.001), the `top of foliage (sunward) on black reference` is what we want to use. For this lesson, we will just focus on this reflectance condition. Let's take a look at the spectra for the single csv we read in:
 
@@ -146,17 +139,13 @@ print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Bl
 ```
 
 So ... how can we read the spectral data in for all of the samples collected at RMNP? The code chunk below loops through all the spectral samples and creates a new data frame comprised of the taxonID + date of the fspID, and the reflectance values only of the top of the leaf on the black reference. 
-
-Note, it may take a minute or so for this loop to complete.
-
-FSP1 <- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID=="FSP_RMNP_20200706_2043"),]
-
 ``` {r create-refl-df}
 spectra_list <- list()
 for (i in 1:nrow(spectra_merge)) {
   taxonID <- spectra_merge$taxonID[i] # get the taxonID
-  url <- spectra_merge$downloadFileUrl[i] # get the data download URL
-  refl_data <- read.csv(url) # read the data csv into a dataframe
+  ssID <- spectra_merge$spectralSampleID[i] # get the spectralSampleID
+  # get the reflectance data for this spectralSampleID from per_sample
+  refl_data <- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID==ssID),]
   # filter to select only the `top on black` reflectanceCondition and keep the reflectance data only
   refl <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("reflectance")]
   spectra_list[[i]] <- refl
@@ -296,11 +285,13 @@ picol_potr5_spectra_plot <- ggplot(picol_potr5_data,
 print(picol_potr5_spectra_plot + ggtitle("Spectra of Lodgepole (PICOL) and Aspen (POTR5) samples @ RMNP"))
 ```
 
-Here we can see there are some distinct differences in the spectral signatures between these two species.
+Here we can see that while there is considerable overlap in the visible portion of the electromagnetic spectrum, there are some distinct differences in the spectral signatures between these two species, particularly in the infrared regions.
 
 ## Foliar Trait Data
 
-As described in the Field Spectra Data Quick Start Guide, "To find the geographic location of each plant, use the plant crown shapefiles in the Plant foliar physical and chemical properties data product (DP1.10026.001, table cfc_shapefile). For the locations of plants that have not been mapped to shapefiles, follow the instructions in the Data Product User Guide for DP1.10026.001."
+As described in the Field Spectra Data Quick Start Guide, 
+
+> "To find the geographic location of each plant, use the plant crown shapefiles in the Plant foliar physical and chemical properties data product (DP1.10026.001, table cfc_shapefile). For the locations of plants that have not been mapped to shapefiles, follow the instructions in the Data Product User Guide for DP1.10026.001."
 
 This next section outlines how you would go about finding the geolocation information for the field spectra data. This is necessary if you are doing any sort of scaling exercise with the AOP hyperspectral data, which we will demonstrate next.
 
@@ -321,7 +312,7 @@ foliar_trait_info$siteCodes[which(foliar_trait_info$siteCodes$siteCode == 'RMNP'
 
 Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise location information of the foliar spectra samples.
 
-```{r load-foliar-trait, }
+```{r load-foliar-trait, results="hide"}
 foliar_traits <- loadByProduct(dpID='DP1.10026.001',
                                site='RMNP',
                                startdate='2020-07',
@@ -376,7 +367,6 @@ Check the `spectralSampleID` and `taxonID`:
 FSP_RMNP_PICOL$spectralSampleID
 FSP_RMNP_PICOL$taxonID
 ```
-
 Download the reflectance data that encompasses this data point. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means we will need to enter `y` in order to continue the download.
 
 ``` {r download-reflectance, eval=FALSE}
@@ -427,7 +417,6 @@ geth5metadata <- function(h5_file){
   
   return(meta_list)
 }
-
 
   band2Raster <- function(h5_file, band, extent, crs, no_data_value){
     site <- h5ls(h5_file)$group[2] # extract the site info
@@ -574,7 +563,12 @@ Here are some ideas to pursue on your own:
 
 1. We demonstrated how to plot the field spectral sample together with the aerial reflectance of the pixel. What if there is a geographic mis-match between the field and airborne data? What other approaches could you use to align these datasets (eg. applying a buffer, integrating the CHM data)?
 
-2. Foliar traits datasets for more recent years (including RMNP 2020) include shape files of the polygons of the tree crowns where the samples are taken from. Try pulling in that crown data and plotting the average spectra inside the tree crown area. Hint: to see what crown polygon data are available, you can specify `tabl='cfc_shapefile'` in the `loadByProduct` function:
+2. Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. Try pulling in that tree crown shape files and plotting the average spectra inside the tree crown area. 
+
+
+<div id="ds-dataTip" markdown="1">
+
+<i class="fa fa-star"></i> **Data Tip:** to see what crown polygon data are available, you can specify `tabl='cfc_shapefile'` in the `loadByProduct` function:
 
 ```
 polygons <- loadByProduct(dpID='DP1.10026.001', 
@@ -583,4 +577,6 @@ polygons <- loadByProduct(dpID='DP1.10026.001',
                           check.size=F)
 ```
 
-3. The foliar trait data is also a key dataset for scaling - for example, a common ecological application would be to develop foliar trait models from the airborne reflectance data, using the in-situ foliar trait data to train the model. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis would be the same.
+</div>
+
+The foliar trait data is also a key data set for scaling - for example, a common ecological application would be to develop foliar trait models from the airborne reflectance data, using the in-situ foliar trait data to train the model, eg. <a href="https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.16711" target="_blank">Foliar functional traits from imaging spectroscopy across biomes in eastern North America (Wang et al. 2020)</a>. NEON is currently developing foliar trait data products following this method. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis using NEON data would be the same.
