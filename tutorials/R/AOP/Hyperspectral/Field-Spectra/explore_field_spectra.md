@@ -1,3 +1,4 @@
+---
 syncID: f0e521fd2eca45e3b6eca7b205669ab0
 title: "Explore Field Spectra Data - Scaling Ground and Airborne Observations"
 description: "Explore the field spectra data product, link field spectra to airborne surface reflectance data."
@@ -79,9 +80,9 @@ Before downloading the data, we can explore the data product using the `neonUtil
 
     #View(field_spectra_info$siteCodes$availableDataUrls)
 
-We can see that there are data available at 14 sites, as of 2023.
+We can see that there are data available at 14 sites, as of the end of 2023.
 
-Now that we know what data are available, let's take a look at one of the sites: <a href="https://www.neonscience.org/field-sites/rmnp" target="_blank">Rocky Mountain National Park (RMNP)</a> in Colorado. We'll use data from this site to demonstrate some exploratory analysis you might start with when working with the field spectral data. To load this field spectra data directly into R, you can use the `neonUtilities::loadByProduct` function, specifying the data product ID (dpID) and site. Since this product is collected fairly infrequently, to date there is only one collection per year of this for a subset of sites, so specifying the year-month in addition to the site is not necessary. This data is not too large in volume, so it should be fine to set the option `check.size=FALSE`.
+Now that we know what sites have this field spectral data, let's take a look at one of the sites as an example - <a href="https://www.neonscience.org/field-sites/rmnp" target="_blank">Rocky Mountain National Park (RMNP)</a> in Colorado. We'll use this site to demonstrate some exploratory analysis you might start with when working with the field spectral data. To load this data directly into R, you can use the `neonUtilities::loadByProduct` function, specifying the data product ID (dpID) and site. Since this product is collected fairly infrequently, to date there is only one collection per year of this for the subset of sites shown above, so specifying the year-month in addition to the site is not necessary. This data is not too large in volume, so it should be fine to set the option `check.size=FALSE`.
 
 
 
@@ -107,16 +108,17 @@ You can use `View(spectra_merge)` to see the contents of this dataframe, or alte
 
     colnames(spectra_merge)
 
-    ##  [1] "spectralSampleID"         "uid.x"                    "software"                 "locationID.x"             "collectDate.x"            "spectralSampleCode.x"    
-    ##  [7] "downloadFileUrl"          "downloadFileName"         "processedBy"              "reviewedBy"               "remarks.x"                "dataQF.x"                
-    ## [13] "publicationDate.x"        "release.x"                "uid.y"                    "locationID.y"             "domainID"                 "siteID"                  
-    ## [19] "plotID"                   "plotType"                 "nlcdClass"                "geodeticDatum"            "decimalLatitude"          "decimalLongitude"        
-    ## [25] "coordinateUncertainty"    "elevation"                "elevationUncertainty"     "altLatitude"              "altLongitude"             "altCoordinateUncertainty"
-    ## [31] "collectDate.y"            "eventID"                  "cfcIndividual"            "taxonID"                  "scientificName"           "sampleID"                
-    ## [37] "sampleCode"               "individualID"             "plantStatus"              "leafStatus"               "leafAge"                  "leafExposure"            
-    ## [43] "leafSamplePosition"       "targetType"               "targetStatus"             "measurementVenue"         "measurementDate"          "leafArrangement"         
-    ## [49] "spectralSampleCode.y"     "remarks.y"                "collectedBy"              "recordedBy"               "dataQF.y"                 "publicationDate.y"       
-    ## [55] "release.y"
+    ##  [1] "spectralSampleID"         "uid.x"                    "software"                 "locationID.x"             "collectDate.x"           
+    ##  [6] "spectralSampleCode.x"     "downloadFileUrl"          "downloadFileName"         "processedBy"              "reviewedBy"              
+    ## [11] "remarks.x"                "dataQF.x"                 "publicationDate.x"        "release.x"                "uid.y"                   
+    ## [16] "locationID.y"             "domainID"                 "siteID"                   "plotID"                   "plotType"                
+    ## [21] "nlcdClass"                "geodeticDatum"            "decimalLatitude"          "decimalLongitude"         "coordinateUncertainty"   
+    ## [26] "elevation"                "elevationUncertainty"     "altLatitude"              "altLongitude"             "altCoordinateUncertainty"
+    ## [31] "collectDate.y"            "eventID"                  "cfcIndividual"            "taxonID"                  "scientificName"          
+    ## [36] "sampleID"                 "sampleCode"               "individualID"             "plantStatus"              "leafStatus"              
+    ## [41] "leafAge"                  "leafExposure"             "leafSamplePosition"       "targetType"               "targetStatus"            
+    ## [46] "measurementVenue"         "measurementDate"          "leafArrangement"          "spectralSampleCode.y"     "remarks.y"               
+    ## [51] "collectedBy"              "recordedBy"               "dataQF.y"                 "publicationDate.y"        "release.y"
 
     head(spectra_merge[c("spectralSampleID","downloadFileUrl")])
 
@@ -142,7 +144,6 @@ The `downloadFileUrl` column is where the actual spectral measurements are store
     spectra_merge[1,]$taxonID
 
     ## [1] "POTR5"
-
 To start, we can read in a single field spectral sample, which has the `spectralSampleID` of FSP_RMNP_20200706_2043.
 
 
@@ -209,10 +210,10 @@ Note, it may take a minute or so for this loop to complete.
 In order to plot the spectra for each `taxonID`, we need to rearrange the data frame so that it contains the data in 3 columns: `wavelength`, `variable`, and `value`. We can do this using `melt` as follows:
 
 
-    ## Warning in melt(spectra_df, id = "wavelength", value.name = "reflectance", : The melt generic in data.table has been passed a data.frame and will attempt to redirect
-    ## to the relevant reshape2 method; please note that reshape2 is deprecated, and this redirection is now deprecated as well. To continue using melt methods from reshape2
-    ## while both libraries are attached, e.g. melt.list, you can prepend the namespace like reshape2::melt(spectra_df). In the next version, this warning will become an
-    ## error.
+    ## Warning in melt(spectra_df, id = "wavelength", value.name = "reflectance", : The melt generic in data.table has been passed a data.frame and will attempt to
+    ## redirect to the relevant reshape2 method; please note that reshape2 is deprecated, and this redirection is now deprecated as well. To continue using melt methods
+    ## from reshape2 while both libraries are attached, e.g. melt.list, you can prepend the namespace like reshape2::melt(spectra_df). In the next version, this warning
+    ## will become an error.
 
 
 <div class="figure" style="text-align: center">
@@ -260,7 +261,7 @@ What do you notice about these spectra? It looks like there is some variation be
     ## 21   PICOL FSP_RMNP_20200720_1304          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory Sampled in AOP lab
     ## 24   PICOL FSP_RMNP_20200721_1243          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory               <NA>
 
-Here, we can see that all the plants have an "OK" status, and all the leaves have a "healthy" status, but we are still seeing some variation in the spectral signatures. This is also to be expected. Note that it appears the absolute values of reflectance vary quite a bit, but the relative reflectance differences, for example between the near infrared (NIR) and visible portions of the spectrum, may be fairly consistent. Let's test this qualitative observation by computing the NDVI (Normalized Difference Vegetation Index, a normalized ratio between the NIR and red portions of the spectrum) and comparing this index across all samples. 
+Here, we can see that all the plants have an "OK" status, and all the leaves have a "healthy" status, but we are still seeing some variation in the spectral signatures. This is expected, as there is uncertainty associated with any measurement, due to the properties of the leaf being sample, and the measurements themselves. Note that it appears the absolute values of reflectance vary quite a bit, but the relative reflectance differences, for example between the near infrared (NIR) and visible portions of the spectrum, may be fairly consistent. Let's test this qualitative observation by computing the NDVI (Normalized Difference Vegetation Index, a normalized ratio between the NIR and red portions of the spectrum) and comparing this index across all samples. 
 
 $$
 NDVI = \frac{NIR-RED}{NIR+RED}
@@ -346,11 +347,11 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
                                    check.size=FALSE)
 
     ## Finding available files
-    ##   |                                                                                                                                                                      |                                                                                                                                                              |   0%  |                                                                                                                                                                      |==============================================================================================================================================================| 100%
+    ##   |                                                                                                                                                                |                                                                                                                                                        |   0%  |                                                                                                                                                                |========================================================================================================================================================| 100%
     ## 
     ## Downloading files totaling approximately 1.045671 MB
     ## Downloading 1 files
-    ##   |                                                                                                                                                                      |                                                                                                                                                              |   0%  |                                                                                                                                                                      |==============================================================================================================================================================| 100%
+    ##   |                                                                                                                                                                |                                                                                                                                                        |   0%  |                                                                                                                                                                |========================================================================================================================================================| 100%
     ## 
     ## Unpacking zip files using 1 cores.
     ## Stacking table cfc_elementsSummary
@@ -372,7 +373,7 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
     ## Copied the most recent publication of categoricalCodes file to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 14 data tables and 4 metadata tables!
-    ## Stacking took 1.011186 secs
+    ## Stacking took 0.724658 secs
 
     names(foliar_traits)
 
@@ -408,7 +409,12 @@ Finally, we can merge this `foliar_traits_loc` data frame with the `spectra_merg
     ## 5 FSP_RMNP_20200706_2120 RMNP_004.basePlot.cfc  3472   PICOL          5.8        83.0   453949.4     4448624
     ## 6 FSP_RMNP_20200709_2104 RMNP_041.basePlot.cfc  2510   POTR5         15.0       335.8   453532.4     4458517
 
-Great, now we have the field spectra data and the corresponding locations of the leaf-clip samples. For the final part of this lesson, we will download the airborne reflectance data, and use some pre-defined functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means we will need to enter `y` in order to continue the download.
+Great, now we have the field spectra data and the corresponding locations of the leaf-clip samples. 
+
+## Airborne Reflectance Data
+
+For the final part of this lesson, we will download the airborne reflectance data, and use some pre-defined functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. First, let's set the working directory to where we want to download the data. 
+
 
 
     # set working directory (this will depend on your local environment)
@@ -417,7 +423,7 @@ Great, now we have the field spectra data and the corresponding locations of the
 
     setwd(wd)
 
-We'll just link a single PICOL leaf-clip sample with the corresponding reflectance spectra of the pixel corresponding to where this sample was located.
+We will download the corresponding reflectance spectra of the pixel corresponding to where a single PICOL sample was located. Let's extract that sample from the `spectral_traits` table so we can easily pull out the geographic information.
 
 
     FSP_RMNP_PICOL <- spectra_traits[spectra_traits$spectralSampleID == "FSP_RMNP_20200720_1304",]
@@ -433,7 +439,7 @@ Check the `spectralSampleID` and `taxonID`:
 
     ## [1] "PICOL"
 
-Download the reflectance data that encompasses this data point.
+Download the reflectance data that encompasses this data point. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means we will need to enter `y` in order to continue the download.
 
 
     byTileAOP(dpID='DP3.30006.001',
@@ -514,13 +520,13 @@ Now that we've defined these functions, we can run `lapply` on the band2Raster f
 
     h5_meta <- geth5metadata(h5_file)
 
-    
+    ## Error in geth5metadata(h5_file): could not find function "geth5metadata"
 
     # get all bands - a consecutive list of integers from 1:426 (# of bands)
 
     all_bands <- as.list(1:length(h5_meta$wavelengths))
 
-    
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.list': object 'h5_meta' not found
 
     # lapply applies the function `band2Raster` to each element in the list `all_bands`
 
@@ -531,25 +537,31 @@ Now that we've defined these functions, we can run `lapply` on the band2Raster f
                         crs = h5_meta$crs,
                         no_data_value = h5_meta$no_data_value)
 
-    
+    ## Error in eval(expr, envir, enclos): object 'band2Raster' not found
 
     refl_rast <- rast(refl_list)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'refl_list' not found
 
 Let's plot a single band (in the red wavelength) of the reflectance tile, for reference. 
 
 
     plot(refl_rast[[58]])
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'refl_rast' not found
+
     #convert the data frame into a shape file (vector)
 
     m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
                     FSP_RMNP_PICOL$adjNorthing), crs=h5_meta$crs)
 
+    ## Error in eval(expr, envir, enclos): object 'h5_meta' not found
+
     # plot
 
     plot(m, add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-band58-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
 And we can zoom in on the sample location.
 
@@ -560,9 +572,11 @@ And we can zoom in on the sample location.
 
     plot(refl_rast[[58]],xlim=x_sub,ylim=y_sub)
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'refl_rast' not found
+
     plot(m, add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-band58-zoom-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
 We can also plot an RGB image. First we'll run `lapply` on the band2Raster function, this time using a list only consisting of the RGB bands:
 
@@ -580,33 +594,47 @@ We can also plot an RGB image. First we'll run `lapply` on the band2Raster funct
                         crs = h5_meta$crs,
                         no_data_value = h5_meta$no_data_value)
 
-    
+    ## Error in eval(expr, envir, enclos): object 'band2Raster' not found
 
     rgb_rast <- rast(rgb_list)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'rgb_list' not found
 
 Plot the RGB of the entire 1km x 1km tile, as well as zoomed in on the sample location.
 
 
     plotRGB(rgb_rast,stretch='lin',axes=TRUE)
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'rgb_rast' not found
+
     plot(m, col="red", add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-refl-rgb-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
     #zoom in
 
     plotRGB(rgb_rast,stretch='lin',xlim=x_sub,ylim=y_sub)
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'rgb_rast' not found
+
     plot(m, col="red", add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-refl-rgb-2.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
 Next we can extract the aerial reflectance spectra using the `terra::extract` function as follows. We'll create a data frame of the wavelengths and reflectance of that pixel.
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/extract-air-refl-spectra-1.png" alt=" "  />
-<p class="caption"> </p>
-</div>
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'extract': object 'refl_rast' not found
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': object 'refl_air' not found
+
+    ## Error in eval(expr, envir, enclos): object 'h5_meta' not found
+
+    ## Error: object 'refl_air_df' not found
+
+    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
+
+    ## Error in eval(expr, envir, enclos): object 'picol_air_plot' not found
 
 Plot the leaf-clip spectra of this PICOL sample.
 
@@ -615,7 +643,15 @@ Plot the leaf-clip spectra of this PICOL sample.
 <p class="caption"> </p>
 </div>
 
+## Plotting Leaf-Clip and Airborne Data Together
+
 Finally, let's make a plot of these two spectra (leaf-clip and aerial reflectance) together.
+
+
+    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
+
+    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
+
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-both-1.png" alt=" "  />

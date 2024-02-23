@@ -1,3 +1,4 @@
+---
 syncID: f0e521fd2eca45e3b6eca7b205669ab0
 title: "Explore Field Spectra Data - Scaling Ground and Airborne Observations"
 description: "Explore the field spectra data product, link field spectra to airborne surface reflectance data."
@@ -70,9 +71,9 @@ field_spectra_info$siteCodes$siteCode
 #View(field_spectra_info$siteCodes$availableDataUrls)
 ```
 
-We can see that there are data available at 14 sites, as of 2023.
+We can see that there are data available at 14 sites, as of the end of 2023.
 
-Now that we know what data are available, let's take a look at one of the sites: <a href="https://www.neonscience.org/field-sites/rmnp" target="_blank">Rocky Mountain National Park (RMNP)</a> in Colorado. We'll use data from this site to demonstrate some exploratory analysis you might start with when working with the field spectral data. To load this field spectra data directly into R, you can use the `neonUtilities::loadByProduct` function, specifying the data product ID (dpID) and site. Since this product is collected fairly infrequently, to date there is only one collection per year of this for a subset of sites, so specifying the year-month in addition to the site is not necessary. This data is not too large in volume, so it should be fine to set the option `check.size=FALSE`.
+Now that we know what sites have this field spectral data, let's take a look at one of the sites as an example - <a href="https://www.neonscience.org/field-sites/rmnp" target="_blank">Rocky Mountain National Park (RMNP)</a> in Colorado. We'll use this site to demonstrate some exploratory analysis you might start with when working with the field spectral data. To load this data directly into R, you can use the `neonUtilities::loadByProduct` function, specifying the data product ID (dpID) and site. Since this product is collected fairly infrequently, to date there is only one collection per year of this for the subset of sites shown above, so specifying the year-month in addition to the site is not necessary. This data is not too large in volume, so it should be fine to set the option `check.size=FALSE`.
 
 
 ```{r load-field-spectra, results="hide"}
@@ -107,7 +108,6 @@ spectra_merge[1,]$spectralSampleID
 spectra_merge[1,]$downloadFileUrl
 spectra_merge[1,]$taxonID
 ```
-
 To start, we can read in a single field spectral sample, which has the `spectralSampleID` of FSP_RMNP_20200706_2043.
 
 ``` {r read-single-csv}
@@ -221,7 +221,7 @@ What do you notice about these spectra? It looks like there is some variation be
 spectra_merge[which(spectra_merge$taxonID == "PICOL"), c("taxonID","spectralSampleID","plantStatus","leafStatus","leafAge","leafExposure","leafSamplePosition","targetType","targetStatus","measurementVenue","remarks.y")]
 ```
 
-Here, we can see that all the plants have an "OK" status, and all the leaves have a "healthy" status, but we are still seeing some variation in the spectral signatures. This is also to be expected. Note that it appears the absolute values of reflectance vary quite a bit, but the relative reflectance differences, for example between the near infrared (NIR) and visible portions of the spectrum, may be fairly consistent. Let's test this qualitative observation by computing the NDVI (Normalized Difference Vegetation Index, a normalized ratio between the NIR and red portions of the spectrum) and comparing this index across all samples. 
+Here, we can see that all the plants have an "OK" status, and all the leaves have a "healthy" status, but we are still seeing some variation in the spectral signatures. This is expected, as there is uncertainty associated with any measurement, due to the properties of the leaf being sample, and the measurements themselves. Note that it appears the absolute values of reflectance vary quite a bit, but the relative reflectance differences, for example between the near infrared (NIR) and visible portions of the spectrum, may be fairly consistent. Let's test this qualitative observation by computing the NDVI (Normalized Difference Vegetation Index, a normalized ratio between the NIR and red portions of the spectrum) and comparing this index across all samples. 
 
 $$
 NDVI = \frac{NIR-RED}{NIR+RED}
@@ -344,7 +344,12 @@ spectra_traits <- merge(spectra_merge,foliar_traits_loc,by="sampleID")
 head(spectra_traits[c("spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")])
 ```
 
-Great, now we have the field spectra data and the corresponding locations of the leaf-clip samples. For the final part of this lesson, we will download the airborne reflectance data, and use some pre-defined functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means we will need to enter `y` in order to continue the download.
+Great, now we have the field spectra data and the corresponding locations of the leaf-clip samples. 
+
+## Airborne Reflectance Data
+
+For the final part of this lesson, we will download the airborne reflectance data, and use some pre-defined functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. First, let's set the working directory to where we want to download the data. 
+
 
 ``` {r set-wd}
 # set working directory (this will depend on your local environment)
@@ -352,7 +357,7 @@ wd <- "~/data/"
 setwd(wd)
 ```
 
-We'll just link a single PICOL leaf-clip sample with the corresponding reflectance spectra of the pixel corresponding to where this sample was located.
+We will download the corresponding reflectance spectra of the pixel corresponding to where a single PICOL sample was located. Let's extract that sample from the `spectral_traits` table so we can easily pull out the geographic information.
 
 ``` {r single-picol-spectra}
 FSP_RMNP_PICOL <- spectra_traits[spectra_traits$spectralSampleID == "FSP_RMNP_20200720_1304",]
@@ -365,7 +370,7 @@ FSP_RMNP_PICOL$spectralSampleID
 FSP_RMNP_PICOL$taxonID
 ```
 
-Download the reflectance data that encompasses this data point.
+Download the reflectance data that encompasses this data point. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means we will need to enter `y` in order to continue the download.
 
 ``` {r download-reflectance, eval=FALSE}
 byTileAOP(dpID='DP3.30006.001',
@@ -525,6 +530,8 @@ picol_leafclip_plot <- ggplot(picol_data,
                                  y = reflectance)) + geom_line() 
 print(picol_leafclip_plot + ggtitle("Leaf-Clip Spectra of PICOL FSP_RMNP_20200720_1304"))
 ```
+
+## Plotting Leaf-Clip and Airborne Data Together
 
 Finally, let's make a plot of these two spectra (leaf-clip and aerial reflectance) together.
 
