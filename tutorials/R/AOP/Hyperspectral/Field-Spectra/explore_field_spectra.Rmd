@@ -88,7 +88,7 @@ Let's take a look at all the associated data contained in this product, using th
 ```{r field-spectra-names}
 names(field_spectra)
 ```
-We encourage looking at all of these variables to learn more about the data product, but you can find the actual data stored in three of these variables: `fsp_boutMetadata`, `fsp_sampleMetadata`, and `fsp_spectralData`. Next, we can merge the data and metadata into a single table as follows. 
+We encourage looking at all of these variables to learn more about the data product, but you can find the actual data stored in the variables: `fsp_boutMetadata` (contains metadata information about this sampling bout), `fsp_sampleMetadata` (contains relevant metadata about the individual sample), and `fsp_spectralData` (contains information about the individual sample data), and `per_sample` (contains the actual wavelength and reflectance data). Next, we can merge the data and metadata into a single table as follows. 
 
 ```{r merge-data-metadata}
 spectra_merge <- merge(field_spectra$fsp_spectralData,field_spectra$fsp_sampleMetadata,by="spectralSampleID") 
@@ -126,7 +126,7 @@ This `reflectanceCondition` describes what exactly is being measured. As stated 
 
 When linking with NEON's airborne spectral dataset (DP3.30006.001), the `top of foliage (sunward) on black reference` is what we want to use. For this lesson, we will just focus on this reflectance condition. Let's take a look at the spectra for the single csv we read in:
 
-``` {r plot-reflectance-conditions, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-reflectance-conditions, fig.align="center", fig.width = 12, fig.height = 4.5}
 refl_conditions_plot <- ggplot(FSP_RMNP_20200706_2043,             
                aes(x = wavelength, 
                    y = reflectance, 
@@ -136,7 +136,7 @@ print(refl_conditions_plot + ggtitle("FSP_RMNP_20200706_2043 - all reflectance c
 
 And then subset just to the top of foliage on black reference, to plot the reflectance:
 
-``` {r plot-single-spectra, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-single-spectra, fig.align="center", fig.width = 12, fig.height = 4.5}
 FSP_RMNP_20200706_2043_REFL <- FSP_RMNP_20200706_2043[FSP_RMNP_20200706_2043$reflectanceCondition == "top of foliage (sunward) on black reference", c("reflectance","wavelength")]
 
 spectra_plot <- ggplot(FSP_RMNP_20200706_2043_REFL,
@@ -148,6 +148,8 @@ print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Bl
 So ... how can we read the spectral data in for all of the samples collected at RMNP? The code chunk below loops through all the spectral samples and creates a new data frame comprised of the taxonID + date of the fspID, and the reflectance values only of the top of the leaf on the black reference. 
 
 Note, it may take a minute or so for this loop to complete.
+
+FSP1 <- field_spectra$per_sample[which(field_spectra$per_sample$spectralSampleID=="FSP_RMNP_20200706_2043"),]
 
 ``` {r create-refl-df}
 spectra_list <- list()
@@ -171,7 +173,7 @@ spectra_df$wavelength <- wavelengths
 
 In order to plot the spectra for each `taxonID`, we need to rearrange the data frame so that it contains the data in 3 columns: `wavelength`, `variable`, and `value`. We can do this using `melt` as follows:
 
-``` {r plot-taxon-spectra, fig.align="center", echo = FALSE, fig.width = 14, fig.height = 5}
+``` {r plot-taxon-spectra, fig.align="center", warning = FALSE, fig.width = 14, fig.height = 5}
 data_long <- melt(spectra_df, id = "wavelength",value.name="reflectance",variable.name="taxonID")
 all_spectra_plot <- ggplot(data_long,             
                aes(x = wavelength, 
@@ -182,7 +184,7 @@ print(all_spectra_plot + ggtitle("Spectra of all Taxon IDs collected at RMNP"))
 
 You'll note there are a number of spectra with `taxonID`s of PICOL, PIPOS, and POTR5. We can also plot the spectra grouped by `taxonID`.
 
-``` {r plot-taxon-spectra2, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-taxon-spectra2, fig.align="center", fig.width = 12, fig.height = 4.5}
 spectra_df2 <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
 # assign the taxonIDs to the column names
 taxonIDs <- spectra_merge$taxonID 
@@ -204,7 +206,7 @@ spectra_merge %>% count(taxonID, sort = TRUE)
 
 Let's dig in a a little more into the `taxonID`s` which have multiple field spectra measurements. PICOL, PIPOS, and POTR5 each have 5 samples - these are the more common species at RMNP. Let's look at the spectra only from PICOL to start. For more details on this species, you can refer to the USDA <a href="https://plants.sc.egov.usda.gov/home/plantProfile?symbol=PICOL" target="_blank">PICOL</a> plant profile page - we can see here that the common name of this species is "Lodgepole Pine".
 
-``` {r plot-picol-spectra, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-picol-spectra, fig.align="center", fig.width = 12, fig.height = 4.5}
 spectra_data_table <- as.data.table(spectra_df)
 picol_data_table <- spectra_data_table[, grep("wavelength|PICOL", names(spectra_data_table)), with = FALSE]
 picol_data <- melt(picol_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -238,14 +240,14 @@ ndvi = ndvi[1:(length(ndvi)-1)]
 
 Let's plot NDVI for all of the samples.
 
-``` {r ndvi-barplot, fig.align="right", echo = FALSE, fig.width = 12, fig.height = 5}
+``` {r ndvi-barplot, fig.align="right", fig.width = 12, fig.height = 5}
 pigl_ndvi <- select(ndvi,contains("PICOL"))
 barplot(unlist(pigl_ndvi), cex.names=1) 
 title(main = "PICOL NDVI", xlab = "sample", ylab = "NDVI")
 ```
 We can also make a boxplot.
 
-``` {r ndvi-boxplot, fig.align="right", echo = FALSE, fig.width = 5, fig.height = 5}
+``` {r ndvi-boxplot, fig.align="right", fig.width = 5, fig.height = 5}
 boxplot(unlist(pigl_ndvi), cex.names=1) 
 title(main = "PICOL NDVI Boxplot", xlab = "sample", ylab = "NDVI")
 ```
@@ -256,7 +258,7 @@ Let's also plot the spectra of the other more common Rocky Mountain species: <a 
 
 First, start with PIPOS (Ponderosa Pine):
 
-``` {r plot-pipos-spectra, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-pipos-spectra, fig.align="center", fig.width = 12, fig.height = 4.5}
 spectra_data_table <- as.data.table(spectra_df)
 pipos_data_table <- spectra_data_table[, grep("wavelength|PIPOS", names(spectra_data_table)), with = FALSE]
 pipos_data <- melt(pipos_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -269,7 +271,7 @@ print(pipos_spectra_plot + ggtitle("Spectra of Ponderosa Pine (PIPOS) samples at
 
 And then POTR5 (Quaking Aspen):
 
-``` {r plot-potr5-spectra, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-potr5-spectra, fig.align="center", fig.width = 12, fig.height = 4.5}
 spectra_data_table <- as.data.table(spectra_df)
 potr5_data_table <- spectra_data_table[, grep("wavelength|POTR5", names(spectra_data_table)), with = FALSE]
 potr5_data <- melt(potr5_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -282,7 +284,7 @@ print(picol_spectra_plot + ggtitle("Spectra of Aspen (POTR5) samples @ RMNP"))
 
 Finally, it may be helpful to plot the spectra of two species on the same plot. For this example, we'll show PICOL (Lodgepole Pine) and POTR5 (Quaking Aspen) together, including all 5 measurements of each.
 
-``` {r plot-picol-potr5-spectra, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-picol-potr5-spectra, fig.align="center", fig.width = 12, fig.height = 4.5}
 spectra_data_table2 <- as.data.table(spectra_df2)
 picol_potr5_data_table <- spectra_data_table2[, grep("wavelength|PICOL|POTR5", names(spectra_data_table2)), with = FALSE]
 
@@ -441,7 +443,8 @@ geth5metadata <- function(h5_file){
 }
 ```
 
-Now that we've defined these functions, we can run `lapply` on the band2Raster function, using all the bands:
+Now that we've defined these functions, we can run `lapply` on the band2Raster function, using all the bands. This may take a minute or two to run.
+
 
 ``` {r refl-to-rast}
 # get the relevant metadata using the geth5metadata function
@@ -510,7 +513,7 @@ plot(m, col="red", add = T)
 
 Next we can extract the aerial reflectance spectra using the `terra::extract` function as follows. We'll create a data frame of the wavelengths and reflectance of that pixel.
 
-``` {r extract-air-refl-spectra, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r extract-air-refl-spectra, fig.align="center", fig.width = 12, fig.height = 4.5}
 refl_air <- extract(refl_rast, 
                     cbind(FSP_RMNP_PICOL$adjEasting,
                           FSP_RMNP_PICOL$adjNorthing))
@@ -527,7 +530,7 @@ print(picol_air_plot + ggtitle("Airborne Reflectance Spectra of PICOL @ RMNP"))
 
 Plot the leaf-clip spectra of this PICOL sample.
 
-``` {r plot-picol-spectra-leafclip, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-picol-spectra-leafclip, fig.align="center", fig.width = 12, fig.height = 4.5}
 spectra_data_table <- as.data.table(spectra_df)
 picol_data_table <- spectra_data_table[, grep("wavelength|PICOL_20200720_1304", names(spectra_data_table)), with = FALSE]
 picol_data <- melt(picol_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
@@ -541,7 +544,7 @@ print(picol_leafclip_plot + ggtitle("Leaf-Clip Spectra of PICOL FSP_RMNP_2020072
 
 Finally, let's make a plot of these two spectra (leaf-clip and aerial reflectance) together.
 
-``` {r plot-picol-spectra-both, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5}
+``` {r plot-picol-spectra-both, fig.align="center", fig.width = 12, fig.height = 4.5}
 # scale the airborne reflectance by the scale factor
 refl_air_df$scaled <- (refl_air_df$reflectance/as.vector(10000))
 
@@ -571,6 +574,13 @@ Here are some ideas to pursue on your own:
 
 1. We demonstrated how to plot the field spectral sample together with the aerial reflectance of the pixel. What if there is a geographic mis-match between the field and airborne data? What other approaches could you use to align these datasets (eg. applying a buffer, integrating the CHM data)?
 
-2. Foliar traits datasets for more recent years (including RMNP 2020) include shape files of the polygons of the tree crowns where the samples are taken from. Try pulling in that crown data and plotting the average spectra inside the tree crown area.
+2. Foliar traits datasets for more recent years (including RMNP 2020) include shape files of the polygons of the tree crowns where the samples are taken from. Try pulling in that crown data and plotting the average spectra inside the tree crown area. Hint: to see what crown polygon data are available, you can specify `tabl='cfc_shapefile'` in the `loadByProduct` function:
 
-3. The foliar trait data is also a key dataset for scaling - for example, a common ecological application would be to develop a foliar trait model from the airborne reflectance data, using the in-situ foliar trait data to train the model. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis would be the same.
+```
+polygons <- loadByProduct(dpID='DP1.10026.001', 
+                          tabl='cfc_shapefile', 
+                          include.provisional=T,
+                          check.size=F)
+```
+
+3. The foliar trait data is also a key dataset for scaling - for example, a common ecological application would be to develop foliar trait models from the airborne reflectance data, using the in-situ foliar trait data to train the model. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis would be the same.

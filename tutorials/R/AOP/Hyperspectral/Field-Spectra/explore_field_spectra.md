@@ -163,12 +163,31 @@ This `reflectanceCondition` describes what exactly is being measured. As stated 
 
 When linking with NEON's airborne spectral dataset (DP3.30006.001), the `top of foliage (sunward) on black reference` is what we want to use. For this lesson, we will just focus on this reflectance condition. Let's take a look at the spectra for the single csv we read in:
 
+
+    refl_conditions_plot <- ggplot(FSP_RMNP_20200706_2043,             
+                   aes(x = wavelength, 
+                       y = reflectance, 
+                       color = reflectanceCondition)) + geom_line() 
+
+    print(refl_conditions_plot + ggtitle("FSP_RMNP_20200706_2043 - all reflectance conditions"))
+
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-reflectance-conditions-1.png" alt=" "  />
 <p class="caption"> </p>
 </div>
 
 And then subset just to the top of foliage on black reference, to plot the reflectance:
+
+
+    FSP_RMNP_20200706_2043_REFL <- FSP_RMNP_20200706_2043[FSP_RMNP_20200706_2043$reflectanceCondition == "top of foliage (sunward) on black reference", c("reflectance","wavelength")]
+
+    
+
+    spectra_plot <- ggplot(FSP_RMNP_20200706_2043_REFL,
+                           aes(x = wavelength, 
+                               y = reflectance)) + geom_line() 
+
+    print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Black Reference"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-single-spectra-1.png" alt=" "  />
@@ -210,11 +229,14 @@ Note, it may take a minute or so for this loop to complete.
 In order to plot the spectra for each `taxonID`, we need to rearrange the data frame so that it contains the data in 3 columns: `wavelength`, `variable`, and `value`. We can do this using `melt` as follows:
 
 
-    ## Warning in melt(spectra_df, id = "wavelength", value.name = "reflectance", : The melt generic in data.table has been passed a data.frame and will attempt to
-    ## redirect to the relevant reshape2 method; please note that reshape2 is deprecated, and this redirection is now deprecated as well. To continue using melt methods
-    ## from reshape2 while both libraries are attached, e.g. melt.list, you can prepend the namespace like reshape2::melt(spectra_df). In the next version, this warning
-    ## will become an error.
+    data_long <- melt(spectra_df, id = "wavelength",value.name="reflectance",variable.name="taxonID")
 
+    all_spectra_plot <- ggplot(data_long,             
+                   aes(x = wavelength, 
+                       y = reflectance, 
+                       color = taxonID)) + geom_line() 
+
+    print(all_spectra_plot + ggtitle("Spectra of all Taxon IDs collected at RMNP"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-taxon-spectra-1.png" alt=" "  />
@@ -222,6 +244,26 @@ In order to plot the spectra for each `taxonID`, we need to rearrange the data f
 </div>
 
 You'll note there are a number of spectra with `taxonID`s of PICOL, PIPOS, and POTR5. We can also plot the spectra grouped by `taxonID`.
+
+
+    spectra_df2 <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
+
+    # assign the taxonIDs to the column names
+
+    taxonIDs <- spectra_merge$taxonID 
+
+    colnames(spectra_df2) <- taxonIDs
+
+    spectra_df2$wavelength <- wavelengths
+
+    data_long2 <- melt(as.data.table(spectra_df2), id = "wavelength")
+
+    all_spectra_plot <- ggplot(data_long2,             
+                   aes(x = wavelength, 
+                       y = value, 
+                       color = variable)) + geom_line(alpha=0.5) 
+
+    print(all_spectra_plot + ggtitle("Spectra of all Taxon IDs collected at RMNP"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-taxon-spectra2-1.png" alt=" "  />
@@ -244,6 +286,20 @@ We can see there are 7 different species represented. We can get the count of ea
 
 Let's dig in a a little more into the `taxonID`s` which have multiple field spectra measurements. PICOL, PIPOS, and POTR5 each have 5 samples - these are the more common species at RMNP. Let's look at the spectra only from PICOL to start. For more details on this species, you can refer to the USDA <a href="https://plants.sc.egov.usda.gov/home/plantProfile?symbol=PICOL" target="_blank">PICOL</a> plant profile page - we can see here that the common name of this species is "Lodgepole Pine".
 
+
+    spectra_data_table <- as.data.table(spectra_df)
+
+    picol_data_table <- spectra_data_table[, grep("wavelength|PICOL", names(spectra_data_table)), with = FALSE]
+
+    picol_data <- melt(picol_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
+
+    picol_spectra_plot <- ggplot(picol_data,
+                                aes(x = wavelength, 
+                                    y = reflectance, 
+                                    color = taxon_fsp_ID)) + geom_line() 
+
+    print(picol_spectra_plot + ggtitle("Spectra of PICOL samples collected at RMNP"))
+
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-1.png" alt=" "  />
 <p class="caption"> </p>
@@ -254,12 +310,18 @@ What do you notice about these spectra? It looks like there is some variation be
 
     spectra_merge[which(spectra_merge$taxonID == "PICOL"), c("taxonID","spectralSampleID","plantStatus","leafStatus","leafAge","leafExposure","leafSamplePosition","targetType","targetStatus","measurementVenue","remarks.y")]
 
-    ##    taxonID       spectralSampleID plantStatus leafStatus leafAge leafExposure leafSamplePosition   targetType targetStatus measurementVenue          remarks.y
-    ## 3    PICOL FSP_RMNP_20200706_2120          OK    healthy  mature     part-sun             middle pure foliage        fresh       laboratory               <NA>
-    ## 8    PICOL FSP_RMNP_20200709_2050          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory               <NA>
-    ## 10   PICOL FSP_RMNP_20200713_1117          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory Sampled in AOP lab
-    ## 21   PICOL FSP_RMNP_20200720_1304          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory Sampled in AOP lab
-    ## 24   PICOL FSP_RMNP_20200721_1243          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory               <NA>
+    ##    taxonID       spectralSampleID plantStatus leafStatus leafAge leafExposure leafSamplePosition   targetType targetStatus measurementVenue
+    ## 3    PICOL FSP_RMNP_20200706_2120          OK    healthy  mature     part-sun             middle pure foliage        fresh       laboratory
+    ## 8    PICOL FSP_RMNP_20200709_2050          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory
+    ## 10   PICOL FSP_RMNP_20200713_1117          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory
+    ## 21   PICOL FSP_RMNP_20200720_1304          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory
+    ## 24   PICOL FSP_RMNP_20200721_1243          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory
+    ##             remarks.y
+    ## 3                <NA>
+    ## 8                <NA>
+    ## 10 Sampled in AOP lab
+    ## 21 Sampled in AOP lab
+    ## 24               <NA>
 
 Here, we can see that all the plants have an "OK" status, and all the leaves have a "healthy" status, but we are still seeing some variation in the spectral signatures. This is expected, as there is uncertainty associated with any measurement, due to the properties of the leaf being sample, and the measurements themselves. Note that it appears the absolute values of reflectance vary quite a bit, but the relative reflectance differences, for example between the near infrared (NIR) and visible portions of the spectrum, may be fairly consistent. Let's test this qualitative observation by computing the NDVI (Normalized Difference Vegetation Index, a normalized ratio between the NIR and red portions of the spectrum) and comparing this index across all samples. 
 
@@ -280,11 +342,23 @@ You can refer to this tutorial for how you would calculate NDVI from the aerial 
 
 Let's plot NDVI for all of the samples.
 
+
+    pigl_ndvi <- select(ndvi,contains("PICOL"))
+
+    barplot(unlist(pigl_ndvi), cex.names=1) 
+
+    title(main = "PICOL NDVI", xlab = "sample", ylab = "NDVI")
+
 <div class="figure" style="text-align: right">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/ndvi-barplot-1.png" alt=" "  />
 <p class="caption"> </p>
 </div>
 We can also make a boxplot.
+
+
+    boxplot(unlist(pigl_ndvi), cex.names=1) 
+
+    title(main = "PICOL NDVI Boxplot", xlab = "sample", ylab = "NDVI")
 
 <div class="figure" style="text-align: right">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/ndvi-boxplot-1.png" alt=" "  />
@@ -297,6 +371,20 @@ Let's also plot the spectra of the other more common Rocky Mountain species: <a 
 
 First, start with PIPOS (Ponderosa Pine):
 
+
+    spectra_data_table <- as.data.table(spectra_df)
+
+    pipos_data_table <- spectra_data_table[, grep("wavelength|PIPOS", names(spectra_data_table)), with = FALSE]
+
+    pipos_data <- melt(pipos_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
+
+    pipos_spectra_plot <- ggplot(pipos_data,
+                                aes(x = wavelength, 
+                                    y = reflectance, 
+                                    color = taxon_fsp_ID)) + geom_line() 
+
+    print(pipos_spectra_plot + ggtitle("Spectra of Ponderosa Pine (PIPOS) samples at RMNP"))
+
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-pipos-spectra-1.png" alt=" "  />
 <p class="caption"> </p>
@@ -304,12 +392,42 @@ First, start with PIPOS (Ponderosa Pine):
 
 And then POTR5 (Quaking Aspen):
 
+
+    spectra_data_table <- as.data.table(spectra_df)
+
+    potr5_data_table <- spectra_data_table[, grep("wavelength|POTR5", names(spectra_data_table)), with = FALSE]
+
+    potr5_data <- melt(potr5_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
+
+    potr5_spectra_plot <- ggplot(potr5_data,
+                                aes(x = wavelength, 
+                                    y = reflectance, 
+                                    color = taxon_fsp_ID)) + geom_line() 
+
+    print(picol_spectra_plot + ggtitle("Spectra of Aspen (POTR5) samples @ RMNP"))
+
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-potr5-spectra-1.png" alt=" "  />
 <p class="caption"> </p>
 </div>
 
 Finally, it may be helpful to plot the spectra of two species on the same plot. For this example, we'll show PICOL (Lodgepole Pine) and POTR5 (Quaking Aspen) together, including all 5 measurements of each.
+
+
+    spectra_data_table2 <- as.data.table(spectra_df2)
+
+    picol_potr5_data_table <- spectra_data_table2[, grep("wavelength|PICOL|POTR5", names(spectra_data_table2)), with = FALSE]
+
+    
+
+    picol_potr5_data <- melt(picol_potr5_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxonID')
+
+    picol_potr5_spectra_plot <- ggplot(picol_potr5_data,
+                                aes(x = wavelength, 
+                                    y = reflectance, 
+                                    color = taxonID)) + geom_line(alpha=0.5) 
+
+    print(picol_potr5_spectra_plot + ggtitle("Spectra of Lodgepole (PICOL) and Aspen (POTR5) samples @ RMNP"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-potr5-spectra-1.png" alt=" "  />
@@ -353,11 +471,11 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
                                    check.size=FALSE)
 
     ## Finding available files
-    ##   |                                                                                                                                                                |                                                                                                                                                        |   0%  |                                                                                                                                                                |========================================================================================================================================================| 100%
+    ##   |                                                                                                                                                           |                                                                                                                                                   |   0%  |                                                                                                                                                           |===================================================================================================================================================| 100%
     ## 
     ## Downloading files totaling approximately 1.045671 MB
     ## Downloading 1 files
-    ##   |                                                                                                                                                                |                                                                                                                                                        |   0%  |                                                                                                                                                                |========================================================================================================================================================| 100%
+    ##   |                                                                                                                                                           |                                                                                                                                                   |   0%  |                                                                                                                                                           |===================================================================================================================================================| 100%
     ## 
     ## Unpacking zip files using 1 cores.
     ## Stacking table cfc_elementsSummary
@@ -379,7 +497,7 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
     ## Copied the most recent publication of categoricalCodes file to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 14 data tables and 4 metadata tables!
-    ## Stacking took 1.042802 secs
+    ## Stacking took 1.933185 secs
 
     names(foliar_traits)
 
@@ -518,20 +636,21 @@ Now we can use some pre-defined functions for working with the airborne reflecta
         return(refl_out) # return the terra raster object
     }
 
-Now that we've defined these functions, we can run `lapply` on the band2Raster function, using all the bands:
+Now that we've defined these functions, we can run `lapply` on the band2Raster function, using all the bands. This may take a minute or two to run.
+
 
 
     # get the relevant metadata using the geth5metadata function
 
     h5_meta <- geth5metadata(h5_file)
 
-    
+    ## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
 
     # get all bands - a consecutive list of integers from 1:426 (# of bands)
 
     all_bands <- as.list(1:length(h5_meta$wavelengths))
 
-    
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.list': object 'h5_meta' not found
 
     # lapply applies the function `band2Raster` to each element in the list `all_bands`
 
@@ -542,25 +661,31 @@ Now that we've defined these functions, we can run `lapply` on the band2Raster f
                         crs = h5_meta$crs,
                         no_data_value = h5_meta$no_data_value)
 
-    
+    ## Error in eval(expr, envir, enclos): object 'all_bands' not found
 
     refl_rast <- rast(refl_list)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'refl_list' not found
 
 Let's plot a single band (in the red wavelength) of the reflectance tile, for reference. 
 
 
     plot(refl_rast[[58]])
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'refl_rast' not found
+
     #convert the data frame into a shape file (vector)
 
     m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
                     FSP_RMNP_PICOL$adjNorthing), crs=h5_meta$crs)
 
+    ## Error in eval(expr, envir, enclos): object 'h5_meta' not found
+
     # plot
 
     plot(m, add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-band58-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
 And we can zoom in on the sample location.
 
@@ -571,9 +696,11 @@ And we can zoom in on the sample location.
 
     plot(refl_rast[[58]],xlim=x_sub,ylim=y_sub)
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'refl_rast' not found
+
     plot(m, add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-band58-zoom-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
 We can also plot an RGB image. First we'll run `lapply` on the band2Raster function, this time using a list only consisting of the RGB bands:
 
@@ -591,35 +718,78 @@ We can also plot an RGB image. First we'll run `lapply` on the band2Raster funct
                         crs = h5_meta$crs,
                         no_data_value = h5_meta$no_data_value)
 
-    
+    ## Error in H5Fopen(file, flags = flags, fapl = fapl, native = native): HDF5. File accessibility. Unable to open file.
 
     rgb_rast <- rast(rgb_list)
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'rgb_list' not found
 
 Plot the RGB of the entire 1km x 1km tile, as well as zoomed in on the sample location.
 
 
     plotRGB(rgb_rast,stretch='lin',axes=TRUE)
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'rgb_rast' not found
+
     plot(m, col="red", add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-refl-rgb-1.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
     #zoom in
 
     plotRGB(rgb_rast,stretch='lin',xlim=x_sub,ylim=y_sub)
 
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'rgb_rast' not found
+
     plot(m, col="red", add = T)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-refl-rgb-2.png)
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
 
 Next we can extract the aerial reflectance spectra using the `terra::extract` function as follows. We'll create a data frame of the wavelengths and reflectance of that pixel.
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/extract-air-refl-spectra-1.png" alt=" "  />
-<p class="caption"> </p>
-</div>
+
+    refl_air <- extract(refl_rast, 
+                        cbind(FSP_RMNP_PICOL$adjEasting,
+                              FSP_RMNP_PICOL$adjNorthing))
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'extract': object 'refl_rast' not found
+
+    refl_air_df <- data.frame(t(refl_air))
+
+    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': object 'refl_air' not found
+
+    refl_air_df$wavelengths <- h5_meta$wavelengths
+
+    ## Error in eval(expr, envir, enclos): object 'h5_meta' not found
+
+    names(refl_air_df) <- c('reflectance','wavelength')
+
+    ## Error: object 'refl_air_df' not found
+
+    picol_air_plot <- ggplot(refl_air_df,
+                             aes(x=wavelength, 
+                                 y=reflectance)) + geom_line() + ylim(0,2500)
+
+    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
+
+    print(picol_air_plot + ggtitle("Airborne Reflectance Spectra of PICOL @ RMNP"))
+
+    ## Error in eval(expr, envir, enclos): object 'picol_air_plot' not found
 
 Plot the leaf-clip spectra of this PICOL sample.
+
+
+    spectra_data_table <- as.data.table(spectra_df)
+
+    picol_data_table <- spectra_data_table[, grep("wavelength|PICOL_20200720_1304", names(spectra_data_table)), with = FALSE]
+
+    picol_data <- melt(picol_data_table, id = "wavelength",value.name = 'reflectance', variable.name = 'taxon_fsp_ID')
+
+    picol_leafclip_plot <- ggplot(picol_data,
+                                 aes(x = wavelength, 
+                                     y = reflectance)) + geom_line() 
+
+    print(picol_leafclip_plot + ggtitle("Leaf-Clip Spectra of PICOL FSP_RMNP_20200720_1304"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-leafclip-1.png" alt=" "  />
@@ -629,6 +799,26 @@ Plot the leaf-clip spectra of this PICOL sample.
 ## Plotting Leaf-Clip and Airborne Data Together
 
 Finally, let's make a plot of these two spectra (leaf-clip and aerial reflectance) together.
+
+
+    # scale the airborne reflectance by the scale factor
+
+    refl_air_df$scaled <- (refl_air_df$reflectance/as.vector(10000))
+
+    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
+
+    spectra_plot <- ggplot() + 
+      geom_line(data=refl_air_df, aes(x=wavelength, y=scaled), color='green', show.legend=TRUE) +
+      geom_line(data=picol_data, aes(x=wavelength, y=reflectance), color='darkgreen', show.legend=TRUE) +
+    
+      labs(x="Wavelength (nm)",
+           y="Reflectance") +
+      theme(legend.position = c(2500, 0.3)) +
+      ylim(0, 0.5)
+
+    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
+
+    print(spectra_plot + ggtitle("Spectra of PICOL Leaf Clip & Corresponding Airborne Pixel at RMNP"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-both-1.png" alt=" "  />
@@ -649,6 +839,13 @@ Here are some ideas to pursue on your own:
 
 1. We demonstrated how to plot the field spectral sample together with the aerial reflectance of the pixel. What if there is a geographic mis-match between the field and airborne data? What other approaches could you use to align these datasets (eg. applying a buffer, integrating the CHM data)?
 
-2. Foliar traits datasets for more recent years (including RMNP 2020) include shape files of the polygons of the tree crowns where the samples are taken from. Try pulling in that crown data and plotting the average spectra inside the tree crown area.
+2. Foliar traits datasets for more recent years (including RMNP 2020) include shape files of the polygons of the tree crowns where the samples are taken from. Try pulling in that crown data and plotting the average spectra inside the tree crown area. Hint: to see what crown polygon data are available, you can specify `tabl='cfc_shapefile'` in the `loadByProduct` function:
 
-3. The foliar trait data is also a key dataset for scaling - for example, a common ecological application would be to develop a foliar trait model from the airborne reflectance data, using the in-situ foliar trait data to train the model. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis would be the same.
+```
+polygons <- loadByProduct(dpID='DP1.10026.001', 
+                          tabl='cfc_shapefile', 
+                          include.provisional=T,
+                          check.size=F)
+```
+
+3. The foliar trait data is also a key dataset for scaling - for example, a common ecological application would be to develop foliar trait models from the airborne reflectance data, using the in-situ foliar trait data to train the model. This is beyond the scope of this lesson, but the initial steps for conducting that sort of analysis would be the same.
