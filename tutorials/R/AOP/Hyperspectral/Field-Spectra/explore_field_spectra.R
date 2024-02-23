@@ -86,7 +86,7 @@ colnames(spectra_df) <- taxonIDs
 spectra_df$wavelength <- wavelengths
 
 
-## ----plot-taxon-spectra, fig.align="center", echo = FALSE, fig.width = 10, fig.height = 5-----------------------------------------------------------------------
+## ----plot-taxon-spectra, fig.align="center", echo = FALSE, fig.width = 14, fig.height = 5-----------------------------------------------------------------------
 data_long <- melt(spectra_df, id = "wavelength",value.name="reflectance",variable.name="taxonID")
 all_spectra_plot <- ggplot(data_long,             
                aes(x = wavelength, 
@@ -135,11 +135,15 @@ ndvi = (nir - red) / (nir + red)
 ndvi = ndvi[1:(length(ndvi)-1)]
 
 
-## ----ndvi-plot, fig.align="right", echo = FALSE, fig.width = 14, fig.height = 5---------------------------------------------------------------------------------
+## ----ndvi-barplot, fig.align="right", echo = FALSE, fig.width = 12, fig.height = 5------------------------------------------------------------------------------
 pigl_ndvi <- select(ndvi,contains("PICOL"))
 barplot(unlist(pigl_ndvi), cex.names=1) 
-title(main = "PICOL NDVI",
-      xlab = "sample", ylab = "NDVI")
+title(main = "PICOL NDVI", xlab = "sample", ylab = "NDVI")
+
+
+## ----ndvi-boxplot, fig.align="right", echo = FALSE, fig.width = 5, fig.height = 5-------------------------------------------------------------------------------
+boxplot(unlist(pigl_ndvi), cex.names=1) 
+title(main = "PICOL NDVI Boxplot", xlab = "sample", ylab = "NDVI")
 
 
 ## ----plot-pipos-spectra, fig.align="center", echo = FALSE, fig.width = 12, fig.height = 4.5---------------------------------------------------------------------
@@ -267,6 +271,7 @@ geth5metadata <- function(h5_file){
   h5closeAll() # cloes all open h5 instances
   
   return(meta_list)
+}
 
 
   band2Raster <- function(h5_file, band, extent, crs, no_data_value){

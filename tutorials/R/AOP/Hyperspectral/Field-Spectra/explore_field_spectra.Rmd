@@ -171,7 +171,7 @@ spectra_df$wavelength <- wavelengths
 
 In order to plot the spectra for each `taxonID`, we need to rearrange the data frame so that it contains the data in 3 columns: `wavelength`, `variable`, and `value`. We can do this using `melt` as follows:
 
-``` {r plot-taxon-spectra, fig.align="center", echo = FALSE, fig.width = 10, fig.height = 5}
+``` {r plot-taxon-spectra, fig.align="center", echo = FALSE, fig.width = 14, fig.height = 5}
 data_long <- melt(spectra_df, id = "wavelength",value.name="reflectance",variable.name="taxonID")
 all_spectra_plot <- ggplot(data_long,             
                aes(x = wavelength, 
@@ -238,11 +238,16 @@ ndvi = ndvi[1:(length(ndvi)-1)]
 
 Let's plot NDVI for all of the samples.
 
-``` {r ndvi-plot, fig.align="right", echo = FALSE, fig.width = 14, fig.height = 5}
+``` {r ndvi-barplot, fig.align="right", echo = FALSE, fig.width = 12, fig.height = 5}
 pigl_ndvi <- select(ndvi,contains("PICOL"))
 barplot(unlist(pigl_ndvi), cex.names=1) 
-title(main = "PICOL NDVI",
-      xlab = "sample", ylab = "NDVI")
+title(main = "PICOL NDVI", xlab = "sample", ylab = "NDVI")
+```
+We can also make a boxplot.
+
+``` {r ndvi-boxplot, fig.align="right", echo = FALSE, fig.width = 5, fig.height = 5}
+boxplot(unlist(pigl_ndvi), cex.names=1) 
+title(main = "PICOL NDVI Boxplot", xlab = "sample", ylab = "NDVI")
 ```
 
 As we can see, the NDVI doesn't vary too much between the various samples. NDVI is a nice proxy for vegetation health, and could potentially be used in training models using this reflectance data, for example.
@@ -419,6 +424,7 @@ geth5metadata <- function(h5_file){
   h5closeAll() # cloes all open h5 instances
   
   return(meta_list)
+}
 
 
   band2Raster <- function(h5_file, band, extent, crs, no_data_value){

@@ -281,7 +281,13 @@ You can refer to this tutorial for how you would calculate NDVI from the aerial 
 Let's plot NDVI for all of the samples.
 
 <div class="figure" style="text-align: right">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/ndvi-plot-1.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/ndvi-barplot-1.png" alt=" "  />
+<p class="caption"> </p>
+</div>
+We can also make a boxplot.
+
+<div class="figure" style="text-align: right">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/ndvi-boxplot-1.png" alt=" "  />
 <p class="caption"> </p>
 </div>
 
@@ -373,7 +379,7 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
     ## Copied the most recent publication of categoricalCodes file to /stackedFiles
     ## Copied the most recent publication of variable definition file to /stackedFiles
     ## Finished: Stacked 14 data tables and 4 metadata tables!
-    ## Stacking took 0.724658 secs
+    ## Stacking took 1.042802 secs
 
     names(foliar_traits)
 
@@ -493,8 +499,12 @@ Now we can use some pre-defined functions for working with the airborne reflecta
       h5closeAll() # cloes all open h5 instances
       
       return(meta_list)
+    }
+
     
+
     
+
       band2Raster <- function(h5_file, band, extent, crs, no_data_value){
         site <- h5ls(h5_file)$group[2] # extract the site info
         # read in the raster for the band specified, this will be an array
@@ -508,11 +518,6 @@ Now we can use some pre-defined functions for working with the airborne reflecta
         return(refl_out) # return the terra raster object
     }
 
-    ## Error: <text>:41:0: unexpected end of input
-    ## 39:     return(refl_out) # return the terra raster object
-    ## 40: }
-    ##    ^
-
 Now that we've defined these functions, we can run `lapply` on the band2Raster function, using all the bands:
 
 
@@ -520,13 +525,13 @@ Now that we've defined these functions, we can run `lapply` on the band2Raster f
 
     h5_meta <- geth5metadata(h5_file)
 
-    ## Error in geth5metadata(h5_file): could not find function "geth5metadata"
+    
 
     # get all bands - a consecutive list of integers from 1:426 (# of bands)
 
     all_bands <- as.list(1:length(h5_meta$wavelengths))
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'as.list': object 'h5_meta' not found
+    
 
     # lapply applies the function `band2Raster` to each element in the list `all_bands`
 
@@ -537,31 +542,25 @@ Now that we've defined these functions, we can run `lapply` on the band2Raster f
                         crs = h5_meta$crs,
                         no_data_value = h5_meta$no_data_value)
 
-    ## Error in eval(expr, envir, enclos): object 'band2Raster' not found
+    
 
     refl_rast <- rast(refl_list)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'refl_list' not found
 
 Let's plot a single band (in the red wavelength) of the reflectance tile, for reference. 
 
 
     plot(refl_rast[[58]])
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'refl_rast' not found
-
     #convert the data frame into a shape file (vector)
 
     m <- vect(cbind(FSP_RMNP_PICOL$adjEasting,
                     FSP_RMNP_PICOL$adjNorthing), crs=h5_meta$crs)
 
-    ## Error in eval(expr, envir, enclos): object 'h5_meta' not found
-
     # plot
 
     plot(m, add = T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-band58-1.png)
 
 And we can zoom in on the sample location.
 
@@ -572,11 +571,9 @@ And we can zoom in on the sample location.
 
     plot(refl_rast[[58]],xlim=x_sub,ylim=y_sub)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'refl_rast' not found
-
     plot(m, add = T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-band58-zoom-1.png)
 
 We can also plot an RGB image. First we'll run `lapply` on the band2Raster function, this time using a list only consisting of the RGB bands:
 
@@ -594,47 +591,33 @@ We can also plot an RGB image. First we'll run `lapply` on the band2Raster funct
                         crs = h5_meta$crs,
                         no_data_value = h5_meta$no_data_value)
 
-    ## Error in eval(expr, envir, enclos): object 'band2Raster' not found
+    
 
     rgb_rast <- rast(rgb_list)
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'rast': object 'rgb_list' not found
 
 Plot the RGB of the entire 1km x 1km tile, as well as zoomed in on the sample location.
 
 
     plotRGB(rgb_rast,stretch='lin',axes=TRUE)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'rgb_rast' not found
-
     plot(m, col="red", add = T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-refl-rgb-1.png)
 
     #zoom in
 
     plotRGB(rgb_rast,stretch='lin',xlim=x_sub,ylim=y_sub)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'rgb_rast' not found
-
     plot(m, col="red", add = T)
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plot': object 'm' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-refl-rgb-2.png)
 
 Next we can extract the aerial reflectance spectra using the `terra::extract` function as follows. We'll create a data frame of the wavelengths and reflectance of that pixel.
 
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'extract': object 'refl_rast' not found
-
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 't': object 'refl_air' not found
-
-    ## Error in eval(expr, envir, enclos): object 'h5_meta' not found
-
-    ## Error: object 'refl_air_df' not found
-
-    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
-
-    ## Error in eval(expr, envir, enclos): object 'picol_air_plot' not found
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/extract-air-refl-spectra-1.png" alt=" "  />
+<p class="caption"> </p>
+</div>
 
 Plot the leaf-clip spectra of this PICOL sample.
 
@@ -646,12 +629,6 @@ Plot the leaf-clip spectra of this PICOL sample.
 ## Plotting Leaf-Clip and Airborne Data Together
 
 Finally, let's make a plot of these two spectra (leaf-clip and aerial reflectance) together.
-
-
-    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
-
-    ## Error in eval(expr, envir, enclos): object 'refl_air_df' not found
-
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-spectra-both-1.png" alt=" "  />
