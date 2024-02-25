@@ -149,19 +149,15 @@ This `reflectanceCondition` describes what exactly is being measured. As stated 
 
 > "Spectral reflectance of both the front and back of the sample is measured against a reflective white spectralon reference panel. A black spectralon reference is then measured, followed by spectral transmittance measurements of the front and back of the sample. Reference measurements of the white reference are taken between each leaf measurement."
 
-When linking with NEON's airborne spectral dataset (DP3.30006.001), the `top of foliage (sunward) on black reference` is what we want to use. For this lesson, we will just focus on this reflectance condition. Let's take a look at the spectra for the single csv we read in:
+When linking with NEON's airborne spectral dataset (DP3.30006.001), the `top of foliage (sunward) on black reference` is the condition that we want to use. For this lesson, we will just focus on this reflectance condition. Let's take a look at the spectra for the single csv we read in. Note that you'll need to cast the wavelength and reflectance data to "numeric" data type, using `as.numeric`.
 
 
     refl_conditions_plot <- ggplot(FSP_RMNP_20200706_2043,             
-                   aes(x = wavelength, 
-                       y = reflectance, 
+                   aes(x = as.numeric(wavelength), 
+                       y = as.numeric(reflectance), 
                        color = reflectanceCondition)) + geom_line() 
 
-    print(refl_conditions_plot + ggtitle("FSP_RMNP_20200706_2043 - all reflectance conditions"))
-
-    ## `geom_line()`: Each group consists of only one observation.
-    ## ℹ Do you need to adjust the group aesthetic?
-
+    print(refl_conditions_plot + ggtitle("FSP_RMNP_20200706_2043 - all reflectance conditions") + xlab("wavelength (nm)") + ylab("reflectance"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-reflectance-conditions-1.png" alt=" "  />
@@ -176,14 +172,10 @@ And then subset just to the top of foliage on black reference, to plot the refle
     
 
     spectra_plot <- ggplot(FSP_RMNP_20200706_2043_REFL,
-                           aes(x = wavelength, 
-                               y = reflectance)) + geom_line() 
+                           aes(x = as.numeric(wavelength), 
+                               y = as.numeric(reflectance))) + geom_line() 
 
-    print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Black Reference"))
-
-    ## `geom_line()`: Each group consists of only one observation.
-    ## ℹ Do you need to adjust the group aesthetic?
-
+    print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Black Reference") + xlab("wavelength (nm)") + ylab("reflectance"))
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-single-spectra-1.png" alt=" "  />
@@ -191,6 +183,7 @@ And then subset just to the top of foliage on black reference, to plot the refle
 </div>
 
 So ... how can we read the spectral data in for all of the samples collected at RMNP? The code chunk below loops through all the spectral samples and creates a new data frame comprised of the taxonID + date of the fspID, and the reflectance values only of the top of the leaf on the black reference. 
+
 
     spectra_list <- list()
 
@@ -206,7 +199,9 @@ So ... how can we read the spectral data in for all of the samples collected at 
 
     # get the wavelength values corresponding to the subset we selected for each of the spectra
 
-    wavelengths <- as.numeric(refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")])
+    wavelengths <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")]
+
+    wavelengths <- as.numeric(wavelengths)
 
     spectra_df <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
 

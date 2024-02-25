@@ -45,19 +45,19 @@ unique(FSP_RMNP_20200706_2043$reflectanceCondition)
 
 ## ----plot-reflectance-conditions, fig.align="center", fig.width = 12, fig.height = 4.5-----------------------------------------------------------
 refl_conditions_plot <- ggplot(FSP_RMNP_20200706_2043,             
-               aes(x = wavelength, 
-                   y = reflectance, 
+               aes(x = as.numeric(wavelength), 
+                   y = as.numeric(reflectance), 
                    color = reflectanceCondition)) + geom_line() 
-print(refl_conditions_plot + ggtitle("FSP_RMNP_20200706_2043 - all reflectance conditions"))
+print(refl_conditions_plot + ggtitle("FSP_RMNP_20200706_2043 - all reflectance conditions") + xlab("wavelength (nm)") + ylab("reflectance"))
 
 
 ## ----plot-single-spectra, fig.align="center", fig.width = 12, fig.height = 4.5-------------------------------------------------------------------
 FSP_RMNP_20200706_2043_REFL <- FSP_RMNP_20200706_2043[FSP_RMNP_20200706_2043$reflectanceCondition == "top of foliage (sunward) on black reference", c("reflectance","wavelength")]
 
 spectra_plot <- ggplot(FSP_RMNP_20200706_2043_REFL,
-                       aes(x = wavelength, 
-                           y = reflectance)) + geom_line() 
-print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Black Reference"))
+                       aes(x = as.numeric(wavelength), 
+                           y = as.numeric(reflectance))) + geom_line() 
+print(spectra_plot + ggtitle("FSP_RMNP_20200706_2043_REFL - Top of Foliage on Black Reference") + xlab("wavelength (nm)") + ylab("reflectance"))
 
 
 ## ----create-refl-df------------------------------------------------------------------------------------------------------------------------------
@@ -72,7 +72,8 @@ for (i in 1:nrow(spectra_merge)) {
   spectra_list[[i]] <- refl
 }
 # get the wavelength values corresponding to the subset we selected for each of the spectra
-wavelengths <- as.numeric(refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")])
+wavelengths <- refl_data[which(refl_data$reflectanceCondition == "top of foliage (sunward) on black reference"), c("wavelength")]
+wavelengths <- as.numeric(wavelengths)
 spectra_df <- as.data.frame(do.call(cbind, spectra_list)) # make a new dataframe from the spectra_list
 # assign the taxonID + fspID to the column names to make unique column names
 taxonIDs <- paste0(spectra_merge$taxonID,substr(spectra_merge$spectralSampleID,9,22))
