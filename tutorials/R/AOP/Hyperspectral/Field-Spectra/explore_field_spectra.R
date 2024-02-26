@@ -10,9 +10,9 @@ library(terra)
 
 ## ----field-spectra-info--------------------------------------------------------------------------------------------------------------------------
 field_spectra_info <- neonUtilities::getProductInfo('DP1.30012.001')
-field_spectra_info$siteCodes$siteCode
-#View(field_spectra_info$siteCodes)
-#View(field_spectra_info$siteCodes$availableDataUrls)
+#View(field_spectra_info$siteCodes) 
+#View(field_spectra_info$siteCodes$availableDataUrls) # list available data urls
+field_spectra_info$siteCodes$siteCode # list all available sites
 
 
 ## ----load-field-spectra, results="hide"----------------------------------------------------------------------------------------------------------
@@ -210,7 +210,7 @@ spectra_traits <- merge(spectra_merge,foliar_traits_loc,by="sampleID")
 head(spectra_traits[c("spectralSampleID","locationID.x","tagID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing")])
 
 
-## ----set-wd--------------------------------------------------------------------------------------------------------------------------------------
+## ----set-wd, results="hide"----------------------------------------------------------------------------------------------------------------------
 # set working directory (this will depend on your local environment)
 wd <- "~/data/"
 setwd(wd)

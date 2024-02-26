@@ -6,7 +6,7 @@ dateCreated: 2024-02-12
 authors: Bridget Hass
 contributors: Claire Lunch
 estimatedTime: 1 - 1.5 Hours
-packagesLibraries: neonUtilities, geoNEON, terra, rhdf5, ggplot2, data.table, dplyr, 
+packagesLibraries: neonUtilities, geoNEON, terra, rhdf5, ggplot2, data.table, dplyr
 topics: hyperspectral, foliar traits
 languagesTool: R
 dataProduct: DP1.30012.001, DP1.10026.001, DP3.30006.001
@@ -18,7 +18,7 @@ urlTitle: scale-spectra
 
 In this tutorial, we will go through a scaling exercise to link the <a href="https://data.neonscience.org/data-products/DP1.30012.001" target="_blank">field spectral reflectance</a> and airborne <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">spectrometer orthorectified surface directional reflectance</a>. We will also tie in the <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">plant foliar traits</a> data, which contains the geographic information associated with the field spectra data. 
 
-Field spectral reflectance provide information about individual leaves or foliage, and samples such as these are often used as spectral endmembers in classification applications. A collection of these spectral data can comprise a spectral library, eg. the <a href="https://www.usgs.gov/labs/spectroscopy-lab/science/spectral-library" target="_blank">USGS Spectral Library</a>. This NEON data product is collected on an opportunistic basis, typically in conjunction with NEON AOP overflights and in coordination with TOS Canopy Foliage Sampling. AOP typically collects spectra at 1-2 sites per year, so it is currently available at a subset of the NEON sites. The tutorial also demonstrates how to programmatically find which data are available.
+Field spectral reflectance provide information about individual leaves or foliage, and samples such as these are often used as spectral end-members in classification applications. A collection of these spectral data can comprise a spectral library, eg. the <a href="https://www.usgs.gov/labs/spectroscopy-lab/science/spectral-library" target="_blank">USGS Spectral Library</a>. This NEON data product is collected on an opportunistic basis, typically in conjunction with NEON AOP overflights and in coordination with TOS Canopy Foliage Sampling. AOP typically collects spectra at 1-2 sites per year, so it is currently available at a subset of the NEON sites. The tutorial also demonstrates how to programmatically find which data are available.
 
 
 <div id="ds-objectives" markdown="1">
@@ -40,7 +40,7 @@ You will need the most current version of R and, preferably, `RStudio` loaded on
 ### Install R Packages
 
 * **neonUtilities:** `install.packages("neonUtilities")`
-* **geoNEON:** install.packages("devtools"), devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+* **geoNEON:** `install.packages("devtools")`, `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **data.table:** `install.packages("data.table")`
 * **dplyr:** `install.packages("dplyr")`
@@ -67,18 +67,18 @@ First, load the required libraries.
 
     library(terra)
 
-Before downloading the data, we can explore the data product using the `neonUtilities::getProductInfo`. Let's take a look at the field spectra data product as follows. You can take a look at various components of the `field_spectra_info` variable as well by un-commentning the lines starting with `View`.
+Before downloading the data, we can explore the data product using the `neonUtilities::getProductInfo`. Let's take a look at the field spectra data product as follows. You can take a look at various components of the `field_spectra_info` variable as well by un-commenting the lines starting with `View`.
 
 
     field_spectra_info <- neonUtilities::getProductInfo('DP1.30012.001')
 
-    field_spectra_info$siteCodes$siteCode
+    #View(field_spectra_info$siteCodes) 
+
+    #View(field_spectra_info$siteCodes$availableDataUrls) # list available data urls
+
+    field_spectra_info$siteCodes$siteCode # list all available sites
 
     ##  [1] "DSNY" "GRSM" "GUAN" "HEAL" "ORNL" "OSBS" "PUUM" "RMNP" "SERC" "STEI" "TREE" "UNDE" "WREF" "YELL"
-
-    #View(field_spectra_info$siteCodes)
-
-    #View(field_spectra_info$siteCodes$availableDataUrls)
 
 We can see that there are data available at 14 sites, as of the end of 2023.
 
@@ -433,7 +433,7 @@ As described in the Field Spectra Data Quick Start Guide,
 
 This next section outlines how you would go about finding the geolocation information for the field spectra data. This is necessary if you are doing any sort of scaling exercise with the AOP hyperspectral data, which we will demonstrate next.
 
-Let's start by looking at the product information for this foliar trait data product.
+Let's start by looking at the product information for this foliar trait data product. As before, you can un-comment the `#View` lines to explore this dataset more.
 
 
     foliar_trait_info <- neonUtilities::getProductInfo('DP1.10026.001')
@@ -774,7 +774,7 @@ Hopefully this tutorial provides a bouncing-off point for more exploratory analy
 
 Here are some ideas to pursue on your own:
 
-1. We demonstrated how to plot the field spectral sample together with the aerial reflectance of the pixel. What if there is a geographic mis-match between the field and airborne data? What other approaches could you use to align these datasets (eg. applying a buffer, integrating the CHM data)?
+1. We demonstrated how to plot the field spectral sample together with the airborne remotely sensed reflectance of the pixel. What if there is a geographic mis-match between the field and airborne data? What other approaches could you use to align these datasets (eg. applying a buffer, integrating the CHM data)?
 
 2. Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. Try pulling in that tree crown shape files and plotting the average spectra inside the tree crown area. 
 
