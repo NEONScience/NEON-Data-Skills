@@ -73,7 +73,7 @@
 
 # First let's import the required packages:
 
-# In[ ]:
+# In[27]:
 
 
 import os
@@ -87,7 +87,7 @@ import matplotlib.pyplot as plt
 # ## Read in the datasets
 # To start, we will download the NEON surface reflectance data (DP3.30006.001) which are provided in hdf5 (.h5) format. Use the `download_url` function below to download the data directly from the cloud storage location.
 
-# In[ ]:
+# In[28]:
 
 
 # function to download data stored on the internet in a public url to a local file
@@ -100,7 +100,7 @@ def download_url(url,download_dir):
     file_object.write(r.content)
 
 
-# In[ ]:
+# In[29]:
 
 
 # define the urls for downloading the reflectance tiles
@@ -129,7 +129,7 @@ os.listdir('./data')
 
 # Now that we have an idea of how to use `h5py` to read in an h5 file, let's use this to explore the hyperspectral reflectance data. Note that if the h5 file is stored in a different directory than where you are running your notebook, you need to include the path (either relative or absolute) to the directory where that data file is stored. Use `os.path.join` to create the full path of the file. 
 
-# In[ ]:
+# In[30]:
 
 
 # Note that you may need to update this filepath for your local machine
@@ -140,7 +140,7 @@ f = h5py.File('./data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5','r')
 # 
 # We can look inside the HDF5 dataset with the ```h5py visititems``` function. The ```list_dataset``` function defined below displays all datasets stored in the hdf5 file and their locations within the hdf5 file:
 
-# In[ ]:
+# In[31]:
 
 
 #list_dataset lists the names of datasets in an hdf5 file
@@ -158,7 +158,7 @@ f.visititems(list_dataset)
 # 
 # We can also display the name, shape, and type of each of these datasets using the `ls_dataset` function defined below, which is also called with the `visititems` method: 
 
-# In[ ]:
+# In[32]:
 
 
 #ls_dataset displays the name, shape, and type of datasets in hdf5 file
@@ -170,7 +170,7 @@ def ls_dataset(name,node):
 # Data Tip: To see what the visititems method (or any method) does, type ? at the end, eg.
 # `f.visititems?`
 
-# In[ ]:
+# In[33]:
 
 
 f.visititems(ls_dataset)
@@ -178,7 +178,7 @@ f.visititems(ls_dataset)
 
 # Now that we can see the structure of the hdf5 file, let's take a look at some of the information that is stored inside. Let's start by extracting the reflectance data, which is nested under `SERC/Reflectance/Reflectance_Data`:  
 
-# In[ ]:
+# In[34]:
 
 
 serc_refl = f['SERC']['Reflectance']
@@ -187,7 +187,7 @@ print(serc_refl)
 
 # The two members of the HDF5 group `/SERC/Reflectance` are `Metadata` and `Reflectance_Data`. Let's save the reflectance data as the variable serc_reflArray:
 
-# In[ ]:
+# In[35]:
 
 
 serc_reflArray = serc_refl['Reflectance_Data']
@@ -196,7 +196,7 @@ print(serc_reflArray)
 
 # We can extract the size of this reflectance array that we extracted using the `shape` method:
 
-# In[ ]:
+# In[36]:
 
 
 refl_shape = serc_reflArray.shape
@@ -216,7 +216,7 @@ print('SERC Reflectance Data Dimensions:',refl_shape)
 # 
 # NEON hyperspectral data contain around 426 spectral bands, and when working with tiled data, the spatial dimensions are 1000 x 1000, where each pixel represents 1 meter. Now let's take a look at the wavelength values. First, we will extract wavelength information from the `serc_refl` variable that we created:
 
-# In[ ]:
+# In[37]:
 
 
 #define the wavelengths variable
@@ -228,7 +228,7 @@ print('wavelengths:',wavelengths)
 
 # We can then use `numpy` (imported as `np`) to see the minimum and maximum wavelength values:
 
-# In[ ]:
+# In[38]:
 
 
 # Display min & max wavelengths
@@ -238,7 +238,7 @@ print('max wavelength:', np.amax(wavelengths),'nm')
 
 # Finally, we can determine the band widths (distance between center bands of two adjacent bands). Let's try this for the first two bands and the last two bands. Remember that Python uses 0-based indexing (`[0]` represents the first value in an array), and note that you can also use negative numbers to splice values from the end of an array (`[-1]` represents the last value in an array).
 
-# In[ ]:
+# In[39]:
 
 
 #show the band widths between the first 2 bands and last 2 bands 
@@ -248,14 +248,14 @@ print('band width between last 2 bands =',(wavelengths[-1]-wavelengths[-2]),'nm'
 
 # The center wavelengths recorded in this hyperspectral cube range from 383.88 - 2512.18 nm, and each band covers a range of ~5 nm. Now let's extract spatial information, which is stored under `SERC/Reflectance/Metadata/Coordinate_System/Map_Info`:
 
-# In[ ]:
+# In[40]:
 
 
 serc_mapInfo = serc_refl['Metadata']['Coordinate_System']['Map_Info']
 print('SERC Map Info:',serc_mapInfo)
 
 
-# In[ ]:
+# In[41]:
 
 
 serc_mapInfo[()]
@@ -281,14 +281,14 @@ serc_mapInfo[()]
 # 
 # Let's extract relevant information from the `Map_Info` metadata to define the spatial extent of this dataset. To do this, we can use the `split` method to break up this string into separate values:
 
-# In[ ]:
+# In[42]:
 
 
 #First convert mapInfo to a string
 mapInfo_string = serc_mapInfo[()].decode("utf-8") # read in as string
 
 
-# In[ ]:
+# In[43]:
 
 
 #split the strings using the separator "," 
@@ -298,7 +298,7 @@ print(mapInfo_split)
 
 # Now we can extract the spatial information we need from the map info values, convert them to the appropriate data type (float) and store it in a way that will enable us to access and apply it later when we want to plot the data: 
 
-# In[ ]:
+# In[44]:
 
 
 #Extract the resolution & convert to floating decimal number
@@ -306,7 +306,7 @@ res = float(mapInfo_split[5]),float(mapInfo_split[6])
 print('Resolution:',res)
 
 
-# In[ ]:
+# In[45]:
 
 
 #Extract the upper left-hand corner coordinates from mapInfo
@@ -320,7 +320,7 @@ yMin = yMax - (refl_shape[0]*res[1]) #yMin = top edge - (# of rows * y pixel res
 
 # Now we can define the spatial extent as the tuple `(xMin, xMax, yMin, yMax)`. This is the format required for applying the spatial extent when plotting with `matplotlib.pyplot`.
 
-# In[ ]:
+# In[46]:
 
 
 #Define extent as a tuple:
@@ -333,7 +333,7 @@ print('serc_ext type:',type(serc_ext))
 
 # While it is useful to have all the data contained in a hyperspectral cube, it is difficult to visualize all this information at once. We can extract a single band (representing a ~5nm band, approximating a single wavelength) from the cube by using splicing as follows. Note that we have to cast the reflectance data into the type `float`. Recall that since Python indexing starts at 0 instead of 1, in order to extract band 56, we need to use the index 55.
 
-# In[ ]:
+# In[47]:
 
 
 b56 = serc_reflArray[:,:,55].astype(float)
@@ -358,7 +358,7 @@ print('Band 56 Reflectance:\n',b56)
 # 
 # We can extract and apply the `Data_Ignore_Value` and `Scale_Factor` as follows:
 
-# In[ ]:
+# In[48]:
 
 
 #View and apply scale factor and data ignore value
@@ -376,7 +376,7 @@ print('Cleaned Band 56 Reflectance:\n',b56)
 # 
 # Now we can plot this band using the Python package ```matplotlib.pyplot```, which we imported at the beginning of the lesson as ```plt```. Note that the default colormap is jet unless otherwise specified. You can explore using different colormaps on your own; see the <a href="https://matplotlib.org/examples/color/colormaps_reference.html" target="_blank">mapplotlib colormaps</a> for  for other options. 
 
-# In[ ]:
+# In[49]:
 
 
 serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys') 
@@ -388,7 +388,7 @@ serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys')
 # 
 # We can plot a histogram using the `matplotlib.pyplot.hist` function. Note that this function won't work if there are any NaN values, so we can ensure we are only plotting the real data values using the call below. You can also specify the # of bins you want to divide the data into. 
 
-# In[ ]:
+# In[50]:
 
 
 plt.hist(b56[~np.isnan(b56)],50); #50 signifies the # of bins
@@ -396,7 +396,7 @@ plt.hist(b56[~np.isnan(b56)],50); #50 signifies the # of bins
 
 # We can see that most of the reflectance values are < 0.4. In order to show more contrast in the image, we can adjust the colorlimit (`clim`) to 0-0.4:
 
-# In[ ]:
+# In[51]:
 
 
 serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys',clim=(0,0.4)) 
@@ -411,25 +411,14 @@ plt.title('SERC Band 56 Reflectance');
 # 
 # Histogram equalization is a method in image processing of contrast adjustment using the image's histogram. Stretching the histogram can improve the contrast of a displayed image, as we will show how to do below. 
 # 
-#  <figure>
-# 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/histogram_equalization.png">
-# 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/histogram_equalization.png"></a>
-# 	<figcaption> Histogram equalization is a method in image processing of contrast adjustment 
-# using the image's histogram. Stretching the histogram can improve the contrast 
-# of a displayed image, as we will show how to do below.
-# 	Source: <a href="https://en.wikipedia.org/wiki/Talk%3AHistogram_equalization#/media/File:Histogrammspreizung.png"> Wikipedia - Public Domain </a>
-# 	</figcaption>
-# </figure>
-# 
-# 
-# *The following tutorial section is adapted from scikit-image's tutorial
-# <a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.*
+# The following code is adapted from scikit-image's tutorial
+# <a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.
 # 
 # Below we demonstrate a widget to interactively explore different linear contrast stretches:
 
 # ### Explore the contrast stretch feature interactively using IPython widgets: 
 
-# In[ ]:
+# In[52]:
 
 
 from skimage import exposure
