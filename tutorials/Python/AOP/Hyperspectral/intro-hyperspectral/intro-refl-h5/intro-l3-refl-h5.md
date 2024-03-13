@@ -10,9 +10,9 @@ packagesLibraries: numpy, h5py, gdal, matplotlib, scikit-image, ipywidgets
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, reflectance
 languagesTool: python
 dataProduct: DP3.30006.001,
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/Intro_NEON_AOP_HDF5_Reflectance_Tiles_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5.ipynb
 tutorialSeries: intro-hsi-py-series
-urlTitle: neon-h5-refl-py
+urlTitle: neon-refl-h5-py
 ---
 
 
