@@ -10,7 +10,7 @@ packagesLibraries: os, sys, numpy, matplotlib, gdal, scipy, scikit-learn, scikit
 topics: lidar, remote-sensing
 languagesTool: python
 dataProduct: DP1.10098.001, DP3.30015.001 
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-biomass/calc-biomass_py/calc-biomass_py.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py/calc-biomass_py.ipynb
 tutorialSeries: intro-lidar-py-series
 urlTitle: calc-biomass-py
 ---
