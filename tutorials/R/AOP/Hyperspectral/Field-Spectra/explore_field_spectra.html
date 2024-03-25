@@ -80,8 +80,8 @@ section.footnotes::before {
 <div class="date"><h3></h3></div>
 </div>
 <div class="body">
-<p>In this tutorial, we will go through a scaling exercise to link the <a href="https://data.neonscience.org/data-products/DP1.30012.001" target="_blank">field spectral reflectance</a> and airborne <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">spectrometer orthorectified surface directional reflectance</a>. We will also tie in the <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">plant foliar traits</a> data, which contains the geographic information and other metadata about the plants measured for associated with the field spectra data.</p>
-<p>Field spectral reflectance provide information about individual leaves or foliage, and samples such as these are often used as spectral end-members in classification applications. A collection of these spectral data can comprise a spectral library, eg. the <a href="https://www.usgs.gov/labs/spectroscopy-lab/science/spectral-library" target="_blank">USGS Spectral Library</a>. This NEON data product is collected on an opportunistic basis, typically in conjunction with NEON Airborne Observation Platform (AOP) overflights and in coordination with TOS Canopy Foliage Sampling. AOP typically collects spectra at 1-2 sites per year, so it is currently available at a subset of the NEON sites. The tutorial also demonstrates how to programmatically determine which data are available.</p>
+<p>In this tutorial, we will demonstrate a scaling exercise to link the NEON <a href="https://data.neonscience.org/data-products/DP1.30012.001" target="_blank">field spectral reflectance</a> and airborne <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">spectrometer orthorectified surface directional reflectance</a> datasets. We will also tie in the <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">plant foliar traits</a> data, which contains the geographic information and other metadata about the plants associated with the field spectra data.</p>
+<p>Field spectral reflectance provide information about individual leaves or foliage, and samples such as these are often used as spectral end-members in classification applications. A collection of these spectral data can comprise a spectral library, eg. the <a href="https://www.usgs.gov/labs/spectroscopy-lab/science/spectral-library" target="_blank">USGS Spectral Library</a>. This NEON data product is collected on an opportunistic basis, typically in conjunction with NEON Airborne Observation Platform (AOP) overflights and in coordination with Terrestrial Observation System (TOS) Canopy Foliage Sampling. AOP typically collects spectra at 1-2 sites per year, so it is currently available at a subset of the NEON sites. The tutorial also demonstrates how to programmatically determine which data are available.</p>
 <div id="ds-objectives" markdown="1">
 <h2 id="learning-objectives">Learning Objectives</h2>
 <p>After completing this activity, you will be able to:</p>
@@ -313,7 +313,7 @@ print(potr5_picol_plot + ggtitle(&quot;Comparison PICOL (Lodgepole Pine) and POT
 
 #View(foliar_trait_info$siteCodes$availableDataUrls)
 </code></pre>
-<p>We can get the <code>availableDataUrls</code> of the RMNP site as follows:</p>
+<p>We can get the <code>availableDataUrls</code> of the RMNP site as follows. This step is not required, but as we showed with the field spectral data, this is a way to see what foliar trait data are available for a given site, since the canopy foliar sampling does not occur every year.</p>
 <pre><code># view the RMNP foliar trait available data urls
 
 foliar_trait_info$siteCodes[which(foliar_trait_info$siteCodes$siteCode == 'RMNP'),c(&quot;availableDataUrls&quot;)]
@@ -341,7 +341,7 @@ names(foliar_traits)
 <p>Since the spectra_top_black table includes the wavelength and reflectance values for all 426 bands, we can first subset it to only include a single wavelength.</p>
 <pre><code>spectra_traits &lt;- merge(spectra_top_black,foliar_traits_loc,by=&quot;sampleID&quot;)
 
-# display values of only first wavelength
+# display values of only first wavelength for each sample
 
 spectra_traits_sub &lt;- merge(spectra_top_black[spectra_top_black$wavelength == 350,],foliar_traits_loc,by=&quot;sampleID&quot;)
 
@@ -373,8 +373,6 @@ spectra_traits_sub[c(&quot;spectralSampleID&quot;,&quot;taxonID&quot;,&quot;stem
 ## 23 FSP_RMNP_20200707_2058   PIPOS          7.4        73.0   456379.8     4450485 RMNP.03868.2020
 ## 24 FSP_RMNP_20200716_1202    PSME         16.4       338.2   459056.9     4450435 RMNP.03836.2020
 ## 25 FSP_RMNP_20200713_1117   PICOL          9.3        25.4   460126.2     4449769 RMNP.03626.2020
-
-#head(spectra_traits[c(&quot;spectralSampleID&quot;,&quot;taxonID&quot;,&quot;stemDistance&quot;,&quot;stemAzimuth&quot;,&quot;adjEasting&quot;,&quot;adjNorthing&quot;,&quot;crownPolygonID&quot;)],1)
 </code></pre>
 <p>Great, now we have the field spectra data and the corresponding locations of the leaf-clip samples.</p>
 <h2 id="airborne-reflectance-data">Airborne Reflectance Data</h2>
@@ -448,7 +446,7 @@ h5_file &lt;- paste0(wd,&quot;DP3.30006.001/neon-aop-products/2020/FullSite/D10/
     return(refl_out) # return the terra raster object
 }
 </code></pre>
-<p>Now that we’ve defined these functions, we can run <code>lapply</code> on the band2Raster function, using all the bands. This may take a minute or two to run.</p>
+<p>Now that we’ve defined these functions, we can run <code>lapply</code> on the <code>band2Raster</code> function, using all the bands. This may take a minute or two to complete.</p>
 <pre><code># get the relevant metadata using the geth5metadata function
 
 h5_meta &lt;- geth5metadata(h5_file)
@@ -471,7 +469,7 @@ refl_rast &lt;- rast(refl_list)
 <p>We can also plot an RGB image. First we’ll run <code>lapply</code> on the band2Raster function, this time using a list only consisting of the RGB bands:</p>
 <pre><code>rgb &lt;- list(58,34,19)
 
-# lapply tells R to apply the function to each element in the list
+# lapply applies the function to each element in the RGB list
 
 rgb_list &lt;- lapply(rgb,
                     FUN = band2Raster,
@@ -489,8 +487,6 @@ rgb_rast &lt;- rast(rgb_list)
 
 tree_loc &lt;- vect(cbind(fsp_rmnp_picol_20200720_1304$adjEasting,
                        fsp_rmnp_picol_20200720_1304$adjNorthing), crs=h5_meta$crs)
-
-# plot
 
 plot(tree_loc, col=&quot;red&quot;, add = T)
 </code></pre>
@@ -510,8 +506,6 @@ plot(tree_loc, col=&quot;red&quot;, add = T)
                     cbind(fsp_rmnp_picol_20200720_1304$adjEasting[1],
                           fsp_rmnp_picol_20200720_1304$adjNorthing[1]))
 
-
-
 refl_air_df &lt;- data.frame(t(refl_air))
 
 refl_air_df$wavelengths &lt;- h5_meta$wavelengths
@@ -519,8 +513,6 @@ refl_air_df$wavelengths &lt;- h5_meta$wavelengths
 names(refl_air_df) &lt;- c('reflectance','wavelength')
 
 refl_air_df$reflectance &lt;- refl_air_df$reflectance/10000 #scale by reflectance scale factor (10,000)
-
-
 
 picol_air_plot &lt;- ggplot(refl_air_df, aes(x=wavelength, y=reflectance)) + geom_line() + ylim(0,.25)
 
@@ -558,7 +550,7 @@ print(spectra_plot + ggtitle(&quot;Spectra of PICOL Leaf Clip Sample &amp; Corre
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/combine-fps-refl-df-plot-1.png" alt=" "  />
 <p class="caption"> </p>
 </div>
-Why is there a difference between the leaf-clip spectra and the remotely-sensed spectra of the corresponding pixel? Here are a few things to consider ...
+Why is there a difference between the leaf-clip spectra and the remotely-sensed spectra of the corresponding pixel? 
 <p>Each reflectance pixel represents a 1m x 1m area, so it contains an average spectra of all the vegetation and non-vegetation that are contained in that area. For example, a single pixel could contain the reflectance of a mix of leaves as well as branches, and any gaps in the tree canopy (eg. the ground under the tree). This averaging is called “spectral mixing” and you can perform “spectral un-mixing” to decompose an average spectra into it’s component parts. These leaf clip spectra can be used as “end-members”, in classification applications, for example.</p>
 <p>Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform attempts to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).</p>
 <h3 id="incorporating-the-tree-crown-polygon-shapefiles">Incorporating the Tree Crown Polygon Shapefiles</h3>
@@ -633,19 +625,13 @@ print(picol_crown_plot + ggtitle(&quot;Airborne Reflectance Spectra of Tree Crow
 
 combined_df &lt;- bind_rows(fsp_rmnp_picol_20200720_1304[c(&quot;wavelength&quot;,&quot;reflectance&quot;)],picol_crown_df[c(&quot;wavelength&quot;,&quot;reflectance&quot;)])
 
-
-
 # add a new column to indicate spectra data source
 
 combined_df$spectra_source &lt;- c(rep(&quot;leaf-clip reflectance&quot;, nrow(fsp_rmnp_picol_20200720_1304)), rep(&quot;airborne reflectance&quot;, nrow(picol_crown_df)))
 
-
-
 spectra_crown_plot &lt;- ggplot() + 
   geom_line(data=combined_df, aes(x=wavelength, y=reflectance, color=spectra_source), show.legend=TRUE) +
   labs(x=&quot;Wavelength (nm)&quot;,  y=&quot;Reflectance&quot;) + theme(legend.position = c(0.8, 0.8)) +  ylim(0, 0.5)
-
-
 
 print(spectra_crown_plot + ggtitle(&quot;Spectra of PICOL Leaf Clip Sample &amp; Corresponding Airborne Tree-Crown Pixels at RMNP&quot;))
 </code></pre>
@@ -653,9 +639,10 @@ print(spectra_crown_plot + ggtitle(&quot;Spectra of PICOL Leaf Clip Sample &amp;
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/combine-fsp-crown-poly-spectra-plot-1.png" alt=" "  />
 <p class="caption"> </p>
 </div>
-<p>Again we can see there is some discrepancy between the airborne and field spectra, and that there is a decent amount of variation in the spectra of all the pixels contained in the tree crown. The leaf-clip spectra is one “end-member” that contributes to the 1-m pixel combined reflectance. This exploratory analysis</p>
-<h3 id="next-steps">Next Steps</h3>
-<p>This tutorial demonstrates a simple example of linking the field spectra data and AOP reflectance data for a single sample, using geographic data included in the foliar sampling datasets, as well as crown polygon shapefile data. This is intended to provide a bouncing-off point for more exploratory analysis and/or in-depth research. What else might you want to explore, using these linked datasets?</p>
+<p>Again we can see there is some discrepancy between the airborne and field spectra, and there is a decent amount of variation between the spectra of the pixels contained within the tree crown polygon. The leaf-clip spectra is one “end-member” that contributes to the 1-m pixel combined reflectance. The exploratory anaysis demonstrated in this tutorial is an example of some steps you might take to get a feel for the data. We recommend you explore some other samples, or other field spectra datasets and build off this R code to answer some questions you come up with as you start digging into the data.</p>
+<div id="next-steps" markdown="1">
+<h3 id="next-steps-on-your-own">Next Steps (On Your Own)</h3>
+<p>This tutorial demonstrates a simple example of linking the field spectra data and AOP airborne reflectance data for a single sample, using geographic data included in the foliar traits datasets, as well as crown polygon shapefile data. This is intended to provide a bouncing-off point for more exploratory analysis and/or in-depth research. What else might you want to explore, using these linked datasets?</p>
 <p>Here are some ideas to pursue on your own:</p>
 <ol>
 <li>
@@ -665,6 +652,7 @@ print(spectra_crown_plot + ggtitle(&quot;Spectra of PICOL Leaf Clip Sample &amp;
 <p>This lesson demonstrates linking the airborne and leaf-clip spectral data for a single species. Your analysis might require running this kind of comparison for all of the spectral samples. How might you re-structure or re-factor the code to do this?</p>
 </li>
 </ol>
+</div>
 </div>
 </body>
 </html>

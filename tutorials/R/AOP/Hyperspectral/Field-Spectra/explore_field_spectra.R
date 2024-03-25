@@ -140,10 +140,9 @@ foliar_traits_loc <- merge(foliar_traits$cfc_fieldData,vst.loc,by="individualID"
 
 ## ----spectra-traits---------------------------------------------------------------------------------------------------------------------------------
 spectra_traits <- merge(spectra_top_black,foliar_traits_loc,by="sampleID")
-# display values of only first wavelength
+# display values of only first wavelength for each sample
 spectra_traits_sub <- merge(spectra_top_black[spectra_top_black$wavelength == 350,],foliar_traits_loc,by="sampleID")
 spectra_traits_sub[c("spectralSampleID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing","crownPolygonID")]
-#head(spectra_traits[c("spectralSampleID","taxonID","stemDistance","stemAzimuth","adjEasting","adjNorthing","crownPolygonID")],1)
 
 
 ## ----set-wd, results="hide"-------------------------------------------------------------------------------------------------------------------------
@@ -229,7 +228,7 @@ refl_rast <- rast(refl_list)
 
 ## ----refl-to-rgb-rast-------------------------------------------------------------------------------------------------------------------------------
 rgb <- list(58,34,19)
-# lapply tells R to apply the function to each element in the list
+# lapply applies the function to each element in the RGB list
 rgb_list <- lapply(rgb,
                     FUN = band2Raster,
                     h5_file = h5_file,
@@ -244,7 +243,6 @@ plotRGB(rgb_rast,stretch='lin',axes=TRUE)
 #convert the data frame into a shape file (vector)
 tree_loc <- vect(cbind(fsp_rmnp_picol_20200720_1304$adjEasting,
                        fsp_rmnp_picol_20200720_1304$adjNorthing), crs=h5_meta$crs)
-# plot
 plot(tree_loc, col="red", add = T)
 
 
@@ -259,12 +257,10 @@ plot(tree_loc, col="red", add = T)
 refl_air <- extract(refl_rast, 
                     cbind(fsp_rmnp_picol_20200720_1304$adjEasting[1],
                           fsp_rmnp_picol_20200720_1304$adjNorthing[1]))
-
 refl_air_df <- data.frame(t(refl_air))
 refl_air_df$wavelengths <- h5_meta$wavelengths
 names(refl_air_df) <- c('reflectance','wavelength')
 refl_air_df$reflectance <- refl_air_df$reflectance/10000 #scale by reflectance scale factor (10,000)
-
 picol_air_plot <- ggplot(refl_air_df, aes(x=wavelength, y=reflectance)) + geom_line() + ylim(0,.25)
 print(picol_air_plot + ggtitle("Airborne Reflectance Spectra of PICOL at RMNP"))
 
@@ -331,13 +327,10 @@ print(picol_crown_plot + ggtitle("Airborne Reflectance Spectra of Tree Crown Pol
 ## ----combine-fsp-crown-poly-spectra-plot, fig.align="center", fig.width = 12, fig.height = 4.5------------------------------------------------------
 # create a combined dataframe of the leaf clip spectra (fsp_rmnp_picol) and the tree crown pixel spectra (picol_crown_df)
 combined_df <- bind_rows(fsp_rmnp_picol_20200720_1304[c("wavelength","reflectance")],picol_crown_df[c("wavelength","reflectance")])
-
 # add a new column to indicate spectra data source
 combined_df$spectra_source <- c(rep("leaf-clip reflectance", nrow(fsp_rmnp_picol_20200720_1304)), rep("airborne reflectance", nrow(picol_crown_df)))
-
 spectra_crown_plot <- ggplot() + 
   geom_line(data=combined_df, aes(x=wavelength, y=reflectance, color=spectra_source), show.legend=TRUE) +
   labs(x="Wavelength (nm)",  y="Reflectance") + theme(legend.position = c(0.8, 0.8)) +  ylim(0, 0.5)
-
 print(spectra_crown_plot + ggtitle("Spectra of PICOL Leaf Clip Sample & Corresponding Airborne Tree-Crown Pixels at RMNP"))
 
