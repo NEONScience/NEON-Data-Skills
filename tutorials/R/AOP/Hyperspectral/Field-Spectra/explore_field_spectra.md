@@ -697,6 +697,6 @@ Here are some ideas to pursue on your own:
 
 1. We demonstrated how to plot the field spectral sample together with the airborne remotely sensed reflectance of the pixel. What if there is a geographic mis-match between the field and airborne data? What other approaches could you use to align these datasets (eg. applying a buffer, integrating the CHM data)? What other factors might you want to consider (eg. shading of some of the tree crown pixels, etc.)?
 
-2. This lesson demonstrates linking the airborne and leaf-clip spectral data for a single species. Your analysis might require running this kind of comparison for all of the spectral samples. How might you re-structure or re-factor the code to do this?
+2. This lesson demonstrates linking the airborne and leaf-clip spectral data for a single species. Your analysis might require running this kind of comparison for all of the spectral samples. How might you build upon the code to do this? What re-factoring would be needed?
 
 </div>
