@@ -288,7 +288,7 @@ print(spectra_plot + ggtitle("Spectra of PICOL Leaf Clip Sample & Corresponding 
 ## ----read-crown-poly-shp----------------------------------------------------------------------------------------------------------------------------
 shp_file <- paste0('~/data/','RMNP/RMNP-2020-polygons-v2/RMNP-2020-polygons.shp')
 rmnp_crown_poly <- terra::vect(shp_file)
-crs(rmnp_crown_poly, describe=TRUE)
+crs(rmnp_crown_poly, describe=TRUE) # display dataframe describing the CRS
 # cat(crs(rmnp_crown_poly), "\n")
 
 
@@ -310,7 +310,7 @@ refl_crown_df$wavelengths <- h5_meta$wavelengths
 names(refl_crown_df) <- c('1','2','3','4','5','6','wavelength')
 row.names(refl_crown_df) <- NULL #reset the row names so they represent the band #s
 picol_crown_df <- melt(refl_crown_df, id.vars = 'wavelength', value.name = 'reflectance', variable.name = 'crown_pixel')
-# head(picol_crown_df[c("crown_pixel","wavelength","reflectance")]) #optionally display the data
+# head(picol_crown_df[c("crown_pixel","wavelength","reflectance")]) #optionally display the first part of the data
 
 
 ## ----plot-picol-crown-pixels, fig.align="center", fig.width = 12, fig.height = 4.5------------------------------------------------------------------

@@ -4,10 +4,10 @@ title: "Explore Field Spectra Data - Scaling Ground and Airborne Observations"
 description: "Explore the field spectra data product, link field spectra to airborne surface reflectance data."
 dateCreated: 2024-02-12
 authors: Bridget Hass
-contributors: Claire Lunch
+contributors: Claire Lunch, Samantha Weintraub-Leff
 estimatedTime: 1.5 Hours
 packagesLibraries: neonUtilities, geoNEON, neonOS, terra, rhdf5, ggplot2, dplyr, reshape2
-topics: hyperspectral, foliar traits
+topics: hyperspectral, foliar traits, remote-sensing, reflectance
 languagesTool: R
 dataProduct: DP1.30012.001, DP1.10026.001, DP3.30006.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/explore-field-spectra.R
@@ -18,7 +18,7 @@ urlTitle: explore-field-spectra
 
 In this tutorial, we will demonstrate a scaling exercise to link the NEON <a href="https://data.neonscience.org/data-products/DP1.30012.001" target="_blank">field spectral reflectance</a> and airborne <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">spectrometer orthorectified surface directional reflectance</a> datasets. We will also tie in the <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">plant foliar traits</a> data, which contains the geographic information and other metadata about the plants associated with the field spectra data.
 
-Field spectral reflectance provide information about individual leaves or foliage, and samples such as these are often used as spectral end-members in classification applications. A collection of these spectral data can comprise a spectral library, eg. the <a href="https://www.usgs.gov/labs/spectroscopy-lab/science/spectral-library" target="_blank">USGS Spectral Library</a>. This NEON data product is collected on an opportunistic basis, typically in conjunction with NEON Airborne Observation Platform (AOP) overflights and in coordination with Terrestrial Observation System (TOS) Canopy Foliage Sampling. AOP typically collects spectra at 1-2 sites per year, so it is currently available at a subset of the NEON sites. The tutorial also demonstrates how to programmatically determine which data are available.
+Field spectral reflectance provide information about individual leaves or foliage, and samples such as these are often used as spectral end-members in classification applications. These data are measured with a hand-held Analytical Spectral Device (ASD). A collection of these spectral data can comprise a spectral library, eg. the <a href="https://www.usgs.gov/labs/spectroscopy-lab/science/spectral-library" target="_blank">USGS Spectral Library</a>. This data product is collected on an opportunistic basis, typically in conjunction with NEON Airborne Observation Platform (AOP) overflights and in coordination with Terrestrial Observation System (TOS) Canopy Foliage Sampling. AOP typically collects spectra at 1-2 sites per year, so it is currently available at a subset of the NEON sites. The tutorial also demonstrates how to programmatically determine which data are available.
 
 
 <div id="ds-objectives" markdown="1">
@@ -44,6 +44,7 @@ You will need the most current version of R and, preferably, `RStudio` loaded on
 * **geoNEON:** `install.packages("devtools")`, `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
+* **reshape2:** `install.packages("reshape2")`
 * **rhdf5:** `install.packages("rhdf5")`
 * **terra:** `install.packages("terra")`
 
@@ -98,9 +99,8 @@ Let's take a look at all the associated tables contained in this data product, u
 
     names(field_spectra)
 
-    ##  [1] "categoricalCodes_30012"      "citation_30012_RELEASE-2024" "fsp_boutMetadata"            "fsp_sampleMetadata"         
-    ##  [5] "fsp_spectralData"            "issueLog_30012"              "per_sample"                  "readme_30012"               
-    ##  [9] "validation_30012"            "variables_30012"
+    ## [1] "categoricalCodes_30012" "fsp_boutMetadata"       "fsp_sampleMetadata"     "fsp_spectralData"       "issueLog_30012"        
+    ## [6] "per_sample"             "readme_30012"           "validation_30012"       "variables_30012"
 We encourage looking at all of these tables to learn more about the data product, but you can find the actual data stored in the variables: `fsp_boutMetadata` (contains metadata information about this sampling bout), `fsp_sampleMetadata` (contains relevant metadata about the individual samples), `fsp_spectralData` (contains information about the individual sample data), and `per_sample` (contains the wavelength and reflectance data). Next, we can merge the `fsp_spectralData`, `fsp_sampleMetadata` and `per_sample` into a single data frame as follows. For more info on joining OS tables, please refer to https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins.
 
 
@@ -478,7 +478,7 @@ Now that we've defined these functions, we can run `lapply` on the `band2Raster`
 
     refl_rast <- rast(refl_list)
 
-We can also plot an RGB image. First we'll run `lapply` on the band2Raster function, this time using a list only consisting of the RGB bands:
+We can also plot an RGB image. First we'll run `lapply` on the `band2Raster` function, this time using a list only consisting of the RGB bands:
 
 
     rgb <- list(58,34,19)
@@ -585,9 +585,9 @@ Also, it is important to understand that there are uncertainties in the ASD meas
 
 ### Incorporating Tree Crown Polygon Shapefiles
 
-Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown shapefil data are not available for all of the canopy foliar data, but if they are available, it is recommended to use them. The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area. 
+Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown shapefiles are not available for all of the canopy foliar data, but if they are available, it is recommended to use them. The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area. 
 
-First, we can use the `neonUtilities::loadByProduct` and `zipsByURI` functions to download all the tree crown polygon shapefile data, as follows. If you are not sure what crown polygon data are available, this would be the recommended way to determine that as well.
+First, we can use the `neonUtilities::loadByProduct` and `zipsByURI` functions to download all the tree crown polygon shapefile data, as follows. This is also the recommended way to determine which crown polygon data are available, across all the sites.
 
 
     crown_polys <- loadByProduct(dpID='DP1.10026.001', 
@@ -600,20 +600,20 @@ First, we can use the `neonUtilities::loadByProduct` and `zipsByURI` functions t
 
     zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
 
-Next we can read in the polygon data as a terra SpatialVec object as follows. Display the coordinate reference system (CRS) information. You can un-comment the last line to display more detailed info about the CRS.
+Next we can read in the polygon data as a terra `SpatVector` object as follows. Display the coordinate reference system (CRS) information. You can un-comment the last line to display more detailed information about the CRS.
 
 
     shp_file <- paste0('~/data/','RMNP/RMNP-2020-polygons-v2/RMNP-2020-polygons.shp')
 
     rmnp_crown_poly <- terra::vect(shp_file)
 
-    crs(rmnp_crown_poly, describe=TRUE)
+    crs(rmnp_crown_poly, describe=TRUE) # display dataframe describing the CRS
 
     ##                       name authority code                              area                         extent
     ## 1 WGS 84 / Pseudo-Mercator      EPSG 3857 World between 85.06°S and 85.06°N -180.00, 180.00, 85.06, -85.06
 
     # cat(crs(rmnp_crown_poly), "\n")
-You can see that this data has EPSG code 3857, which does not match the AOP raster data, which is in UTM 13N (EPSG 32613) for this site. We can re-project the vector data so that both datasets are in the same projection. Note that NEON is planning to update the CRS of the polygon data to match the AOP raster data, but this is not currently available (as of Spring 2024).
+You can see that this data has EPSG code 3857, which does not match the AOP raster data, which is in UTM 13N (EPSG 32613) for this site. We can re-project the vector data so that both datasets align. Note that NEON is planning to update the CRS of the polygon data to match the AOP raster data, but this is not currently available (as of Spring 2024).
 
 
     rmnp_crown_poly_UTM13N <- project(rmnp_crown_poly, "EPSG:32613")
@@ -646,9 +646,9 @@ We can again use `terra:extract` to pull out the reflectance values of all the p
 
     picol_crown_df <- melt(refl_crown_df, id.vars = 'wavelength', value.name = 'reflectance', variable.name = 'crown_pixel')
 
-    # head(picol_crown_df[c("crown_pixel","wavelength","reflectance")]) #optionally display the data
+    # head(picol_crown_df[c("crown_pixel","wavelength","reflectance")]) #optionally display the first part of the data
 
-Plot the spectra of all the pixels in the tree crown polygon, first applpying the reflectance scale factor.
+Plot the spectra of all the pixels in the tree crown polygon, first applying the reflectance scale factor.
 
 
     picol_crown_df$reflectance <- (picol_crown_df$reflectance/10000)
@@ -663,7 +663,7 @@ Plot the spectra of all the pixels in the tree crown polygon, first applpying th
 <p class="caption"> </p>
 </div>
 
-Lastly, let's plot the reflectance of the airborne hyperspectral data (all pixels in the tree-crown polygon) along with the leaf-clip spectra.
+Great, we've plotted the reflectance curves of all the pixels captured within the tree crown polygon area. What might cause some of the differences between these spectral signatures? Lastly, let's plot the reflectance of the airborne hyperspectral data (all pixels in the tree-crown polygon) along with the ground-measured leaf-clip spectra.
 
 
     # create a combined dataframe of the leaf clip spectra (fsp_rmnp_picol) and the tree crown pixel spectra (picol_crown_df)
@@ -685,7 +685,8 @@ Lastly, let's plot the reflectance of the airborne hyperspectral data (all pixel
 <p class="caption"> </p>
 </div>
 
-Again we can see there is some discrepancy between the airborne and field spectra, and there is a decent amount of variation between the spectra of the pixels contained within the tree crown polygon. The leaf-clip spectra is one "end-member" that contributes to the 1-m pixel combined reflectance. The exploratory anaysis demonstrated in this tutorial is an example of some steps you might take to get a feel for the data. We recommend you explore some other samples, or other field spectra datasets and build off this R code to answer some questions you come up with as you start digging into the data.
+Again we can see there is some discrepancy between the airborne and field spectra, and there is a decent amount of variation between the spectra of the pixels contained within the tree crown polygon. The leaf-clip spectra is one "end-member" that contributes to the 1-m pixel combined reflectance. The exploratory analysis demonstrated in this tutorial is an example of some steps you might take to get a feel for the data. We recommend you explore some other samples at this site, or field spectra data at another site, building off this R code to answer some questions you come up with as you start digging into the data.
+
 
 <div id="next-steps" markdown="1">
 
