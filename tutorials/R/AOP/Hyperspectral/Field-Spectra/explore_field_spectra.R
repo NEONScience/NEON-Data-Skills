@@ -29,9 +29,6 @@ names(field_spectra)
 
 ## ----list2env, results="hide"-----------------------------------------------------------------------------------------------------------------------
 list2env(field_spectra, .GlobalEnv)
-
-
-## ----merge-data-metadata----------------------------------------------------------------------------------------------------------------------------
 spectra_data_metadata <- joinTableNEON(fsp_spectralData,fsp_sampleMetadata)
 spectra_data <- merge(spectra_data_metadata,per_sample,by="spectralSampleID")
 
@@ -285,7 +282,6 @@ print(spectra_plot + ggtitle("Spectra of PICOL Leaf Clip Sample & Corresponding 
 ##                           tabl='cfc_shapefile',
 ##                           include.provisional=T,
 ##                           check.size=F)
-## 
 ## zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
 
 

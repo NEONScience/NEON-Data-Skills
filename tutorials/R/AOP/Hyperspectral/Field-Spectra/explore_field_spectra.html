@@ -152,7 +152,6 @@ field_spectra_info$siteCodes$siteCode # list all available sites
 <p>We encourage looking at all of these tables to learn more about the data product, but you can find the actual data stored in the variables: <code>fsp_boutMetadata</code> (contains metadata information about this sampling bout), <code>fsp_sampleMetadata</code> (contains relevant metadata about the individual samples), <code>fsp_spectralData</code> (contains information about the individual sample data), and <code>per_sample</code> (contains the wavelength and reflectance data). Next, we can merge the <code>fsp_spectralData</code>, <code>fsp_sampleMetadata</code> and <code>per_sample</code> into a single data frame as follows. For more info on joining OS tables, please refer to <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins">https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins</a>.</p>
 <pre><code>list2env(field_spectra, .GlobalEnv)
 
-
 spectra_data_metadata &lt;- joinTableNEON(fsp_spectralData,fsp_sampleMetadata)
 
 spectra_data &lt;- merge(spectra_data_metadata,per_sample,by=&quot;spectralSampleID&quot;)
@@ -321,7 +320,7 @@ foliar_trait_info$siteCodes[which(foliar_trait_info$siteCodes$siteCode == 'RMNP'
 ## [[1]]
 ## [1] &quot;https://data.neonscience.org/api/v0/data/DP1.10026.001/RMNP/2020-07&quot;
 </code></pre>
-<p>Let’s download the foliar trait data from 2020-07 at RMNP to obtain the precise location information of the foliar spectra samples.</p>
+<p>Let’s download the foliar trait data from 2020-07 at RMNP to obtain the precise locations of the foliar spectra samples.</p>
 <pre><code>foliar_traits &lt;- loadByProduct(dpID='DP1.10026.001',
                                site='RMNP',
                                startdate='2020-07',
@@ -553,9 +552,9 @@ print(spectra_plot + ggtitle(&quot;Spectra of PICOL Leaf Clip Sample &amp; Corre
 Why is there a difference between the leaf-clip spectra and the remotely-sensed spectra of the corresponding pixel? 
 <p>Each reflectance pixel represents a 1m x 1m area, so it contains an average spectra of all the vegetation and non-vegetation that are contained in that area. For example, a single pixel could contain the reflectance of a mix of leaves as well as branches, and any gaps in the tree canopy (eg. the ground under the tree). This averaging is called “spectral mixing” and you can perform “spectral un-mixing” to decompose an average spectra into it’s component parts. These leaf clip spectra can be used as “end-members”, in classification applications, for example.</p>
 <p>Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform attempts to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).</p>
-<h3 id="incorporating-the-tree-crown-polygon-shapefiles">Incorporating the Tree Crown Polygon Shapefiles</h3>
-<p>Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown data are not available for all of the . The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area.</p>
-<p>First, we can use the neonUtilities::loadByProduct and zipsByURI function to download all the tree crown polygon shapefile data, as follows. If you are not sure what crown polygon data are available, this would be the way to determine that as well.</p>
+<h3 id="incorporating-tree-crown-polygon-shapefiles">Incorporating Tree Crown Polygon Shapefiles</h3>
+<p>Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown shapefil data are not available for all of the canopy foliar data, but if they are available, it is recommended to use them. The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area.</p>
+<p>First, we can use the <code>neonUtilities::loadByProduct</code> and <code>zipsByURI</code> functions to download all the tree crown polygon shapefile data, as follows. If you are not sure what crown polygon data are available, this would be the recommended way to determine that as well.</p>
 <pre><code>crown_polys &lt;- loadByProduct(dpID='DP1.10026.001', 
 
                           tabl='cfc_shapefile', 
@@ -563,8 +562,6 @@ Why is there a difference between the leaf-clip spectra and the remotely-sensed 
                           include.provisional=T,
 
                           check.size=F)
-
-
 
 zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
 </code></pre>

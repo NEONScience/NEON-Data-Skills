@@ -93,9 +93,6 @@ We encourage looking at all of these tables to learn more about the data product
 
 ``` {r list2env, results="hide"}
 list2env(field_spectra, .GlobalEnv)
-```
-
-```{r merge-data-metadata}
 spectra_data_metadata <- joinTableNEON(fsp_spectralData,fsp_sampleMetadata)
 spectra_data <- merge(spectra_data_metadata,per_sample,by="spectralSampleID")
 ```
@@ -224,8 +221,7 @@ We can get the `availableDataUrls` of the RMNP site as follows. This step is not
 # view the RMNP foliar trait available data urls
 foliar_trait_info$siteCodes[which(foliar_trait_info$siteCodes$siteCode == 'RMNP'),c("availableDataUrls")]
 ```
-
-Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise location information of the foliar spectra samples.
+Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise locations of the foliar spectra samples.
 
 ```{r load-foliar-trait, results="hide"}
 foliar_traits <- loadByProduct(dpID='DP1.10026.001',
@@ -430,18 +426,17 @@ Each reflectance pixel represents a 1m x 1m area, so it contains an average spec
 
 Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform attempts to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).
 
-### Incorporating the Tree Crown Polygon Shapefiles
+### Incorporating Tree Crown Polygon Shapefiles
 
-Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown data are not available for all of the . The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area. 
+Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown shapefil data are not available for all of the canopy foliar data, but if they are available, it is recommended to use them. The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area. 
 
-First, we can use the neonUtilities::loadByProduct and zipsByURI function to download all the tree crown polygon shapefile data, as follows. If you are not sure what crown polygon data are available, this would be the way to determine that as well.
+First, we can use the `neonUtilities::loadByProduct` and `zipsByURI` functions to download all the tree crown polygon shapefile data, as follows. If you are not sure what crown polygon data are available, this would be the recommended way to determine that as well.
 
 ``` {r crown-poly, eval=FALSE, results="hide"}
 crown_polys <- loadByProduct(dpID='DP1.10026.001', 
                           tabl='cfc_shapefile', 
                           include.provisional=T,
                           check.size=F)
-
 zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
 ```
 
