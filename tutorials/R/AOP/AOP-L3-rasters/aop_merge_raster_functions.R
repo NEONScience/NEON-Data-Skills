@@ -225,9 +225,9 @@ makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,apiTok
   makeDir(dataRootDir)
   
   if (is.null(apiToken)) {
-    byFileAOP(dpID, site=siteCode,year=year,check.size=F,savepath=dataRootDir)} 
+    byFileAOP(dpID, site=siteCode,year=year,include.provisional=T,check.size=F,savepath=dataRootDir)} 
   else {
-    byFileAOP(dpID, site=siteCode,year=year,check.size=F,savepath=dataRootDir,token=apiToken)}
+    byFileAOP(dpID, site=siteCode,year=year,include.provisional=T,check.size=F,savepath=dataRootDir,token=apiToken)}
   
   dataPaths <- getDataPaths(dpID)
   dataAbbrs <- getDataAbbr(dpID)
