@@ -3,13 +3,14 @@
 # cloud-optimized geotiff (COG)."
 
 # example execution:
-# makeFullSiteMosaics('DP3.30024.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/DEMs',apiToken="your_api_token")
-# makeFullSiteMosaics("DP3.30015.001",'2019','CHEQ','c:/neon/data','c:/neon/outputs/2019_CHEQ/CHM')
+# 1. set all the optional parameters:
+# makeFullSiteMosaics('DP3.30024.001','2021','MCRA','c:/neon/data','c:/neon/outputs/2021_MCRA/DEMs',apiToken="your_api_token",include.provisional=T,COG=T)
+# 2. use defaults for apiToken (NULL), include.provisional (F), and COG (F)
+# makeFullSiteMosaics("DP3.30015.001",'2019','CHEQ','c:/neon/data','c:/neon/outputs/2019_CHEQ/CHM') 
 
 # Load required packages
 library(neonUtilities)
-library(raster)
-library(gdalUtilities)
+library(terra)
 library(data.table)
 library(docstring)
 
@@ -17,11 +18,10 @@ library(docstring)
 
 #create a lookup data table linking data product, sensor, and download path
 lookupTable = data.table(
-  dpID = c("DP3.30010.001","DP3.30011.001","DP3.30012.001","DP3.30014.001",
-           "DP3.30015.001","DP3.30019.001","DP3.30024.001","DP3.30024.001",
-           "DP3.30025.001","DP3.30025.001","DP3.30026.001"),
-  sensor = c("Camera",
-             "Spectrometer",
+  dpID = c("DP3.30011.001","DP3.30012.001","DP3.30014.001","DP3.30015.001",
+           "DP3.30019.001","DP3.30024.001","DP3.30024.001","DP3.30025.001",
+           "DP3.30025.001","DP3.30026.001"),
+  sensor = c("Spectrometer",
              "Spectrometer",
              "Spectrometer",
              "DiscreteLidar",
@@ -31,10 +31,9 @@ lookupTable = data.table(
              "DiscreteLidar",
              "DiscreteLidar",
              "Spectrometer"),
-  dpName = c("image","albedo","LAI","fPAR","CHM","WaterIndices","DTM","DSM",
+  dpName = c("albedo","LAI","fPAR","CHM","WaterIndices","DTM","DSM",
              "slope","aspect","VegetationIndices"),
-  path = c("L3/Camera/Mosaic",
-           "L3/Spectrometer/Albedo",
+  path = c("L3/Spectrometer/Albedo",
            "L3/Spectrometer/LAI",
            "L3/Spectrometer/FPAR",
            "L3/DiscreteLidar/CanopyHeightModelGtif",
@@ -44,8 +43,8 @@ lookupTable = data.table(
            "L3/DiscreteLidar/SlopeGtif",
            "L3/DiscreteLidar/AspectGtif",
            "L3/Spectrometer/VegIndices"),
-  errorTifs = c(FALSE,FALSE,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE),
-  zipped = c(FALSE,FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE)
+  errorTifs = c(FALSE,TRUE,TRUE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE),
+  zipped = c(FALSE,FALSE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,FALSE,TRUE)
 )
 
 #function to make a new directory, only if it doesn't exist
@@ -170,19 +169,21 @@ unzipFolders <- function(zippedFolders,outDir) {
   mapply(unzip, zipfile = zippedFolders, exdir = outDir)
 }
 
-#function to merge all data tiles
+
+#function to merge all data tiles, using terra package
 mergeDataTiles <- function(dataTiles) {
-  rasters <- lapply(dataTiles,FUN=brick)
+  rasters <- lapply(dataTiles, FUN=rast)
   sprintf('Merging tiled rasters')
-  fullMosaic <- do.call(merge, c(rasters, tolerance = 1))
+  fullMosaic <- do.call(terra::merge, rasters)
   return(fullMosaic)
 }
+
 
 #function to write raster to geotiff file
 writeFullMosaicTif <- function(fullMosaic,outFileDir,outFileTif) {
   sprintf('Writing geotiff %s',outFileTif)
   makeDir(outFileDir)
-  writeRaster(fullMosaic,file=file.path(outFileDir,outFileTif), format="GTiff", overwrite=TRUE)
+  writeRaster(fullMosaic,file=file.path(outFileDir,outFileTif), filetype="GTiff", overwrite=TRUE)
 }
 
 #function to convert geotiff to cloud-optimized geotiff
@@ -197,21 +198,23 @@ convertTif2Cog <- function(outFileDir,inFileTif,outFileCog) {
 }
 
 #function that generates the full site mosaic for any of the AOP L3 raster tifs:
-makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,apiToken=NULL) {
-  #' Download all AOP files for a given site, year, and L3 product, mosaic the files, and save the full site mosaic to a tiff and cloud-optimized geotiff.
+makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,include.provisional=F,apiToken=NULL,COG=F) {
+  #' Download all AOP files for a given site, year, and L3 product, mosaic the files, and save the full site mosaic to a tiff and optional cloud-optimized geotiff.
   #'
   #' This function 1) Runs the neonUtilities byFileAOP function to download NEON 
   #' AOP data by site, year, and product (see byFileAOP documention for additional details). 
   #' 2) merges the raster tiles into a full-site mosaic, as well as the 
   #' associated error tifs, where applicable, and 3) saves the full site mosaics 
-  #' to a tif and cloud-optimized geotiff.
+  #' to a tif and cloud-optimized geotiff, if specified by COG=T.
   #' 
   #' @param dpID The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3 reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.
   #' @param year The four-digit year to search for data.
   #' @param siteCode The four-letter code of a single NEON site, e.g. 'MCRA'.
   #' @param dataRootDir The file path to download data to. 
   #' @param outFileDir The file path where the full-site mosaic geotiffs and cloud-optimized geotiffs are saved.
-  #' @param apiToken User specific API token (generated within neon.datascience user accounts). If not provided, no API token is used.
+  #' @param include.provisional T or F, should provisional data be included in downloaded files? Defaults to F. See https://www.neonscience.org/data-samples/data-management/data-revisions-releases for details on the difference between provisional and released data.
+  #' @param apiToken User specific API token (generated within neon user accounts). If not provided, no API token is used.
+  #' @param COG T or F, generate a Cloud Optimized Geotiff (COG) in addition to a geotiff? Defaults to F.
   #' @return description
   
   cat('Generating full-site mosaic(s)\n')
@@ -225,9 +228,9 @@ makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,apiTok
   makeDir(dataRootDir)
   
   if (is.null(apiToken)) {
-    byFileAOP(dpID, site=siteCode,year=year,include.provisional=T,check.size=F,savepath=dataRootDir)} 
+    byFileAOP(dpID, site=siteCode,year=year,include.provisional=include.provisional,check.size=F,savepath=dataRootDir)} 
   else {
-    byFileAOP(dpID, site=siteCode,year=year,include.provisional=T,check.size=F,savepath=dataRootDir,token=apiToken)}
+    byFileAOP(dpID, site=siteCode,year=year,include.provisional=include.provisional,check.size=F,savepath=dataRootDir,token=apiToken)}
   
   dataPaths <- getDataPaths(dpID)
   dataAbbrs <- getDataAbbr(dpID)
@@ -235,9 +238,7 @@ makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,apiTok
   cat(dataAbbrs,sep='\n')
   dataExts <- getDataExts(dpID)
   downloadDirs <- getDownloadDirs(dataRootDir,siteCode,dpID,year)
-  # allDownloadDirs <- unique(dirname(list.files(file.path(dataRootDir,dpID,'neon-aop-products',year),rec=T))) #only list folders with files
-  # cat('All download folders:\n')
-  # print(allDownloadDirs[2:length(allDownloadDirs)])
+
   dataDirs <- getDataDirs(dataRootDir,siteCode,dpID,downloadDirs)
   cat('Data directories:\n')
   cat(dataDirs,sep='\n')
@@ -273,9 +274,12 @@ makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,apiTok
     outFileTif <- fullMosaicNames[[i]]
     cat(paste0('Generating ',outFileTif,'\n'))
     writeFullMosaicTif(fullMosaics[[i]],outFileDir,outFileTif)
-    # name the COG file the same as tif but with COG suffix
-    outFileCog <- gsub(".tif", "_COG.tif", outFileTif) 
-    cat(paste0('Generating ',outFileCog,'\n'))
-    convertTif2Cog(outFileDir,outFileTif,outFileCog)
+    if (COG==TRUE) {
+      # name the COG file the same as tif but with COG suffix
+      outFileCog <- gsub(".tif", "_COG.tif", outFileTif) 
+      cat(paste0('Generating ',outFileCog,'\n'))
+      # convert the tif to a COG
+      convertTif2Cog(outFileDir,outFileTif,outFileCog)
+      }
   }
 } 
