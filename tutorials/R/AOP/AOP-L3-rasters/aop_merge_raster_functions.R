@@ -169,21 +169,17 @@ unzipFolders <- function(zippedFolders,outDir) {
   mapply(unzip, zipfile = zippedFolders, exdir = outDir)
 }
 
-
-#function to merge all data tiles, using terra package
-mergeDataTiles <- function(dataTiles) {
-  rasters <- lapply(dataTiles, FUN=rast)
-  sprintf('Merging tiled rasters')
-  fullMosaic <- do.call(terra::merge, rasters)
-  return(fullMosaic)
+#function to list tiled rasters using terra rast and sprc
+listDataTiles <- function(dataTiles) {
+  tile_list <- lapply(dataTiles, rast)
+  tiles_sprc <- sprc(tile_list)
+  return(tiles_sprc)
 }
 
-
-#function to write raster to geotiff file
-writeFullMosaicTif <- function(fullMosaic,outFileDir,outFileTif) {
-  sprintf('Writing geotiff %s',outFileTif)
-  makeDir(outFileDir)
-  writeRaster(fullMosaic,file=file.path(outFileDir,outFileTif), filetype="GTiff", overwrite=TRUE)
+#function to mosaic and write raster to a geotiff file 
+writeFullMosaicTif <- function(tiles_sprc,outFileDir,outFileTif) {
+  filename = file.path(outFileDir,outFileTif)
+  mosaic(tiles_sprc, fun = "mean", filename = file.path(outFileDir,outFileTif), overwrite=TRUE)
 }
 
 #function to convert geotiff to cloud-optimized geotiff
@@ -255,11 +251,11 @@ makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,includ
   #get the list of dataTiles for each data directory and extension
   dataTiles <- getDataTilesByExt(dataDirs,dataExts)
   
-  cat('Creating full site mosaics\n')
-  fullMosaics <- list()
+  # cat('Creating full site mosaics\n')
+  tileList <- list()
   fullMosaicNames <- list()
   for (i in 1:length(dataTiles)) {
-    fullMosaics[[i]] <- mergeDataTiles(dataTiles[[i]])
+    tileList[[i]] <- listDataTiles(dataTiles[[i]])
     dataDirSplit <- unlist(strsplit(dataTiles[[i]][1],.Platform$file.sep))
     tileNameSplit <- unlist(strsplit(dataTiles[[i]][1],'_'))
     if (tail(tileNameSplit,1)=='error.tif') {
@@ -268,12 +264,12 @@ makeFullSiteMosaics <- function(dpID,year,siteCode,dataRootDir,outFileDir,includ
       fullMosaicNames[[i]] <- paste0(dataDirSplit[9],'_',tail(tileNameSplit,n=1))}
   }
   
-  cat('Writing full mosaics to Geotiffs and Cloud-Optimized Geotiffs\n')
+  # cat('Writing full mosaics to Geotiffs\n')
   makeDir(outFileDir)
-  for (i in 1:length(fullMosaics)) {
+  for (i in 1:length(tileList)) {
     outFileTif <- fullMosaicNames[[i]]
     cat(paste0('Generating ',outFileTif,'\n'))
-    writeFullMosaicTif(fullMosaics[[i]],outFileDir,outFileTif)
+    writeFullMosaicTif(tileList[[i]],outFileDir,outFileTif)
     if (COG==TRUE) {
       # name the COG file the same as tif but with COG suffix
       outFileCog <- gsub(".tif", "_COG.tif", outFileTif) 
