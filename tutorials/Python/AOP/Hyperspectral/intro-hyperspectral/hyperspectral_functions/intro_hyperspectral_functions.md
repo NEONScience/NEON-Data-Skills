@@ -1,6 +1,6 @@
 ---
 syncID: e046a83d83f2042d8b40dea1b20fd6779
-title: "Read in and visualize hyperspectral data in Python"
+title: "Read in and visualize hyperspectral data using functions in Python"
 description: "Learn to efficiently work with tiled NEON AOP hyperspectral data in Python using functions."
 dateCreated: 2017-06-19 
 authors: Bridget Hass
