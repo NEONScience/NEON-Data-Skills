@@ -163,7 +163,7 @@ import laspy
 Now we'll pull in all the functions in the module **neon_aop_download_functions.py**, linked at the top of this tutorial. You can also download this file programmatically as follows:
 
 ```python
-url = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py"
+url = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/intro_point_clouds_py/neon_aop_download_functions.py"
 response = requests.get(url)
 open("neon_aop_download_functions.py", "wb").write(response.content)
 ```
