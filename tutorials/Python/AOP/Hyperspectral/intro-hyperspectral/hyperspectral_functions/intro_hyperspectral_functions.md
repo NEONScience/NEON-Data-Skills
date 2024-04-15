@@ -356,7 +356,7 @@ neon_hs.plot_aop_rgb(rgb,
 
 
     
-![png]((https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_py_files/intro_hyperspectral_functions_30_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_py_files/intro_hyperspectral_functions_30_0.png)
     
 
 
@@ -390,7 +390,7 @@ neon_hs.plot_aop_rgb(cir,
 
 
     
-![png]((https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_py_files/intro_hyperspectral_functions_32_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_py_files/intro_hyperspectral_functions_32_2.png)
     
 
 
