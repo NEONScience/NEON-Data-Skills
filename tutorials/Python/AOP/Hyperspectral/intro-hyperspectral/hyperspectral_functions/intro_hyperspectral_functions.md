@@ -1,6 +1,6 @@
 ---
 syncID: e046a83d83f2042d8b40dea1b20fd6779
-title: "Read in and visualize hyperspectral data using functions in Python"
+title: "Read in and visualize hyperspectral data in Python"
 description: "Learn to efficiently work with tiled NEON AOP hyperspectral data in Python using functions."
 dateCreated: 2017-06-19 
 authors: Bridget Hass
@@ -10,12 +10,14 @@ packagesLibraries: h5py, requests, skimage
 topics: hyperspectral, remote-sensing, hdf5
 languagesTool: Python
 dataProduct: NEON.DP3.30006.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials\Python\AOP\hyperspectral\into_hyperspectral_functions.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/into_hyperspectral_functions.ipynb
 tutorialSeries: 
 urlTitle: refl-functions-py
 ---
 
 In this tutorial, you will learn how to efficiently read in hdf5 data and metadata, plot a single band and rgb band combinations of a reflectance data tile using Python functions created for working with and visualizing NEON AOP hyperspectral data.
+
+This tutorial uses the Level 3<a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>. 
 
 
 <div id="ds-ojectives" markdown="1">
@@ -38,10 +40,10 @@ After completing this tutorial, you will be able to:
 
 Data and additional scripts required for this lesson are downloaded programmatically as part of the tutorial.
 
-The LiDAR and imagery data used to create this raster teaching data subset were collected over the <a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/dsny" target="_blank">https://www.neonscience.org/field-sites/dsny (DSNY)</a> field site and processed at NEON headquarters.
+The LiDAR and imagery data used to create this raster teaching data subset were collected over NEON's
+<a href="https://www.neonscience.org/field-sites/dsny" target="_blank">Disney Wilderness Preserve (DSNY)</a> field site and processed at NEON headquarters.
 
-The dataset can also be downloaded from the <a href="http://data.neonscience.org" target="_blank">NEON data portal</a>.
+The dataset can also be downloaded from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
 </div>
 
@@ -72,14 +74,13 @@ First we can import the required packages and the `neon_aop_hyperspectral` modul
 import os
 import sys
 import time
-import copy
 import h5py
 import requests
 import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-This next function is a handy way to download the Python module and data that we will be using for this lesson. This uses hte `requests` package. Don't worry too much about the details.
+This next function is a handy way to download the Python module and data that we will be using for this lesson. This uses the `requests` package.
 
 
 ```python
@@ -93,16 +94,14 @@ def download_url(url,download_dir):
     file_object.write(r.content)
 ```
 
+Download the module from its location on GitHub, add the python_modules to the path and import the neon_aop_hyperspectral.py module.
+
 
 ```python
 module_url = "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/aop_python_modules/neon_aop_hyperspectral.py"
 download_url(module_url,'../python_modules')
 # os.listdir('../python_modules') #optionally show the contents of this directory to confirm the file downloaded
-```
 
-
-```python
-# add the python_modules to the path and import the python neon download and hyperspectral functions
 sys.path.insert(0, '../python_modules')
 # import the neon_aop_hyperspectral module, the semicolon supresses an empty plot from displaying
 import neon_aop_hyperspectral as neon_hs;
@@ -220,12 +219,12 @@ print("--- It took %s seconds to read in the data ---" % round((time.time() - st
 ```
 
     Reading in  .\data\NEON_D03_DSNY_DP3_454000_3113000_reflectance.h5
-    --- It took 14.0 seconds to read in the data ---
+    --- It took 7.0 seconds to read in the data ---
     
 
 
 ```python
-# display the reflectance metadata dictionary
+# display the reflectance metadata dictionary contents
 refl_metadata
 ```
 
@@ -297,7 +296,7 @@ neon_hs.plot_aop_refl(band56/refl_metadata['scale_factor'],
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_py_files/intro_hyperspectral_functions_24_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_24_0.png)
     
 
 
@@ -357,7 +356,7 @@ neon_hs.plot_aop_rgb(rgb,
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_py_files/intro_hyperspectral_functions_30_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_30_0.png)
     
 
 
@@ -381,17 +380,17 @@ neon_hs.plot_aop_rgb(cir,
                      plot_title='DSNY Color Infrared Image')
 ```
 
+    Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
+    
+
     Band 90 Center Wavelength = 829.6 nm
     Band 34 Center Wavelength = 549.1 nm
     Band 19 Center Wavelength = 474.0 nm
     
 
-    Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-    
-
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_py_files/intro_hyperspectral_functions_32_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_32_2.png)
     
 
 
