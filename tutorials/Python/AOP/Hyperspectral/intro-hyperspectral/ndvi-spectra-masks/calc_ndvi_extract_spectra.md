@@ -17,7 +17,8 @@ urlTitle: calc-refl-ndvi-py
 
 In this tutorial, we will calculate the Normalized Difference Vegetation Index (NDVI) using Python functions.
 
-This tutorial uses the Level 3 Spectrometer Surface mosaicked or tiled NEON data product, 
+This tutorial uses the Level 3<a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>. 
+
 
 <div id="ds-objectives" markdown="1">
 
