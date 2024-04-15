@@ -17,7 +17,7 @@ urlTitle: calc-refl-ndvi-py
 
 In this tutorial, we will calculate the Normalized Difference Vegetation Index (NDVI) using Python functions.
 
-This tutorial uses the Level 3<a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>. 
+This tutorial uses the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>. 
 
 
 <div id="ds-objectives" markdown="1">
@@ -57,7 +57,7 @@ The formula for NDVI is: $$NDVI = \frac{(NIR - VIS)}{(NIR+ VIS)}$$
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-indices/ndvi_tree.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-indices/ndvi_tree.png" width="500"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-indices/ndvi_tree.png" width="300"></a>
 	<figcaption> NDVI is calculated from the visible and near-infrared light reflected by vegetation. Healthy vegetation (left) absorbs most of the
     visible light that hits it, and reflects a large portion of near-infrared light. Unhealthy or sparse vegetation (right) reflects more
     visible light and less near-infrared light. Source: <a href="https://www.researchgate.net/figure/266947355_fig1_Figure-1-Green-vegetation-left-absorbs-visible-light-and-reflects-near-infrared-light" target="_blank">Figure 1 in Wu et. al. 2014. PLOS. </a>   
@@ -201,7 +201,7 @@ neon_hs.plot_aop_refl(ndvi,serc_refl_md['extent'],
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/ndvi-spectra-masks/ndvi-spectra-masks_files/ndvi-spectra-masks_21_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/ndvi-spectra-masks/calc_ndvi_extract_spectra_files/calc_ndvi_extract_spectra_21_0.png)
     
 
 
@@ -237,7 +237,7 @@ neon_hs.plot_aop_refl(ndvi_gtpt6,
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/ndvi-spectra-masks/ndvi-spectra-masks_files/ndvi-spectra-masks_25_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/ndvi-spectra-masks/calc_ndvi_extract_spectra_files/calc_ndvi_extract_spectra_25_0.png)
     
 
 
@@ -378,6 +378,6 @@ ax.grid('on');
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/ndvi-spectra-masks/ndvi-spectra-masks_files/ndvi-spectra-masks_35_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/ndvi-spectra-masks/calc_ndvi_extract_spectra_files/calc_ndvi_extract_spectra_35_0.png)
     
 
