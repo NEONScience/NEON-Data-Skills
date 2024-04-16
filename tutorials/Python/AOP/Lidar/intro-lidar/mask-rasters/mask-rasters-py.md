@@ -40,7 +40,7 @@ For this lesson, we will read in Canopy Height Model data collected at NEON's <a
 
 </div>
 
-<img src="http://neon-workwithdata.github.io/neon-data-institute-2016/images/spatialData/raster_masks.jpg" style="width: 750px;"/>
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_masks.jpg" style="width: 750px;"/>
 
 
 ```python
