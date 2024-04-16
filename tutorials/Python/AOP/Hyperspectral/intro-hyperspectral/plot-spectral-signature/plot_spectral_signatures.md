@@ -11,7 +11,6 @@ topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: Python
 dataProduct: DP3.30006.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/plot-spectral-signature/plot_spectral_signatures.ipynb
-tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/plot-spectral-signature/plot_spectral_signatures.md
 tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: plot-spec-sig
 ---
