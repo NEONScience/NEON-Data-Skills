@@ -10,14 +10,15 @@ packagesLibraries: gdal, h5py, requests
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing
 languagesTool: Python
 dataProduct: DP3.30006.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/plot-spectral-signature/plot-spectral_signatures.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/plot-spectral-signature/plot_spectral_signatures.ipynb
+tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/plot-spectral-signature/plot_spectral_signatures.md
 tutorialSeries: intro-hsi-tiles-py-series
 urlTitle: plot-spec-sig
 ---
 
 In this tutorial, we will learn how to extract and plot a spectral profile from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
 
-This tutorial works with the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>. 
+This tutorial works with NEON's Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a> data product. 
 
 
 <div id="ds-objectives" markdown="1">
