@@ -40,7 +40,7 @@ After completing this tutorial, you will be able to:
 
 Data and additional scripts required for this lesson are downloaded programmatically as part of the tutorial.
 
-The hyperspectral imagery file used in this lesson was collected over the <a href="http://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's </a> <a href="http://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center</a> field site in 2021 and processed at NEON headquarters. 
+The hyperspectral imagery file used in this lesson was collected over NEON's <a href="http://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center</a> field site in 2021 and processed at NEON headquarters. 
 
 The entire dataset can be accessed on the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
@@ -56,13 +56,13 @@ A spectral signature is a plot of the amount of light energy reflected by an obj
 For example, vegetation has a distinct spectral signature.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/vegetationSpectrum_MarkElowitz.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/vegetationSpectrum_MarkElowitz.png"></a>
-	<figcaption> Spectral signature of vegetation. Source: Mark Elowitz 
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/vegetationSpectra_Roman2016.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/vegetationSpectra_Roman2016"></a>
+	<figcaption> Spectral signature of vegetation. Source: Roman, Anamaria & Ursu, Tudor. (2016). Multispectral satellite imagery and airborne laser scanning techniques for the detection of archaeological vegetation marks.  
 	</figcaption>
 </figure>
 
-Vegetation has a unique spectral signature characterized by high reflectance in the near infrared wavelengths, and much lower reflectance in the green portion of the visible spectrum. We can extract reflectance values in the NIR and visible spectrums from hyperspectral data in order to map vegetation on the earth's surface. You can also use spectral curves as a proxy for vegetation health. We will explore this concept more in the next lesson, where we will caluclate vegetation indices. 
+Vegetation has a unique spectral signature characterized by high reflectance in the near infrared wavelengths, and much lower reflectance in the green portion of the visible spectrum. For more details, please see <a href="https://www.nv5geospatialsoftware.com/learn/whitepapers/whitepaper-detail/vegetation-analysis-using-vegetation-indices-in-envi" target="_blank">Vegetation Analysis: Using Vegetation Indices in ENVI</a> . We can extract reflectance values in the NIR and visible spectrums from hyperspectral data in order to map vegetation on the earth's surface. You can also use spectral curves as a proxy for vegetation health. We will explore this concept more in the next lesson, where we will caluclate vegetation indices. 
 
 
     
