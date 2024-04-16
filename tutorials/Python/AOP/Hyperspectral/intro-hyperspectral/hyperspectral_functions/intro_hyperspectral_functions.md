@@ -20,11 +20,9 @@ In this tutorial, you will learn how to efficiently read in hdf5 data and metada
 This tutorial uses the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>. 
 
 
-
 <div id="ds-ojectives" markdown="1">
 
-
-### Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Work with Python modules and functions
