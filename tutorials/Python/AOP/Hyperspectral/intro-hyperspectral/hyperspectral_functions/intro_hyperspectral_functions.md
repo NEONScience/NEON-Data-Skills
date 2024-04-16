@@ -15,9 +15,9 @@ tutorialSeries:
 urlTitle: refl-functions-py
 ---
 
-In this tutorial, you will learn how to efficiently read in hdf5 data and metadata, plot a single band and Red-Green-Blue (RGB) band combinations of a reflectance data tile using Python functions created for working with and visualizing NEON AOP hyperspectral data.
+In this tutorial, you will learn how to efficiently read in hyperspectral surface directional reflectance hdf5 data and metadata, plot a single band and Red-Green-Blue (RGB) band combinations of a reflectance data tile using Python functions created for working with and visualizing NEON AOP hyperspectral data.
 
-This tutorial uses the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>. 
+This tutorial works with the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a> data product. 
 
 
 <div id="ds-ojectives" markdown="1">
@@ -40,8 +40,7 @@ After completing this tutorial, you will be able to:
 
 Data and additional scripts required for this lesson are downloaded programmatically as part of the tutorial.
 
-The LiDAR and imagery data used to create this raster teaching data subset were collected over NEON's
-<a href="https://www.neonscience.org/field-sites/dsny" target="_blank">Disney Wilderness Preserve (DSNY)</a> field site and processed at NEON headquarters.
+The data used in this tutorial were collected over NEON's <a href="https://www.neonscience.org/field-sites/dsny" target="_blank">Disney Wilderness Preserve (DSNY)</a> field site and processed at NEON headquarters.
 
 The dataset can also be downloaded from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
