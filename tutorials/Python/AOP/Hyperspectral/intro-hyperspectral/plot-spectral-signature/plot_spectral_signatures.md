@@ -57,7 +57,7 @@ For example, vegetation has a distinct spectral signature.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/vegetationSpectra_Roman2016.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/vegetationSpectra_Roman2016"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/vegetationSpectra_Roman2016.png"></a>
 	<figcaption> Spectral signature of vegetation. Source: Roman, Anamaria & Ursu, Tudor. (2016). Multispectral satellite imagery and airborne laser scanning techniques for the detection of archaeological vegetation marks.  
 	</figcaption>
 </figure>
