@@ -18,7 +18,7 @@ urlTitle: neon-brdf-refl-h5-py
 
 In this introductory tutorial, we demonstrate how to read NEON AOP bidirectional hyperspectral reflectance (Level 3, tiled - <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">DP3.30006.002</a>) data in Python. For a more general introduction to Hyperspectral remote sensing data in Python, please refer to the related lesson: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-refl-h5-py" target="_blank">NEON AOP Hyperspectral Data in HDF5 format with Python</a>, which works with the previous revision of the same reflectance data product.
 
-In Spring 2024, AOP started producing revised (**.002**) spectrometer data products, which incorporate Bidirectional Reflectance Distribution Function (BRDF) and topographic corrections. Airborne hyperspectral data acquired in 2022 and 2023 are being processed with these corrections, and downstream Level 2 and Level 3 derived spectrometer data products (eg. vegetation and water indices, fPAR, LAI, etc.) are now generated from this bidirectional (BRDF-corrected) reflectance data. The L1 directional reflectance data will still be availble under the original **.001** revision # (<a href="https://data.neonscience.org/data-products/DP1.30006.001" target="_blank">DP3.30006.001</a>). Eventually, all previous years of data (2013-2021) will also be re-processed to apply the BRDF and topographic corrections. Updates on this progress will be posted as Data Notifications on the NEON Data Portal.
+In Spring 2024, AOP started producing revised (**.002**) spectrometer data products, which incorporate Bidirectional Reflectance Distribution Function (BRDF) and topographic corrections. Airborne hyperspectral data acquired in 2022 and 2023 are being processed with these corrections, and downstream Level 2 and Level 3 derived spectrometer data products (eg. vegetation and water indices, fPAR, LAI, etc.) are now generated from this bidirectional (BRDF-corrected) reflectance data. The L1 directional reflectance data will still be available under the original **.001** revision # (<a href="https://data.neonscience.org/data-products/DP1.30006.001" target="_blank">DP3.30006.001</a>). Eventually, all previous years of data (2013-2021) will also be re-processed to apply the BRDF and topographic corrections. Updates on this progress will be posted as Data Notifications on the NEON Data Portal.
 
 
 
@@ -31,10 +31,10 @@ The new bidirectional data includes some slight changes to the H5 contents, incl
 
 After completing this tutorial, you will be able to:
 
-* Understand some of the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 contents
+* Understand the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 contents.
 * Use the package `h5py` and the `visititems` method to read a bidirectional reflectance HDF5 file and view data attributes.
-* Read in and plot some of the ancillary data, including the weather quality indicator and the aquisition date
-* Extract and plot a single band of reflectance data.
+* Read in and plot some of the reflectance Ancillary_Imagery and Logs data, including the Weather Quality Indicator and the Aquisition Date.
+* Extract and plot an RGB and False-Color image from different band combinations of the reflectance data.
 
 ### Install Python Packages
 
@@ -91,17 +91,17 @@ As you can see, there are some differences in the HDF5 structure between the .00
 
 1. Addition of an `Acquisition Date` Ancillary Image.
 2. Updated `Weather Quality Index` Ancillary Image.
-3. Update to file naming for L1 relfectance (and associated Log files) to reflect the flight line #, with addition of the raw file name to the top level
-4. Consistency in fields for Ancillary Rasters
-5. Consistency in NO DATA values across Ancillary Rasters
-6. Addition of BRDF metadata
+3. Updated Logs to use file names from the L1 reflectance, including the flight line #, with addition of the raw file name to the top level.
+4. Consistency in fields for Ancillary Rasters.
+5. Consistency in NO DATA values across Ancillary Rasters.
+6. Addition of BRDF metadata.
 
-| HDF Group/Field | Directional Reflectance (DP3.30006.001)      | Bidirectional Reflectance (DP3.30006.002) |
+| HDF Group/Field | Bidirectional Reflectance (DP3.30006.002)      | Directional Reflectance (DP3.30006.001) |
 |----------|------------|-------------------------|
 | Ancillary_Imagery/Acquisition_Date | New field added, including the date (YYMMDD) of each pixel | Information is derived from Data Selection Index |
 | Ancillary_Imagery/Weather_Quality_Indicator | Cloud cover % data provided as 1/2/3 where 1 = <10%, 2 = 10-50%, 3=>50% | Cloud cover data provided as R/G/B color combinations where Green = <10%, Yellow = 10-50%, and Red = >50% cloud cover |
 | Logs | Log file names reflect the Flight Line #, corresonding to the L1 Reflectance Tile | Log file names reflect the time stamp of the flight line |
-| Logs | BRDF logs added (BRDF_COEFFS_JSON_for_Hytools and BRDF_Config_JSON_for_Hytools) |  |
+| Logs | BRDF logs added (BRDF_COEFFS_JSON_for_Hytools and BRDF_Config_JSON_for_Hytools) | No BRDF logs |
 
 Now that you have a high-level picture of what has changed, let's take a look at the bidirectional reflectance data in Python. 
 
