@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: caf9ba121b2343c7a924a5a1156e3ad1
 title: "Introduction to Bidirectional Hyperspectral Reflectance Data in Python" 
 description: "Learn how to read NEON AOP L3 bidirectional (BRDF-corrected) reflectance h5 data in Python and visualize spectral data."
 dateCreated: 2024-04-16
