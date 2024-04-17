@@ -6,10 +6,10 @@ dateCreated: 2018-07-04
 authors: Bridget Hass
 contributors: Donal O'Leary
 estimatedTime: 1 hour
-packagesLibraries: numpy, h5py, gdal, matplotlib, scikit-image, ipywidgets
+packagesLibraries: h5py, gdal, requests, scikit-image, IPython, matplotlib, numpy
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, reflectance
-languagesTool: python
-dataProduct: DP3.30006.001,
+languagesTool: Python
+dataProduct: DP3.30006.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: neon-refl-h5-py
@@ -33,16 +33,21 @@ After completing this tutorial, you will be able to:
 
 ### Install Python Packages
 
-* **numpy**
-* **pandas**
+If you don't already have these packages installed, you will need to do so, using `pip` or `conda` install:
+* **requests**
 * **gdal** 
-* **matplotlib** 
 * **h5py**
 
+Standard packages used in this tutorial include:
+* **numpy**
+* **pandas**
+* **matplotlib** 
 
 ### Download Data
 
-To complete this tutorial, you will download and read in surface directional reflectance data collected at the NEON <a href="https://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center (SERC)</a> site in Maryland. This data is downloaded in the first part of the tutorial, using a function that will download data from the NEON data portal using the Python requests package.
+To complete this tutorial, you will download and read in surface directional reflectance data collected at the NEON <a href="https://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center (SERC)</a> site in Maryland. This data can be downloaded by clicking the link below.
+
+**Download the SERC Directional Reflectance H5 Tile:** <a href="https://storage.googleapis.com/neon-aop-products/2021/FullSite/D02/2021_SERC_5/L3/Spectrometer/Reflectance/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5" class="link--button link--arrow">NEON_D02_SERC_DP3_368000_4306000_reflectance.h5</a>
 
 ### Additional Resources
 More details about the surface directional reflectance data product can be found on the data product page, linked below.
@@ -56,8 +61,7 @@ NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Docume
 </div>
 
 
-Hyperspectral remote sensing data is a useful tool for measuring changes to our 
-environment at the Earth’s surface. In this tutorial we explore how to extract 
+Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this tutorial we explore how to extract 
 information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-products/DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
 
 #### Mapping the Invisible: Introduction to Spectral Remote Sensing
@@ -83,28 +87,9 @@ import matplotlib.pyplot as plt
 ```
 
 ## Read in the datasets
-To start, we will download the NEON surface reflectance data (DP3.30006.001) which are provided in hdf5 (.h5) format. Use the `download_url` function below to download the data directly from the cloud storage location.
-
-
-```python
-# function to download data stored on the internet in a public url to a local file
-def download_url(url,download_dir):
-    if not os.path.isdir(download_dir):
-        os.makedirs(download_dir)
-    filename = url.split('/')[-1]
-    r = requests.get(url, allow_redirects=True)
-    file_object = open(os.path.join(download_dir,filename),'wb')
-    file_object.write(r.content)
-```
-
+To start, we download the NEON surface directional reflectance data (DP3.30006.001), which is provided in hdf5 (.h5) format. You can download the file by clicking on the download link at the top of this lesson. Place the file inside a "data" folder in your working directory, and double check the file is located in the correct location, as follows:
 
 ```python
-# define the urls for downloading the reflectance tiles
-h5_url = "https://storage.googleapis.com/neon-aop-products/2021/FullSite/D02/2021_SERC_5/L3/Spectrometer/Reflectance/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5"
-
-# download the h5 data using the download_url function
-download_url(h5_url,'.\data')
-
 # display the contents in the ./data folder to confirm the download completed
 os.listdir('./data')
 ```
