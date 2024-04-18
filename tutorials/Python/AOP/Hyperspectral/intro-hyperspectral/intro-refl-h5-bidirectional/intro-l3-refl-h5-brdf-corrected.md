@@ -31,7 +31,7 @@ The new bidirectional data includes some slight changes to the H5 contents, incl
 
 After completing this tutorial, you will be able to:
 
-* Understanf the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 conten.ts
+* Understand the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 conten.ts
 * Use the package `h5py` and the `visititems` method to read a bidirectional reflectance HDF5 file and view data attributes.
 * Read in and plot some of threflectance A ancilla_Imagery and Logsry data, including t W weatheQ qualitI indicator and thA aquisitioD da.te
 * Extract and ploan RGB and False-Color image from different band combinations of the reflectance data.a.
@@ -61,10 +61,9 @@ More details about the surface directional reflectance data product can be found
 
 In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a more in-depth understanding  ofthe reflectance daad.
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD</a>
-- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</
-- <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" target="_blank">Topographic and BRDF Corrections for NEON Imaging 
-Spectrometer-derived Reflectance Dat ATBD
-</a>a>
+- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a>
+
+**Download the Topographic and BRDF Corrections ATBD:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" class="link--button link--arrow">Topographic and BRDF Corrections ATBD</a>
 
 </div>
 
@@ -75,12 +74,11 @@ Spectrometer-derived Reflectance Dat ATBD
 Objects appear to be different when viewed from different angles, and when illuminated from different directions. The Bidirectional Reflectance Distribution Function (BRDF) describes the directional dependence of the reflected energy of a target as a function of illumination and viewing geometry. It also depends on the wavelength and structural and optical properties of the surface. In short, the BRDF correction helps to improve continuity in brightness levels between flightlines, and helps minimize the view and illumination angle effects. 
 
 ### Topographic Correction
-Steep mountain slopes can significantly affect the remote sensing of vegetation. In areas with complex terrain, slopes facing the sun receive more light and appear brighter than slopes facing away from the sun. The irradiation on a slope varies strongly with the slope azimuth relative to the sun, and the reflectance of the slope varies with the angles of incidence and exitance relative to the slope normal. The topographic correction involves standardizing the imagery for these two effects 
-based on the slope of the terrain and its relative position with the sun.
+Steep mountain slopes can significantly affect the remote sensing of vegetation. In areas with complex terrain, slopes facing the sun receive more light and appear brighter than slopes facing away from the sun. The irradiation on a slope varies strongly with the slope azimuth relative to the sun, and the reflectance of the slope varies with the angles of incidence and exitance relative to the slope normal. The topographic correction involves standardizing the imagery for these two effects based on the slope of the terrain and its relative position with the sun.
 
-### FlexBRDFslope normal. 
+### FlexBRDF
 
-NEON followed the FlexBRDF approach to perform the topographic and BRDF corrections, following <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JG006622" target="_blank">Queally et al. 2022</a>. Details of the implementation are summarized in the <a href="" target="_blank">Topographic and BRATBD Basis Document</a>. Section 4.2 and Fig 6 in the linked document provide a short summary of the approach. The BRDF correction is applied using the University of Wisconsin Environmental Spectroscopy Lab's Python-based open-source software
+NEON followed the FlexBRDF approach to perform the topographic and BRDF corrections, following <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JG006622" target="_blank">Queally et al. 2022</a>. Details of the implementation are summarized in the Topographic and BRDF Corrections ATBD, which can be downloaded from the link at the bottom of the previous section. The BRDF correction is applied using the University of Wisconsin Environmental Spectroscopy Lab's Python-based open-source software
 <a href="https://github.com/EnSpec/hytools" target="_blank">HyTools</a>. 
 
 <figure>
