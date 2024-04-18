@@ -22,8 +22,7 @@ In Spring 2024, AOP started producing revised (**.002**) spectrometer data produ
 
 
 
-The new bidirectional data includes some slight changes to the H5 contents, including some additional fields specific to the BRDF corrections. This tutorial outlines the major differences and highlights information you may want to incorporate when working with this revised data product. The tutorial also covers fundamental steps of reading in and exploring the HDF5 (h5) format that the reflectance data is delivered in. You will develop skills to explore and visualize the spectral data, and learn to make some functions for streamlining this process
-.
+The new bidirectional data includes some slight changes to the H5 contents, including some additional fields specific to the BRDF corrections. This tutorial outlines the major differences and highlights information you may want to incorporate when working with this revised data product. The tutorial also covers fundamental steps of reading in and exploring the HDF5 (h5) format that the reflectance data is delivered in. You will develop skills to explore and visualize the spectral data, and learn to make some functions for streamlining this process.
 
 <div id="ds-objectives" markdown="1">
     
