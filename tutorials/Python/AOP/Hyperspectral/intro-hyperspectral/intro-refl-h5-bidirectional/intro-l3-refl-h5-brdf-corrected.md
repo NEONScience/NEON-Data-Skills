@@ -31,10 +31,10 @@ The new bidirectional data includes some slight changes to the H5 contents, incl
 
 After completing this tutorial, you will be able to:
 
-* Understand the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 conten.ts
+* Understand the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 contents.
 * Use the package `h5py` and the `visititems` method to read a bidirectional reflectance HDF5 file and view data attributes.
-* Read in and plot some of threflectance A ancilla_Imagery and Logsry data, including t W weatheQ qualitI indicator and thA aquisitioD da.te
-* Extract and ploan RGB and False-Color image from different band combinations of the reflectance data.a.
+* Read in and plot some of the Reflectance `Ancillary_Imagery` and `Logs` data, including the Weather Quality indicator and the Aquisition Date.
+* Extract and plot an RGB and False-Color image from different band combinations of the reflectance data.
 
 ### Install Python Packages
 
@@ -50,9 +50,8 @@ You can download this data from the NEON Data portal, or by clicking the link be
 
 **Download the LIRO Directional Reflectance Tile:** <a href="https://storage.googleapis.com/neon-aop-provisional-products/2022/FullSite/D05/2022_LIRO_3/L3/Spectrometer/Reflectance/NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5" class="link--button link--arrow">NEON_D05_LIRO_DP3_290000_5097000_reflectance.h5</a>
 
-### Additional Resource
+### Additional Resources
 If you are new to NEON hyperspectral reflectance data, we recommend going through the tutorial series below, or at least the first lesson. This series uses the directional reflectance data (DP3.30006.001), but the same principles apply.
-s- 
 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-python" target="_blank">Introduction to Hyperspectral Remote Sensing Data in Python</a>
 
