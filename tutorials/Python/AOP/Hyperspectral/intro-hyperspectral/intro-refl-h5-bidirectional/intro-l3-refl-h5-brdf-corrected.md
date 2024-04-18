@@ -257,19 +257,6 @@ We will also highlight some of the new and updated datasets that differ from the
 - `Reflectance/Metadata/Logs/L004-1_20220623/BRDF_COEFFS_JSON_for_Hytools`
 - `Reflectance/Metadata/Logs/L004-1_20220623/BRDF_Config_JSON_for_Hytools`
 
-We can also display the name, shape, and type of each of these datasets using the `ls_dataset` function defined below, which is also called with the `visititems` method: 
-
-
-```python
-site_name = str(list(h5_file.items())).split("'")[1]
-print('site name:',site_name)
-prod_name = str(list(h5_file[site_name].items())).split("'")[1] # this is the Reflectance
-print('product name:',prod_name)
-```
-
-    site name: LIRO
-    product name: Reflectance
-    
 
 The function below pulls out some spatial information about the dataset that will come in handy for plotting. Please refer to the ... lesson for more details about this spatial information.
 
