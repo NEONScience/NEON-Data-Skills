@@ -45,7 +45,7 @@ You will need the most current version of R and, preferably, `RStudio` loaded on
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
 * **reshape2:** `install.packages("reshape2")`
-* **rhdf5:** `install.packages("rhdf5")`
+* **rhdf5:** `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
 * **terra:** `install.packages("terra")`
 
 </div>
