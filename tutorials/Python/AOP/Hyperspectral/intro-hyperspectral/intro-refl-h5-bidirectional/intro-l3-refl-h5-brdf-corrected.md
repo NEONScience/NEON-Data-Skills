@@ -3,8 +3,8 @@ syncID: caf9ba121b2343c7a924a5a1156e3ad1
 title: "Introduction to Bidirectional Hyperspectral Reflectance Data in Python" 
 description: "Learn how to read NEON AOP L3 bidirectional (BRDF-corrected) reflectance h5 data in Python and visualize spectral data."
 dateCreated: 2024-04-16
-authors: Bridget Hass
-contributors: Tristan Goulden, Shashi Konduri
+authors: Bridget Hass, Shashi Konduri
+contributors: Tristan Goulden
 estimatedTime: 1 hour
 packagesLibraries: h5py, gdal
 topics: hyperspectral-remote-sensing, BRDF, HDF5, remote-sensing, reflectance
@@ -31,10 +31,10 @@ The new bidirectional data includes some slight changes to the H5 contents, incl
 
 After completing this tutorial, you will be able to:
 
-* Understand the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 contents.
+* Understanf the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 conten.ts
 * Use the package `h5py` and the `visititems` method to read a bidirectional reflectance HDF5 file and view data attributes.
-* Read in and plot some of the reflectance Ancillary_Imagery and Logs data, including the Weather Quality Indicator and the Aquisition Date.
-* Extract and plot an RGB and False-Color image from different band combinations of the reflectance data.
+* Read in and plot some of threflectance A ancilla_Imagery and Logsry data, including t W weatheQ qualitI indicator and thA aquisitioD da.te
+* Extract and ploan RGB and False-Color image from different band combinations of the reflectance data.a.
 
 ### Install Python Packages
 
@@ -50,26 +50,38 @@ You can download this data from the NEON Data portal, or by clicking the link be
 
 **Download the LIRO Directional Reflectance Tile:** <a href="https://storage.googleapis.com/neon-aop-provisional-products/2022/FullSite/D05/2022_LIRO_3/L3/Spectrometer/Reflectance/NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5" class="link--button link--arrow">NEON_D05_LIRO_DP3_290000_5097000_reflectance.h5</a>
 
-### Additional Resources
-
+### Additional Resource
 If you are new to NEON hyperspectral reflectance data, we recommend going through the tutorial series below, or at least the first lesson. This series uses the directional reflectance data (DP3.30006.001), but the same principles apply.
+s- 
 
-- <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-python" target="_blank">Introduction to Hyperspectral Remote Sensing Data in Python</a>
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-python" target="_blank">Introduction to Hyperspectral Remote Sensing Data in Python</a>
 
 More details about the surface directional reflectance data product can be found on the data product page, linked below.
 - <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic</a>
 
-In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a more in-depth understanding ofthe reflectance data.
+In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a more in-depth understanding  ofthe reflectance daad.
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD</a>
-- <a href="" target="_blank">BRDF Correction ATBD</a>
-- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a>
+- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</
+- <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" target="_blank">Topographic and BRDF Corrections for NEON Imaging 
+Spectrometer-derived Reflectance Dat ATBD
+</a>a>
 
 </div>
 
 
-## BRDF Correction
+## BRDF and Topographic Corrections
 
-Objects look different when viewed from different angles, and when illuminated from different directions. The BRDF (units sr-1) describes the directional dependence of the reflected energy of a target as a function of illumination and viewing geometry. It also depends on the wavelength and structural and optical properties of the surface. In short, the BRDF correction helps to improve continuity in brightness levels between flightlines, and helps minimize the view and illumination angle effects.
+### BRDF Correction
+Objects appear to be different when viewed from different angles, and when illuminated from different directions. The Bidirectional Reflectance Distribution Function (BRDF) describes the directional dependence of the reflected energy of a target as a function of illumination and viewing geometry. It also depends on the wavelength and structural and optical properties of the surface. In short, the BRDF correction helps to improve continuity in brightness levels between flightlines, and helps minimize the view and illumination angle effects. 
+
+### Topographic Correction
+Steep mountain slopes can significantly affect the remote sensing of vegetation. In areas with complex terrain, slopes facing the sun receive more light and appear brighter than slopes facing away from the sun. The irradiation on a slope varies strongly with the slope azimuth relative to the sun, and the reflectance of the slope varies with the angles of incidence and exitance relative to the slope normal. The topographic correction involves standardizing the imagery for these two effects 
+based on the slope of the terrain and its relative position with the sun.
+
+### FlexBRDFslope normal. 
+
+NEON followed the FlexBRDF approach to perform the topographic and BRDF corrections, following <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JG006622" target="_blank">Queally et al. 2022</a>. Details of the implementation are summarized in the <a href="" target="_blank">Topographic and BRATBD Basis Document</a>. Section 4.2 and Fig 6 in the linked document provide a short summary of the approach. The BRDF correction is applied using the University of Wisconsin Environmental Spectroscopy Lab's Python-based open-source software
+<a href="https://github.com/EnSpec/hytools" target="_blank">HyTools</a>. 
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/BRDFcorrection.PNG">
@@ -545,41 +557,10 @@ plot_ancillary_data(anc_image_dict['Slope'],colorlimit=(0,45),title='Slope')
 
 
 ## BRDF Correction Parameters
-Next let's take a quick look at the new BRDF Logs. These provide information about the coefficients and configuration files used in applying the BRDF correction. The BRDF correction is applied using the University of Wisconsin Environmental Spectroscopy Lab's Python-based open-source software
-<a href="https://github.com/EnSpec/hytools" target="_blank">HyTools</a>. 
+Next let's take a quick look at the new BRDF Logs. These provide information about the coefficients and configuration files used in applying the BRDF correction as outlined in the BRDF correction ATBD. 
 
-
-```python
-# BRDF Coefficients
-brdf_coeffs = h5_file['LIRO/Reflectance/Metadata/Logs/L004-1_20220623/BRDF_COEFFS_JSON_for_Hytools'][()]
-# use json.loads to read this in as a dictionary object
-brdf_coeffs_dict = json.loads(brdf_coeffs.decode("utf-8"))
-# display just the first 15 items to see the file contents
-list(brdf_coeffs_dict.items())[:15]
-```
-
-
-
-
-    [('solar_zn_type', 'scene'),
-     ('type', 'flex'),
-     ('grouped', True),
-     ('geometric', 'li_sparse'),
-     ('volume', 'ross_thick'),
-     ('b/r', 10),
-     ('h/b', 2),
-     ('sample_perc', 0.1),
-     ('interp_kind', 'linear'),
-     ('calc_mask',
-      [['ndi', {'band_1': 850, 'band_2': 660, 'min': 0.1, 'max': 1.0}]]),
-     ('apply_mask',
-      [['ndi', {'band_1': 850, 'band_2': 660, 'min': 0.1, 'max': 1.0}]]),
-     ('bin_type', 'dynamic'),
-     ('num_bins', 19),
-     ('ndvi_bin_min', 0.05),
-     ('ndvi_bin_max', 1.0)]
-
-
+### BRDF Configuration JSON
+Table 2 in the BRDF correction ATBD lists the definitions for the user-defined parameters that go into the FlexBRDF approach, which is also the same information provided in the config.json file. This information is stored within the reflectance metadata in the "Logs" for each flightline, and can be accessed in Python as follows:
 
 
 ```python
@@ -608,6 +589,39 @@ list(brdf_config_dict.items())[:3]
 
 
 
+### BRDF Coefficients JSON
+The BRDF coefficients provided in the `BRDF_COEFFS_JSON_for_Hytools` refer to `f_iso`, `f_geo`, and `f_vol` in Equation 11 in the BRDF correction ATBD. BRDF effects (and the value of those three coefficients) vary by vegetation type and by wavelength. In the absence of a site-specific landcover map, the FlexBRDF approach uses NDVI as a proxy for characterizing the vegetation type. To characterize the vegetation diversity, it stratifies the entire range of NDVI values for a site into 18 bins dynamically such that each bin has roughly the same number of pixels (# of bins and dynamic binning approach are user-defined parameters in the config file). This binning is carried out separately for each of the 426 wavelength bands. The coefficients file provides the value of three coefficients used for each of the 18 NDVI bins for each of the 426 bands. The Python code chunk below demonstrates how to access these coefficients for a single flightline. 
+
+
+```python
+# BRDF Coefficients
+brdf_coeffs = h5_file['LIRO/Reflectance/Metadata/Logs/L004-1_20220623/BRDF_COEFFS_JSON_for_Hytools'][()]
+# use json.loads to read this in as a dictionary object
+brdf_coeffs_dict = json.loads(brdf_coeffs.decode("utf-8"))
+# display just the first 10 items to see the beginning of the file contents
+list(brdf_coeffs_dict.items())[:10]
+# brdf_coeffs_dict # optionally display the full dictionary
+```
+
+
+
+
+    [('solar_zn_type', 'scene'),
+     ('type', 'flex'),
+     ('grouped', True),
+     ('geometric', 'li_sparse'),
+     ('volume', 'ross_thick'),
+     ('b/r', 10),
+     ('h/b', 2),
+     ('sample_perc', 0.1),
+     ('interp_kind', 'linear'),
+     ('calc_mask',
+      [['ndi', {'band_1': 850, 'band_2': 660, 'min': 0.1, 'max': 1.0}]])]
+
+
+
+This BRDF correction information may be useful to gain a better understanding of the BRDF implementation. Optionally, you may wish to carry out your own BRDF correction in HyTools with different parameters, starting from NEON's L1 reflectance data, so this would be the place to check what was used in the NEON data products.
+
 ## Reflectance Data
 
 Finally, let's read in and plot the reflectance data.
@@ -630,7 +644,7 @@ def stack_rgb(refl_array,bands):
     return rescaled_rgb
 ```
 
-This is a little dark. We can use the `skimage.exposure` to rescale, or lighten this up a bit. Let's define another function that includes this feature.
+Run this function on the reflectance data, using bands in the visible portion of the spectrum (Red, Green, and Blue, bands 58, 34, and 19). This will create a "True Color Image".
 
 
 ```python
@@ -643,6 +657,8 @@ plt.imshow(refl_rgb,extent=map_info['extent']);
 ![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/intro-l3-refl-h5-brdf-corrected_files/intro-l3-refl-h5-brdf-corrected_34_0.png)
     
 
+
+This is a little dark. We can use the `skimage.exposure` to rescale, or lighten this up a bit. Let's define another function that includes this feature.
 
 You can see this image is a little dark. The function incorporates the `skimage.exposure` to rescale, or lighten up the data. It also adds in some other handy plotting features like a plot title.
 
