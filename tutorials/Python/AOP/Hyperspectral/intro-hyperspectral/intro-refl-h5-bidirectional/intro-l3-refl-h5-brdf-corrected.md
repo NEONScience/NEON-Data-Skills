@@ -33,7 +33,7 @@ After completing this tutorial, you will be able to:
 
 * Understand the differences between the directional (DP3.30006.001) and bidirectional (DP3.30006.002) surface reflectance data and H5 contents.
 * Use the package `h5py` and the `visititems` method to read a bidirectional reflectance HDF5 file and view data attributes.
-* Read in and plot some of the Reflectance `Ancillary_Imagery` and `Logs` data, including the Weather Quality indicator and the Aquisition Date.
+* Read in and plot some of the Reflectance `Ancillary_Imagery` and `Logs` data, including the Weather Quality Indicator and the Acquisition Date.
 * Extract and plot an RGB and False-Color image from different band combinations of the reflectance data.
 
 ### Install Python Packages
@@ -101,7 +101,7 @@ If you're working with the bidirectional reflectance data for the first time, we
 As you can see, there are some differences in the HDF5 structure between the .001 (directional) and .002 (bidirectional) datasets. The major changes are summarized below, with additional details outlined in the table.
 
 1. Addition of an `Acquisition Date` Ancillary Image.
-2. Updated `Weather Quality Index` Ancillary Image.
+2. Updated `Weather Quality Indicator` Ancillary Image.
 3. Updated Logs to use file names from the L1 reflectance, including the flight line #, with addition of the raw file name to the top level.
 4. Consistency in fields for Ancillary Rasters.
 5. Consistency in NO DATA values across Ancillary Rasters.
