@@ -6,7 +6,7 @@ dateCreated: 2024-04-20
 authors: Bridget Hass
 contributors: Tristan Goulden
 estimatedTime: 1 hour
-packagesLibraries: h5py, gdal, scikit-image
+packagesLibraries: h5py, gdal, osr, rasterio, scikit-image
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, reflectance
 languagesTool: Python
 dataProduct: DP3.30006.002
