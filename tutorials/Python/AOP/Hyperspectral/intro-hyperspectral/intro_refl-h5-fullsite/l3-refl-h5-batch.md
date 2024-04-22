@@ -340,8 +340,7 @@ plot_wqi(wqi_array,wqi_extent)
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-fullsite/l3-refl-h5-batch_files/l3-refl-h5-batch_24_0.png)
-    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro_refl-h5-fullsite/l3-refl-h5-batch_files/l3-refl-h5-batch_24_0.png)
 
 
 ## Batch process reflectance data: create multi-band raster geotiffs and merge
@@ -512,5 +511,5 @@ plot_refl_rgb(rgb_transposed,rgb_merged_extent,ls_pct=.2,plot_title="LIRO Reflec
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-fullsite/l3-refl-h5-batch_files/l3-refl-h5-batch_32_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro_refl-h5-fullsite/l3-refl-h5-batch_files/l3-refl-h5-batch_32_1.png)
 
