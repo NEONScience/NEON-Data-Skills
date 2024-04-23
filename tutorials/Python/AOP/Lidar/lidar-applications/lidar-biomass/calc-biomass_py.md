@@ -288,7 +288,7 @@ plt.savefig(os.path.join(data_path,chm_name.replace('.tif','.png')),dpi=300,orie
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_25_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_25_0.png)
     
 
 
@@ -394,7 +394,7 @@ array2raster(data_path+'maximum.tif',
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_37_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_37_0.png)
     
 
 
@@ -469,7 +469,7 @@ array2raster(data_path+'labels.tif',
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_44_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_44_0.png)
     
 
 
@@ -597,6 +597,6 @@ array2raster(os.path.join(data_path,chm_name.replace('CHM.tif','Biomass.tif')),
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py/calc-biomass_py_files/calc-biomass_py_59_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_59_1.png)
     
 
