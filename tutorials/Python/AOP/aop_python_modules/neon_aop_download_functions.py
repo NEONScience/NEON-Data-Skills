@@ -24,7 +24,7 @@ def list_available_urls(product,site):
     for i in range(len(r.json()['data']['siteCodes'])):
         if site in r.json()['data']['siteCodes'][i]['siteCode']:
             data_urls=r.json()['data']['siteCodes'][i]['availableDataUrls']
-    if len(data_urls)==0:
+    if 'data_urls' not in locals() or len(data_urls) == 0:
         print('WARNING: no urls found for product ' + product + ' at site ' + site)
     else:
         return data_urls
