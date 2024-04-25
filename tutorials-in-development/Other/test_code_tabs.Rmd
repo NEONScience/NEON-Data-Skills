@@ -1,18 +1,7 @@
 ---
-syncID: 
 title: "Test reticulate tabs"
-description: Test for tabbed tutorials with R and Python code. Do not publish this tutorial.
+output: html_document
 dateCreated: '2024-04-25'
-dataProducts: 
-authors: Claire K. Lunch
-contributors: 
-estimatedTime: 0 hours
-packagesLibraries: neonUtilities, neonutilities
-topics: data-management, rep-sci
-languageTool: R, Python
-code1: 
-tutorialSeries:
-urlTitle: test-code-tabs
 ---
 
 ```{r setup, include=FALSE}
