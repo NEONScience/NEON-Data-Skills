@@ -1,429 +1,352 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-<title>makeFullSiteMosaics</title>
-
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
-
-
-
-
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Merging AOP L3 Tiles in R into Full-Site Rasters</title>
 <style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
 body {
+  font-family: sans-serif;
   max-width: 800px;
   margin: auto;
   padding: 1em;
-  line-height: 20px;
+  line-height: 1.5;
+  box-sizing: border-box;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
 }
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 pre code {
-   display: block; padding: 0.5em;
+  display: block;
+  overflow-x: auto;
 }
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
 }
-
-code[class] {
-  background-color: #F8F8F8;
+table {
+  margin: auto;
+  border-top: 1px solid #666;
 }
-
-table, td, th {
-  border: none;
-}
-
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
 blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
 }
 
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
 }
 </style>
-
-
-
 </head>
-
 <body>
-<p>Most AOP L3 data are provided in 1km x 1km tiled geotiff rasters. A single site may contain hundreds of separate raster data files for each data product. This tutorial shows you how to merge these tiles into a single raster, covering the full site, which enables more efficient regional-scale analysis. </p>
-
-<p>In this tutorial, you will import the <code>aop_mosaic_rasters.R</code> script and use the function
-<code>makeFullSiteMosaics</code> to download AOP L3 tiled raster (geotiff) data sets for a 
-given data product, site, and year. This function uses the <code>neonUtilities</code> R package 
-<code>byFileAOP</code> function to download the data. Once downloaded, the tiles are merged 
-into a single raster covering the full site (or whatever coverage was obtained that year). 
-Finally, this full-site raster is saved as a geotiff and cloud-optimized geotiff 
-(COG) file in an output folder specified in the function.</p>
-
-<p>Once you have generated full-site geotiffs, it is much simpler to visualize and conduct
-further analysis of the data in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth Engine. </p>
-
-<div id="ds-objectives" markdown="1">
-
-## Learning Objectives
-
-After completing this activity, you will be able to:
-
-* Run the makeFullSiteMosaics function to:
-  * download and merge AOP L3 geotiff rasters
-  * export the full site rasters to geotiffs and cloud-optimized geotiffs (COG)
-* Read in and plot the full site geotiffs
-
-## Things You’ll Need To Complete This Tutorial
-To complete this tutorial you will need 
-* The most current version of R and, preferably, RStudio installed on your computer. 
-* A NEON API token (optional, but recommended). If you haven&rsquo;t set up an API token, or used it in an R environment, please refer to the tutorial: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank"> NEON API Tokens in R</a>
-* You will need to install the following R packages, if they are not already installed:
-
-### R Libraries to Install:
-* **neonUtilities**: install.packages(&lsquo;neonUtilities&rsquo;)
-* **gdalUtilities**: install.packages(&lsquo;gdalUtilities&rsquo;)
-* **raster**: install.packages(&lsquo;raster&rsquo;)
-* **data.table**: install.packages(&lsquo;data.table&rsquo;)
-* **docstring**: install.packages(&lsquo;docstring&rsquo;)
-
-### Data to Download
-
-You do not need to download any data prior to running this tutorial, as you will 
-download AOP data sets using neonUtilities as part of this lesson.
-
-**Set Working Directory:** This lesson assumes that you have set your working
-directory to the folder where you have cloned the github repo, and/or where you have saved 
-the aop_merge_raster_functions.R script (code can be downloaded at the bottom of this tutorial).
-You will need to modify the working directory path in this tutorial to match your 
-local directory structure.
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
-
-### Recommended Skills
-
-For this tutorial you should be familiar with AOP data, and raster geotiff data generally. 
-You should also be familiar with the neonUtilities R package for downloading NEON data.
-
-### AOP Raster Data 
-
-The function makeFullSiteMosaics is set up for downloading AOP L3 raster data 
-products. The table below shows a full list of these data products, including the 
-sensor, data product ID (dpID), the sub-directory structure where files are downloaded to 
-(the neonUtilities function preserves the original folder structure of the data 
-as it is stored by NEON), and the name of the files. neonUtilities prints out 
-the full path where data and metadata are downloaded, but the script 
-aop_mosaic_rasters.R used in this tutorial goes a step further, and automatically 
-finds the path where data is downloaded, and handles some additional data wrangling 
-in order to simplify pre-processing.
-
-Refer to this table when using the function. If you select a dpID that is not in 
-this list, the function will error out and display a table with the valid dpIDs, 
-(similar to the table).
-
-| Sensor       | Data Product ID | Download Path                          | Short Name        |
-|&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-|
-| Camera       | DP3.30010.001   | L3/Camera/Mosaic                       | image             |
-| Lidar        | DP3.30024.001   | L3/DiscreteLidar/DTMGtif               | DTM               |
-| Lidar        | DP3.30024.001   | L3/DiscreteLidar/DSMGtif               | DSM               |
-| Lidar        | DP3.30015.001   | L3/DiscreteLidar/CanopyHeightModelGtif | CHM               |
-| Lidar        | DP3.30025.001   | L3/DiscreteLidar/SlopeGtif             | slope             |
-| Lidar        | DP3.30025.001   | L3/DiscreteLidar/AspectGtif            | aspect            |
-| Spectrometer | DP3.30011.001   | L3/Spectrometer/Albedo                 | albedo            |
-| Spectrometer | DP3.30012.001   | L3/Spectrometer/LAI                    | LAI               |
-| Spectrometer | DP3.30014.001   | L3/Spectrometer/FPAR                   | fPAR              |
-| Spectrometer | DP3.30019.001   | L3/Spectrometer/WaterIndices           | WaterIndices      |
-| Spectrometer | DP3.30026.001   | L3/Spectrometer/VegIndices             | VegetationIndices |
-
+<div class="frontmatter">
+<div class="title"><h1>Merging AOP L3 Tiles in R into Full-Site Rasters</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
 </div>
-
-<p>This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. Let&#39;s get started!</p>
-
+<div class="body">
+<p>Most AOP L3 data are provided in 1km x 1km tiled geotiff rasters. A single site may contain hundreds of separate raster data files for each data product. This tutorial shows you how to merge these tiles into a single raster, covering the full site, which enables more efficient regional-scale analysis.</p>
+<p>In this tutorial, you will import the <code>aop_mosaic_rasters.R</code> script and use the function
+<code>makeFullSiteMosaics</code> to download AOP L3 tiled raster (geotiff) data sets for a
+given data product, site, and year. This function uses the <code>neonUtilities</code> R package
+<code>byFileAOP</code> function to download the data. Once downloaded, the tiles are merged
+into a single raster covering the full site (or whatever coverage was obtained that year).
+Finally, this full-site raster is saved as a geotiff and cloud-optimized geotiff
+(COG) file in an output folder specified in the function.</p>
+<p>Once you have generated full-site geotiffs, it is much simpler to visualize and conduct
+further analysis of the data in your preferred geospatial application, eg. ArcGIS, QGIS, or Google Earth Engine.</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="learning-objectives">Learning Objectives</h2>
+<p>After completing this activity, you will be able to:</p>
+<ul>
+<li>Run the <code>makeFullSiteMosaics</code> function to:
+<ul>
+<li>download and merge AOP L3 geotiff rasters</li>
+<li>export the full site rasters to geotiffs and cloud-optimized geotiffs (COG)</li>
+</ul>
+</li>
+<li>Read in and plot the full site geotiffs</li>
+</ul>
+<h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<p>To complete this tutorial you will need</p>
+<ul>
+<li>The most current version of R and, preferably, RStudio installed on your computer.</li>
+<li>A NEON API token (optional, but recommended). If you haven’t set up an API token, or used it in an R environment, please refer to the tutorial: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank"> NEON API Tokens in R</a></li>
+<li>You will need to install the following R packages, if they are not already installed:</li>
+</ul>
+<h3 id="r-libraries-to-install">R Libraries to Install:</h3>
+<ul>
+<li><strong>neonUtilities</strong>: <code>install.packages('neonUtilities')</code></li>
+<li><strong>terra</strong>: <code>install.packages('terra')</code></li>
+<li><strong>data.table</strong>: <code>install.packages('data.table')</code></li>
+<li><strong>docstring</strong>: <code>install.packages('docstring')</code></li>
+</ul>
+<h3 id="data-to-download">Data to Download</h3>
+<p>You do not need to download any data prior to running this tutorial, as you will
+download AOP data sets using <code>neonUtilities</code> as part of this lesson.</p>
+<p><strong>Set Working Directory:</strong> This lesson assumes that you have set your working
+directory to the folder where you have cloned the github repo, and/or where you have saved
+the aop_merge_raster_functions.R script (code can be downloaded at the bottom of this tutorial).
+You will need to modify the working directory path in this tutorial to match your
+local directory structure.</p>
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank">An overview
+of setting the working directory in R can be found here.</a></p>
+<h3 id="recommended-skills">Recommended Skills</h3>
+<p>For this tutorial you should be familiar with AOP data, and raster geotiff data generally.
+You should also be familiar with the <code>neonUtilities</code> R package for downloading NEON data.</p>
+<p>If you have not used a NEON token for downloading data, we recommend you review
+the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" 
+target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a>.</p>
+<h3 id="aop-raster-data">AOP Raster Data</h3>
+<p>The function <code>makeFullSiteMosaics</code> is set up for downloading AOP L3 lidar and
+spectrometer derived raster data products. The table below shows a full list of
+these data products, including the sensor, data product ID (dpID), the
+sub-directory structure where files are downloaded to (the neonUtilities
+function preserves the original folder structure of the data as it is stored by
+NEON on Google Cloud Storage), and the name of the files. <code>neonUtilities</code> prints
+out the full path where data and metadata are downloaded, but the script
+<code>aop_mosaic_rasters.R</code> used in this tutorial goes a step further, and
+automatically finds the path where data is downloaded, and handles some
+additional data management (such as unzipping zipped folders) in order to
+simplify pre-processing.</p>
+<p>Refer to this table when using the function. If you select a dpID that is not in
+this list, the function will error out and display a table with the valid dpIDs,
+(similar to the table).</p>
+<table>
+<thead>
+<tr>
+<th>Sensor</th>
+<th>Data Product ID</th>
+<th>Download Path</th>
+<th>Short Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lidar</td>
+<td>DP3.30024.001</td>
+<td>L3/DiscreteLidar/DTMGtif</td>
+<td>DTM</td>
+</tr>
+<tr>
+<td>Lidar</td>
+<td>DP3.30024.001</td>
+<td>L3/DiscreteLidar/DSMGtif</td>
+<td>DSM</td>
+</tr>
+<tr>
+<td>Lidar</td>
+<td>DP3.30015.001</td>
+<td>L3/DiscreteLidar/CanopyHeightModelGtif</td>
+<td>CHM</td>
+</tr>
+<tr>
+<td>Lidar</td>
+<td>DP3.30025.001</td>
+<td>L3/DiscreteLidar/SlopeGtif</td>
+<td>slope</td>
+</tr>
+<tr>
+<td>Lidar</td>
+<td>DP3.30025.001</td>
+<td>L3/DiscreteLidar/AspectGtif</td>
+<td>aspect</td>
+</tr>
+<tr>
+<td>Spectrometer</td>
+<td>DP3.30011.001</td>
+<td>L3/Spectrometer/Albedo</td>
+<td>albedo</td>
+</tr>
+<tr>
+<td>Spectrometer</td>
+<td>DP3.30012.001</td>
+<td>L3/Spectrometer/LAI</td>
+<td>LAI</td>
+</tr>
+<tr>
+<td>Spectrometer</td>
+<td>DP3.30014.001</td>
+<td>L3/Spectrometer/FPAR</td>
+<td>fPAR</td>
+</tr>
+<tr>
+<td>Spectrometer</td>
+<td>DP3.30019.001</td>
+<td>L3/Spectrometer/WaterIndices</td>
+<td>WaterIndices</td>
+</tr>
+<tr>
+<td>Spectrometer</td>
+<td>DP3.30026.001</td>
+<td>L3/Spectrometer/VegIndices</td>
+<td>VegetationIndices</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This tutorial illustrates the function for the NEON aquatic site <a href="https://www.neonscience.org/field-sites/mcra" target="_blank"> MCRA (McRae Creek)</a> in Domain 16, the Pacific Northwest. This site was chosen for demonstration because it is one of the smallest AOP sites, and therefore is quicker to download. Let’s get started!</p>
 <p>First, clone the git repository locally and set the working directory to where you cloned the data skills repository. You will need to modify the file path below to reflect where you have cloned the repository, or saved the aop_merge_raster_functions.R script.</p>
-
 <pre><code># change the wd depending on your local environment
+
 wd &lt;- file.path(path.expand(&quot;~&quot;),&quot;GitHubRepos&quot;,&quot;NEON-Data-Skills&quot;,&quot;tutorials&quot;,&quot;R&quot;,&quot;AOP&quot;,&quot;AOP-L3-rasters&quot;) 
+
 setwd(wd)
 </code></pre>
+<p>First let’s use <code>source</code> to pull in the <code>aop_merge_raster_functions.R</code> script, which is located in the working directory. For more details on what <code>source</code> does, please refer to the <a href="https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/source-function-in-R/" target="_blank"> CU Earth Lab Tutorial on Source Functions in R</a></p>
+<pre><code>source(&quot;aop_merge_raster_functions.R&quot;)
 
-<p>First let&#39;s use <code>source</code> to pull in the <code>aop_merge_raster_functions.R</code> script, which is located in the working directory. For more details on what <code>source</code> does, please refer to the <a href="https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/source-function-in-R/" target="_blank"> CU Earth Lab Tutorial on Source Functions in R</a></p>
-
-<pre><code>source(&quot;./aop_merge_raster_functions.R&quot;)
+## Error in file(filename, &quot;r&quot;, encoding = encoding): cannot open the connection
 </code></pre>
-
-<p>Let&#39;s take a look a the documentation for the function <code>makeFullSiteMosaics</code></p>
-
-<pre><code>help(makeFullSiteMosaics)
-</code></pre>
-
-<p>You should see the function documentation pop up in the <em>RStudio Help</em> window, similar to below:</p>
-
-<h3>makeFullSiteMosaics</h3>
-
-<p>{TempPackage}   R Documentation</p>
-
-<p>Download all AOP files for a given site, year, and L3 product, mosaic the files, and save the full site mosaic to a tiff and cloud-optimized geotiff.</p>
-
-<h4>Description</h4>
-
-<p>This function 1) Runs the neonUtilities byFileAOP function to download NEON AOP data by site, year, and product (see byFileAOP documention for additional details). 2) mosaics the data product tiles into a full-site mosaic, as well as the associated error tifs, where applicable, and 3) saves the full site mosaics to a tif and cloud-optimized geotiff.</p>
-
-<h4>Usage</h4>
-
+<p>Let’s take a look at the input parameters for the function <code>makeFullSiteMosaics</code>. If you start to type this function in R, it should show you the required (and optional inputs). Below is some more detailed information about this function:</p>
+<h4 id="description">Description</h4>
+<p>This function 1) Runs the neonUtilities byFileAOP function to download NEON AOP data by site, year, and product (see byFileAOP documentation for additional details). 2) mosaics the data product tiles into a full-site mosaic, as well as the associated error tifs, where applicable, and 3) saves the full site mosaics to a tif and optional cloud-optimized geotiff.</p>
+<h4 id="usage">Usage</h4>
 <p>makeFullSiteMosaics(
-  dpID,
-  year,
-  siteCode,
-  dataRootDir,
-  outFileDir,
-  apiToken = NULL)   </p>
-
-<h4>Arguments</h4>
-
-<h5>dpID</h5>
-
-<p>The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3            reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.</p>
-
-<h5>year</h5>
-
+dpID,
+year,
+siteCode,
+dataRootDir,
+outFileDir,
+include.provisional = T,
+apiToken = NULL,
+COG = T)</p>
+<h4 id="arguments">Arguments</h4>
+<h5 id="dpid">dpID</h5>
+<p>The identifier of the AOP data product to download, in the form DP3.PRNUM.REV, e.g. DP3.30011.001. This works for all AOP L3 rasters except L3 reflectance. If an invalid data product ID is provided, the code will show an error message and display the valid dpIDs.</p>
+<h5 id="year">year</h5>
 <p>The four-digit year to search for data.</p>
-
-<h5>siteCode</h5>
-
-<p>The four-letter code of a single NEON site, e.g. &#39;MCRA&#39;.</p>
-
-<h5>dataRootDir</h5>
-
+<h5 id="sitecode">siteCode</h5>
+<p>The four-letter code of a single NEON site, e.g. ‘MCRA’.</p>
+<h5 id="datarootdir">dataRootDir</h5>
 <p>The file path to download data to.</p>
-
-<h5>outFileDir</h5>
-
+<h5 id="outfiledir">outFileDir</h5>
 <p>The file path where the full-site mosaic geotiffs and cloud-optimized geotiffs are saved.</p>
-
-<h5>apiToken</h5>
-
+<h5 id="include-provisional">include.provisional</h5>
+<p>T or F, should provisional data be included in downloaded files? Defaults to F. See <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases">https://www.neonscience.org/data-samples/data-management/data-revisions-releases</a> for details on the difference between provisional and released data.</p>
+<h5 id="apitoken">apiToken</h5>
 <p>User specific API token (generated within neon.datascience user accounts). If not provided, no API token is used.</p>
-
-<p><em>TIP</em>: We recommend using an API token when downloading NEON data programmatically. The function will work without a token, if you leave it out (as described in the documentation), but it is best to get in the practice of using the token! Here I source the token from a file, where the file consists of a single line of code defining the token (called NEON_TOKEN). To set up an API token, please refer to the R tutorial on generating tokens, linked in the requirements section at the beginning of this lesson. </p>
-
+<h5 id="cog">COG</h5>
+<p>T or F, generate a Cloud Optimized Geotiff (COG) in addition to a geotiff? Defaults to F.</p>
+<div id="ds-dataTip" markdown="1">
+<p><strong>Data Tip</strong>: We recommend using an API token when downloading NEON data programmatically. The function will work without a token, if you leave it out (as described in the documentation), but it is best to get in the practice of using the token! Here I source the token from a file, where the file consists of a single line of code defining the token (called NEON_TOKEN). To set up an API token, please refer to the R tutorial on generating tokens, linked in the Recommended SKills section at the beginning of this lesson.</p>
+</div>
+<p>You can set the token as follows, directly in R, replacing “MY TOKEN” with your unique token.</p>
 <pre><code>NEON_TOKEN &lt;- &quot;MY TOKEN&quot;
 </code></pre>
-
-<p>We an read in the token using the source function as follows. This assumes the token is saved in the working directory, but you can also set the path to the token explicitly if you&#39;ve saved it elsewhere.</p>
-
+<p>You can read in the token that is saved as <code>neon_token.R</code> using the source function as follows. This assumes the token is saved in the working directory, but you can also set the path to the token explicitly if you’ve saved it elsewhere.</p>
 <pre><code>source(paste0(wd,&quot;/neon_token.R&quot;))
 </code></pre>
-
-<p>Now that we have a general idea of how this function works, from the documentation, let&#39;s go ahead and run it, including the imported token.
-For this example, I set the download folder to &#39;c:/neon/data&#39; and the output folder to &#39;c:/neon/outputs/2021_MCRA/CHM/&#39;. Modify these paths as desired according to your project structure.</p>
-
+<p>Now that we have a general idea of how this function works, and have set the API TOKEN, let’s go ahead and run the function.</p>
+<p>For this example, the download folder is set to ‘c:/neon/data’ and the output folder to ‘c:/neon/outputs/2021_MCRA/CHM/’. Modify these paths as desired according to your project structure.</p>
 <p>Please heed the following warnings before you run the code:</p>
-
 <p>WARNING: This function is currently set so that it does not check the file size before downloading. You can change this, if desired, by either removing the <code>check.size</code> parameter in the the <code>makeFullSiteMosaics</code> function, or by changing the value for that setting to True (<code>check.size=T</code>). This will pause the function and prompt you to type y/n (yes or no) to continue with the download. We recommend changing this parameter if you have limited storage space on your computer, but note that doing so will require a manual input to complete the execution of the function.</p>
+<p>WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn’t stall out before the files finished downloading. To change this setting, you can the R <code>options</code>, but note that this will change the computer’s settings outside of this R environment. If you do re-set the timeout, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing it to 300 seconds (5 minutes).</p>
+<pre><code>timeout0 &lt;- getOption('timeout')
 
-<p>WARNING: We recommend extending the timeout value when downloading large AOP sites so the connection doesn&#39;t stall out before the files finishe downloading. To change this setting, you can the R <code>options</code>, but note that this will change the computer&#39;s settings outside of this R environment. When you do set the timeout, be sure to change it back at the end. The default timeout is 60 seconds, we recommend changing it to 300 seconds (5 minutes).</p>
-
-<pre><code>timeout0 &lt;- getOption(&#39;timeout&#39;)
 print(timeout0)
 
 ## [1] 60
 </code></pre>
-
 <p>Set the timeout to 300 seconds (5 minutes):</p>
-
 <pre><code>options(timeout=300)
-getOption(&#39;timeout&#39;)
+
+getOption('timeout')
 
 ## [1] 300
 </code></pre>
-
 <p>Set the folder to download the data to, and the output folder to save the final CHM rasters:</p>
+<pre><code>download_folder &lt;- 'c:/neon/data'
 
-<pre><code>download_folder &lt;- &#39;c:/neon/data&#39;
-chm_output_folder &lt;- &#39;c:/neon/outputs/2021_MCRA/CHM/&#39;
-
-
-makeFullSiteMosaics(&#39;DP3.30015.001&#39;,&#39;2021&#39;,&#39;MCRA&#39;,download_folder,chm_output_folder,NEON_TOKEN)
+chm_output_folder &lt;- 'c:/neon/outputs/2021_MCRA/CHM/'
 </code></pre>
+<p>Now we’re ready to run the <code>makeFullSiteMosaics</code> function. We will set <code>include.provisional=T</code> to include provisional data (by default it is set to False). That shouldn’t matter in this case because the 2021 MCRA data is part of a Release. For more information on provisional v. released data, please refer to the tutorial:
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Understanding Releases and Provisional Data</a></p>
+<pre><code>makeFullSiteMosaics('DP3.30015.001','2021','MCRA',download_folder,chm_output_folder,NEON_TOKEN,include.provisional=T,COG=T)
 
+## Error in makeFullSiteMosaics(&quot;DP3.30015.001&quot;, &quot;2021&quot;, &quot;MCRA&quot;, download_folder, : could not find function &quot;makeFullSiteMosaics&quot;
+</code></pre>
 <p>Display the output files generated:</p>
-
 <pre><code>list.files(chm_output_folder)
 
-## [1] &quot;2021_MCRA_2_CHM.tif&quot;     &quot;2021_MCRA_2_CHM_COG.tif&quot;
+## [1] &quot;2021_MCRA_2_CHM.tif&quot;     &quot;2021_MCRA_2_CHM_COG.tif&quot; &quot;2022_MCRA_3_CHM.tif&quot;     &quot;2022_MCRA_3_CHM_COG.tif&quot;
 </code></pre>
-
 <p>Now we can read in and plot the full-site CHM tif that we generated using the raster package:</p>
+<pre><code>MCRA_CHM &lt;- rast(file.path(chm_output_folder,'2021_MCRA_2_CHM.tif'))
 
-<pre><code>MCRA_CHM &lt;- raster(file.path(chm_output_folder,&#39;2021_MCRA_2_CHM.tif&#39;))
 plot(MCRA_CHM,main=&quot;2021_MCRA_2 Canopy Height Model&quot;) # add title with main)
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-chm-full-mosaic-1.png" alt=" " /></p>
+<p>Now let’s run the function to generate full-site mosaics for the AOP Veg Indices (DP3.30026.001). The function handles unzipping the zipped folders, and plotting each separate index tif and associated error tif. We will use the same download folder as before (note that the files will be downloaded to a different sub-directory), and specify a new output folder.</p>
+<p>Now we will run <code>makeFullSiteMosaics</code> again. This time leave out the <code>include.provisional</code> parameter, since it is set to False by default. This time we’ll leave the defaults for <code>include.provisional</code> and COG, so COGs will not be generated.</p>
+<pre><code>veg_indices_output_folder&lt;-'c:/neon/outputs/2021_MCRA/VegIndices/'
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-chm-full-mosaic-1.png" alt=" "/></p>
+makeFullSiteMosaics('DP3.30026.001','2021','MCRA',download_folder,veg_indices_output_folder,NEON_TOKEN)
 
-<p>Now let&#39;s run the function to generate full-site mosaics for the AOP Veg Indices (DP3.30026.001). The function handles unzipping the zipped folders, and plotting each separate index tif and associated error tif. We will use the same download folder as before (note that the files will be downloaded to a different sub-directory), and specify a new output folder.</p>
-
-<pre><code>veg_indices_output_folder&lt;-&#39;c:/neon/outputs/2021_MCRA/VegIndices/&#39;
-
-
-makeFullSiteMosaics(&#39;DP3.30026.001&#39;,&#39;2021&#39;,&#39;MCRA&#39;,download_folder,veg_indices_output_folder,NEON_TOKEN)
+## Error in makeFullSiteMosaics(&quot;DP3.30026.001&quot;, &quot;2021&quot;, &quot;MCRA&quot;, download_folder, : could not find function &quot;makeFullSiteMosaics&quot;
 </code></pre>
-
-<p>Let&#39;s see the full-site Veg Indices files that were generated using <code>list.files</code>:</p>
-
+<p>Let’s see the full-site Veg Indices files that were generated using <code>list.files</code>:</p>
 <pre><code>list.files(veg_indices_output_folder)
 
-##  [1] &quot;2021_MCRA_2_ARVI.tif&quot;           &quot;2021_MCRA_2_ARVI_COG.tif&quot;       &quot;2021_MCRA_2_ARVI_error.tif&quot;    
-##  [4] &quot;2021_MCRA_2_ARVI_error_COG.tif&quot; &quot;2021_MCRA_2_EVI.tif&quot;            &quot;2021_MCRA_2_EVI_COG.tif&quot;       
-##  [7] &quot;2021_MCRA_2_EVI_error.tif&quot;      &quot;2021_MCRA_2_EVI_error_COG.tif&quot;  &quot;2021_MCRA_2_NDVI.tif&quot;          
-## [10] &quot;2021_MCRA_2_NDVI_COG.tif&quot;       &quot;2021_MCRA_2_NDVI_error.tif&quot;     &quot;2021_MCRA_2_NDVI_error_COG.tif&quot;
-## [13] &quot;2021_MCRA_2_PRI.tif&quot;            &quot;2021_MCRA_2_PRI_COG.tif&quot;        &quot;2021_MCRA_2_PRI_error.tif&quot;     
-## [16] &quot;2021_MCRA_2_PRI_error_COG.tif&quot;  &quot;2021_MCRA_2_SAVI.tif&quot;           &quot;2021_MCRA_2_SAVI_COG.tif&quot;      
-## [19] &quot;2021_MCRA_2_SAVI_error.tif&quot;     &quot;2021_MCRA_2_SAVI_error_COG.tif&quot;
+##  [1] &quot;2021_MCRA_2_ARVI.tif&quot;       &quot;2021_MCRA_2_ARVI_error.tif&quot; &quot;2021_MCRA_2_EVI.tif&quot;        &quot;2021_MCRA_2_EVI_error.tif&quot; 
+##  [5] &quot;2021_MCRA_2_NDVI.tif&quot;       &quot;2021_MCRA_2_NDVI_error.tif&quot; &quot;2021_MCRA_2_PRI.tif&quot;        &quot;2021_MCRA_2_PRI_error.tif&quot; 
+##  [9] &quot;2021_MCRA_2_SAVI.tif&quot;       &quot;2021_MCRA_2_SAVI_error.tif&quot;
 </code></pre>
-
 <p>Now we can read in the NDVI and NDVI error tifs:</p>
+<pre><code>MCRA_NDVI &lt;- rast(file.path(veg_indices_output_folder,'2021_MCRA_2_NDVI.tif'))
 
-<pre><code>MCRA_NDVI &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI.tif&#39;))
-MCRA_NDVI_error &lt;- raster(file.path(veg_indices_output_folder,&#39;2021_MCRA_2_NDVI_error.tif&#39;))
+MCRA_NDVI_error &lt;- rast(file.path(veg_indices_output_folder,'2021_MCRA_2_NDVI_error.tif'))
 </code></pre>
-
-<p>And, finally, let&#39;s plot NDVI and NDVI error:</p>
-
+<p>And, finally, let’s plot NDVI and NDVI error:</p>
 <pre><code>plot(MCRA_NDVI,main=&quot;2021_MCRA_2 NDVI&quot;)
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-1.png" alt=" "/></p>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-1.png" alt=" " /></p>
 <pre><code>plot(MCRA_NDVI_error,main=&quot;2021_MCRA_2 NDVI Error&quot;) 
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-error-1.png" alt=" "/></p>
-
-<p>Looks good! Go ahead and test out this function on different data products, years, or sites on your own. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.</p>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/AOP-L3-rasters/rfigs/plot-mcra-ndvi-error-1.png" alt=" " />
+Looks good! Go ahead and test out this function on different data products, years, or sites on your own. Note that larger sites will take more time to download the data, and may require significant memory resources on your computer.</p>
 <p>Last but not least, change the timeout back to the original value:</p>
-
 <pre><code>options(timeout=timeout0)
-getOption(&#39;timeout&#39;)
+
+getOption('timeout')
 
 ## [1] 60
 </code></pre>
-
+</div>
 </body>
-
 </html>
