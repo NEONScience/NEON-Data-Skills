@@ -1,0 +1,49 @@
+---
+syncID: 
+title: "Test reticulate tabs"
+description: Test for tabbed tutorials with R and Python code. Do not publish this tutorial.
+dateCreated: '2024-04-25'
+dataProducts: 
+authors: Claire K. Lunch
+contributors: 
+estimatedTime: 0 hours
+packagesLibraries: neonUtilities, neonutilities
+topics: data-management, rep-sci
+languageTool: R, Python
+code1: 
+tutorialSeries:
+urlTitle: test-code-tabs
+---
+
+```{r setup, include=FALSE}
+library(reticulate)
+```
+
+## Load neonUtilities or neonutilities package {.tabset}
+
+### R
+
+```{r R-library}
+library(neonUtilities)
+```
+
+### Python
+
+```{python p-import}
+import neonutilities as nu
+```
+
+## Get a citation {.tabset}
+
+### R
+
+```{r R-citation}
+getCitation(dpID='DP1.20093.001', release='RELEASE-2024')
+```
+
+### Python
+
+```{python p-citation}
+nu.get_citation(dpID='DP1.20093.001', release='RELEASE-2024')
+```
+
