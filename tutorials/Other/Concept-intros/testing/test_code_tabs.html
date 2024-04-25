@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Test reticulate tabs</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Test reticulate tabs</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<h2 id="load-neonutilities-or-neonutilities-package" class="tabset">Load neonUtilities or neonutilities package</h2>
+<h3 id="r_1">R</h3>
+<pre><code>library(neonUtilities)
+</code></pre>
+<h3 id="python_1">Python</h3>
+<pre><code>import neonutilities as nu
+</code></pre>
+<h2 id="get-a-citation" class="tabset">Get a citation</h2>
+<h3 id="r_2">R</h3>
+<pre><code>getCitation(dpID='DP1.20093.001', release='RELEASE-2024')
+
+## [1] &quot;@misc{https://doi.org/10.48443/fdfd-d514,\n  doi = {10.48443/FDFD-D514},\n  url = {https://data.neonscience.org/data-products/DP1.20093.001/RELEASE-2024},\n  author = {{National Ecological Observatory Network (NEON)}},\n  keywords = {chemistry, water quality, anions, cations, alkalinity, nutrients, surface water, nitrogen (N), carbon (C), total carbon (TC), acid neutralizing capacity (ANC), analytes, grab samples, chemical properties, swc, phosphorus (P)},\n  language = {en},\n  title = {Chemical properties of surface water (DP1.20093.001)},\n  publisher = {National Ecological Observatory Network (NEON)},\n  year = {2024},\n  copyright = {Creative Commons Zero v1.0 Universal}\n}\n&quot;
+</code></pre>
+<h3 id="python_2">Python</h3>
+<pre><code>nu.get_citation(dpID='DP1.20093.001', release='RELEASE-2024')
+
+## '@misc{https://doi.org/10.48443/fdfd-d514,\n  doi = {10.48443/FDFD-D514},\n  url = {https://data.neonscience.org/data-products/DP1.20093.001/RELEASE-2024},\n  author = {{National Ecological Observatory Network (NEON)}},\n  keywords = {chemistry, water quality, anions, cations, alkalinity, nutrients, surface water, nitrogen (N), carbon (C), total carbon (TC), acid neutralizing capacity (ANC), analytes, grab samples, chemical properties, swc, phosphorus (P)},\n  language = {en},\n  title = {Chemical properties of surface water (DP1.20093.001)},\n  publisher = {National Ecological Observatory Network (NEON)},\n  year = {2024},\n  copyright = {Creative Commons Zero v1.0 Universal}\n}\n'
+</code></pre>
+</div>
+</body>
+</html>
