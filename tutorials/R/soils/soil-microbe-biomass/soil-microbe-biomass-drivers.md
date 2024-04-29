@@ -531,7 +531,7 @@ Next let's identify the sampling plots so we can show the relationship between m
 
     legend("topleft", legend=soilPlots, col=colors, pch=1, bty="n")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/soil-microbe-biomass/rfigs/mb-temp plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/soil-microbe-biomass/rfigs/mb-temp-plot-1.png)
 
 There isn't an obvious relationship between soil temperature and microbial biomass and the range in soil temperature is relatively narrow due to the subtropical location of the site.
 
@@ -565,7 +565,7 @@ Now let's make a similar plot using soil moisture instead of soil temperature.
 
     legend("topleft", legend=soilPlots, col=colors, pch=1, bty="n")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/soil-microbe-biomass/rfigs/mb-swc plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/soil-microbe-biomass/rfigs/mb-swc-plot-1.png)
 
 There's a lot of noise, but generally there appears to be a positive relationship between soil moisture and microbial biomass. Given the warm but relatively dry climate at GUAN it is perhaps not surprising that microbial biomass increases when more water is available in the soil.
 

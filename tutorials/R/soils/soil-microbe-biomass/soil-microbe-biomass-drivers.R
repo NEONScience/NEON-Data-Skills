@@ -24,14 +24,14 @@ soil <- loadByProduct(dpID = "DP1.10086.001",
 
 
 
-## ----explore microb--------------------------------------------------------------------------------------
+## ----explore-microb--------------------------------------------------------------------------------------
 
 # View the first few rows of the microbial biomass table
 head(microb$sme_scaledMicrobialBiomass)
 
 
 
-## ----total lipid conc correction-------------------------------------------------------------------------
+## ----total-lipid-conc-correction-------------------------------------------------------------------------
 
 # Identify pre- (i.e., c18To0ScaledConcentration = NA) and post-November 2021 data
 preNov2021 <- is.na(microb$sme_scaledMicrobialBiomass$c18To0ScaledConcentration)
@@ -47,14 +47,14 @@ microb$sme_scaledMicrobialBiomass$correctedTotLipidConc[!preNov2021] <-
 
 
 
-## ----microb units----------------------------------------------------------------------------------------
+## ----microb-units----------------------------------------------------------------------------------------
 
 # Identify the units of the totalLipidConcentration data
 microb$variables_10104[grep("totalLipidConcentration", microb$variables_10104$fieldName), c("description", "units")]
 
 
 
-## ----explore soil----------------------------------------------------------------------------------------
+## ----explore-soil----------------------------------------------------------------------------------------
 
 # View the first few rows of the soil core table, which includes soil temperature
 head(soil$sls_soilCoreCollection)
@@ -64,7 +64,7 @@ head(soil$sls_soilMoisture)
 
 
 
-## ----soil units------------------------------------------------------------------------------------------
+## ----soil-units------------------------------------------------------------------------------------------
 
 # Identify the units of the soilTemp data
 soil$variables_10086[grep("soilTemp", soil$variables_10086$fieldName), c("description", "units")]
@@ -84,7 +84,7 @@ swcMicrob <- merge(soil$sls_soilMoisture, coreMicrob, by="sampleID")
 
 
 
-## ----mb-temp plot----------------------------------------------------------------------------------------
+## ----mb-temp-plot----------------------------------------------------------------------------------------
 
 # Identify the different soil plots represented in the table
 soilPlots <- unique(swcMicrob$plotID)
@@ -114,7 +114,7 @@ legend("topleft", legend=soilPlots, col=colors, pch=1, bty="n")
 
 
 
-## ----mb-swc plot-----------------------------------------------------------------------------------------
+## ----mb-swc-plot-----------------------------------------------------------------------------------------
 
 # Create an empty plotting window for the soil moisture and microbial biomass relationship
 plot(swcMicrob$soilMoisture, 

@@ -84,7 +84,7 @@ soil <- loadByProduct(dpID = "DP1.10086.001",
 
 First let's take a look at the microbial data that we downloaded, which is a list of seven tables but we're just going to use two of them: `microb$sme_scaledMicrobialBiomass` and `microb$variables_10104`. We can use the `head()` function to get a sense of what the data look like. There are a lot of columns corresponding to a range of different lipids that might be detected in the phospholipid fatty acid (PLFA) analysis, but we're primarily interested in total microbial biomass as indicated by total lipid concentration (`totalLipidConcentration`). We can also see that at least some of the extractions might not have work correctly as indicated by the `analysisResultsQF` column, so we'll want to filter those out later.
 
-```{r explore microb}
+```{r explore-microb}
 
 # View the first few rows of the microbial biomass table
 head(microb$sme_scaledMicrobialBiomass)
@@ -93,7 +93,7 @@ head(microb$sme_scaledMicrobialBiomass)
 
 There is known contamination of lipid c18To0 from the Buyer and Sasser high-throughput PLFA method that comes from the solid phase extraction 96 well plates used. Prior to November 2021 this lipid was excluded from the results and no correction to the total lipid concentration data is necessary, however, since then c18To0 has been reported in the data and needs to be subtracted from the total lipid concentration to get a reliable estimate of microbial biomass. Note that an alternative approach to correcting the total lipid concentration data is to perform a blank correction based on lipid concentrations reported in blanks in the `microb$sme_batchResults` table.
 
-```{r total lipid conc correction}
+```{r total-lipid-conc-correction}
 
 # Identify pre- (i.e., c18To0ScaledConcentration = NA) and post-November 2021 data
 preNov2021 <- is.na(microb$sme_scaledMicrobialBiomass$c18To0ScaledConcentration)
@@ -111,7 +111,7 @@ microb$sme_scaledMicrobialBiomass$correctedTotLipidConc[!preNov2021] <-
 
 To find the units of the total lipid concentration data we can use the `microb$variables_10104` table, which provides information about each column in the data product. The units are nanomoles of lipids per gram of soil.
 
-```{r microb units}
+```{r microb-units}
 
 # Identify the units of the totalLipidConcentration data
 microb$variables_10104[grep("totalLipidConcentration", microb$variables_10104$fieldName), c("description", "units")]
@@ -121,7 +121,7 @@ microb$variables_10104[grep("totalLipidConcentration", microb$variables_10104$fi
 
 Next let's look at the soil properties data, which contains 14 tables but we'll just use three of them: `soil$sls_soilCoreCollection` which includes soil temperature at the time of sampling, `soil$sls_soilMoisture`, and lastly `soil$variables_10086` to identify the measurement units.
 
-```{r explore soil}
+```{r explore-soil}
 
 # View the first few rows of the soil core table, which includes soil temperature
 head(soil$sls_soilCoreCollection)
@@ -133,7 +133,7 @@ head(soil$sls_soilMoisture)
 
 We can find the units of the soil temperature and soil moisture data in `soil$variables_10086`, which are °C and g water/g soil, respectively.
 
-```{r soil units}
+```{r soil-units}
 
 # Identify the units of the soilTemp data
 soil$variables_10086[grep("soilTemp", soil$variables_10086$fieldName), c("description", "units")]
@@ -163,7 +163,7 @@ swcMicrob <- merge(soil$sls_soilMoisture, coreMicrob, by="sampleID")
 
 Next let's identify the sampling plots so we can show the relationship between microbial biomass and soil temperature for each plot. Then we'll create colors for each sampling plot to use in the graph, identify the rows that passed the sample QA/QC tests, and plot the temperature-microbial biomass relationship.
 
-```{r mb-temp plot}
+```{r mb-temp-plot}
 
 # Identify the different soil plots represented in the table
 soilPlots <- unique(swcMicrob$plotID)
@@ -200,7 +200,7 @@ There isn't an obvious relationship between soil temperature and microbial bioma
 
 Now let's make a similar plot using soil moisture instead of soil temperature.
 
-```{r mb-swc plot}
+```{r mb-swc-plot}
 
 # Create an empty plotting window for the soil moisture and microbial biomass relationship
 plot(swcMicrob$soilMoisture, 
