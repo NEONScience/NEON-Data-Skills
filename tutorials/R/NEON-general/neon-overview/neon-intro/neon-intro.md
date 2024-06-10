@@ -103,7 +103,6 @@ coincide with?
 * Is it/are they terrestrial or aquatic?  
 * Are there data available for the NEON field site(s) that you are most
 interested in? What kind of data are available?
-
 </div>
 
 <div id="ds-dataTip" markdown="1">
@@ -156,7 +155,6 @@ address at the Institute.
 * Which types of NEON data may be more useful to address these questions?
 * What non-NEON data resources could be combined with NEON data to help address your question?
 * What challenges, if any, could you foresee when beginning to work with these data?
-* 
 </div>
 
 <div id="ds-dataTip" markdown="1">
@@ -222,7 +220,6 @@ sites you’ve already identified in the previous Thought Questions.
 * For what time period does the data cover?  
 * What format is the downloadable file available in?  
 * Where is the metadata to support this data?
-* 
 </div>
 
 
