@@ -109,7 +109,7 @@ will want to set this to F.
 * `token`: this allows you to input your NEON API token to obtain faster 
 downloads.
 
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
+Learn more about NEON API tokens in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
 
 There are additional inputs you can learn about in the 
 <a href="https//:www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
