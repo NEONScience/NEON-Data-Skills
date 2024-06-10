@@ -72,7 +72,7 @@ functions for ROI processing.
 ## Launch xROI
 
 A comprehensive user manual for low-level image processing using *xROI* is available from 
-<a href="https://cran.r-project.org/package=xROI/xROI.pdf" target="_blank">CRAN xROI.pdf</a>. 
+<a href="https://github.com/bnasr/xROI" target="_blank">CRAN xROI</a>. 
 While the user manual includes a set of examples for each function; here we 
 will learn to use the graphical interactive mode. 
 
