@@ -128,6 +128,7 @@ Now we can explore if there is any FOV shift in the dataset using the `CLI proce
 Finally, we can go to the `Time series extraction` tab. Extract the time-series. Save the output and explore the dataset in R.
 
 <div id="ds-challenge" markdown="1">
+ 
 ## Challenge: Use xROI
 Let's use xROI on a little more challenging site with field of view shifts. 
 
