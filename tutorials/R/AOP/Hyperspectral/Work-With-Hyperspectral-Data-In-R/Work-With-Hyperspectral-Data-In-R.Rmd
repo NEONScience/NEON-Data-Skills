@@ -463,7 +463,7 @@ b34r
 		<figcaption>The extent of a raster represents the spatial location of each corner. The coordinate units will be determined by the spatial projection coordinate reference system that the data are in. Source: National Ecological Observatory Network (NEON) </figcaption>
 </figure>
 
-<a href="https://www.neonscience.org/raster-data-series" target="_blank"> Learn more about raster attributes including extent, and coordinate reference systems here.</a>
+Learn more about working with Raster data in R in the Data Carpentry workshop: <a href="https://datacarpentry.org/r-raster-vector-geospatial/" target="_blank">Introduction to Geospatial Raster and Vector Data with R</a>.
 
 We can adjust the colors of our raster as well, if desired.
 
