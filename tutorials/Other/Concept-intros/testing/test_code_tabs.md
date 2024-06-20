@@ -18,5 +18,5 @@ urlTitle: test-code-tabs
 
 
 
-<iframe src="https://github.com/NEONScience/NEON-Data-Skills/raw/main/tutorials-in-development/Other/test_code_tabs.html" width="900" height="1600" frameborder="0" allowfullscreen></iframe>
+<embed type="text/html" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials-in-development/Other/test_code_tabs.html" width="900" height="1600"></embed>
 
