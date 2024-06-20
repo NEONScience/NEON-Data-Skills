@@ -1,15 +1,11 @@
-## ----setup, include=FALSE--------------------------------------------------------------------------------
-library(reticulate)
+## ----setup, echo=FALSE--------------------------------------------------------------------------------------------------
+
+library(htmltools)
 
 
-## ----R-library-------------------------------------------------------------------------------------------
-library(neonUtilities)
+
+## ----html, echo=FALSE---------------------------------------------------------------------------------------------------
+
+htmltools::tags$iframe(src="https://github.com/cklunch/NEON-Data-Skills/blob/main/tutorials-in-development/Other/test_code_tabs.html", width="100%", height=1600)
 
 
-## import neonutilities as nu
-
-## ----R-citation------------------------------------------------------------------------------------------
-getCitation(dpID='DP1.20093.001', release='RELEASE-2024')
-
-
-## nu.get_citation(dpID='DP1.20093.001', release='RELEASE-2024')

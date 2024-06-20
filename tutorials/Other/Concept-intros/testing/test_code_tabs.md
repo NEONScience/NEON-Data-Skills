@@ -17,31 +17,6 @@ urlTitle: test-code-tabs
 
 
 
-## Load neonUtilities or neonutilities package {.tabset}
 
-### R
-
-
-    library(neonUtilities)
-
-### Python
-
-
-    import neonutilities as nu
-
-## Get a citation {.tabset}
-
-### R
-
-
-    getCitation(dpID='DP1.20093.001', release='RELEASE-2024')
-
-    ## [1] "@misc{https://doi.org/10.48443/fdfd-d514,\n  doi = {10.48443/FDFD-D514},\n  url = {https://data.neonscience.org/data-products/DP1.20093.001/RELEASE-2024},\n  author = {{National Ecological Observatory Network (NEON)}},\n  keywords = {chemistry, water quality, anions, cations, alkalinity, nutrients, surface water, nitrogen (N), carbon (C), total carbon (TC), acid neutralizing capacity (ANC), analytes, grab samples, chemical properties, swc, phosphorus (P)},\n  language = {en},\n  title = {Chemical properties of surface water (DP1.20093.001)},\n  publisher = {National Ecological Observatory Network (NEON)},\n  year = {2024},\n  copyright = {Creative Commons Zero v1.0 Universal}\n}\n"
-
-### Python
-
-
-    nu.get_citation(dpID='DP1.20093.001', release='RELEASE-2024')
-
-    ## '@misc{https://doi.org/10.48443/fdfd-d514,\n  doi = {10.48443/FDFD-D514},\n  url = {https://data.neonscience.org/data-products/DP1.20093.001/RELEASE-2024},\n  author = {{National Ecological Observatory Network (NEON)}},\n  keywords = {chemistry, water quality, anions, cations, alkalinity, nutrients, surface water, nitrogen (N), carbon (C), total carbon (TC), acid neutralizing capacity (ANC), analytes, grab samples, chemical properties, swc, phosphorus (P)},\n  language = {en},\n  title = {Chemical properties of surface water (DP1.20093.001)},\n  publisher = {National Ecological Observatory Network (NEON)},\n  year = {2024},\n  copyright = {Creative Commons Zero v1.0 Universal}\n}\n'
+<!--html_preserve--><iframe src="https://github.com/cklunch/NEON-Data-Skills/blob/main/tutorials-in-development/Other/test_code_tabs.html" width="100%" height="1600"></iframe><!--/html_preserve-->
 
