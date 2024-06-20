@@ -1,15 +1,11 @@
-## ----setup, include=FALSE--------------------------------------------------------------------------------
-library(reticulate)
+## ----setup, echo=FALSE--------------------------------------------------------------------------------------------------
+
+library(htmltools)
 
 
-## ----R-library-------------------------------------------------------------------------------------------
-library(neonUtilities)
+
+## ----html---------------------------------------------------------------------------------------------------------------
+
+htmltools::includeHTML("https://github.com/NEONScience/NEON-Data-Skills/raw/main/tutorials-in-development/Other/test_code_tabs.html")
 
 
-## import neonutilities as nu
-
-## ----R-citation------------------------------------------------------------------------------------------
-getCitation(dpID='DP1.20093.001', release='RELEASE-2024')
-
-
-## nu.get_citation(dpID='DP1.20093.001', release='RELEASE-2024')

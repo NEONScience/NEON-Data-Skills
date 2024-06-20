@@ -15,35 +15,16 @@ tutorialSeries:
 urlTitle: test-code-tabs
 ---
 
-```{r setup, include=FALSE}
-library(reticulate)
+```{r setup, echo=FALSE}
+
+library(htmltools)
+
 ```
 
-## Load neonUtilities or neonutilities package {.tabset}
 
-### R
+```{r html}
 
-```{r R-library}
-library(neonUtilities)
-```
+htmltools::includeHTML("https://github.com/NEONScience/NEON-Data-Skills/raw/main/tutorials-in-development/Other/test_code_tabs.html")
 
-### Python
-
-```{python p-import}
-import neonutilities as nu
-```
-
-## Get a citation {.tabset}
-
-### R
-
-```{r R-citation}
-getCitation(dpID='DP1.20093.001', release='RELEASE-2024')
-```
-
-### Python
-
-```{python p-citation}
-nu.get_citation(dpID='DP1.20093.001', release='RELEASE-2024')
 ```
 
