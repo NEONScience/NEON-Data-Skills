@@ -1,6 +1,6 @@
 ---
 title: "Test reticulate tabs"
-output: html_fragment
+output: html_document
 dateCreated: '2024-04-25'
 ---
 
