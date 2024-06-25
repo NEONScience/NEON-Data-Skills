@@ -22,7 +22,9 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
           "R/soils/soil-microbe-biomass",
           "R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R",
           "Python/GCP/discharge-bq-demo",
-          "Other/Concept-intros/testing")
+          "Other/Concept-intros/test_tabs_iframe",
+          "Other/Concept-intros/test_tabs_full_doc",
+          "Other/Concept-intros/test_tabs_fragment")
 
 #################### Set up Input Variables #############################
 

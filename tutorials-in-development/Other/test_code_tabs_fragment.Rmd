@@ -1,5 +1,5 @@
 ---
-output: html_document
+output: html_fragment
 dateCreated: '2024-04-25'
 ---
 
