@@ -1,0 +1,38 @@
+---
+title: "Test reticulate tabs"
+output: html_fragment
+dateCreated: '2024-04-25'
+---
+
+```{r setup, include=FALSE}
+library(reticulate)
+```
+
+## Load neonUtilities or neonutilities package {.tabset}
+
+### R
+
+```{r R-library}
+library(neonUtilities)
+```
+
+### Python
+
+```{python p-import}
+import neonutilities as nu
+```
+
+## Get a citation {.tabset}
+
+### R
+
+```{r R-citation}
+getCitation(dpID='DP1.20093.001', release='RELEASE-2024')
+```
+
+### Python
+
+```{python p-citation}
+nu.get_citation(dpID='DP1.20093.001', release='RELEASE-2024')
+```
+
