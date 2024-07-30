@@ -391,12 +391,11 @@ mod_fit_candidates &lt;- targets_clim_train %&gt;%
 fabletools::report(mod_fit_candidates)
 
 ## # A tibble: 3 × 15
-##   .model    r_squared adj_r_squared  sigma2 statistic p_value    df log_lik   AIC  AICc   BIC
-##   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 mod_temp   0.0332         0.0245  0.00416    3.78    0.0544     2    149. -610. -610. -602.
-## 2 mod_prec…  0.000797      -0.00829 0.00430    0.0877  0.768      2    147. -606. -606. -598.
-## 3 mod_temp…  0.0333         0.0156  0.00420    1.88    0.158      3    149. -608. -608. -597.
-## # ℹ 4 more variables: CV &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;, rank &lt;int&gt;
+##   .model          r_squared adj_r_squared  sigma2 statistic p_value    df log_lik   AIC  AICc   BIC      CV deviance df.residual  rank
+##   &lt;chr&gt;               &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;       &lt;int&gt; &lt;int&gt;
+## 1 mod_temp         0.0332         0.0245  0.00416    3.78    0.0544     2    149. -610. -610. -602. 0.00421    0.458         110     2
+## 2 mod_precip       0.000797      -0.00829 0.00430    0.0877  0.768      2    147. -606. -606. -598. 0.00541    0.473         110     2
+## 3 mod_temp_precip  0.0333         0.0156  0.00420    1.88    0.158      3    149. -608. -608. -597. 0.00500    0.458         109     3
 </code></pre>
 <p>Now, plot the predicted versus observed abundance data.</p>
 <pre><code># visualize model fit
@@ -525,15 +524,14 @@ fc_best_lm_efi &lt;- fc_best_lm %&gt;%
 <pre><code>head(fc_best_lm_efi)
 
 ## # A tibble: 6 × 10
-##   datetime   site_id parameter model_id                 family variable prediction project_id
-##   &lt;date&gt;     &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                    &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;     
-## 1 2022-01-01 OSBS    1         bet_abund_example_tslm_… ensem… abundan…    -0.0737 neon4cast 
-## 2 2022-01-01 OSBS    2         bet_abund_example_tslm_… ensem… abundan…     0.0263 neon4cast 
-## 3 2022-01-01 OSBS    3         bet_abund_example_tslm_… ensem… abundan…     0.0639 neon4cast 
-## 4 2022-01-01 OSBS    4         bet_abund_example_tslm_… ensem… abundan…    -0.0266 neon4cast 
-## 5 2022-01-01 OSBS    5         bet_abund_example_tslm_… ensem… abundan…    -0.0512 neon4cast 
-## 6 2022-01-01 OSBS    6         bet_abund_example_tslm_… ensem… abundan…     0.0230 neon4cast 
-## # ℹ 2 more variables: reference_datetime &lt;chr&gt;, duration &lt;chr&gt;
+##   datetime   site_id parameter model_id                    family   variable  prediction project_id reference_datetime duration
+##   &lt;date&gt;     &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                       &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;   
+## 1 2022-01-01 OSBS    1         bet_abund_example_tslm_temp ensemble abundance    -0.0280 neon4cast  2022-01-01         P1W     
+## 2 2022-01-01 OSBS    2         bet_abund_example_tslm_temp ensemble abundance     0.204  neon4cast  2022-01-01         P1W     
+## 3 2022-01-01 OSBS    3         bet_abund_example_tslm_temp ensemble abundance     0.0418 neon4cast  2022-01-01         P1W     
+## 4 2022-01-01 OSBS    4         bet_abund_example_tslm_temp ensemble abundance     0.0434 neon4cast  2022-01-01         P1W     
+## 5 2022-01-01 OSBS    5         bet_abund_example_tslm_temp ensemble abundance     0.0954 neon4cast  2022-01-01         P1W     
+## 6 2022-01-01 OSBS    6         bet_abund_example_tslm_temp ensemble abundance     0.0719 neon4cast  2022-01-01         P1W
 
 
 # visualize the EFI-formatted submission
@@ -689,16 +687,15 @@ mod_scores &lt;- score(
 head(mod_scores)
 
 ## # A tibble: 6 × 17
-##   model_id    reference_datetime site_id datetime   family variable observation   crps   logs
-##   &lt;chr&gt;       &lt;chr&gt;              &lt;chr&gt;   &lt;date&gt;     &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 bet_abund_… 2022-01-01         OSBS    2022-04-04 sample abundan…      0.102  0.0308 -1.49 
-## 2 bet_abund_… 2022-01-01         OSBS    2022-04-18 sample abundan…      0.188  0.0971 -0.286
-## 3 bet_abund_… 2022-01-01         OSBS    2022-04-25 sample abundan…      0.0877 0.0185 -1.97 
-## 4 bet_abund_… 2022-01-01         OSBS    2022-05-02 sample abundan…      0.0857 0.0111 -2.08 
-## 5 bet_abund_… 2022-01-01         OSBS    2022-05-16 sample abundan…      0.0786 0.0294 -1.15 
-## 6 bet_abund_… 2022-01-01         OSBS    2022-05-30 sample abundan…      0.133  0.0299 -1.46 
-## # ℹ 8 more variables: mean &lt;dbl&gt;, median &lt;dbl&gt;, sd &lt;dbl&gt;, quantile97.5 &lt;dbl&gt;,
-## #   quantile02.5 &lt;dbl&gt;, quantile90 &lt;dbl&gt;, quantile10 &lt;dbl&gt;, horizon &lt;drtn&gt;
+##   model_id  reference_datetime site_id datetime   family variable observation   crps   logs   mean median     sd quantile97.5 quantile02.5
+##   &lt;chr&gt;     &lt;chr&gt;              &lt;chr&gt;   &lt;date&gt;     &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+## 1 bet_abun… 2022-01-01         OSBS    2022-04-04 sample abundan…      0.102  0.0333 -1.37  0.0541 0.0375 0.0532        0.149    -0.0100  
+## 2 bet_abun… 2022-01-01         OSBS    2022-04-18 sample abundan…      0.188  0.104  -0.332 0.0319 0.0372 0.109         0.205    -0.126   
+## 3 bet_abun… 2022-01-01         OSBS    2022-04-25 sample abundan…      0.0877 0.0307 -1.24  0.0382 0.0416 0.0473        0.107    -0.0478  
+## 4 bet_abun… 2022-01-01         OSBS    2022-05-02 sample abundan…      0.0857 0.0299 -1.21  0.0587 0.0463 0.0796        0.167    -0.0421  
+## 5 bet_abun… 2022-01-01         OSBS    2022-05-16 sample abundan…      0.0786 0.0274 -1.38  0.109  0.115  0.0718        0.215     0.00693 
+## 6 bet_abun… 2022-01-01         OSBS    2022-05-30 sample abundan…      0.133  0.0780 -0.434 0.0375 0.0281 0.0356        0.108     0.000965
+## # ℹ 3 more variables: quantile90 &lt;dbl&gt;, quantile10 &lt;dbl&gt;, horizon &lt;drtn&gt;
 </code></pre>
 <p>Are these scores better than our null models? Here, we will score the <code>mod_mean</code> and <code>mod_naive</code> models, and combine the null model scores with the scores for our <code>best_lm</code> forecast above. Then we can compare.</p>
 <pre><code># get scores for the mean and naive models
@@ -752,7 +749,10 @@ rbind(mod_results_to_score_null,mod_results_to_score_lm) %&gt;% ggplot(., aes(da
   ylab(&quot;Abundance&quot;)+
   theme_classic()
 </code></pre>
-<p>![ ](<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/visualize">https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/visualize</a> forecasts to raw target data-1.png)</p>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot forecasts to raw target data-1.png" alt="Figure: Compare Forecasts to Raw Data"  />
+<p class="caption">Figure: Compare Forecasts to Raw Data</p>
+</div>
 <p>Let’s plot the scores. Remember, lower scores indicate better forecast accuracy.</p>
 <pre><code>all_mod_scores %&gt;%
   ggplot(aes(datetime, crps, color = model_id)) +
