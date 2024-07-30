@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Forecast Beetle Richness and Abundance and Submit Forecasts to the NEON Ecological Forecast Challenge</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Forecast Beetle Richness and Abundance and Submit Forecasts to the NEON Ecological Forecast Challenge</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<h1 id="about-this-tutorial">About this tutorial</h1>
+<h2 id="learning-objectives">Learning objectives</h2>
+<ul>
+<li>Overview of the <a href="https://projects.ecoforecast.org/neon4cast-docs/Beetles.html">Beetle Communities</a> theme for the <a href="https://projects.ecoforecast.org/neon4cast-ci/">NEON Ecological Forecast Challenge</a></li>
+<li>How to create a simple forecast for the Beetle Communities theme</li>
+<li>How to submit/score a forecast to evaluate its accuracy</li>
+<li>How to use the NEON Forecast Challenge resources in your research and teaching</li>
+</ul>
+<h2 id="target-user-groups-for-this-tutorial">Target user groups for this tutorial</h2>
+<p>This tutorial is intended to be used by ecological forecasters at any stage of expertise and may be used as a learning tool as an introduction to forecasting properties of ecological populations or communities. Below, we provide code for introductory examples to walk through the entire process of creating and submitting a forecast to the NEON Ecological Forecasting challenge. This includes:</p>
+<ol>
+<li>Accessing target datasets of NEON ground beetle richness and abundance</li>
+<li>Accessing climate forecast data to use as drivers in models predicting beetle data</li>
+<li>How to use the <code>fable</code> package for R to specify and fit models</li>
+<li>How to submit a forecast to the forecast challenge</li>
+</ol>
+<p>Upon completing this tutorial, participants should be able to create and submit forecasts to the Beetle Communities theme of the EFI RCN NEON Ecological Forecasting challenge.</p>
+<h2 id="things-you-will-need-to-complete-this-tutorial">Things you will need to complete this tutorial</h2>
+<p>You will need a current version of R (v4.2 or newer) to complete this tutorial. We also recommend the RStudio IDE to work with R.</p>
+<p>To complete the workshop via this markdown document the following packages will need to be installed:</p>
+<ul>
+<li><code>tidyverse</code></li>
+<li><code>lubridate</code></li>
+<li><code>tsibble</code></li>
+<li><code>fable</code></li>
+<li><code>fabletools</code></li>
+<li><code>remotes</code> (to install neon4cast from gitHub)</li>
+<li><code>neon4cast</code> (from github)</li>
+</ul>
+<p>The following code chunk should be run to install packages.</p>
+<pre><code>install.packages('tidyverse') # collection of R packages for data manipulation, analysis, and visualisation
+
+install.packages('lubridate') # working with dates and times
+
+install.packages('tsibble') # working with timeseries data
+
+install.packages('fable') # running forecasts
+
+install.packages('fabletools') # helper functions for using fable
+
+install.packages('remotes')
+
+install.packages('tsibble') # package for dealing with time series data sets and tsibble objects
+
+remotes::install_github('eco4cast/neon4cast') # package from NEON4cast challenge organisers to assist with forecast building and submission
+
+remotes::install_github(&quot;eco4cast/score4cast&quot;) # package to score forecasts
+</code></pre>
+<p>Then load the packages.</p>
+<pre><code>version$version.string
+
+## [1] &quot;R version 4.3.2 (2023-10-31 ucrt)&quot;
+
+library(tidyverse)
+
+library(lubridate)
+
+library(tsibble)
+
+library(fable)
+
+library(fabletools)
+
+library(neon4cast)
+
+library(score4cast)
+</code></pre>
+<h1 id="introduction">Introduction</h1>
+<h2 id="the-neon-ecological-forecast-challenge"><a href="https://projects.ecoforecast.org/neon4cast-ci/">The NEON Ecological Forecast Challenge</a></h2>
+<p>The Challenge has been organized by the Ecological Forecasting Initiative Research Coordination Network (<a href="https://ecoforecast.org/">EFI RCN</a>).</p>
+<p>The Challenge asks the scientific community to produce ecological forecasts of future observations of ecological data that will be collected and published by the <a href="https://www.neonscience.org/">National Ecological Observatory Network (NEON)</a>. The Challenge is split into <a href="https://projects.ecoforecast.org/neon4cast-ci/targets.html#sec-starting-sites">five themes</a> that span aquatic and terrestrial systems, and population, community, and ecosystem processes across a broad range of ecoregions. We are excited to use this Challenge to learn more about the predictability of ecological processes by forecasting NEON data before it is collected.</p>
+<p>Which modeling frameworks, mechanistic processes, and statistical approaches best capture community, population, and ecosystem dynamics? These questions are answerable by a community generating a diverse array of forecasts. The Challenge is open to any individual or team from anywhere around the world that wants to submit forecasts. Learn more about how you can participate <a href="https://projects.ecoforecast.org/neon4cast-ci/instructions.html">here.</a>.</p>
+<h2 id="goals-for-forecasts-of-ecological-communities">Goals for forecasts of ecological communities</h2>
+<p>Ecologists are interested in tracking changes in the <strong>number of individual organisms over time</strong> (count data of abundance). Numbers of each species will change due to births, deaths, and movement in (immigration) or out (emigration) of populations. The abundance of an ecological community is the sum of the number of individuals of each species. For example, in a hypothetical community of beetles sampled in Year 1 (time=1) , Species A has 10 individuals, Species B has 40 individuals and Species C has 50 individuals, giving a community abundance of 100. In subsequent years the abundance may increase, decrease or remain constant. A forecast may use this sequence of observations over time to predict how many individuals will occur in the next year (time=2), or a number of years into the future (time n). How far into the future we predict is known as the forecast horizon. The accuracy of the prediction is then compared to new observations and a new prediction is made.</p>
+<p>Ecologists are also interested in tracking changes in the <strong>number of species over time</strong> (Species richness over time without species identity) and in species turnover over time steps where the identity of the species is known. In the example above there are three species (A,B,C) but over time this can change if for example Species C  was to decline from 10 to zero individuals then the species richness would be 2, or increase if two previously unobserved species (D &amp; E) arrive into the community, the species richness would be 4. Note that the loss of species A and the arrival of D and E gives a net species richness of 4, but without keeping track of the identity of the species we may be unaware of how community composition is changing over time.</p>
+<p>Ecological communities change for many reasons and so it is important to understand the drivers of changes in abundance or species richness by adding environmental variables into the models. By knowing how species change over time we can use the driving variables to predict, or forecast, the values for the abundance and species richness variables for the ecological communities into the future.</p>
+<h2 id="overview-of-the-beetle-communities-theme">Overview of the <a href="https://projects.ecoforecast.org/neon4cast-docs/Beetles.html">Beetle Communities</a> theme</h2>
+<p><strong>What</strong>: Forecast abundance and/or richness of ground beetles (carabids) collected in pitfall traps, standardized to sampling effort (trap night). More information about the NEON data product (DP1.10022.001, Ground beetles sampled from pitfall traps) we are forecasting can be found <a href="https://data.neonscience.org/data-products/DP1.10022.001">here</a>. Note that we are not downloading the target dataset from the NEON data portal. Rather, we will download a version of the dataset that has been simplified and preformatted for this challenge by the EFI RCN. An example script
+to preformat the target data from the EFI RCN can be found <a href="https://github.com/eco4cast/neon4cast/blob/465e39d6a0fd78e1deebedbb50cfaee5bd018406/notebook/beetles_example.R">here</a>. Specifically, the targets are:</p>
+<ul>
+<li><code>abundance</code>: Total number of carabid individuals per trap-night, estimated each week of the year at each NEON site</li>
+<li><code>richness</code>: Total number of unique ‘species’ in a sampling bout for each NEON site each week.</li>
+</ul>
+<p><strong>Where</strong>: All 47 terrestrial <a href="https://www.neonscience.org/field-sites/explore-field-sites">NEON sites</a>.</p>
+<p>You can download metadata for all NEON sites as follows:</p>
+<pre><code># To download the NEON site information table:
+
+neon_site_info &lt;- read_csv(&quot;https://www.neonscience.org/sites/default/files/NEON_Field_Site_Metadata_20231026.csv&quot;)
+</code></pre>
+<p>This table has information about the field sites, including location, ecoregion, and other useful metadata (e.g. elevation, mean annual precipitation, temperature, and NLCD class).</p>
+<p>Or, you can load a more targeted list of just the sites included in the Beetle Communities theme:</p>
+<pre><code>site_data &lt;- read_csv(&quot;https://raw.githubusercontent.com/eco4cast/neon4cast-targets/main/NEON_Field_Site_Metadata_20220412.csv&quot;) %&gt;%
+
+  dplyr::filter(beetles == 1)
+</code></pre>
+<p>For this tutorial, we are going to focus on the <a href="https://www.neonscience.org/field-sites/osbs">NEON site at Ordway-Swisher Biological Station (OSBS)</a>, which is located in Domain 03 (D03) in Florida.</p>
+<p>If you’re interested to learn more about downloading and exploring NEON data beyond beetles at OSBS, follow <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr">this link</a> to get an overview of NEON’s data products, how to download the data, and how to interact visualize and analyze the data.</p>
+<p><strong>When</strong>: Target data are available as early as 2013 at some sites, and data are available at all sites from 2019 on. Pitfall trap deployments are typically two weeks in duration (i.e., a sampling bout lasts two weeks), and traps are collected and redeployed throughout the growing season at each NEON site. Note that the target data for The Challenge are standardized to represent beetle abundance per trap night. Because pitfall trap samples need to be sorted and individuals counted and identified, the latency for data publication can be nearly a year. In this tutorial we will train our models on data from 2013-2021 and we will make forecasts for the 2022 season so that we can score them immediately.</p>
+<p>Check current ground beetle data availability on the <a href="https://data.neonscience.org/data-products/DP1.10022.001#:~:text=last_page-,Availability%20and%20Download,-July%202013%20%E2%80%93%20January">NEON Data Portal</a>.</p>
+<p>Determining a reference date (the first day of the forecast) and a forecast horizon (the time window that is being forecast) are two major challenges when forecasting population and community data. Other themes in the NEON Ecological Forecast Challenge focus on targets that are derived from instrument data, e.g., dissolved Oxygen or temperature in lakes, that are collected at a high frequency (e.g., &gt; 1 Hz) and available in near-real-time (e.g., latency &lt; 1 day). In practice, forecasts for these types of data have horizons that are typically a week to a month because they use output from weather forecasts (e.g., NOAA GEFS forecasts) as drivers in their models. These forecasts can be evaluated and updated as new data roll in, and new weather forecasts are published. This approach is known as “iterative near-term ecological forecasting” (<a href="https://doi.org/10.1073/pnas.1710231115">Dietze et al. 2018</a>).</p>
+<p>In contrast, population and community data are often available at a much lower frequency (e.g., bi-weekly or annual sampling bouts) with a much higher latency (e.g., 6 months to a year) because of the effort that is required to collect and process samples and publish the data. Thus, the goals and applications will likely be different for forecasts of these types of data. There is still an opportunity to iterate, and update forecasts, but over a much longer time period. For more information on NEON’s Provisional and Released data refer to this link <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases">here</a>.</p>
+<p>QUESTION: What are some use-cases for forecasts of ecological populations and communities that you are interested in pursuing?</p>
+<h1 id="forecasting-neon-beetle-communities">Forecasting NEON beetle communities</h1>
+<h2 id="define-spatial-and-temporal-parameters-for-our-forecast">Define spatial and temporal parameters for our forecast</h2>
+<p>Here we set some values for variables in our code to identify the NEON site we will be working with and the forecast start and end dates. This will allow us to easily adapt this code for future runs at different sites and forecasting different time windows.</p>
+<p>Choose a NEON site:</p>
+<pre><code># choose site
+
+my_site = &quot;OSBS&quot;
+</code></pre>
+<p>Choose forecast start and end dates:</p>
+<pre><code># date where we will start making predictions
+
+forecast_startdate &lt;- &quot;2022-01-01&quot; #fit up through 2021, forecast 2022 data
+
+
+
+# date where we will stop making predictions
+
+forecast_enddate &lt;- &quot;2025-01-01&quot;
+</code></pre>
+<p>Note that the <code>forecast_startdate</code> will be renamed <code>reference_datetime</code> when we submit our forecast to the The Challenge. As the parameter name indicates, this date represents the beginning of the forecast. For this tutorial, we are using a <code>forecast_startdate</code>, or <code>reference_datetime</code>, that is in the past so that we can evaluate the accuracy of our forecasts at the end of this tutorial.</p>
+<p>The <code>forecast_enddate</code> is used to determine the forecast horizon. In this example, we are setting a horizon to extend into the future.</p>
+<p>If you want to create a true forecast to submit to the challenge, you will want to set your <code>forecast_startdate</code> as today’s date. However, you will likely need to wait until next year before you can evaluate your forecast performance because you will need to wait for the data to be collected, processed, and published.</p>
+<h2 id="read-in-the-data">Read in the data</h2>
+<p>We begin by first looking at the historic data - called the ‘targets’. These data are available with a latency of approximately 330 days. Here is how you read in the data from the targets file available from the EFI server.</p>
+<pre><code># beetle targets are here
+
+url &lt;- &quot;https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=neon4cast/duration=P1W/beetles-targets.csv.gz&quot;
+
+
+
+# read in the table
+
+targets &lt;- read_csv(url) %&gt;%
+  mutate(datetime = as_date(datetime)) %&gt;%  # set proper formatting
+  dplyr::filter(site_id == my_site,  # filter to desired site
+                datetime &lt; &quot;2022-12-31&quot;) # excluding provisional data 
+</code></pre>
+<h2 id="visualise-the-target-data">Visualise the target data</h2>
+<p>Let’s take a look at the targets data!</p>
+<pre><code>targets[100:110,]
+
+## # A tibble: 11 × 6
+##    project_id site_id datetime   duration variable  observation
+##    &lt;chr&gt;      &lt;chr&gt;   &lt;date&gt;     &lt;chr&gt;    &lt;chr&gt;           &lt;dbl&gt;
+##  1 neon4cast  OSBS    2017-06-12 P1W      richness       7     
+##  2 neon4cast  OSBS    2017-06-26 P1W      abundance      0.0821
+##  3 neon4cast  OSBS    2017-06-26 P1W      richness      10     
+##  4 neon4cast  OSBS    2017-07-10 P1W      abundance      0.0446
+##  5 neon4cast  OSBS    2017-07-10 P1W      richness       6     
+##  6 neon4cast  OSBS    2017-07-24 P1W      abundance      0.114 
+##  7 neon4cast  OSBS    2017-07-24 P1W      richness       8     
+##  8 neon4cast  OSBS    2017-08-07 P1W      abundance      0.0196
+##  9 neon4cast  OSBS    2017-08-07 P1W      richness       4     
+## 10 neon4cast  OSBS    2017-08-21 P1W      abundance      0.0375
+## 11 neon4cast  OSBS    2017-08-21 P1W      richness       6
+</code></pre>
+<p>It is good practice to examine the dataset before proceeding with analysis:</p>
+<pre><code>targets %&gt;% 
+  as_tsibble(index = datetime, key = variable) %&gt;%
+  autoplot() +
+  facet_grid(variable ~ ., scales = &quot;free_y&quot;) + 
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)
+</code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot targets-1.png" alt="Figure: Beetle targets data at OSBS"  />
+<p class="caption">Figure: Beetle targets data at OSBS</p>
+</div>
+Note that target data are available through 2022. As of the writing of this document, some provisional 2023 data may be available. The full 2023 NEON Ground Beetle dataset will be QCed during 2024 and published as a release with a DOI in January 2025 pending there are no data collection and data processing setbacks.
+<h2 id="create-the-training-dataset">Create the training dataset</h2>
+<p>We will train our forecast models on target data from the beginning of the dataset until our <code>forecast_startdate</code>, which we set above.</p>
+<pre><code>targets_train &lt;- targets %&gt;%
+  filter(datetime &lt; forecast_startdate) %&gt;%
+  pivot_wider(names_from = variable, values_from = observation) %&gt;%
+  as_tsibble(index = datetime)
+</code></pre>
+<h2 id="example-forecasts-some-simple-models">Example forecasts: some simple models</h2>
+<p>In this tutorial, we will begin by producing two “null model” forecasts using functions available in the <code>fable</code> package for R. The <code>MEAN</code> null model will forecast abundance based on the historical mean and standard deviation in the training data. The <code>NAIVE</code> null model is a random walk model that generates a forecast based on the current observation plus process uncertainty. We will then use the <code>TSLM</code> function to create simple linear regression models to predict beetle abundances using daily temperature (mean daily temperature at 2m height) and precipitation (daily cumulative precipitation) estimates produced from CMIP6 climate model runs from 1950-2050. While these data do not represent actual observations of temperature and precipitation at the NEON site, they have been fit to historical data, so past dates in the simulated data should capture general trends at the site and values for future dates should represent a realistic forecast of climate variables into the future.</p>
+<p>An overview of the models we will fit to the data in this tutorial:</p>
+<ul>
+<li>Null models
+<ul>
+<li><code>fable::MEAN()</code>: Historical mean and standard deviation</li>
+<li><code>fable::NAIVE()</code>: Random walk model assuming future data are current data plus process uncertainty</li>
+</ul>
+</li>
+<li>Regression models with climate drivers (accessed from <a href="https://open-meteo.com/">https://open-meteo.com/</a>)
+<ul>
+<li>Temperature: Daily mean temperature from CMIP6 climate model runs</li>
+<li>Precipitation: Daily cumulative precipitation from CMIP6 model runs</li>
+<li>Temperature + Precipitation</li>
+</ul>
+</li>
+</ul>
+<p>Here, we use CMIP6 data climate drivers as both training and forecasting data for simplicity and the ability to generate forecasts further into the future compared to other target data with shorter data latencies.</p>
+<p>At the end of this tutorial, we will compare the performance of our best regression model against the two null models.</p>
+<h3 id="forecast-beetle-abundance-null-models">Forecast beetle abundance: null models</h3>
+<p>Here, we fit our two null models to the training data and then create forecasts for 2022-2024. Note that we are using a <code>log(x + 1)</code> transform (using the <code>log1p()</code> function) for the abundance data in all of our models. This is a common transform for abundance data for communities, which are typically log-normal, but with zeros. We are keeping the model simple for this example, but you could substitute generalized linear regression models, zero-inflated models, or other approaches better model the distribution of beetle abundances.</p>
+<pre><code># specify and fit models
+
+# Using a log(x + 1) transform on the abundance data
+
+mod_fits &lt;- targets_train %&gt;% 
+  tsibble::fill_gaps() %&gt;% # gap fill the data for the random walk model
+  fabletools::model(
+    mod_mean = fable::MEAN(log1p(abundance)), # generate a forecast from the historical mean plus the standard deviation of the historical data
+    mod_naive = fable::NAIVE(log1p(abundance))) # random walk model, requires gap filling. Generates a forecast from the current observation plus random process noise
+
+
+
+# make a forecast
+
+fc_null &lt;- mod_fits %&gt;%
+  fabletools::forecast(h = &quot;3 years&quot;) 
+</code></pre>
+<p>Next, we can visualize our two null model forecasts.</p>
+<pre><code># visualize the forecast
+
+fc_null %&gt;% 
+  autoplot(targets_train) +
+  facet_grid(.model ~ ., scales = &quot;free_y&quot;) +
+  theme_bw()
+</code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot null forecast-1.png" alt="Figure: NULL forecasts of ground beetle abundance at OSBS"  />
+<p class="caption">Figure: NULL forecasts of ground beetle abundance at OSBS</p>
+</div>
+<p>Note the difference in the scale of the y-axis between the two forecasts. How might this affect your use of the two different models as null models?</p>
+<h3 id="forecast-beetle-abundance-regression-models">Forecast beetle abundance: regression models</h3>
+<p>Regression on climate model outputs allows us to make predictions about future field seasons based on CMIP6 projections. We downloaded climate model outputs from <a href="https://open-meto.com">https://open-meto.com</a> using the <code>RopenMeto</code> package, which you can install using: <code>remotes::install_github(&quot;FLARE-forecast/RopenMeteo&quot;)</code>. More information about the simulations that produced the climate drivers used in this example can be found <a href="https://openmeteo.substack.com/p/climate-change-api">here</a>.</p>
+<p>So we do not overwhelm the open-meteo API, we have made the climate data used in this tutorial available as a <a href="https://de.cyverse.org/data/ds/iplant/home/shared/NEON/ESA2024/forecasting_beetles_workshop?type=folder&amp;resourceId=af152ca6-dc9b-11ee-aacd-90e2ba675364">Community Data resource on the CyVerse Data Store</a>.</p>
+<p>The climate data we’re using in this example were generated by the CMCC_CM2_VHR4 climate model.</p>
+<p>Other predictor variables beyond climate data are appropriate for forecasting. Just remember that the driver data for forecasting are an out-of-sample observation (also forecasted) such that it can be used to generate a prediction of beetle richness and abundance.</p>
+<pre><code># Get climate data
+
+path_to_clim_data &lt;- &quot;https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2024/forecasting_beetles_workshop/modeled_climate_2012-2050_OSBS_CMCC_CM2_VHR4.csv&quot;
+
+
+
+clim_long &lt;- read_csv(path_to_clim_data)  %&gt;%
+        filter(datetime &lt;= forecast_enddate)
+
+
+
+# make a tsibble object
+
+clim_long_ts &lt;- clim_long %&gt;%
+  as_tsibble(index = datetime, 
+             key = c(variable, model_id))
+
+
+
+# make wide
+
+clim_wide &lt;- clim_long %&gt;%
+  select(-unit) %&gt;%
+  pivot_wider(names_from = variable, values_from = prediction)
+</code></pre>
+<p>Let’s take a look at the data. The dotted line indicates our <code>forecast_startdate</code>.</p>
+<pre><code># visualize climate data
+
+clim_long_ts %&gt;%
+  ggplot(aes(datetime, prediction)) + 
+  geom_line() +
+  facet_grid(variable ~ ., scales = &quot;free_y&quot;) +
+  geom_vline(xintercept = lubridate::as_date(forecast_startdate),
+             lty = 2) + 
+  theme_bw() +
+  theme(legend.position = &quot;none&quot;)
+</code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot climate data-1.png" alt="Figure: modeled climate data at OSBS"  />
+<p class="caption">Figure: modeled climate data at OSBS</p>
+</div>
+<p>Next, we will break up the climate data into a training set (<code>clim_past</code>) and a dataset to use for forecasting (<code>clim_future</code>).</p>
+<pre><code># subset into past and future datasets, based on forecast_startdate
+
+clim_past &lt;- clim_wide %&gt;%
+  filter(datetime &lt; forecast_startdate,
+         datetime &gt; &quot;2012-01-01&quot;)
+
+
+
+clim_future &lt;- clim_wide %&gt;%
+  filter(datetime &gt;= forecast_startdate,
+         datetime &lt;= forecast_enddate)
+</code></pre>
+<p>Now, combine target and climate data to make a training dataset.</p>
+<pre><code># combine target and climate data into a training dataset
+
+targets_clim_train &lt;- targets_train %&gt;%
+  left_join(clim_past)
+</code></pre>
+<p>Next, specify and fit simple linear regression models using <code>fable::TSLM()</code>, and examine the model fit statistics.</p>
+<pre><code># specify and fit model
+
+mod_fit_candidates &lt;- targets_clim_train %&gt;%
+  fabletools::model(
+    mod_temp = fable::TSLM(log1p(abundance) ~ temperature_2m_mean),
+    mod_precip = fable::TSLM(log1p(abundance) ~ precipitation_sum),
+    mod_temp_precip = fable::TSLM(log1p(abundance) ~ temperature_2m_mean + precipitation_sum))
+
+
+
+# look at fit stats
+
+fabletools::report(mod_fit_candidates)
+
+## # A tibble: 3 × 15
+##   .model    r_squared adj_r_squared  sigma2 statistic p_value    df log_lik   AIC  AICc   BIC
+##   &lt;chr&gt;         &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 mod_temp   0.0332         0.0245  0.00416    3.78    0.0544     2    149. -610. -610. -602.
+## 2 mod_prec…  0.000797      -0.00829 0.00430    0.0877  0.768      2    147. -606. -606. -598.
+## 3 mod_temp…  0.0333         0.0156  0.00420    1.88    0.158      3    149. -608. -608. -597.
+## # ℹ 4 more variables: CV &lt;dbl&gt;, deviance &lt;dbl&gt;, df.residual &lt;int&gt;, rank &lt;int&gt;
+</code></pre>
+<p>Now, plot the predicted versus observed abundance data.</p>
+<pre><code># visualize model fit
+
+# augment reformats model output into a tsibble for easier plotting
+
+fabletools::augment(mod_fit_candidates) %&gt;%
+  ggplot(aes(x = datetime)) +
+  geom_line(aes(y = abundance, lty = &quot;Obs&quot;), color = &quot;dark gray&quot;) +
+  geom_line(aes(y = .fitted, color = .model, lty = &quot;Model&quot;)) +
+  facet_grid(.model ~ .) +
+  theme_bw()
+</code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot tslm modeled vs observed-1.png" alt="Figure: TSLM predictions of beetle abundances at OSBS compared against observed data"  />
+<p class="caption">Figure: TSLM predictions of beetle abundances at OSBS compared against observed data</p>
+</div>
+<p>We could use all of these models to make an ensemble forecast, but for simplicity, we will just take the best model (lowest AICc), and use that to create a forecast:</p>
+<pre><code># focus on temperature model for now
+
+mod_best_lm &lt;- mod_fit_candidates %&gt;% select(mod_temp)
+
+report(mod_best_lm)
+
+## Series: abundance 
+## Model: TSLM 
+## Transformation: log1p(abundance) 
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.07759 -0.04002 -0.01051  0.02192  0.28585 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)         -0.031335   0.051783  -0.605   0.5463  
+## temperature_2m_mean  0.003947   0.002029   1.945   0.0544 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.0645 on 110 degrees of freedom
+## Multiple R-squared: 0.03324,	Adjusted R-squared: 0.02445
+## F-statistic: 3.782 on 1 and 110 DF, p-value: 0.054357
+
+# make a forecast
+
+# filter &quot;future&quot; climate data to target climate model
+
+fc_best_lm &lt;- mod_best_lm %&gt;%
+  fabletools::forecast(
+    new_data = 
+      clim_future %&gt;%
+      as_tsibble(index = datetime)) 
+</code></pre>
+<p>Visualize the forecast.</p>
+<pre><code># visualize the forecast
+
+fc_best_lm %&gt;% 
+  autoplot(targets_train) +
+  facet_grid(.model ~ .) + 
+  theme_bw()
+</code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot tslm forecast-1.png" alt="Figure: TSLM forecast of beelte abundance at OSBS"  />
+<p class="caption">Figure: TSLM forecast of beelte abundance at OSBS</p>
+</div>
+<pre><code># format for submission to EFI
+
+# for non-normal distributions, efi_format function draws samples to create
+
+# n time series to provide an estimate of uncertainty
+
+# https://projects.ecoforecast.org/neon4cast-ci/instructions.html
+
+# I'm putting &quot;example&quot; in the name so the model does not register as 
+
+# an official entry to the challenge
+</code></pre>
+<p>Does this forecast seem reasonable?</p>
+<h2 id="how-to-submit-a-forecast-to-the-neon-forecast-challenge">How to submit a forecast to the NEON Forecast Challenge</h2>
+<p>Detailed guidelines on how to submit a forecast to the NEON Forecast Challenge can be found <a href="https://projects.ecoforecast.org/neon4cast-ci/instructions.html">here</a>. The <a href="https://projects.ecoforecast.org/neon4cast-ci/instructions.html#forecast-file-format">forecast file format</a> requires the following columns:</p>
+<ul>
+<li>
+<p><code>project_id</code>: use “neon4cast”</p>
+</li>
+<li>
+<p><code>model_id</code>: the short name of the model defined as the model_id in your registration. The model_id should have no spaces. model_id should reflect a method to forecast one or a set of target variables and must be unique to the neon4cast challenge.</p>
+</li>
+<li>
+<p><code>datetime</code>: forecast timestamp. Format <code>%Y-%m-%d %H:%M:%S</code> with UTC as the time zone. Forecasts submitted with a <code>%Y-%m-%d</code> format will be converted to a full datetime assuming UTC mid-night.</p>
+</li>
+<li>
+<p><code>reference_datetime</code>: The start of the forecast; this should be 0 times steps in the future. There should only be one value of <code>reference_datetime</code> in the file. Format is <code>%Y-%m-%d %H:%M:%S</code> with UTC as the time zone. Forecasts submitted with a <code>%Y-%m-%d</code> format will be converted to a full datetime assuming UTC mid-night.</p>
+</li>
+<li>
+<p><code>duration</code>: the time-step of the forecast. Use the value of <code>P1D</code> for a daily forecast, <code>P1W</code> for a weekly forecast, and <code>PT30M</code> for 30 minute forecast. This value should match the duration of the target variable that you are forecasting. Formatted as <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 duration</a></p>
+</li>
+<li>
+<p><code>site_id</code>: code for NEON site.</p>
+</li>
+<li>
+<p><code>family</code>: name of the probability distribution that is described by the parameter values in the parameter column (see list below for accepted distribution). An ensemble forecast as a family of ensemble. See note below about family</p>
+</li>
+<li>
+<p><code>parameter</code>: the parameters for the distribution (see note below about the parameter column) or the number of the ensemble members. For example, the parameters for a normal distribution are called <code>mu</code> and <code>sigma</code>.</p>
+</li>
+<li>
+<p><code>variable</code>: standardized variable name. It must match the variable name in the target file.</p>
+</li>
+<li>
+<p><code>prediction</code>: forecasted value for the parameter in the parameter column</p>
+</li>
+</ul>
+<p>To submit our example forecast, we can take the output from the <code>fabletools::forecast()</code> function we used above and feed it into <code>neon4cast::efi_format()</code> to format the output for submissions to The Challenge. We also need to add a few additional columns.</p>
+<pre><code># update dataframe of model output for submission
+
+fc_best_lm_efi &lt;- fc_best_lm %&gt;% 
+  mutate(site_id = my_site) %&gt;% #efi needs a NEON site ID
+  neon4cast::efi_format() %&gt;%
+  mutate(
+    project_id = &quot;neon4cast&quot;,
+    model_id = &quot;bet_abund_example_tslm_temp&quot;,
+    reference_datetime = forecast_startdate,
+    duration = &quot;P1W&quot;)
+</code></pre>
+<p>What does the content of the submission look like?</p>
+<pre><code>head(fc_best_lm_efi)
+
+## # A tibble: 6 × 10
+##   datetime   site_id parameter model_id                 family variable prediction project_id
+##   &lt;date&gt;     &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;                    &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;     
+## 1 2022-01-01 OSBS    1         bet_abund_example_tslm_… ensem… abundan…    -0.0737 neon4cast 
+## 2 2022-01-01 OSBS    2         bet_abund_example_tslm_… ensem… abundan…     0.0263 neon4cast 
+## 3 2022-01-01 OSBS    3         bet_abund_example_tslm_… ensem… abundan…     0.0639 neon4cast 
+## 4 2022-01-01 OSBS    4         bet_abund_example_tslm_… ensem… abundan…    -0.0266 neon4cast 
+## 5 2022-01-01 OSBS    5         bet_abund_example_tslm_… ensem… abundan…    -0.0512 neon4cast 
+## 6 2022-01-01 OSBS    6         bet_abund_example_tslm_… ensem… abundan…     0.0230 neon4cast 
+## # ℹ 2 more variables: reference_datetime &lt;chr&gt;, duration &lt;chr&gt;
+
+
+# visualize the EFI-formatted submission
+
+fc_best_lm_efi %&gt;% 
+  as_tsibble(index = datetime,
+             key = c(model_id, parameter)) %&gt;%
+  ggplot(aes(datetime, prediction, color = parameter)) +
+  geom_line() +
+  facet_grid(model_id ~ .) +
+  theme_bw()
+</code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot tslm submission-1.png" alt="Figure: TSLM forecast submission file for OSBS, parameter indicates emsemble member"  />
+<p class="caption">Figure: TSLM forecast submission file for OSBS, parameter indicates emsemble member</p>
+</div>
+<p>Lastly, if you feel so inclined, you can submit your forecast outputs file as an entry to The Challenge to be scored. If you want to submit a file, you will (1) need to <a href="https://forms.gle/kg2Vkpho9BoMXSy57">register your model</a> and (2) you cannot have the word “example” in your <code>filename</code> or <code>model_id</code>. In the example below, we are including the “example” text string in the file and model names so it is not evaluated as part of the challenge.</p>
+<pre><code># file name format is: theme_name-year-month-day-model_id.csv
+
+
+
+# set the theme name
+
+theme_name &lt;- &quot;beetles&quot;
+
+
+
+# set your submission date
+
+file_date &lt;- Sys.Date()
+
+
+
+# make sure the model_id in the filename matches the model_id in the data
+
+# NOTE: having the text string &quot;example&quot; in the file name will prevent this 
+
+# submission from being displayed on the challenge dashboard or being included
+
+# in statistics about challenge participation. 
+
+efi_model_id &lt;- &quot;bet_abund_example_tslm_temp&quot;
+
+
+
+# format the file name
+
+forecast_file &lt;- paste0(theme_name,&quot;-&quot;,file_date,&quot;-&quot;,efi_model_id,&quot;.csv.gz&quot;)
+
+
+
+# write the file to your working directory
+
+write_csv(fc_best_lm_efi, forecast_file)
+
+
+
+# submit the file
+
+neon4cast::submit(forecast_file = forecast_file)
+</code></pre>
+<h1 id="evaluating-your-forecast">Evaluating your forecast</h1>
+<h2 id="how-your-submission-will-be-scored">How your submission will be scored</h2>
+<p>The Challenge implements methods from the scoringRules R package to calculate the Continuous Rank Probability Score (CRPS) via the <code>score4cast</code> package, where a lower CRPS score indicates higher forecast accuracy. CRPS uses information about the variance of the forecasts as well as the estimated mean to calculate the score by comparing it with the observation. There is some balance between accuracy and precision. The forecasts will also be compared with ‘null’ models (RW and climatology). More information can be found in the <a href="https://projects.ecoforecast.org/neon4cast-docs/Evaluation.html">documentation</a> or the <code>score4cast</code> package from EFI organizers <a href="https://github.com/eco4cast/score4cast">here</a>.</p>
+<p>You can view past submissions to the Beetle Communities theme <a href="https://projects.ecoforecast.org/neon4cast-dashboard/beetles.html">here:</a>.</p>
+<p>You can also download the raw scores from the bucket directly, for example:</p>
+<pre><code># This example requires the `arrow` package
+
+# install.packages(&quot;arrow&quot;)
+
+library(arrow)
+
+
+
+# what is your model_id?
+
+# my_mod_id &lt;- &quot;bet_abund_example_tslm_temp&quot;
+
+# my_mod_id &lt;- &quot;bet_example_mod_null&quot;
+
+my_mod_id &lt;- &quot;bet_example_mod_naive&quot;
+
+
+
+# format the URL
+
+my_url &lt;- paste0(
+
+  &quot;s3://anonymous@bio230014-bucket01/challenges/scores/parquet/project_id=neon4cast/duration=P1W/variable=abundance/model_id=&quot;,
+
+  my_mod_id,
+
+  &quot;?endpoint_override=sdsc.osn.xsede.org&quot;)
+
+
+
+# bind dataset
+
+ds_mod_results &lt;- arrow::open_dataset(my_url)
+
+
+
+# get recs for dates that are scored
+
+my_scores &lt;- ds_mod_results %&gt;%
+
+  filter(!is.na(crps)) %&gt;% 
+
+  collect()
+
+
+
+head(my_scores)
+</code></pre>
+<h2 id="how-to-score-your-own-forecast">How to score your own forecast</h2>
+<p>For immediate feedback, we can use the targets data from 2022 to score our forecast for the 2022 field season at OSBS.</p>
+<pre><code># filter to 2022 because that is the latest release year
+
+# 2023 is provisional and most sites do not yet have data reported
+
+targets_2022 &lt;- targets %&gt;% 
+  dplyr::filter(
+    datetime &gt;= &quot;2022-01-01&quot;, 
+    datetime &lt; &quot;2023-01-01&quot;,
+    variable == &quot;abundance&quot;,
+    observation &gt; 0)
+
+
+
+# list of target site dates for filtering mod predictions
+
+target_site_dates_2022 &lt;- targets_2022 %&gt;%
+  select(site_id, datetime) %&gt;% distinct()
+
+
+
+# filter model forecast data to dates where we have observations
+
+mod_results_to_score_lm &lt;- fc_best_lm_efi %&gt;%
+  left_join(target_site_dates_2022,.) %&gt;%
+  dplyr::filter(!is.na(parameter))
+
+
+
+# score the forecasts
+
+mod_scores &lt;- score(
+  forecast = mod_results_to_score_lm,
+  target = targets_2022) 
+
+
+
+head(mod_scores)
+
+## # A tibble: 6 × 17
+##   model_id    reference_datetime site_id datetime   family variable observation   crps   logs
+##   &lt;chr&gt;       &lt;chr&gt;              &lt;chr&gt;   &lt;date&gt;     &lt;chr&gt;  &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 bet_abund_… 2022-01-01         OSBS    2022-04-04 sample abundan…      0.102  0.0308 -1.49 
+## 2 bet_abund_… 2022-01-01         OSBS    2022-04-18 sample abundan…      0.188  0.0971 -0.286
+## 3 bet_abund_… 2022-01-01         OSBS    2022-04-25 sample abundan…      0.0877 0.0185 -1.97 
+## 4 bet_abund_… 2022-01-01         OSBS    2022-05-02 sample abundan…      0.0857 0.0111 -2.08 
+## 5 bet_abund_… 2022-01-01         OSBS    2022-05-16 sample abundan…      0.0786 0.0294 -1.15 
+## 6 bet_abund_… 2022-01-01         OSBS    2022-05-30 sample abundan…      0.133  0.0299 -1.46 
+## # ℹ 8 more variables: mean &lt;dbl&gt;, median &lt;dbl&gt;, sd &lt;dbl&gt;, quantile97.5 &lt;dbl&gt;,
+## #   quantile02.5 &lt;dbl&gt;, quantile90 &lt;dbl&gt;, quantile10 &lt;dbl&gt;, horizon &lt;drtn&gt;
+</code></pre>
+<p>Are these scores better than our null models? Here, we will score the <code>mod_mean</code> and <code>mod_naive</code> models, and combine the null model scores with the scores for our <code>best_lm</code> forecast above. Then we can compare.</p>
+<pre><code># get scores for the mean and naive models
+
+# the fc_null object has scores from both models
+
+# note: we need to add site_id back in for efi_format() to work
+
+fc_null_efi &lt;- fc_null %&gt;% 
+  mutate(site_id = my_site) %&gt;% #efi needs a NEON site ID
+  neon4cast::efi_format() 
+
+
+
+# filter to dates where we have target data from 2022
+
+mod_results_to_score_null &lt;- fc_null_efi %&gt;%
+  left_join(target_site_dates_2022,.) %&gt;%
+  dplyr::filter(!is.na(parameter))
+
+
+
+# socre the forecasts for those dates
+
+mod_null_scores &lt;- score(
+  forecast = mod_results_to_score_null,
+  target = targets_2022) 
+
+
+
+# stack the scores for our best_lm and the null models
+
+# forcing reference_datetime to be the same type in both tables
+
+# so they will stack
+
+all_mod_scores &lt;- bind_rows(
+  mod_null_scores %&gt;% mutate(
+    reference_datetime = as.character(reference_datetime)), 
+  mod_scores %&gt;% mutate(
+    reference_datetime = as.character(reference_datetime)))
+</code></pre>
+<p>Before we visualize the scores, we can visualize the target 2022 observations against the forecast ensembles for among all three models.</p>
+<pre><code>mod_results_to_score_lm &lt;- mod_results_to_score_lm %&gt;% select(site_id,datetime,parameter,model_id,family,variable,prediction)
+
+
+
+rbind(mod_results_to_score_null,mod_results_to_score_lm) %&gt;% ggplot(., aes(datetime, prediction, color = model_id, group=interaction(parameter, model_id))) +
+  geom_line(lwd = 1)+
+  geom_point(data = targets_2022, aes(datetime, observation), color = &quot;black&quot;, size = 6, inherit.aes = F)+
+  ylab(&quot;Abundance&quot;)+
+  theme_classic()
+</code></pre>
+<p>![ ](<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/visualize">https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/visualize</a> forecasts to raw target data-1.png)</p>
+<p>Let’s plot the scores. Remember, lower scores indicate better forecast accuracy.</p>
+<pre><code>all_mod_scores %&gt;%
+  ggplot(aes(datetime, crps, color = model_id)) +
+  geom_line() +
+  theme_bw() +
+  ggtitle(&quot;Forecast scores over time at OSBS for 2022&quot;)
+</code></pre>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot forecast scores-1.png" alt="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season"  />
+<p class="caption">Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season</p>
+</div>
+<ul>
+<li>Which model(s) did best?</li>
+<li>What might explain the differences in scores between the different models?</li>
+</ul>
+<h1 id="what-s-next">What’s next?</h1>
+<ul>
+<li>The forecasts we created here were relatively simple. What are ideas you have to improve the forecasts?</li>
+<li>How could you expand on this forecasting exercise? More sites? Different forecast horizons?</li>
+<li>How could you apply what you have learned here in your research or teaching?</li>
+</ul>
+<h1 id="acknowledgements">Acknowledgements</h1>
+<p>This tutorial is based in part off of tutorials created by Freya Olsson for the <a href="https://github.com/OlssonF/NEON-forecast-challenge-workshop/tree/main">NEON Forecast Challenge Workshop</a> and examples created by Carl Boettiger for the <a href="https://github.com/cboettig/neon-beetles-forecasts/tree/main">Beetle Communities theme documentation</a>.</p>
+</div>
+</body>
+</html>
