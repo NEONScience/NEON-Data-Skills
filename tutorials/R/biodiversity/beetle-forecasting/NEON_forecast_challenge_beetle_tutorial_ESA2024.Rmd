@@ -1,18 +1,18 @@
 ---
 title: "Forecast Beetle Richness and Abundance and Submit Forecasts to the NEON Ecological Forecast Challenge"
-syncID: 
+syncID: 2bed8b22086544ae8505eee591054b0a
 description: Generate forecasts of beetle richness and abundance that are submitted to the Ecological Forecasting Initiative NEON forecasting challenge.
 authors: Eric R. Sokol & Ryan McClure
-contributors: "Juniper Simonis, Carl Boettiger, Sydne Record"
+contributors: Juniper Simonis, Carl Boettiger, Sydne Record
 estimatedTime: 2 Hours
 packagesLibraries: tidyverse, lubridate, tsibble, fable, fabletools, remotes, neon4cast
-topics: "ecological-forecasting, data-analysis, organisms, data-viz"
+topics: ecological-forecasting, data-analysis, organisms, data-viz
 languagesTool: R
 dataProduct: DP1.20120.001
-code1: ""
-tutorialSeries: null
-urlTitle: "neon-beetle-forecasting"
-dateCreated: "2024-07-30"
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/NEON_forecast_challenge_beetle_tutorial_ESA2024.R
+tutorialSeries: 
+urlTitle: neon-beetle-forecasting
+dateCreated: 2024-07-30
 ---
 
 ```{r setup, include=FALSE}
