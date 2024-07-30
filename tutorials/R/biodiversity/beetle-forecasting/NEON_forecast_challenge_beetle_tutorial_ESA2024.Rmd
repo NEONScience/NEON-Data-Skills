@@ -554,7 +554,7 @@ all_mod_scores <- bind_rows(
 ```
 Before we visualize the scores, we can visualize the target 2022 observations against the forecast ensembles for among all three models.
 
-```{r visualize forecasts to raw target data}
+```{r plot forecasts to raw target data, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Compare Forecasts to Raw Data"}
 mod_results_to_score_lm <- mod_results_to_score_lm %>% select(site_id,datetime,parameter,model_id,family,variable,prediction)
 
 rbind(mod_results_to_score_null,mod_results_to_score_lm) %>% ggplot(., aes(datetime, prediction, color = model_id, group=interaction(parameter, model_id))) +
@@ -566,7 +566,7 @@ rbind(mod_results_to_score_null,mod_results_to_score_lm) %>% ggplot(., aes(datet
 ```
 
 Let's plot the scores. Remember, lower scores indicate better forecast accuracy. 
-```{r plot forecast scores, fig.height = 4, fig.width = 8, fig.align = "center", fig.cap="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season"}
+```{r plot forecast scores, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season"}
 all_mod_scores %>%
   ggplot(aes(datetime, crps, color = model_id)) +
   geom_line() +
