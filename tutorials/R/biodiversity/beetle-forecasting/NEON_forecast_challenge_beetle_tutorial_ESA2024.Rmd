@@ -198,7 +198,7 @@ targets %>%
   theme(legend.position = "none")
 
 ```
-Note that target data are available through 2022. As of the writing of this document, some provisional 2023 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2025 release will include all of the 2022 data but not all of 2023. The full 2023 NEON Ground Beetle dataset will be QCed through 2024 and published as a release with a DOI in January 2025 pending there are no data collection and data processing setbacks. 
+Note that target data are available through 2022. As of the writing of this document, some provisional 2023 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2025 release will include all of the 2022 data but not all of 2023. The full 2022 NEON Ground Beetle data set will be QC'd in 2024 and published as a release with a DOI in January 2025 pending there are no data collection and data processing setbacks. 
 
 ### Create the training dataset
 
