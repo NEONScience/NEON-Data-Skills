@@ -332,8 +332,9 @@ mod_fit_candidates <- targets_clim_train %>%
     mod_precip = fable::TSLM(log1p(abundance) ~ precipitation_sum),
     mod_temp_precip = fable::TSLM(log1p(abundance) ~ temperature_2m_mean + precipitation_sum))
 
-# look at fit stats
-fabletools::report(mod_fit_candidates)
+# look at fit stats and identify the best model using AIC, where the lowest AIC is the best model
+fabletools::report(mod_fit_candidates) %>%
+  select(`.model`, AIC)
 ```
 
 Now, plot the predicted versus observed abundance data.
@@ -536,7 +537,7 @@ mod_results_to_score_null <- fc_null_efi %>%
   left_join(target_site_dates_2022,.) %>%
   dplyr::filter(!is.na(parameter))
 
-# socre the forecasts for those dates
+# score the forecasts for those dates
 mod_null_scores <- score(
   forecast = mod_results_to_score_null,
   target = targets_2022) 
