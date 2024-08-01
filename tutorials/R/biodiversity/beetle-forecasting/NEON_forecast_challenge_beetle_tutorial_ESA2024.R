@@ -1,20 +1,19 @@
-## ----setup, include=FALSE---------------------------------------------------------------------------------------------------------------
+## ----setup, include=FALSE-----------------------------------------------------------------------------------------------------------------
 knitr::opts_chunk$set(eval=TRUE, error=FALSE, warning=FALSE, message=FALSE)
 
 
-## ----install packages, eval = F---------------------------------------------------------------------------------------------------------
-## install.packages('tidyverse') # collection of R packages for data manipulation, analysis, and visualisation
-## install.packages('lubridate') # working with dates and times
-## install.packages('tsibble') # working with timeseries data
-## install.packages('fable') # running forecasts
-## install.packages('fabletools') # helper functions for using fable
+## ----install packages, eval = F-----------------------------------------------------------------------------------------------------------
+## install.packages('tidyverse')
+## install.packages('lubridate')
+## install.packages('tsibble')
+## install.packages('fable')
+## install.packages('fabletools')
 ## install.packages('remotes')
-## install.packages('tsibble') # package for dealing with time series data sets and tsibble objects
-## remotes::install_github('eco4cast/neon4cast') # package from NEON4cast challenge organisers to assist with forecast building and submission
-## remotes::install_github("eco4cast/score4cast") # package to score forecasts
+## remotes::install_github('eco4cast/neon4cast')
+## remotes::install_github("eco4cast/score4cast")
 
 
-## ----load packages----------------------------------------------------------------------------------------------------------------------
+## ----load packages------------------------------------------------------------------------------------------------------------------------
 version$version.string
 
 library(tidyverse)
@@ -26,22 +25,22 @@ library(neon4cast)
 library(score4cast)
 
 
-## ----get all neon site metadata, eval=F-------------------------------------------------------------------------------------------------
+## ----get all neon site metadata, eval=F---------------------------------------------------------------------------------------------------
 ## # To download the NEON site information table:
 ## neon_site_info <- read_csv("https://www.neonscience.org/sites/default/files/NEON_Field_Site_Metadata_20231026.csv")
 
 
-## ----get neon sites, eval=F-------------------------------------------------------------------------------------------------------------
+## ----get neon sites, eval=F---------------------------------------------------------------------------------------------------------------
 ## site_data <- read_csv("https://raw.githubusercontent.com/eco4cast/neon4cast-targets/main/NEON_Field_Site_Metadata_20220412.csv") %>%
 ##   dplyr::filter(beetles == 1)
 
 
-## ----set site---------------------------------------------------------------------------------------------------------------------------
+## ----set site-----------------------------------------------------------------------------------------------------------------------------
 # choose site
 my_site = "OSBS"
 
 
-## ----site forecast dates----------------------------------------------------------------------------------------------------------------
+## ----site forecast dates------------------------------------------------------------------------------------------------------------------
 # date where we will start making predictions
 forecast_startdate <- "2022-01-01" #fit up through 2021, forecast 2022 data
 
@@ -49,7 +48,7 @@ forecast_startdate <- "2022-01-01" #fit up through 2021, forecast 2022 data
 forecast_enddate <- "2025-01-01"
 
 
-## ----read data--------------------------------------------------------------------------------------------------------------------------
+## ----read data----------------------------------------------------------------------------------------------------------------------------
 # beetle targets are here
 url <- "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project_id=neon4cast/duration=P1W/beetles-targets.csv.gz"
 
@@ -60,11 +59,11 @@ targets <- read_csv(url) %>%
                 datetime < "2022-12-31") # excluding provisional data 
 
 
-## ----targets table----------------------------------------------------------------------------------------------------------------------
+## ----targets table------------------------------------------------------------------------------------------------------------------------
 targets[100:110,]
 
 
-## ----plot targets, fig.height = 4, fig.width = 8, fig.align = "center", fig.cap="Figure: Beetle targets data at OSBS"-------------------
+## ----plot targets, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Beetle targets data at OSBS"--------------------
 targets %>% 
   as_tsibble(index = datetime, key = variable) %>%
   autoplot() +
@@ -74,14 +73,14 @@ targets %>%
 
 
 
-## ----get training data------------------------------------------------------------------------------------------------------------------
+## ----get training data--------------------------------------------------------------------------------------------------------------------
 targets_train <- targets %>%
   filter(datetime < forecast_startdate) %>%
   pivot_wider(names_from = variable, values_from = observation) %>%
   as_tsibble(index = datetime)
 
 
-## ----null forecasts---------------------------------------------------------------------------------------------------------------------
+## ----null forecasts-----------------------------------------------------------------------------------------------------------------------
 # specify and fit models
 # Using a log(x + 1) transform on the abundance data
 mod_fits <- targets_train %>% 
@@ -95,7 +94,7 @@ fc_null <- mod_fits %>%
   fabletools::forecast(h = "3 years") 
 
 
-## ----plot null forecast, fig.height = 4, fig.width = 8, fig.align = "center", fig.cap="Figure: NULL forecasts of ground beetle abundance at OSBS"----
+## ----plot null forecast, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: NULL forecasts of ground beetle abundance at OSBS"----
 # visualize the forecast
 fc_null %>% 
   autoplot(targets_train) +
@@ -103,7 +102,7 @@ fc_null %>%
   theme_bw()
 
 
-## ----get climate data-------------------------------------------------------------------------------------------------------------------
+## ----get climate data---------------------------------------------------------------------------------------------------------------------
 
 # Get climate data
 path_to_clim_data <- "https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2024/forecasting_beetles_workshop/modeled_climate_2012-2050_OSBS_CMCC_CM2_VHR4.csv"
@@ -122,7 +121,7 @@ clim_wide <- clim_long %>%
   pivot_wider(names_from = variable, values_from = prediction)
 
 
-## ----plot climate data, fig.height = 4, fig.width = 8, fig.align = "center", fig.cap="Figure: modeled climate data at OSBS"-------------
+## ----plot climate data, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: modeled climate data at OSBS"--------------
 # visualize climate data
 clim_long_ts %>%
   ggplot(aes(datetime, prediction)) + 
@@ -135,7 +134,7 @@ clim_long_ts %>%
 
 
 
-## ----eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE------------------------------------------------------------------
+## ----eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE--------------------------------------------------------------------
 # subset into past and future datasets, based on forecast_startdate
 clim_past <- clim_wide %>%
   filter(datetime < forecast_startdate,
@@ -147,13 +146,13 @@ clim_future <- clim_wide %>%
 
 
 
-## ----eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE------------------------------------------------------------------
+## ----eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE--------------------------------------------------------------------
 # combine target and climate data into a training dataset
 targets_clim_train <- targets_train %>%
   left_join(clim_past)
 
 
-## ----eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE------------------------------------------------------------------
+## ----eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE--------------------------------------------------------------------
 # specify and fit model
 mod_fit_candidates <- targets_clim_train %>%
   fabletools::model(
@@ -165,7 +164,7 @@ mod_fit_candidates <- targets_clim_train %>%
 fabletools::report(mod_fit_candidates)
 
 
-## ----plot tslm modeled vs observed, fig.height = 4, fig.width = 8, fig.align = "center", fig.cap="Figure: TSLM predictions of beetle abundances at OSBS compared against observed data"----
+## ----plot tslm modeled vs observed, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: TSLM predictions of beetle abundances at OSBS compared against observed data"----
 # visualize model fit
 # augment reformats model output into a tsibble for easier plotting
 fabletools::augment(mod_fit_candidates) %>%
@@ -177,7 +176,7 @@ fabletools::augment(mod_fit_candidates) %>%
 
 
 
-## ----forecast best tslm-----------------------------------------------------------------------------------------------------------------
+## ----forecast best tslm-------------------------------------------------------------------------------------------------------------------
 # focus on temperature model for now
 mod_best_lm <- mod_fit_candidates %>% select(mod_temp)
 report(mod_best_lm)
@@ -191,22 +190,16 @@ fc_best_lm <- mod_best_lm %>%
       as_tsibble(index = datetime)) 
 
 
-## ----plot tslm forecast, fig.height = 4, fig.width = 8, fig.align = "center", fig.cap="Figure: TSLM forecast of beelte abundance at OSBS"----
+## ----plot tslm forecast, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: TSLM forecast of beelte abundance at OSBS"----
 # visualize the forecast
 fc_best_lm %>% 
   autoplot(targets_train) +
   facet_grid(.model ~ .) + 
   theme_bw()
 
-# format for submission to EFI
-# for non-normal distributions, efi_format function draws samples to create
-# n time series to provide an estimate of uncertainty
-# https://projects.ecoforecast.org/neon4cast-ci/instructions.html
-# I'm putting "example" in the name so the model does not register as 
-# an official entry to the challenge
 
 
-## ----format for efi submission----------------------------------------------------------------------------------------------------------
+## ----format for efi submission------------------------------------------------------------------------------------------------------------
 # update dataframe of model output for submission
 fc_best_lm_efi <- fc_best_lm %>% 
   mutate(site_id = my_site) %>% #efi needs a NEON site ID
@@ -218,11 +211,11 @@ fc_best_lm_efi <- fc_best_lm %>%
     duration = "P1W")
 
 
-## ----submission table-------------------------------------------------------------------------------------------------------------------
+## ----submission table---------------------------------------------------------------------------------------------------------------------
 head(fc_best_lm_efi)
 
 
-## ----plot tslm submission, fig.height = 4, fig.width = 8, fig.align = "center", fig.cap="Figure: TSLM forecast submission file for OSBS, parameter indicates emsemble member"----
+## ----plot tslm submission, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: TSLM forecast submission file for OSBS, parameter indicates emsemble member"----
 # visualize the EFI-formatted submission
 fc_best_lm_efi %>% 
   as_tsibble(index = datetime,
@@ -233,7 +226,7 @@ fc_best_lm_efi %>%
   theme_bw()
 
 
-## ----submit forecast to efi, eval=F-----------------------------------------------------------------------------------------------------
+## ----submit forecast to efi, eval=F-------------------------------------------------------------------------------------------------------
 ## # file name format is: theme_name-year-month-day-model_id.csv
 ## 
 ## # set the theme name
@@ -259,7 +252,7 @@ fc_best_lm_efi %>%
 ## 
 
 
-## ----get scores from efi, eval=F--------------------------------------------------------------------------------------------------------
+## ----get scores from efi, eval=F----------------------------------------------------------------------------------------------------------
 ## # This example requires the `arrow` package
 ## # install.packages("arrow")
 ## library(arrow)
@@ -286,7 +279,7 @@ fc_best_lm_efi %>%
 ## head(my_scores)
 
 
-## ----score forecast---------------------------------------------------------------------------------------------------------------------
+## ----score forecast-----------------------------------------------------------------------------------------------------------------------
 # filter to 2022 because that is the latest release year
 # 2023 is provisional and most sites do not yet have data reported
 targets_2022 <- targets %>% 
@@ -313,7 +306,7 @@ mod_scores <- score(
 head(mod_scores)
 
 
-## ----getting null model scores----------------------------------------------------------------------------------------------------------
+## ----getting null model scores------------------------------------------------------------------------------------------------------------
 # get scores for the mean and naive models
 # the fc_null object has scores from both models
 # note: we need to add site_id back in for efi_format() to work
@@ -341,21 +334,25 @@ all_mod_scores <- bind_rows(
     reference_datetime = as.character(reference_datetime)))
 
 
-## ----plot forecasts to raw target data, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Compare Forecasts to Raw Data"----
-mod_results_to_score_lm <- mod_results_to_score_lm %>% select(site_id,datetime,parameter,model_id,family,variable,prediction)
+## ----plot forecasts to raw target data, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Compare Forecasts to Raw Data. Ensemble forecasts are the lines and the black circles are the direct observations."----
 
-rbind(mod_results_to_score_null,mod_results_to_score_lm) %>% ggplot(., aes(datetime, prediction, color = model_id, group=interaction(parameter, model_id))) +
+mod_results_to_score_lm <- mod_results_to_score_lm |> select(site_id,datetime,parameter,model_id,family,variable,prediction)
+
+rbind(mod_results_to_score_null,mod_results_to_score_lm) %>% 
+  ggplot(., aes(datetime, prediction, color = model_id, group=interaction(parameter, model_id))) +
   geom_line(lwd = 1)+
-  geom_point(data = targets_2022, aes(datetime, observation), color = "black", size = 6, inherit.aes = F)+
+  geom_point(aes(datetime, observation), color = "black", size = 6, inherit.aes = F, data = targets_2022)+
   ylab("Abundance")+
   theme_classic()
 
 
 
 ## ----plot forecast scores, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season"----
+
 all_mod_scores %>%
   ggplot(aes(datetime, crps, color = model_id)) +
   geom_line() +
   theme_bw() +
   ggtitle("Forecast scores over time at OSBS for 2022")
+
 
