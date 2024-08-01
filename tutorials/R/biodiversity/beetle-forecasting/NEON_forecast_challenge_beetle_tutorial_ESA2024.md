@@ -2,8 +2,8 @@
 title: "Forecast Beetle Richness and Abundance and Submit Forecasts to the NEON Ecological Forecast Challenge"
 syncID: 2bed8b22086544ae8505eee591054b0a
 description: Generate forecasts of beetle richness and abundance that are submitted to the Ecological Forecasting Initiative NEON forecasting challenge.
-authors: Eric R. Sokol, Ryan McClure, Allison Gerken
-contributors: Kelsey Yule, Juniper Simonis, Carl Boettiger, Sydne Record, Freya Olson, Vihanga Gunadasa, Meghan Beatty
+authors: Eric R. Sokol, Meghan Beatty, Hashini Gunadasa, Allison Gerken, Khum Magar, Ryan McClure, Glenda Wardle 
+contributors: Juniper Simonis, Carl Boettiger, Sydne Record,  Vihanga Gunadasa
 estimatedTime: 2 Hours
 packagesLibraries: tidyverse, lubridate, tsibble, fable, fabletools, remotes, neon4cast
 topics: ecological-forecasting, data-analysis, organisms, data-viz
@@ -204,7 +204,7 @@ Let's take a look at the targets data!
 
     targets[100:110,]
 
-    ## # A tibble: 11 × 6
+    ## # A tibble: 11 x 6
     ##    project_id site_id datetime   duration variable  observation
     ##    <chr>      <chr>   <date>     <chr>    <chr>           <dbl>
     ##  1 neon4cast  OSBS    2017-06-12 P1W      richness       7     
@@ -232,7 +232,7 @@ It is good practice to examine the dataset before proceeding with analysis:
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot targets-1.png" alt="Figure: Beetle targets data at OSBS"  />
 <p class="caption">Figure: Beetle targets data at OSBS</p>
 </div>
-Note that target data are available through 2022. As of the writing of this document, some provisional 2023 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2025 release will include all of the 2022 data but not all of 2023. The full 2023 NEON Ground Beetle dataset will be QCed through 2024 and published as a release with a DOI in January 2025 pending there are no data collection and data processing setbacks. 
+Note that target data are available through 2022. As of the writing of this document, some provisional 2023 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2025 release will include all of the 2022 data but not all of 2023. The full 2022 NEON Ground Beetle data set will be QC'd in 2024 and published as a release with a DOI in January 2025 pending there are no data collection and data processing setbacks. 
 
 ### Create the training dataset
 
@@ -394,11 +394,12 @@ Next, specify and fit simple linear regression models using `fable::TSLM()`, and
     fabletools::report(mod_fit_candidates)
 
     ## # A tibble: 3 x 15
-    ##   .model          r_squared adj_r_squared  sigma2 statistic p_value    df log_lik   AIC  AICc   BIC      CV deviance df.residual  rank
-    ##   <chr>               <dbl>         <dbl>   <dbl>     <dbl>   <dbl> <int>   <dbl> <dbl> <dbl> <dbl>   <dbl>    <dbl>       <int> <int>
-    ## 1 mod_temp         0.0332         0.0245  0.00416    3.78    0.0544     2    149. -610. -610. -602. 0.00421    0.458         110     2
-    ## 2 mod_precip       0.000797      -0.00829 0.00430    0.0877  0.768      2    147. -606. -606. -598. 0.00541    0.473         110     2
-    ## 3 mod_temp_precip  0.0333         0.0156  0.00420    1.88    0.158      3    149. -608. -608. -597. 0.00500    0.458         109     3
+    ##   .model    r_squared adj_r_squared  sigma2 statistic p_value    df log_lik   AIC  AICc   BIC      CV deviance
+    ##   <chr>         <dbl>         <dbl>   <dbl>     <dbl>   <dbl> <int>   <dbl> <dbl> <dbl> <dbl>   <dbl>    <dbl>
+    ## 1 mod_temp   0.0332         0.0245  0.00416    3.78    0.0544     2    149. -610. -610. -602. 0.00421    0.458
+    ## 2 mod_prec~  0.000797      -0.00829 0.00430    0.0877  0.768      2    147. -606. -606. -598. 0.00541    0.473
+    ## 3 mod_temp~  0.0333         0.0156  0.00420    1.88    0.158      3    149. -608. -608. -597. 0.00500    0.458
+    ## # i 2 more variables: df.residual <int>, rank <int>
 
 Now, plot the predicted versus observed abundance data.
 
@@ -513,14 +514,14 @@ What does the content of the submission look like?
     head(fc_best_lm_efi)
 
     ## # A tibble: 6 x 10
-    ##   datetime   site_id parameter model_id                    family   variable  prediction project_id reference_datetime duration
-    ##   <date>     <chr>   <chr>     <chr>                       <chr>    <chr>          <dbl> <chr>      <chr>              <chr>   
-    ## 1 2022-01-01 OSBS    1         bet_abund_example_tslm_temp ensemble abundance  -0.0103   neon4cast  2022-01-01         P1W     
-    ## 2 2022-01-01 OSBS    2         bet_abund_example_tslm_temp ensemble abundance   0.0604   neon4cast  2022-01-01         P1W     
-    ## 3 2022-01-01 OSBS    3         bet_abund_example_tslm_temp ensemble abundance  -0.0470   neon4cast  2022-01-01         P1W     
-    ## 4 2022-01-01 OSBS    4         bet_abund_example_tslm_temp ensemble abundance   0.0382   neon4cast  2022-01-01         P1W     
-    ## 5 2022-01-01 OSBS    5         bet_abund_example_tslm_temp ensemble abundance   0.0154   neon4cast  2022-01-01         P1W     
-    ## 6 2022-01-01 OSBS    6         bet_abund_example_tslm_temp ensemble abundance   0.000735 neon4cast  2022-01-01         P1W
+    ##   datetime   site_id parameter model_id      family variable prediction project_id reference_datetime duration
+    ##   <date>     <chr>   <chr>     <chr>         <chr>  <chr>         <dbl> <chr>      <chr>              <chr>   
+    ## 1 2022-01-01 OSBS    1         bet_abund_ex~ ensem~ abundan~     0.0557 neon4cast  2022-01-01         P1W     
+    ## 2 2022-01-01 OSBS    2         bet_abund_ex~ ensem~ abundan~     0.118  neon4cast  2022-01-01         P1W     
+    ## 3 2022-01-01 OSBS    3         bet_abund_ex~ ensem~ abundan~     0.0680 neon4cast  2022-01-01         P1W     
+    ## 4 2022-01-01 OSBS    4         bet_abund_ex~ ensem~ abundan~     0.0152 neon4cast  2022-01-01         P1W     
+    ## 5 2022-01-01 OSBS    5         bet_abund_ex~ ensem~ abundan~     0.0648 neon4cast  2022-01-01         P1W     
+    ## 6 2022-01-01 OSBS    6         bet_abund_ex~ ensem~ abundan~     0.0167 neon4cast  2022-01-01         P1W
 
 
     # visualize the EFI-formatted submission
@@ -685,15 +686,16 @@ For immediate feedback, we can use the targets data from 2022 to score our forec
     head(mod_scores)
 
     ## # A tibble: 6 x 17
-    ##   model_id    reference_datetime site_id datetime   family variable observation   crps   logs   mean median     sd quantile97.5 quantile02.5
-    ##   <chr>       <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>        <dbl>        <dbl>
-    ## 1 bet_abund_~ 2022-01-01         OSBS    2022-04-04 sample abundan~      0.102  0.0146 -1.90  0.0823 0.0964 0.0545        0.161     0.000665
-    ## 2 bet_abund_~ 2022-01-01         OSBS    2022-04-18 sample abundan~      0.188  0.0745 -0.937 0.0822 0.0583 0.0602        0.160     0.0210  
-    ## 3 bet_abund_~ 2022-01-01         OSBS    2022-04-25 sample abundan~      0.0877 0.0177 -1.71  0.0663 0.0675 0.0569        0.159    -0.00610 
-    ## 4 bet_abund_~ 2022-01-01         OSBS    2022-05-02 sample abundan~      0.0857 0.0136 -1.81  0.0939 0.0805 0.0814        0.250    -0.0114  
-    ## 5 bet_abund_~ 2022-01-01         OSBS    2022-05-16 sample abundan~      0.0786 0.0282 -1.23  0.0950 0.112  0.0769        0.188    -0.0133  
-    ## 6 bet_abund_~ 2022-01-01         OSBS    2022-05-30 sample abundan~      0.133  0.0570 -0.825 0.0539 0.0652 0.0429        0.112    -0.00627 
-    ## # i 3 more variables: quantile90 <dbl>, quantile10 <dbl>, horizon <drtn>
+    ##   model_id      reference_datetime site_id datetime   family variable observation   crps   logs   mean  median
+    ##   <chr>         <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl>  <dbl>  <dbl>   <dbl>
+    ## 1 bet_abund_ex~ 2022-01-01         OSBS    2022-04-04 sample abundan~      0.102  0.0515 -0.928 0.0300 0.00424
+    ## 2 bet_abund_ex~ 2022-01-01         OSBS    2022-04-18 sample abundan~      0.188  0.121  -0.125 0.0212 0.00923
+    ## 3 bet_abund_ex~ 2022-01-01         OSBS    2022-04-25 sample abundan~      0.0877 0.0159 -1.85  0.105  0.104  
+    ## 4 bet_abund_ex~ 2022-01-01         OSBS    2022-05-02 sample abundan~      0.0857 0.0339 -1.13  0.0392 0.0263 
+    ## 5 bet_abund_ex~ 2022-01-01         OSBS    2022-05-16 sample abundan~      0.0786 0.0207 -1.36  0.0754 0.0639 
+    ## 6 bet_abund_ex~ 2022-01-01         OSBS    2022-05-30 sample abundan~      0.133  0.0319 -1.18  0.116  0.0835 
+    ## # i 6 more variables: sd <dbl>, quantile97.5 <dbl>, quantile02.5 <dbl>, quantile90 <dbl>, quantile10 <dbl>,
+    ## #   horizon <drtn>
 
 Are these scores better than our null models? Here, we will score the `mod_mean` and `mod_naive` models, and combine the null model scores with the scores for our `best_lm` forecast above. Then we can compare. 
 

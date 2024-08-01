@@ -2,8 +2,8 @@
 title: "Forecast Beetle Richness and Abundance and Submit Forecasts to the NEON Ecological Forecast Challenge"
 syncID: 2bed8b22086544ae8505eee591054b0a
 description: Generate forecasts of beetle richness and abundance that are submitted to the Ecological Forecasting Initiative NEON forecasting challenge.
-authors: Eric R. Sokol, Ryan McClure, Allison Gerken
-contributors: Kelsey Yule, Juniper Simonis, Carl Boettiger, Sydne Record, Freya Olson, Vihanga Gunadasa, Meghan Beatty
+authors: Eric R. Sokol, Meghan Beatty, Hashini Gunadasa, Allison Gerken, Khum Magar, Ryan McClure, Glenda Wardle 
+contributors: Juniper Simonis, Carl Boettiger, Sydne Record,  Vihanga Gunadasa
 estimatedTime: 2 Hours
 packagesLibraries: tidyverse, lubridate, tsibble, fable, fabletools, remotes, neon4cast
 topics: ecological-forecasting, data-analysis, organisms, data-viz
