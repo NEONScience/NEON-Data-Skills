@@ -38,7 +38,7 @@ We will start at our ending point of the last tutorial. For this exercise we wil
 
 ```javascript
 // Filter image collection by date and site
-var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-30006-001")
+var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/HSI_REFL/001")
   .filterDate('2021-01-01', '2021-12-31')
   .filterMetadata('NEON_SITE', 'equals', 'SOAP')
   .first();
