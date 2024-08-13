@@ -67,7 +67,7 @@ First, we'll read in the AOP SDR Image Collection at <a href="https://www.neonsc
 var site_center = ee.Geometry.Point([-119.262, 37.033])
 
 // read in the AOP SDR Image Collection
-var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterBounds(site_center)
 
 print('NEON AOP SDR Image Collection',sdr_col)
@@ -193,4 +193,4 @@ As explained in <a href="https://developers.google.com/earth-engine/tutorials/tu
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/44a999244a938dd76dd782fb419458c9" target="_blank">Functions to display AOP SDR Image Collections in GEE</a>
+<a href="https://code.earthengine.google.com/ca03be340d2c56c85581c1485593de3d" target="_blank">Functions to display AOP SDR Image Collections in GEE</a>
