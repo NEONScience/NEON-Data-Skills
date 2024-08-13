@@ -172,27 +172,41 @@ You can expand each image by clicking on the arrow to the left of the image name
 Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties using `.filterMetadata`.
 
 ```javascript
-// read in a single SDR image at the NEON site SOAP in 2021
-var sdrSOAP = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-30006-001")
+// read in a single reflectance image at the NEON site MCRA in 2021
+var refl_MCRA_2021 = refl001
   .filterDate('2021-01-01', '2021-12-31') // filter by date - 2021
-  .filterMetadata('NEON_SITE', 'equals', 'SOAP') // filter by site
+  .filterMetadata('NEON_SITE', 'equals', 'MCRA') // filter by site
   .first(); // select the first one to pull out a single image
 ```
 
-Now that we've selected a single image, we can plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've just read into the variable `sdrSOAP`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
+Next let's take a look at the Image Property and display the release information. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
+
+```
+// look at the image properties
+var properties = refl_MCRA_2021.toDictionary()
+print('MCRA 2021 Directional Reflectance Properties:', properties)
+
+// determine the release information for this image
+// see https://www.neonscience.org/data-samples/data-management/data-revisions-releases
+var release_status = properties.select(['PROVISIONAL_RELEASED']);
+print('MCRA 2021 Directional Reflectance Release Status:', release_status)
+var release_year = properties.select(['RELEASE_YEAR']);
+print('MCRA 2021 Directional Reflectance Release Year:', release_year)
+
+Now that we've selected a single image, we can plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've read into the variable `refl_MCRA_2021`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
 
 ```javascript
-// pull out the red, green, an dblue bands
-var rgb = sdrSOAP.select(['B053', 'B035', 'B019']);
+// pull out the red, green, and blue bands
+var refl001_MCRA_2021_RGB = refl_MCRA_2021.select(['B053', 'B035', 'B019']);
 
 // set visualization parameters
-var rgbVis = {min: 0, max: 1260, gamma: 0.8};
+var rgb_vis = {min: 0, max: 1260, gamma: 0.8};
 
-// center the map at the lat / lon of the site, set zoom to 12
-Map.setCenter(-119.25, 37.06, 12);
+// center the map at the lat / lon of the site, set zoom to 13
+Map.setCenter(-122.15, 44.27, 13);
 
 // add this RGB layer to the Map and give it a title
-Map.addLayer(rgb, rgbVis, 'SOAP 2021 RGB Camera Imagery');
+Map.addLayer(refl001_MCRA_2021_RGB, rgb_vis, 'MCRA 2021 RGB Reflectance Imagery');
 ```
 
 When you run the code you should now see the true color images on the map! You can zoom in and out and explore some of the other interactive options on your own.
