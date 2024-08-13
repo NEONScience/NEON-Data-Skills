@@ -216,8 +216,8 @@ Map.addLayer(refl001_MCRA_2021_RGB, rgb_vis, 'MCRA 2021 RGB Reflectance Imagery'
 When you run the code you should now see the true color images on the map! You can zoom in and out and explore some of the other interactive options on your own.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.PNG" alt="MCRA Reflectance RGB Image."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.png" alt="MCRA Reflectance RGB Image."></a>
 </figure>
 
 ## A Quick Recap
