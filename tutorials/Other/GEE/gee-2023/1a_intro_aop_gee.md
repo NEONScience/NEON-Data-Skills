@@ -155,21 +155,9 @@ In the **Console** tab to the right of the code, you will see a list of all avai
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG" alt="Available AOP Images"></a>
 </figure>
 
-
-
-## Explore Image Properties
-
-You can expand each image by clicking on the arrow to the left of the image name to explore the properties. These include additional metadata information about the properties, as well as information about each of the bands.
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_properties_expanded.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_properties_expanded.PNG" alt="SDR Image Properties."></a>
-</figure>
-
-
 ## Filter by Image Properties and Display a True Color Image
 
-Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties using `.filterMetadata`.
+Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties, such as the NEON site code, using `.filterMetadata`.
 
 ```javascript
 // read in a single reflectance image at the NEON site MCRA in 2021
@@ -179,21 +167,37 @@ var refl_MCRA_2021 = refl001
   .first(); // select the first one to pull out a single image
 ```
 
-Next let's take a look at the Image Property and display the release information. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
+## Explore Image Properties
+
+Next let's take a look at the Image Property and display the release information. 
 
 ```
 // look at the image properties
 var properties = refl_MCRA_2021.toDictionary()
 print('MCRA 2021 Directional Reflectance Properties:', properties)
+```
 
+Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band. In a subsequent lesson, we will demonstrate how to extract this information in order to make a spectral plot. You may wish to refer to this to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG" alt="SDR Image Properties."></a>
+</figure>
+
+When working with NEON data, whether downloaded from the Data Portal, or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. Use the code below to display this information for the MCRA 2021 site. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
+
+```
 // determine the release information for this image
 // see https://www.neonscience.org/data-samples/data-management/data-revisions-releases
 var release_status = properties.select(['PROVISIONAL_RELEASED']);
 print('MCRA 2021 Directional Reflectance Release Status:', release_status)
 var release_year = properties.select(['RELEASE_YEAR']);
 print('MCRA 2021 Directional Reflectance Release Year:', release_year)
+```
 
-Now that we've selected a single image, we can plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've read into the variable `refl_MCRA_2021`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
+## Plot a True Color Image
+
+Finally, let's plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've read into the variable `refl_MCRA_2021`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
 
 ```javascript
 // pull out the red, green, and blue bands
@@ -212,15 +216,15 @@ Map.addLayer(refl001_MCRA_2021_RGB, rgb_vis, 'MCRA 2021 RGB Reflectance Imagery'
 When you run the code you should now see the true color images on the map! You can zoom in and out and explore some of the other interactive options on your own.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/soap_sdr_rgb.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/soap_sdr_rgb.PNG" alt="SOAP SDR RGB."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.PNG" alt="MCRA Reflectance RGB Image."></a>
 </figure>
 
 ## A Quick Recap
 
-You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP ImageCollection into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display available Images. Lastly, you learned to read in an individual SDR Image, and display a map of a true color image (RGB composite).
+You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP ImageCollection into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display information about the collection. Lastly, you learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite).
 
-It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is not as straightforward. One of the major challenges to working with AOP reflectance data is it's large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
+It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is more involved. One of the major challenges to working with AOP reflectance data is it's large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral, lidar, and camera data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
 
 ## Get Lesson Code
 
