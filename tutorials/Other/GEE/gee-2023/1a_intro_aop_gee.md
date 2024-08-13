@@ -177,7 +177,7 @@ var properties = refl_MCRA_2021.toDictionary()
 print('MCRA 2021 Directional Reflectance Properties:', properties)
 ```
 
-Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band. In a subsequent lesson, we will demonstrate how to extract this information in order to make a spectral plot. You may wish to refer to this to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image.
+Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band (Bands 001 - 426). You may wish to refer to this wavelength information to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG">
