@@ -107,38 +107,52 @@ When you Run the code above (by clicking on the **Run** above the code editor), 
 If you click `Convert`, the line of code will disappear and the variable will be imported into your session directly, and will show up at the top of the code editor. Go ahead and convert the variables for all three lines of code, so you should see the following. Tip: if you type `Ctrl-z`, you can re-generate the line of code, and the variable will still show up in the imported variables at the top of the editor. It is recommended to retain the code that reads in each variable, for reproducibility. If you don't do this, and wish to share this code with someone else, or run the code outside of your current code editor, the imported variables will not be saved and any subsequent code referring to this variable will result in an error message.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/imported_sdr.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/imported_sdr.png" alt="Imported AOP Image Collections."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/variable_imports.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/variable_imports.PNG" alt="Imported AOP Image Collections."></a>
 </figure>
 
 Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *version*. 
 
-Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link `projects/neon-prod-earthengine/DP3-30006-001`. Below we'll show the window that pops-up when you click on `SDR` and select the **IMAGES** tab. We encourage you to look at all of the datasets similarly. **Note:** when the GEE datasets become public, you will be able to search for the NEON AOP image collections through the <a href="[https://data.neonscience.org/data-products/explore](https://developers.google.com/earth-engine/datasets)" target="_blank">Earth Engine Data Catalog</a>.
+Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link, eg. `projects/neon-prod-earthengine/CHM/001`. Below we'll show the window that pops-up when you click on the CHM link. We encourage you to explore all of the AOP datasets similarly. **Note:** when the GEE datasets become public, you will be able to search for the NEON AOP image collections through the search bar on the <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Earth Engine Data Catalog</a> webpage.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_asset_details_images.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_asset_details_images.png" alt="SDR Asset Details Description."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_chm_asset_details.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_chm_asset_details.png" alt="NEON CHM Asset Description."></a>
 </figure>
 
-You can click on the **IMAGES** tab to explore all the available NEON images for that data product. Some of the text may be cut off in the default view, but if you click in one of the table values the table will expand. This table summarizes individual sites and years that are available for the SDR Image Collection. The ImageID provides the path to read in an individual image. 
-
-Note that the images imported into GEE may have some slight differences from the data downloaded from the data portal. We highly encourage you to explore the description and associated documentation for the data products on the NEON data portal as well (eg. <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a>) for relevant information about the data products, how they are generated, and other pertinent details.
+Note that the end of the description includes a link to the Data Product landing page on the NEON Data Portal, as well as the Quick Start Guide, which includes links to all the documentation pertaining to this NEON data product, including the Algorithm Theoretical Basis Documents (ATBDs). Click on the other tabs to explore more about this data product. These tabs include `DESCRIPTION`, `BANDS`, `IMAGE PROPERTIES`, `TERMS OF USE`, AND `CITATIONS`.   
 
 ## AOP GEE Data Availability
 
-Since we are adding AOP data to GEE on a rolling basis, the first thing you may want to do is see what datasets are currently available. A quick way to do this is shown below:
+Since we are adding AOP data to GEE on a rolling basis, the first thing you may want to do after reading in the image collections is to see what datasets are currently available on GEE. A quick way to do this is shown below:
 
 ```javascript
-// list all available images in the NEON Surface Directional Reflectance (SDR) image collection:
-print('NEON Images in the SDR Collection',
-      sdrCol.aggregate_array('system:index'))
+// list all available images in the NEON Surface Directional Reflectance Image Collection:
+print('NEON Images in the Directional Reflectance Collection',
+      refl001.aggregate_array('system:index'))
+      
+// list all available images in the NEON Surface Bidirectional Reflectance Image Collection:
+print('NEON Images in the Bidirectional Reflectance Collection',
+      refl002.aggregate_array('system:index'))
+
+// list all available images in the NEON DEM image collection:
+print('NEON Images in the DEM Collection',
+      dem.aggregate_array('system:index'))
+
+// list all available images in the NEON CHM image collection:
+print('NEON Images in the CHM Collection',
+      chm.aggregate_array('system:index'))
+
+// list all available images in the NEON CHM image collection:
+print('NEON Images in the RGB Camera Collection',
+      rgb.aggregate_array('system:index'))
 ```
 
-In the **Console** tab to the right of the code, you will see a list of all available images. Expand the box to see the full path. The names of the all the SDR images follow the format `YEAR_SITE_VISIT_SDR`, so you can identify the site and year of data this way. AOP typically visits each site 3 out of every 4 years, so the visit number indicates the number of times AOP has visited that site. In some cases, AOP may re-visit a site twice in the same year.
+In the **Console** tab to the right of the code, you will see a list of all available images. Expand each List to see the data available for each Image Collection. The names of the all the images follow the format `YEAR_SITE_#`, so you can identify the site and year of data this way. The number at the end is the Visit #; AOP typically visits each site 3 out of every 4-5 years, so the visit number indicates the number of times AOP has visited that site. Occasionally, AOP may re-visit a site twice in the same year.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/sdr_image_list.PNG" alt="SDR Image List."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG" alt="Available AOP Images"></a>
 </figure>
 
 
