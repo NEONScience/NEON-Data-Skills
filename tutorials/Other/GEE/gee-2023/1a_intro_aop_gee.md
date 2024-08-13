@@ -3,7 +3,7 @@ syncID: cd3f3df4c3684bc29cf6feea5cfebe59
 title: "Introduction to AOP Public Datasets in Google Earth Engine (GEE)"
 description: "Introductory tutorial on exploring AOP Image Collections in Earth Engine."
 dateCreated: 2023-05-24
-authors: Bridget M. Hass, John Musinsky
+authors: Bridget Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 20 minutes
 packagesLibraries: 
@@ -169,7 +169,7 @@ var refl_MCRA_2021 = refl001
 
 ## Explore Image Properties
 
-Next let's take a look at the Image Property and display the release information. 
+Next let's take a look at the Image Properties.
 
 ```
 // look at the image properties
@@ -222,7 +222,7 @@ When you run the code you should now see the true color images on the map! You c
 
 ## A Quick Recap
 
-You did it! You should now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP ImageCollection into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display information about the collection. Lastly, you learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite).
+You did it! You now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display information about the collection. Lastly, you learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite).
 
 It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is more involved. One of the major challenges to working with AOP reflectance data is it's large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral, lidar, and camera data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
 
