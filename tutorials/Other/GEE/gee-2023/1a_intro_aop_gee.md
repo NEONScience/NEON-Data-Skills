@@ -184,7 +184,7 @@ Look in the Console for the properties, you can expand by clicking on the arrow 
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG" alt="SDR Image Properties."></a>
 </figure>
 
-When working with NEON data, whether downloaded from the Data Portal, or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. Use the code below to display this information for the MCRA 2021 site. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
+When working with NEON data, whether downloaded from the Data Portal, or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is released, the property `RELEASE_YEAR` will display the year of the release. Use the code below to display this information for the MCRA 2021 directional reflectance data. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
 
 ```
 // determine the release information for this image
@@ -194,6 +194,8 @@ print('MCRA 2021 Directional Reflectance Release Status:', release_status)
 var release_year = properties.select(['RELEASE_YEAR']);
 print('MCRA 2021 Directional Reflectance Release Year:', release_year)
 ```
+
+In this example, the data is part of `RELEASE-2024`.
 
 ## Plot a True Color Image
 
