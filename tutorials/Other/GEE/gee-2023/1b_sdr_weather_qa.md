@@ -71,7 +71,7 @@ print('QA Bands',soapSDR_qa)
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG" alt="QA Bands"></a>
 </figure>
 
-Most of these QA bands are inputs to and outputs from the Atmospheric Correction (ATCOR). We will expand upon these further, and encourage you to read more details about these data in the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance Algorithm Theoritical Basis Document</a>. For the purposes of this exercise, we will focus on the Weather Quality Indicator band. Note that you can explore each of the QA bands, following similar steps below, just adjusting for the band names and values accordingly.
+Most of these QA bands are inputs to and outputs from the Atmospheric Correction (ATCOR). We will expand upon these further, and encourage you to read more details about these data in the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance Algorithm Theoritical Basis Document</a>. For the purposes of this exercise, we will focus on the Weather Quality Indicator band. Note that you can explore each of the QA bands, following similar steps below, adjusting the band names and values accordingly.
 
 ## Read in the `Weather_Quality_Indicator` Band
 
@@ -151,8 +151,8 @@ Map.addLayer(soapDates,
 	
 ## Recap
 
-Success! In this lesson you learned how to read in Weather Quality Information from the Surface Directional Reflectance (SDR) QA bands in GEE. You have learned to mask data to keep only data collected in <10% cloud cover, and plot the three weather quality classes. You have also briefly looked at some of the other QA bands, and following a similar approach could explore each of these bands similarly (such as mapping the acquisition dates). Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for conducting any subsequent data analysis.
+In this lesson you learned how to read in Weather Quality Information from the Surface Directional Reflectance (SDR) QA bands in GEE. You learned to mask data to keep only data collected in the cleares sky conditions (<10% cloud cover), and plot the three weather quality classes. You also learned how to find the other QA bands, and following a similar approach could explore each of these bands similarly. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for interpreting the data and carrying out subsequent data analysis.
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/e3b50f0b78a97cb05669b3a44f6fac95" target="_blank">AOP GEE SDR Weather Quality</a>
+<a href="https://code.earthengine.google.com/3b9f43d1e1baefab5ceabc6a59d03b51" target="_blank">AOP GEE SDR Weather Quality</a>
