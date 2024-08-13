@@ -33,8 +33,8 @@ You will gain familiarity with:
  * Zonal statistics
 
 ## Requirements
- * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * A gmail (@gmail.com) account.
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/.
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
