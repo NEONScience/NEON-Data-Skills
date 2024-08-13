@@ -29,7 +29,7 @@ After completing this activity, you will be able to:
  * Understand the trade-offs in different kinds of resolutions (spatial, spectral, and temporal)
 
 ## Requirements
- * Register for an Earth Engine account <a href="https://code.earthengine.google.com/register" target="_blank">here</a>
+ * Register for an Earth Engine account; if you haven't already done this, you can <a href="https://code.earthengine.google.com/register" target="_blank">here</a>.
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
@@ -56,7 +56,7 @@ var site_center = ee.Geometry.Point([-83.5, 35.7]);
 var roi = ee.FeatureCollection('projects/neon-sandbox-dataflow-ee/assets/chimney_tops_fire')
 
 // Read in the SDR Image Collection
-var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterBounds(site_center);
 
 // Read in Landsat 8 Surface Reflectance Image Collection
@@ -165,4 +165,4 @@ This figure highlights some important points. First, we can see that there is go
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/b79904271c8284f92400827fd6557c74" target="_blank">NDVI Time Series</a>
+<a href="https://code.earthengine.google.com/95ff30f1b59fa327df0767029f8d0bc2" target="_blank">GRSM NDVI Time Series - Landsat 8 & AOP</a>
