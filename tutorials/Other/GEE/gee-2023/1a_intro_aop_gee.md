@@ -55,11 +55,11 @@ The NEON data products that have been made available on GEE can be currently be 
 
 | Acronym | Revision | Data Product      | Data Product ID |
 |---------|----------|-------------------|-----------------|
-| HSI_REFL | 001 | Surface Directional Reflectance | DP3.30006.001 |
-| HSI_REFL | 002 | Surface Bidirectional Reflectance | DP3.30006.002 |
-| RGB | Red Green Blue (Camera Imagery) | DP3.30010.001 |
-| DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3.30024.001 |
-| CHM | Ecosystem Structure (Canopy Height Model; CHM) | DP3.30015.001 |
+| HSI_REFL | 001 | Surface Directional Reflectance | <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a> |
+| HSI_REFL | 002 | Surface Bidirectional Reflectance | <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">DP3.30006.002</a> |
+| RGB | 001 | Red Green Blue (Camera Imagery) | <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">DP3.30010.001</a> |
+| DEM | 001 | Digital Surface and Terrain Models (DSM/DTM) | <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a> |
+| CHM | 001 | Ecosystem Structure (Canopy Height Model; CHM) | <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a> |
 
 ## Get Started with Google Earth Engine
 
