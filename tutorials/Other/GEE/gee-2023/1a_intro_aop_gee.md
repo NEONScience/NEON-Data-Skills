@@ -18,7 +18,9 @@ urlTitle: intro-aop-gee-image-collections
 
 <div id="ds-introduction" markdown="1">
 
-Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of Spring 2023 are being added to Google Earth Engine with the plan to make them publicly available datasets. NEON will eventually add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. We do not currently have a time estimate for when all of the AOP data will be added to GEE, but we will be ramping up data additions in the second half of 2023. Please stay tuned for a <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank"> Data Notification</a> in Summer-Fall 2023 which will more officially announce the plan for adding AOP data to the Google Earth Engine public datasets.
+Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of Summer 2024 are being added to Google Earth Engine as publicly available datasets. NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the Bidirectional reflectance as that becomes available, we are only adding this data upon request. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
+
+There is not currently have a time estimate for when all of the AOP data will be added to GEE, but we will be ramping up data additions in the second half of 2024. If you wish to add a given NEON site and year(s) in Google Earth Engine, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine" in the text. Please stay tuned for a <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank">NEON Data Notification</a> in Fall 2024 which will officially announce the plan for adding AOP data to the Google Earth Engine public datasets.
 
 <div id="ds-objectives" markdown="1">
 
@@ -35,6 +37,7 @@ And you will be able to:
 ## Requirements
  * A gmail (@gmail.com) account
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Select the "Use without a Cloud Project" option, to create a free non-commercial account. For more details, refer to <a href="https://earthengine.google.com/noncommercial/" target="_blank">Noncommercial Earth Engine</a>
+ * A Google Cloud Project. See <a href="https://developers.google.com/earth-engine/cloud/earthengine_cloud_project_setup/" target="_blank"> Set up your Earth Engine enabled Cloud Project</a>.
  * A basic understanding of the GEE Code Editor and the GEE JavaScript API.
 
 ## Additional Resources
@@ -50,12 +53,13 @@ AOP has currently added a subset of AOP Level 3 (tiled) data products at over 10
 
 The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the Data Product ID, matching the IDs on the <a href="https://data.neonscience.org/data-products/explore" target="_blank"> NEON Data Portal</a>. The table below summarizes the IDs to use for each data product, and can be used as a reference for reading in AOP GEE datasets. You will learn how to access and read in these data products in the next part of this lesson. 
 
-| Acronym | Data Product      | Data Product ID (Prefix) |
-|----------|------------|-------------------------|
-| SDR | Surface Directional Reflectance | DP3-30006-001 |
-| RGB | Red Green Blue (Camera Imagery) | DP3-30010-001 |
-| DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3-30024-001 |
-| CHM | Ecosystem Structure (Canopy Height Model; CHM) | DP3-30015-001 |
+| Acronym | Revision | Data Product      | Data Product ID |
+|---------|----------|-------------------|-----------------|
+| HSI_REFL | 001 | Surface Directional Reflectance | DP3.30006.001 |
+| HSI_REFL | 002 | Surface Bidirectional Reflectance | DP3.30006.002 |
+| RGB | Red Green Blue (Camera Imagery) | DP3.30010.001 |
+| DEM | Digital Surface and Terrain Models (DSM/DTM) | DP3.30024.001 |
+| CHM | Ecosystem Structure (Canopy Height Model; CHM) | DP3.30015.001 |
 
 ## Get Started with Google Earth Engine
 
@@ -77,13 +81,15 @@ In your code editor, copy and run the following lines of code to create 3 `Image
 ```javascript
 //read in the AOP image collections as variables
 
-var aopSDR = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+var refl001 = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
 
-var aopRGB = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30010-001') 
+var refl002 = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/002')
 
-var aopCHM = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015-001')
+var rgb = ee.ImageCollection('projects/neon-prod-earthengine/assets/RGB/001') 
 
-var aopDEM = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30024-001')
+var chm = ee.ImageCollection('projects/neon-prod-earthengine/assets/CHM/001')
+
+var dem = ee.ImageCollection('projects/neon-prod-earthengine/assets/DEM/001')
 ```
 
 A few tips for the working in the Code Editor: 
