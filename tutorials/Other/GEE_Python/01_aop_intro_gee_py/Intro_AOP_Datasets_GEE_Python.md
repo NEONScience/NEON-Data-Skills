@@ -24,7 +24,7 @@ After completing this tutorial, you will be able to use Python to:
 * Read in and visualize AOP Reflectance, RGB Camera, and Lidar raster datasets
 * Become familiar with the AOP Image Properties
 * Filter data based off image properties to pull in dataset(s) of interest
-* Explore the interactive mapping features in geemap
+* Explore the interactive mapping features in `geemap`
 
 ### Requirements
 
@@ -97,7 +97,7 @@ ee.Authenticate()
 
 <p>To authorize access needed by Earth Engine, open the following
         URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=d14Y5cPpjRI2xthDcGnDihZhifXKCYeSXN96Rfh6vZs&tc=vLZudoll6bTTGiTL2pRlB31GehartDDjHuVTwnH446M&cc=QBieU0J-NeNTC_uvd0gpCsAObmuETaWjFpO-t6g7naw>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=d14Y5cPpjRI2xthDcGnDihZhifXKCYeSXN96Rfh6vZs&tc=vLZudoll6bTTGiTL2pRlB31GehartDDjHuVTwnH446M&cc=QBieU0J-NeNTC_uvd0gpCsAObmuETaWjFpO-t6g7naw</a></p>
+        <p><a href=https://code.earthengine.google.com/client-auth?...</a></p>
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
 
@@ -114,7 +114,7 @@ ee.Authenticate()
 ee.Initialize()
 ```
 
-Now that you've Authenticated and Initialized your Earth Engine account, you can start using the Python API to interact with GEE using the `ee` and `geemap` packageS.
+Now that you've Authenticated and Initialized your Earth Engine account, you can start using the Python API to interact with GEE using the `ee` and `geemap` packages.
 
 First let's read in the Surface Directional Reflectance Image Collection (`HSI_REFL/001`) and see what data are available in GEE.
 
@@ -454,6 +454,7 @@ Map
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2019.PNG" alt="Harvard Forest 2019 Weather QA Map" width="800"><figcaption>Harvard Forest 2019 Weather QA Map Layer</figcaption></a>
 </figure><br>
 
+
 In 2019, the AOP was able to collect all but the easternmost flightline in green, or clear-sky weather conditions. Let's take a look at the data from 2018 for comparison:
 
 
@@ -489,6 +490,7 @@ Map
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2018.PNG">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2018.PNG" alt="Harvard Forest 2018 Weather QA Map" width="800"><figcaption>Harvard Forest 2018 Weather QA Map Layer</figcaption></a>
 </figure><br>
+
 
 We can see that in 2019, the weather conditions were sub-optimal for collecting. When working with the AOP data, this is important information to keep in mind - as the reflectance data (and other optical data, such as the camera data) collected in cloudy sky conditions are not directly comparable to data collected in clear skies.
 
