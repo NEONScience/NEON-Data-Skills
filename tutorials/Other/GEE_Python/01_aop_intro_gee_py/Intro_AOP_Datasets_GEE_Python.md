@@ -1,5 +1,5 @@
 ---
-syncID: d14552056cc440549ae3c1bac80eaeb7
+syncID: 
 title: "Intro to AOP Datasets in Google Earth Engine (GEE) using Python"
 description: "Explore AOP reflectance, camera, and lidar datasets in GEE"
 dateCreated: 2023-07-25
@@ -9,8 +9,9 @@ estimatedTime: 30 minutes
 packagesLibraries: earthengine-api, geemap
 topics:
 languagesTool: Python, Google Earth Engine
-dataProducts: DP3.30006.001, DP3.30010.001, DP3.30015.001, DP3.30024.001
-code1: https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/Other/GEE_Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
+dataProducts: DP3.30006.001, DP3.30006.002, DP3.30010.001, DP3.30015.001, DP3.30024.001
+code1: 	
+https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
 tutorialSeries: 
 urlTitle: aop-gee-py-intro
 ---
@@ -21,24 +22,26 @@ urlTitle: aop-gee-py-intro
 After completing this tutorial, you will be able to use Python to:
 
 * Determine the available AOP datasets in Google Earth Engine
-* Read in and visualize AOP Reflectance, RGB Camera, and Lidar Raster datasets
+* Read in and visualize AOP Reflectance, RGB Camera, and Lidar raster datasets
 * Become familiar with the AOP Image Properties
 * Filter data based off image properties to pull in dataset(s) of interest
 * Explore the interactive mapping features in geemap
 
 ### Requirements
 
-To follow along with this code, you will need to 
+To follow along with this code, you will need to:
 1. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
-2. Install **Python 3.x**
-3. Install required Python packages (matplotlib, cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
-- earthengine-api
-- geemap
+2. Install **Python 3.9+**
+3. Install required Python packages 
+- `pip install earthengine-api --upgrade`
+- `pip install geemap`
+
+You may need to run the following to upgrade the `google-api-python-client`:
+- `pip install --upgrade google-api-python-client`
 
 Notes: 
-- This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. This lesson was written in **Jupyter Notebook** so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. 
+- This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version or higher. This lesson was written in **Jupyter Notebook** so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. 
 - If not using **Jupyter**, we recommend using **Spyder**, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.
-
 
 ### Additional Resources
 - <a href="https://developers.google.com/earth-engine/tutorials/community/intro-to-python-api" target="_blank">Google Developers Intro to Python API</a>
@@ -47,26 +50,25 @@ Notes:
 
 </div>
 
-## AOP data in GEE
+## AOP data in Google Earth Engine
 
-[Google Earth Engine](https://earthengine.google.com/) is a platform idea for carrying out continental and planetary scale geospatial analyses. It has a multi-pedabyte catalog of satellite imagery and geospatial datasets, and is a powerful tool for comparing and scaling up NEON airborne datasets. 
+[Google Earth Engine](https://earthengine.google.com/) is a platform for carrying out continental and planetary scale geospatial analyses. It has a multi-pedabyte catalog of satellite imagery and geospatial datasets, and is a powerful environment for comparing and scaling up NEON airborne datasets. 
 
-The NEON data products can currently be accessed through the `projects/neon-prod-earthengine/assets/` folder with an appended prefix of the data product ID (DPID) similar to what you see on the [NEON data portal](https://data.neonscience.org/data-products/explore). The table below shows the corresponding prefixes to use for the available data products.
+The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the dataset Acronym and Revision Number, shown in the table below. 
 
-| Acronym | Data Product      | Data Product ID (Prefix)          |
-|----------|------------|-------------------------|
-| SDR | Surface Directional Reflectance | DP3-30006-001 |
-| RGB | Red Green Blue (Camera Imagery) | DP3-30010-001 |
-| CHM | Canopy Height Model | DP3-30015-001 |
-| DSM | Digital Surface Model | DP3-30024-001 |
-| DTM | Digital Terrain Model | DP3-30024-001 |
+| Acronym | Revision | Data Product      | Data Product ID |
+|---------|----------|-------------------|-----------------|
+| HSI_REFL | 001 | Surface Directional Reflectance | <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a> |
+| HSI_REFL | 002 | Surface Bidirectional Reflectance | <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">DP3.30006.002</a> |
+| RGB | 001 | Red Green Blue (Camera Imagery) | <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">DP3.30010.001</a> |
+| DEM | 001 | Digital Surface and Terrain Models (DSM/DTM) | <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a> |
+| CHM | 001 | Ecosystem Structure (Canopy Height Model; CHM) | <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a> |
 
-
-To access the NEON AOP data you can read in the Image Collection `ee.ImageCollection` and filter by the date and other properties of interest.
+To access the NEON AOP data you can read in the Image Collection `ee.ImageCollection` followed by the path, eg. the Surface Directional Reflectance can be found under the path `projects/neon-prod-earthengine/assets/HSI_REFL/001`. You can then filter down to a particular site and year of interest using the properties. 
 
 First, import the relevant Earth Engine Python packages, `earthengine-api` [(ee)](https://developers.google.com/earth-engine/guides/python_install) and [geemap](https://geemap.org/). This lesson was written using geemap version 0.22.1. If you have an older version installed, used the command below to update.
 
-## GEE Python API
+## GEE Python Package Installation and Authentication
 
 
 ```python
@@ -95,14 +97,17 @@ ee.Authenticate()
 
 
 <p>To authorize access needed by Earth Engine, open the following
+        URL in a web browser and follow the instructions:</p>
+        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=d14Y5cPpjRI2xthDcGnDihZhifXKCYeSXN96Rfh6vZs&tc=vLZudoll6bTTGiTL2pRlB31GehartDDjHuVTwnH446M&cc=QBieU0J-NeNTC_uvd0gpCsAObmuETaWjFpO-t6g7naw>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=d14Y5cPpjRI2xthDcGnDihZhifXKCYeSXN96Rfh6vZs&tc=vLZudoll6bTTGiTL2pRlB31GehartDDjHuVTwnH446M&cc=QBieU0J-NeNTC_uvd0gpCsAObmuETaWjFpO-t6g7naw</a></p>
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="600"><figcaption></figcaption></a>
-</figure><br>
 
-When the token is entered, you should receive the notice: `"Successfully saved authorization token."`
+
+    Enter verification code:  
+    
+
+    
+    Successfully saved authorization token.
     
 
 
@@ -110,29 +115,30 @@ When the token is entered, you should receive the notice: `"Successfully saved a
 ee.Initialize()
 ```
 
-Now that you've logged in to your Earth Engine account, you can start using the Python API with the `ee` package.
+Now that you've Authenticated and Initialized your Earth Engine account, you can start using the Python API to interact with GEE using the `ee` and `geemap` packageS.
 
-First let's read in the Surface Directional Reflectance (SDR) Image Collection and take a look at the available data.
+First let's read in the Surface Directional Reflectance Image Collection (`HSI_REFL/001`) and see what data are available in GEE.
 
 
 ```python
 # Read in the NEON AOP Surface Directional Reflectance (SDR) Collection:
-sdrCol = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+refl001 = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
 
-# List all available sites in the NEON SDR image collection:
-print('All Available NEON SDR Images:')
-
+# Count and list all available sites in the NEON directional reflectance image collection:
 # Get the number of SDR images
-sdrCount = sdrCol.size()
-print('Count: ', str(sdrCount.getInfo())+'\n')
+refl001_count = refl001.size()
+refl001_count = str(refl001_count.getInfo())
+print(f'Found {refl001_count} NEON Directional Reflectance Images in GEE')
 
-print(sdrCol.aggregate_array('system:index').getInfo())
+refl001_year_sites = refl001.aggregate_array('system:index').getInfo()
+print('\nLast 10 reflectance datasets available:')
+print(refl001_year_sites[-10:])
 ```
 
-    All Available NEON SDR Images:
-    Count:  25
+    Found 48 NEON Directional Reflectance Images in GEE
     
-    ['2013_CPER_1_SDR', '2016_CLBJ_1_SDR', '2016_GRSM_2_SDR', '2016_HARV_3_SDR', '2017_CLBJ_2_SDR', '2017_CPER_3_SDR', '2017_GRSM_3_SDR', '2017_SERC_3_SDR', '2018_CLBJ_3_SDR', '2019_CLBJ_4_SDR', '2019_HARV_6_SDR', '2019_HEAL_3_SDR', '2019_JORN_3_SDR', '2019_SOAP_4_SDR', '2020_CPER_5_SDR', '2020_CPER_7_SDR', '2020_NIWO_4_SDR', '2021_ABBY_4_SDR', '2021_CLBJ_5_SDR', '2021_CPER_8_SDR', '2021_GRSM_5_SDR', '2021_HEAL_4_SDR', '2021_JORN_4_SDR', '2021_SJER_5_SDR', '2021_SOAP_5_SDR']
+    Last 10 reflectance datasets available:
+    ['2021_GRSM_5', '2021_HEAL_4', '2021_JERC_6', '2021_JORN_4', '2021_MCRA_2', '2021_OAES_5', '2021_OSBS_6', '2021_SJER_5', '2021_SOAP_5', '2021_SRER_4']
     
 
 We can also look for data for a specified site - for example look at all the years of AOP SDR data available for a given site.
@@ -143,15 +149,15 @@ We can also look for data for a specified site - for example look at all the yea
 site = 'CPER'
 
 # Get the flight year and site information
-flightYears = sdrCol.aggregate_array('FLIGHT_YEAR').getInfo()
-sites = sdrCol.aggregate_array('NEON_SITE').getInfo()
+flight_years = refl001.aggregate_array('FLIGHT_YEAR').getInfo()
+sites = refl001.aggregate_array('NEON_SITE').getInfo()
 
-print('\nYears of SDR data available in GEE for',site+':')
-print([year_site[0] for year_site in zip(flightYears,sites) if site in year_site])
+print('\nYears of Directional Reflectance data available in GEE for ',site+':')
+print([year_site[0] for year_site in zip(flight_years,sites) if site in year_site])
 ```
 
     
-    Years of SDR data available in GEE for CPER:
+    Years of Directional Reflectance data available in GEE for  CPER:
     [2013, 2017, 2020, 2020, 2021]
     
 
@@ -160,30 +166,30 @@ Let's take a look at another dataset, the high-resolution RGB camera imagery:
 
 ```python
 # Read in the NEON AOP Camera (RGB) Collection:
-rgbCol = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30010-001')
+rgb = ee.ImageCollection('projects/neon-prod-earthengine/assets/RGB/001')
 
 # List all available sites in the NEON SDR image collection:
-print('All Available NEON Camera Images:')
+print('Available NEON Camera Images:')
 # Get the number of RGB images
-rgbCount = rgbCol.size()
-print('Count: ', str(sdrCount.getInfo())+'\n')
-print(rgbCol.aggregate_array('system:index').getInfo())
+rgb_count = rgb.size()
+print('Count: ', str(rgb_count.getInfo())+'\n')
+print(rgb.aggregate_array('system:index').getInfo())
 ```
 
-    All Available NEON Camera Images:
-    Count:  25
+    Available NEON Camera Images:
+    Count:  44
     
-    ['2016_HARV_3_RGB', '2017_CLBJ_2_RGB', '2017_GRSM_3_RGB', '2017_SERC_3_RGB', '2018_CLBJ_3_RGB', '2018_TEAK_3_RGB', '2019_BART_5_RGB', '2019_CLBJ_4_RGB', '2019_HARV_6_RGB', '2019_HEAL_3_RGB', '2019_JORN_3_RGB', '2019_SOAP_4_RGB', '2020_CPER_7_RGB', '2020_NIWO_4_RGB', '2020_RMNP_3_RGB', '2020_UKFS_5_RGB', '2020_UNDE_4_RGB', '2020_YELL_3_RGB', '2021_ABBY_4_RGB', '2021_BLAN_4_RGB', '2021_BONA_4_RGB', '2021_CLBJ_5_RGB', '2021_DEJU_4_RGB', '2021_DELA_6_RGB', '2021_HEAL_4_RGB', '2021_JERC_6_RGB', '2021_JORN_4_RGB', '2021_LENO_6_RGB', '2021_MLBS_4_RGB', '2021_OSBS_6_RGB', '2021_SERC_5_RGB', '2021_SJER_5_RGB', '2021_SOAP_5_RGB', '2021_TALL_6_RGB', '2021_WREF_4_RGB']
+    ['2016_HARV_3', '2017_CLBJ_2', '2017_GRSM_3', '2017_SERC_3', '2018_CLBJ_3', '2018_OAES_3', '2018_SRER_2', '2018_TEAK_3', '2019_BART_5', '2019_CLBJ_4', '2019_HARV_6', '2019_HEAL_3', '2019_JORN_3', '2019_OAES_4', '2019_SOAP_4', '2020_CPER_7', '2020_NIWO_4', '2020_RMNP_3', '2020_UKFS_5', '2020_UNDE_4', '2020_YELL_3', '2021_ABBY_4', '2021_BLAN_4', '2021_BONA_4', '2021_CLBJ_5', '2021_DEJU_4', '2021_DELA_6', '2021_HEAL_4', '2021_JERC_6', '2021_JORN_4', '2021_LENO_6', '2021_MLBS_4', '2021_OAES_5', '2021_OSBS_6', '2021_SERC_5', '2021_SJER_5', '2021_SOAP_5', '2021_SRER_4', '2021_TALL_6', '2021_WREF_4', '2022_OAES_6', '2022_UNDE_5', '2023_CLBJ_7', '2023_OAES_7']
     
 
 Similarly, you can read in the DEM and CHM collections as follows:
 
 ```python
 # Read in the NEON AOP DEM Collection (this includes the DTM and DSM as 2 bands)
-demCol = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30024-001')
+dem = ee.ImageCollection('projects/neon-prod-earthengine/assets/DEM/001')
 
 # Read in the NEON AOP CHM Collection
-chmCol = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015-001')
+chm = ee.ImageCollection('projects/neon-prod-earthengine/assets/CHM/001')
 ```
 
 ## Explore Image Properties
@@ -192,16 +198,13 @@ Now that we've read in a couple of image collections, let's take a look at some 
 
 
 ```python
-props = geemap.image_props(sdrCol.first())
+props = geemap.image_props(refl001.first())
+
+# Display the property names for the first 15 properties:
+props.keys().getInfo()[:16]
 
 # Optionally display all properties by uncommenting the line below
 # props
-```
-
-
-```python
-# Display the property names for the first 15 properties:
-props.keys().getInfo()[:15]
 ```
 
 
@@ -216,8 +219,9 @@ props.keys().getInfo()[:15]
      'NEON_DOMAIN',
      'NEON_SITE',
      'NOMINAL_SCALE',
-     'PRODUCT_TYPE',
-     'SCALING_FACTOR',
+     'PROVISIONAL_RELEASED',
+     'RELEASE_YEAR',
+     'SCALE_FACTOR',
      'SENSOR_NAME',
      'SENSOR_NUMBER',
      'WL_FWHM_B001',
@@ -228,31 +232,34 @@ props.keys().getInfo()[:15]
 You can also look at all the Image properties by typing `props`. This generates a long output, so we will just show a portion of the output from that:
 
 ```
-AOP_VISIT_NUMBER:1
-DESCRIPTION:Orthorectified surface directional reflectance (0-1 unitless, scaled by 10000) ...
-FLIGHT_YEAR:2013
-IMAGE_DATE:2013-06-25
-NEON_DATA_PROD_ID:DP3.30006.001
-NEON_DATA_PROD_URL:https://data.neonscience.org/data-products/DP3.30006.001
-NEON_DOMAIN:D10
-NEON_SITE:CPER
-NOMINAL_SCALE:1
-PRODUCT_TYPE:SDR
-SCALING_FACTOR:10000
-SENSOR_NAME:AVIRIS-NG
-SENSOR_NUMBER:NIS1
-WL_FWHM_B001:382.3465,5.8456
+AOP_VISIT_NUMBER: 1
+DESCRIPTION :Orthorectified surface directional reflectance (0-1 unitless, scaled by 10000) ...
+FLIGHT_YEAR: 2013
+IMAGE_DATE: 2013-06-25
+NEON_DATA_PROD_ID: DP3.30006.001
+NEON_DATA_PROD_URL: https://data.neonscience.org/data-products/DP3.30006.001
+NEON_DOMAIN: D10
+NEON_SITE: CPER
+NOMINAL_SCALE: 1
+PROVISIONAL_RELEASED: RELEASED
+RELEASE_YEAR :2024R
+SCALING_FACTO 1:10000
+SENSOR_NAM E:AVIRIS-NG
+SENSOR_NUMBE R:NIS1
+WL_FWHM_B00 1:382.3465,5.8456
     
 system:asset_size:68059.439009 MB
 system:band_names: List (442 elements)
-system:id:projects/neon-prod-earthengine/assets/DP3-30006-001/2013_CPER_1_SDR
-system:index:2013_CPER_1_SDR
+system:id:projects/neon-prod-earthengine/assets/HSI_REFL/001/2013_CPER_1
+system:index:2013_CPER_1DR
 system:time_end:2013-06-25 10:42:05
 system:time_start:2013-06-25 08:30:45
 system:version:1689911980211725
 ```
 
-The image properties contain some additional relevant information about the dataset, and are variables you can filter on to select a subset of the data. A lot of these properties are self-explanatory, but some of them may be less apparent. A short description of a few properties is outlined below. Note that when the datasets become part of the Google Public Datasets, you will be able to see descriptions of the properties in GEE.
+The image properties contain some additional relevant information about the dataset, and are variables you can filter on to select a subset of the data. A lot of these properties are self-explanatory, but some of them may be less apparent. A short description of a few properties is outlined below. Note that when the datasets become part of the Google Public Datasets, you will be able to see descriptions of the properties in GEE
+- `PROVISIONAL_RELEASED`: Whether the data are available provisionally, or are Released. See https://www.neonscience.org/data-samples/data-management/data-revisions-releases for more information on the NEON release process.
+- `RELEASE_YEAR`: The year of the release tag, if the data have been Released. .
 
 - `SENSOR_NAME`: The name of the hyperspectral sensor. All NEON sensors are JPL AVIRIS-NG sensors.
 - `SENSOR_NUMBER`: The payload number, NIS1 = NEON Imaging Spectrometer, Payload 1. NEON Operates 3 separate payloads, each with a unique hyperspectral sensor (as well as unique LiDAR and Camera sensors).
@@ -262,133 +269,138 @@ In addition there are some `system` properties, including information about the 
 
 ## Filter an Image Collection
 
-One of the most useful aspects of having AOP data ingested in Earth Engine is the ability to filter by properties, such as the site name, dates, sensors, etc. In this next section, we will show how to filter datasets to extract only data of interest. We'll use the NEON's <a href="https://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center (SERC)</a>, in Maryland.
+One of the most useful aspects of having AOP data ingested in Earth Engine is the ability to filter by properties, such as the site name, dates, sensors, etc. In this next section, we will show how to filter datasets to extract only data of interest. We'll use the NEON's <a href="https://www.neonscience.org/field-sites/harv" target="_blank">Harvard Forest (HARV)</a>, in Massachusettes.
 
 
 ```python
-# See the years of data available for the specified site:
-site = 'SERC'
+# See the years of data available for a specified site:
+site = 'HARV'
 
 # Get the flight year and site information
-flightYears = rgbCol.aggregate_array('FLIGHT_YEAR').getInfo()
-sites = rgbCol.aggregate_array('NEON_SITE').getInfo()
+rgb_flight_years = rgb.aggregate_array('FLIGHT_YEAR').getInfo()
+rgb_sites = rgb.aggregate_array('NEON_SITE').getInfo()
 
 print('\nYears of RGB data available in GEE for',site+':')
-print([year_site[0] for year_site in zip(flightYears,sites) if site in year_site])
+print([year_site[0] for year_site in zip(rgb_flight_years, rgb_sites) if site in year_site])
 ```
 
     
-    Years of RGB data available in GEE for SERC:
-    [2017, 2021]
+    Years of RGB data available in GEE for HARV:
+    [2016, 2019]
     
 
 
 ```python
 # Get the flight year and site information
-flightYears = sdrCol.aggregate_array('FLIGHT_YEAR').getInfo()
-sites = sdrCol.aggregate_array('NEON_SITE').getInfo()
+refl001_flight_years = refl001.aggregate_array('FLIGHT_YEAR').getInfo()
+refl001_sites = refl001.aggregate_array('NEON_SITE').getInfo()
 
-print('\nYears of SDR data available in GEE for',site+':')
-print([year_site[0] for year_site in zip(flightYears,sites) if site in year_site])
+print('\nYears of Directional Reflectance data available in GEE for',site+':')
+print([year_site[0] for year_site in zip(refl001_flight_years, refl001_sites) if site in year_site])
 ```
 
     
-    Years of SDR data available in GEE for SERC:
-    [2017]
+    Years of Directional Reflectance data available in GEE for HARV:
+    [2014, 2016, 2017, 2018, 2019]
     
 
 
 ```python
 # Specify the start and end dates
-year = 2017
-start_date = ee.Date.fromYMD(year, 1, 1) 
-end_date = start_date.advance(1, "year")
+year = 2019
+start_date2019 = ee.Date.fromYMD(year, 1, 1) 
+end_date2019 = start_date2019.advance(1, "year")
 
 # Filter the RGB image collection on the site and dates
-SERC_RGB_2017 = rgbCol.filterDate(start_date, end_date).filterMetadata('NEON_SITE', 'equals', site).mosaic()
+harv_rgb2019 = rgb.filterDate(start_date2019, end_date2019).filterMetadata('NEON_SITE', 'equals', site).mosaic()
 ```
 
 ## Add Data Layers to the Map
 
-In order to visualize and interact with the dataset, we can use `geemap.Map()` as follows. This will create a blank Map of the world, and then when you run `geemap` code to add layers, the Map will update - so note this is a little different from standard Jupyter Notebook output, where the figures typically show up below each code chunk.
+In order to visualize and interact with the dataset, we can use `geemap.Map()` as follows, to display Harvard Forest camera and directional reflectance imagery from 2019.
 
 
 ```python
 Map = geemap.Map()
+
+# Specify center location of HARV
+# NEON field site information can be found on the NEON website here > https://www.neonscience.org/field-sites/harv
+geo = ee.Geometry.Point([-72.17, 42.5])
+
+# Set the visualization parameters so contrast is maximized
+rgb_vis_params = {'min': 45, 'max': 200, 'gamma': .6}
+
+# Add the RGB data as a layer to the Map
+Map.addLayer(harv_rgb2019, rgb_vis_params, 'HARV 2019 RGB Camera');
+
+# Center the map on the site center and set zoom level
+Map.centerObject(geo, 11);
+
 Map
 ```
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/world_map.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/world_map.PNG" alt="Earth Engine Map" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
-</figure><br>
 
 
 
-We'll start by reading in an RGB image over the Smithsonian Environmental Research Center (SERC) and adding the layer to the Map.
+    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
 
 
-```python
-# Specify center location of SERC: 38.890131, -76.560014
-# NEON field site information can be found on the NEON website here > https://www.neonscience.org/field-sites/serc
-geo = ee.Geometry.Point([-76.56, 38.89])
-
-# Set the visualization parameters so contrast is maximized
-rgb_vis_params = {'min': 0, 'max': 250, 'gamma': 0.8}
-
-# Add the SERC RGB data as a layer to the Map
-Map.addLayer(SERC_RGB_2017, rgb_vis_params, 'SERC 2017 RGB Camera');
-
-# Center the map on SERC and set zoom level
-Map.centerObject(geo, 12);
-```
 
 ## Surface Directional Reflectance (SDR)
 
 Next let's take a look at one of the SDR datasets. We will pull in only the data bands, for this example. 
 
-### SDR Data Bands
+### Reflectance Data Bands
 
 
 ```python
+Map = geemap.Map()
+
 # Read in the first image of the SDR Image Collection
-sdrImage = sdrCol.filterDate(start_date, end_date).filterMetadata('NEON_SITE', 'equals', site).mosaic()
+harv_refl2019 = refl001.filterDate(start_date2019, end_date2019).filterMetadata('NEON_SITE', 'equals', site).mosaic()
 
 # Read in only the data bands, all of which start with "B", eg. "B001"
-sdrData = sdrImage.select('B.*')
+harv_refl2019_data = harv_refl2019.select('B.*')
 
 # Set the visualization parameters so contrast is maximized, and display RGB bands (true-color image)
-sdrVisParams = {'min':0, 'max':1200, 'gamma':0.9, 'bands':['B053','B035','B019']};
+refl001_viz = {'min':0, 'max':1200, 'gamma':0.9, 'bands':['B053','B035','B019']};
 
-# Add the SERC RGB data as a layer to the Map
-Map.addLayer(sdrData, sdrVisParams, 'SERC 2017 SDR');
+# Add the reflectance data as a Layer to the Map
+Map.addLayer(harv_refl2019_data, refl001_viz, 'Harvard Forest 2019 Directional Reflectance');
+
+# Center the map on the site center and set zoom level
+Map.centerObject(geo, 11);
+
+Map
 ```
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_sdr_rgb_layers.png" alt="SERC Map Layers" width="800"><figcaption>Map Panel with SERC 2017 RGB and SDR Layers Added</figcaption></a>
-</figure><br>
 
-### SDR QA Bands
+
+
+    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
+
+
+
+### Reflectance QA Bands
 
 Before we used a regular expression to pull out only the bands starting with "B". We can also take a look at the remaining bands using a similar expression, but this time excluding bands starting with "B". These comprise all of the QA-related bands that provide additional information and context about the data bands. This next chunk of code prints out the IDs of all the QA bands.
 
 
 ```python
 # Read in only the QA bands, none of which start with "B"
-sdrQA_bands = sdrImage.select('[^B].*')
+reflQA_bands = harv_refl2019.select('[^B].*')
 
 # Create a dictionary of the band information
-sdrQA_band_info = sdrQA_bands.getInfo()
-type(sdrQA_band_info)
+reflQA_band_info = reflQA_bands.getInfo()
+type(reflQA_band_info)
 
 # Loop through the band info dictionary to print out the ID of each band
-print('QA band IDs:\n')
-for i in range(len(sdrQA_band_info['bands'])):
-    print(sdrQA_band_info['bands'][i]['id'])
+print('QA bands:\n')
+for i in range(len(reflQA_band_info['bands'])):
+    print(reflQA_band_info['bands'][i]['id'])
 ```
 
-    QA band IDs:
+    QA bands:
     
     Aerosol_Optical_Depth
     Aspect
@@ -408,11 +420,11 @@ for i in range(len(sdrQA_band_info['bands'])):
     Acquisition_Date
     
 
-Most of these QA bands are related to the Atmospheric Correction (ATCOR), one of the processing steps in converting Radiance to Reflectance. For more details on this process, NEON provides an Algorithm Theoretical Basis Document (ATBD), which is available from the data portal. https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true
+Most of these QA bands are related to the Atmospheric Correction (ATCOR), one of the spectrometer processing steps which converts Radiance to Reflectance. For more details on this process, NEON provides an Algorithm Theoretical Basis Document (ATBD), which is available on the NEON data portal and linked here: <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD </a>. 
 
-Bands that may be most useful for standard analyses are the `Weather_Quality_Indicator` and `Acquisition_Date`. The weather quality indicator includes information about the cloud conditions during the flight, as reported by the flight operators, where 1 corresponds to <10% cloud cover, 2 corresponds to 10-50% cloud cover, and 3 corresponds to >50% cloud cover. We recommend using only clear-sky data for a typical analysis, as it comprises the highest quality reflectance data.
+The `Weather_Quality_Indicator` is particularly useful for assessing data quality. The weather quality indicator includes information about the cloud conditions during the flight, as reported by the flight operators, where 1 corresponds to <10% cloud cover, 2 corresponds to 10-50% cloud cover, and 3 corresponds to >50% cloud cover. We recommend using only clear-sky data (1) for a typical analysis, as it results in the highest quality reflectance data.
 
-You may be interested in the acquisition date if, for example, you are linking field data collected on a specific date, or are interested in finding satellite data collected close in time to the AOP imagery.
+You mayalso  be interested in the `Acquisition_Date` if, for example, you are linking field data collected on a specific date, or are interested in finding satellite data collected close in time to the AOP imagery.
 
 The next chunks of code show how to add the Weather QA bands to the Map Layer.
 
@@ -420,29 +432,74 @@ The next chunks of code show how to add the Weather QA bands to the Map Layer.
 
 
 ```python
-sdrWeatherQA = sdrCol.select(['Weather_Quality_Indicator']);
+Map = geemap.Map()
+
+harv_refl_weather_qa2019 = harv_refl2019.select(['Weather_Quality_Indicator']);
 
 # Define a palette for the weather - to match NEON AOP's weather color conventions (green-yellow-red)
-gyrPalette = ['00ff00', # green (<10% cloud cover)
-              'ffff00', # yellow (10-50% cloud cover)
-              'ff0000']; # red (>50% cloud cover)
-             
-# Visualization parameters to display the weather bands (cloud conditions) with the green-yellow-red palette
-weatherVisParams = {'min': 1, 'max': 3, 'palette': gyrPalette, 'opacity': 0.3};
+gyr_palette = ['green','yellow','red']
 
-# Add the SERC RGB data as a layer to the Map
-Map.addLayer(sdrWeatherQA, weatherVisParams, 'SERC 2017 Weather QA');
+# Visualization parameters to display the weather bands (cloud conditions) with the green-yellow-red palette
+weather_viz = {'min': 1, 'max': 3, 'palette': gyr_palette, 'opacity': 0.3};
+
+# Add the RGB data as a layer to the Map
+Map.addLayer(harv_refl_weather_qa2019, weather_viz, 'HARV 2019 Weather QA');
+
+# Center the map on the site center and set zoom level
+Map.centerObject(geo, 11);
+
+Map
 ```
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_weather_qa_layer.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/serc_weather_qa_layer.png" alt="SERC Weather QA Layer" width="800"><figcaption>Map Panel Displaying SERC 2017 Weather QA Layer</figcaption></a>
-</figure><br>
 
-In 2017 most of the SERC site was collected in "green" (<10% cloud cover) sky conditions, with the exception of a small portion on the western side of the flight box. When working with this dataset, we recommend only using this clear-sky portion, where clouds have not obscured the reflectance values.
+
+
+    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
+
+
+
+In 2019, the AOP was able to collect all but the easternmost flightline in green, or clear-sky weather conditions. Let's take a look at the data from 2018 for comparison:
+
+
+```python
+# Specify the start and end dates
+year = 2018
+start_date2018 = ee.Date.fromYMD(year, 1, 1) 
+end_date2018 = start_date2018.advance(1, "year")
+
+# Filter the reflectance image collection on the site and dates
+harv_refl2018 = refl001.filterDate(start_date2018, end_date2018).filterMetadata('NEON_SITE', 'equals', site).mosaic()
+
+Map = geemap.Map()
+
+harv_refl_weather_qa2018 = harv_refl2018.select(['Weather_Quality_Indicator']);
+
+# Define a palette for the weather - to match NEON AOP's weather color conventions (green-yellow-red)
+gyr_palette = ['green','yellow','red']
+
+# Visualization parameters to display the weather bands (cloud conditions) with the green-yellow-red palette
+weather_viz = {'min': 1, 'max': 3, 'palette': gyr_palette, 'opacity': 0.3};
+
+# Add the weather QA layer to the map
+Map.addLayer(harv_refl_weather_qa2018, weather_viz, 'HARV 2019 Weather QA');
+
+# Center the map on the site center and set zoom level
+Map.centerObject(geo, 11);
+
+Map
+```
+
+
+
+
+    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
+
+
+
+We can see that in 2019, the weather conditions were sub-optimal for collecting. When working with the AOP data, this is important information to keep in mind - as the reflectance data (and other optical data, such as the camera data) collected in cloudy sky conditions are not directly comparable to data collected in clear skies.
 
 ## Recap
 
-In this lesson, you learned how to access the four NEON AOP Image Collections that are available in GEE: 1. Surface Directional Reflectance (SDR), 2. High-resolution Camera (RGB), and LiDAR-derived rasters 3. Digital Elevation Models (DEM - DTM/Terrain and DSM/Surface) and 4. Ecosystem Structure (Canopy Height Model - CHM). You generated code to determine which AOP datasets are available in GEE for a given Image Collection. You explored the SDR image properties and learned how to filter on specified metadata to pull out a subset of Images or a single Image from an Image Collection. You learned how to use `geemap` to add data layers to the interactive map panel. And lastly, you learned how to select and visualize the `Weather_Quality_Indicator` band, which is a useful first step in working with AOP reflectance data. 
+In this lesson, you learned how to access the five NEON datasets that are available in GEE: Bidirectional Reflectance (`HSI_REFL/002`), Surface Directional Reflectance (`HSI_REFL/001`), Camera (`RGB/001`), and LiDAR-derived Digital Elevation (Terrain and Surface) Models (`DEM/001`) and Ecosystem Structure / Canopy Height Model (`CHM/001`). You generated code to determine which AOP datasets are available in GEE for a given Image Collection. You explored the directional reflectance image properties and learned how to filter on metadata to pull out a subset of Images or a single Image from an Image Collection. You learned how to use the `geemap` package to add data layers to the interactive map panel. And lastly, you learned how to select and visualize the `Weather_Quality_Indicator` band, which is a useful first step in assessing the data quality of the AOP reflectance and camera imagery.
 
 This is a great starting point for your own research!
