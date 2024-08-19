@@ -341,7 +341,7 @@ Map
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_camera_rgb.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_camera_rgb.png" alt="Harvard Forest RGB Camera" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_camera_rgb.png" alt="Harvard Forest RGB Camera" width="800"><figcaption>Harvard Forest RGB Camera Layer</figcaption></a>
 </figure><br>
 
 
@@ -375,7 +375,7 @@ Map
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_refl_rgb.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_refl_rgb.png" alt="Harvard Forest Reflectance Data" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_refl_rgb.png" alt="Harvard Forest Reflectance Data" width="800"><figcaption>Harvard Forest Reflectance Data Layer</figcaption></a>
 </figure><br>
 
 
@@ -451,7 +451,7 @@ Map
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2019.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2019.png" alt="Harvard Forest 2019 Weather QA Map" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2019.png" alt="Harvard Forest 2019 Weather QA Map" width="800"><figcaption>Harvard Forest 2019 Weather QA Map Layer</figcaption></a>
 </figure><br>
 
 In 2019, the AOP was able to collect all but the easternmost flightline in green, or clear-sky weather conditions. Let's take a look at the data from 2018 for comparison:
@@ -487,7 +487,7 @@ Map
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2018.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2018.png" alt="Harvard Forest 2018 Weather QA Map" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2018.png" alt="Harvard Forest 2018 Weather QA Map" width="800"><figcaption>Harvard Forest 2018 Weather QA Map Layer</figcaption></a>
 </figure><br>
 
 We can see that in 2019, the weather conditions were sub-optimal for collecting. When working with the AOP data, this is important information to keep in mind - as the reflectance data (and other optical data, such as the camera data) collected in cloudy sky conditions are not directly comparable to data collected in clear skies.
