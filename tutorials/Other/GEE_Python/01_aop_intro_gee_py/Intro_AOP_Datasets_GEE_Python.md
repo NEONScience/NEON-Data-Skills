@@ -94,20 +94,15 @@ geemap.__version__
 ee.Authenticate()
 ```
 
-
-<p>To authorize access needed by Earth Engine, open the following
-        URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?</a></p>
+<p>To authorize access needed by Earth Engine, open the link that pops up and follow the prompts which will generate a token.
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/enter_verification_code.PNG" alt="enter_verification_code screenshot" width="600"><figcaption></figcaption></a>
+</figure><br>
 
-
-    Enter verification code:  
-    
-
-    
-    Successfully saved authorization token.
-    
+Copy the token into the box, and when you hit enter, you should receive the notice: `"Successfully saved authorization token."`
 
 
 ```python
