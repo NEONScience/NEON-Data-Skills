@@ -20,7 +20,7 @@ urlTitle: aop-gee-plot-spectra
 
 ## Objectives
 After completing this activity, you will be able to:
-- Read in a single AOP Hyperspectral Reflectance raster data set at the NEON site SOAP
+- Read in a single AOP Hyperspectral Reflectance raster data set at a NEON site
 - Link spectral band #s to wavelength values
 - Create an interactive widget to plot the spectral signature of a given pixel upon clicking
 
@@ -34,11 +34,11 @@ After completing this activity, you will be able to:
 
 ## Read in the AOP SDR 2021 Dataset at SOAP
 
-We will start at our ending point of the last tutorial. For this exercise we will only read data from SOAP collected in 2021:
+We will start at the ending point of the last tutorial. For this exercise we will only read data from SOAP collected in 2021:
 
 ```javascript
 // Filter image collection by date and site
-var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-30006-001")
+var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/HSI_REFL/001")
   .filterDate('2021-01-01', '2021-12-31')
   .filterMetadata('NEON_SITE', 'equals', 'SOAP')
   .first();
@@ -142,4 +142,4 @@ In this lesson you learned how to read in wavelength information from the Surfac
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/ab1f812851ef19eebf871664d865181f" target="_blank">AOP GEE SDR Weather Quality</a>
+<a href="https://code.earthengine.google.com/b08021305eb73b4f54aa137759cc16cf" target="_blank">AOP GEE Reflectance Plot Spectra</a>

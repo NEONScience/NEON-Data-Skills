@@ -29,7 +29,7 @@ After completing this activity, you will be able to:
  * Understand the trade-offs in different kinds of resolutions (spatial, spectral, and temporal)
 
 ## Requirements
- * Register for an Earth Engine account <a href="https://code.earthengine.google.com/register" target="_blank">here</a>
+ * Register for an Earth Engine account; if you haven't already done this, you can <a href="https://code.earthengine.google.com/register" target="_blank">here</a>.
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
@@ -56,7 +56,7 @@ var site_center = ee.Geometry.Point([-83.5, 35.7]);
 var roi = ee.FeatureCollection('projects/neon-sandbox-dataflow-ee/assets/chimney_tops_fire')
 
 // Read in the SDR Image Collection
-var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterBounds(site_center);
 
 // Read in Landsat 8 Surface Reflectance Image Collection
@@ -161,8 +161,8 @@ print(ndvi_timeseries)
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1f_ndvi_timeseries/ndvi-time-series.png" alt="NDVI Time Series Landsat 8 + AOP at GRSM 2016-2022"></a>
 </figure>
 
-This figure highlights some important points. First, we can see that there is good alignment between the mean NDVI calculated from AOP reflectance data and Landsat 8 at these times. While the Airborne Observation Platform seeks to collect data in peak green conditions, this is not always possible due to logistical or other constraints. In this case, one the AOP collection in 2017 was in October, past peak-greenness when the leaves already started senescing in some areas. Generating a time-series plot like this can help highlight the data in the context of the larger temporal trends. In this case we can see strong seasonal trends from the Landsat time series. This brings us to the second point: while AOP data has very high spectral (426 bands) and spatial (1m) resolution, the temporal resolution (annual or bi-annual) may not fully suffice for your research needs. This is where scaling with satellite data - either to expand your analysis to a larger area, or to achieve a more comprehensive temporal understanding - can be very powerful! This tutorial demonstrates a simple example of scaling up the temporal resolution, but demonstrates how GEE makes this sort of scalable analysis much simpler! 
+This figure demonstrates some important points. First, we can see that there is good alignment between the mean NDVI calculated from AOP reflectance data and Landsat 8 at these times. While the Airborne Observation Platform seeks to collect data in peak green conditions, this is not always possible due to logistical or other constraints. For this site, one of the AOP collections in 2017 was in October, past peak-greenness, and the leaves already started senescing in some areas. Generating a time-series plot like this can help highlight the data in the context of the larger temporal trends. In this example, the NDVI time-series generated from Landsat 8 highlights strong seasonal trends. This brings us to the second point: while AOP data has very high spectral (426 bands) and spatial (1m) resolution, the temporal resolution (annual or bi-annual) may not fully suffice for your research needs. This is where scaling with satellite data - either to expand your analysis to a larger area, or to achieve a more comprehensive temporal understanding - can be very informative. This tutorial demonstrates a simple example of scaling up the temporal resolution, but demonstrates how GEE makes this sort of scalable analysis much simpler! 
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/b79904271c8284f92400827fd6557c74" target="_blank">NDVI Time Series</a>
+<a href="https://code.earthengine.google.com/95ff30f1b59fa327df0767029f8d0bc2" target="_blank">GRSM NDVI Time Series - Landsat 8 & AOP</a>
