@@ -339,10 +339,10 @@ Map
 ```
 
 
-
-
-    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
-
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_camera_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_camera_rgb.png" alt="Harvard Forest RGB Camera" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+</figure><br>
 
 
 ## Surface Directional Reflectance (SDR)
@@ -373,11 +373,10 @@ Map.centerObject(geo, 11);
 Map
 ```
 
-
-
-
-    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
-
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_refl_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_refl_rgb.png" alt="Harvard Forest Reflectance Data" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+</figure><br>
 
 
 ### Reflectance QA Bands
@@ -423,7 +422,7 @@ Most of these QA bands are related to the Atmospheric Correction (ATCOR), one of
 
 The `Weather_Quality_Indicator` is particularly useful for assessing data quality. The weather quality indicator includes information about the cloud conditions during the flight, as reported by the flight operators, where 1 corresponds to <10% cloud cover, 2 corresponds to 10-50% cloud cover, and 3 corresponds to >50% cloud cover. We recommend using only clear-sky data (1) for a typical analysis, as it results in the highest quality reflectance data.
 
-You mayalso  be interested in the `Acquisition_Date` if, for example, you are linking field data collected on a specific date, or are interested in finding satellite data collected close in time to the AOP imagery.
+You may also  be interested in the `Acquisition_Date` if, for example, you are linking field data collected on a specific date, or are interested in finding satellite data collected close in time to the AOP imagery.
 
 The next chunks of code show how to add the Weather QA bands to the Map Layer.
 
@@ -450,12 +449,10 @@ Map.centerObject(geo, 11);
 Map
 ```
 
-
-
-
-    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
-
-
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2019.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2019.png" alt="Harvard Forest 2019 Weather QA Map" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+</figure><br>
 
 In 2019, the AOP was able to collect all but the easternmost flightline in green, or clear-sky weather conditions. Let's take a look at the data from 2018 for comparison:
 
@@ -488,14 +485,13 @@ Map.centerObject(geo, 11);
 Map
 ```
 
-
-
-
-    Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
-
-
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2018.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_aop_gee_py/harv_weather_qa2018.png" alt="Harvard Forest 2018 Weather QA Map" width="800"><figcaption>Earth Engine Map Panel</figcaption></a>
+</figure><br>
 
 We can see that in 2019, the weather conditions were sub-optimal for collecting. When working with the AOP data, this is important information to keep in mind - as the reflectance data (and other optical data, such as the camera data) collected in cloudy sky conditions are not directly comparable to data collected in clear skies.
+
 
 ## Recap
 
