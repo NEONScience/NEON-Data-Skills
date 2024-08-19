@@ -97,7 +97,7 @@ ee.Authenticate()
 
 <p>To authorize access needed by Earth Engine, open the following
         URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?...</a></p>
+        <p><a href=https://code.earthengine.google.com/client-auth?</a></p>
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
 
