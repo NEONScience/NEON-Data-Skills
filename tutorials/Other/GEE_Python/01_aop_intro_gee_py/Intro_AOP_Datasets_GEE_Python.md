@@ -115,11 +115,11 @@ First let's read in the Surface Directional Reflectance Image Collection (`HSI_R
 
 
 ```python
-# Read in the NEON AOP Surface Directional Reflectance (SDR) Collection:
+# Read in the NEON AOP Surface Directional Reflectance Collection:
 refl001 = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
 
 # Count and list all available sites in the NEON directional reflectance image collection:
-# Get the number of SDR images
+# Get the number of reflectance images
 refl001_count = refl001.size()
 refl001_count = str(refl001_count.getInfo())
 print(f'Found {refl001_count} NEON Directional Reflectance Images in GEE')
@@ -135,7 +135,7 @@ print(refl001_year_sites[-10:])
     ['2021_GRSM_5', '2021_HEAL_4', '2021_JERC_6', '2021_JORN_4', '2021_MCRA_2', '2021_OAES_5', '2021_OSBS_6', '2021_SJER_5', '2021_SOAP_5', '2021_SRER_4']
     
 
-We can also look for data for a specified site - for example look at all the years of AOP SDR data available for a given site.
+We can also look for data for a specified site - for example look at all the years of AOP reflectance (001) data available for a given site.
 
 
 ```python
@@ -162,7 +162,7 @@ Let's take a look at another dataset, the high-resolution RGB camera imagery:
 # Read in the NEON AOP Camera (RGB) Collection:
 rgb = ee.ImageCollection('projects/neon-prod-earthengine/assets/RGB/001')
 
-# List all available sites in the NEON SDR image collection:
+# List all available sites in the NEON directional reflectance image collection:
 print('Available NEON Camera Images:')
 # Get the number of RGB images
 rgb_count = rgb.size()
@@ -339,9 +339,9 @@ Map
 </figure><br>
 
 
-## Surface Directional Reflectance (SDR)
+## Surface Directional Reflectance
 
-Next let's take a look at one of the SDR datasets. We will pull in only the data bands, for this example. 
+Next let's take a look at one of the Surface Directional Reflectance datasets. We will pull in only the data bands, for this example. 
 
 ### Reflectance Data Bands
 
@@ -349,7 +349,7 @@ Next let's take a look at one of the SDR datasets. We will pull in only the data
 ```python
 Map = geemap.Map()
 
-# Read in the first image of the SDR Image Collection
+# Read in the first image of the Reflectance Image Collection
 harv_refl2019 = refl001.filterDate(start_date2019, end_date2019).filterMetadata('NEON_SITE', 'equals', site).mosaic()
 
 # Read in only the data bands, all of which start with "B", eg. "B001"
