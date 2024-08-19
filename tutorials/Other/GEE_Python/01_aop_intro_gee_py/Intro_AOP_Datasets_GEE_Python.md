@@ -242,33 +242,32 @@ NEON_SITE: CPER
 NOMINAL_SCALE: 1
 PROVISIONAL_RELEASED: RELEASED
 RELEASE_YEAR :2024R
-SCALING_FACTO 1:10000
-SENSOR_NAM E:AVIRIS-NG
-SENSOR_NUMBE R:NIS1
-WL_FWHM_B00 1:382.3465,5.8456
+SCALING_FACTOR:10000
+SENSOR_NAME: AVIRIS-NG
+SENSOR_NUMBER: NIS1
+WL_FWHM_B001: 382.3465,5.8456
     
-system:asset_size:68059.439009 MB
+system:asset_size: 68059.439009 MB
 system:band_names: List (442 elements)
-system:id:projects/neon-prod-earthengine/assets/HSI_REFL/001/2013_CPER_1
-system:index:2013_CPER_1DR
-system:time_end:2013-06-25 10:42:05
-system:time_start:2013-06-25 08:30:45
-system:version:1689911980211725
+system:id: projects/neon-prod-earthengine/assets/HSI_REFL/001/2013_CPER_1
+system:index: 2013_CPER_1
+system:time_end: 2013-06-25 10:42:05
+system:time_start: 2013-06-25 08:30:45
+system:version: 1689911980211725
 ```
 
 The image properties contain some additional relevant information about the dataset, and are variables you can filter on to select a subset of the data. A lot of these properties are self-explanatory, but some of them may be less apparent. A short description of a few properties is outlined below. Note that when the datasets become part of the Google Public Datasets, you will be able to see descriptions of the properties in GEE
 - `PROVISIONAL_RELEASED`: Whether the data are available provisionally, or are Released. See https://www.neonscience.org/data-samples/data-management/data-revisions-releases for more information on the NEON release process.
-- `RELEASE_YEAR`: The year of the release tag, if the data have been Released. .
-
+- `RELEASE_YEAR`: The year of the release tag, if the data have been Released. 
 - `SENSOR_NAME`: The name of the hyperspectral sensor. All NEON sensors are JPL AVIRIS-NG sensors.
 - `SENSOR_NUMBER`: The payload number, NIS1 = NEON Imaging Spectrometer, Payload 1. NEON Operates 3 separate payloads, each with a unique hyperspectral sensor (as well as unique LiDAR and Camera sensors).
-- `WL_FWHM_B###`: Center Wavelength (WL) and Full Width Half Max (FWHM) of the band, both in nm
+- `WL_FWHM_B###`: Center Wavelength (WL) and Full Width Half Max (FWHM) of the band, both in nm.
 
-In addition there are some `system` properties, including information about the size of the asset, the band names (most of these are just band numbers but the QA bands have more descriptive names), as well as the start and end time of the collection.
+In addition, there are some `system` properties, including information about the size of the asset, the band names (most of these are just band numbers but the QA bands have more descriptive names), as well as the start and end time of the collection.
 
 ## Filter an Image Collection
 
-One of the most useful aspects of having AOP data ingested in Earth Engine is the ability to filter by properties, such as the site name, dates, sensors, etc. In this next section, we will show how to filter datasets to extract only data of interest. We'll use the NEON's <a href="https://www.neonscience.org/field-sites/harv" target="_blank">Harvard Forest (HARV)</a>, in Massachusettes.
+One of the most useful features of working with AOP data ingested in Earth Engine is the ability to filter by properties, such as the site name, dates, etc. In this next section, we will show how to filter datasets to extract only data of interest. We'll use the NEON's <a href="https://www.neonscience.org/field-sites/harv" target="_blank">Harvard Forest (HARV)</a>, in Massachusettes.
 
 
 ```python
