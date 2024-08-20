@@ -44,6 +44,8 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 </div>
 
+
+## GEE Function and Mapping Syntax
 Let's get started! First let's take a look at the syntax for writing user-defined functions in GEE. If you are familiar with other programming languages, this should look somewhat familiar. The function requires input argument(s) `args` and returns an `output`.
 
 ```javascript
@@ -60,6 +62,7 @@ To call the function for a full image collection, you can use a <a href="https:/
 var newVariable = collection.map(myFunction);
 ```
 
+## Read in AOP Directional Reflectance Image Collection
 First, we'll read in the AOP Directional Reflectance Image Collection at <a href="https://www.neonscience.org/field-sites/jerc" target="_blank"> Jones Center At Ichauway (JERC)</a>.
 
 ```javascript
@@ -74,6 +77,7 @@ var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL
 print('NEON AOP Directional Reflectance Image Collection',sdr_col)
 ```
 
+## Cloud Masking Function
 Building off the example from the previous tutorial, we can write a simple function to apply cloud-masking to an Image Collection:
 
 ```javascript
@@ -95,6 +99,7 @@ Then we can use `.map()` to apply this as follows:
 var sdr_cloudfree = sdr_col.map(clearSDR)
 ```
 
+## Function to Add Multiple Reflectance Layers to Map
 For the next example, we will write a function to add a Map Layer for each Image in an Image collection. We'll provide the full script below, including the function `addNISImage`, with comments explaining what each part of the function does. Note that a helpful troubleshooting technique is to add in `print` statements if you are unsure what the code is returning. We have included some commented-out print statements in the function, which show the outputs (which would show up in the console tab). 
 
 For a little more detail on how this function was applied, refer to this GIS Stack Exchange Post: <a href="https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine" target="_blank">Add/display all images of my collection in google earth engine</a>. When writing your own GEE code, the <a href="https://developers.google.com/earth-engine" target="_blank">Google earth-engine developers pages</a> may not always have an example of what you are trying to do, so stack overflow can be a valuable resource.
@@ -128,7 +133,7 @@ Note that the first half of this function is just pulling out relevant informati
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function1_refl_rgb.png" alt="JERC Visualization Function Output"></a>
 </figure>
 
-## Function including cloud-masking and adding weather QA layers
+## Function including Cloud-Masking and Weather QA Layers
 Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the SDR data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
 
 ```javascript
