@@ -87,7 +87,7 @@ function clearSDR(image) {
   var weather_qa = image.select(['Weather_Quality_Indicator']);
   // WEATHER QUALITY INDICATOR = 1 is < 10% CLOUD COVER
   var clear_qa = weather_qa.eq(1);
-  // mask out all cloudy pixels from the SDR image
+  // mask out all cloudy pixels from the reflectance image
   return image.updateMask(clear_qa);
 }
 ```
@@ -134,7 +134,7 @@ Note that the first half of this function is just pulling out relevant informati
 </figure>
 
 ## Function including Cloud-Masking and Weather QA Layers
-Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the SDR data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
+Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the reflectance data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
 
 ```javascript
 // Next we can build upon this function to add the Weather QA layer and
