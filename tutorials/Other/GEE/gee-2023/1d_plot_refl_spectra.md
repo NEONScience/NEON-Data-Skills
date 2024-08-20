@@ -3,7 +3,7 @@ syncID: d2e642ff6bb44f8798ddbe4fd5e45243
 title: "Plot spectral signatures of AOP Reflectance data in GEE"
 description: "Interactively plot the spectral signature of an AOP reflectance data pixel in GEE"
 dateCreated: 2022-04-15
-authors: Bridget M. Hass, John Musinsky
+authors: Bridget Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 45 minutes
 packagesLibraries: 
@@ -28,7 +28,7 @@ After completing this activity, you will be able to:
 
 - Complete the following introductory AOP GEE tutorials:
     - <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-image-collections" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
-- An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the [Intro to Working with Hyperspectral Remote Sensing Data](https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r) tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
+- An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the R code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
 </div>
 
