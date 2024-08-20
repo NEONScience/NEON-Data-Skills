@@ -1,15 +1,15 @@
 ---
 syncID: 0339425fefc541dbaf5ab7f736352374
 title: "Functions in Google Earth Engine (GEE)"
-description: "Write functions to add AOP SDR data as Map layers and apply cloud-masking"
+description: "Write functions to add AOP reflectance data as Map layers and apply cloud-masking"
 dateCreated: 2022-07-27
-authors: Bridget M. Hass, John Musinsky
+authors: Bridget Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
-estimatedTime: 20 minutes
+estimatedTime: 30 minutes
 packagesLibraries: 
 topics: hyperspectral, remote-sensing
 languageTool: GEE
-dataProduct: DP3.30006.001
+dataProduct: DP3.30006.001, DP3.30006.002
 code1: 
 tutorialSeries: aop-gee2023
 urlTitle: intro-gee-functions
