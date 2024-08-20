@@ -29,8 +29,7 @@ After completing this activity, you will be able to:
 - Write a function to add the weather quality layer to the map, and mask out cloudy data from an Reflectance Image Collection
 
 ## Requirements
- * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * An Earth Engine account. You can sign up for a non-commercial Earth Engine account here: https://code.earthengine.google.com/register
  * A basic understanding of the GEE code editor and the GEE JavaScript API. These are introduced in the tutorials:
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a>
