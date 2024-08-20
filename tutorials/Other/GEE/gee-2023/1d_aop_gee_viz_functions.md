@@ -33,10 +33,10 @@ After completing this activity, you will be able to:
  * A basic understanding of the GEE code editor and the GEE JavaScript API. These are introduced in the tutorials:
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Intro to AOP Data in GEE</a>
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-sdr-tutorial" target="_blank">Introduction to AOP Hyperspectral Data in GEE</a>
- * A basic understanding of hyperspectral data and the AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in R</a> tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
+ * A basic understanding of hyperspectral data and the AOP hyperspectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in R</a> tutorial. You do not need to follow along with the R code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
 ## Additional Resources
-If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
+If this is your first time using GEE, we recommend checking out the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
  * <a href="https://developers.google.com/earth-engine/guides/getstarted" target="_blank"> Get Started with Earth-Engine </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial </a>
  * <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" target="_blank"> Functional Programming in GEE </a>
@@ -55,7 +55,7 @@ var functionName = function(args) {
 };
 ```
 
-To call the function for a full image collection, you can use a <a href="https://developers.google.com/earth-engine/guides/getstarted#mapping-what-to-do-instead-of-a-for-loop" target="_blank"> map </a> to apply the function to all items in a collection. This is shown in the script below.
+To call the function for a full image collection, you can use a <a href="https://developers.google.com/earth-engine/guides/getstarted#mapping-what-to-do-instead-of-a-for-loop" target="_blank">map</a> to apply the function to all items in a collection. This is outlined in the code chunk below.
 
 ```javascript
 // Map the function over the collection.
