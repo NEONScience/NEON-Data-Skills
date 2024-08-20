@@ -20,9 +20,9 @@ urlTitle: aop-gee-plot-spectra
 
 ## Objectives
 After completing this activity, you will be able to:
-- Read in a single AOP Hyperspectral Reflectance raster data set at a NEON site
-- Link spectral band #s to wavelength values
-- Create an interactive widget to plot the spectral signature of a given pixel upon clicking
+- Read in and map a single AOP Hyperspectral reflectance image at a NEON site
+- Link spectral band numbers to wavelength values
+- Create an interactive plot to display the spectral signature of a given pixel upon clicking
 
 ## Requirements
 
@@ -34,7 +34,7 @@ After completing this activity, you will be able to:
 
 ## Read in the AOP Directional Reflectance Image
 
-We will start at the ending point of the last tutorial. For this exercise we will only read directional reflectance data from SOAP collected in 2021:
+As should be familiar by now from the previous tutorials in this series, we'll start by pulling in the AOP data. For this exercise we will only read directional reflectance data from SOAP collected in 2021:
 
 ```javascript
 // Filter image collection by date and site
