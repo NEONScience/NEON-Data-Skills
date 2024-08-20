@@ -15,7 +15,8 @@ tutorialSeries: aop-gee2023
 urlTitle: intro-gee-functions
 
 ---
-## Writing a Function to Visualize AOP SDR Image Collections
+
+## Writing a Function to Visualize AOP Reflectance Image Collections
 
 In the earlier <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-sdr-weather-qa-gee" target="_blank">Reflectance pre-processing tutorial</a>, we showed how to read in a band of data containing weather quality information and apply cloud-masking using that band. In this tutorial, we will show you a more simplified way of doing this, using functions so we can more easily apply that operation to an Image Collection. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code repeatedly, it may be an opportunity to create a function. For example, in the previous tutorial, we repeated lines of code to pull in different years of data at SRER, the only difference being the year and the variable names for each year. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and reproducible. 
 
@@ -24,8 +25,8 @@ In the earlier <a href="https://www.neonscience.org/resources/learning-hub/tutor
 ## Objectives
 After completing this activity, you will be able to:
 - Understand the basic structure of functions in GEE (JavaScript API)
-- Write and call a function to read in and display images from each year in an AOP SDR Image Collection
-- Write a function to add the weather quality layer to the map, and mask out cloudy data from an SDR Image Collection
+- Write and call a function to read in and display images from all available years in an AOP Reflectance Image Collection
+- Write a function to add the weather quality layer to the map, and mask out cloudy data from an Reflectance Image Collection
 
 ## Requirements
  * A gmail (@gmail.com) account
@@ -124,8 +125,8 @@ function addNISImage(image) {
 Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function1_refl_rgb.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function1_refl_rgb.png" alt="JERC Visualization Function Output"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function1_refl_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function1_refl_rgb.png" alt="JERC Visualization Function Output"></a>
 </figure>
 
 ## Function including cloud-masking and adding weather QA layers
@@ -182,8 +183,8 @@ sdr_col.evaluate(function(sdr_col) {
 Map.centerObject(site_center, 11);
 ```
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function2_weather_qa.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function2_weather_qa.png" alt="JERC Clear QA Function Output"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function2_weather_qa.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function2_weather_qa.png" alt="JERC Clear QA Function Output"></a>
 </figure>
 
 In the "Layers" tab, select and de-select the Map Layers to look at the data and the weather QA information for all of the years. This figure shows the weather quality information at JERC in 2019, where the data were collected in mixed cloud conditions. Flight operators prioritize flying the area over NEON plots in the best weather conditions when possible. As explained in the previous lesson, when working with AOP reflectance data, the weather conditions during the flights are one of the most important quality considerations. 
