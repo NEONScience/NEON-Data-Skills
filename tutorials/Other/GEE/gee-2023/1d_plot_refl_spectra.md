@@ -1,7 +1,7 @@
 ---
 syncID: d2e642ff6bb44f8798ddbe4fd5e45243
 title: "Plot spectral signatures of AOP Reflectance data in GEE"
-description: "Interactively plot the spectral signature of an AOP SDR pixel in GEE"
+description: "Interactively plot the spectral signature of an AOP reflectance data pixel in GEE"
 dateCreated: 2022-04-15
 authors: Bridget M. Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
@@ -32,9 +32,9 @@ After completing this activity, you will be able to:
 
 </div>
 
-## Read in the AOP SDR 2021 Dataset at SOAP
+## Read in the AOP Directional Reflectance Image
 
-We will start at the ending point of the last tutorial. For this exercise we will only read data from SOAP collected in 2021:
+We will start at the ending point of the last tutorial. For this exercise we will only read directional reflectance data from SOAP collected in 2021:
 
 ```javascript
 // Filter image collection by date and site
@@ -54,7 +54,7 @@ Map.setCenter(-119.25, 37.06, 12);
 ```
 
 ## Extract data bands
-Next we will extract only the "data" bands in order to plot the spectral information. The SDR data contains 426 data bands, and a number of QA/Metdata bands that provide  additional information that can be useful in interpreting and analyzing the data (such as the Weather Quality Information). For plotting the spectra, we only need the data bands.
+Next we will extract only the "data" bands in order to plot the spectral information. The reflectance data contains 426 data bands, and a number of QA/Metdata bands that provide  additional information that can be useful in interpreting and analyzing the data (such as the Weather Quality Information). For plotting the spectra, we only need the data bands.
 
 ```javascript
 // Pull out only the data bands (these all start with B, eg. B001)
@@ -129,16 +129,16 @@ Map.onClick(function(coords) {
 });
 ```
 
-When you run this code, (linked at the bottom), you will see the SOAP 2021 SDR layer show up in the Map panel, along with a white figure panel. When you click anywhere in the SDR image, the empty figure will be populated with the spectral signature of the pixel you clicked on.
+When you run this code, (linked at the bottom), you will see the SOAP 2021 directional reflectance layer show up in the Map panel, along with a white figure panel. When you click anywhere in the image, the empty figure will be populated with the spectral signature of the pixel you clicked on.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG" alt="SOAP Specral Plot"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png" alt="SOAP Specral Signature"></a>
 </figure>
 
 ## Recap
 
-In this lesson you learned how to read in wavelength information from the Surface Directional Reflectance (SDR) properties in GEE, created functions to convert from one data format to another, and created an interactive plot to visualize the spectral signature of a selected pixel. You can quickly see how GEE is a powerful tool for interactive data visualization and exploratory analysis.
+In this lesson you learned how to read in wavelength information from the Surface Directional Reflectance properties in GEE, created functions to convert from one data format to another, and created an interactive plot to visualize the spectral signature of a selected pixel. You can quickly see how GEE is a powerful tool for interactive data visualization and exploratory analysis.
 
 ## Get Lesson Code
 
