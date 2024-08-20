@@ -17,7 +17,7 @@ urlTitle: intro-gee-functions
 ---
 ## Writing a Function to Visualize AOP SDR Image Collections
 
-In the earlier <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-sdr-weather-qa-gee" target="_blank">Reflectance preprocessing tutorial</a>, we showed how to read in a band of data containing weather quality information and apply cloud-masking using that band. In this tutorial, we will show you a more simplified way of doing this, using functions so we can more easily apply that operation to an Image Collection. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code repeatedly, it may be an opportunity to create a function. For example, in the previous tutorial, we repeated lines of code to pull in different years of data at SRER, the only difference being the year and the variable names for each year. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and reproducible. 
+In the earlier <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-sdr-weather-qa-gee" target="_blank">Reflectance pre-processing tutorial</a>, we showed how to read in a band of data containing weather quality information and apply cloud-masking using that band. In this tutorial, we will show you a more simplified way of doing this, using functions so we can more easily apply that operation to an Image Collection. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code repeatedly, it may be an opportunity to create a function. For example, in the previous tutorial, we repeated lines of code to pull in different years of data at SRER, the only difference being the year and the variable names for each year. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and reproducible. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -60,17 +60,18 @@ To call the function for a full image collection, you can use a <a href="https:/
 var newVariable = collection.map(myFunction);
 ```
 
-First, we'll read in the AOP SDR Image Collection at <a href="https://www.neonscience.org/field-sites/soap" target="_blank"> Soaproot Saddle (SOAP)</a>.
+First, we'll read in the AOP Directional Reflectance Image Collection at <a href="https://www.neonscience.org/field-sites/jerc" target="_blank"> Jones Center At Ichauway (JERC)</a>.
 
 ```javascript
-// specify center location of SOAP
-var site_center = ee.Geometry.Point([-119.262, 37.033])
+// specify center location of the site (JERC)
+var site_center = ee.Geometry.Point([-84.468623,31.194839])
 
-// read in the AOP SDR Image Collection
+// read in the AOP Directional Reflectance (HSI_REFL/001) Image Collection
+// filter to the site_center
 var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterBounds(site_center)
 
-print('NEON AOP SDR Image Collection',sdr_col)
+print('NEON AOP Directional Reflectance Image Collection',sdr_col)
 ```
 
 Building off the example from the previous tutorial, we can write a simple function to apply cloud-masking to an Image Collection:
@@ -101,7 +102,7 @@ For a little more detail on how this function was applied, refer to this GIS Sta
 ```javascript
 // Define visualization parameters for the reflectance data, showing a true-color image
 // B053 ~ 642 nm, B035 ~ 552 nm , B019 ~ 472nm 
-var sdr_vis_params = {'min':0, 'max':1200, 'gamma':0.9, 'bands':['B053','B035','B019']};
+var sdr_vis_params = {'min':0, 'max':1200, 'gamma': 0.9, 'bands': ['B053','B035','B019']};
 
 // Function to display each NIS Image in the NEON AOP Image Collection
 function addNISImage(image) { 
@@ -112,41 +113,32 @@ function addNISImage(image) {
   // getInfo() converts to string on the server
   var sysID_serverStr = sysID_serverObj.getInfo()
   // truncate the string to show only the fileName (NEON domain + site code + product code + year)
-  var fileName = sysID_serverStr.slice(52,100); 
+  var fileName = sysID_serverStr.slice(51,100); 
   // print("fileName: "+fileName) // optionally print the file name, can uncomment
 
   // add this layer to the map using the true-color (RGB) visualization parameters
-  Map.addLayer(imageId, sdr_vis_params, fileName)
+  Map.addLayer(imageId, sdr_vis_params, fileName + ' Refl RGB - All Flightlines')
 }
-
-// call the addNISimages function
-// see this link for an explanation of what is occurring:
-// https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine
-sdr_col.evaluate(function(sdr_col) {
-  sdr_col.features.map(addNISImage);
-})
-
-// Center the map on site and set zoom level (11)
-Map.centerObject(site_center, 11);
 ```
 
 Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. 
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function1.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function1.png" alt="SOAP visualization function output"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function1_refl_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function1_refl_rgb.png" alt="JERC Visualization Function Output"></a>
 </figure>
 
-## Function including cloud-masking
+## Function including cloud-masking and adding weather QA layers
 Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the SDR data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
 
 ```javascript
+// Next we can build upon this function to add the Weather QA layer and
+// call the cloud-masking function and add the clear-weather data layers to the Map
+
 // Define a palette for the weather - to match NEON AOP's weather color conventions
 // This will be used in the visualization parameters for the Weather QA layer
-var gyr_palette = [
-  '00ff00',  // green (<10% cloud cover)
-  'ffff00',  // yellow (10-50% cloud cover)
-  'ff0000']; // red (>50% cloud cover)
+// green (<10% cloud cover), yellow (10-50% cloud cover), red (>50% cloud cover)
+var gyr_palette = ['green','yellow','red']
 
 // Build upon the function to add a layer of the weather band, and 
 // mask out poor-weather data (>10% cloud cover), keeping only the clear weather (<10% cloud cover)
@@ -158,7 +150,7 @@ function addClearNISImages(image) {
   // getInfo() converts to string on the server
   var sysID_serverStr = sysID_serverObj.getInfo()
   // truncate the string to show only the fileName (NEON domain + site code + product code + year)
-  var fileName = sysID_serverStr.slice(52,100); // optionally print, can uncomment
+  var fileName = sysID_serverStr.slice(51,100); // optionally print, can uncomment
   
   // create a single band Weather Quality QA layer for 2016
   var weather_qa = imageId.select(['Weather_Quality_Indicator']);
@@ -171,20 +163,30 @@ function addClearNISImages(image) {
   Map.addLayer(weather_qa, {min: 1, max: 3, palette: gyr_palette, opacity: 0.3}, fileName + ' Weather QA Band')
 
   // add the clear weather reflectance layer to the map - the 0 means the layer won't be turned on by default
-  Map.addLayer(sdr_cloudfree, sdr_vis_params, fileName + ' Clear',0)
+  Map.addLayer(sdr_cloudfree, sdr_vis_params, fileName + ' Refl RGB - Clear Skies', 0)
 }
 
 //call the clearNISImages function
 sdr_col.evaluate(function(sdr_col) {
   sdr_col.features.map(addClearNISImages);
 })
+
+// call the addNISimages function
+// see this link for an explanation of what is occurring:
+// https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine
+sdr_col.evaluate(function(sdr_col) {
+  sdr_col.features.map(addNISImage);
+})
+
+// Center the map on site and set zoom level (11)
+Map.centerObject(site_center, 11);
 ```
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function2.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/soap_function2.png" alt="SOAP clear qa function output"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function2_weather_qa.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_sdr_viz_functions/jerc_function2_weather_qa.png" alt="JERC Clear QA Function Output"></a>
 </figure>
 
-This figure shows the weather quality information at SOAP in 2019, where the data were collected in mixed cloud conditions. Flight operators prioritize flying the area over NEON plots in the best weather conditions when possible. As explained in the previous lesson, when working with AOP reflectance data, the weather conditions during the flights are one of the most important quality considerations. 
+In the "Layers" tab, select and de-select the Map Layers to look at the data and the weather QA information for all of the years. This figure shows the weather quality information at JERC in 2019, where the data were collected in mixed cloud conditions. Flight operators prioritize flying the area over NEON plots in the best weather conditions when possible. As explained in the previous lesson, when working with AOP reflectance data, the weather conditions during the flights are one of the most important quality considerations. 
 
 ## Recap
 
@@ -193,4 +195,4 @@ As explained in <a href="https://developers.google.com/earth-engine/tutorials/tu
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/ca03be340d2c56c85581c1485593de3d" target="_blank">Functions to display AOP SDR Image Collections in GEE</a>
+<a href="https://code.earthengine.google.com/a4f46c3d0dc85402e2a622b0ecf8ebb7" target="_blank">Functions to display AOP Reflectance Image Collections in GEE</a>
