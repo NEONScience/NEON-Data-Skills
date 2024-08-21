@@ -28,10 +28,9 @@ After completing this activity, you will be able to integrate NEON airborne (AOP
  * Assessing model performance and learn what the different accuracy metrics can tell you
 
 ## Requirements
- * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/register/
  * An understanding of the GEE code editor and the GEE JavaScript API.
- * Optionally, complete the first three GEE tutorials in this tutorial series: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-image-collections" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
+ * Optionally, complete the first three GEE tutorials in this tutorial series: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
 
 ## Additional Resources
 The links below to the earth engine guides may assist you as you work through this lesson.
@@ -53,9 +52,9 @@ Workflow Steps:
 
 ## Load in and Display the AOP and TOS Data
 
-Let's get started. In this first chunk of code, we'll specify the CLBJ location, read in the pre-processed woody vegetation data, as well as the TOS and Airshed boundaries. Details about these boundaries are described on the NEON <a href="https://www.neonscience.org/data-collection/flight-box-design" target="_blank"> Flight Box Design </a> webpage.
+We'll start by reading in and displaying Map layers of NEON AOP and TOS woody vegetation data. In this first chunk of code, we'll specify the CLBJ location, read in the pre-processed woody vegetation data, as well as the TOS and Airshed boundaries. Details about these boundaries are described on the NEON <a href="https://www.neonscience.org/data-collection/flight-box-design" target="_blank"> Flight Box Design </a> webpage.
 
-The plant species data, contained in the CLBJ_veg_2017_filtered feature collection, was derived from the NEON woody plant vegetation structure data product (DP1.10098.001). Land cover classes (grassland, water, shade) were subsequently added to the Feature Collection from visual inspection of the NEON spectrometer reflectance data product (DP3.30006.001). 
+The plant species data, contained in the `CLBJ_veg_2017_filtered` feature collection, was derived from the NEON woody plant vegetation structure data product (DP1.10098.001). Land cover classes (grassland, water, shade) were subsequently added to the Feature Collection from visual inspection of the NEON spectrometer reflectance data product (DP3.30006.001). 
 
 ```javascript
 // Specify CLBJ location
@@ -71,79 +70,93 @@ var CLBJ_Airshed = ee.FeatureCollection('projects/neon/Airsheds/CLBJ_90percent_f
 Next, let's display the Digital Terrain Model (DTM) and Canopy Height Model (CHM) from the 2017 CLBJ collection, masking out the no-data values (-9999). 
 
 ```javascript
-// Display DTM for CLBJ. First, filter the DEM image collection by year, DEM type and geographic location
-var CLBJ_DTM2017 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+// Display Digital Terrain Model (DTM) for CLBJ. 
+// Filter the DEM image collection by the year and geographic location & select the DEM type (DTM)
+var clbj_dtm2017 = ee.ImageCollection('projects/neon-prod-earthengine/assets/DEM/001')
   .filterDate('2017-01-01', '2017-12-31')
-  .filterMetadata('Type', 'equals', 'DTM')
   .filterBounds(geo)
+  .select('DTM')
   .first();
-// Then mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
-var CLBJ_DTM2017mask = CLBJ_DTM2017.updateMask(CLBJ_DTM2017.gte(0.0000));
-Map.addLayer(CLBJ_DTM2017mask, {min:285, max:1294}, 'CLBJ DTM 2017',0);
 
-// Display CHM for CLBJ. First, filter the DEM image collection by year, DEM type and geographic location
-var CLBJ_CHM2017 = ee.ImageCollection('projects/neon/DP3-30024-001_DEM')
+// Add the DTM to the map using a histogram stretch based on min and max data values
+Map.addLayer(clbj_dtm2017, {min:285, max:1294}, 'CLBJ DTM 2017',0);
+
+// Display Canopy Height Model (CHM) for CLBJ. 
+var clbj_chm2017 = ee.ImageCollection('projects/neon-prod-earthengine/assets/CHM/001')
   .filterDate('2017-01-01', '2017-12-31')
-  .filterMetadata('Type', 'equals', 'CHM')
   .filterBounds(geo)
   .first();
   
-// Mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
-var CLBJ_CHM2017mask = CLBJ_CHM2017.updateMask(CLBJ_CHM2017.gte(0.0000));
-Map.addLayer(CLBJ_CHM2017mask, {min:0, max:33}, 'CLBJ CHM 2017',0);
+// Add to the map using a histogram stretch based on min and max data values
+Map.addLayer(clbj_chm2017, {min:0, max:33}, 'CLBJ CHM 2017',0);
 ```
 
-We also want to pull in the Surface Directional Reflectance (SDR) data. When we do this, we want to keep only the valid bands. Water vapor absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm, and the atmospheric correction that converts radiance to reflectance subsequently results in spikes in reflectance in these two band windows. For more information on the water vapor bands, refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/plot-spec-sig-tiles-python" target="_blank">Plot Spectral Signatures in Python</a>. We will also remove the last 10 bands, as the bands in this region also tend to be noisy.
+We also want to pull in the Surface Directional Reflectance data . When we do this, we want to keep only the valid bands. Water vapor absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm, and the atmospheric correction that converts radiance to reflectance subsequently results in spikes in reflectance in these two band windows. For more information on the water vapor bands, refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/plot-spec-sig-tiles-python" target="_blank">Plot Spectral Signatures in Python</a>. We will also remove the last 10 bands, as the bands in this region also tend to be noisy.
 
 To remove bands in GEE, you can specify the bands to exclude (here we named this `bandsToRemove`) and use the `.removeAll` function to keep only the valid bands. Note we are including as much spectral information as possible for this tutorial, but you could select a smaller subset of bands and likely obtain similar results. We encourage you to test this out on your own. When running the classification on a larger area, it may be a valuable trade-off to include a smaller number of bands so the code runs faster (or doesn't run out of memory).  
 
 ```javascript
-// Display Surface Directional Reflectance (SDR) image for CLBJ. First, filter the image collection by year, type and geographic location
-var CLBJ_SDR2017 = ee.ImageCollection('projects/neon/DP3-30006-001_SDR')
+// Display Surface Directional Reflectance (HSI_REFL/001) image for CLBJ. 
+var clbj_sdr2017 = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterDate('2017-01-01', '2017-12-31')
   .filterBounds(geo)
   .first()
+  
+var band_names = clbj_sdr2017.bandNames()
+print('Band Names',band_names)
 
-// Then select all bands except water absorption bands (band195-band205 and band287-band310), as well as the last 10 bands, which also tend to be noisy
-var bandNames = CLBJ_SDR2017.bandNames()
-var bandsToRemove = ['band195','band196','band197','band198','band199','band200','band201','band202','band203','band204','band205','band287','band288','band289','band290','band291','band292','band293','band294','band295','band296','band297','band298','band299','band300','band301','band302','band303','band304','band305','band306','band307','band308','band309','band310','band416','band417','band418','band419','band420','band421','band422','band423','band424','band425']
-var bandsToKeep = bandNames.removeAll(bandsToRemove)
-var CLBJ_SDR2017subset = CLBJ_SDR2017.select(bandsToKeep)
+// Remove the "bad" bands - these are the water vapor absorption bands (B195 - B20 and B287 - B310)
+// If you look at the data for these bands, you will see these are all set to the same value of -100.
+// Also remove the last 10 bands (B416-B425), as those tend to be noisy. 
+var bands_to_remove = ['B195','B196','B197','B198','B199','B200','B201','B202','B203','B204','B205,',
+                       'B287','B288','B289','B290','B291','B292','B293','B294','B295','B296','B297','B298',
+                       'B299','B300','B301','B302','B303','B304','B305','B306','B307','B308','B309','B310',
+                       'B416','B417','B418','B419','B420','B421','B422','B423','B424','B425']
 
-print('CLBJ_SDR2017 Valid Band Subset')
-print(CLBJ_SDR2017subset)
+// Select the inverse of the bad bands to include only the valid bands
+var bands_to_keep = band_names.removeAll(bands_to_remove)
+var clbj_sdr2017_subset = clbj_sdr2017.select(bands_to_keep)
 
-//Then mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
-var CLBJ_SDR2017mask = CLBJ_SDR2017subset.updateMask(CLBJ_SDR2017subset.gte(0.0000)).select(['band053', 'band035', 'band019']);
-Map.addLayer(CLBJ_SDR2017mask, {min:.5, max:10}, 'CLBJ SDR 2017', 0);
+print('CLBJ SDR 2017 Valid Band Subset')
+print(clbj_sdr2017_subset)
+
+// Mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
+// var CLBJ_SDR2017mask = CLBJ_SDR2017.updateMask(CLBJ_SDR2017.gte(0.0000)).select(['B053', 'B035', 'B019']);
+Map.addLayer(clbj_sdr2017, {min:.5, max:10}, 'CLBJ SDR 2017', 0);
 ```
 
-Next we can combine the SDR bands (381 after we removed the water vapor bands + the last 10 bands) and the CHM band to create a composite multi-band raster that will become our predictor variable (what we use to generate the random forest classification model). We can then crop this to the tower airshed boundary so we can work with a smaller area. This will speed up the process considerably. Optionally, you could classify the full airshed - this code is commented out, if you want to try that instead.
+## Combine Subset Reflectance and CHM bands
+Next we can combine the reflectance bands (381 after we removed the water vapor bands and the last 10 bands) and the CHM band to create a composite multi-band raster that will become our predictor variable (what we use to generate the random forest classification model). We can then crop this to the tower airshed boundary so we can work with a smaller area. This will speed up the process considerably. Optionally, you could classify the full airshed - this code is commented out, if you want to try that instead.
 
 ```javascript
-//Combine the SDR (381 bands) and CHM (1 band) for classification
-var CLBJ_SDR_CHMcomposite = CLBJ_SDR2017subset.addBands(CLBJ_CHM2017mask).aside(print, 'Composite SDR and CHM image');
+// Combine the reflectance valid data (381 bands) and CHM (1 band) to use in classification
+var clbj_sdr_chm2017 = clbj_sdr2017_subset.addBands(clbj_chm2017).aside(print, 'Composite SDR and CHM image');
 
-//Crop the reflectance image/CHM composite to the NEON tower airshed boundary and add to the map
-var CLBJ_SDR2017_airshed = CLBJ_SDR_CHMcomposite.clip(CLBJ_Airshed) // comment if uncommenting next line of code
-//var CLBJ_SDR2017_airshed = CLBJ_SDR_CHMcomposite // uncomment to classify entire SDR scene
-Map.addLayer(CLBJ_SDR2017_airshed, {bands:['band053', 'band035', 'band019'], min:.5, max:10}, 'CLBJ-Airshed SDR/CHM 2017');
+// Crop the reflectance image/CHM composite to the NEON tower airshed boundary and add to the map
+var clbj_sdr_chm_airshed = clbj_sdr_chm2017.clip(clbj_airshed) // comment if uncommenting next line of code
+//var CLBJ_SDR2017_airshed = composite // uncomment to classify entire SDR scene
+Map.addLayer(clbj_sdr_chm_airshed, {bands:['B053', 'B035', 'B019'], min:.5, max:10}, 'CLBJ-Airshed SDR/CHM 2017');
 ```
+
+## Display Woody Vegetation Data
 
 The next chunk of code just displays the TOS and Airshed polygon layers, and prints some details about the NEON vegetation structure data to the Console.
 
-```
+```javascript
 // Display the TOS boundary polygon layer
-Map.addLayer(CLBJ_TOS.style({width: 3, color: "blue", fillColor: "#00000000"}),{},"CLBJ TOS", 0)
+Map.addLayer(clbj_tos.style({width: 3, color: "blue", fillColor: "#00000000"}),{},"CLBJ TOS", 0)
 
 // Display the Airshed polygon layer
-Map.addLayer(CLBJ_Airshed.style({width: 3, color: "white", fillColor: "#00000000"}),{},"CLBJ Airshed", 0)
+Map.addLayer(clbj_airshed.style({width: 3, color: "white", fillColor: "#00000000"}),{},"CLBJ Airshed", 0)
 
 // Print details about the NEON vegetation structure Feature Collection to the Console
-print(CLBJ_veg, 'All woody plant samples')
+// Plant species data were derived from the NEON woody plant vegetation structure data product (DP1.10098.001)
+// Land cover classes (grassland, water, shade) were subsequently added to the Feature Collection by visually 
+// inspecting the NEON spectrometer reflectance data product (DP3.30006.001)
+print(clbj_veg, 'All woody plant samples')
 ```
 
-If you run all the code so far, you should be able to see the following layers in the map. Expand the variables printed to the console to make sure the # of bands are correct, and the "bad" (water vapor / noisy) bands are removed.
+If you have run all the code so far, you should be able to see the following layers in the map. Expand the variables printed to the console to make sure the # of bands are correct, and the "bad" (water vapor / noisy) bands are removed.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/4b_supervised_classification/added_layers.png">
@@ -177,6 +190,7 @@ Map.addLayer(CLBJ_WATR, {color: 'blue'}, 'Water', 0);
 var CLBJ_SHADE = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['SHADE']));
 Map.addLayer(CLBJ_SHADE, {color: 'black'}, 'Shade', 0);
 ```
+
 ## Train/Test Split
 
 Once we have the training data for each species, we can split the data for each species into training and test data, using an 80/20 split. The training data will be used later on to train the random forest model, and the test data is used to test the accuracy of the model results on an independent data set.
@@ -354,4 +368,4 @@ This tutorial was modified from a lesson developed by the <a href="https://tropi
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/31018cbab5e14d34ac9e8a78e48052f9" target="_blank">AOP GEE Random Forest Classification</a>
+<a href="https://code.earthengine.google.com/2c7078b994777fb5a2020f464fa990b8" target="_blank">AOP GEE Hyperspectral Random Forest Classification</a>
