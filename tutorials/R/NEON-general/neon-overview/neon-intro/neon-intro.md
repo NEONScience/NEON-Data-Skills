@@ -19,23 +19,15 @@ Here we will provide an overview of the National Ecological Observatory
 Network (NEON). Please carefully read through these materials and links that
 discuss NEON’s mission and design. 
 
-<div id="ds-challenge" markdown="1">
-**Data Institute participants**: As you review this information, please
-consider the
-<a href="https://www.neonscience.org/di-rs-capstone" target="_blank">capstone project </a>
-that you may want to work on at the Institute. At the end of week one, you will 
-document an initial research question or idea and associated data needed to 
-address that question, that you may want to explore while at the NEON Data Institute.
-</div>
-
 <div id="ds-objectives" markdown="1">
+ 
 ## Learning Objectives
 At the end of this activity, you will be able to:
 
 * Explain the mission of the National Ecological Observatory Network (NEON).
 * Explain the how sites are located within the NEON project design.
-* Explain the different types of data that will be collected and provided by
- NEON.
+* Explain the different types of data that will be collected and provided by NEON.
+
  </div>
 
 ## The NEON Project Mission & Design
@@ -56,8 +48,10 @@ Please, read the following page about
 <a href="https://www.neonscience.org/observatory/about" target="_blank"> NEON's mission</a>.
 
 <div id="ds-challenge" markdown="1">
+ 
 **Data Institute Participants -- Thought Question:** How might/does the NEON project
 intersect with your current research or future career goals?
+
 </div>
 
 ## NEON's Spatial Design
@@ -88,15 +82,14 @@ Click here to view the NEON Field Site Map</a>
 
 Explore the NEON field site map. Do the following:
 
-* Zoom in on a study area of interest to see if there are any NEON field sites 
-that are nearby.
-* Use the menu below the map to 
-filter sites by name, type, domain, or state.
+* Zoom in on a study area of interest to see if there are any NEON field sites that are nearby.
+* Use the menu below the map to filter sites by name, type, domain, or state.
 * Select one field site of interest.
   * Click on the marker in the map.
   * Then click on Site Details to jump to the field site landing page.
 
 <div id="ds-challenge" markdown="1">
+ 
 **Data Institute Participant -- Thought Questions:**
 Use the map above to answer these questions. Consider the research question that 
 you may explore as your Capstone Project at the Institute or about a current 
@@ -113,8 +106,10 @@ interested in? What kind of data are available?
 </div>
 
 <div id="ds-dataTip" markdown="1">
+ 
 <i class="fa fa-star"></i> **Data Tip:** You can download
 <a href="https://www.neonscience.org/data/maps-spatial-data" target="_blank">maps, kmz, or shapefiles of the field sites here</a>.
+
 </div>
 
 ## NEON Data
@@ -139,9 +134,7 @@ All data collection protocols and processing documents are publicly available.
 Read more about <a href="https://www.neonscience.org/data-collection/protocols-standardized-methods" target="_blank">the standardized protocols and how to access these documents</a>. 
 
 ### Specimens & Samples
-NEON also collects samples and specimens from which the other data products are
-based.  These samples are also available for research and education purposes. Learn
-more:
+NEON also collects samples and specimens from which the other data products are based.  These samples are also available for research and education purposes. Learn more:
 <a href="https://www.neonscience.org/data/archival-samples/archival-samples-catalog" target="_blank"> NEON Biorepository</a>.
 
 
@@ -154,30 +147,29 @@ Platform (AOP).
 
 
 <div id="ds-challenge" markdown="1">
+ 
 **Data Institute Participant – Thought Questions:** 
 Consider either your current or future research or the question you’d like to 
 address at the Institute.
 
 * Which types of NEON data may be more useful to address these questions?
 * What non-NEON data resources could be combined with NEON data to help address your question?
-* What challenges, if any, could you foresee when beginning to work with these
-data?
+* What challenges, if any, could you foresee when beginning to work with these data?
 </div>
 
 <div id="ds-dataTip" markdown="1">
+ 
 <i class="fa fa-star"></i> **Data Tip:** NEON also provides support to your own 
 research including proposals to fly the AOP over other study sites, a mobile 
 tower/instrumentation setup and others. Learn more here the
 <a href="https://www.neonscience.org/opportunities/assignable-assets" target="_blank">Assignable Assets programs </a>.
+
 </div>
 
 ## Access NEON Data
 
-NEON data are processed and go through quality assurance quality control checks 
-at NEON headquarters in Boulder, CO.
-NEON carefully documents every aspect of sampling design, data collection,
-processing and delivery. This documentation is freely available through the
-NEON data portal.
+NEON data are processed and go through quality assurance quality control checks at NEON headquarters in Boulder, CO.
+NEON carefully documents every aspect of sampling design, data collection, processing and delivery. This documentation is freely available through the NEON data portal.
 
 * Visit the 
 <a href="http://data.neonscience.org/home" target="_blank">NEON Data Portal - data.neonscience.org </a>
@@ -211,14 +203,14 @@ neonUtilities package (<a href="https://www.neonscience.org/neonDataStackR" targ
 have created code packages to directly access the data through an API. Learn more
 about the available resources by reading the <a href="https://www.neonscience.org/data/code-resources" target="_blank">Code Resources page</a> or visiting the 
 <a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub repo</a>.  
-3. Using the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a>. Access NEON data directly 
-using a custom API call. 
+3. Using the <a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a>. Access NEON data directly using a custom API call. 
 4. Access NEON data through partner's portals. Where NEON data directly overlap
 with other community resources, NEON data can be accessed through the portals. 
 Examples include Phenocam, BOLD, Ameriflux, and others. You can learn more in the 
 documentation for individual data products.  
 
 <div id="ds-challenge" markdown="1">
+ 
 **Data Institute Participant – Thought Questions:** 
 Use the Data Portal tools to investigate the data availability for the field
 sites you’ve already identified in the previous Thought Questions. 
@@ -227,7 +219,7 @@ sites you’ve already identified in the previous Thought Questions.
 * Of these, what type of data are you most interested in working with for your project while at the Institute.  
 * For what time period does the data cover?  
 * What format is the downloadable file available in?  
-* Where is the metadata to support this data?  
+* Where is the metadata to support this data?
 </div>
 
 
@@ -240,9 +232,8 @@ Data Institute in Boulder, CO. Include the types of NEON (and other data) that y
 will need to implement this project. Save this summary as you will be refining 
 and adding to your ideas over the next few weeks.
 
-The goal of this activity if for you to begin to think about the 
-<a href="https://www.neonscience.org/di-rs-capstone" target="_blank">capstone project </a> 
-that you wish to work on while at the Data Institute. This project will ideally be 
+The goal of this activity if for you to begin to think about a Capstone Project
+that you wish to work on at the end of the Data Institute. This project will ideally be 
 performed in groups, so over the next few weeks you'll have a chance to view the other
 project proposals and merge projects to collaborate with your colleagues.
 </div>

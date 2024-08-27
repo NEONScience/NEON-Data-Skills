@@ -4,15 +4,15 @@ title: "Raster 03: Raster Calculations in R - Subtract One Raster from Another a
 description: "This tutorial covers how to subtract one raster from another using efficient methods - the overlay function compared to basic subtraction. We also cover how to extract pixel values from a set of locations - for example a buffer region around plot locations at a field site. Finally, it explains the basic principles of writing functions in R."	
 dateCreated: 2015-10-23
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	Jason Brown
+contributors:	Jason Brown, Bridget Hass
 estimatedTime: 30 minutes
-packagesLibraries: raster, rgdal
+packagesLibraries: terra
 topics: data-analysis, raster, spatial-data-gis
 languagesTool: R
 dataProduct: DP3.30024.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/03-Raster-Calculations-In-R/03-Raster-Calculations-In-R.R
 tutorialSeries: raster-data-series
-urlTitle: dc-raster-calculations-r
+urlTitle: raster-calculations-r
 
 ---
 
@@ -41,8 +41,7 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
-* **raster:** `install.packages("raster")`
-* **rgdal:** `install.packages("rgdal")`
+* **terra:** `install.packages("terra")`
 
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -96,14 +95,14 @@ downloadable R script of the entire lesson, available in the footer of each less
 We often want to perform calculations on two or more rasters to create a new 
 output raster. For example, if we are interested in mapping the heights of trees
 across an entire field site, we might want to calculate the *difference* between
-the Digital Surface Model (DSM, tops of trees) and the 
-Digital Terrain Model (DTM, ground level). The resulting dataset is referred to 
-as a Canopy Height Model (CHM) and represents the actual height of trees, 
-buildings, etc. with the influence of ground elevation removed.
+the Digital Surface Model (DSM, tops of trees) and the Digital Terrain Model 
+(DTM, ground level). The resulting dataset is referred to as a Canopy Height 
+Model (CHM) and represents the actual height of trees, buildings, etc. with the 
+influence of ground elevation removed.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-derived-products/lidarTree-height.png"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/lidarTree-height.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/lidarTree-height.png"
     ALT="Series of three images depicting the differences between a digital surface model (DSM), a digital terrain model (DTM), and a canopy height model (CHM). DSM - DTM = CHM."
     </a>
     <figcaption> Source: National Ecological Observatory Network (NEON)
@@ -115,24 +114,26 @@ buildings, etc. with the influence of ground elevation removed.
 *What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data*</a>. 
 
 ### Load the Data 
-We will need the `raster` package to import and perform raster calculations. We
-will use the DTM (`NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif`) 
-and DSM (`NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif`) from the
-NEON Harvard Forest Field site.
+We will need the `terra` package to import and perform raster calculations. We
+will use the DTM and DSM from the NEON Harvard Forest Field site, which were 
+downloaded in the previous lessons.
 
 ```{r load-libraries }
 # load raster package
-library(raster)
+library(terra)
 
 # set working directory to ensure R can find the file we wish to import
-wd <- "~/Git/data/" # this will depend on your local environment environment
+wd <- "~/data/" # this will depend on your local environment environment
 # be sure that the downloaded file is in this directory
 setwd(wd)
 
-# view info about the dtm & dsm raster data that we will work with.
-GDALinfo(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif"))
-GDALinfo(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
+# define the DSM and DTM files
+dsm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif")
+dtm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DTMGtif/NEON_D01_HARV_DP3_732000_4713000_DTM.tif")
 
+# view info about the dtm & dsm raster data
+describe(path.expand(dsm_harv_file),meta=TRUE)
+#describe(path.expand(dsm_harv_file),meta=TRUE)
 ```
 
 As seen from the `geoTiff` tags, both rasters have:
@@ -144,16 +145,14 @@ As seen from the `geoTiff` tags, both rasters have:
 Let's load the data. 
 
 ``` {r load-plot-data, fig.cap=c("Digital terrain model showing the ground surface of NEON's site Harvard Forest","Digital surface model showing the elevation of NEON's site Harvard Forest")}
-# load the DTM & DSM rasters
-DTM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DTM/HARV_dtmCrop.tif"))
-DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
+# read the files in as raster objects
+DSM_HARV <- rast(dsm_harv_file)
+DTM_HARV <- rast(dtm_harv_file)
 
 # create a quick plot of each to see what we're dealing with
-plot(DTM_HARV,
-     main="Digital Terrain Model \n NEON Harvard Forest Field Site")
+plot(DTM_HARV, main="Digital Terrain Model - HARV")
 
-plot(DSM_HARV,
-     main="Digital Surface Model \n NEON Harvard Forest Field Site")
+plot(DSM_HARV, main="Digital Surface Model - HARV")
 ```
 
 ## Two Ways to Perform Raster Calculations
@@ -180,7 +179,7 @@ CHM_HARV <- DSM_HARV - DTM_HARV
 
 # plot the output CHM
 plot(CHM_HARV,
-     main="Canopy Height Model - Raster Math Subtract\n NEON Harvard Forest Field Site",
+     main="Canopy Height Model (CHM = DSM - DTM), HARV",
      axes=FALSE) 
 
 ```
@@ -219,20 +218,17 @@ a appropriate color palette for the data, plot title and no axes ticks / labels.
 
 ```{r challenge-code-CHM-HARV,  include=TRUE, results="hide", fig.cap=c("Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest with six breaks", "Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest with four breaks"), echo=FALSE} 
 # 1) 
-minValue(CHM_HARV)
-maxValue(CHM_HARV)
-# 2) Looks at histogram, minValue(NAME)/maxValue(NAME), NAME and look at values
-# slot. 
+min(CHM_HARV)
+# 2) Looks at histogram, minValue(NAME)/maxValue(NAME), NAME and look at values slot. 
 # 3
 hist(CHM_HARV, 
      col="springgreen4",
-     main = "Histogram of Canopy Height Model\nNEON Harvard Forest Field Site",
-     maxpixels=ncell(CHM_HARV))
+     main = "Histogram of Canopy Height Model - HARV")
 # 4 
 hist(CHM_HARV, 
      col="lightgreen",
-     main = "Histogram of Canopy Height Model\nNEON Harvard Forest Field Site",
-     maxpixels=ncell(CHM_HARV),
+     main = "Histogram of Canopy Height Model - HARV",
+     maxcell=ncell(CHM_HARV),
      breaks=8)
 
 # 5
@@ -241,57 +237,58 @@ plot(CHM_HARV,
      breaks=c(0,10,20,30),
      col=myCol,
      axes=F,
-     main="Canopy Height Model \nNEON Harvard Forest Field Site")
+     main="Canopy Height Model - HARV")
 
 ```
 
 ## Overlay Function: Efficient Raster Calculations 
-Raster math, like we just did, is an appropriate approach to raster calculations
-if:
+Raster math, like we just did, is an appropriate approach if:
 
 1. The rasters we are using are small in size.
 2. The calculations we are performing are simple.
 
 However, raster math is a less efficient approach as computation becomes more
 complex or as file sizes become large. 
-The `overlay()` function is more efficient when:
+The `lapp()` function is more efficient when:
 
 1. The rasters we are using are larger in size. 
 2. The rasters are stored as individual files. 
 3. The computations performed are complex. 
 
-The `overlay()` function takes two or more rasters and applies a function to
+The `lapp()` function takes two or more rasters and applies a function to
 them using efficient processing methods. The syntax is
 
-`outputRaster <- overlay(raster1, raster2, fun=functionName)`
-
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** If the rasters are stacked and stored 
-as `RasterStack` or `RasterBrick` objects in R, then we should use `calc()`. 
-`overlay()` will not work on stacked rasters. 
-</div>
+`outputRaster <- lapp(raster1, raster2, fun=functionName)`
 
 Let's perform the same subtraction calculation that we calculated above using 
-raster math, using the `overlay()` function.  
+raster math, using the `lapp()` function.  
 
-```{r raster-overlay, fig.cap="Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest produced by the overlay() function"}
-CHM_ov_HARV<- overlay(DSM_HARV,
-                      DTM_HARV,
-                      fun=function(r1, r2){return(r1-r2)})
+```{r raster-overlay, fig.cap="Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest produced by the lapp() function"}
+CHM_ov_HARV <- lapp(sds(list(DSM_HARV, DTM_HARV)), 
+                    fun = function(r1, r2) { return( r1 - r2) })
 
-plot(CHM_ov_HARV,
-  main="Canopy Height Model - Overlay Subtract\n NEON Harvard Forest Field Site")
+
+CHM_ov_HARV_df <- as.data.frame(CHM_ov_HARV, xy = TRUE)
+# Now we can plot the CHM:
+
+#ggplot() +
+#  geom_raster(data = CHM_ov_HARV_df, 
+#              aes(x = x, y = y, fill = DSM_HARV)) + 
+#  scale_fill_gradientn(name = "Canopy Height", colors = terrain.colors(10)) + 
+#  coord_quickmap()
 ```
 
 How do the plots of the CHM created with manual raster math and the `overlay()`
 function compare?  
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i> **Data Tip:** A custom function consists of a defined
 set of commands performed on a input object. Custom functions are particularly 
 useful for tasks that need to be repeated over and over in the code. A
 simplified syntax for writing a custom function in R is:
 `functionName <- function(variable1, variable2){WhatYouWantDone, WhatToReturn}`
+
 </div>
 
 ## Export a GeoTIFF
@@ -329,10 +326,10 @@ Ecological Observatory Network's (NEON) standard `NoDataValue`.
 Data are often more interesting and powerful when we compare them across various 
 locations. Let's compare some data collected over Harvard Forest to data
 collected in Southern California. The 
-<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >NEON San Joaquin Experimental Range (SJER) field site </a> 
+<a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >NEON San Joaquin Experimental Range (SJER) field site </a> 
 located in Southern California has a very different ecosystem and climate than
 the
-<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >NEON Harvard Forest Field Site</a>
+<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >NEON Harvard Forest Field Site</a>
 in Massachusetts.  
 
 Import the SJER DSM and DTM raster files and create a Canopy Height Model.
@@ -356,9 +353,8 @@ both datasets!
 
 </div>
 
-```{r challenge-code-SJER-CHM,include=TRUE, results="hide", fig.cap=c("Histogram of digital terrain model showing the distribution of the ground surface of NEON's site San Joaquin Experimental Range", "Histogram of digital surface model showing the distribution of the elevation of NEON's site San Joaquin Experimental Range", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site San Joaquin Experimental Range", "Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site San Joaquin Experimental Range"), echo=FALSE}
-# 1.
-# load the DTM
+```{r challenge-code-SJER-CHM, include=TRUE, results="hide", fig.cap=c("Histogram of digital terrain model showing the distribution of the ground surface of NEON's site San Joaquin Experimental Range", "Histogram of digital surface model showing the distribution of the elevation of NEON's site San Joaquin Experimental Range", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site San Joaquin Experimental Range", "Canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site Harvard Forest", "Histogram of canopy height model showing the distribution of the height of the trees of NEON's site San Joaquin Experimental Range"), echo=FALSE}
+# 1.load the DTM
 DTM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DTM/SJER_dtmCrop.tif"))
 # load the DSM
 DSM_SJER <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/SJER/DSM/SJER_dsmCrop.tif"))

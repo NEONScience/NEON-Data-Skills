@@ -1,25 +1,28 @@
-## ----load-libraries----------------------------------------------------
+## ----load-libraries------------------------------------------------------------------------------------
 # load packages
 library(ggplot2) # create efficient, professional plots
 library(plotly) # create cool interactive plots
 
 ## Set your working directory to ensure R can find the file we wish to import and where we want to save our files. Be sure to move the downloaded files into your working directory!
-wd <- "C:/Users/fsanchez/Documents/data/" # This will depend on your local environment
+wd <- "~/data/" # This will depend on your local environment
 setwd(wd)
 
 
 
-## ----import-discharge-2------------------------------------------------
+## ----import-discharge-2--------------------------------------------------------------------------------
 
 #import data
-discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), sep= "\t",skip=24, header=TRUE,stringsAsFactors = FALSE)
+discharge <- read.csv(paste0(wd,"disturb-events-co13/discharge/06730200-discharge_daily_1986-2013.txt"), 
+                      sep= "\t", skip=24, 
+                      header=TRUE,
+                      stringsAsFactors = FALSE)
 
 #view first few lines
 head(discharge)
 
 
 
-## ----remove-second-header----------------------------------------------
+## ----remove-second-header------------------------------------------------------------------------------
 # nrow: how many rows are in the R object
 nrow(discharge)
 
@@ -29,7 +32,7 @@ nrow(discharge)
 discharge <- discharge[2:nrow(discharge),]
 
 
-## ----rename-headers----------------------------------------------------
+## ----rename-headers------------------------------------------------------------------------------------
 #view names
 names(discharge)
 
@@ -42,13 +45,13 @@ names(discharge)
 
 
 
-## ----view-data-structure-----------------------------------------------
+## ----view-data-structure-------------------------------------------------------------------------------
 #view structure of data
 str(discharge)
 
 
 
-## ----adjust-data-structure---------------------------------------------
+## ----adjust-data-structure-----------------------------------------------------------------------------
 # view class of the disValue column
 class(discharge$disValue)
 
@@ -59,7 +62,7 @@ str(discharge)
 
 
 
-## ----convert-time------------------------------------------------------
+## ----convert-time--------------------------------------------------------------------------------------
 #view class
 class(discharge$datetime)
 
@@ -129,12 +132,12 @@ disPlot.plotly <- disPlot.plotly +
 disPlot.plotly
 
 
-## ----view-plotly, eval=F, comment=NA-----------------------------------
+## ----view-plotly, eval=F, comment=NA-------------------------------------------------------------------
 # view plotly plot in R
 ggplotly(disPlot.plotly)
 
 
-## ----pub-plotly, eval=FALSE, comment=NA--------------------------------
+## ----pub-plotly, eval=FALSE, comment=NA----------------------------------------------------------------
 # set username
 Sys.setenv("plotly_username"="yourUserNameHere")
 # set user key

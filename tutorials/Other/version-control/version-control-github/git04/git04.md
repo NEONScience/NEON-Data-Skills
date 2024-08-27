@@ -19,6 +19,7 @@ urlTitle: markdown-files
 This tutorial covers how create and format Markdown files.
 
 <div id="ds-objectives" markdown="1">
+
 ## Learning Objectives
 At the end of this activity, you will be able to:
 
@@ -30,16 +31,12 @@ At the end of this activity, you will be able to:
 ## What is the .md Format?
 
 Markdown is a human readable syntax for formatting text documents. Markdown can
-be used to produce nicely formatted documents including
-pdf's, web pages and more. In fact, this web page that you are reading right now
-is generated from a markdown document!
+be used to produce nicely formatted documents including pdfs, web pages and more. 
+In fact, this web page that you are reading right now is generated from a markdown document!
 
 In this tutorial, we will create a markdown file that documents both who you are
 and also the project that you might want to work on at the NEON Data Institute.
 
-
-<a class="link--button link--arrow" href="https://www.neonscience.org/di-rs-capstone" target="_blank">
-Read more about the Data Institute Capstone Project</a>
 
 ## Markdown Formatting
 
@@ -105,14 +102,17 @@ For a more thorough list of markdown syntax, please read this
 <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">GitHub Guide on Markdown</a>.
 
 <div id="ds-dataTip" markdown="1">
+	
 <i class="fa fa-star"></i> **Data Tip:**
 There are many free Markdown editors out there! The
 <a href="http://Atom.io" target="_blank">atom.io</a>
 editor is a powerful text editor package by GitHub, that also has a Markdown
 renderer allowing you to see what your Markdown looks like as you are working.
+
 </div>
 
 <div id="ds-challenge" markdown="1">
+	
 ## Activity: Create A Markdown Document
 
 Now that you are familiar with the Markdown syntax, use it to create
@@ -148,7 +148,6 @@ with internet access. If you prefer to not share your bio information publicly,
 please submit your Markdown document using a pseudonym for your name. You may also
 want to use a pseudonym for your GitHub account. HINT: cartoon character names work well.
 Please email us with the pseudonym so that we can connect the submitted document to you.
-
 
 </div>
 

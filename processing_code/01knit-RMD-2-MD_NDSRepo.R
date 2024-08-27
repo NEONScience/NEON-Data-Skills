@@ -14,19 +14,23 @@ require(markdown)
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
+          "R/NEON-general/neon-overview/release-provisional",
           "R/NEON-general/neon-code-packages/neonUtilities",
           "R/NEON-general/neon-code-packages/spatialData",
           "R/Lidar/lidar-topography/veg_structure_and_chm",
           "R/NEON-general/neon-code-packages/neonOS",
-          "R/soils/soil-sensors-intro",
-          "R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp",
-          "Python/GCP/discharge-bq-demo")
+          "R/soils/soil-microbe-biomass",
+          "R/R-skills/Colorado-floods-data-visualization/USGS-Stream-Discharge-In-R",
+          "Python/GCP/discharge-bq-demo",
+          "Other/Concept-intros/test_tabs_iframe",
+          "Other/Concept-intros/test_tabs_full_doc",
+          "Other/Concept-intros/test_tabs_fragment")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[7]
+subDir <- dirs[11]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"
@@ -36,7 +40,7 @@ gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root
 # set working dir - this is where the data are located
 # this is also where a temporary dir is created by this
 # processing_code to generate documents and figures
-wd_processing_doc <- "~/Users/clunch/data/"
+wd_processing_doc <- "/Users/clunch/data/"
 
 # set the base url for images and links in the md file
 base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/"

@@ -1,6 +1,5 @@
 ---
-title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better
-  Understand the 2013 Colorado Floods'
+title: 'Data Activity: Visualize Palmer Drought Severity Index Data in R to Better Understand the 2013 Colorado Floods'
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/Colorado-floods-data-visualization/nCLIMDIV-Palmer-Drought-In-R/nCLIMDIV-Palmer-Drought-In-R.R
 contributors: Felipe Sanchez, Donal O'Leary
 dataProduct: 
@@ -433,6 +432,7 @@ If you are using the downloaded dataset accompanying this lesson,  this data can
 </div>
 
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Do different measures show the same pattern?
 
 The nCLIMDIV dataset includes not only the Palmer Drought Severity Index 

@@ -17,10 +17,9 @@ urlTitle: dc-culm-activity-ndvi-met-data-r
 
 This tutorial is a culmination activity for the series on 
 <a href="https://www.neonscience.org/tabular-time-series" target="_blank"> working with tabular time series data in R </a>.
-Other related series include:
-<a href="https://www.neonscience.org/raster-data-series" target="_blank"> working with raster time-series data in R</a>
-and
-<a href="https://www.neonscience.org/vector-data-series" target="_blank"> working with vector data in R </a>.
+Refer to Data Carpentry's :
+<a href="https://datacarpentry.org/r-raster-vector-geospatial" target="_blank"> Introduction to Geospatial Raster and Vector Data with R</a>
+for further related content.
 
 <div id="ds-objectives" markdown="1">
 

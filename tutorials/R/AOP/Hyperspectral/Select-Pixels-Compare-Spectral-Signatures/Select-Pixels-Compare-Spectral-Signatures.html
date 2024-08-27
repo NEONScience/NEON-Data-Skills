@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Select pixels and compare spectral signatures in R</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Select pixels and compare spectral signatures in R</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<p>In this tutorial, we will learn how to plot spectral signatures of several
+different land cover types using an interactive <code>click</code> feature of the
+<code>terra</code> package.</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="learning-objectives">Learning Objectives</h2>
+<p>After completing this activity, you will be able to:</p>
+<ul>
+<li>Extract and plot spectra from an HDF5 file.</li>
+<li>Work with groups and datasets within an HDF5 file.</li>
+<li>Use the <code>terra::click()</code> function to interact with an RGB raster image</li>
+</ul>
+<h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<p>To complete this tutorial you will need the most current version of R and,
+preferably, RStudio loaded on your computer.</p>
+<h3 id="r-libraries-to-install">R Libraries to Install:</h3>
+<ul>
+<li><strong>rhdf5</strong>: <code>install.packages(&quot;BiocManager&quot;)</code>, <code>BiocManager::install(&quot;rhdf5&quot;)</code></li>
+<li><strong>terra</strong>: <code>install.packages('terra')</code></li>
+<li><strong>plyr</strong>: <code>install.packages('plyr')</code></li>
+<li><strong>reshape2</strong>: <code>install.packages('reshape2')</code></li>
+<li><strong>ggplot2</strong>: <code>install.packages('ggplot2')</code></li>
+<li><strong>neonUtilities</strong>: <code>install.packages('neonUtilities')</code></li>
+</ul>
+<p><a href="https://neonscience.org/packages-in-r" target="_blank"> More on Packages in
+R - Adapted from Software Carpentry.</a></p>
+<h3 id="data-to-download">Data to Download</h3>
+<p>These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network’s</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.</p>
+<p><strong>Set Working Directory:</strong> This lesson assumes that you have set your working directory to the location of the downloaded data.</p>
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a></p>
+<h3 id="recommended-skills">Recommended Skills</h3>
+<p>This tutorial will require that you be comfortable navigating HDF5 files, and have an understanding of what spectral signatures are. For additional information on these topics, we highly recommend you work through the earlier tutorials in this <a href="https://neonscience.org/intro-hsi-r-series" target="_blank"> <em>Introduction to Hyperspectral Remote Sensing Data</em> series</a> before starting on this tutorial.</p>
+</div>
+<h2 id="getting-started">Getting Started</h2>
+<p>First, we need to load our required packages and set the working directory.</p>
+<pre><code># load required packages
+
+library(rhdf5)
+
+library(reshape2)
+
+library(terra)
+
+library(plyr)
+
+library(ggplot2)
+
+library(grDevices)
+
+
+
+# set working directory, you can change this if desired
+
+wd &lt;- &quot;~/data/&quot; 
+
+setwd(wd)
+</code></pre>
+<p>Download the reflectance tile, if you haven’t already, using <code>neonUtilities::byTileAOP</code>:</p>
+<pre><code>byTileAOP(dpID = 'DP3.30006.001',
+
+          site = 'SJER',
+
+          year = '2021',
+
+          easting = 257500,
+
+          northing = 4112500,
+
+          savepath = wd)
+</code></pre>
+<p>And then we can read in the hyperspectral hdf5 data. We will also collect a few other important pieces of information (band wavelengths and scaling factor) while we’re at it.</p>
+<pre><code># define filepath to the hyperspectral dataset
+
+h5_file &lt;- paste0(wd,&quot;DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5&quot;)
+
+
+
+# read in the wavelength information from the HDF5 file
+
+wavelengths &lt;- h5read(h5_file,&quot;/SJER/Reflectance/Metadata/Spectral_Data/Wavelength&quot;)
+
+
+
+# grab scale factor from the Reflectance attributes
+
+reflInfo &lt;- h5readAttributes(h5_file,&quot;/SJER/Reflectance/Reflectance_Data&quot; )
+
+
+
+scaleFact &lt;- reflInfo$Scale_Factor
+</code></pre>
+<p>Now, we will read in the RGB image that we created in an earlier tutorial and plot it.</p>
+<pre><code># read in RGB image as a 'stack' rather than a plain 'raster'
+
+rgbStack &lt;- rast(paste0(wd,&quot;NEON_hyperspectral_tutorial_example_RGB_image.tif&quot;))
+
+
+
+# plot as RGB image, with a linear stretch
+
+plotRGB(rgbStack,
+        r=1,g=2,b=3, scale=300, 
+        stretch = &quot;lin&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/read-in-RGB-and-plot-1.png" alt="RGB image of a portion of the SJER field site using 3 bands from the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image." /></p>
+<h2 id="interactive-click-function-from-the-terra-package">Interactive <code>click</code> Function from the <code>terra</code> Package</h2>
+<p>Next, we use an interactive clicking function to identify the pixels that we want to extract spectral signatures for. To follow along with this tutorial, we suggest the following six cover types (exact locations shown in the image below).</p>
+<ol>
+<li>Water</li>
+<li>Tree canopy (avoid the shaded northwestern side of the tree)</li>
+<li>Irrigated grass</li>
+<li>Bare soil (baseball diamond infield)</li>
+<li>Building roof (blue)</li>
+<li>Road</li>
+</ol>
+<p>As shown here:</p>
+<figure >
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/Click_points.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/Click_points.png"
+    alt="RGB image of a portion of the SJER field site using 3 bands from the raster stack. Also displayed are points labeled with numbers one through six, representing six land cover types selected using the interactive click function from the raster package. These are: 1. Water, 2. Tree Canopy, 3. Grass, 4. Soil (Baseball Diamond), 5. Building Roof, and 6. Road. Plotting parameters have been changed to enhance visibility.">
+    </a>
+<figcaption>Six different land cover types chosen for this study in the order listed above (red numbers). This image is displayed with a histogram stretch.</figcaption>
+</figure>
+<div id="ds-dataTip" markdown="1">
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> Note from the <code>terra::click</code> Description (which you can read by typing <code>help(&quot;click&quot;)</code>: <code>click</code> “does not work well on the default RStudio plotting device. To work around that, you can first run <code>dev.new(noRStudioGD = TRUE)</code> which will create a separate window for plotting, then use <code>plot()</code> followed by <code>click()</code> and click on the map.”</p>
+</div>
+<p>For this next part, if you are following along in RStudio, you will need to enter these line below directly in the Console. <code>dev.new(noRStudioGD = TRUE)</code> will open up a separate window for plotting, which is where you will click the pixels to extract spectra, using the <code>terra::click</code> functionality.</p>
+<pre><code>dev.new(noRStudioGD = TRUE)
+</code></pre>
+<p>Now we can create our RGB plot, and start clicking on this in the pop-out Graphics window.</p>
+<pre><code># change plotting parameters to better see the points and numbers generated from clicking
+
+par(col=&quot;red&quot;, cex=2)
+
+
+
+# use a histogram stretch in order to provide more contrast for selecting pixels
+
+plotRGB(rgbStack, r=1, g=2, b=3, scale=300, stretch = &quot;hist&quot;) 
+
+
+
+# use the 'click' function
+
+c &lt;- click(rgbStack, n = 6, id=TRUE, xy=TRUE, cell=TRUE, type=&quot;p&quot;, pch=16, col=&quot;red&quot;, col.lab=&quot;red&quot;)
+</code></pre>
+<p>Once you have clicked your six points, the graphics window should close. If you want to choose new points, or if you accidentally clicked a point that you didn’t intend to, run the previous 2 chunks of code again to re-start.</p>
+<p>The <code>click()</code> function identifies the cell number that you clicked, but in order to extract spectral signatures, we need to convert that cell number into a row and column, as shown here:</p>
+<pre><code># convert raster cell number into row and column (used to extract spectral signature below)
+
+c$row &lt;- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
+
+c$col &lt;- c$cell%%ncol(rgbStack)
+</code></pre>
+<h2 id="extract-spectral-signatures-from-hdf5-file">Extract Spectral Signatures from HDF5 file</h2>
+<p>Next, we will loop through each of the cells that and use the <code>h5read()</code> function to extract the reflectance values of all bands from the given pixel (row and column).</p>
+<pre><code># create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
+
+pixel_df &lt;- as.data.frame(wavelengths)
+
+# loop through each of the cells that we selected
+
+for(i in 1:length(c$cell)){
+# extract spectral values from a single pixel
+aPixel &lt;- h5read(h5_file,&quot;/SJER/Reflectance/Reflectance_Data&quot;,
+                 index=list(NULL,c$col[i],c$row[i]))
+
+# scale reflectance values from 0-1
+aPixel &lt;- aPixel/as.vector(scaleFact)
+
+# reshape the data and turn into dataframe
+b &lt;- adply(aPixel,c(1))
+
+# rename the column that we just created
+names(b)[2] &lt;- paste0(&quot;Point_&quot;,i)
+
+# add reflectance values for this pixel to our combined data.frame called pixel_df
+pixel_df &lt;- cbind(pixel_df,b[2])
+}
+</code></pre>
+<h2 id="plot-spectral-signatures-using-ggplot2">Plot Spectral signatures using ggplot2</h2>
+<p>Finally, we have everything that we need to plot the spectral signatures for each of the pixels that we clicked. In order to color our lines by the different land cover types, we will first reshape our data using the <code>melt()</code> function, then plot the spectral signatures.</p>
+<pre><code># Use the melt() function to reshape the dataframe into a format that ggplot prefers
+
+pixel.melt &lt;- reshape2::melt(pixel_df, id.vars = &quot;wavelengths&quot;, value.name = &quot;Reflectance&quot;)
+
+# Now, let's plot the spectral signatures!
+
+ggplot()+
+  geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
+  scale_colour_manual(values = c(&quot;blue3&quot;,&quot;green4&quot;,&quot;green2&quot;,&quot;tan4&quot;,&quot;grey50&quot;,&quot;black&quot;),
+                      labels = c(&quot;Water&quot;,&quot;Tree&quot;,&quot;Grass&quot;,&quot;Soil&quot;,&quot;Roof&quot;,&quot;Road&quot;))+
+  labs(color = &quot;Cover Type&quot;)+
+  ggtitle(&quot;Land cover spectral signatures&quot;)+
+  theme(plot.title = element_text(hjust = 0.5, size=20))+
+  xlab(&quot;Wavelength&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/plot-spectral-signatures-1.png" alt="Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. The x-axis is wavelength in nanometers and the y-axis is reflectance." /></p>
+<p>Nice! However, there seems to be something weird going on in the wavelengths near ~1400nm and ~1850 nm…</p>
+<h2 id="atmospheric-absorption-bands">Atmospheric Absorption Bands</h2>
+<p>Those irregularities around 1400nm and 1850 nm are two major atmospheric absorption bands - regions where gasses in the atmosphere (primarily carbon dioxide and water vapor) absorb radiation, and therefore, obscure the reflected radiation that the imaging spectrometer measures. Fortunately, the lower and upper bound of each of those atmospheric absorption bands is specified in the HDF5 file. Let’s read those bands and plot rectangles where the reflectance measurements are obscured by atmospheric absorption.</p>
+<pre><code># grab reflectance metadata (which contains absorption band limits)
+
+reflMetadata &lt;- h5readAttributes(h5_file,&quot;/SJER/Reflectance&quot; )
+
+ab1 &lt;- reflMetadata$Band_Window_1_Nanometers
+
+ab2 &lt;- reflMetadata$Band_Window_2_Nanometers
+
+# Plot spectral signatures again with grey rectangles highlighting the absorption bands
+
+ggplot()+
+  geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
+  geom_rect(mapping=aes(ymin=min(pixel.melt$Reflectance),ymax=max(pixel.melt$Reflectance), xmin=ab1[1], xmax=ab1[2]), color=&quot;black&quot;, fill=&quot;grey40&quot;, alpha=0.8)+
+  geom_rect(mapping=aes(ymin=min(pixel.melt$Reflectance),ymax=max(pixel.melt$Reflectance), xmin=ab2[1], xmax=ab2[2]), color=&quot;black&quot;, fill=&quot;grey40&quot;, alpha=0.8)+
+  scale_colour_manual(values = c(&quot;blue3&quot;,&quot;green4&quot;,&quot;green2&quot;,&quot;tan4&quot;,&quot;grey50&quot;,&quot;black&quot;),
+                      labels = c(&quot;Water&quot;,&quot;Tree&quot;,&quot;Grass&quot;,&quot;Soil&quot;,&quot;Roof&quot;,&quot;Road&quot;))+
+  labs(color = &quot;Cover Type&quot;)+
+  ggtitle(&quot;Land cover spectral signatures with\n atmospheric absorption bands greyed out&quot;)+
+  theme(plot.title = element_text(hjust = 0.5, size=20))+
+  xlab(&quot;Wavelength&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/mask-atmospheric-absorption-bands-1.png" alt="Plot of spectral signatures for the six different land cover types: Water, Tree, Grass, Soil, Roof, and Road. This plot includes two greyed-out rectangles in regions near 1400nm and 1850nm where the reflectance measurements are obscured by atmospheric absorption. The x-axis is wavelength in nanometers and the y-axis is reflectance." /></p>
+<p>Now we can clearly see that the noisy sections of each spectral signature are within the atmospheric absorption bands. For our final step, let’s take all reflectance values from within each absorption band and set them to <code>NA</code> to remove the noisiest sections from the plot.</p>
+<pre><code># Duplicate the spectral signatures into a new data.frame
+
+pixel.melt.masked &lt;- pixel.melt
+
+# Mask out all values within each of the two atmospheric absorption bands
+
+pixel.melt.masked[pixel.melt.masked$wavelengths&gt;ab1[1]&amp;pixel.melt.masked$wavelengths&lt;ab1[2],]$Reflectance &lt;- NA
+
+pixel.melt.masked[pixel.melt.masked$wavelengths&gt;ab2[1]&amp;pixel.melt.masked$wavelengths&lt;ab2[2],]$Reflectance &lt;- NA
+
+
+
+# Plot the masked spectral signatures
+
+ggplot()+
+  geom_line(data = pixel.melt.masked, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
+  scale_colour_manual(values = c(&quot;blue3&quot;,&quot;green4&quot;,&quot;green2&quot;,&quot;tan4&quot;,&quot;grey50&quot;,&quot;black&quot;),
+                      labels = c(&quot;Water&quot;,&quot;Tree&quot;,&quot;Grass&quot;,&quot;Soil&quot;,&quot;Roof&quot;,&quot;Road&quot;))+
+  labs(color = &quot;Cover Type&quot;)+
+  ggtitle(&quot;Land cover spectral signatures with\n atmospheric absorption bands removed&quot;)+
+  theme(plot.title = element_text(hjust = 0.5, size=20))+
+  xlab(&quot;Wavelength&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/remove-absorption-band-reflectances-1.png" alt="Plot of spectral signatures for the six different land cover types. Values falling within the atmospheric absorption bands have been set to NA and ommited from the plot. The x-axis is wavelength in nanometers and the y-axis is reflectance." /></p>
+<p>There you have it, spectral signatures for six different land cover types, with the regions from the atmospheric absorption bands removed.</p>
+<div id="ds-challenge" markdown="1">
+<h3 id="challenge-compare-spectral-signatures">Challenge: Compare Spectral Signatures</h3>
+<p>There are many interesting comparisons to make with spectral signatures.
+Try these challenges to explore hyperspectral data further:</p>
+<ol>
+<li>
+<p>Compare six different types of vegetation, and pick an appropriate color for each of their lines. A nice guide to the many different color options in R can be found <a href="http://sape.inf.usi.ch/quick-reference/ggplot2/colour" target="_blank"> <em>here</em>.</a></p>
+</li>
+<li>
+<p>What happens if you only click five points? What about ten? How does this change the spectral signature plots, and can you fix any errors that occur?</p>
+</li>
+<li>
+<p>Does shallow water have a different spectral signature than deep water?</p>
+</li>
+</ol>
+</div>
+</div>
+</body>
+</html>

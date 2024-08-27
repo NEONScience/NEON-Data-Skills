@@ -437,15 +437,15 @@ uptake values.
 
 ## Assumptions, Simplifications, and Further Possibilities
 
-As mentioned, it's best to model GEE and respiration separately, 
+As mentioned, it's best to model GPP and respiration separately, 
 and we would expect NDVI to have a much stronger relationship with 
-GEE than respiration. But that's not the only way our analysis 
+GPP than respiration. But that's not the only way our analysis 
 here is limited relative to what's possible.
 
 To simplify our calculations of which fluxes correspond to the NDVI 
 values, I provided the `flight.dates` table, which contains a single 
-date for each site and year. In reality, the flights usually span 
-several days, which are often not consecutive. In addition to 
+date for each site and year. In reality, the flights can span 
+several days, which aren't always consecutive. In addition to 
 simplifying the flight info, the flux footprints in the provided dataset 
 are averaged over all the days when the plane was overhead.
 

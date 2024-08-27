@@ -1,18 +1,18 @@
 ---
 syncID: cdeed1d7546a4a179c0cd83b17a4938c
 title: "Raster 01: Plot Raster Data in R"	
-description: "This tutorial explains how to plot a raster in R using R's base plot function. It also covers how to layer a raster on top of a hillshade to produce  an eloquent map."	
+description: "This tutorial explains how to plot a raster in R using R's base plot function. It also shows how to create a hillshade and layer a DSM raster on top of a hillshade to produce an eloquent map."	
 dateCreated: 2015-10-2
 authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Williams, Jeff Hollister,  Mike Smorul	
-contributors:	Jason Brown
+contributors:	Jason Brown, Bridget Hass
 estimatedTime: 30 minutes
-packagesLibraries: raster, rgdal
+packagesLibraries: terra
 topics: data-viz, raster, spatial-data-gis
 languagesTool: R
 dataProduct: DP3.30024.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/01-Plot-Raster.R
 tutorialSeries: raster-data-series
-urlTitle: dc-plot-raster-data-r
+urlTitle: plot-raster-data-r
 ---
 
 
@@ -37,82 +37,75 @@ on your computer to complete this tutorial.
 
 ### Install R Packages
 
-* **raster:** `install.packages("raster")`
-* **rgdal:** `install.packages("rgdal")`
+* **terra:** `install.packages("terra")`
 
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Download Data
 
-<h3> <a href="https://ndownloader.figshare.com/files/3701578"> NEON Teaching Data Subset: Airborne Remote Sensing Data </a></h3>
+Data required for this tutorial will be downloaded using `neonUtilities` in the lesson.
 
-The LiDAR and imagery data used to create this raster teaching data subset 
-were collected over the 
+The LiDAR and imagery data used in this lesson were collected over the 
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank" >Harvard Forest</a>
-and 
-<a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" >San Joaquin Experimental Range</a>
-field sites and processed at NEON headquarters. 
-The entire dataset can be accessed by request from the 
-<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> 
+field site. 
 
-<a href="https://ndownloader.figshare.com/files/3701578" class="link--button link--arrow"> Download Dataset</a>
-
-
-
+The entire dataset can be accessed from the 
+<a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
 
 ****
 
-**Set Working Directory:** This lesson assumes that you have set your working 
-directory to the location of the downloaded and unzipped data subsets. 
+**Set Working Directory:** This lesson will explain how to set the working directory. You may wish to set your working directory to some other location, depending on how you prefer to organize your data.
 
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a>
-
-**R Script & Challenge Code:** NEON data lessons often contain challenges that reinforce 
-learned skills. If available, the code for challenge solutions is found in the
-downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 
 ****
 
 ### Additional Resources
 
-* <a href="http://cran.r-project.org/web/packages/raster/raster.pdf" target="_blank"> Read more about the `raster` package in R.</a>
+* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
+Read more about the `terra` package in R.</a>
 
 </div>
 
 ## Plot Raster Data in R
 In this tutorial, we will plot the Digital Surface Model (DSM) raster 
 for the NEON Harvard Forest Field Site. We will use the `hist()` function as a 
-tool to explore raster values. And render categorical plots, using the `breaks` argument to get bins that are meaningful representations of our data. 
+tool to explore raster values. And render categorical plots, using the `breaks` 
+argument to get bins that are meaningful representations of our data. 
 
-We will use the `raster` and `rgdal` packages in this tutorial. If you do not
-have the `DSM_HARV` object from the 
-<a href="https://www.neonscience.org/dc-raster-data-r" target="_blank"> *Intro To Raster In R* tutorial</a>, 
-please create it now.  
+We will use the `terra` package in this tutorial. If you do not
+have the `DSM_HARV` variable as defined in the pervious tutorial, <a href="https://www.neonscience.org/dc-raster-data-r" target="_blank"> *Intro To Raster In R*</a>, please download it using `neonUtilities`, as shown in the previous tutorial.  
 
 
-    # if they are not already loaded
-    library(rgdal)
-    library(raster)
+    library(terra)
+
     
-    # set working directory to ensure R can find the file we wish to import
-    wd <- "~/Git/data/" # this will depend on your local environment environment
-    # be sure that the downloaded file is in this directory
+
+    # set working directory
+
+    wd <- "~/data/"
+
     setwd(wd)
+
     
-    # import raster
-    DSM_HARV <- raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_dsmCrop.tif"))
+
+    # import raster into R
+
+    dsm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif")
+
+    DSM_HARV <- rast(dsm_harv_file)
 
 First, let's plot our Digital Surface Model object (`DSM_HARV`) using the
 `plot()` function. We add a title using the argument `main="title"`.
 
 
     # Plot raster object
-    plot(DSM_HARV,
-         main="Digital Surface Model\nNEON Harvard Forest Field Site")
+
+    plot(DSM_HARV, main="Digital Surface Model - HARV")
 
 ![Digital surface model showing the continuous elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hist-raster-1.png)
 
@@ -128,30 +121,24 @@ break values.
 
 
     # Plot distribution of raster values 
+
     DSMhist<-hist(DSM_HARV,
          breaks=3,
          main="Histogram Digital Surface Model\n NEON Harvard Forest Field Site",
-         col="wheat3",  # changes bin color
+         col="lightblue",  # changes bin color
          xlab= "Elevation (m)")  # label the x-axis
-
-    ## Warning in .hist1(x, maxpixels = maxpixels, main = main, plot =
-    ## plot, ...): 4% of the raster cells were used. 100000 values used.
 
 ![Histogram of digital surface model showing the distribution of the elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/create-histogram-breaks-1.png)
 
     # Where are breaks and how many pixels in each category?
+
     DSMhist$breaks
 
     ## [1] 300 350 400 450
 
     DSMhist$counts
 
-    ## [1] 32124 67392   484
-
-Warning message!? Remember, the default for the histogram is to include only a
-subset of 100,000 values. We could force it to show all the pixel values or we
-can use the histogram as is and figure that the sample of 100,000 values
-represents our data well. 
+    ## [1] 355269 611685  33046
 
 Looking at our histogram, R has binned out the data as follows:
 
@@ -171,16 +158,19 @@ We can include as few or many breaks as we'd like.
 
 
     # plot using breaks.
+
     plot(DSM_HARV, 
          breaks = c(300, 350, 400, 450), 
          col = terrain.colors(3),
-         main="Digital Surface Model (DSM)\n NEON Harvard Forest Field Site")
+         main="Digital Surface Model (DSM) - HARV")
 
 ![Digital surface model showing the elevation of NEON's site Harvard Forest with three breaks](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/plot-with-breaks-1.png)
 
 <div id="ds-dataTip" markdown="1">
+
 <i class="fa fa-star"></i> **Data Tip:** Note that when we assign break values
 a set of 4 values will result in 3 bins of data.
+
 </div>
 
 ### Format Plot
@@ -193,15 +183,19 @@ We can label the x- and y-axes of our plot too using `xlab` and `ylab`.
 
 
     # Assign color to a object for repeat use/ ease of changing
+
     myCol = terrain.colors(3)
+
     
+
     # Add axis labels
+
     plot(DSM_HARV, 
          breaks = c(300, 350, 400, 450), 
          col = myCol,
-         main="Digital Surface Model\nNEON Harvard Forest Field Site", 
-         xlab = "UTM Westing Coordinate (m)", 
-         ylab = "UTM Northing Coordinate (m)")
+         main="Digital Surface Model - HARV", 
+         xlab = "UTM Easting (m)", 
+         ylab = "UTM Northing (m)")
 
 ![Digital surface model showing the elevation of NEON's site Harvard Forest with UTM Westing Coordinate (m) on the x-axis and UTM Northing Coordinate (m) on the y-axis](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/add-plot-title-1.png)
 
@@ -209,15 +203,17 @@ Or we can also turn off the axes altogether.
 
 
     # or we can turn off the axis altogether
+
     plot(DSM_HARV, 
          breaks = c(300, 350, 400, 450), 
          col = myCol,
-         main="Digital Surface Model\n NEON Harvard Forest Field Site", 
+         main="Digital Surface Model - HARV", 
          axes=FALSE)
 
 ![Digital surface model showing the elevation of NEON's site Harvard Forest with no axes](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/turn-off-axes-1.png)
 
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Plot Using Custom Breaks
 
 Create a plot of the Harvard Forest Digital Surface Model (DSM) that has:
@@ -231,74 +227,53 @@ the range of pixel values.
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-code-plotting-1.png)
 
-## Layering Rasters
+## Hillshade & Layering Rasters
+
+
+The `terra` package has built-in functions called `terrain` for calculating 
+slope and aspect, and `shade` for computing hillshade from the slope and aspect. 
+A hillshade is a raster that maps the shadows and texture that you would see 
+from above when viewing terrain.
+
+See the <a href="https://rdrr.io/cran/terra/man/shade.html" target="_blank">shade 
+documentation</a> for more details.
+
 We can layer a raster on top of a hillshade raster for the same area, and use a 
-transparency factor to created a 3-dimensional shaded effect. A
-hillshade is a raster that maps the shadows and texture that you would see from
-above when viewing terrain.
+transparency factor to created a 3-dimensional shaded effect. 
 
 
-    # import DSM hillshade
-    DSM_hill_HARV <- 
-      raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/DSM/HARV_DSMhill.tif"))
-    
-    # plot hillshade using a grayscale color ramp that looks like shadows.
-    plot(DSM_hill_HARV,
-        col=grey(1:100/100),  # create a color ramp of grey colors
-        legend=FALSE,
-        main="Hillshade - DSM\n NEON Harvard Forest Field Site",
-        axes=FALSE)
 
-![Hillshade digital surface model showing the elevation of NEON's site Harvard Forest in grayscale](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hillshade-1.png)
+    slope <- terrain(DSM_HARV, "slope", unit="radians")
 
-<div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** Turn off, or hide, the legend on 
-a plot using `legend=FALSE`.
-</div>
+    aspect <- terrain(DSM_HARV, "aspect", unit="radians")
 
-We can layer another raster on top of our hillshade using by using `add=TRUE`.
-Let's overlay `DSM_HARV` on top of the `hill_HARV`.
+    hill <- shade(slope, aspect, 45, 270)
 
+    plot(hill, col=grey(0:100/100), legend=FALSE, mar=c(2,2,1,4))
 
-    # plot hillshade using a grayscale color ramp that looks like shadows.
-    plot(DSM_hill_HARV,
-        col=grey(1:100/100),  #create a color ramp of grey colors
-        legend=F,
-        main="DSM with Hillshade \n NEON Harvard Forest Field Site",
-        axes=FALSE)
-    
-    # add the DSM on top of the hillshade
-    plot(DSM_HARV,
-         col=rainbow(100),
-         alpha=0.4,
-         add=T,
-         legend=F)
+    plot(DSM_HARV, col=terrain.colors(25, alpha=0.35), add=TRUE, main="HARV DSM with Hillshade")
 
-![Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/overlay-hillshade-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/slope-aspect-hill-1.png)
 
 The alpha value determines how transparent the colors will be (0 being
-transparent, 1 being opaque). Note that here we used the color palette
-`rainbow()` instead of `terrain.color()`.
+transparent, 1 being opaque). You can also change the color palette, for example, 
+use `rainbow()` instead of `terrain.color()`.
 
-* More information in the 
+* More information can be found in the 
 <a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/palettes.html" target="_blank">R color palettes documentation</a>. 
 
 <div id="ds-challenge" markdown="1">
+
 ### Challenge: Create DTM & DSM for SJER
-Use the files in the `NEON_RemoteSensing/SJER/` directory to create a Digital
-Terrain Model map and Digital Surface Model map of the San Joaquin Experimental
-Range field site.
+Download data from the NEON field site 
+<a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> 
+and create maps of the Digital Terrain and Digital Surface Models.
 
 Make sure to:
  
  * include hillshade in the maps,
  * label axes on the DSM map and exclude them from the DTM map, 
- * a title for the maps,
- * experiment with various alpha values and color palettes to represent the
- data.
+ * add titles for the maps,
+ * experiment with various alpha values and color palettes to represent the data.
  
 </div>
-
-
-![Digital surface model overlaying the hillshade raster showing the 3D elevation of NEON's site San Joaquin Experiment Range](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-hillshade-layering-1.png)![Digital terrain model overlaying the hillshade raster showing the 3D ground surface of NEON's site San Joaquin Experiment Range](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/challenge-hillshade-layering-2.png)
-

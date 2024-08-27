@@ -16,7 +16,7 @@ urlTitle: phenocam-xroi-intro
 ---
 
 In this tutorial, we'll learn how to use an interactive open-source toolkit, the 
-<a href="https://cran.r-project.org/web/packages/xROI/index.html" target="_blank">xROI R package</a>
+<a href="https://github.com/bnasr/xROI" target="_blank">xROI</a>
  that facilitates the process of time series extraction and improves the quality 
  of the final data. The xROI package provides a responsive environment for 
  scientists to interactively:
@@ -44,16 +44,7 @@ were performed using the `Geospatial Data Abstraction Library (GDAL)` and the
 
 ## Install xROI
 
-The xROI R package has been published on The Comprehensive R Archive Network (CRAN). 
-The latest tested xROI package can be installed from the 
-<a href="https://cran.r-project.org/package=xROI" target="_blank">CRAN packages repository</a> by running the following command in an R environment. 
-
-
-    utils::install.packages('xROI', repos = "http://cran.us.r-project.org" )
-
-Alternatively, the latest beta release of xROI can be directly downloaded and 
-installed from the development GitHub repository. 
-
+The latest release of xROI can be directly downloaded and installed from the development GitHub repository. 
 
     # install devtools first
     utils::install.packages('devtools', repos = "http://cran.us.r-project.org" )
@@ -72,7 +63,7 @@ functions for ROI processing.
 ## Launch xROI
 
 A comprehensive user manual for low-level image processing using *xROI* is available from 
-<a href="https://cran.r-project.org/package=xROI/xROI.pdf" target="_blank">CRAN xROI.pdf</a>. 
+<a href="https://github.com/bnasr/xROI" target="_blank">GitHub xROI</a>. 
 While the user manual includes a set of examples for each function; here we 
 will learn to use the graphical interactive mode. 
 
@@ -137,6 +128,7 @@ Now we can explore if there is any FOV shift in the dataset using the `CLI proce
 Finally, we can go to the `Time series extraction` tab. Extract the time-series. Save the output and explore the dataset in R.
 
 <div id="ds-challenge" markdown="1">
+ 
 ## Challenge: Use xROI
 Let's use xROI on a little more challenging site with field of view shifts. 
 

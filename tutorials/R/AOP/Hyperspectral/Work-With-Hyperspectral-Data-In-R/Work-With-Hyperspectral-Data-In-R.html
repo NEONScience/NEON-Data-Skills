@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<p>In this tutorial, we will show how to read and extract NEON reflectance data stored within an HDF5 file using R.</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="learning-objectives">Learning Objectives</h2>
+<p>After completing this tutorial, you will be able to:</p>
+<ul>
+<li>Explain how HDF5 data can be used to store spatial data and the associated benefits of this format when working with large spatial data cubes.</li>
+<li>Extract metadata from HDF5 files.</li>
+<li>Slice or subset HDF5 data. You will extract one band of pixels.</li>
+<li>Plot a matrix as an image and a raster.</li>
+<li>Export a final GeoTIFF (spatially projected) that can be used both in further analysis and in common GIS tools like QGIS.</li>
+</ul>
+<h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<p>To complete this tutorial you will need the most current version of R and, preferably, RStudio installed on your computer.</p>
+<h3 id="r-libraries-to-install">R Libraries to Install:</h3>
+<ul>
+<li><strong>rhdf5</strong>: <code>install.packages(&quot;BiocManager&quot;)</code>, <code>BiocManager::install(&quot;rhdf5&quot;)</code></li>
+<li><strong>terra</strong>: <code>install.packages(&quot;terra&quot;)</code></li>
+<li><strong>neonUtilities</strong>: <code>install.packages(&quot;neonUtilities&quot;)</code></li>
+</ul>
+<p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R - Adapted from Software Carpentry.</a></p>
+<h3 id="data-to-download">Data to Download</h3>
+<p>Data will be downloaded in the tutorial using the <code>neonUtilities::byTileAOP</code> function.</p>
+<p>These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network’s</a> <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin Experimental Range field site</a> in March of 2021.
+The data were collected over the San Joaquin field site located in California (Domain 17).The entire dataset can be also be downloaded from the <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.</p>
+<hr />
+<p><strong>Set Working Directory:</strong> This lesson assumes that you have set your working directory to the location of the downloaded data.</p>
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a></p>
+<p><strong>R Script &amp; Challenge Code:</strong> NEON data lessons often contain challenges to reinforce skills. If available, the code for challenge solutions is found in the downloadable R script of the entire lesson, available in the footer of each lesson page.</p>
+</div> 
+<h2 id="about-hyperspectral-remote-sensing-data">About Hyperspectral Remote Sensing Data</h2>
+<p>The electromagnetic spectrum is composed of thousands of bands representing different types of light energy. Imaging spectrometers (instruments that collect hyperspectral data) break the electromagnetic spectrum into groups of bands that support classification of objects by their spectral properties on the Earth’s surface. Hyperspectral data consists of many bands - up to hundreds of bands - that span a portion of the electromagnetic spectrum, from the visible to the Short Wave Infrared (SWIR) regions.</p>
+<p>The NEON imaging spectrometer (NIS) collects data within the 380 nm to 2510 nm portions of the electromagnetic spectrum within bands that are approximately 5 nm in width. This results in a hyperspectral data cube that contains approximately 426 bands - which means BIG DATA.</p>
+<figure>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/DataCube.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/DataCube.png"
+  alt="Data cube graphic of NEON hyperspectral data. Each layer in the cube represents a band."></a>
+	<figcaption>A data cube of NEON hyperspectral data. Each layer in the cube represents a band.</figcaption>
+</figure>
+<p>The HDF5 data model natively compresses data stored within it (makes it smaller) and supports data slicing (extracting only the portions of the data that you need to work with rather than reading the entire dataset into memory). These features make it ideal for working with large data cubes such as those generated by imaging spectrometers, in addition to supporting spatial data and associated metadata.</p>
+<p>In this tutorial we will demonstrate how to read and extract spatial raster data stored within an HDF5 file using R.</p>
+<h2 id="read-hdf5-data-into-r">Read HDF5 data into R</h2>
+<p>We will use the <code>terra</code> and <code>rhdf5</code> packages to read in the HDF5 file that contains hyperspectral data for the
+<a href="https://www.neonscience.org/field-sites/SJER" target="_blank">NEON San Joaquin (SJER) field site</a>.
+Let’s start by calling the needed packages and reading in our NEON HDF5 file.</p>
+<p>Please be sure that you have <em>at least</em> version 2.10 of <code>rhdf5</code> installed. Use:
+<code>packageVersion(&quot;rhdf5&quot;)</code> to check the package version.</p>
+<div id="ds-dataTip" markdown="1">
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> To update all packages installed in R, use <code>update.packages()</code>.</p>
+</div>
+<pre><code># Load `terra` and `rhdf5` packages to read NIS data into R
+
+library(terra)
+
+library(rhdf5)
+
+library(neonUtilities)
+</code></pre>
+<p>Set the working directory to ensure R can find the file we are importing, and we know where the file is being saved. You can move the file that is downloaded afterward, but be sure to re-set the path to the file.</p>
+<pre><code>wd &lt;- &quot;~/data/&quot; #This will depend on your local environment
+
+setwd(wd)
+</code></pre>
+<p>We can use the <code>neonUtilities</code> function <code>byTileAOP</code> to download a single reflectance tile. You can run <code>help(byTileAOP)</code> to see more details on what the various inputs are. For this exercise, we’ll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000,4112000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~672.7 MB, so make sure you have enough space on your local drive. You can set <code>check.size=FALSE</code> if you want to download without a prompt.</p>
+<pre><code>byTileAOP(dpID='DP3.30006.001',
+
+          site='SJER',
+
+          year='2021',
+
+          easting=257500,
+
+          northing=4112500,
+
+          check.size=TRUE, # set to FALSE if you don't want to enter y/n
+
+          savepath = wd)
+</code></pre>
+<p>This file will be downloaded into a nested subdirectory under the <code>~/data</code> folder, inside a folder named <code>DP3.30006.001</code> (the Data Product ID). The file should show up in this location:  <code>~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5</code>.</p>
+<div id="ds-dataTip" markdown="1">
+<p><i class="fa fa-star"></i> <strong>Data Tip:</strong> To make sure you are pointing to the correct path, look in the <code>~/data</code> folder and navigate to where the .h5 file is saved, or use the R command <code>list.files(path=wd,pattern=&quot;\\.h5$&quot;,recursive=TRUE,full.names=TRUE)</code> to display the full path of the .h5 file. Note, if you have any other .h5 files downloaded in this folder, it will display all of the hdf5 files.</p>
+</div>
+<pre><code># Define the h5 file name to be opened
+
+h5_file &lt;- paste0(wd,&quot;DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5&quot;)
+</code></pre>
+<p>You can use <code>h5ls</code> and/or <code>View(h5ls(...))</code> to look at the contents of the hdf5 file, as follows:</p>
+<pre><code># look at the HDF5 file structure 
+
+View(h5ls(h5_file,all=T))
+</code></pre>
+<p>When you look at the structure of the data, take note of the “map info” dataset, the <code>Coordinate_System</code> group, and the <code>wavelength</code> and <code>Reflectance</code> datasets. The <code>Coordinate_System</code> folder contains the spatial attributes of the data including its EPSG Code, which is easily converted to a Coordinate Reference System (CRS). The CRS documents how the data are physically located on the Earth. The <code>wavelength</code> dataset contains the wavelength values for each band in the data. The <code>Reflectance</code> dataset contains the image data that we will use for both data processing and visualization.</p>
+<p>More Information on raster metadata:</p>
+<ul>
+<li>
+<p><a href="https://www.neonscience.org/raster-data-r" target="_blank"> Raster Data in R - The Basics</a> - this tutorial explains more about how rasters work in R and their associated metadata.</p>
+</li>
+<li>
+<p><a href="https://www.neonscience.org/hyper-spec-intro" target="_blank"> About Hyperspectral Remote Sensing Data</a> -this tutorial explains more about metadata and important concepts associated with multi-band (multi and hyperspectral) rasters.</p>
+</li>
+</ul>
+<div id="ds-dataTip" markdown="1">
+<p><i class="fa fa-star"></i><strong>Data Tip - HDF5 Structure:</strong> Note that the structure of individual HDF5 files may vary depending on who produced the data. In this case, the Wavelength and reflectance data within the file are both h5 datasets. However, the spatial information is contained within a group. Data downloaded from another organization (like NASA) may look different. This is why it’s important to explore the data as a first step!</p>
+</div>
+<p>We can use the <code>h5readAttributes()</code> function to read and extract metadata from the HDF5 file. Let’s start by learning about the wavelengths described within this file.</p>
+<pre><code># get information about the wavelengths of this dataset
+
+wavelengthInfo &lt;- h5readAttributes(h5_file,&quot;/SJER/Reflectance/Metadata/Spectral_Data/Wavelength&quot;)
+
+wavelengthInfo
+
+## $Description
+## [1] &quot;Central wavelength of the reflectance bands.&quot;
+## 
+## $Units
+## [1] &quot;nanometers&quot;
+</code></pre>
+<p>Next, we can use the <code>h5read</code> function to read the data contained within the HDF5 file. Let’s read in the wavelengths of the band centers:</p>
+<pre><code># read in the wavelength information from the HDF5 file
+
+wavelengths &lt;- h5read(h5_file,&quot;/SJER/Reflectance/Metadata/Spectral_Data/Wavelength&quot;)
+
+head(wavelengths)
+
+## [1] 381.6035 386.6132 391.6229 396.6327 401.6424 406.6522
+
+tail(wavelengths)
+
+## [1] 2485.693 2490.703 2495.713 2500.722 2505.732 2510.742
+</code></pre>
+<p>Which wavelength is band 21 associated with?</p>
+<p>(Hint: look at the wavelengths vector that we just imported and check out the data located at index 21 - <code>wavelengths[21]</code>).</p>
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/bluelight_EMSpectrum.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/bluelight_EMSpectrum.png"
+    alt="Graphical representation showing where the 482 nm wavelength falls within the blue portion of the visible light region of the electromagnetic spectrum." width=400></a>
+    <figcaption>482 nanometers falls within the blue portion of the electromagnetic spectrum. Source: National Ecological Observatory Network</figcaption>
+</figure>
+<p>Band 21 has a associated wavelength center of 481.7982 nanometers (nm) which is in the blue portion (~380-500 nm) of the visible electromagnetic spectrum (~380-700 nm).</p>
+<h3 id="bands-and-wavelengths">Bands and Wavelengths</h3>
+<p>A <em>band</em> represents a group of wavelengths. For example, the wavelength values between 695 nm and 700 nm might be one band captured by an imaging spectrometer. The imaging spectrometer collects reflected light energy in a pixel for light in that band. Often when you work with a multi- or hyperspectral dataset, the band information is reported as the center wavelength value. This value represents the mean value of the wavelengths represented in that  band. Thus in a band spanning 695-700 nm, the center would be 697.5 nm). The full width half max (FWHM) will also be reported. This value can be thought of as the spread of the band around that center point. So, a band that covers 800-805 nm might have a FWHM of 5 nm and a wavelength value of 802.5 nm.</p>
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrumZoomed.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/spectrumZoomed.png"
+    alt="Graphical representation showing how bands represent a range of values within the electromagnetic spectrum. The graphic shows wavelengths 675 nm through 700 nm split into five different bands, labeled bands A through E. Values for each band are often represented as the center point value of each band." width=400></a>
+    <figcaption>Bands represent a range of values (types of light) within the electromagnetic spectrum. Values for each band are often represented as the center point value of each band. Source: National Ecological Observatory Network (NEON)</figcaption>
+</figure>
+<p>The HDF5 dataset that we are working with in this activity may contain more information than we need to work with. For example, we don’t necessarily need to process all 426 bands available in a full NEON hyperspectral reflectance file - if we are interested in creating a product like NDVI which only uses bands in the Near InfraRed (NIR) and Red portions of the spectrum. Or we might only be interested in a spatial subset of the data - perhaps an area where we have collected corresponding ground data in the field.</p>
+<p>The HDF5 format allows us to slice (or subset) the data - quickly extracting the subset that we need to process. Let’s extract one of the green bands - band 34.</p>
+<p>By the way - what is the center wavelength value associated with band 34?</p>
+<p>Hint: <code>wavelengths[34]</code>.</p>
+<p>How do we know this band is a green band in the visible portion of the spectrum?</p>
+<p>In order to effectively subset our data, let’s first read the reflectance metadata stored as <em>attributes</em> in the “Reflectance_Data” dataset.</p>
+<pre><code># First, we need to extract the reflectance metadata:
+
+reflInfo &lt;- h5readAttributes(h5_file, &quot;/SJER/Reflectance/Reflectance_Data&quot;)
+
+reflInfo
+
+## $Cloud_conditions
+## [1] &quot;For cloud conditions information see Weather Quality Index dataset.&quot;
+## 
+## $Cloud_type
+## [1] &quot;Cloud type may have been selected from multiple flight trajectories.&quot;
+## 
+## $Data_Ignore_Value
+## [1] -9999
+## 
+## $Description
+## [1] &quot;Atmospherically corrected reflectance.&quot;
+## 
+## $Dimension_Labels
+## [1] &quot;Line, Sample, Wavelength&quot;
+## 
+## $Dimensions
+## [1] 1000 1000  426
+## 
+## $Interleave
+## [1] &quot;BSQ&quot;
+## 
+## $Scale_Factor
+## [1] 10000
+## 
+## $Spatial_Extent_meters
+## [1]  257000  258000 4112000 4113000
+## 
+## $Spatial_Resolution_X_Y
+## [1] 1 1
+## 
+## $Units
+## [1] &quot;Unitless.&quot;
+## 
+## $Units_Valid_range
+## [1]     0 10000
+
+# Next, we read the different dimensions
+
+
+
+nRows &lt;- reflInfo$Dimensions[1]
+
+nCols &lt;- reflInfo$Dimensions[2]
+
+nBands &lt;- reflInfo$Dimensions[3]
+
+
+
+nRows
+
+## [1] 1000
+
+nCols
+
+## [1] 1000
+
+nBands
+
+## [1] 426
+</code></pre>
+<p>The HDF5 read function reads data in the order: Bands, Cols, Rows. This is different from how R reads data. We’ll adjust for this later.</p>
+<pre><code># Extract or &quot;slice&quot; data for band 34 from the HDF5 file
+
+b34 &lt;- h5read(h5_file,&quot;/SJER/Reflectance/Reflectance_Data&quot;,index=list(34,1:nCols,1:nRows)) 
+
+
+
+# what type of object is b34?
+
+class(b34)
+
+## [1] &quot;array&quot;
+</code></pre>
+<h3 id="a-note-about-data-slicing-in-hdf5">A Note About Data Slicing in HDF5</h3>
+<p>Data slicing allows us to extract and work with subsets of the data rather than reading in the entire dataset into memory. In this example, we will extract and plot the green band without reading in all 426 bands. The ability to slice large datasets makes HDF5 ideal for working with big data.</p>
+<p>Next, let’s convert our data from an array (more than 2 dimensions) to a matrix (just 2 dimensions). We need to have our data in a matrix format to plot it.</p>
+<pre><code># convert from array to matrix by selecting only the first band
+
+b34 &lt;- b34[1,,]
+
+
+
+# display the class of this re-defined variable
+
+class(b34)
+
+## [1] &quot;matrix&quot; &quot;array&quot;
+</code></pre>
+<h3 id="arrays-vs-matrices">Arrays vs. Matrices</h3>
+<p>Arrays are matrices with more than 2 dimensions. When we say dimension, we are talking about the “z” associated with the data (imagine a series of tabs in a spreadsheet). Put the other way: matrices are arrays with only 2 dimensions. Arrays can have any number of dimensions one, two, ten or more.</p>
+<p>Here is a matrix that is 4 x 3 in size (4 rows and 3 columns):</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>species 1</th>
+<th>species 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>total number</td>
+<td>23</td>
+<td>45</td>
+</tr>
+<tr>
+<td>average weight</td>
+<td>14</td>
+<td>5</td>
+</tr>
+<tr>
+<td>average length</td>
+<td>2.4</td>
+<td>3.5</td>
+</tr>
+<tr>
+<td>average height</td>
+<td>32</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dimensions-in-arrays">Dimensions in Arrays</h3>
+<p>An array contains 1 or more dimensions in the “z” direction. For example, let’s say that we collected the same set of species data for every day in a 30 day month. We might then have a matrix like the one above for each day for a total of 30 days making a 4 x 3 x 30 array (this dataset has more than 2 dimensions). More on R object types <a href="http://www.statmethods.net/input/datatypes.html">here</a> (links to external site, DataCamp).</p>
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/matrix.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/matrix.png"
+    alt=""Graphic showing a two-dimensional matrix containing only columns, and rows.">
+    </a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/array.png"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/r-skills/array.png"
+    alt="Graphic showing an array, which in contrast to a matrix, has more than two dimensions. In this graphic, additional dimensions are represented in the z direction, and labeled a through d.">
+    </a>
+    <figcaption>Left: a matrix has only 2 dimensions. Right: an array has more than 2 dimensions.</figcaption>
+</figure>
+<p>Next, let’s look at the metadata for the reflectance data. When we do this, take note of 1) the scale factor and 2) the data ignore value. Then we can plot the band 34 data. Plotting spatial data as a visual “data check” is a good idea to make sure processing is being performed correctly and all is well with the image.</p>
+<pre><code># look at the metadata for the reflectance dataset
+
+h5readAttributes(h5_file,&quot;/SJER/Reflectance/Reflectance_Data&quot;)
+
+## $Cloud_conditions
+## [1] &quot;For cloud conditions information see Weather Quality Index dataset.&quot;
+## 
+## $Cloud_type
+## [1] &quot;Cloud type may have been selected from multiple flight trajectories.&quot;
+## 
+## $Data_Ignore_Value
+## [1] -9999
+## 
+## $Description
+## [1] &quot;Atmospherically corrected reflectance.&quot;
+## 
+## $Dimension_Labels
+## [1] &quot;Line, Sample, Wavelength&quot;
+## 
+## $Dimensions
+## [1] 1000 1000  426
+## 
+## $Interleave
+## [1] &quot;BSQ&quot;
+## 
+## $Scale_Factor
+## [1] 10000
+## 
+## $Spatial_Extent_meters
+## [1]  257000  258000 4112000 4113000
+## 
+## $Spatial_Resolution_X_Y
+## [1] 1 1
+## 
+## $Units
+## [1] &quot;Unitless.&quot;
+## 
+## $Units_Valid_range
+## [1]     0 10000
+
+# plot the image
+
+image(b34)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/read-attributes-plot-1.png" alt="Plot of reflectance values for band 34 data. This plot shows a very washed out image lacking any detail." /></p>
+<p>What do you notice about the first image? It’s washed out and lacking any detail. What could be causing this? It got better when plotting the log of the values, but still not great.</p>
+<pre><code># this is a little hard to visually interpret - what happens if we plot a log of the data?
+
+image(log(b34))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-log-b34-1.png" alt=" " /></p>
+<p>Let’s look at the distribution of reflectance values in our data to figure out what is going on.</p>
+<pre><code># Plot range of reflectance values as a histogram to view range
+
+# and distribution of values.
+
+hist(b34,breaks=50,col=&quot;darkmagenta&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-1.png" alt="Histogram of reflectance values for band 34. The x-axis represents the reflectance values and ranges from 0 to 8000. The frequency of these values is on the y-axis. The histogram shows reflectance values are skewed to the right, where the majority of the values lie between 0 and 1000. We can conclude that reflectance values are not equally distributed across the range of reflectance values, resulting in a washed out image." /></p>
+<pre><code># View values between 0 and 5000
+
+hist(b34,breaks=100,col=&quot;darkmagenta&quot;,xlim = c(0, 5000))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-2.png" alt="Histogram of reflectance values between 0 and 5000 for band 34. Reflectance values are on the x-axis, and the frequency is on the y-axis. The x-axis limit has been set 5000 in order to better visualize the distribution of reflectance values. We can confirm that the majority of the values are indeed within the 0 to 4000 range." /></p>
+<pre><code># View higher values
+
+hist(b34, breaks=100,col=&quot;darkmagenta&quot;,xlim = c(5000, 15000),ylim = c(0, 750))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/hist-data-3.png" alt="Histogram of reflectance values between 5000 and 15000 for band 34. Reflectance values are on the x-axis, and the frequency is on the y-axis. Plot shows that a very few number of pixels have reflectance values larger than 5,000. These values are skewing how the image is being rendered and heavily impacting the way the image is drawn on our monitor." /></p>
+<p>As you’re examining the histograms above, keep in mind that reflectance values range between 0-1. The <strong>data scale factor</strong> in the metadata tells us to divide all reflectance values by 10,000. Thus, a value of 5,000 equates to a reflectance value of 0.50. Storing data as integers (without decimal places) compared to floating points (with decimal places) creates a smaller file. This type of scaling is commin in remote sensing datasets.</p>
+<p>Notice in the data that there are some larger reflectance values (&gt;5,000) that represent a smaller number of pixels. These pixels are skewing how the image renders.</p>
+<h3 id="data-ignore-value">Data Ignore Value</h3>
+<p>Image data in raster format will often contain a data ignore value and a scale factor. The data ignore value represents pixels where there are no data. Among other causes, no data values may be attributed to the sensor not collecting data in that area of the image or to processing results which yield null values.</p>
+<p>Remember that the metadata for the <code>Reflectance</code> dataset designated -9999 as <code>data ignore value</code>. Thus, let’s set all pixels with a value == -9999 to <code>NA</code> (no value). If we do this, R won’t render these pixels.</p>
+<pre><code># there is a no data value in our raster - let's define it
+
+noDataValue &lt;- as.numeric(reflInfo$Data_Ignore_Value)
+
+noDataValue
+
+## [1] -9999
+
+# set all values equal to the no data value (-9999) to NA
+
+b34[b34 == noDataValue] &lt;- NA
+
+
+
+# plot the image now
+
+image(b34)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/set-values-NA-1.png" alt="Plot of reflectance values for band 34 data with values equal to -9999 set to NA. Image data in raster format will often contain no data values, which may be attributed to the sensor not collecting data in that area of the image or to processing results which yield null values. Reflectance datasets designate -9999 as data ignore values. As such, we will reassign -9999 values to NA so R won’t try to render these pixels." /></p>
+<h3 id="reflectance-values-and-image-stretch">Reflectance Values and Image Stretch</h3>
+<p>Our image still looks dark because R is trying to render all reflectance values between 0 and 14999 as if they were distributed equally in the histogram. However we know they are not distributed equally. There are many more values between 0-5000 than there are values &gt;5000.</p>
+<p>Images contain a distribution of reflectance values. A typical image viewing program will render the values by distributing the entire range of reflectance values across a range of “shades” that the monitor can render - between 0 and 255.
+However, often the distribution of reflectance values is not linear. For example, in the case of our data, most of the reflectance values fall between 0 and 0.5. Yet there are a few values &gt;0.8 that are heavily impacting the way the image is
+drawn on our monitor. Imaging processing programs like ENVI, QGIS and ArcGIS (and even Adobe Photoshop) allow you to adjust the stretch of the image. This is similar to adjusting the contrast and brightness in Photoshop.</p>
+<p>The proper way to adjust our data would be to apply what’s called an <code>image stretch</code>. We will learn how to stretch our image data later. For now, let’s plot the values as the log function on the pixel reflectance values to factor out those larger values.</p>
+<pre><code>image(log(b34))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-log-1.png" alt="Plot of log transformed reflectance values for the previous b34 image. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by doing whats called an image stretch." /></p>
+<p>The log applied to our image increases the contrast making it look more like an image. However, look at the images below. The top one is an RGB image as the image should look. The bottom one is our log-adjusted image. Notice a difference?</p>
+<figure class="half">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/RGBImage_2.png"
+    alt="RGB image of the SJER field site. At the top right of the image, there is dark, brackish water. Scattered throughout the image, there are several trees. At the center of the image, there is a baseball field, with low grass. At the bottom left of the image, there is a parking lot and some buildings with highly reflective surfaces, and adjacent to it is a section of a gravel lot." width=400>
+    </a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SJER_Flipped.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/SJER_Flipped.png"
+    alt="Plot of log transformed reflectance values for the b34 image previously plotted. Applying the log to the image increases the contrast making it look more like an image by factoring out those larger values. While an improvement, the image is still far from great. The proper way to adjust an image is by applying an image stretch. The log transformed image appears flipped because when R reads in the dataset, it reads them as: Columns x Bands x Rows, as opposed to the RGB image on the left which has dimensions as Bands x Rows x Columns." width=400>
+    </a>
+    <figcaption>Top: The image as it should look. Bottom: the image that we outputted from the code above. Notice a difference?</figcaption>
+</figure>
+<h3 id="transpose-image">Transpose Image</h3>
+<p>Notice that there are three data dimensions for this file: Bands x Rows x Columns. However, when R reads in the dataset, it reads them as: Columns x Bands x Rows. The data are flipped. We can quickly transpose the data to correct for this using the <code>t</code> or <code>transpose</code> command in R.</p>
+<p>The orientation is rotated in our log adjusted image. This is because R reads in matrices starting from the upper left hand corner. While most rasters read pixels starting from the lower left hand corner. In the next section, we will deal with this issue by creating a proper georeferenced (spatially located) raster in R. The raster format will read in pixels following the same methods as other GIS and imaging processing software like QGIS and ENVI do.</p>
+<pre><code># We need to transpose x and y values in order for our 
+
+# final image to plot properly
+
+b34 &lt;- t(b34)
+
+image(log(b34), main=&quot;Transposed Image&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/transpose-data-1.png" alt="Plot showing the transposed image of the log transformed reflectance values of b34. The orientation of the image is rotated in our log transformed image, because R reads in the matrices starting from the upper left hand corner." /></p>
+<h2 id="create-a-georeferenced-raster">Create a Georeferenced Raster</h2>
+<p>Next, we will create a proper raster using the <code>b34</code> matrix. The raster format will allow us to define and manage:</p>
+<ul>
+<li>Image stretch</li>
+<li>Coordinate reference system &amp; spatial reference</li>
+<li>Resolution</li>
+<li>and other raster attributes…</li>
+</ul>
+<p>It will also account for the orientation issue discussed above.</p>
+<p>To create a raster in R, we need a few pieces of information, including:</p>
+<ul>
+<li>The coordinate reference system (CRS)</li>
+<li>The spatial extent of the image</li>
+</ul>
+<h3 id="define-raster-crs">Define Raster CRS</h3>
+<p>First, we need to define the Coordinate reference system (CRS) of the raster. To do that, we can first grab the EPSG code from the HDF5 attributes, and covert the EPSG to a CRS string. Then we can assign that CRS to the raster object.</p>
+<pre><code># Extract the EPSG from the h5 dataset
+
+h5EPSG &lt;- h5read(h5_file, &quot;/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code&quot;)
+
+
+
+# convert the EPSG code to a CRS string
+
+h5CRS &lt;- crs(paste0(&quot;+init=epsg:&quot;,h5EPSG))
+
+
+
+# define final raster with projection info 
+
+# note that capitalization will throw errors on a MAC.
+
+# if UTM is all caps it might cause an error!
+
+b34r &lt;- rast(b34, 
+        crs=h5CRS)
+
+
+
+# view the raster attributes
+
+b34r
+
+## class       : SpatRaster 
+## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
+## resolution  : 1, 1  (x, y)
+## extent      : 0, 1000, 0, 1000  (xmin, xmax, ymin, ymax)
+## coord. ref. : WGS 84 / UTM zone 11N 
+## source(s)   : memory
+## name        : lyr.1 
+## min value   :    32 
+## max value   : 13129
+
+# let's have a look at our properly oriented raster. Take note of the 
+
+# coordinates on the x and y axis.
+
+
+
+image(log(b34r), 
+      xlab = &quot;UTM Easting&quot;, 
+      ylab = &quot;UTM Northing&quot;,
+      main = &quot;Properly Oriented Raster&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/define-CRS-1.png" alt="Plot of the properly oriented raster image of the band 34 data. In order to orient the image correctly, the coordinate reference system was defined and assigned to the raster object. X-axis represents the UTM Easting values, and the Y-axis represents the Northing values." /></p>
+<p>Next we define the extents of our raster. The extents will be used to calculate the raster’s resolution. Fortunately, the spatial extent is provided in the HDF5 file “Reflectance_Data” group attributes that we saved before as <code>reflInfo</code>.</p>
+<pre><code># Grab the UTM coordinates of the spatial extent
+
+xMin &lt;- reflInfo$Spatial_Extent_meters[1]
+
+xMax &lt;- reflInfo$Spatial_Extent_meters[2]
+
+yMin &lt;- reflInfo$Spatial_Extent_meters[3]
+
+yMax &lt;- reflInfo$Spatial_Extent_meters[4]
+
+
+
+# define the extent (left, right, top, bottom)
+
+rasExt &lt;- ext(xMin,xMax,yMin,yMax)
+
+rasExt
+
+## SpatExtent : 257000, 258000, 4112000, 4113000 (xmin, xmax, ymin, ymax)
+
+# assign the spatial extent to the raster
+
+ext(b34r) &lt;- rasExt
+
+
+
+# look at raster attributes
+
+b34r
+
+## class       : SpatRaster 
+## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
+## resolution  : 1, 1  (x, y)
+## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
+## coord. ref. : WGS 84 / UTM zone 11N 
+## source(s)   : memory
+## name        : lyr.1 
+## min value   :    32 
+## max value   : 13129
+</code></pre>
+<figure>
+		<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/sat_image_lat_lon.png">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/sat_image_lat_lon.png"
+		alt="Image showing how the extent of a raster image represents the spatial location of each corner. The coordinate units are determined by the spatial projection/coordinate reference system that are assigned to the data.">
+		</a>
+		<figcaption>The extent of a raster represents the spatial location of each corner. The coordinate units will be determined by the spatial projection coordinate reference system that the data are in. Source: National Ecological Observatory Network (NEON) </figcaption>
+</figure>
+<p><a href="https://www.neonscience.org/raster-data-series" target="_blank"> Learn more about raster attributes including extent, and coordinate reference systems here.</a></p>
+<p>We can adjust the colors of our raster as well, if desired.</p>
+<pre><code># let's change the colors of our raster and adjust the zlim 
+
+col &lt;- terrain.colors(25)
+
+
+
+image(b34r,  
+      xlab = &quot;UTM Easting&quot;, 
+      ylab = &quot;UTM Northing&quot;,
+      main= &quot;Spatially Referenced Raster&quot;,
+      col=col, 
+      zlim=c(0,3000))
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Work-With-Hyperspectral-Data-In-R/rfigs/plot-colors-raster-1.png" alt="Plot of the properly oriented raster image of B34 with custom colors. We can adjust the colors of the image by adjusting the z limits, which in this case makes the highly reflective surfaces more vibrant. This color adjustment is more apparent in the bottom left of the image, where the parking lot, buildings and bare surfaces are located. The X-axis represents the UTM Easting values, and the Y-axis represents the Northing values." /></p>
+<p>We’ve now created a raster from band 34 reflectance data. We can export the data as a raster, using the <code>writeRaster</code> command. Note that it’s good practice to close the H5 connection before moving on!</p>
+<pre><code># write out the raster as a geotiff
+
+writeRaster(b34r,
+
+            file=paste0(wd,&quot;band34.tif&quot;),
+
+            overwrite=TRUE)
+
+
+
+# close the H5 file
+
+H5close()
+</code></pre>
+<div id="ds-challenge" markdown="1">
+<h3 id="challenge-work-with-rasters">Challenge: Work with Rasters</h3>
+<p>Try these three extensions on your own:</p>
+<ol>
+<li>
+<p>Create rasters using other bands in the dataset.</p>
+</li>
+<li>
+<p>Vary the distribution of values in the image to mimic an image stretch.
+e.g. <code>b34[b34 &gt; 6000 ] &lt;- 6000</code></p>
+</li>
+<li>
+<p>Use what you know to extract ALL of the reflectance values for ONE pixel rather than for an entire band. HINT: this will require you to pick
+an x and y value and then all values in the z dimension: <code>aPixel&lt;- h5read(h5_file,&quot;Reflectance&quot;,index=list(NULL,100,35))</code>. Plot the spectra output.</p>
+</li>
+</ol>
+</div>
+</div>
+</body>
+</html>

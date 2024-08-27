@@ -11,7 +11,7 @@ topics: lidar, remote-sensing, data-viz
 languagesTool: plasio
 dataProduct:
 code1:
-tutorialSeries: [intro-lidar-r-series]
+tutorialSeries: intro-lidar-r-series
 urlTitle: plasio-view-pointclouds
 ---
 
@@ -23,11 +23,9 @@ In this tutorial, we will explore LiDAR point cloud data using the free, online
 ## Learning Objectives
 At the end of this tutorial, you will be able to: 
 
-* visualize lidar point clouding using the free online data viewer plas.io
-* describe some of the attributes associated with discrete return lidar points, including 
-intensity, classification and RGB values.
-* explain the use of and difference between the .las and .laz lidar file formats 
-(standard lidar point cloud formats).
+* Visualize lidar point clouding using the free online data viewer plas.io
+* Describe some of the attributes associated with discrete return lidar points, including intensity, classification and RGB values.
+* Explain the use of and difference between the .las and .laz lidar file formats (standard lidar point cloud formats).
 
 ## Things You’ll Need To Complete This Tutorial
 
@@ -39,12 +37,8 @@ intensity, classification and RGB values.
 <h3><a href="https://ndownloader.figshare.com/files/7024955">NEON Teaching Data Subset: Sample LiDAR Point Cloud Data (.las)</a></h3>
 
 
-This .las file contains sample LiDAR point cloud data collected by
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> Airborne Observation Platform</a> 
-group. The .las file format is a commonly used file format to store LIDAR point 
-cloud data. NEON data are available on the
-<a href="http://data.neonscience.org/" target="_blank">NEON data portal</a>. 
+This .las file contains sample LiDAR point cloud data collected by <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> Airborne Observation Platform</a> group. The .las file format is a commonly used file format to store LIDAR point cloud data. NEON <a href="https://data.neonscience.org/data-products/DP1.30003.001" target="_blank">Discrete Return LiDAR Point Cloud Data</a> are available on the <a href="http://data.neonscience.org/" target="_blank">NEON Data Portal</a>. 
 
 <a href="https://ndownloader.figshare.com/files/7024955" class="link--button link--arrow">
 Download NEON Teaching Data Subset: Sample LiDAR Point Cloud Data (.las)</a>
@@ -59,50 +53,34 @@ Download NEON Teaching Data Subset: Sample LiDAR Point Cloud Data (.las)</a>
 #### Example visualization of LiDAR data 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/biomass.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/biomass.png"></a>
-	<figcaption> LiDAR data collected over Grand Mesa, Colorado as a part of 
-	instrument testing and calibration by the National Ecological Observatory Network 
-	Airborne Observation Platform (NEON AOP).
-	Source: National Ecological Observatory Network (NEON)  
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/biomass.png" target="_blank">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/biomass.png">
+	</a>
+	<figcaption>
+		LiDAR data collected over Grand Mesa, Colorado as a part of instrument testing and calibration by the National Ecological Observatory Network 's Airborne Observation Platform (NEON AOP). Source: National Ecological Observatory Network (NEON)  
 	</figcaption>
 </figure>
 
 ## LiDAR File Formats
-LiDAR data are most often available as discrete points. Although, remember that these data 
-can be collected by the lidar instrument, in either discrete or full waveform, formats. 
-A collection of discrete return LiDAR points is known as a LiDAR point cloud.
+LiDAR data are most often available as discrete points. Although, remember that these data can be collected by the lidar instrument, in either discrete or full waveform, formats. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
-".las" is the commonly used file format to store LIDAR point cloud data. This 
-format is supported by the 
-<a href="http://www.asprs.org/" target="_blank"> American Society of Photogrammetry and Remote sensing (ASPRS)</a>. 
-Recently, the 
-<a href="http://www.laszip.org/" target="_blank">.laz</a> 
-format has been developed by Martin Isenberg of LasTools. Laz is a highly 
-compressed version of .las.
+`.las` is the commonly used file format to store LIDAR point cloud data. This format is supported by the <a href="http://www.asprs.org/" target="_blank">American Society of Photogrammetry and Remote Sensing (ASPRS)</a>. The <a href="http://www.laszip.org/" target="_blank">`.laz`</a> format was developed by Martin Isenberg of <a href="https://lastools.github.io/" target="_blank">LAStools</a> . Laz is a highly compressed version of .las. 
 
-In this tutorial, you will open a .las file, in the plas.io free online lidar 
-data viewer. You will then explore some of the attributes associated with a 
-lidar data point cloud.
+In this tutorial, you will open a `.las` file, in the plas.io free online lidar data viewer. You will then explore some of the attributes associated with a lidar data point cloud.
 
 ## LiDAR Attribute Data 
-Remember that not all lidar data are created equally. Different lidar data may
-have different attributes. In this tutorial, we will look at data that contain 
-both intensity values and a ground vs non ground classification.
+Remember that not all lidar data are created equally. Different lidar data may have different attributes. In this tutorial, we will look at data that contain both intensity values and a ground vs non ground classification.
 
 
 ## Plas.io Viewer
-We will use the 
-<a href="http://plas.io" target="_blank"> plas.io website.</a> 
-in this tutorial. As described on their 
-<a href="https://github.com/verma/plasio" target="_blank">plas.io github page</a>:
+We will use the <a href="http://plas.io" target="_blank"> plas.io website.</a> in this tutorial. As described on their <a href="https://github.com/verma/plasio" target="_blank">plas.io github page</a>:
 
 > Plasio is a project by Uday Verma and Howard Butler that implements point cloud 
 rendering capability in a browser. Specifically, it provides a functional 
 implementation of the ASPRS LAS format, and it can consume LASzip-compressed 
 data using LASzip NaCl module. Plasio is Chrome-only at this time, but it is 
 hoped that other contributors can step forward to bring it to other browsers.
-> 
+
 > It is expected that most WebGL-capable browsers should be able to support 
 plasio, and it contains nothing that is explicitly Chrome-specific beyond the 
 optional NaCL LASzip module. 
@@ -129,8 +107,8 @@ plas.io toolbar in the "Data" section.
 NICE! You should see something similar to the screenshot below:
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_dataImport.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_dataImport.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/plasio_dataImport.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/plasio_dataImport.png"></a>
 	<figcaption> NEON lidar data in the plas.io online tool. 
 	</figcaption>
 </figure>
@@ -155,8 +133,8 @@ returned.
 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_Intensity.jpg" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Lidar_Intensity.jpg"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/Lidar_Intensity.jpg" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/Lidar_Intensity.jpg"></a>
 	<figcaption> Lidar intensity values represent the amount of light energy that
 	reflected off of an object and returned to the sensor. 
 	</figcaption>
@@ -173,8 +151,8 @@ values in an image processing software or even in Photoshop).
 Drag the slider back and forth. Notice that you can brighten up the data using the slider.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_intensitySlider.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/plasio_intensitySlider.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/plasio_intensitySlider.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/plasio_intensitySlider.png"></a>
 	<figcaption> The intensity scaling slider is located below the color map 
 tool so it's easy to miss. Drag the slider back and forth to adjust the range 
 of intensity values and to brighten up the lidar point clouds.
@@ -197,52 +175,43 @@ higher. Some common classes include:
 - 6 Building
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Plasio_ColorScheme_KendraSand.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar-point-clouds/Plasio_ColorScheme_KendraSand.png"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/Plasio_ColorScheme_KendraSand.png" target="_blank">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/Plasio_ColorScheme_KendraSand.png"></a>
 	<figcaption> Blue and Orange gradient color scheme submitted by Kendra Sand.
 	What color scheme is your favorite?
 	</figcaption>
 </figure>
 
-In this case, these data are classified as either ground, or non-ground. To 
-view the points, colored by class:
+In this case, these data are classified as either ground, or non-ground. To view the points, colored by class:
 
 - Change the "colorization" setting to "Classification
 - Change the intensity blending slider to "All Color" 
 - For kicks - play with the various colormap options to change the colors of the points.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/classification_Colorization2.png" target="_blank">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/lidar/classification_Colorization2.png"></a>
-	<figcaption> Set the colorization to 'classified' and then adjust the 
-	intensity blending to view the points, colored by ground and non-ground classification.
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/plasio_Colorization2.png" target="_blank">
+		<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-point-clouds/plasio_Colorization2.png">
+	</a>
+	<figcaption>
+		Set the colorization to 'classified' and then adjust the intensity blending to view the points, colored by ground and non-ground classification.
 	</figcaption>
 </figure>
 
 
 ### 4. Spend Some Time Exploring - Do you See Any Trees?
-Finally, spend some time exploring the data. what features do you see in this 
-dataset? What does the topography look like? Is the site flat? Hilly? 
-Mountainous? What do the lidar data tell you, just upon initial inspection?
+Finally, spend some time exploring the data. what features do you see in this dataset? What does the topography look like? Is the site flat? Hilly? Mountainous? What do the lidar data tell you, just upon initial inspection?
 
 ## Summary
 
-* The plas.io online point cloud viewer allows you to quickly view and explore 
-lidar data point clouds.
-* Each lidar data point will have an associated set of attributes. You can 
-check the metadata to determine which attributes the dataset contains. 
-NEON data, provided above, contain both classification and intensity values. 
-* Classification values represent the type of object that the light energy 
-reflected off of. Classification values are often ground vs non ground. Some 
-lidar data files might have buildings, water bodies and other natural and man 
-made elements classified.
-* LiDAR data often has an intensity value associated with it. This represents 
-the amount of light energy that reflected off an object and returned to the sensor. 
+* The plas.io online point cloud viewer allows you to quickly view and explore lidar data point clouds.
+* Each lidar data point will have an associated set of attributes. You can check the metadata to determine which attributes the dataset contains. NEON data, provided above, contain both classification and intensity values. 
+* Classification values represent the type of object that the light energy reflected off of. Classification values are often ground vs non ground. Some lidar data files might have buildings, water bodies and other natural and man-made elements classified.
+* LiDAR data often has an intensity value associated with it. This represents the amount of light energy that reflected off an object and returned to the sensor. 
 
 ***
 
 ## Additional Resources:
 
-*	<a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank"> What is .las? From laspy - the las Python library</a>
-*	<a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank"> las v1.3 specifications</a>
+*	<a href="https://laspy.readthedocs.io/en/latest/intro.html" target="_blank"> What is .las? From laspy - the las Python library</a>
+*	<a href="https://www.asprs.org/wp-content/uploads/2019/03/LAS_1_4_r14.pdf" target="_blank"> LAS v1.4 specifications</a>
 

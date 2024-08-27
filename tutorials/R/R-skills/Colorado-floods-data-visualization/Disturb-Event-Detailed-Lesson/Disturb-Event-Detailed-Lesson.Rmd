@@ -1,6 +1,5 @@
 ---
-title: Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013
-  Colorado Floods
+title: Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013 Colorado Floods
 code1: 
 contributors: Donal O'Leary
 dataProduct: DP3.30024.001
@@ -51,10 +50,12 @@ completely different yard and driveway!
 ## Introduction to Disturbance Events
 
 <div id="ds-dataTip" markdown="1">
+
 **Definition:**  In ecology, a **disturbance event** 
 is a temporary change in environmental conditions that causes a pronounced 
 change in the ecosystem. Common disturbance events include floods, fires, 
 earthquakes, and tsunamis. 
+
 </div>
 
 
@@ -111,11 +112,14 @@ in September 2013 along the Colorado Front Range.
 ### Drought
 How do we measure drought? 
 
-<div id="ds-dataTip" markdown="1"> **Definition:** The **Palmer Drought Severity 
+<div id="ds-dataTip" markdown="1">
+
+**Definition:** The **Palmer Drought Severity 
 Index** is a measure of soil moisture content. It is calculated from soil 
 available water content,precipitation and temperature data. The values range 
 from **extreme drought** (values <-4.0) through **near normal** (-.49 to .49) 
 to **extremely moist** (>4.0).
+
 </div>
 
 Bonus: There are several other commonly used drought indices. The 
@@ -177,8 +181,10 @@ systems.
 How do we measure precipitation? 
 
 <div id="ds-dataTip" markdown="1">
+
 **Definition:** Precipitation is the moisture that
 falls from clouds including rain, hail and snow. 
+
 </div>
 
 Precipitation can be measured by different types of gauges; some must be 
@@ -263,7 +269,9 @@ below to see how patterns of discharge seen in these data?
 ## Impact: Flood
 
 <div id="ds-dataTip" markdown="1">
+
 **Definition:**  A **flood** is anytime water inundates normally dry land. 
+
 </div>
 
 ### Return Interval
@@ -285,8 +293,10 @@ When talking about major disturbance events we often hear "It was a 1000-year
 flood" or "That was a 100-year storm".  What does this really mean?  
   
 <div id="ds-dataTip" markdown="1">
+
 **Definition:** A **return interval** is the likelihood, a statistical 
 measurement, of how often an event will occur for a given area. 
+
 </div>
 
 Check out this 
@@ -330,9 +340,11 @@ flood was a 100-year flood he should still buy the flood insurance?
 ### Flood Plains 
 
 <div id="ds-dataTip" markdown="1"> 
+
 **Definition:**  A **flood plain** is land adjacent to a waterway, from the 
 channel banks to the base of the enclosing valley walls, that experiences 
 flooding during periods of high discharge. 
+
 </div>
 
 <figure>

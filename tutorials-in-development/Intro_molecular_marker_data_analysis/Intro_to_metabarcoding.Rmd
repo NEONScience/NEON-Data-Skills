@@ -1,0 +1,207 @@
+---
+title: "Introduction to Analysis of Molecular Marker Data"
+syncID: eb676be8189a4e9abfdc4e5f901ac818
+description: Getting started with analysis of metabarcoding data.
+dateCreated: "2023-07-08"
+authors: Hugh Cross
+contributors: Hugh Cross, Stephanie Parker
+estimatedTime: 1 hour
+packagesLibraries: dplyr, ggplot2, neonUtilities, phyloseq
+topics: "data-analysis, data-viz"
+languagesTool: R, python, bash, docker
+dataProduct: DP1.10108.001, DP1.20280.001, DP1.20282.001
+code1: null
+tutorialSeries: null
+urlTitle: null
+---
+
+
+```{r opts-set, echo=FALSE}
+library(knitr)
+opts_knit$set(global.par = TRUE)
+```
+
+
+This tutorial is to introduce the end-user to the analysis of NEON metabarcoding (amplicon sequence) data. There are a wide range of programs and pipelines available that have been developed to run these kind of data. The pipeline we have developed was designed to be able to use multiple programs in combination so the user has the flexibility to try different approaches. NEON produces genetic data for a diversity of organisms, and not every programmatic approach will be the best for every group of taxa and every situation. Thus the need to maintain a flexible approach. All of the programs are run using *containers* (primarily using <a href="https://docs.docker.com/" target="_blank">Docker</a>), which create an isolated environment to run each step of the pipeline. This approach creates a modular system in which part or all of a workflow can be run at a time. The big advantage of using containers is that they can be run anywhere, on any operating system (Mac, Windows, Linux), and can be scaled up or down depending on the needs of the project. Small, trial datasets (such as for this tutorial) can be run on your laptop, while larger analyses can be run on servers or in the cloud. The same basic system laid out in this tutorial regardless of the size of the data set . 
+
+
+<div id="ds-objectives" markdown="1">
+
+## Learning Objectives 
+After completing this tutorial you will be able to: 
+
+* Learn the basic principles and file types of metabarcoding analyses
+* Run through a trial analysis of example data, each step at a time
+* Learn how to set up a multi-step pipeline to run using Docker Compose
+* Learn the basics of exploring and graphing the results using the R package Phyloseq
+
+## Things You’ll Need To Complete This Tutorial
+
+### Docker Desktop
+You will need to have Docker Desktop installed on your system (or docker on Linux). <a href="https://docs.docker.com/desktop/install/mac-install/" target="_blank">Here are the instructions for the Mac operating system</a>, <a href="https://docs.docker.com/desktop/install/windows-install/" target="_blank">here are the instructions for Windows OS</a>, and <a href="https://docs.docker.com/desktop/install/linux-install/" target="_blank">here are the instructions for Linux machines</a>. Once this tool is installed and running, you will be able to run docker commands from any terminal (including from the terminal built in to RStudio). 
+
+
+### R Programming Language
+You will need a current version of R to complete this tutorial. We also recommend 
+the RStudio IDE to work with R. 
+
+### R Packages to Install
+Prior to starting the tutorial ensure that the following packages are installed. 
+
+* **tidyverse**: <a href="https://www.tidyverse.org/" target="_blank"> A collection of R packages</a> designed for data science
+* **phyloseq**: <a href="https://joey711.github.io/phyloseq/" target="_blank"> An R package for exploring and graphing metabarcoding data</a>
+
+The tidyverse package can be installed from CRAN:
+
+```{r packages, eval=FALSE}
+
+install.packages("tidyverse")
+
+```
+
+While the phyloseq package must be installed using the Bioconductor Installer:
+
+```{r packages_bioc, eval=FALSE}
+
+source('http://bioconductor.org/biocLite.R')
+biocLite('phyloseq')
+
+```
+
+
+### Example Data Set
+
+The pipeline will include components to download NEON molecular marker data, however, for this introductory tutorial we will use a small dataset that is ready to go. This example data set is provided as an optional download and a backup. 
+
+#### NEON Teaching Data Subset: 
+
+The data used in this tutorial were collected at the 
+
+<a href="https://ndownloader.figshare.com/files/9012085" class="link--button link--arrow">
+Download Dataset</a>
+
+### Working Directory
+This lesson assumes that you have set your working 
+directory to the location of the downloaded and unzipped data subsets. 
+
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
+of setting the working directory in R can be found here.</a>
+
+## Additional Resources
+You can list any additional resources you'd like to link to if needed. 
+
+* <a href="https://docs.docker.com/get-started/" target="_blank"> Overview of Docker</a>
+* <a href="https://docker-curriculum.com/" target="_blank"> A Docker Tutorial for Beginners</a>,
+
+ 
+</div>
+
+
+
+## Getting started with Docker containers 
+
+Docker is an open-source project that allows for deployment of software applications inside 'containers' that are isolated from your computer and run through a virtual host operating system called Docker Engine. The main advantage of running docker over virtual machines is that they use much less resources. This isolation means that you can run a Docker container on most operating systems, including Mac, Windows, and Linux. You may need to set up a free account to use Docker Desktop.
+
+Running your applications with Docker offers many advantages over other approaches, but it can be difficult to get used to. One of the main challenges is that Docker provides an additional layer of abstraction that is outside your own computer's file structure. While this added layer frees you from the frequent nightmares of software installation and dependencies, it can often trip you up. It is important to remember that to process any of the files on your computer with a Docker application it is necessary to copy those files to the Docker's own file system, and then provide a way to get the outputs back into your own computer's file system. Hopefully, the examples below will help make this easier.
+
+Once you have Docker Desktop installed on your computer, then you can check if it is available on your terminal:
+
+```{bash check_dock_install, eval=FALSE}
+
+docker run --help
+
+```
+
+If you get a help message output on the terminal, then you are good to go! Now we will start working with actual commands in the pipeline. 
+
+We will start with a simple command. After installing any software, most of us will try it out with a help command. Here is an example using the program cutadapt on Docker.
+
+```{bash check_docker, eval=FALSE}
+
+docker run --rm -it \
+  quay.io/hughcross/cutadapt_lx:4.1 \
+  cutadapt -h 
+
+
+```
+
+
+Okay, let's break down that command. The `docker run` command will create a container out of the image from the **quay.io** website. This image can be examined using Docker Desktop. If you have not already downloaded this image from the quay.io website (using this command: `docker pull quay.io/hughcross/cutadapt_lx:4.1`) , then running this command will do that for you. The options after this command are as follows:
+
+`--rm` will automatically remove the container when the command is finished. There are instances when you will want to keep the container running, but we are keeping everything simple for now. 
+
+`-it` is two commands merged: the `-i` is for interactive, and the `-t` is to allocate a *tty* (essentially acting as a pseudo terminal) for the container. These two commands together allow you to use the command as an interactive process, like a shell. The opposite of this is when you want to run a container in the background, as for web apps run from Docker. 
+
+The next parameter just names the image that will be turned into a container, in this case our crabs image. You have to specify the entire name as it appears above. 
+
+After the image name, the next line is just the cutadapt command. Note: we are splitting our commands into separate lines using the backslash ('\\'). If you are using a Windows, you can split up your command in the same way using `\`` instead of `\\\`. 
+
+This helps make the command clear to read. You could just have these commands on one line. If you want to split your code, just make sure there is no space after the backslash. 
+
+## First steps of the pipeline
+
+### Trying a command with arguments
+
+If you ran the help command above and it worked, that is great. You know that the docker image is working. However, we want to run actual commands and process some data and for that we need to add some more parameters. 
+
+```{bash first_cmd, eval=FALSE}
+
+docker run --rm -it \
+  -v $(pwd):/data \
+  -w /data \
+  -e RUN="run01" \
+  quay.io/hughcross/cutadapt_lx:4.1 \
+  bash scripts/firstScript.sh
+
+
+```
+
+There is a little more to digest in the above command. 
+
+
+## Additional information about YAML files
+
+This header must be at the top of each tutorial so that all associated metadata 
+will appear correctly. (Spaces at beginning of each line only added so as not to render if this document is knit)
+
+    ---
+    syncID: sync-id-from-list - this will be added by NEON staff, you do not need to include
+    title: "Descriptive Title In Title Case"
+    description: "Descriptive text about the tutorial here. Must be all on one line no matter how long."
+    dateCreated: 2015-08-01
+    authors: Megan A. Jones, Each Author Separated by Commas, 
+    contributors: Jane Doe, Also Seperate, By Commas
+    estimatedTime: 1.5 hrs
+    packagesLibraries: raster, rhdf5, rgdal
+    *see list in processing_code/_data/packagesLibraries.yml for the correct list. If you would like to add a term please include in your PR message. 
+    topics: data-analysis, data-visualization, HDF5, spatial-data-gis 
+    *see list in processing_code/_data/tags.yml for the correct list. If you would like to add a term please include in your PR message. 
+    languagesTool: R, python
+    *see list in processing_code/_data/languagesTool.yml for the correct list. If you would like to add a term please include in your PR message. 
+    dataProduct: DP1.0001.01
+    *all NEON data products used in the tutorial written in the above format. (no .yml for this list). 
+    code1: a URL to where the code for this tutorial is located on GitHub. Don't worry about this field, a NEON Data Skills team member will populate this for you as a part of the publishing process
+    tutorialSeries: 
+    *if the tutorial is part of a series, this metadata isn't used by the Drupal site but is useful for tutorial management
+    urlTitle: styles-css 
+    *a short url that is descriptive but not long. This will become the 'slug' for the tutorial web page
+    ---
+
+## Styling 
+
+Our tutorials are styled with Markdown with a few exceptions (see links). 
+For a simple markdown overview, check out 
+<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">this cheatsheet</a>.
+
+We also use specific styling to improve accessibility of our materials and to match 
+NEONScience.org CSS. Please refer to the 
+<a href="https://github.com/NEONScience/NEON-Data-Skills/blob/master/tutorials/NDS-style-guide.md" target="_blank">NEON Data Skills Style Guide</a>. 
+In particular, please not that we html with target="_blank" for all links. We 
+do not use Markdown formatting for any links. 
+
+## Submission & Review 
+When you are ready for review of your tutorial, complete a Pull Request to the 
+NEONScience/NEON-Data-Skills repository. If you have questions on using a forking workflow in GitHub, please see there series: 
+<a href="https://www.neonscience.org/version-control-git-series" target="_blank"> More on Packages in R </a>– 
+
+

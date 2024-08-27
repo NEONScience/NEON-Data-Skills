@@ -1,0 +1,30 @@
+---
+syncID: 7c50ffa88f7f4a238d21826c1a996570
+title: "Test reticulate tabs by including full html document"
+description: Test for tabbed tutorials with R and Python code. Do not publish this tutorial.
+dateCreated: '2024-06-25'
+dataProducts: 
+authors: Claire K. Lunch
+contributors: 
+estimatedTime: 0 hours
+packagesLibraries: neonUtilities, neonutilities
+topics: data-management, rep-sci
+languageTool: R, Python
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/Concept-intros/test_tabs_full_doc/test_code_tabs_full_doc.R
+tutorialSeries:
+urlTitle: test-code-tabs-full-doc
+---
+
+```{r setup, echo=FALSE}
+
+library(htmltools)
+
+```
+
+
+```{r html, echo=FALSE, warning=FALSE, message=FALSE}
+
+htmltools::includeHTML("https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials-in-development/Other/test_code_tabs.html")
+
+```
+

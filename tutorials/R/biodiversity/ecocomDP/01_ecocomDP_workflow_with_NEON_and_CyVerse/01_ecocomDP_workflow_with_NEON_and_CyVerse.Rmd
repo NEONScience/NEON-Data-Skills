@@ -1,7 +1,7 @@
 ---
 title: "Explore NEON biodiversity data using ecocomDP"
 syncID: 19fe7b1f052c478c8a7df52e4e03efbf
-description: Download and explore NEON algae and aquatic macroinvertebrate data with
+description: Download and explore NEON and LTER aquatic macroinvertebrate data with
   the ecocomDP package for R using the CyVerse Discovery Environment
 authors: Eric R. Sokol
 contributors: "Donal O'Leary, Michael Culshaw-Maurer, Sydne Record"
@@ -35,10 +35,13 @@ In ecological synthesis projects, tasks related to finding, accessing, and vetti
 
 "ecocomDP" is both the name of an R package and a data model. 
  
-EDI describes the ecocomDP data model as "A dataset design pattern for ecological community data to facilitate synthesis and reuse". Because this data model is intended for use with community data, observations are expected to be measures of species abundance, biomass, or similar. However, some ecocomDP datasets report occurrences. The motivation for applying the ecocomDP data pattern to both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research (LTER) Network and Macrosystems Biology projects, is to make these data discoverable and accessible through a single data search tool and to be delivered in a standard format. Functions in the `ecocomDP` package provide tools to maniuplate and visualize ecocomDP formatted data objects in R. We are also in the process of developing tools to easily convert ecocomDP data packages to Darwin Core Archives ([DwC-A, event core](https://rs.gbif.org/core/dwc_event_2022-02-02.xml)) for submission to [GBIF](https://www.gbif.org/) to further facilitate NEON and LTER data discovery.     
+The data model can be described as "a dataset design pattern for ecological community data to facilitate synthesis and reuse". Because this data model is intended for use with community data, observations are expected to be measures of species abundance, biomass, or similar. However, some ecocomDP datasets report occurrences. The motivation for applying the ecocomDP data pattern to both NEON biodiversity data products and EDI data packages, including data from the US Long Term Ecological Research (LTER) Network and Macrosystems Biology projects, is to make these data discoverable and accessible through a single data search tool and to be delivered in a standard format. Functions in the `ecocomDP` package provide tools to maniuplate and visualize ecocomDP formatted data objects in R. We are also in the process of developing tools to easily convert ecocomDP data packages to Darwin Core Archives ([DwC-A, event core](https://rs.gbif.org/core/dwc_event_2022-02-02.xml)) for submission to [GBIF](https://www.gbif.org/) to further facilitate NEON and LTER data discovery.     
 
-For more information on `ecocomDP`, see the GitHub repo here:
-<a href="https://github.com/EDIorg/ecocomDP ">https://github.com/EDIorg/ecocomDP</a>.
+For more information on `ecocomDP`, see:  
+
+ * The GitHub repo: [EDIorg/ecocomDP](https://github.com/EDIorg/ecocomDP)
+ * The website: [ediorg.github.io/ecocomDP](https://ediorg.github.io/ecocomDP/index.html)
+
 
 In this lesson, we will learn how to find and access ecological community datasets provided by the [National Ecological Observatory Network (NEON)](https://www.neonscience.org/) and the [Environmental Data Initiative (EDI)](https://edirepository.org/). 
 
@@ -127,7 +130,9 @@ Once RStudio is open, you should be able to begin the rest of the tutorial.
 ## Load libraries and prepare workspace  
 
 First, we will load all necessary libraries into our R environment. If you are not using the RStudio VICE app with the packages pre-installed and you have not already installed these libraries, please see the "R packages required for this tutorial" section above. 
+
 ```{r load libraries, eval=F, comment=NA}
+
 # clean out workspace
 
 #rm(list = ls()) # OPTIONAL - clear out your environment
@@ -137,6 +142,7 @@ First, we will load all necessary libraries into our R environment. If you are n
 library(tidyverse)
 library(neonUtilities)
 library(ecocomDP)
+
 ```
 
 
@@ -160,9 +166,9 @@ Also, consider using a NEON API token. This will allow you increased download sp
 <div id="ds-objectives" markdown="1">
 
 
-## Using your NEON_TOKEN with the VICE cloud  
+## Using your NEON_TOKEN on an interactive clould platform  
 
-1. In your RStudio session running on the VICE app, type the following in the console to create a new .Renviron file:  
+1. In your RStudio session on a cloud platform, such as VICE, type the following in the console to create a new .Renviron file:  
 ```{r create-Renviron, eval=F}
 usethis::edit_r_environ()
 ```
@@ -172,14 +178,14 @@ usethis::edit_r_environ()
 NEON_TOKEN=PASTE YOUR TOKEN HERE
 ```
 
-3. Go to "File -> Save As" and then navigate to "work > home > YOUR CYVERSE USERNAME" and save your .Renviron file in your personal storage space.   
+3. Save the .Renviron file using a path that makes sense for your workflow using "File -> Save As". For example, on the VICE platform you can use the filepath "work > home > YOUR CYVERSE USERNAME" and save your .Renviron file in your personal storage space, which should persist as long as you have an active account. Other platforms may allow you to mount personal storage volumes where you can securely store tokens.    
 
-4. Read your .Renviron variables to your R session:  
+4. Read your .Renviron variables into your R session, e.g., this would be the path on the VICE platform:  
 ```{r read-Renviron, eval=F}
 readRenviron("../rstudio/work/home/YOUR CYVERSE USERNAME/.Renviron")
 ```
 
-You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables.  
+You should be able to use the above line in any R script running on an RStudio instance on the VICE platform to load your environmental variables because you wrote the .Renviron file to your persistent storage space on the VICE platform. This approach can be adapted to work on other interactive cloud platforms if they are set up similarly. 
 
 
 </div>
@@ -203,6 +209,7 @@ You can download the data using the web interface ([see this video](https://www.
 NEON data are delivered in site-month chunks, so it is necessary to "stack" the data after you have downloaded all of your desired site-month data packages. However, you do not need to worry about data stacking because the NEON staff have developed the `neonUtilities` R package, which provides wrapper functions to interact with the NEON Data Portal API and appropriately unzip and stack the data tables so that they are more user friendly. For more details, see [this tutorial on NEON data stacking](https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr). Here we use the `loadByProduct` function to download NEON macroinvertebrate data from two sites from 2017-2019. The `loadByProduct` function will extract the zip files, stack the data, and load it into your R environment. See [this cheatsheet](https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf) for more information on neonUtilities. 
 
 ```{r download-data, message=FALSE, warning=FALSE, results='hide'}
+
 # Download NEON aquatic macroinvertebrate data from the NEON data portal API
 # Should take < 1 minute
 all_tabs_inv <- neonUtilities::loadByProduct(
@@ -218,11 +225,13 @@ all_tabs_inv <- neonUtilities::loadByProduct(
 To download the entire dataset for all sites for all time, don't include the `site`, `startdate`, or `enddate` arguments. 
 
 ```{r download-all-data, eval=F, comment=NA}
+
 # this download as of Aug 2022 is ~100MB
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = "DP1.20120.001", # the NEON aquatic macroinvert data product
   token = Sys.getenv("NEON_TOKEN"), # use NEON_TOKEN environmental variable
   check.size = T) # you should probably check the filesize before proceeding
+
 ```
 
 This larger download will take longer and might time out. For the macroinvertebrates data product the download could take ~5 minutes on a typical setup. This is not insurmountable, but you don't want to have to download and stack the data every time you run an analysis. Also, other NEON data products can be much larger. A nice feature about working with VICE is we can download the large dataset one time and store it in a shared space in the CyVerse Data Store. We will access a dataset saved on the Data Store later in this tutorial.
@@ -232,6 +241,7 @@ This larger download will take longer and might time out. For the macroinvertebr
 Now that we have the data downloaded, we will need to do some 'data wrangling' to reorganize our data into a more useful format for typical community ecology analyses. First, let's take a look at some of the tables that were generated by `loadByProduct()`:
 
 ```{r download-overview, message=FALSE, warning=FALSE}
+
 # what tables do you get with macroinvertebrate 
 # data product
 names(all_tabs_inv)
@@ -325,7 +335,10 @@ table_taxon <- inv_taxonomyProcessed %>%
 # taxon table information for all taxa in 
 # our database can be downloaded here:
 # takes 1-2 minutes
-# full_taxon_table_from_api <- neonUtilities::getTaxonTable("MACROINVERTEBRATE", token = NEON_TOKEN)
+# full_taxon_table_from_api <- 
+#   neonOS::getTaxonList(
+#     "MACROINVERTEBRATE", 
+#     token = Sys.getenv("NEON_TOKEN"))
 
 
 # Make the observation table.
@@ -411,6 +424,7 @@ sampling_effort_summary <- table_sample_info %>%
 # check out the summary table
 sampling_effort_summary %>% as.data.frame() %>% 
   head() %>% print()
+
 ```
 
 In addition to the `sampling_effort_summary` table displayed above, we have also extracted some other easy to digest summary tables, including:  
@@ -432,6 +446,7 @@ table_observation %>%
   ggplot(aes(n_taxa, taxonRank)) +
   facet_wrap(~ domainID + siteID) +
   geom_col()
+
 ```
 
 What other visualizations would you plot as an initial exploration of this dataset to determine if it would be sufficient for your science question?
@@ -443,6 +458,7 @@ What other visualizations would you plot as an initial exploration of this datas
 Below, we create a site-by-species table.
 
 ```{r make-wide, message=FALSE, warning=FALSE}
+
 # select only site by species density info and remove duplicate records
 table_sample_by_taxon_density_long <- table_observation %>%
   select(sampleID, acceptedTaxonID, inv_dens) %>%
@@ -462,6 +478,16 @@ table_sample_by_taxon_density_wide <- table_sample_by_taxon_density_long %>%
 # check col and row sums -- mins should all be > 0
 colSums(table_sample_by_taxon_density_wide) %>% min()
 rowSums(table_sample_by_taxon_density_wide) %>% min()
+
+# Example: use wide format data with functions in vegan
+# load library
+library(vegan)
+
+# calculate pairwise dissimilarities
+data_dist <- vegdist(table_sample_by_taxon_density_wide, method = "bray")
+
+# view histogram of dissimilarity values in the dataset
+hist(data_dist, xlab = "Bray-Curtis dissimilarity")
 
 ```
 
@@ -659,7 +685,6 @@ data_neon_inv_allsites <- readRDS("../rstudio/work/home/shared/NEON/ESA2022/macr
  2. If you are not running an in instance of RStudio that has the CyVerse Data Store mounted, you can access the data here via a static URL:
  
 ```{R load-all-inv-dataset-url, message=FALSE, warning=FALSE}
-# reading in the data when not using CyVerse VICE
 data_neon_inv_allsites <- readRDS(
   file = gzcon(url("https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2022/macroinverts_neon.ecocomdp.20120.001.001_release2022.RDS")))
 ```
@@ -680,11 +705,7 @@ Now we will see if we can find a comparable LTER benthic macroinvertebrate datas
 data_ntl_inv <- read_data(id = "edi.290.2")
 
 # flatten the dataset
-flat_ntl_inv <- data_ntl_inv %>%
-  flatten_data() %>%
-  mutate(
-    package_id = data_ntl_inv$id,  # add id so multiple datasets can be stacked
-    taxon_rank = tolower(taxon_rank))  # fix case for plotting
+flat_ntl_inv <- data_ntl_inv %>% flatten_data()
 
 View(flat_ntl_inv)
 
@@ -693,6 +714,7 @@ View(flat_ntl_inv)
 Next, we can stack the NEON and the North Temperate Lakes (NTL) LTER benthic macroinvertebrate datasets and make some plots to explore if these two datasets are comparable. Many of the built-in ecocomDP plotting functions will work with the stacked datasets because they both have the same required core ecocomDP variables. However, the ancillary variabiles from each dataset will be different, and these fields will not be useful in the stacked dataset.  
 
 ```{r stack-and-compare-ranks, message=FALSE, warning=FALSE, fig.cap="Fig 7. Compare taxonomic ranks used in the NEON and NTL LTER macroinvertebrate datasets"}
+
 # The NEON dataset is pretty extensive, including streams and lakes. Let's
 # look at what kind of ancillary data are included that might be useful
 # for filtering the dataset:
@@ -725,15 +747,18 @@ stacked_inv %>%
 
 
 ```{r stacked-data-spatial-and-temporal-replication, message=FALSE, warning=FALSE, fig.cap="Fig 8. Comparing spatial and temporal replication of NEON and NTL LTER macroinvertebrate datasets"}
+
 # compare spatial and temporal replication
 # updates are planned for this plotting function to allow 
 # additional aesthetic mappings and faceting
 stacked_inv %>%
   plot_sample_space_time()
+
 ```
 Notice that the NTL sites have a much longer time series and the NEON data add a good amount of spatial replication.
 
 ```{r stacked-data-map, message=FALSE, warning=FALSE, eval=FALSE}
+
 # plot on a US Map
 
 # NOTE: for this to work, you may need to install some dependencies that 
@@ -746,9 +771,11 @@ stacked_inv %>%
   plot_sites()
 
 # Figure not shown
+
 ```
 
 ```{r stacked-data-richness, message=FALSE, warning=FALSE, fig.cap="Fig 9. Richness over time of NEON and NTL LTER macroinvertebrate datasets"}
+
 # explore richness through time
 stacked_inv %>% 
   plot_taxa_diversity(time_window_size = "year") 
@@ -757,24 +784,30 @@ stacked_inv %>%
 
 
 ```{r stacked-occurrence-freq, message=FALSE, warning=FALSE, fig.cap="Fig 10. Occurrence frequencies observed in NEON and NTL LTER macroinvertebrate datasets"}
+
 # compare taxa and abundances
 stacked_inv %>% 
   plot_taxa_occur_freq(
     facet_var = "package_id")
+
 ```
 To actually see the top taxa in each dataset, we need to plot them separately.
 ```{r plot-common-neon-taxa, message=FALSE, warning=FALSE, fig.cap="Fig 11. No. occurrences of common NEON taxa"}
+
 # Plot common NEON taxa abundances
 # you can set the min_occurrence argument to have a reasonable cutoff based 
 # on the plot above
 flat_neon_inv_d05 %>% 
   plot_taxa_occur_freq(min_occurrence = 100)
+
 ```
 
 ```{r plot-common-ntl-taxa, message=FALSE, warning=FALSE, fig.cap="Fig 12. No. occurrences of common NTL taxa"}
+
 # Plot common NTL taxa abundances
 flat_ntl_inv %>% 
   plot_taxa_occur_freq(min_occurrence = 30)
+
 ```
 
 ## Moving forward with synthesis  

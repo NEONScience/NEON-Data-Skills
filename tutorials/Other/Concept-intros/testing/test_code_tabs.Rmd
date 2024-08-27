@@ -1,0 +1,40 @@
+---
+syncID: 8ab4445008fd408fab9992c5c8751505
+title: "Test reticulate tabs"
+description: Test for tabbed tutorials with R and Python code. Do not publish this tutorial.
+dateCreated: '2024-04-25'
+dataProducts: 
+authors: Claire K. Lunch
+contributors: 
+estimatedTime: 0 hours
+packagesLibraries: neonUtilities, neonutilities
+topics: data-management, rep-sci
+languageTool: R, Python
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/Concept-intros/testing/test_code_tabs.R
+tutorialSeries:
+urlTitle: test-code-tabs
+---
+
+```{r setup, echo=FALSE}
+
+library(htmltools)
+library(httr)
+res <- GET("https://api.github.com/repos/cklunch/NEON-Data-Skills/contents/tutorials-in-development/Other/test_code_tabs.html")
+r2 <- content(res)
+download.file(r2$download_url, destfile=paste(getwd(), "/tut_html.html", sep=""), mode="wb", quiet=T)
+
+```
+
+
+```{r html, echo=FALSE, warning=FALSE, message=FALSE}
+
+htmltools::tags$iframe(src = base64enc::dataURI(file=paste(getwd(), "/tut_html.html", sep=""), 
+                                                mime="text/html; charset=UTF-8"), width="100%", height=1600)
+
+```
+
+``` {r cleanup, echo=FALSE}
+
+unlink(paste(getwd(), "/tut_html.html", sep=""))
+
+```
