@@ -40,7 +40,7 @@ plotRGB(RGB_HARV, axes=F)
 
 
 
-## ----plot-RGB-now, fig.cap="Red, green, and blue bands of the camera imagery at NEON's Harvard Forest (HARV) site", echo=FALSE, message=FALSE------------
+## ----plot-bands-separately, fig.cap=c("Red band", "Green band", "Blue band")-----------------------------------------------------------------------------
 
 # Determine the number of bands
 num_bands <- nlyr(RGB_HARV)
@@ -57,32 +57,6 @@ colors <- list(
 for (i in 1:num_bands) {
   plot(RGB_HARV[[i]], main=paste("Band", i), col=colors[[i]])
 }
-
-
-## ----read-single-band, fig.cap="Red band of NEON's site Harvard Forest"----------------------------------------------------------------------------------
- 
-# Read in multi-band raster with raster function. 
-# Default is the first band only.
-RGB_band1_HARV <- 
-  raster(paste0(wd,"NEON-DS-Airborne-Remote-Sensing/HARV/RGB_Imagery/HARV_RGB_Ortho.tif"))
-
-# create a grayscale color palette to use for the image.
-grayscale_colors <- gray.colors(100,            # number of different color levels 
-                                start = 0.0,    # how black (0) to go
-                                end = 1.0,      # how white (1) to go
-                                gamma = 2.2,    # correction between how a digital 
-                                # camera sees the world and how human eyes see it
-                                alpha = NULL)   #Null=colors are not transparent
-
-# Plot band 1
-plot(RGB_band1_HARV, 
-     col=grayscale_colors, 
-     axes=FALSE,
-     main="RGB Imagery - Band 1-Red\nNEON Harvard Forest Field Site") 
-
-# view attributes: Check out dimension, CRS, resolution, values attributes, and 
-# band.
-RGB_band1_HARV
 
 
 ## ----raster-attributes-----------------------------------------------------------------------------------------------------------------------------------
