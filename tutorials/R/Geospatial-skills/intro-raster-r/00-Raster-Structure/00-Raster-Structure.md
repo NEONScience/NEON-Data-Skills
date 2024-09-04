@@ -66,16 +66,14 @@ of setting the working directory in R can be found here.</a>
 
 ****
 
-* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
-Read more about the `terra` package in R.</a>
+* Read more about the <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">`terra`</a> package in R.
 * <a href="https://www.neonscience.org/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
 * <a href="https://www.neonscience.org/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
 
 </div>
 
 ## About Raster Data
-Raster or "gridded" data are stored as a grid of values which are rendered on a 
-map as pixels. Each pixel value represents an area on the Earth's surface.
+Raster or "gridded" data are stored as a grid of values which are rendered on a map as pixels. Each pixel value represents an area on the Earth's surface.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster_concept.png">
@@ -475,7 +473,11 @@ with the `NoDataValue` as `NA`.
 
     newRGBImage <- app(RGB_HARV, func)
 
-    ## |---------|---------|---------|---------|=========================================                                          
+    ## 
+|---------|---------|---------|---------|
+=========================================
+                                          
+
 
     par(col.axis="white",col.lab="white",tck=0)
 
