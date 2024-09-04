@@ -189,9 +189,9 @@ high resolution camera over the <a href="https://www.neonscience.org/field-sites
 ## 
 </code></pre>
 <p>|<br />
-|                                                                                                                                                 |   0%
+|                                                                                                                                                                    |   0%
 |<br />
-|=================================================================================================================================================| 100%
+|====================================================================================================================================================================| 100%
 ## Successfully downloaded 1 files to ~/data//DP3.30010.001</p>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png" alt="Red, green, and blue composite (true color) image of NEON’s Harvard Forest (HARV) site" /></p>
 <p>Or we can plot each bands separately as follows:</p>
@@ -219,7 +219,7 @@ for (i in 1:num_bands) {
   plot(RGB_HARV[[i]], main=paste(&quot;Band&quot;, i), col=colors[[i]])
 }
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-separately-1.png" alt="Red band" /><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-separately-2.png" alt="Green band" /><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-separately-3.png" alt="Blue band" /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-1.png" alt="Red band" /><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-2.png" alt="Green band" /><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-3.png" alt="Blue band" /></p>
 <h3 id="image-raster-data-attributes">Image Raster Data Attributes</h3>
 <p>We can display some of the attributes about the raster, as shown below:</p>
 <pre><code># Print dimensions

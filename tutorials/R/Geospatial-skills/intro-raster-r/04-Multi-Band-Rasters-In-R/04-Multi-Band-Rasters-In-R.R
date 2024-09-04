@@ -1,4 +1,4 @@
-## ----load-libraries--------------------------------------------------------------------------------------------------------------------------------------
+## ----load-libraries---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # terra package to work with raster data
 library(terra)
@@ -16,7 +16,7 @@ setwd(wd)
 
 
 
-## ----download-harv-camera-data---------------------------------------------------------------------------------------------------------------------------
+## ----download-harv-camera-data----------------------------------------------------------------------------------------------------------------------------------------------
 
 byTileAOP(dpID='DP3.30010.001', # rgb camera data
           site='HARV',
@@ -28,7 +28,7 @@ byTileAOP(dpID='DP3.30010.001', # rgb camera data
 
 
 
-## ----demonstrate-RGB-Image, fig.cap="Red, green, and blue composite (true color) image of NEON's Harvard Forest (HARV) site", echo=FALSE-----------------
+## ----demonstrate-RGB-Image, fig.cap="Red, green, and blue composite (true color) image of NEON's Harvard Forest (HARV) site", echo=FALSE------------------------------------
 
 # read the file as a raster
 rgb_harv_file <- paste0(wd, "DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_732000_4713000_image.tif")
@@ -40,7 +40,7 @@ plotRGB(RGB_HARV, axes=F)
 
 
 
-## ----plot-bands-separately, fig.cap=c("Red band", "Green band", "Blue band")-----------------------------------------------------------------------------
+## ----plot-bands, fig.cap=c("Red band", "Green band", "Blue band")-----------------------------------------------------------------------------------------------------------
 
 # Determine the number of bands
 num_bands <- nlyr(RGB_HARV)
@@ -59,7 +59,7 @@ for (i in 1:num_bands) {
 }
 
 
-## ----raster-attributes-----------------------------------------------------------------------------------------------------------------------------------
+## ----raster-attributes------------------------------------------------------------------------------------------------------------------------------------------------------
 # Print dimensions
 cat("Dimensions:\n")
 cat("Number of rows:", nrow(RGB_HARV), "\n")
@@ -88,11 +88,11 @@ cat(extent_str, "\n")
 
 
 
-## ----print-CRS-------------------------------------------------------------------------------------------------------------------------------------------
+## ----print-CRS--------------------------------------------------------------------------------------------------------------------------------------------------------------
 crs(RGB_HARV, describe=TRUE)
 
 
-## ----min-max-image---------------------------------------------------------------------------------------------------------------------------------------
+## ----min-max-image----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Replace Inf and -Inf with NA
 values(RGB_HARV)[is.infinite(values(RGB_HARV))] <- NA
@@ -105,14 +105,14 @@ cat("Min and Max Values for All Bands:\n")
 print(min_max_values)
 
 
-## ----challenge1-answer, eval=FALSE, echo=FALSE-----------------------------------------------------------------------------------------------------------
+## ----challenge1-answer, eval=FALSE, echo=FALSE------------------------------------------------------------------------------------------------------------------------------
 ## 
 ## # We'd expect a *brighter* value for the forest in band 2 (green) than in # band 1 (red) because the leaves on trees of most often appear "green" -
 ## # healthy leaves reflect MORE green light compared to red light.
 ## 
 
 
-## ----image-stretch, fig.cap=c("Composite RGB image of HARV with a linear stretch", "Composite RGB image of HARV with a histogram stretch")---------------
+## ----image-stretch, fig.cap=c("Composite RGB image of HARV with a linear stretch", "Composite RGB image of HARV with a histogram stretch")----------------------------------
 # What does stretch do?
 
 # Plot the linearly stretched raster
@@ -123,7 +123,7 @@ plotRGB(RGB_HARV_lin_stretch, stretch="hist")
 
 
 
-## ----challenge-code-calling-methods, include=TRUE, results="hide", echo=FALSE----------------------------------------------------------------------------
+## ----challenge-code-calling-methods, include=TRUE, results="hide", echo=FALSE-----------------------------------------------------------------------------------------------
 # 1
 # methods for calling a stack
 methods(class=class(RGB_HARV))

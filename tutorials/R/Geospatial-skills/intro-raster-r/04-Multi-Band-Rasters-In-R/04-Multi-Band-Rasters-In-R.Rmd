@@ -7,10 +7,10 @@ authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Willi
 contributors:	Jason Brown, Bridget Hass
 estimatedTime: 1 hour
 packagesLibraries: terra, neonUtilities, RColorBrewer
-topics: data-viz, raster, spatial-data-gis, camera imagery
+topics: data-viz, raster, spatial-data-gis, camera-imagery
 subtopics: 
 languagesTool: R
-dataProduct: DP1.30010.001
+dataProduct: DP3.30010.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/04-Multi-Band-Rasters-In-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-multiband-rasters-r
@@ -151,7 +151,7 @@ plotRGB(RGB_HARV, axes=F)
 
 Or we can plot each bands separately as follows:
 
-```{r plot-bands-separately, fig.cap=c("Red band", "Green band", "Blue band")}
+```{r plot-bands, fig.cap=c("Red band", "Green band", "Blue band")}
 
 # Determine the number of bands
 num_bands <- nlyr(RGB_HARV)

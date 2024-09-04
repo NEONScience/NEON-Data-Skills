@@ -7,10 +7,10 @@ authors: Leah A. Wasser, Megan A. Jones, Zack Brym, Kristina Riemer, Jason Willi
 contributors:	Jason Brown, Bridget Hass
 estimatedTime: 1 hour
 packagesLibraries: terra, neonUtilities, RColorBrewer
-topics: data-viz, raster, spatial-data-gis, camera imagery
+topics: data-viz, raster, spatial-data-gis, camera-imagery
 subtopics: 
 languagesTool: R
-dataProduct: DP1.30010.001
+dataProduct: DP3.30010.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/04-Multi-Band-Rasters-In-R.R
 tutorialSeries: raster-data-series, raster-time-series
 urlTitle: dc-multiband-rasters-r
@@ -145,7 +145,7 @@ high resolution camera over the <a href="https://www.neonscience.org/field-sites
 
     ## Downloading files totaling approximately 351.004249 MB 
     ## Downloading 1 files
-    ##   |                                                                                                                                                         |                                                                                                                                                 |   0%  |                                                                                                                                                         |=================================================================================================================================================| 100%
+    ##   |                                                                                                                                                                            |                                                                                                                                                                    |   0%  |                                                                                                                                                                            |====================================================================================================================================================================| 100%
     ## Successfully downloaded 1 files to ~/data//DP3.30010.001
 
 ![Red, green, and blue composite (true color) image of NEON's Harvard Forest (HARV) site](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png)
@@ -177,7 +177,7 @@ Or we can plot each bands separately as follows:
       plot(RGB_HARV[[i]], main=paste("Band", i), col=colors[[i]])
     }
 
-![Red band](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-separately-1.png)![Green band](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-separately-2.png)![Blue band](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-separately-3.png)
+![Red band](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-1.png)![Green band](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-2.png)![Blue band](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/plot-bands-3.png)
 
 ### Image Raster Data Attributes
 
