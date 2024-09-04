@@ -358,16 +358,14 @@ Data Skills <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> <s
 
 # Plot the linearly stretched raster
 
-plotRGB(RGB_HARV_lin_stretch, stretch=&quot;lin&quot;)
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'RGB_HARV_lin_stretch' not found
-
-# Plot the histogram-stretched raster
-
-plotRGB(RGB_HARV_lin_stretch, stretch=&quot;hist&quot;)
-
-## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'RGB_HARV_lin_stretch' not found
+plotRGB(RGB_HARV, stretch=&quot;lin&quot;)
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png" alt="Composite RGB image of HARV with a linear stretch" /></p>
+<pre><code># Plot the histogram-stretched raster
+
+plotRGB(RGB_HARV, stretch=&quot;hist&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png" alt="Composite RGB image of HARV with a histogram stretch" /></p>
 <p>In this case, the stretch doesn’t enhance the contrast our image significantly given the distribution of reflectance (or brightness) values is distributed well between 0 and 255, and applying a stretch appears to introduce some artificial, almost purple-looking brightness to the image.</p>
 <div id="ds-challenge" markdown="1">
 <h3 id="challenge-what-methods-can-be-used-on-an-r-object">Challenge: What Methods Can Be Used on an R Object?</h3>

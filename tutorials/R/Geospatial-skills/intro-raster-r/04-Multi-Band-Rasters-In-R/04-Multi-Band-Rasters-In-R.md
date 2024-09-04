@@ -334,15 +334,15 @@ The true color image plotted at the beginning of this lesson looks pretty decent
 
     # Plot the linearly stretched raster
 
-    plotRGB(RGB_HARV_lin_stretch, stretch="lin")
+    plotRGB(RGB_HARV, stretch="lin")
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'RGB_HARV_lin_stretch' not found
+![Composite RGB image of HARV with a linear stretch](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-1.png)
 
     # Plot the histogram-stretched raster
 
-    plotRGB(RGB_HARV_lin_stretch, stretch="hist")
+    plotRGB(RGB_HARV, stretch="hist")
 
-    ## Error in h(simpleError(msg, call)): error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'RGB_HARV_lin_stretch' not found
+![Composite RGB image of HARV with a histogram stretch](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/image-stretch-2.png)
 
 In this case, the stretch doesn't enhance the contrast our image significantly given the distribution of reflectance (or brightness) values is distributed well between 0 and 255, and applying a stretch appears to introduce some artificial, almost purple-looking brightness to the image.
 

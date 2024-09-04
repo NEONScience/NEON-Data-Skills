@@ -116,10 +116,10 @@ print(min_max_values)
 # What does stretch do?
 
 # Plot the linearly stretched raster
-plotRGB(RGB_HARV_lin_stretch, stretch="lin")
+plotRGB(RGB_HARV, stretch="lin")
 
 # Plot the histogram-stretched raster
-plotRGB(RGB_HARV_lin_stretch, stretch="hist")
+plotRGB(RGB_HARV, stretch="hist")
 
 
 
