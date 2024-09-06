@@ -1,15 +1,16 @@
 ---
-syncID: 317ecab8e00b4a959a76dba181bb33b8
-title: "Clean NEON Aquatic Instrument Data"
-description: "Tutorial for Cleaning NEON Level 1 AIS data"
+syncID: 850bea0fe3bd4c2f86ecd51eb966e54e
+title: "Cleaning and Gap-Filling NEON Aquatic Instrument Data"
+description: Tutorial for Cleaning NEON Level 1 AIS data
 dateUpdates: 2024-08-27
 authors: Bobby Hensley
 contributors: 
+dataProducts: DP1.20288.001, DP1.20033.001
 estimatedTime: 2 hours
 packagesLibraries: neonUtilities, ggplot2, zoo
 topics: data-management, rep-sci
 languageTool: R, API
-code1: R/clean-neon-ais-data/clean-neon-ais-data.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-neon-ais-data/clean-neon-ais-data.R
 tutorialSeries:
 urlTitle: clean-neon-ais-data
 ---
@@ -86,7 +87,8 @@ individual quality flags and Calibration Records are included.
 waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001", site="WALK", 
                      startdate="2024-04", enddate="2024-05",
                      package="expanded", release="current",
-                     check.size = F)
+                     include.provisional=T,
+                     check.size=F)
 list2env(waq,.GlobalEnv)
 ```
 
@@ -191,7 +193,7 @@ for(i in 2:nrow(waq_down)){if((waq_down$startDateTime[i]>stepStart)&
 ```
 
 Alternatively, we could create a customized range test where any values outside 
-a specified minimum and maximum are set to NA. Fr example, Dissolved Oxygen 
+a specified minimum and maximum are set to NA. For example, Dissolved Oxygen 
 saturation in most healthy streams is usually around 100%, and values far
 outside this range might be erroneous.
 
@@ -357,7 +359,8 @@ the `neonUtilities` package.
 nsw <- neonUtilities::loadByProduct(dpID="DP1.20033.001", site="WALK", 
                      startdate="2024-01", enddate="2024-02",
                      package="expanded", release="current",
-                     check.size = F)
+                     include.provisional=T,
+                     check.size=F)
 list2env(nsw,.GlobalEnv)
 ```
 
@@ -369,7 +372,7 @@ print(unique(NSW_15_minute$horizontalPosition))
 
 There should only be one horizontalPosition present, because NEON only measures
 Nitrate in surface water at the downstream location for wadeable stream sites.
-Therefore, we no not need to subset this dataset like we did for Water quality.
+Therefore, we do not need to subset this dataset like we did for Water quality.
 We can now plot the data, including uncertainty bands.
 
 ```{r plot-nsw-raw}
@@ -467,7 +470,6 @@ A shift correction can take multiple forms. We can either add/subtract a value
 for an issue with an offset (intercept), and/or multiplying by a value for an 
 issue with the gain (slope).  For this example, let's apply a constant offset
 of +1.1 and leave the gain as 1.
-t this code chunk.
 
 ```{r correct-nsw-shift}
 shiftStart <- as.POSIXct("2024-01-11 20:00:00",tz="GMT")
@@ -480,7 +482,7 @@ gain <- 1
         NSW_15_minute$cleanSurfWaterNitrate[i]*gain+offset}}
 ```
 
-We can then rep-lot the shifted data.
+We can then re-plot the shifted data.
 
 ```{r plot-nsw-shift}
 nswPlotShift <- ggplot() +

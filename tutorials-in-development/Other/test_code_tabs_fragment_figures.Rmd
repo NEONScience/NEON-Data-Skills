@@ -1,0 +1,101 @@
+---
+output: html_fragment
+dateCreated: '2024-08-07'
+---
+
+```{r setup, include=FALSE}
+library(reticulate)
+```
+
+## Set up: Load packages {.tabset}
+
+### R
+
+```{r R-library}
+library(neonUtilities)
+```
+
+### Python
+
+```{python p-import}
+import neonutilities as nu
+import matplotlib.pyplot as plt
+```
+
+## {-}
+
+Here is some text explaining what it is we're doing here.
+
+## Download data {.tabset}
+
+Let's download some data!
+
+### R
+
+```{r R-load, results="hide"}
+
+veg <- loadByProduct(dpID='DP1.10098.001', site='WREF', 
+                     startdate='2022-01', include.provisional=T,
+                     check.size=F)
+
+```
+
+### Python
+
+```{python p-load, results="hide"}
+
+veg = nu.load_by_product(dpid='DP1.10098.001', site='WREF',
+                         startdate='2022-01', include_provisional=True,
+                         check_size=False)
+
+```
+
+## {-}
+
+### Check table names {.tabset}
+
+Verify the table names in the downloaded data.
+
+#### R
+
+```{r R-names}
+
+names(veg)
+
+```
+
+#### Python
+
+```{python p-names}
+
+veg.keys()
+
+```
+
+### {-}
+
+## Plot species frequency {.tabset}
+
+Now let's plot the frequency distribution of tree species.
+
+### R
+
+```{r R-plot}
+
+vegspp <- table(veg$vst_mappingandtagging$taxonID)
+vegspp <- vegspp[order(vegspp, decreasing=T)]
+barplot(vegspp, names.arg=names(vegspp), 
+        ylab="Total", las=2)
+
+```
+
+### Python
+
+```{python p-plot, results="hide"}
+
+vegspp = veg['vst_mappingandtagging']['taxonID'].value_counts()
+plt.bar(vegspp.keys(), vegspp)
+plt.xticks(rotation=90)
+
+```
+

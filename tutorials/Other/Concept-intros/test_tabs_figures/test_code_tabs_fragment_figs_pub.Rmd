@@ -1,0 +1,30 @@
+---
+syncID: fakeSyncID
+title: "Longer test for code tabs"
+description: Test for tabbed tutorials with R and Python code. Do not publish this tutorial.
+dateCreated: '2024-08-07'
+dataProducts: 
+authors: Claire K. Lunch
+contributors: 
+estimatedTime: 0 hours
+packagesLibraries: neonUtilities, neonutilities
+topics: data-management, rep-sci
+languageTool: R, Python
+code1: 
+tutorialSeries:
+urlTitle: long-code-tab-test
+---
+
+```{r setup, echo=FALSE}
+
+library(htmltools)
+
+```
+
+
+```{r html, echo=FALSE, warning=FALSE, message=FALSE}
+
+htmltools::includeHTML("/Users/clunch/GitHub/NEON-Data-Skills/tutorials-in-development/Other/test_code_tabs_fragment_figures.html")
+
+```
+
