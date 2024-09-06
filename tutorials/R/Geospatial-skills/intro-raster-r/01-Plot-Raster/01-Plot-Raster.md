@@ -66,8 +66,7 @@ of setting the working directory in R can be found here.</a>
 
 ### Additional Resources
 
-* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
-Read more about the `terra` package in R.</a>
+* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">Read more about the `terra` package in R.</a>
 
 </div>
 

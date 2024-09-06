@@ -1,9 +1,9 @@
 ---
 syncID: d2e642ff6bb44f8798ddbe4fd5e45243
 title: "Plot spectral signatures of AOP Reflectance data in GEE"
-description: "Interactively plot the spectral signature of an AOP SDR pixel in GEE"
+description: "Interactively plot the spectral signature of an AOP reflectance data pixel in GEE"
 dateCreated: 2022-04-15
-authors: Bridget M. Hass, John Musinsky
+authors: Bridget Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
 estimatedTime: 45 minutes
 packagesLibraries: 
@@ -20,25 +20,25 @@ urlTitle: aop-gee-plot-spectra
 
 ## Objectives
 After completing this activity, you will be able to:
-- Read in a single AOP Hyperspectral Reflectance raster data set at the NEON site SOAP
-- Link spectral band #s to wavelength values
-- Create an interactive widget to plot the spectral signature of a given pixel upon clicking
+- Read in and map a single AOP Hyperspectral reflectance image at a NEON site
+- Link spectral band numbers to wavelength values
+- Create an interactive plot to display the spectral signature of a given pixel upon clicking
 
 ## Requirements
 
 - Complete the following introductory AOP GEE tutorials:
     - <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-image-collections" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
-- An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the [Intro to Working with Hyperspectral Remote Sensing Data](https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r) tutorial. You do not need to follow along with the code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
+- An understanding of hyperspectral data and AOP spectral data products. If this is your first time working with AOP hyperspectral data, we encourage you to start with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data</a> tutorial. You do not need to follow along with the R code in those lessons, but at least read through to gain a better understanding NEON's spectral data products.
 
 </div>
 
-## Read in the AOP SDR 2021 Dataset at SOAP
+## Read in the AOP Directional Reflectance Image
 
-We will start at our ending point of the last tutorial. For this exercise we will only read data from SOAP collected in 2021:
+As should be familiar by now from the previous tutorials in this series, we'll start by pulling in the AOP data. For this exercise we will only read directional reflectance data from SOAP collected in 2021:
 
 ```javascript
 // Filter image collection by date and site
-var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/DP3-30006-001")
+var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/HSI_REFL/001")
   .filterDate('2021-01-01', '2021-12-31')
   .filterMetadata('NEON_SITE', 'equals', 'SOAP')
   .first();
@@ -54,7 +54,7 @@ Map.setCenter(-119.25, 37.06, 12);
 ```
 
 ## Extract data bands
-Next we will extract only the "data" bands in order to plot the spectral information. The SDR data contains 426 data bands, and a number of QA/Metdata bands that provide  additional information that can be useful in interpreting and analyzing the data (such as the Weather Quality Information). For plotting the spectra, we only need the data bands.
+Next we will extract only the "data" bands in order to plot the spectral information. The reflectance data contains 426 data bands, and a number of QA/Metdata bands that provide  additional information that can be useful in interpreting and analyzing the data (such as the Weather Quality Information). For plotting the spectra, we only need the data bands.
 
 ```javascript
 // Pull out only the data bands (these all start with B, eg. B001)
@@ -129,17 +129,17 @@ Map.onClick(function(coords) {
 });
 ```
 
-When you run this code, (linked at the bottom), you will see the SOAP 2021 SDR layer show up in the Map panel, along with a white figure panel. When you click anywhere in the SDR image, the empty figure will be populated with the spectral signature of the pixel you clicked on.
+When you run this code, (linked at the bottom), you will see the SOAP 2021 directional reflectance layer show up in the Map panel, along with a white figure panel. When you click anywhere in the image, the empty figure will be populated with the spectral signature of the pixel you clicked on.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_plot_spectra/soap_spectral_plot.PNG" alt="SOAP Specral Plot"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png" alt="SOAP Specral Signature"></a>
 </figure>
 
 ## Recap
 
-In this lesson you learned how to read in wavelength information from the Surface Directional Reflectance (SDR) properties in GEE, created functions to convert from one data format to another, and created an interactive plot to visualize the spectral signature of a selected pixel. You can quickly see how GEE is a powerful tool for interactive data visualization and exploratory analysis.
+In this lesson you learned how to read in wavelength information from the Surface Directional Reflectance properties in GEE, created functions to convert from one data format to another, and created an interactive plot to visualize the spectral signature of a selected pixel. You can quickly see how GEE is a powerful tool for interactive data visualization and exploratory analysis.
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/ab1f812851ef19eebf871664d865181f" target="_blank">AOP GEE SDR Weather Quality</a>
+<a href="https://code.earthengine.google.com/b08021305eb73b4f54aa137759cc16cf" target="_blank">AOP GEE Reflectance Plot Spectra</a>

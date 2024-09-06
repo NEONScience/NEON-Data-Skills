@@ -32,7 +32,7 @@ After completing this tutorial, you will be able to use Python to:
 
 To follow along with this code, you will need to 
 1. Sign up for a non-commercial Google Earth Engine account here https://code.earthengine.google.com/register.
-2. Install **Python 3.x**
+2. Install **Python 3.9+**
 3. Install required Python packages (matplotlib, cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)
 - earthengine-api
 - geemap

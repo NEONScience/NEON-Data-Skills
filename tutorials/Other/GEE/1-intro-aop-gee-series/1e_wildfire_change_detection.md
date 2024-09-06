@@ -1,6 +1,6 @@
 ---
 syncID: d98dbad4b55b45a79a62bad1d25333fb
-title: "Wildfire Change Analysis Using AOP Reflectance and Canopy Height Data in GEE"
+title: "Wildfire Change Exploration Using AOP Reflectance and Canopy Height Data in GEE"
 description: "Explore pre- and post- wildfire imagery at GRSM, looking at differences in canopy height and Normalize Burn Ratio"
 dateCreated: 2023-07-29
 authors: John Musinsky, Stepan Bryleev, Bridget Hass
@@ -33,8 +33,7 @@ You will gain familiarity with:
  * Zonal statistics
 
 ## Requirements
- * A gmail (@gmail.com) account
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/.
  * A basic understanding of the GEE code editor and the GEE JavaScript API.
  * Optionally, complete the previous GEE tutorials in this tutorial series: 
     * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-gee-tutorial" target="_blank">Introduction to AOP Public Datasets in Google Earth Engine (GEE)</a>
@@ -65,7 +64,7 @@ Next, we'll read in the SDR image collection, and then write a function to mask 
 
 ```javascript
 // Read in the SDR Image Collection at GRSM
-var grsm_sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30006-001')
+var grsm_sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterBounds(site_center)
   
 // Function to mask out poor-weather data, keeping only the <10% cloud cover weather data
@@ -106,7 +105,7 @@ Next we can create a similar function for reading in the CHM dataset over all th
 
 ```javascript
 // Read in the CHM Image collection at GRSM
-var grsm_chm_col =  ee.ImageCollection('projects/neon-prod-earthengine/assets/DP3-30015-001')
+var grsm_chm_col =  ee.ImageCollection('projects/neon-prod-earthengine/assets/CHM/001')
   .filterBounds(site_center)
 
 // Function to display Single Band Images setting display range to linear 2%
@@ -272,4 +271,4 @@ On your own, we encourage you to dig into the code from this tutorial and expand
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/a22913d3a125580b5a9218e0675c4528" target="_blank">Wildfire Change Analysis</a>
+<a href="https://code.earthengine.google.com/cbae69d8cc23498268b5e24335e13786" target="_blank">GRSM Wildfire Change Exploration</a>
