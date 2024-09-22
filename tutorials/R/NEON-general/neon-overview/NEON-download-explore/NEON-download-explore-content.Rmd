@@ -47,14 +47,13 @@ library(reticulate)
 
 ## Set up: Install Packages {.tabset}
 
-* **neonUtilities**: Basic functions for accessing NEON data in R
-* **neonutilities**: Basic functions for accessing NEON data in Python
-* **neonOS**: Functions for common data wrangling needs for NEON observational data in R. No equivalent in Python; the tutorial uses custom Python code in those sections.
-* **terra**: Spatial data package; needed for working with remote sensing data in R.
-
 Packages only need to be installed once, you can skip this step after the first time:
 
 ### R
+
+* **neonUtilities**: Basic functions for accessing NEON data
+* **neonOS**: Functions for common data wrangling needs for NEON observational data.
+* **terra**: Spatial data package; needed for working with remote sensing data.
 
 ```{r install, eval=FALSE}
 
@@ -66,9 +65,13 @@ install.packages("terra")
 
 ### Python
 
+* **neonutilities**: Basic functions for accessing NEON data
+* **rasterio**: Spatial data package; needed for working with remote sensing data.
+
 ```{python p-install, eval=FALSE}
 
 pip install neonutilities
+pip install rasterio
 
 ```
 
@@ -87,7 +90,7 @@ pip install neonutilities
 
 ### R
 
-```{r R-library}
+```{r R-library, results="hide", message=FALSE}
 
 library(neonUtilities)
 library(neonOS)
@@ -101,6 +104,7 @@ library(terra)
 
 import neonutilities as nu
 import os
+import rasterio
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -177,7 +181,15 @@ to assign data types to each column of data:
 
 ### R
 
-```{r read-par, results="hide", message=FALSE, warning=FALSE}
+```{r read-par-hidden, results="hide", message=FALSE, warning=FALSE}
+
+par30 <- readTableNEON(
+  dataFile="~/Downloads/NEON_par_R/stackedFiles/PARPAR_30min.csv", 
+  varFile="~/Downloads/NEON_par_R/stackedFiles/variables_00024.csv")
+head(par30)
+
+```
+```{r read-par, eval=FALSE}
 
 par30 <- readTableNEON(
   dataFile="~/Downloads/NEON_par/stackedFiles/PARPAR_30min.csv", 
@@ -223,7 +235,7 @@ data in more depth, see the <a href="https://www.neonscience.org/resources/learn
 
 ```{r plot-par, eval=TRUE}
 
-plot(PARMean~startDateTime, 
+plot(PARMean~endDateTime, 
      data=par30[which(par30$verticalPosition=="080"),],
      type="l")
 
@@ -234,7 +246,8 @@ plot(PARMean~startDateTime,
 ```{python p-plot-par, eval=TRUE}
 
 par30top = par30[par30.verticalPosition=="080"]
-plt.plot(par30top.endDateTime, par30top.PARMean)
+fig, ax = plt.subplots()
+ax.plot(par30top.endDateTime, par30top.PARMean)
 plt.show()
 
 ```
@@ -253,11 +266,11 @@ plot.
 
 ```{r plot-par-lower, eval=TRUE}
 
-plot(PARMean~startDateTime, 
+plot(PARMean~endDateTime, 
      data=par30[which(par30$verticalPosition=="080"),],
      type="l")
 
-lines(PARMean~startDateTime, 
+lines(PARMean~endDateTime, 
      data=par30[which(par30$verticalPosition=="020"),],
      col="blue")
 
@@ -268,9 +281,9 @@ lines(PARMean~startDateTime,
 ```{python p-plot-par-lower, eval=TRUE}
 
 par30low = par30[par30.verticalPosition=="020"]
-plt.plot(par30top.endDateTime, par30top.PARMean)
-plt.plot(par30low.endDateTime, par30top.PARMean, 
-         color="blue")
+fig, ax = plt.subplots()
+ax.plot(par30top.endDateTime, par30top.PARMean)
+ax.plot(par30low.endDateTime, par30low.PARMean)
 plt.show()
 
 ```
@@ -294,7 +307,7 @@ using `loadByProduct()`:
 
 ### R
 
-```{r run-loadByProduct-par, results="hide"}
+```{r run-loadByProduct-par-hidden, results="hide", include=FALSE}
 
 parlist <- loadByProduct(dpID="DP1.00024.001", 
                          site="WREF", 
@@ -303,16 +316,32 @@ parlist <- loadByProduct(dpID="DP1.00024.001",
                          check.size=F)
 
 ```
+```{r run-loadByProduct-par, eval=FALSE}
+
+parlist <- loadByProduct(dpID="DP1.00024.001", 
+                         site="WREF", 
+                         startdate="2019-09",
+                         enddate="2019-11")
+
+```
 
 ### Python
 
-```{python p-run-loadByProduct-par, results="hide"}
+```{python p-run-loadByProduct-par-hidden, results="hide", include=FALSE}
 
 parlist = nu.load_by_product(dpid="DP1.00024.001", 
                 site="WREF", 
                 startdate="2019-09",
                 enddate="2019-11",
                 check_size=False)
+
+```
+```{python p-run-loadByProduct-par, eval=FALSE}
+
+parlist = nu.load_by_product(dpid="DP1.00024.001", 
+                site="WREF", 
+                startdate="2019-09",
+                enddate="2019-11")
 
 ```
 
@@ -324,8 +353,7 @@ The object returned by `loadByProduct()` in R is a named list, and the
 object returned by `load_by_product()` in Python is a dictionary. The 
 objects contained in the list or dictionary are the same set of tables 
 we ended with after stacking the data from the portal above. You can 
-see this by checking the names of the tables in 
-`parlist`:
+see this by checking the names of the tables in `parlist`:
 
 #### R
 
@@ -398,7 +426,7 @@ subject to change.
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set it to F.
-* `token`: Use a NEON API token for faster downloads. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial</a> 
+* `token`: Optional NEON API token for faster downloads. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial</a> 
 for instructions on using a token.
 * `nCores`: Number of cores to use for parallel processing. Defaults 
 to 1, i.e. no parallelization. Only available in R.
@@ -606,9 +634,12 @@ boxplot(analyteConcentration~siteID,
 ```{python p-13C-by-site, message=FALSE, warning=FALSE}
 
 apl13C = apl_plantExternalLabDataPerSample[
-         apl_plantExternalLabDataPerSample.analyte=="13C"]
-plt.boxplot(apl13C["siteID"],
-            apl13C["analyteConcentration"])
+         apl_plantExternalLabDataPerSample.analyte=="d13C"]
+grouped = apl13C.groupby("siteID")["analyteConcentration"]
+fig, ax = plt.subplots()
+ax.boxplot(x=[group.values for name, group in grouped],
+           tick_labels=grouped.groups.keys())
+plt.show()
 
 ```
 
@@ -668,8 +699,8 @@ the info in the Quick Start Guide:
 
 apct = pd.merge(apl_biomass, 
             apl_plantExternalLabDataPerSample,
-            left_on="chemSubsampleID",
-            right_on="sampleID",
+            left_on=["siteID", "chemSubsampleID"],
+            right_on=["siteID", "sampleID"],
             how="outer")
 
 ```
@@ -679,16 +710,20 @@ for each taxon.
 
 ```{python p-plot-13C-by-tax, eval=TRUE}
 
-apl13Cspp = apct[apct.analyte=="13C"]
-plt.boxplot(apl13Cspp["scientificName"],
-            apl13Cspp["analyteConcentration"])
+apl13Cspp = apct[apct.analyte=="d13C"]
+grouped = apl13Cspp.groupby("scientificName")["analyteConcentration"]
+fig, ax = plt.subplots()
+ax.boxplot(x=[group.values for name, group in grouped],
+           tick_labels=grouped.groups.keys())
+ax.tick_params(axis='x', labelrotation=90)
+plt.show()
 
 ```
 
 ### {-}
 
 And now we can see most of the sampled plants have carbon 
-isotope ratios around -30, with just two species accounting 
+isotope ratios around -30, with just a few species accounting 
 for most of the more enriched samples.
 
 
@@ -716,29 +751,53 @@ corresponding tiles you want to download
 whose corresponding tiles you want to download
 * `buffer`: `byTileAOP()` only. Size in meters of buffer to include 
 around coordinates when deciding which tiles to download
+* `token`: Optional NEON API token for faster downloads.
+* `chunk_size`: Only in Python. Set the chunk size of chunked 
+downloads, can improve efficiency in some cases. Defaults to 1 MB.
 
 Here, we'll download one tile of Ecosystem structure (Canopy Height 
 Model) (DP3.30015.001) from WREF in 2017.
 
+### R
+
 ```{r aop-tile, results="hide", eval=FALSE, comment=NA}
 
-byTileAOP("DP3.30015.001", site="WREF", year="2017",
-          easting=580000, northing=5075000, 
-          savepath="~/Downloads", check.size=F)
+byTileAOP(dpID="DP3.30015.001", site="WREF", 
+          year=2017,easting=580000, 
+          northing=5075000, 
+          savepath="~/Downloads")
 
 ```
+
+### Python
+
+```{python p-aop-tile, results="hide", eval=FALSE, comment=NA}
+
+nu.by_tile_aop(dpid="DP3.30015.001", site="WREF", 
+               year=2017,easting=580000, 
+               northing=5075000, 
+               savepath=os.path.expanduser(
+                 "~/Downloads"))
+
+```
+
+## {-}
 
 In the directory indicated in `savepath`, you should now have a folder 
 named `DP3.30015.001` with several nested subfolders, leading to a tif 
 file of a canopy height model tile.
 
 
-## Navigate data downloads: AOP
+## Navigate data downloads: AOP {.tabset}
 
-To work with AOP data, the best bet is the `terra` package. 
-It has functionality for most analyses you might want to do.
+To work with AOP data, the best bet in R is the `terra` package. 
+It has functionality for most analyses you might want to do. In 
+Python, we'll use the rasterio package here; explore 
+NEON remote sensing tutorials for more guidance.
 
-We'll use it to read in the tile we downloaded:
+First let's read in the tile we downloaded:
+
+### R
 
 ```{r read-aop, eval=TRUE}
 
@@ -746,7 +805,19 @@ chm <- rast("~/Downloads/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_
 
 ```
 
-The `terra` package includes plotting functions:
+### Python
+
+```{python p-read-aop, eval=TRUE}
+
+chm = rasterio.open(os.path.expanduser("~/Downloads/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
+
+```
+
+## {-}
+
+### Plot canopy height model {.tabset}
+
+#### R
 
 ```{r reset-graph-param, eval=TRUE, echo=F, results='hide', message=F, warning=F}
 
@@ -759,6 +830,17 @@ par(mar=c(5,4,4,1))
 plot(chm, col=topo.colors(6))
 
 ```
+
+#### Python
+
+```{python p-plot-aop, eval=TRUE}
+
+plt.imshow(chm.read(1))
+plt.show()
+
+```
+
+### {-}
 
 Now we can see canopy height across the downloaded tile; 
 the tallest trees are over 60 meters, not surprising in 
