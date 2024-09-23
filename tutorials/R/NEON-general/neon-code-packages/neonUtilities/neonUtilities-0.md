@@ -389,7 +389,7 @@ ensures time stamps and missing data are interpreted correctly.</p>
 </div>
 <div id="python-6" class="section level3">
 <h3>Python</h3>
-<pre class="python"><code>SAAT30 = read_table_neon(
+<pre class="python"><code>SAAT30 = nu.read_table_neon(
   dataFile=&#39;/stackedFiles/SAAT_30min.csv&#39;,
   varFile=&#39;/stackedFiles/variables_00002.csv&#39;
 )</code></pre>
