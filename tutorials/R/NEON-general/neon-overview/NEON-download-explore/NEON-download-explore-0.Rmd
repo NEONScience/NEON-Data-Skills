@@ -24,8 +24,7 @@ library(htmltools)
 
 ```{r html, echo=FALSE, warning=FALSE, message=FALSE}
 
-htmltools::includeHTML("https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/refs/heads/main/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore-content.html")
+htmltools::includeHTML("/Users/clunch/GitHub/NEON-Data-Skills/tutorials/R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore-content.html")
 
 ```
-
 
