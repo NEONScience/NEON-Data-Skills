@@ -234,7 +234,7 @@ data in more depth, see the <a href="https://www.neonscience.org/resources/learn
 
 #### R
 
-```{r plot-par, dpi=36, eval=TRUE}
+```{r plot-par, dpi=72, eval=TRUE}
 
 plot(PARMean~endDateTime, 
      data=par30[which(par30$verticalPosition=="080"),],
@@ -244,7 +244,7 @@ plot(PARMean~endDateTime,
 
 #### Python
 
-```{python p-plot-par, dpi=36, eval=TRUE}
+```{python p-plot-par, dpi=72, eval=TRUE}
 
 par30top = par30[par30.verticalPosition=="080"]
 fig, ax = plt.subplots()
@@ -265,7 +265,7 @@ plot.
 
 #### R
 
-```{r plot-par-lower, dpi=36, eval=TRUE}
+```{r plot-par-lower, dpi=72, eval=TRUE}
 
 plot(PARMean~endDateTime, 
      data=par30[which(par30$verticalPosition=="080"),],
@@ -273,13 +273,13 @@ plot(PARMean~endDateTime,
 
 lines(PARMean~endDateTime, 
      data=par30[which(par30$verticalPosition=="020"),],
-     col="blue")
+     col="orange")
 
 ```
 
 #### Python
 
-```{python p-plot-par-lower, dpi=36, eval=TRUE}
+```{python p-plot-par-lower, dpi=72, eval=TRUE}
 
 par30low = par30[par30.verticalPosition=="020"]
 fig, ax = plt.subplots()
@@ -621,7 +621,7 @@ subset to only the carbon isotope analyte:
 
 #### R
 
-```{r 13C-by-site, dpi=36, message=FALSE, warning=FALSE}
+```{r 13C-by-site, dpi=72, message=FALSE, warning=FALSE}
 
 boxplot(analyteConcentration~siteID, 
         data=apl_plantExternalLabDataPerSample, 
@@ -632,7 +632,7 @@ boxplot(analyteConcentration~siteID,
 
 #### Python
 
-```{python p-13C-by-site, dpi=36, message=FALSE, warning=FALSE}
+```{python p-13C-by-site, dpi=72, results="hide", message=FALSE, warning=FALSE}
 
 apl13C = apl_plantExternalLabDataPerSample[
          apl_plantExternalLabDataPerSample.analyte=="d13C"]
@@ -681,7 +681,7 @@ par(mar=c(12,4,0.25,1))
 
 ```
 
-```{r plot-13C-by-tax, dpi=36, eval=TRUE}
+```{r plot-13C-by-tax, dpi=72, eval=TRUE}
 
 boxplot(analyteConcentration~scientificName, 
         data=apct, subset=analyte=="d13C", 
@@ -709,7 +709,7 @@ apct = pd.merge(apl_biomass,
 Using the merged data, now we can plot carbon isotope ratio 
 for each taxon.
 
-```{python p-plot-13C-by-tax, dpi=36, eval=TRUE}
+```{python p-plot-13C-by-tax, dpi=72, eval=TRUE, results="hide"}
 
 apl13Cspp = apct[apct.analyte=="d13C"]
 grouped = apl13Cspp.groupby("scientificName")["analyteConcentration"]
@@ -826,7 +826,7 @@ par(mar=c(5,4,4,1))
 
 ```
 
-```{r plot-aop, dpi=36, eval=TRUE}
+```{r plot-aop, dpi=72, eval=TRUE}
 
 plot(chm, col=topo.colors(6))
 
