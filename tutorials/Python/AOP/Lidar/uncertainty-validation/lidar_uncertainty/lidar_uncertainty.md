@@ -15,7 +15,7 @@ tutorialSeries: rs-uncertainty-py-series
 urlTitle: lidar-uncertainty-py
 ---
 
-In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) and assess the uncertainty between data colleced over the same area on different days. 
+In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) and assess the uncertainty between data collected over the same area on different days. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -26,7 +26,7 @@ After completing this tutorial, you will be able to:
 * Difference the tif files
 * Create histograms of the DSM, DTM, and CHM differences
 * Remove vegetated areas of DSM & DTMs using the CHM
-* Compare difference in DSM and DTMS over vegetated and ground pixels
+* Compare difference in DSM and DTMs over vegetated and ground pixels
 
 ### Install Python Packages
 
