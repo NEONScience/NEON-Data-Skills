@@ -199,12 +199,12 @@ ax.legend(handles=[class1,class2,class3,class4,class5],
 
 Create the following threshold classified outputs:
 
-1. An NDVI raster where values are classified into the following categories:
+An NDVI raster where values are classified into the following categories:
 - Low greenness: NDVI < 0.3
 - Medium greenness: 0.3 < NDVI < 0.6
 - High greenness: NDVI > 0.6
 
-2. A classified aspect raster where the data is grouped into North and South facing slopes (or all four cardinal directions): 
+A classified aspect raster where the data is grouped into North and South facing slopes (or all four cardinal directions): 
 - North: 0-45 & 315-360 degrees 
 - South: 135-225 degrees
 
