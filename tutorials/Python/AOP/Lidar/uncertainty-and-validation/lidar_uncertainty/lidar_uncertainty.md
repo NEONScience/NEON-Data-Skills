@@ -10,7 +10,7 @@ packagesLibraries: neonutilities, rasterio
 topics: hyperspectral-remote-sensing, remote-sensing
 languagesTool: Python
 dataProduct: DP3.30015.001, DP3.30024.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty_py.py
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty.py
 tutorialSeries: rs-uncertainty-py-series
 urlTitle: lidar-uncertainty-py
 ---
