@@ -163,7 +163,7 @@ show(dtm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
     
 
 
-Since we want to know what the changed between the two days, we will create an array containing the pixel differences across the two arrays.  To do this let's subtract the two DSMs. First let's extract the data from the datasets as follows:
+Since we want to know what changed between the two days, we will create an array containing the pixel differences across the two arrays.  To do this let's subtract the two DSMs. First let's extract the data from the datasets as follows:
 
 
 ```python
@@ -295,7 +295,7 @@ ax.set_title('DTM Difference Map');
 
 The overall magnitude of differences are smaller than in the DSM but the same spatial pattern of the error is evident. 
 
-Now, we'll plot the Canopy Height Model (CHM) of the same area. In the CHM, the tree heights above ground are represented, with all ground pixels having zero elevation. This time we'll use a colorbar which shows the ground as light green and the highest vegetation as dark green. We can set the lower limit of the color bar to zero and the upper limit to the mean canopy height to get a good color variation. 
+Now, we'll plot the Canopy Height Model (CHM) of the same area. In the CHM, the tree heights above ground are represented, with all ground pixels having zero elevation. This time we'll use a colorbar which shows the ground as light green and the highest vegetation as dark green. 
 
 
 ```python
@@ -313,7 +313,7 @@ show(chm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
 
 From the CHM, it appears the spatial distribution of error patterns follow the location of vegetation. 
 
-Now let's isolate only the pixels in the difference DSM that correspond to vegetation location, calcualte the mean and standard deviation and plot the associated histogram. Before displaying the histogram, we'll remove the no data values from the difference DSM and the non-zero pixels from the CHM. To keep the number of elements the same in each vector to allow element-wise logical operations in Python, we have to remove the difference DSM no data elements from the CHM array as well. 
+Now let's isolate only the pixels in the difference DSM that correspond to vegetation location, calculate the mean and standard deviation, and plot the associated histogram. Before displaying the histogram, we'll remove the no data values from the difference DSM and the non-zero pixels from the CHM. To keep the number of elements the same in each vector to allow element-wise logical operations in Python, we have to remove the difference DSM no data elements from the CHM array as well. 
 
 
 ```python
@@ -384,7 +384,7 @@ plt.xlabel('Height Difference (m)'); plt.ylabel('Frequency');
     
 
 
-Although the variation is reduced, it is still larger than expected for LiDAR. This is because under vegetation there may not be much laser energy reaching the ground, and those points that do may return with lower signal. The sparsity of points leads to surface interpolation over larger areas which can miss variations in the topography. Since the distribution of LIDAR and their location varied for each day, this resulted in different terrain representations and a uncertianty in the ground surface. This shows that the accuracy of LiDAR DTMs is reduced when under vegetation.
+Although the variation is reduced, it is still larger than expected for LiDAR. This is because under vegetation there may not be much laser energy reaching the ground, and the points that reach the ground may return with lower signal. The sparsity of points leads to surface interpolation over larger distances, which can miss variations in the topography. Since the distribution of LIDAR points varied on each day, this resulted in different terrain representations and an uncertainty in the ground surface. This shows that the accuracy of LiDAR DTMs is reduced when there is vegetation present.
 
 Finally, let's look at the DTM difference on only the ground points (where CHM = 0).
 
@@ -416,6 +416,6 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency');
     
 
 
-In the open ground scenario we are able to produce the error chatracteristics we expect with a mean difference of only 0.011 m and a variation of 0.068 m. 
+In the open ground scenario we are able to see the error characteristics we expect, with a mean difference of only 0.011 m and a variation of 0.068 m. 
 
-This shows that the uncertainty we expect in the NEON LiDAR system (~0.15 m) is only valid in bare, open, hard surface scenarios. We cannot expect the accuracy of the LiDAR to reach this level when vegetation is present. Quantifying the top of the canopy is particularly difficult and can lead to uncertainty in excess of 1 m for any given pixel.  
+This shows that the uncertainty we expect in the NEON LiDAR system (~0.15 m) is only valid in bare, open, hard-surfaces. We cannot expect the LiDAR to be as accurate when vegetation is present. Quantifying the top of the canopy is particularly difficult and can lead to uncertainty in excess of 1 m for any given pixel.  
