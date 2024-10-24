@@ -425,14 +425,14 @@ This shows that the uncertainty we expect in the NEON LiDAR system (~0.15 m) is 
 
 **Challenge: Repeat this uncertainty analysis on another NEON site**
 
-1. There are a number of other instances where AOP has flown repeat flights in short proximity (within a few days, to a few months apart). Try repeating this analysis for one of these sites, listed below:
+There are a number of other instances where AOP has flown repeat flights in short proximity (within a few days, to a few months apart). Try repeating this analysis for one of these sites, listed below:
 
 - 2017 SERC
 - 2019 CHEQ
 - 2020 CPER
 - 2024 KONZ
 
-2. Repeat this analysis for a site that was flown twice in the same year, but with different lidar sensors (payloads).
+Repeat this analysis for a site that was flown twice in the same year, but with different lidar sensors (payloads).
 - 2023 SOAP (Visit 6: Riegl Q780, Visit 7: Optech Galaxy Prime)
 
 Tip: You may wish to read this <a href="https://www.neonscience.org/about/faq" target="_blank">FAQ: Have AOP sensors changed over the years? How do different sensors affect the data?</a> This discusses the differences between lidar sensors that NEON AOP operates, and some of the implications for the data products derived from the lidar sensor.
