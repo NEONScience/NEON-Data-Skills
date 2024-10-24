@@ -152,9 +152,7 @@ show(dsm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
 
 
     
-![png](output_11_0.png)
-    
-
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_11_0.png)
 
 
 ```python
@@ -166,7 +164,7 @@ show(dtm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
 
 
     
-![png](output_12_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_12_0.png)
     
 
 
@@ -206,7 +204,7 @@ plt.show()
 
 
     
-![png](output_18_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_18_0.png)
     
 
 
@@ -223,7 +221,7 @@ plt.show()
 
 
     
-![png](output_20_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_20_0.png)
     
 
 
@@ -252,7 +250,7 @@ ax.set_title('DSM Difference Map');
 
 
     
-![png](output_22_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_22_0.png)
     
 
 
@@ -296,7 +294,7 @@ ax.set_title('DTM Difference Map');
 
 
     
-![png](output_26_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_26_0.png)
     
 
 
@@ -314,7 +312,7 @@ show(chm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
 
 
     
-![png](output_28_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_28_0.png)
     
 
 
@@ -351,7 +349,7 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency');
 
 
     
-![png](output_31_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_31_0.png)
     
 
 
@@ -387,7 +385,7 @@ plt.xlabel('Height Difference (m)'); plt.ylabel('Frequency');
 
 
     
-![png](output_35_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_35_0.png)
     
 
 
@@ -419,7 +417,7 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency');
 
 
     
-![png](output_38_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_38_0.png)
     
 
 
