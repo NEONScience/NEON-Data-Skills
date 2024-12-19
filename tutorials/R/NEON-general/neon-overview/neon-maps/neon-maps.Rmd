@@ -6,7 +6,7 @@ dateCreated: 2021-04-06
 authors: Claire K. Lunch
 contributors: Megan Jones, Alison Dernbach, Donal O'Leary
 estimatedTime: 20 minutes
-packagesLibraries: sp, rgdal
+packagesLibraries: sf
 topics: data-management, rep-sci
 languageTool: R
 dataProduct: 
@@ -42,14 +42,13 @@ the RStudio IDE to work with R.
 
 ## Setup R Environment
 
-We'll need several R packages in this tutorial. Install the packages, if not 
-already installed, and load the libraries for each. 
+We'll use the `sf` R package in this tutorial. Install the package, if not 
+already installed, and load the library. 
 
 ```{r install, eval=FALSE}
 
 # run once to get the package, and re-run if you need to get updates
-install.packages("sp")  # work with spatial data
-install.packages("rgdal")  # work with spatial data
+install.packages("sf")  # work with spatial data
 
 ```
 
@@ -57,10 +56,7 @@ install.packages("rgdal")  # work with spatial data
 ```{r libraries, results="hide"}
 
 # run every time you start a script
-library(sp)
-library(rgdal)
-
-options(stringsAsFactors=F)
+library(sf)
 
 # set working directory to ensure R can find the file we wish to import and where
 # we want to save our files. 
@@ -113,7 +109,7 @@ alternative ways to work with spatial data.
 Using the domain shapefile and the field sites list, let's make a map of NEON 
 site locations.
 
-We'll read in the spatial data using the `rgdal` and `sp` packages and plot it 
+We'll read in the spatial data using the `sf` package and plot it 
 using base R. First, read in the domain shapefile. 
 
 Be sure to move the downloaded and unzipped data files into the working directory 
@@ -122,7 +118,7 @@ you set earlier!
 ```{r load-domains, results="hide"}
 
 # upload data
-neonDomains <- readOGR(paste0(wd,"NEONDomains_0"), layer="NEON_Domains")
+neonDomains <- read_sf(paste0(wd,"NEONDomains_2024"), layer="NEON_Domains")
 
 ```
 
@@ -133,7 +129,7 @@ the sites.
 
 ```{r plot-domains, fig.width=8, fig.height=6, fig.cap="Map of the United States with each NEON domain outlined"}
 
-plot(neonDomains)
+plot(st_geometry(neonDomains))
 
 ```
 
@@ -143,14 +139,14 @@ many map projections possible, and Mercator is distorted in very
 well-documented ways! Here, we'll use it as a demonstration, but you may 
 want to use a different projection in your own work.
 
-The `spTransform()` and `CRS()` functions in the `sp` package can be used 
+The `st_transform()` function in the `sf` package can be used 
 to convert the projection:
 
 ```{r mercator, fig.width=8, fig.height=6}
 
-neonMercator <- spTransform(neonDomains,
-                            CRS("+proj=merc"))
-plot(neonMercator)
+neonMercator <- st_transform(neonDomains,
+                            crs="+proj=merc")
+plot(st_geometry(neonMercator))
 
 ```
 
@@ -162,7 +158,10 @@ locations on it. To do this, we need to load and explore the field sites data.
 ```{r load-explore-sites}
 
 # read in the data
-neonSites <- read.delim(paste0(wd,"field-sites.csv"), sep=",", header=T)
+# make sure the file name matches the file you downloaded
+# the date stamp is updated over time
+neonSites <- read.delim(paste0(wd,"NEON_Field_Site_Metadata_20241219.csv"), 
+                        sep=",", header=T)
 
 # view data structure for each variable
 str(neonSites)
@@ -171,13 +170,13 @@ str(neonSites)
 
 Here there is a lot of associated data about the field sites that may be of 
 interest, such as site descriptions and dominant vegetation types. For mapping 
-purposes, we can see that there are both **Latitude** and **Longitude**
+purposes, we can see that there are both latitude and longitude
 data, so we can plot this data onto our previous map. 
 
 ```{r plot-sites, fig.width=8, fig.height=6, fig.cap="NEON domain map with site dots added"}
 
-plot(neonDomains)
-points(neonSites$Latitude~neonSites$Longitude,
+plot(st_geometry(neonDomains))
+points(neonSites$field_latitude~neonSites$field_longitude,
        pch=20)
 
 ```
@@ -185,14 +184,13 @@ points(neonSites$Latitude~neonSites$Longitude,
 Now we can see all the sites across the Observatory. Note that we've switched 
 back to the Lat-Long projection, which makes it simple to plot the site 
 locations onto the map using their latitude and longitude. To plot them on 
-the Mercator projection, we would need to convert the site latitude and 
-longitude values into a SpatialPoints object, and then perform the same 
-conversion. See `sp` package documentation if you are interested in doing 
+the Mercator projection, we would need to perform the same conversion on 
+the coordinates. See `sf` package documentation if you are interested in doing 
 this.
 
 NEON has both aquatic and terrestrial sites, with important differences 
 between the two. Looking back at the variables in this data set, we can 
-see that `Site.Type` designates the aquatic and terrestrial sites. 
+see that `field_site_type` designates the aquatic and terrestrial sites. 
 
 Let's differentiate the site types by adding color to our plot, with 
 terrestrial sites in green and aquatic sites in blue.
@@ -203,12 +201,12 @@ terrestrial sites in green and aquatic sites in blue.
 siteCol <- character(nrow(neonSites))
 
 # populate new variable with colors, according to Site.Type
-siteCol[grep("Aquatic", neonSites$Site.Type)] <- "blue"
-siteCol[grep("Terrestrial", neonSites$Site.Type)] <- "green"
+siteCol[grep("Aquatic", neonSites$field_site_type)] <- "blue"
+siteCol[grep("Terrestrial", neonSites$field_site_type)] <- "green"
 
 # add color to points on map
-plot(neonDomains)
-points(neonSites$Latitude~neonSites$Longitude,
+plot(st_geometry(neonDomains))
+points(neonSites$field_latitude~neonSites$field_longitude,
        pch=20, col=siteCol)
 
 ```
