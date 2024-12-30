@@ -1,0 +1,90 @@
+## Writing a tutorial with R and Python code tabs
+
+### Overview:
+
+The website displays tutorials based on markdown files. Because pure markdown doesn't allow for code tabs, we've implemented a workaround. The code tabs are created in an Rmarkdown file. That file is knit to an html fragment. The fragment is then embedded in a markdown file for rendering on the website. This means a tabbed tutorial involves four files:
+
+* Rmd file: All content for the tutorial is written here
+* html fragment: Knitted version of the Rmd file
+* Second Rmd file: Contains only the yaml header for the website and a pointer to the html fragment
+* md file: Knitted version of the second Rmd file. This is the file that syncs to the website.
+
+This looks complicated, but only the first file requires real work (since it contains all the content). Detailed instructions below.
+
+### Writing the content file (Rmd)
+
+This file starts with a very simple yaml header:
+
+```
+---
+title: Content for XXXXX tutorial
+output: html_fragment
+dateCreated: 'YYYY-MM-DD'
+---
+```
+
+For all of the non-tabbed content, write in Rmarkdown as usual.
+
+#### Creating tabs
+
+Tabs are created by labeling a header with `{.tabset}`, then nesting the tab labels as headers one level below. Typically the tabset is at header level 2, and the tabs are at header level 3, like this:
+
+```
+## Title for this section {.tabset}
+
+This text will appear above both tabs.
+
+### R
+
+This text will appear in the R tab.
+
+### Python
+
+This text will appear in the Python tab.
+
+## {-}
+```
+
+The `## {-}` label closes out this set of tabs.
+
+You can also make the tabset a level 3 header, and the tabs level 4. To the user, the tabs appear the same, but you may sometimes want to do this because in the NEON learning hub, level 2 headers appear as the table of contents for the tutorial in the lefthand bar. They define the sections of a tutorial. You can't create tabs without a header, so using level 3 headers lets you include multiple sets of tabs within a section.
+
+```
+### Level 3 header within a section {.tabset}
+
+#### R
+
+This text will appear in the R tab.
+
+#### Python
+
+This text will appear in the Python tab.
+
+### {-}
+```
+
+Code blocks can be included in tabs just like they can in any other Rmarkdown file.
+
+```
+## Title for this section {.tabset}
+
+This text describes the general approach, relevant to both languages.
+
+### R
+
+This text describes any specifics relevant to the R code.
+
+ ```{r chunk-name}
+ R code goes here
+ ```
+
+### Python
+
+This text describes any specifics relevant to the Python code.
+
+ ```{python p-chunk-name}
+ Python code goes here
+ ```
+
+## {-}
+```
