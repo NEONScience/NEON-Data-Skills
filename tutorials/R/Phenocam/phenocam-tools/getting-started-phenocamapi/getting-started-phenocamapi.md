@@ -2,7 +2,7 @@
 syncID: 040aa4e32b574a7dac2bf2f88ea86858
 title: "Interacting with the PhenoCam Server using phenocamapi R Package"
 description: "Learn the basics of how to extract PhenoCam data and metadata through the Phenocam API"
-date: "2020-03-19"
+date: "2024-12-30"
 authors: Bijan Seyednasrollah
 contributors:
 estimatedTime: 0.5 hrs
@@ -19,14 +19,14 @@ urlTitle: phenocam-api-intro
 
 The <a href="https://cran.r-project.org/web/packages/phenocamapi/index.html" target="_blank"> *phenocamapi* R package</a> 
 is developed to simplify interacting with the 
-<a href="https://phenocam.sr.unh.edu" target="_blank">PhenoCam network</a> 
-dataset and perform data wrangling steps on PhenoCam sites' data and metadata. 
+<a href="https://phenocam.nau.edu/webcam/" target="_blank">PhenoCam network</a> 
+dataset and perform data wrangling steps on PhenoCam sites' data and metadata.
 
 This tutorial will show you the basic commands for accessing PhenoCam data
 through the PhenoCam API. The *phenocampapi* R package is developed and maintained by 
-<a href="https://bnasr.github.io/" target="_blank">Bijan Seyednarollah</a>. 
-The most recent release is available on GitHub (<a href="https://github.com/bnasr/phenocamapi" target="_blank">PhenocamAPI</a>). 
-<a href="https://github.com/bnasr/phenocamapi/tree/master/vignettes" target ="_blank">Additional vignettes</a> 
+the PhenoCam team. 
+The most recent release is available on GitHub (<a href="https://github.com/PhenoCamNetwork/phenocamapi" target="_blank">PhenocamAPI</a>). 
+<a href="https://github.com/PhenoCamNetwork/phenocamapi/tree/master/vignettes" target ="_blank">Additional vignettes</a> 
 can be found on how to merge external time-series (e.g. Flux data) with the 
 PhenoCam time-series. 
 
@@ -52,9 +52,13 @@ To explore the PhenoCam data, we'll use several packages for this tutorial.
 
 
     
-    library(data.table)
-    library(phenocamapi)
-    library(lubridate)
+
+    library(data.table) #installs package that creates a data frame for visualizing data in row-column table format
+
+    library(phenocamapi)  #installs packages of time series and phenocam data from the Phenology Network. Loads required packages rjson, bitops and RCurl
+
+    library(lubridate)  #install time series data package
+
     library(jpeg)
 
 
@@ -64,18 +68,23 @@ network using the `get_phenos()` function. The returning value would be a
 
 
     
-    # obtaining the phenocam site metadata from the server as data.table
+
+    #Obtain phenocam metadata from the Phenology Network in form of a data.table
+
     phenos <- get_phenos()
-    
-    # checking out the first few sites
-    head(phenos$site)
-
-    #> [1] "acadia"         "aguatibiaeast"  "aguatibianorth" "ahwahnee"       "alleypond"     
-    #> [6] "alligatorriver"
 
     
-    # checking out the columns
-    colnames(phenos)
+
+    #Explore metadata table
+
+    head(phenos$site) #preview first six rows of the table. These are the first six phenocam sites in the Phenology Network
+
+    #> [1] "aafcottawacfiaf14e" "aafcottawacfiaf14n" "aafcottawacfiaf14w" "acadia"            
+    #> [5] "admixpasture"       "adrycpasture"
+
+    
+
+    colnames(phenos)  #view all column names. 
 
     #>  [1] "site"                      "lat"                       "lon"                      
     #>  [4] "elev"                      "active"                    "utc_offset"               
@@ -91,18 +100,15 @@ network using the `get_phenos()` function. The returning value would be a
     #> [34] "site_acknowledgements"     "modified"                  "flux_networks_name"       
     #> [37] "flux_networks_url"         "flux_networks_description"
 
+    #This is all the metadata we have for the phenocams in the Phenology Network
+
 Now we have a better idea of the types of metadata that are available for the
 Phenocams. 
 
 ### Remove null values
 
 We may want to explore some of the patterns in the metadata before we jump into
-specific locations. 
-
-Let's look at Mean Annual Precipitation (MAP) and Mean Annual
-Temperature (MAT) across the different field site and classify those by the
-primary vegetation type (`primary_veg_type`) for each site. We can find out what 
-the abbreviations for the vegetation types mean from the following table:
+specific locations. Let's look at Mean Annual Precipitation (MAP) and Mean Annual Temperature (MAT) across the different field site and classify those by the primary vegetation type ('primary_veg_type') for each site. 
 
 | Abbreviation |	Description |
 |----------|:-------------:|------:|
@@ -124,11 +130,18 @@ To do this we'd first want to remove the sites where there is not data and then
 plot the data. 
 
 
-    # removing the sites with unkown MAT and MAP values
-    phenos <- phenos[!((MAT_worldclim == -9999)|(MAP_worldclim == -9999))]
+    # #Some sites do not have data on Mean Annual Precipitation (MAP) and Mean Annual Temperature (MAT).
+
     
-    # extracting the PhenoCam climate space based on the WorldClim dataset
-    # and plotting the sites across the climate space different vegetation type as different symbols and colors
+
+    # removing the sites with unknown MAT and MAP values
+
+    phenos <- phenos[!((MAT_worldclim == -9999)|(MAP_worldclim == -9999))]
+
+    
+
+    # Making a plot showing all sites by their vegetation type (represented as different symbols and colors) plotting across climate (MAT and MAP) space. Refer to table to identify vegetation type acronyms.
+
     phenos[primary_veg_type=='DB', plot(MAT_worldclim, MAP_worldclim, pch = 19, col = 'green', xlim = c(-5, 27), ylim = c(0, 4000))]
 
     #> NULL
@@ -154,6 +167,7 @@ plot the data.
     #> NULL
 
     
+
     legend('topleft', legend = c('DB','DN', 'EN','EB','AG', 'SH'), 
            pch = c(19, 1, 17, 25, 12, 23), 
            col =  c('green', 'darkgreen', 'brown',  'orange',  'yellow',  'red' ))
@@ -170,34 +184,47 @@ flux tower. For this, we'd want to filter for those with a flux tower using the
 
 
 
-    # store sites with flux_data available and the FLUX site name is specified
+    # Create a data table only including the sites that have flux_data available and where the FLUX site name is specified
+
     phenofluxsites <- phenos[flux_data==TRUE&!is.na(flux_sitenames)&flux_sitenames!='', 
-                             .(PhenoCam=site, Flux=flux_sitenames)] # return as table 
-    #and specify which variables to retain
+                             .(PhenoCam=site, Flux=flux_sitenames)] # return as table
+
     
+
+    #Specify to retain variables of Phenocam site and their flux tower name
+
     phenofluxsites <- phenofluxsites[Flux!='']
+
     
-    # see the first few rows
+
+    # view the first few rows of the data table
+
     head(phenofluxsites)
 
-    #>                PhenoCam                               Flux
-    #> 1:       alligatorriver                             US-NC4
-    #> 2:          arsbrooks10 US-Br1: Brooks Field Site 10- Ames
-    #> 3:          arsbrooks11 US-Br3: Brooks Field Site 11- Ames
-    #> 4:        arscolesnorth                               LTAR
-    #> 5:        arscolessouth                               LTAR
-    #> 6: arsgreatbasinltar098                             US-Rws
+    #>               PhenoCam                               Flux
+    #>                 <char>                             <char>
+    #> 1:        admixpasture                             NZ-ADw
+    #> 2: alercecosteroforest                             CL-ACF
+    #> 3:      alligatorriver                             US-NC4
+    #> 4:            amtsvenn                                 No
+    #> 5:    arkansaswhitaker                             US-RGW
+    #> 6:         arsbrooks10 US-Br1: Brooks Field Site 10- Ames
 
 We could further identify which of those Phenocams with a flux tower and in 
 deciduous broadleaf forests (`primary_veg_type=='DB'`). 
 
 
     
-    #list deciduous broadleaf sites with flux tower
+
+    #list deciduous broadleaf sites with a flux tower
+
     DB.flux <- phenos[flux_data==TRUE&primary_veg_type=='DB', 
                       site]  # return just the site names as a list
+
     
+
     # see the first few rows
+
     head(DB.flux)
 
     #> [1] "alligatorriver" "bartlett"       "bartlettir"     "bbc1"           "bbc2"          
@@ -206,22 +233,25 @@ deciduous broadleaf forests (`primary_veg_type=='DB'`).
 
 ## PhenoCam time series
 
-PhenoCam time series are extracted time series data obtained from ROI's for a 
-given site. 
+PhenoCam time series are extracted time series data obtained from regions of interest (ROI's) for a given site. 
 
 ### Obtain ROIs
 To download the phenological time series from the PhenoCam, we need to know the 
 site name, vegetation type and ROI ID. This information can be obtained from each
 specific PhenoCam page on the 
-<a href="https://phenocam.sr.unh.edu/webcam/gallery/" target="_blank">PhenoCam website</a> 
+<a href="https://phenocam.nau.edu/webcam/gallery/" target="_blank">PhenoCam website</a> 
 or by using the `get_rois()` function. 
 
 
 
-    # obtaining the list of all the available ROI's on the PhenoCam server
+    # Obtaining the list of all the available regions of interest (ROI's) on the PhenoCam server and producing a data table
+
     rois <- get_rois()
+
     
-    # view what information is returned
+
+    # view the data variables in the data table
+
     colnames(rois)
 
     #>  [1] "roi_name"          "site"              "lat"               "lon"              
@@ -231,47 +261,61 @@ or by using the `get_rois()` function.
     #> [17] "one_day_summary"   "three_day_summary" "data_release"
 
     
-    # view first few locations
+
+    # view first few regions of of interest (ROI) locations
+
     head(rois$roi_name)
 
-    #> [1] "alligatorriver_DB_1000"   "arbutuslake_DB_1000"      "arbutuslakeinlet_DB_1000"
-    #> [4] "arbutuslakeinlet_EN_1000" "arbutuslakeinlet_EN_2000" "archboldavir_AG_1000"
+    #> [1] "aafcottawacfiaf14n_AG_1000"  "admixpasture_AG_1000"        "adrycpasture_AG_1000"       
+    #> [4] "alercecosteroforest_EN_1000" "alligatorriver_DB_1000"      "almondifapa_AG_1000"
 
 ### Download time series
 
 The `get_pheno_ts()` function can download a time series and return the result 
 as a `data.table`. 
 Let's work with the 
-<a href="https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000.html">Duke Forest Hardwood Stand (`dukehw`) PhenoCam</a> 
+<a href="https://phenocam.nau.edu/webcam/sites/dukehw/">Duke Forest Hardwood Stand (`dukehw`) PhenoCam</a> 
 and specifically the ROI 
-<a href="https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000.html">`DB_1000`</a> 
+<a href="https://phenocam.nau.edu/webcam/roi/dukehw/DB_1000/">`DB_1000`</a> 
 we can run the following code. 
 
 
     # list ROIs for dukehw
+
     rois[site=='dukehw',]
 
     #>          roi_name   site      lat       lon roitype active show_link show_data_link
+    #>            <char> <char>    <num>     <num>  <char> <lgcl>    <lgcl>         <lgcl>
     #> 1: dukehw_DB_1000 dukehw 35.97358 -79.10037      DB   TRUE      TRUE           TRUE
-    #>    sequence_number                                   description first_date  last_date
-    #> 1:            1000 canopy level DB forest at awesome Duke forest 2013-06-01 2020-03-17
-    #>    site_years missing_data_pct                                               roi_page
-    #> 1:        6.6              3.0 https://phenocam.sr.unh.edu/webcam/roi/dukehw/DB_1000/
-    #>                                                                     roi_stats_file
-    #> 1: https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000_roistats.csv
-    #>                                                                one_day_summary
-    #> 1: https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000_1day.csv
-    #>                                                              three_day_summary data_release
-    #> 1: https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000_3day.csv           NA
+    #>    sequence_number                                   description first_date  last_date site_years
+    #>              <num>                                        <char>     <char>     <char>     <char>
+    #> 1:            1000 canopy level DB forest at awesome Duke forest 2013-06-01 2024-12-30       10.7
+    #>    missing_data_pct                                            roi_page
+    #>              <char>                                              <char>
+    #> 1:              8.0 https://phenocam.nau.edu/webcam/roi/dukehw/DB_1000/
+    #>                                                                  roi_stats_file
+    #>                                                                          <char>
+    #> 1: https://phenocam.nau.edu/data/archive/dukehw/ROI/dukehw_DB_1000_roistats.csv
+    #>                                                             one_day_summary
+    #>                                                                      <char>
+    #> 1: https://phenocam.nau.edu/data/archive/dukehw/ROI/dukehw_DB_1000_1day.csv
+    #>                                                           three_day_summary data_release
+    #>                                                                      <char>       <lgcl>
+    #> 1: https://phenocam.nau.edu/data/archive/dukehw/ROI/dukehw_DB_1000_3day.csv           NA
 
     
-    # to obtain the DB 1000 from dukehw
+
+    # Obtain the decidous broadleaf, ROI ID 1000 data from the dukehw phenocam
+
     dukehw_DB_1000 <- get_pheno_ts(site = 'dukehw', vegType = 'DB', roiID = 1000, type = '3day')
+
     
-    # what data are available
+
+    # Produces a list of the dukehw data variables
+
     str(dukehw_DB_1000)
 
-    #> Classes 'data.table' and 'data.frame':	830 obs. of  35 variables:
+    #> Classes 'data.table' and 'data.frame':	1414 obs. of  35 variables:
     #>  $ date                : chr  "2013-06-01" "2013-06-04" "2013-06-07" "2013-06-10" ...
     #>  $ year                : int  2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
     #>  $ doy                 : int  152 155 158 161 164 167 170 173 176 179 ...
@@ -325,10 +369,14 @@ Before we can plot `gcc-90` we do need to fix our dates and convert them from
 Factors to Date to correctly plot. 
 
 
-    # date variable into date format
+    # Convert date variable into date format
+
     dukehw_DB_1000[,date:=as.Date(date)]
+
     
+
     # plot gcc_90
+
     dukehw_DB_1000[,plot(date, gcc_90, col = 'green', type = 'b')]
 
     #> NULL
@@ -347,32 +395,46 @@ Therefore, extracting a list of midday images (only one image a day) can be usef
 
 
     
+
     # obtaining midday_images for dukehw
+
     duke_middays <- get_midday_list('dukehw')
+
     
+
     # see the first few rows
+
     head(duke_middays)
 
-    #> [1] "http://phenocam.sr.unh.edu/data/archive/dukehw/2013/05/dukehw_2013_05_31_150331.jpg"
-    #> [2] "http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_01_120111.jpg"
-    #> [3] "http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_02_120109.jpg"
-    #> [4] "http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_03_120110.jpg"
-    #> [5] "http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_04_120119.jpg"
-    #> [6] "http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_05_120110.jpg"
+    #> [1] "http://phenocam.nau.edu/data/archive/dukehw/2013/05/dukehw_2013_05_31_150331.jpg"
+    #> [2] "http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_01_120111.jpg"
+    #> [3] "http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_02_120109.jpg"
+    #> [4] "http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_03_120110.jpg"
+    #> [5] "http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_04_120119.jpg"
+    #> [6] "http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_05_120110.jpg"
 
 Now we have a list of all the midday images from this Phenocam. Let's download
 them and plot 
 
 
     # download a file
+
     destfile <- tempfile(fileext = '.jpg')
+
     
+
     # download only the first available file
+
     # modify the `[1]` to download other images
+
     download.file(duke_middays[1], destfile = destfile, mode = 'wb')
+
     
+
     # plot the image
+
     img <- try(readJPEG(destfile))
+
     if(class(img)!='try-error'){
       par(mar= c(0,0,0,0))
       plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
@@ -390,151 +452,58 @@ learn how to do that next.
 
 
     
+
     # open a temporary directory
+
     tmp_dir <- tempdir()
+
     
+
     # download a subset. Example dukehw 2017
+
     download_midday_images(site = 'dukehw', # which site
                            y = 2017, # which year(s)
                            months = 1:12, # which month(s)
                            days = 15, # which days on month(s)
                            download_dir = tmp_dir) # where on your computer
 
-    #> 
-  |                                                                                        
-  |                                                                                  |   0%
-  |                                                                                        
-  |=======                                                                           |   8%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_01_15_120109.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |==============                                                                    |  17%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_02_15_120108.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |====================                                                              |  25%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_03_15_120151.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |===========================                                                       |  33%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_04_15_120110.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |==================================                                                |  42%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_05_15_120108.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |=========================================                                         |  50%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_06_15_120120.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |================================================                                  |  58%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_07_15_120109.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |=======================================================                           |  67%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_08_15_120110.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |==============================================================                    |  75%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_09_15_120110.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |====================================================================              |  83%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_10_15_120112.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |===========================================================================       |  92%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_11_15_120111.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> 
-  |                                                                                        
-  |==================================================================================| 100%
-
-    #> Warning in download_midday_images(site = "dukehw", y = 2017, months = 1:12, : /var/folders/
-    #> bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_12_15_120108.jpg was already
-    #> in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-    #> [1] "/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45"
-
     
+
     # list of downloaded files
-    duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
-    
-    head(duke_middays_path)
 
-    #> [1] "/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_01_15_120109.jpg"
-    #> [2] "/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_02_15_120108.jpg"
-    #> [3] "/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_03_15_120151.jpg"
-    #> [4] "/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_04_15_120110.jpg"
-    #> [5] "/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_05_15_120108.jpg"
-    #> [6] "/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_06_15_120120.jpg"
+    duke_middays_path <- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
+
+    
+
+    head(duke_middays_path)
 
 We can demonstrate the seasonality of Duke forest observed from the camera. (Note
 this code may take a while to run through the loop).
 
     n <- length(duke_middays_path)
+
     par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
+
     
+
     for(i in 1:n){
       img <- readJPEG(duke_middays_path[i])
       plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
       rasterImage(img, 0, 0, 1, 1)
       mtext(month.name[i], line = -2)
     }
+
     mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-monthly-forest-1.png)
 
-The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.sr.unh.edu/webcam/network/download/"> PhenoCam </a>.
+The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.nau.edu/webcam/data_products/"> PhenoCam </a>.
 
 
 *** 
 
 The *phenocamapi* R package is developed and maintained by 
 <a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. 
-The most recent release is available from 
-<a href="https://github.com/bnasr/phenocamapi" target="_blank">https://github.com/bnasr/phenocamapi</a>.
+The most recent release of the *phenocamapi* R package is 
+available on GitHub: 
+<a href="https://github.com/PhenoCamNetwork/phenocamapi" target="_blank">https://github.com/PhenoCamNetwork/phenocamapi</a>.

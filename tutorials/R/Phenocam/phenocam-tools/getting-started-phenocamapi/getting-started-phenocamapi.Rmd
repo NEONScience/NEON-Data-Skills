@@ -24,14 +24,14 @@ knitr::opts_chunk$set(
 
 The <a href="https://cran.r-project.org/web/packages/phenocamapi/index.html" target="_blank"> *phenocamapi* R package</a> 
 is developed to simplify interacting with the 
-<a href="https://phenocam.sr.unh.edu" target="_blank">PhenoCam network</a> 
+<a href="https://phenocam.nau.edu/webcam/" target="_blank">PhenoCam network</a> 
 dataset and perform data wrangling steps on PhenoCam sites' data and metadata.
 
 This tutorial will show you the basic commands for accessing PhenoCam data
 through the PhenoCam API. The *phenocampapi* R package is developed and maintained by 
-<a href="https://bnasr.github.io/" target="_blank">Bijan Seyednarollah</a>. 
-The most recent release is available on GitHub (<a href="https://github.com/bnasr/phenocamapi" target="_blank">PhenocamAPI</a>). 
-<a href="https://github.com/bnasr/phenocamapi/tree/master/vignettes" target ="_blank">Additional vignettes</a> 
+the PhenoCam team. 
+The most recent release is available on GitHub (<a href="https://github.com/PhenoCamNetwork/phenocamapi" target="_blank">PhenocamAPI</a>). 
+<a href="https://github.com/PhenoCamNetwork/phenocamapi/tree/master/vignettes" target ="_blank">Additional vignettes</a> 
 can be found on how to merge external time-series (e.g. Flux data) with the 
 PhenoCam time-series. 
 
@@ -55,7 +55,7 @@ process them in an R environment.
 
 To explore the PhenoCam data, we'll use several packages for this tutorial. 
 
-```{r libraries}
+```{r libraries, warning=FALSE}
 
 library(data.table) #installs package that creates a data frame for visualizing data in row-column table format
 library(phenocamapi)  #installs packages of time series and phenocam data from the Phenology Network. Loads required packages rjson, bitops and RCurl
@@ -74,9 +74,9 @@ network using the `get_phenos()` function. The returning value would be a
 phenos <- get_phenos()
 
 #Explore metadata table
-head(phenocam$site) #preview first six rows of the table. These are the first six phenocam sites in the Phenology Network
+head(phenos$site) #preview first six rows of the table. These are the first six phenocam sites in the Phenology Network
 
-colnames(phenocam)  #view all column names. 
+colnames(phenos)  #view all column names. 
 #This is all the metadata we have for the phenocams in the Phenology Network
 ```
 
@@ -171,7 +171,7 @@ PhenoCam time series are extracted time series data obtained from regions of int
 To download the phenological time series from the PhenoCam, we need to know the 
 site name, vegetation type and ROI ID. This information can be obtained from each
 specific PhenoCam page on the 
-<a href="https://phenocam.sr.unh.edu/webcam/gallery/" target="_blank">PhenoCam website</a> 
+<a href="https://phenocam.nau.edu/webcam/gallery/" target="_blank">PhenoCam website</a> 
 or by using the `get_rois()` function. 
 
 
@@ -192,9 +192,9 @@ head(rois$roi_name)
 The `get_pheno_ts()` function can download a time series and return the result 
 as a `data.table`. 
 Let's work with the 
-<a href="https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000.html">Duke Forest Hardwood Stand (`dukehw`) PhenoCam</a> 
+<a href="https://phenocam.nau.edu/webcam/sites/dukehw/">Duke Forest Hardwood Stand (`dukehw`) PhenoCam</a> 
 and specifically the ROI 
-<a href="https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000.html">`DB_1000`</a> 
+<a href="https://phenocam.nau.edu/webcam/roi/dukehw/DB_1000/">`DB_1000`</a> 
 we can run the following code. 
 
 ```{r, fig.height=5, fig.width=6.5, message=FALSE}
@@ -279,7 +279,7 @@ Now we can access all the midday images and download them one at a time. However
 we frequently want all the images within a specific time range of interest. We'll
 learn how to do that next. 
 
-```{r midday-time-range, fig.height=6, fig.width=8, message=FALSE, eval=TRUE}
+```{r midday-time-range, fig.height=6, fig.width=8, message=FALSE, warning=FALSE, eval=TRUE, results="hide"}
 
 # open a temporary directory
 tmp_dir <- tempdir()
@@ -314,12 +314,13 @@ mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = 
 
 ```
 
-The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.sr.unh.edu/webcam/network/download/"> PhenoCam </a>.
+The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.nau.edu/webcam/data_products/"> PhenoCam </a>.
 
 
 *** 
 
 The *phenocamapi* R package is developed and maintained by 
 <a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. 
-The most recent release is available from 
-<a href="https://github.com/bnasr/phenocamapi" target="_blank">https://github.com/bnasr/phenocamapi</a>.
+The most recent release of the *phenocamapi* R package is 
+available on GitHub: 
+<a href="https://github.com/PhenoCamNetwork/phenocamapi" target="_blank">https://github.com/PhenoCamNetwork/phenocamapi</a>.
