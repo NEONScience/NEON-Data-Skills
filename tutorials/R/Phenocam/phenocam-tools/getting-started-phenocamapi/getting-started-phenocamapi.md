@@ -502,8 +502,6 @@ The goal of this section was to show how to download a limited number of midday 
 
 *** 
 
-The *phenocamapi* R package is developed and maintained by 
-<a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. 
 The most recent release of the *phenocamapi* R package is 
 available on GitHub: 
 <a href="https://github.com/PhenoCamNetwork/phenocamapi" target="_blank">https://github.com/PhenoCamNetwork/phenocamapi</a>.
