@@ -1,184 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-<title>Exploring PhenoCam metadata</title>
-
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
-
-
-
-
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Interacting with the PhenoCam Server using phenocamapi R Package</title>
 <style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
 body {
+  font-family: sans-serif;
   max-width: 800px;
   margin: auto;
   padding: 1em;
-  line-height: 20px;
+  line-height: 1.5;
+  box-sizing: border-box;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
 }
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
 }
 pre code {
-   display: block; padding: 0.5em;
+  display: block;
+  overflow-x: auto;
 }
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
 }
-
-code[class] {
-  background-color: #F8F8F8;
+table {
+  margin: auto;
+  border-top: 1px solid #666;
 }
-
-table, td, th {
-  border: none;
-}
-
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
 blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
 }
 
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
 }
 </style>
-
-
-
 </head>
-
 <body>
-<p>The <a href="https://cran.r-project.org/web/packages/phenocamapi/index.html" target="_blank"> <em>phenocamapi</em> R package</a> 
-is developed to simplify interacting with the 
-<a href="https://phenocam.sr.unh.edu" target="_blank">PhenoCam network</a> 
-dataset and perform data wrangling steps on PhenoCam sites&#39; data and metadata.</p>
-
+<div class="frontmatter">
+<div class="title"><h1>Interacting with the PhenoCam Server using phenocamapi R Package</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3>2024-12-30</h3></div>
+</div>
+<div class="body">
+<p>The <a href="https://cran.r-project.org/web/packages/phenocamapi/index.html" target="_blank"> <em>phenocamapi</em> R package</a>
+is developed to simplify interacting with the
+<a href="https://phenocam.nau.edu/webcam/" target="_blank">PhenoCam network</a>
+dataset and perform data wrangling steps on PhenoCam sites’ data and metadata.</p>
 <p>This tutorial will show you the basic commands for accessing PhenoCam data
-through the PhenoCam API. The <em>phenocampapi</em> R package is developed and maintained by 
-<a href="https://bnasr.github.io/" target="_blank">Bijan Seyednarollah</a>. 
-The most recent release is available on GitHub (<a href="https://github.com/bnasr/phenocamapi" target="_blank">PhenocamAPI</a>). 
-<a href="https://github.com/bnasr/phenocamapi/tree/master/vignettes" target ="_blank">Additional vignettes</a> 
-can be found on how to merge external time-series (e.g. Flux data) with the 
-PhenoCam time-series. </p>
-
-<p>We begin with several useful skills and tools for extracting PhenoCam data 
+through the PhenoCam API. The <em>phenocampapi</em> R package is developed and maintained by
+the PhenoCam team.
+The most recent release is available on GitHub (<a href="https://github.com/PhenoCamNetwork/phenocamapi" target="_blank">PhenocamAPI</a>).
+<a href="https://github.com/PhenoCamNetwork/phenocamapi/tree/master/vignettes" target ="_blank">Additional vignettes</a>
+can be found on how to merge external time-series (e.g. Flux data) with the
+PhenoCam time-series.</p>
+<p>We begin with several useful skills and tools for extracting PhenoCam data
 directly from the server:</p>
-
 <ul>
 <li>Exploring the PhenoCam metadata</li>
 <li>Filtering the dataset by site attributes</li>
@@ -186,40 +100,41 @@ directly from the server:</p>
 <li>Extracting the list of midday images</li>
 <li>Downloading midday images for a given time range</li>
 </ul>
-
-<h2>Exploring PhenoCam metadata</h2>
-
-<p>Each PhenoCam site has specific metadata including but not limited to how a site 
-is set up and where it is located, what vegetation type is visible from the 
-camera, and its climate regime. Each PhenoCam may have zero to several Regions 
-of Interest (ROIs) per vegetation type. The <em>phenocamapi</em> package is an 
-interface to interact with the PhenoCam server to extract those data and 
+<h2 id="exploring-phenocam-metadata">Exploring PhenoCam metadata</h2>
+<p>Each PhenoCam site has specific metadata including but not limited to how a site
+is set up and where it is located, what vegetation type is visible from the
+camera, and its climate regime. Each PhenoCam may have zero to several Regions
+of Interest (ROIs) per vegetation type. The <em>phenocamapi</em> package is an
+interface to interact with the PhenoCam server to extract those data and
 process them in an R environment.</p>
+<p>To explore the PhenoCam data, we’ll use several packages for this tutorial.</p>
+<pre><code>library(data.table) #installs package that creates a data frame for visualizing data in row-column table format
 
-<p>To explore the PhenoCam data, we&#39;ll use several packages for this tutorial. </p>
+library(phenocamapi)  #installs packages of time series and phenocam data from the Phenology Network. Loads required packages rjson, bitops and RCurl
 
-<pre><code>library(data.table)
-library(phenocamapi)
-library(lubridate)
+library(lubridate)  #install time series data package
+
 library(jpeg)
 </code></pre>
-
-<p>We can obtain an up-to-date <code>data.frame</code> of the metadata of the entire PhenoCam 
-network using the <code>get_phenos()</code> function. The returning value would be a 
+<p>We can obtain an up-to-date <code>data.frame</code> of the metadata of the entire PhenoCam
+network using the <code>get_phenos()</code> function. The returning value would be a
 <code>data.table</code> in order to simplify further data exploration.</p>
+<pre><code>#Obtain phenocam metadata from the Phenology Network in form of a data.table
 
-<pre><code># obtaining the phenocam site metadata from the server as data.table
 phenos &lt;- get_phenos()
 
-# checking out the first few sites
-head(phenos$site)
-
-#&gt; [1] &quot;acadia&quot;         &quot;aguatibiaeast&quot;  &quot;aguatibianorth&quot; &quot;ahwahnee&quot;       &quot;alleypond&quot;     
-#&gt; [6] &quot;alligatorriver&quot;
 
 
-# checking out the columns
-colnames(phenos)
+#Explore metadata table
+
+head(phenos$site) #preview first six rows of the table. These are the first six phenocam sites in the Phenology Network
+
+#&gt; [1] &quot;aafcottawacfiaf14e&quot; &quot;aafcottawacfiaf14n&quot; &quot;aafcottawacfiaf14w&quot; &quot;acadia&quot;            
+#&gt; [5] &quot;admixpasture&quot;       &quot;adrycpasture&quot;
+
+
+
+colnames(phenos)  #view all column names. 
 
 #&gt;  [1] &quot;site&quot;                      &quot;lat&quot;                       &quot;lon&quot;                      
 #&gt;  [4] &quot;elev&quot;                      &quot;active&quot;                    &quot;utc_offset&quot;               
@@ -234,178 +149,137 @@ colnames(phenos)
 #&gt; [31] &quot;ecoregion&quot;                 &quot;landcover_igbp&quot;            &quot;dataset_version1&quot;         
 #&gt; [34] &quot;site_acknowledgements&quot;     &quot;modified&quot;                  &quot;flux_networks_name&quot;       
 #&gt; [37] &quot;flux_networks_url&quot;         &quot;flux_networks_description&quot;
+
+#This is all the metadata we have for the phenocams in the Phenology Network
 </code></pre>
-
 <p>Now we have a better idea of the types of metadata that are available for the
-Phenocams. </p>
-
-<h3>Remove null values</h3>
-
+Phenocams.</p>
+<h3 id="remove-null-values">Remove null values</h3>
 <p>We may want to explore some of the patterns in the metadata before we jump into
-specific locations. </p>
+specific locations. Let’s look at Mean Annual Precipitation (MAP) and Mean Annual Temperature (MAT) across the different field site and classify those by the primary vegetation type (‘primary_veg_type’) for each site.</p>
+<p>| Abbreviation |	Description |
+|–––––|:———––:|——:|
+| AG |	agriculture |
+| DB |	deciduous broadleaf |
+| DN |	deciduous needleleaf |
+| EB |	evergreen broadleaf |
+| EN |	evergreen needleleaf |
+| GR |	grassland |
+| MX |	mixed vegetation (generally EN/DN, DB/EN, or DB/EB) |
+| SH |	shrubs |
+| TN |	tundra (includes sedges, lichens, mosses, etc.) |
+| WT |	wetland |
+| NV |	non-vegetated |
+| RF |	reference panel |
+| XX |	unspecified |</p>
+<p>To do this we’d first want to remove the sites where there is not data and then
+plot the data.</p>
+<pre><code># #Some sites do not have data on Mean Annual Precipitation (MAP) and Mean Annual Temperature (MAT).
 
-<p>Let&#39;s look at Mean Annual Precipitation (MAP) and Mean Annual
-Temperature (MAT) across the different field site and classify those by the
-primary vegetation type (<code>primary_veg_type</code>) for each site. We can find out what 
-the abbreviations for the vegetation types mean from the following table:</p>
 
-<table><thead>
-<tr>
-<th>Abbreviation</th>
-<th align="center">Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>AG</td>
-<td align="center">agriculture</td>
-</tr>
-<tr>
-<td>DB</td>
-<td align="center">deciduous broadleaf</td>
-</tr>
-<tr>
-<td>DN</td>
-<td align="center">deciduous needleleaf</td>
-</tr>
-<tr>
-<td>EB</td>
-<td align="center">evergreen broadleaf</td>
-</tr>
-<tr>
-<td>EN</td>
-<td align="center">evergreen needleleaf</td>
-</tr>
-<tr>
-<td>GR</td>
-<td align="center">grassland</td>
-</tr>
-<tr>
-<td>MX</td>
-<td align="center">mixed vegetation (generally EN/DN, DB/EN, or DB/EB)</td>
-</tr>
-<tr>
-<td>SH</td>
-<td align="center">shrubs</td>
-</tr>
-<tr>
-<td>TN</td>
-<td align="center">tundra (includes sedges, lichens, mosses, etc.)</td>
-</tr>
-<tr>
-<td>WT</td>
-<td align="center">wetland</td>
-</tr>
-<tr>
-<td>NV</td>
-<td align="center">non-vegetated</td>
-</tr>
-<tr>
-<td>RF</td>
-<td align="center">reference panel</td>
-</tr>
-<tr>
-<td>XX</td>
-<td align="center">unspecified</td>
-</tr>
-</tbody></table>
 
-<p>To do this we&#39;d first want to remove the sites where there is not data and then 
-plot the data. </p>
+# removing the sites with unknown MAT and MAP values
 
-<pre><code># removing the sites with unkown MAT and MAP values
 phenos &lt;- phenos[!((MAT_worldclim == -9999)|(MAP_worldclim == -9999))]
 
-# extracting the PhenoCam climate space based on the WorldClim dataset
-# and plotting the sites across the climate space different vegetation type as different symbols and colors
-phenos[primary_veg_type==&#39;DB&#39;, plot(MAT_worldclim, MAP_worldclim, pch = 19, col = &#39;green&#39;, xlim = c(-5, 27), ylim = c(0, 4000))]
+
+
+# Making a plot showing all sites by their vegetation type (represented as different symbols and colors) plotting across climate (MAT and MAP) space. Refer to table to identify vegetation type acronyms.
+
+phenos[primary_veg_type=='DB', plot(MAT_worldclim, MAP_worldclim, pch = 19, col = 'green', xlim = c(-5, 27), ylim = c(0, 4000))]
 
 #&gt; NULL
 
-phenos[primary_veg_type==&#39;DN&#39;, points(MAT_worldclim, MAP_worldclim, pch = 1, col = &#39;darkgreen&#39;)]
+phenos[primary_veg_type=='DN', points(MAT_worldclim, MAP_worldclim, pch = 1, col = 'darkgreen')]
 
 #&gt; NULL
 
-phenos[primary_veg_type==&#39;EN&#39;, points(MAT_worldclim, MAP_worldclim, pch = 17, col = &#39;brown&#39;)]
+phenos[primary_veg_type=='EN', points(MAT_worldclim, MAP_worldclim, pch = 17, col = 'brown')]
 
 #&gt; NULL
 
-phenos[primary_veg_type==&#39;EB&#39;, points(MAT_worldclim, MAP_worldclim, pch = 25, col = &#39;orange&#39;)]
+phenos[primary_veg_type=='EB', points(MAT_worldclim, MAP_worldclim, pch = 25, col = 'orange')]
 
 #&gt; NULL
 
-phenos[primary_veg_type==&#39;AG&#39;, points(MAT_worldclim, MAP_worldclim, pch = 12, col = &#39;yellow&#39;)]
+phenos[primary_veg_type=='AG', points(MAT_worldclim, MAP_worldclim, pch = 12, col = 'yellow')]
 
 #&gt; NULL
 
-phenos[primary_veg_type==&#39;SH&#39;, points(MAT_worldclim, MAP_worldclim, pch = 23, col = &#39;red&#39;)]
+phenos[primary_veg_type=='SH', points(MAT_worldclim, MAP_worldclim, pch = 23, col = 'red')]
 
 #&gt; NULL
 
 
-legend(&#39;topleft&#39;, legend = c(&#39;DB&#39;,&#39;DN&#39;, &#39;EN&#39;,&#39;EB&#39;,&#39;AG&#39;, &#39;SH&#39;), 
+
+legend('topleft', legend = c('DB','DN', 'EN','EB','AG', 'SH'), 
        pch = c(19, 1, 17, 25, 12, 23), 
-       col =  c(&#39;green&#39;, &#39;darkgreen&#39;, &#39;brown&#39;,  &#39;orange&#39;,  &#39;yellow&#39;,  &#39;red&#39; ))
+       col =  c('green', 'darkgreen', 'brown',  'orange',  'yellow',  'red' ))
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-MAT-MAP-1.png" alt=" "/></p>
-
-<h3>Filtering using attributes</h3>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-MAT-MAP-1.png" alt=" " /></p>
+<h3 id="filtering-using-attributes">Filtering using attributes</h3>
 <p>Alternatively, we may want to only include Phenocams with certain attributes in
 our datasets. For example, we may be interested only in sites with a co-located
-flux tower. For this, we&#39;d want to filter for those with a flux tower using the
-<code>flux_sitenames</code> attribute in the metadata. </p>
+flux tower. For this, we’d want to filter for those with a flux tower using the
+<code>flux_sitenames</code> attribute in the metadata.</p>
+<pre><code># Create a data table only including the sites that have flux_data available and where the FLUX site name is specified
 
-<pre><code># store sites with flux_data available and the FLUX site name is specified
-phenofluxsites &lt;- phenos[flux_data==TRUE&amp;!is.na(flux_sitenames)&amp;flux_sitenames!=&#39;&#39;, 
-                         .(PhenoCam=site, Flux=flux_sitenames)] # return as table 
-#and specify which variables to retain
+phenofluxsites &lt;- phenos[flux_data==TRUE&amp;!is.na(flux_sitenames)&amp;flux_sitenames!='', 
+                         .(PhenoCam=site, Flux=flux_sitenames)] # return as table
 
-phenofluxsites &lt;- phenofluxsites[Flux!=&#39;&#39;]
 
-# see the first few rows
+
+#Specify to retain variables of Phenocam site and their flux tower name
+
+phenofluxsites &lt;- phenofluxsites[Flux!='']
+
+
+
+# view the first few rows of the data table
+
 head(phenofluxsites)
 
-#&gt;                PhenoCam                               Flux
-#&gt; 1:       alligatorriver                             US-NC4
-#&gt; 2:          arsbrooks10 US-Br1: Brooks Field Site 10- Ames
-#&gt; 3:          arsbrooks11 US-Br3: Brooks Field Site 11- Ames
-#&gt; 4:        arscolesnorth                               LTAR
-#&gt; 5:        arscolessouth                               LTAR
-#&gt; 6: arsgreatbasinltar098                             US-Rws
+#&gt;               PhenoCam                               Flux
+#&gt;                 &lt;char&gt;                             &lt;char&gt;
+#&gt; 1:        admixpasture                             NZ-ADw
+#&gt; 2: alercecosteroforest                             CL-ACF
+#&gt; 3:      alligatorriver                             US-NC4
+#&gt; 4:            amtsvenn                                 No
+#&gt; 5:    arkansaswhitaker                             US-RGW
+#&gt; 6:         arsbrooks10 US-Br1: Brooks Field Site 10- Ames
 </code></pre>
+<p>We could further identify which of those Phenocams with a flux tower and in
+deciduous broadleaf forests (<code>primary_veg_type=='DB'</code>).</p>
+<pre><code>#list deciduous broadleaf sites with a flux tower
 
-<p>We could further identify which of those Phenocams with a flux tower and in 
-deciduous broadleaf forests (<code>primary_veg_type==&#39;DB&#39;</code>). </p>
-
-<pre><code>#list deciduous broadleaf sites with flux tower
-DB.flux &lt;- phenos[flux_data==TRUE&amp;primary_veg_type==&#39;DB&#39;, 
+DB.flux &lt;- phenos[flux_data==TRUE&amp;primary_veg_type=='DB', 
                   site]  # return just the site names as a list
 
+
+
 # see the first few rows
+
 head(DB.flux)
 
 #&gt; [1] &quot;alligatorriver&quot; &quot;bartlett&quot;       &quot;bartlettir&quot;     &quot;bbc1&quot;           &quot;bbc2&quot;          
 #&gt; [6] &quot;bbc3&quot;
 </code></pre>
-
-<h2>PhenoCam time series</h2>
-
-<p>PhenoCam time series are extracted time series data obtained from ROI&#39;s for a 
-given site. </p>
-
-<h3>Obtain ROIs</h3>
-
-<p>To download the phenological time series from the PhenoCam, we need to know the 
+<h2 id="phenocam-time-series">PhenoCam time series</h2>
+<p>PhenoCam time series are extracted time series data obtained from regions of interest (ROI’s) for a given site.</p>
+<h3 id="obtain-rois">Obtain ROIs</h3>
+<p>To download the phenological time series from the PhenoCam, we need to know the
 site name, vegetation type and ROI ID. This information can be obtained from each
-specific PhenoCam page on the 
-<a href="https://phenocam.sr.unh.edu/webcam/gallery/" target="_blank">PhenoCam website</a> 
-or by using the <code>get_rois()</code> function. </p>
+specific PhenoCam page on the
+<a href="https://phenocam.nau.edu/webcam/gallery/" target="_blank">PhenoCam website</a>
+or by using the <code>get_rois()</code> function.</p>
+<pre><code># Obtaining the list of all the available regions of interest (ROI's) on the PhenoCam server and producing a data table
 
-<pre><code># obtaining the list of all the available ROI&#39;s on the PhenoCam server
 rois &lt;- get_rois()
 
-# view what information is returned
+
+
+# view the data variables in the data table
+
 colnames(rois)
 
 #&gt;  [1] &quot;roi_name&quot;          &quot;site&quot;              &quot;lat&quot;               &quot;lon&quot;              
@@ -415,47 +289,58 @@ colnames(rois)
 #&gt; [17] &quot;one_day_summary&quot;   &quot;three_day_summary&quot; &quot;data_release&quot;
 
 
-# view first few locations
+
+# view first few regions of of interest (ROI) locations
+
 head(rois$roi_name)
 
-#&gt; [1] &quot;alligatorriver_DB_1000&quot;   &quot;arbutuslake_DB_1000&quot;      &quot;arbutuslakeinlet_DB_1000&quot;
-#&gt; [4] &quot;arbutuslakeinlet_EN_1000&quot; &quot;arbutuslakeinlet_EN_2000&quot; &quot;archboldavir_AG_1000&quot;
+#&gt; [1] &quot;aafcottawacfiaf14n_AG_1000&quot;  &quot;admixpasture_AG_1000&quot;        &quot;adrycpasture_AG_1000&quot;       
+#&gt; [4] &quot;alercecosteroforest_EN_1000&quot; &quot;alligatorriver_DB_1000&quot;      &quot;almondifapa_AG_1000&quot;
 </code></pre>
-
-<h3>Download time series</h3>
-
-<p>The <code>get_pheno_ts()</code> function can download a time series and return the result 
-as a <code>data.table</code>. 
-Let&#39;s work with the 
-<a href="https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000.html">Duke Forest Hardwood Stand (<code>dukehw</code>) PhenoCam</a> 
-and specifically the ROI 
-<a href="https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000.html"><code>DB_1000</code></a> 
-we can run the following code. </p>
-
+<h3 id="download-time-series">Download time series</h3>
+<p>The <code>get_pheno_ts()</code> function can download a time series and return the result
+as a <code>data.table</code>.
+Let’s work with the
+<a href="https://phenocam.nau.edu/webcam/sites/dukehw/">Duke Forest Hardwood Stand (<code>dukehw</code>) PhenoCam</a>
+and specifically the ROI
+<a href="https://phenocam.nau.edu/webcam/roi/dukehw/DB_1000/"><code>DB_1000</code></a>
+we can run the following code.</p>
 <pre><code># list ROIs for dukehw
-rois[site==&#39;dukehw&#39;,]
+
+rois[site=='dukehw',]
 
 #&gt;          roi_name   site      lat       lon roitype active show_link show_data_link
+#&gt;            &lt;char&gt; &lt;char&gt;    &lt;num&gt;     &lt;num&gt;  &lt;char&gt; &lt;lgcl&gt;    &lt;lgcl&gt;         &lt;lgcl&gt;
 #&gt; 1: dukehw_DB_1000 dukehw 35.97358 -79.10037      DB   TRUE      TRUE           TRUE
-#&gt;    sequence_number                                   description first_date  last_date
-#&gt; 1:            1000 canopy level DB forest at awesome Duke forest 2013-06-01 2020-03-17
-#&gt;    site_years missing_data_pct                                               roi_page
-#&gt; 1:        6.6              3.0 https://phenocam.sr.unh.edu/webcam/roi/dukehw/DB_1000/
-#&gt;                                                                     roi_stats_file
-#&gt; 1: https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000_roistats.csv
-#&gt;                                                                one_day_summary
-#&gt; 1: https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000_1day.csv
-#&gt;                                                              three_day_summary data_release
-#&gt; 1: https://phenocam.sr.unh.edu/data/archive/dukehw/ROI/dukehw_DB_1000_3day.csv           NA
+#&gt;    sequence_number                                   description first_date  last_date site_years
+#&gt;              &lt;num&gt;                                        &lt;char&gt;     &lt;char&gt;     &lt;char&gt;     &lt;char&gt;
+#&gt; 1:            1000 canopy level DB forest at awesome Duke forest 2013-06-01 2024-12-30       10.7
+#&gt;    missing_data_pct                                            roi_page
+#&gt;              &lt;char&gt;                                              &lt;char&gt;
+#&gt; 1:              8.0 https://phenocam.nau.edu/webcam/roi/dukehw/DB_1000/
+#&gt;                                                                  roi_stats_file
+#&gt;                                                                          &lt;char&gt;
+#&gt; 1: https://phenocam.nau.edu/data/archive/dukehw/ROI/dukehw_DB_1000_roistats.csv
+#&gt;                                                             one_day_summary
+#&gt;                                                                      &lt;char&gt;
+#&gt; 1: https://phenocam.nau.edu/data/archive/dukehw/ROI/dukehw_DB_1000_1day.csv
+#&gt;                                                           three_day_summary data_release
+#&gt;                                                                      &lt;char&gt;       &lt;lgcl&gt;
+#&gt; 1: https://phenocam.nau.edu/data/archive/dukehw/ROI/dukehw_DB_1000_3day.csv           NA
 
 
-# to obtain the DB 1000 from dukehw
-dukehw_DB_1000 &lt;- get_pheno_ts(site = &#39;dukehw&#39;, vegType = &#39;DB&#39;, roiID = 1000, type = &#39;3day&#39;)
 
-# what data are available
+# Obtain the decidous broadleaf, ROI ID 1000 data from the dukehw phenocam
+
+dukehw_DB_1000 &lt;- get_pheno_ts(site = 'dukehw', vegType = 'DB', roiID = 1000, type = '3day')
+
+
+
+# Produces a list of the dukehw data variables
+
 str(dukehw_DB_1000)
 
-#&gt; Classes &#39;data.table&#39; and &#39;data.frame&#39;:   830 obs. of  35 variables:
+#&gt; Classes 'data.table' and 'data.frame':	1414 obs. of  35 variables:
 #&gt;  $ date                : chr  &quot;2013-06-01&quot; &quot;2013-06-04&quot; &quot;2013-06-07&quot; &quot;2013-06-10&quot; ...
 #&gt;  $ year                : int  2013 2013 2013 2013 2013 2013 2013 2013 2013 2013 ...
 #&gt;  $ doy                 : int  152 155 158 161 164 167 170 173 176 179 ...
@@ -493,256 +378,134 @@ str(dukehw_DB_1000)
 #&gt;  $ YYYYMMDD            : chr  &quot;2013-06-01&quot; &quot;2013-06-04&quot; &quot;2013-06-07&quot; &quot;2013-06-10&quot; ...
 #&gt;  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;
 </code></pre>
-
-<p>We now have a variety of data related to this ROI from the Hardwood Stand at Duke 
-Forest. </p>
-
-<p>Green Chromatic Coordinate (GCC) is a measure of &ldquo;greenness&rdquo; of an area and is
+<p>We now have a variety of data related to this ROI from the Hardwood Stand at Duke
+Forest.</p>
+<p>Green Chromatic Coordinate (GCC) is a measure of “greenness” of an area and is
 widely used in Phenocam images as an indicator of the green pigment in vegetation.
-Let&#39;s use this measure to look at changes in GCC over time at this site. Looking 
-back at the available data, we have several options for GCC. <code>gcc90</code> is the 90th 
-quantile of GCC in the pixels across the ROI (for more details, 
-<a href="https://daac.ornl.gov/VEGETATION/guides/PhenoCam_V1.html" target="_blank"> PhenoCam v1 description</a>). 
-We&#39;ll use this as it tracks the upper greenness values while not including many 
-outliners.  </p>
+Let’s use this measure to look at changes in GCC over time at this site. Looking
+back at the available data, we have several options for GCC. <code>gcc90</code> is the 90th
+quantile of GCC in the pixels across the ROI (for more details,
+<a href="https://daac.ornl.gov/VEGETATION/guides/PhenoCam_V1.html" target="_blank"> PhenoCam v1 description</a>).
+We’ll use this as it tracks the upper greenness values while not including many
+outliners.</p>
+<p>Before we can plot <code>gcc-90</code> we do need to fix our dates and convert them from
+Factors to Date to correctly plot.</p>
+<pre><code># Convert date variable into date format
 
-<p>Before we can plot <code>gcc-90</code> we do need to fix our dates and convert them from 
-Factors to Date to correctly plot. </p>
-
-<pre><code># date variable into date format
 dukehw_DB_1000[,date:=as.Date(date)]
 
+
+
 # plot gcc_90
-dukehw_DB_1000[,plot(date, gcc_90, col = &#39;green&#39;, type = &#39;b&#39;)]
+
+dukehw_DB_1000[,plot(date, gcc_90, col = 'green', type = 'b')]
 
 #&gt; NULL
 
-mtext(&#39;Duke Forest, Hardwood&#39;, font = 2)
+mtext('Duke Forest, Hardwood', font = 2)
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-gcc90-1.png" alt=" "/></p>
-
-<h2>Download midday images</h2>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-gcc90-1.png" alt=" " /></p>
+<h2 id="download-midday-images">Download midday images</h2>
 <p>While PhenoCam sites may have many images in a given day, many simple analyses
-can use just the midday image when the sun is most directly overhead the canopy. 
-Therefore, extracting a list of midday images (only one image a day) can be useful. </p>
-
+can use just the midday image when the sun is most directly overhead the canopy.
+Therefore, extracting a list of midday images (only one image a day) can be useful.</p>
 <pre><code># obtaining midday_images for dukehw
-duke_middays &lt;- get_midday_list(&#39;dukehw&#39;)
+
+duke_middays &lt;- get_midday_list('dukehw')
+
+
 
 # see the first few rows
+
 head(duke_middays)
 
-#&gt; [1] &quot;http://phenocam.sr.unh.edu/data/archive/dukehw/2013/05/dukehw_2013_05_31_150331.jpg&quot;
-#&gt; [2] &quot;http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_01_120111.jpg&quot;
-#&gt; [3] &quot;http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_02_120109.jpg&quot;
-#&gt; [4] &quot;http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_03_120110.jpg&quot;
-#&gt; [5] &quot;http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_04_120119.jpg&quot;
-#&gt; [6] &quot;http://phenocam.sr.unh.edu/data/archive/dukehw/2013/06/dukehw_2013_06_05_120110.jpg&quot;
+#&gt; [1] &quot;http://phenocam.nau.edu/data/archive/dukehw/2013/05/dukehw_2013_05_31_150331.jpg&quot;
+#&gt; [2] &quot;http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_01_120111.jpg&quot;
+#&gt; [3] &quot;http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_02_120109.jpg&quot;
+#&gt; [4] &quot;http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_03_120110.jpg&quot;
+#&gt; [5] &quot;http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_04_120119.jpg&quot;
+#&gt; [6] &quot;http://phenocam.nau.edu/data/archive/dukehw/2013/06/dukehw_2013_06_05_120110.jpg&quot;
 </code></pre>
-
-<p>Now we have a list of all the midday images from this Phenocam. Let&#39;s download
-them and plot </p>
-
+<p>Now we have a list of all the midday images from this Phenocam. Let’s download
+them and plot</p>
 <pre><code># download a file
-destfile &lt;- tempfile(fileext = &#39;.jpg&#39;)
+
+destfile &lt;- tempfile(fileext = '.jpg')
+
+
 
 # download only the first available file
+
 # modify the `[1]` to download other images
-download.file(duke_middays[1], destfile = destfile, mode = &#39;wb&#39;)
+
+download.file(duke_middays[1], destfile = destfile, mode = 'wb')
+
+
 
 # plot the image
+
 img &lt;- try(readJPEG(destfile))
-if(class(img)!=&#39;try-error&#39;){
+
+if(class(img)!='try-error'){
   par(mar= c(0,0,0,0))
-  plot(0:1,0:1, type=&#39;n&#39;, axes= FALSE, xlab= &#39;&#39;, ylab = &#39;&#39;)
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
   rasterImage(img, 0, 0, 1, 1)
 }
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/midday-download-1.png" alt=" "/></p>
-
-<h3>Download midday images for a given time range</h3>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/midday-download-1.png" alt=" " /></p>
+<h3 id="download-midday-images-for-a-given-time-range">Download midday images for a given time range</h3>
 <p>Now we can access all the midday images and download them one at a time. However,
-we frequently want all the images within a specific time range of interest. We&#39;ll
-learn how to do that next. </p>
-
+we frequently want all the images within a specific time range of interest. We’ll
+learn how to do that next.</p>
 <pre><code># open a temporary directory
+
 tmp_dir &lt;- tempdir()
 
+
+
 # download a subset. Example dukehw 2017
-download_midday_images(site = &#39;dukehw&#39;, # which site
+
+download_midday_images(site = 'dukehw', # which site
                        y = 2017, # which year(s)
                        months = 1:12, # which month(s)
                        days = 15, # which days on month(s)
                        download_dir = tmp_dir) # where on your computer
 
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |                                                                                  |   0%
-  |<br/>
-  |=======                                                                           |   8%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_01_15_120109.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |==============                                                                    |  17%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_02_15_120108.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |====================                                                              |  25%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_03_15_120151.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |===========================                                                       |  33%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_04_15_120110.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |==================================                                                |  42%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_05_15_120108.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |=========================================                                         |  50%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_06_15_120120.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |================================================                                  |  58%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_07_15_120109.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |=======================================================                           |  67%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_08_15_120110.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |==============================================================                    |  75%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_09_15_120110.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |====================================================================              |  83%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_10_15_120112.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |===========================================================================       |  92%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_11_15_120111.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; 
-</code></pre>
-
-<p>|<br/>
-  |==================================================================================| 100%</p>
-
-<pre><code>#&gt; Warning in download_midday_images(site = &quot;dukehw&quot;, y = 2017, months = 1:12, : /var/folders/
-#&gt; bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_12_15_120108.jpg was already
-#&gt; in /var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45
-
-#&gt; [1] &quot;/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45&quot;
 
 
 # list of downloaded files
-duke_middays_path &lt;- dir(tmp_dir, pattern = &#39;dukehw*&#39;, full.names = TRUE)
+
+duke_middays_path &lt;- dir(tmp_dir, pattern = 'dukehw*', full.names = TRUE)
+
+
 
 head(duke_middays_path)
-
-#&gt; [1] &quot;/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_01_15_120109.jpg&quot;
-#&gt; [2] &quot;/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_02_15_120108.jpg&quot;
-#&gt; [3] &quot;/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_03_15_120151.jpg&quot;
-#&gt; [4] &quot;/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_04_15_120110.jpg&quot;
-#&gt; [5] &quot;/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_05_15_120108.jpg&quot;
-#&gt; [6] &quot;/var/folders/bn/w43q_t8s3_xckn5j4plhb289fqhhfx/T//RtmpwGdn45/dukehw_2017_06_15_120120.jpg&quot;
 </code></pre>
-
 <p>We can demonstrate the seasonality of Duke forest observed from the camera. (Note
 this code may take a while to run through the loop).</p>
-
 <pre><code>n &lt;- length(duke_middays_path)
+
 par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
+
+
 
 for(i in 1:n){
   img &lt;- readJPEG(duke_middays_path[i])
-  plot(0:1,0:1, type=&#39;n&#39;, axes= FALSE, xlab= &#39;&#39;, ylab = &#39;&#39;)
+  plot(0:1,0:1, type='n', axes= FALSE, xlab= '', ylab = '')
   rasterImage(img, 0, 0, 1, 1)
   mtext(month.name[i], line = -2)
 }
-mtext(&#39;Seasonal variation of forest at Duke Hardwood Forest&#39;, font = 2, outer = TRUE)
+
+mtext('Seasonal variation of forest at Duke Hardwood Forest', font = 2, outer = TRUE)
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-monthly-forest-1.png" alt=" "/></p>
-
-<p>The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.sr.unh.edu/webcam/network/download/"> PhenoCam </a>.</p>
-
-<hr/>
-
-<p>The <em>phenocamapi</em> R package is developed and maintained by 
-<a href="https://bnasr.github.io/">Bijan Seyednarollah</a>. 
-The most recent release is available from 
-<a href="https://github.com/bnasr/phenocamapi" target="_blank"><a href="https://github.com/bnasr/phenocamapi">https://github.com/bnasr/phenocamapi</a></a>.</p>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Phenocam/phenocam-tools/getting-started-phenocamapi/rfigs/plot-monthly-forest-1.png" alt=" " /></p>
+<p>The goal of this section was to show how to download a limited number of midday images from the PhenoCam server. However, more extensive datasets should be downloaded from the <a href="https://phenocam.nau.edu/webcam/data_products/"> PhenoCam </a>.</p>
+<hr />
+<p>The <em>phenocamapi</em> R package is developed and maintained by
+<a href="https://bnasr.github.io/">Bijan Seyednarollah</a>.
+The most recent release of the <em>phenocamapi</em> R package is
+available on GitHub:
+<a href="https://github.com/PhenoCamNetwork/phenocamapi" target="_blank"><a href="https://github.com/PhenoCamNetwork/phenocamapi">https://github.com/PhenoCamNetwork/phenocamapi</a></a>.</p>
+</div>
 </body>
-
 </html>

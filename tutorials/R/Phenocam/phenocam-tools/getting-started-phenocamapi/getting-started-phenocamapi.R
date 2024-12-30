@@ -1,37 +1,37 @@
-## ----setup, include = FALSE---------------------------------------------------------------
+## ----setup, include = FALSE----------------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
 
-## ----libraries----------------------------------------------------------------------------
+## ----libraries, warning=FALSE--------------------------------------------------------------------
 
-library(data.table)
-library(phenocamapi)
-library(lubridate)
+library(data.table) #installs package that creates a data frame for visualizing data in row-column table format
+library(phenocamapi)  #installs packages of time series and phenocam data from the Phenology Network. Loads required packages rjson, bitops and RCurl
+library(lubridate)  #install time series data package
 library(jpeg)
 
 
+## ----obtain-data, fig.height=5, fig.width=8, message=FALSE---------------------------------------
 
-## ----obtain-data, fig.height=5, fig.width=8, message=FALSE--------------------------------
-
-# obtaining the phenocam site metadata from the server as data.table
+#Obtain phenocam metadata from the Phenology Network in form of a data.table
 phenos <- get_phenos()
 
-# checking out the first few sites
-head(phenos$site)
+#Explore metadata table
+head(phenos$site) #preview first six rows of the table. These are the first six phenocam sites in the Phenology Network
 
-# checking out the columns
-colnames(phenos)
+colnames(phenos)  #view all column names. 
+#This is all the metadata we have for the phenocams in the Phenology Network
 
 
-## ----plot-MAT-MAP, message=FALSE, fig.height=8, fig.width=8-------------------------------
-# removing the sites with unkown MAT and MAP values
+## ----plot-MAT-MAP, message=FALSE, fig.height=8, fig.width=8--------------------------------------
+# #Some sites do not have data on Mean Annual Precipitation (MAP) and Mean Annual Temperature (MAT).
+
+# removing the sites with unknown MAT and MAP values
 phenos <- phenos[!((MAT_worldclim == -9999)|(MAP_worldclim == -9999))]
 
-# extracting the PhenoCam climate space based on the WorldClim dataset
-# and plotting the sites across the climate space different vegetation type as different symbols and colors
+# Making a plot showing all sites by their vegetation type (represented as different symbols and colors) plotting across climate (MAT and MAP) space. Refer to table to identify vegetation type acronyms.
 phenos[primary_veg_type=='DB', plot(MAT_worldclim, MAP_worldclim, pch = 19, col = 'green', xlim = c(-5, 27), ylim = c(0, 4000))]
 phenos[primary_veg_type=='DN', points(MAT_worldclim, MAP_worldclim, pch = 1, col = 'darkgreen')]
 phenos[primary_veg_type=='EN', points(MAT_worldclim, MAP_worldclim, pch = 17, col = 'brown')]
@@ -45,22 +45,22 @@ legend('topleft', legend = c('DB','DN', 'EN','EB','AG', 'SH'),
 
 
 
-## ----filter-flux, fig.height=5, fig.width=6.5, message=FALSE------------------------------
-# store sites with flux_data available and the FLUX site name is specified
+## ----filter-flux, fig.height=5, fig.width=6.5, message=FALSE-------------------------------------
+# Create a data table only including the sites that have flux_data available and where the FLUX site name is specified
 phenofluxsites <- phenos[flux_data==TRUE&!is.na(flux_sitenames)&flux_sitenames!='', 
-                         .(PhenoCam=site, Flux=flux_sitenames)] # return as table 
-#and specify which variables to retain
+                         .(PhenoCam=site, Flux=flux_sitenames)] # return as table
 
+#Specify to retain variables of Phenocam site and their flux tower name
 phenofluxsites <- phenofluxsites[Flux!='']
 
-# see the first few rows
+# view the first few rows of the data table
 head(phenofluxsites)
 
 
 
-## ----filter-flux-db, fig.height=5, fig.width=6.5, message=FALSE---------------------------
+## ----filter-flux-db, fig.height=5, fig.width=6.5, message=FALSE----------------------------------
 
-#list deciduous broadleaf sites with flux tower
+#list deciduous broadleaf sites with a flux tower
 DB.flux <- phenos[flux_data==TRUE&primary_veg_type=='DB', 
                   site]  # return just the site names as a list
 
@@ -68,32 +68,32 @@ DB.flux <- phenos[flux_data==TRUE&primary_veg_type=='DB',
 head(DB.flux)
 
 
-## ----get-rois, fig.height=5, fig.width=6.5, message=FALSE---------------------------------
-# obtaining the list of all the available ROI's on the PhenoCam server
+## ----get-rois, fig.height=5, fig.width=6.5, message=FALSE----------------------------------------
+# Obtaining the list of all the available regions of interest (ROI's) on the PhenoCam server and producing a data table
 rois <- get_rois()
 
-# view what information is returned
+# view the data variables in the data table
 colnames(rois)
 
-# view first few locations
+# view first few regions of of interest (ROI) locations
 head(rois$roi_name)
 
 
 
-## ---- fig.height=5, fig.width=6.5, message=FALSE------------------------------------------
+## ----fig.height=5, fig.width=6.5, message=FALSE--------------------------------------------------
 # list ROIs for dukehw
 rois[site=='dukehw',]
 
-# to obtain the DB 1000 from dukehw
+# Obtain the decidous broadleaf, ROI ID 1000 data from the dukehw phenocam
 dukehw_DB_1000 <- get_pheno_ts(site = 'dukehw', vegType = 'DB', roiID = 1000, type = '3day')
 
-# what data are available
+# Produces a list of the dukehw data variables
 str(dukehw_DB_1000)
 
 
 
-## ----plot-gcc90, fig.height=5, fig.width=8------------------------------------------------
-# date variable into date format
+## ----plot-gcc90, fig.height=5, fig.width=8-------------------------------------------------------
+# Convert date variable into date format
 dukehw_DB_1000[,date:=as.Date(date)]
 
 # plot gcc_90
@@ -102,7 +102,7 @@ mtext('Duke Forest, Hardwood', font = 2)
 
 
 
-## ----midday-list, fig.height=5, fig.width=8, message=FALSE--------------------------------
+## ----midday-list, fig.height=5, fig.width=8, message=FALSE---------------------------------------
 
 # obtaining midday_images for dukehw
 duke_middays <- get_midday_list('dukehw')
@@ -112,7 +112,7 @@ head(duke_middays)
 
 
 
-## ----midday-download, fig.height=5, fig.width=8-------------------------------------------
+## ----midday-download, fig.height=5, fig.width=8--------------------------------------------------
 # download a file
 destfile <- tempfile(fileext = '.jpg')
 
@@ -129,7 +129,7 @@ if(class(img)!='try-error'){
 }
 
 
-## ----midday-time-range, fig.height=6, fig.width=8, message=FALSE, eval=TRUE---------------
+## ----midday-time-range, fig.height=6, fig.width=8, message=FALSE, warning=FALSE, eval=TRUE, results="hide"----
 
 # open a temporary directory
 tmp_dir <- tempdir()
@@ -148,7 +148,7 @@ head(duke_middays_path)
 
 
 
-## ----plot-monthly-forest, fig.height=6, fig.width=8, message=FALSE, eval=TRUE-------------
+## ----plot-monthly-forest, fig.height=6, fig.width=8, message=FALSE, eval=TRUE--------------------
 n <- length(duke_middays_path)
 par(mar= c(0,0,0,0), mfrow=c(4,3), oma=c(0,0,3,0))
 
