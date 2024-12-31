@@ -76,15 +76,15 @@ This text describes any specifics relevant to the R code.
 
  ```{r chunk-name}
  R code goes here
- ```
+  ```
 
  ### Python
 
  This text describes any specifics relevant to the Python code.
 
- ```{python p-chunk-name}
- Python code goes here
- ```
+  ```{python p-chunk-name}
+  Python code goes here
+  ```
 
  ## {-}
 ```
