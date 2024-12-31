@@ -1,7 +1,19 @@
 ---
-title: Content for API token tutorial
-output: html_fragment
-dateCreated: '2024-12-30'
+syncID: 99d22b526c1a4a88847259a4d05b46af
+title: "Using an API Token when Accessing NEON Data with neonUtilities"
+description: "Get an API token tied to your NEON user account, and use it for faster download speeds when accessing NEON data via the neonUtilities package."
+dateCreated: 2020-05-04
+authors: [Claire K. Lunch]
+contributors: [Maxwell Burner]
+estimatedTime: 20 minutes
+packagesLibraries: neonUtilities
+topics: data-management, rep-sci
+languageTool: R
+dataProduct: DP1.10026.001, DP3.30015.001
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial/neon-api-tokens-tutorial.R
+tutorialSeries:
+urlTitle: neon-api-tokens-tutorial
+
 ---
 
 NEON data can be downloaded from either the NEON Data Portal or the NEON API. 
@@ -25,9 +37,7 @@ to evaluate the growth and reach of the observatory, and to advocate for
 training activities, workshops, and software development.
 
 Tokens can be used whenever you use the NEON API. In this tutorial, we'll 
-focus on using tokens with the neonUtilities R package and the neonutilities 
-Python package. You can follow the tutorial using your preferred programming 
-language.
+focus on using tokens with the neonUtilities R package.
 
 <div id="ds-objectives" markdown="1">
 
@@ -38,53 +48,12 @@ After completing this activity, you will be able to:
  * Use your token when downloading data with neonUtilities 
 
 ## Things You’ll Need To Complete This Tutorial
-A recent version of R (version 4+) or Python (3.9+) installed on 
-your computer.
+You will need a version of R (3.4.1 or higher) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
 
-## Install and Load Packages {.tabset}
+### Install R Packages
 
-### R
-
-Install the neonUtilities package. You can skip this step if it's 
-already installed, but remember to update regularly.
-
-```{r installs, eval=FALSE}
-
-install.packages("neonUtilities")
-
-```
-
-Load the package.
-
-```{r loadStuff, results="hide"}
-
-library(neonUtilities)
-
-```
-
-### Python
-
-Install the neonutilities package. You can skip this step if it's 
-already installed, but remember to update regularly.
-
-```{python p-install, eval=FALSE}
-
-# do this in the command line
-pip install neonutilities
-
-```
-
-Load the package.
-
-```{python p-loadStuff}
-
-import neonutilities as nu
-import os
-
-```
-
-## {-}
-
+* **neonUtilities:** `install.packages("neonUtilities")`
 
 ## Additional Resources
 
@@ -129,18 +98,34 @@ Click on the Copy button to copy your API token to the clipboard:
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-api-token/api-token-copy-button.png" alt="Account page on NEON Data Portal showing API token with Copy button highlighted"></a>
 </figure>
 
-## Use API token in neonUtilities {.tabset}
+## Use API token in neonUtilities 
 
 In the next section, we'll walk through saving your token somewhere secure but 
-accessible to your code. But first let's try out using the token the easy way, 
-by using it as a simple text string.
+accessible to your code. But first let's try out using the token the easy way.
+
+First, we need to load the `neonUtilities` package and set the working 
+directory:
+
+```{r loadStuff, eval=FALSE, comment=NA}
+
+# install neonUtilities - can skip if already installed, but
+# API tokens are only enabled in neonUtilities v1.3.4 and higher
+# if your version number is lower, re-install
+install.packages("neonUtilities")
+
+# load neonUtilities
+library(neonUtilities)
+
+# set working directory
+wd <- "~/data" # this will depend on your local machine
+setwd(wd)
+
+```
 
 NEON API tokens are very long, so it would be annoying to keep pasting the 
-entire string into functions. Assign your token an object name:
+entire text string into functions. Assign your token an object name:
 
-### R
-
-```{r nameToken}
+```{r nameToken, eval=FALSE, comment=NA}
 
 NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
@@ -150,35 +135,13 @@ Now we'll use the `loadByProduct()` function to download data. Your
 API token is entered as the optional `token` input parameter. For 
 this example, we'll download Plant foliar traits (DP1.10026.001).
 
-```{r getCFC, results="hide"}
+```{r getCFC, eval=FALSE, comment=NA}
 
 foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
                         package="expanded", check.size=F,
                         token=NEON_TOKEN)
 
 ```
-
-### Python
-
-```{python p-nameToken}
-
-NEON_TOKEN = "PASTE YOUR TOKEN HERE"
-
-```
-
-Now we'll use the `load_by_product()` function to download data. Your 
-API token is entered as the optional `token` input parameter. For 
-this example, we'll download Plant foliar traits (DP1.10026.001).
-
-```{python p-getCFC, results="hide"}
-
-foliar = nu.load_by_product(dpid="DP1.10026.001", site="all", 
-                        package="expanded", check_size=False,
-                        token=NEON_TOKEN)
-
-```
-
-## {-}
 
 You should now have data saved in the `foliar` object; the API 
 silently used your token. If you've downloaded data without a 
@@ -189,35 +152,16 @@ downloading data or otherwise accessing the API; you can use the
 `token` input with all of them. For example, when downloading 
 remote sensing data:
 
-### Use token to download AOP data {.tabset}
-
-#### R
-
 ```{r getAOP, eval=FALSE, comment=NA}
 
 chm <- byTileAOP(dpID="DP3.30015.001", site="WREF", 
                  year=2017, check.size=F,
                  easting=c(571000,578000), 
                  northing=c(5079000,5080000), 
-                 savepath=getwd(),
+                 savepath=wd,
                  token=NEON_TOKEN)
 
 ```
-
-#### Python
-
-```{python p-getAOP, eval=FALSE, comment=NA}
-
-chm = nu.by_tile_aop(dpid="DP3.30015.001", site="WREF", 
-                 year=2017, check_size=False,
-                 easting=[571000,578000], 
-                 northing=[5079000,5080000], 
-                 savepath=os.getcwd(),
-                 token=NEON_TOKEN)
-
-```
-
-### {-}
 
 ## Token management for open code
 
@@ -231,21 +175,20 @@ there. Instead, you'll need to save your token locally on your computer,
 and pull it into your code without displaying it. There are a few ways to 
 do this, we'll show two options here.
 
-* Option 1: Save the token in a local file, and `source()` (R) or `import` 
-(Python) that file at the start of every script. This is fairly simple but 
-requires a line of code in every script.
+* Option 1: Save the token in a local file, and `source()` that file at the 
+start of every script. This is fairly simple but requires a line of code in 
+every script.
 
-* Option 2: Set the token as an environment variable and you can access it 
-from any script. This is a little harder to set up initially, but once it's 
-done, it's done globally, and it will work in every script you run.
+* Option 2: Add the token to a `.Renviron` file to create an environment 
+variable that gets loaded when you open R. This is a little harder to set 
+up initially, but once it's done, it's done globally, and it will work in 
+every script you run.
 
-## Option 1: Save token in a local file {.tabset}
-
-### R
+## Option 1: Save token in a local file
 
 Open a new, empty R script (.R). Put a single line of code in the script:
 
-```{r scriptToSource}
+```{r scriptToSource, eval=FALSE, comment=NA}
 
 NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 
@@ -263,47 +206,17 @@ source(paste0(wd, "/neon_token_source.R"))
 
 ```
 
-Now you can use `token=NEON_TOKEN` when you run `neonUtilities` 
+Then you'll be able to use `token=NEON_TOKEN` when you run `neonUtilities` 
 functions, and you can share your code without accidentally sharing your 
 token.
 
-### Python
+## Option 2: Save token to the R environment
 
-Open a new, empty Python script (.py). Put a single line of code in the script:
+To create a persistent environment variable, we use a `.Renviron` file. 
+Before creating a file, check which directory R is using as your home 
+directory:
 
-```{python p-scriptToSource}
-
-NEON_TOKEN = "PASTE YOUR TOKEN HERE"
-
-```
-
-Save this file in a logical place on your machine, somewhere that won't be 
-visible publicly. Here, let's call the file `neon_token_source.py`, and 
-save it to the working directory. Then, at the start of 
-every script where you're going to use the NEON API, you would run this line 
-of code:
-
-```{python p-source, eval=FALSE, comment=NA}
-
-import neon_token_source
-
-```
-
-Now you can use `token=neon_token_source.NEON_TOKEN` when you run `neonutilities` 
-functions, and you can share your code without accidentally sharing your 
-token.
-
-## {-}
-
-## Option 2: Set token as environment variable {.tabset}
-
-### R
-
-To create a persistent environment variable in R, we use a 
-`.Renviron` file. Before creating a file, check which directory 
-R is using as your home directory:
-
-```{r getdir, results="hide"}
+```{r getdir, eval=FALSE, comment=NA}
 
 # For Windows:
 Sys.getenv("R_USER")
@@ -329,7 +242,7 @@ If you already have a `.Renviron` file, open it and follow the instructions
 below to add to it. If you don't have one, create one using File -> New File 
 -> Text File in the RStudio menus.
 
-Add one line to the text file. In this case, there are no quotes around the 
+Add one line to the text file. In this option, there are no quotes around the 
 token value.
 
 ```{r Renviron, eval=FALSE, comment=NA}
@@ -345,7 +258,7 @@ R to load the environment.
 Once your token is assigned to an environment variable, use the function 
 `Sys.getenv()` to access it. For example, in `loadByProduct()`:
 
-```{r useEnvtToken, results="hide"}
+```{r useEnvtToken, eval=FALSE, comment=NA}
 
 foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
                         package="expanded", check.size=F,
@@ -353,56 +266,4 @@ foliar <- loadByProduct(dpID="DP1.10026.001", site="all",
 
 ```
 
-### Python
-
-To create a persistent environment variable in Python, the simplest 
-option is to use the `dotenv` module. You will still need to load the 
-variables in each script, but it provides a more flexible way to 
-manage enrionment variables.
-
-```{python p-install-env, eval=FALSE}
-
-pip install python-dotenv
-
-```
-
-Create a file named `.env` in the project folder. If you're using 
-GitHub, make sure `.env` is in your `.gitignore` to avoid syncing 
-tokens to GitHub.
-
-To add variables to the `.env` file:
-
-```{python p-var-add, eval=FALSE}
-
-import dotenv
-
-dotenv.set_key(dotenv_path=".env", 
-               key_to_set="NEON_TOKEN", 
-               value_to_set="YOUR TOKEN HERE")
-
-```
-
-Use the command `dotenv.load_dotenv()` to load environment 
-variables to the session, then use `os.environ.get()` to 
-access particular variables. For example, in 
-`load_by_product()`:
-
-```{python p-loadTokens, eval=FALSE}
-
-dotenv.load_dotenv()
-
-```
-
-```{python p-useEnvtToken, results="hide"}
-
-foliar = nu.load_by_product(dpid="DP1.10026.001", site="all", 
-                        package="expanded", check_size=False,
-                        token=os.environ.get("NEON_TOKEN"))
-
-```
-
-If `dotenv.load_dotenv()` returns `False`, the variables did not 
-load. Try `dotenv.load_dotenv(dotenv.find_dotenv(usecwd=True))`.
-
-## {-}
 

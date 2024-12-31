@@ -88,3 +88,14 @@ This text describes any specifics relevant to the Python code.
 
 ## {-}
 ```
+
+You can put multiple code chunks in a tab, but keep in mind this means they will appear and disappear as one large unit when the user toggles the tabs. If there is text between the code blocks, you'll need to repeat it in both tabs. I've mostly used this option when I have multiple code blocks with language-specific instructions between them.
+
+#### Knitting the content file
+
+Make sure you have the reticulate package installed.
+
+Use the Knit button in RStudio to Knit to html_fragment.
+
+Review the html file. You won't see the tabs, but is all the code there? Did it run correctly? Do the figures appear as they should?
+
