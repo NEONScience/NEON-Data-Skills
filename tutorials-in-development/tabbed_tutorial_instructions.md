@@ -78,15 +78,15 @@ This text describes any specifics relevant to the R code.
  R code goes here
  ```
 
-### Python
+ ### Python
 
-This text describes any specifics relevant to the Python code.
+ This text describes any specifics relevant to the Python code.
 
  ```{python p-chunk-name}
  Python code goes here
  ```
 
-## {-}
+ ## {-}
 ```
 
 You can put multiple code chunks in a tab, but keep in mind this means they will appear and disappear as one large unit when the user toggles the tabs. If there is text between the code blocks, you'll need to repeat it in both tabs. I've mostly used this option when I have multiple code blocks with language-specific instructions between them.
