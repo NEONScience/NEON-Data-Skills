@@ -91,7 +91,7 @@ This text describes any specifics relevant to the Python code.
 
 You can put multiple code chunks in a tab, but keep in mind this means they will appear and disappear as one large unit when the user toggles the tabs. If there is text between the code blocks, you'll need to repeat it in both tabs. I've mostly used this option when I have multiple code blocks with language-specific instructions between them.
 
-#### Knitting the content file
+### Knitting the html fragment
 
 Make sure you have the reticulate package installed.
 
@@ -99,3 +99,20 @@ Use the Knit button in RStudio to Knit to html_fragment.
 
 Review the html file. You won't see the tabs, but is all the code there? Did it run correctly? Do the figures appear as they should?
 
+### Creating the file to sync (Rmd)
+
+The Rmd file for the sync to website should contain the usual yaml header, as described in the [Tutorial Instructions](https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/Tutorial_Instructions.pdf) document. Other than that, it should contain only two code chunks: one to load the `htmltools` package, and one with a pointer to the html fragment. See the Rmd file for the [neonUtilities package](https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/R/NEON-general/neon-code-packages/neonUtilities/neonUtilities-0.Rmd) for an example to copy.
+
+The URL to the html fragment should point to the "raw" version at raw.githubusercontent.com.
+
+File naming: To make sure the website picks up the correct file, name the files so that this file appears before the content files in the folder. I've been ending the file names in `-0` to ensure this, e.g. `api-tokens-content.Rmd` and `api-tokens-0.Rmd`.
+
+### Knitting the file to sync (md)
+
+Knit the Rmd file using the usual R tutorial processing code [here](https://github.com/NEONScience/NEON-Data-Skills/blob/main/processing_code/01knit-RMD-2-MD_NDSRepo.R). Delete the .html and .R outputs.
+
+Review the .md file. In most markdown viewers, you still won't see the tabs, but make sure the code ran correctly and the text and figures are rendering correctly.
+
+### Pushing to GitHub and website
+
+Push your changes to GitHub and follow the usual steps to verify the tutorial or updates appear on the website. Review the tutorial on the website to make sure the tabs appear as expected.
