@@ -71,7 +71,8 @@ setwd(wd)
 ### Python
 
 There are a variety of spatial packages available in Python; 
-we'll use `rasterio`.
+we'll use `rasterio`. We'll also use several modules that 
+are installed automatically with standard Python installations.
 
 ```{python p-install_packages, eval=FALSE}
 
@@ -86,6 +87,7 @@ Now load packages.
 
 import neonutilities as nu
 import pandas as pd
+import numpy as np
 import rasterio
 import requests
 import os
@@ -184,9 +186,26 @@ NEON API to retrieve their location data:
 vegmapall = veglist["vst_mappingandtagging"]
 vegmap = vegmapall.loc[vegmapall["pointID"] != ""]
 vegmap = vegmap.reindex()
-vegmap["points"] = vegmap["namedLocation"] + vegmap["pointID"]
+vegmap["points"] = vegmap["namedLocation"] + "." + vegmap["pointID"]
+vegpoints = list(set(list(vegmap["points"])))
 
+easting = []
+northing = []
+for i in vegpoints:
+    vres = requests.get("https://data.neonscience.org/api/v0/locations/"+i)
+    vreslist = vres.json()
+    easting.append(vreslist["data"]["locationUtmEasting"])
+    northing.append(vreslist["data"]["locationUtmNorthing"])
 
+ptdct = dict(points=vegpoints, 
+             easting=easting, 
+             northing=northing)
+ptfrm = pd.DataFrame.from_dict(ptdct)
+ptfrm.set_index("points", inplace=True)
+
+vegmap = vegmap.join(ptfrm, 
+                     on="points", 
+                     how="inner")
 
 ```
 
