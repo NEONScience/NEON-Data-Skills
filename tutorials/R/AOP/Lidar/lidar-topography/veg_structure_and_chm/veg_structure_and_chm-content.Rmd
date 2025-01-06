@@ -191,15 +191,26 @@ vegpoints = list(set(list(vegmap["points"])))
 
 easting = []
 northing = []
+coordinateUncertainty = []
+elevationUncertainty = []
 for i in vegpoints:
     vres = requests.get("https://data.neonscience.org/api/v0/locations/"+i)
     vreslist = vres.json()
     easting.append(vreslist["data"]["locationUtmEasting"])
     northing.append(vreslist["data"]["locationUtmNorthing"])
+    props = pd.DataFrame.from_dict(vreslist["data"]["locationProperties"])
+    coordinateUncertainty.append(props.loc[props["locationPropertyName"]==
+                                         "Value for Coordinate uncertainty"]
+                                 ["locationPropertyValue"])
+    elevationUncertainty.append(props.loc[props["locationPropertyName"]==
+                                         "Value for Elevation uncertainty"]
+                                 ["locationPropertyValue"])
 
 ptdct = dict(points=vegpoints, 
              easting=easting, 
-             northing=northing)
+             northing=northing,
+             coordinateUncertainty=coordinateUncertainty,
+             elevationUncertainty=elevationUncertainty)
 ptfrm = pd.DataFrame.from_dict(ptdct)
 ptfrm.set_index("points", inplace=True)
 
@@ -209,7 +220,36 @@ vegmap = vegmap.join(ptfrm,
 
 ```
 
+Next, use the distance and azimuth data to calculate the precise 
+locations of individuals, relative to the reference locations.
+
+```{python p-vegloc}
+
+vegmap["adjEasting"] = (vegmap["easting"]
+                        + vegmap["stemDistance"]
+                        * np.sin(vegmap["stemAzimuth"]
+                                   * np.pi) / 180)
+
+vegmap["adjNorthing"] = (vegmap["northing"]
+                        + vegmap["stemDistance"]
+                        * np.cos(vegmap["stemAzimuth"]
+                                   * np.pi) / 180)
+
+```
+
+Add to the uncertainty estimate to account for error in measurement 
+from the reference location, as described in the User Guide.
+
+```{python p-veglocunc}
+
+vegmap["adjCoordinateUncertainty"] = vegmap["coordinateUncertainty"] + 0.6
+vegmap["adjElevationUncertainty"] = vegmap["elevationUncertainty"] + 1
+
+```
+
 ### {-}
+
+### Combine location with tree traits {.tabset}
 
 Now we have the mapped locations of individuals in the `vst_mappingandtagging` 
 table, and the annual measurements of tree dimensions such as height and 
@@ -219,7 +259,9 @@ together, join the two tables, using the `joinTableNEON()` function from the
 for Vegetation structure for more information about the data tables and the 
 joining instructions `joinTableNEON()` is using.
 
-```{r veg_merge}
+#### R
+
+```{r veg-merge}
 
 veg <- joinTableNEON(veglist$vst_apparentindividual, 
                      vegmap, 
@@ -228,11 +270,38 @@ veg <- joinTableNEON(veglist$vst_apparentindividual,
 
 ```
 
+#### Python
+
+Like the `geoNEON` package, there is not currently a  Python 
+equivalent to the `neonOS` package. Refer to the 
+<a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">Quick Start Guide</a> for Vegetation structure to find the data field to use to 
+join the two tables.
+
+```{python p-veg-merge}
+
+veglist["vst_apparentindividual"].set_index("individualID", inplace=True)
+veg = vegmap.join(veglist["vst_apparentindividual"],
+                  on="individualID",
+                  how="inner",
+                  lsuffix="_MAT",
+                  rsuffix="_AI")
+
+```
+
+### {-}
+
+### Make a stem map {.tabset}
+
 Let's see what the data look like! Make a stem map of the plants in 
-plot WREF_075. Note that the `circles` argument of the `symbols()` function expects a radius, but 
-`stemDiameter` is just that, a diameter, so we will need to divide by two. 
-And `stemDiameter` is in centimeters, but the mapping scale is in meters, 
-so we also need to divide by 100 to get the scale right.
+plot WREF_075. Each tree is mapped by a circle matching its size.
+
+#### R
+
+Note that the `circles` argument of the `symbols()` function expects a 
+radius, but `stemDiameter` is just that, a diameter, so we will need to 
+divide by two. And `stemDiameter` is in centimeters, but the mapping 
+scale is in meters, so we also need to divide by 100 to get the scale 
+right.
 
 ```{r plot-1}
 
@@ -258,6 +327,16 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
         inches=F, add=T, fg="lightblue")
 
 ```
+
+#### Python
+
+```{python p-plot-1}
+
+
+
+```
+
+
 
 ## 3. Canopy height model data
 
