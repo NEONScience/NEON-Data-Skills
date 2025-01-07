@@ -88,6 +88,7 @@ Now load packages.
 import neonutilities as nu
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 import rasterio
 import requests
 import os
@@ -228,12 +229,12 @@ locations of individuals, relative to the reference locations.
 vegmap["adjEasting"] = (vegmap["easting"]
                         + vegmap["stemDistance"]
                         * np.sin(vegmap["stemAzimuth"]
-                                   * np.pi) / 180)
+                                   * np.pi / 180))
 
 vegmap["adjNorthing"] = (vegmap["northing"]
                         + vegmap["stemDistance"]
                         * np.cos(vegmap["stemAzimuth"]
-                                   * np.pi) / 180)
+                                   * np.pi / 180))
 
 ```
 
@@ -332,7 +333,19 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 
 ```{python p-plot-1}
 
+veg75 = veg.loc[veg["plotID_AI"]=="WREF_075"]
 
+fig, ax = plt.subplots()
+
+xy = np.array(tuple(zip(veg75.adjEasting, veg75.adjNorthing)))
+srad = veg.stemDiameter/100/2
+patches = [plt.Circle(center, size) for center, size in zip(xy, srad)]
+
+coll = matplotlib.collections.PatchCollection(patches, facecolors="white", edgecolors="black")
+ax.add_collection(coll)
+
+ax.margins(0.1)
+plt.show()
 
 ```
 
