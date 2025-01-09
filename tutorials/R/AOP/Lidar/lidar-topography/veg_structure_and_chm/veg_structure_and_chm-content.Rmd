@@ -296,13 +296,13 @@ veg = vegmap.join(veglist["vst_apparentindividual"],
 Let's see what the data look like! Make a stem map of the plants in 
 plot WREF_075. Each tree is mapped by a circle matching its size.
 
-#### R
-
-Note that the `circles` argument of the `symbols()` function expects a 
+Note that in both languages the input to the "circle" function is a 
 radius, but `stemDiameter` is just that, a diameter, so we will need to 
 divide by two. And `stemDiameter` is in centimeters, but the mapping 
 scale is in meters, so we also need to divide by 100 to get the scale 
 right.
+
+#### R
 
 ```{r plot-1}
 
@@ -338,7 +338,7 @@ veg75 = veg.loc[veg["plotID_AI"]=="WREF_075"]
 fig, ax = plt.subplots()
 
 xy = np.array(tuple(zip(veg75.adjEasting, veg75.adjNorthing)))
-srad = veg.stemDiameter/100/2
+srad = veg75.stemDiameter/100/2
 patches = [plt.Circle(center, size) for center, size in zip(xy, srad)]
 
 coll = matplotlib.collections.PatchCollection(patches, facecolors="white", edgecolors="black")
@@ -349,9 +349,29 @@ plt.show()
 
 ```
 
+And now overlay the estimated uncertainty in the location of each stem, 
+in blue:
 
+```{python p-plot-2}
 
-## 3. Canopy height model data
+fig, ax = plt.subplots()
+
+sunc = veg75.adjCoordinateUncertainty
+patchunc = [plt.Circle(center, size) for center, size in zip(xy, sunc)]
+
+coll = matplotlib.collections.PatchCollection(patches, facecolors="None", edgecolors="black")
+collunc = matplotlib.collections.PatchCollection(patchunc, facecolors="None", edgecolors="lightblue")
+ax.add_collection(coll)
+ax.add_collection(collunc)
+
+ax.margins(0.1)
+plt.show()
+
+```
+
+### {-}
+
+## 3. Canopy height model data {.tabset}
 
 Now we'll download the CHM tile covering plot WREF_075. Several 
 other plots are also covered by this tile. We could download all tiles 
@@ -366,7 +386,10 @@ WREF\_075 crossed tile boundaries, this code would download all
 relevant tiles).
 
 The download will include several metadata files as well as the data 
-tile. Load the data tile into the environment using the `terra` package.
+tile. Load the data tile into the environment using the `terra` package 
+in R and the `rasterio` package in Python.
+
+### R
 
 ```{r get-chm, results="hide"}
 
@@ -387,6 +410,30 @@ plot(chm, col=topo.colors(5))
 
 ```
 
+### Python
+
+```{python p-get-chm, results="hide"}
+
+nu.by_tile_aop(dpid="DP3.30015.001", site="WREF", year="2017", 
+          easting=list(veg75.adjEasting), 
+          northing=list(veg75.adjNorthing),
+          check_size=False, savepath=os.getcwd())
+
+chm = rasterio.open(os.getcwd() + "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+
+```
+
+Let's view the tile.
+
+```{python p-plot-chm}
+
+plt.imshow(chm.read(1))
+plt.show()
+
+```
+
+## {-}
+
 ## 4. Comparing the two datasets
 
 Now we have the heights of individual trees measured from the ground, and 
@@ -394,10 +441,13 @@ the height of the top surface of the canopy, measured from the air. There
 are many different ways to make a comparison between these two 
 datasets! This section will walk through three different approaches.
 
-First, subset the vegetation structure data to only the trees that fall 
-within this tile, using the `ext()` function from the `terra` package.
+### Subset the data {.tabset}
 
-This step isn't strictly necessary, but it will make the processing faster.
+First, subset the vegetation structure data to only the trees that fall 
+within this tile. This step isn't strictly necessary, but it will make 
+the processing faster.
+
+#### R
 
 ```{r vegsub}
 
@@ -408,10 +458,29 @@ vegsub <- veg[which(veg$adjEasting >= ext(chm)[1] &
 
 ```
 
-Starting with a very simple first pass: use the `extract()` function 
-from the `terra` package to get the CHM value matching the coordinates 
-of each mapped plant. Then make a scatter plot of each tree's height 
-vs. the CHM value at its location.
+#### Python
+
+```{python p-vegsub}
+
+vegsub = veg.loc[~(veg["adjEasting"] >= chm.bounds[0]) &
+                 ~(veg["adjEasting"] <= chm.bounds[1]) &
+                 ~(veg["adjNorthing"] >= chm.bounds[2]) & 
+                 ~(veg["adjNorthing"] <= chm.bounds[3])]
+
+```
+
+### {-}
+
+### Canopy height at mapped tree locations {.tabset}
+
+Starting with a very simple first pass: get the CHM value matching 
+the coordinates of each mapped plant. Then make a scatter plot of 
+each tree's height vs. the CHM value at its location.
+
+#### R
+
+The `extract()` function from the `terra` package gets the values 
+from the tile at the given coordinates.
 
 ```{r no-buffer-chm}
 
