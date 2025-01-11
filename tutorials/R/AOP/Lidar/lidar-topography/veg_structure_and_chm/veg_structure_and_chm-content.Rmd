@@ -575,11 +575,7 @@ cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM,
 
 ```{python p-buffer-chm}
 
-valCHMbuff <- extract(chm, 
-                  buffer(vect(cbind(vegsub$adjEasting,
-                  vegsub$adjNorthing)),
-                  width=vegsub$adjCoordinateUncertainty),
-                  fun=max)
+valCHM = list(chm.sample(tuple(zip(vegsub["adjEasting"], vegsub["adjNorthing"]))))
 
 plot(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM~
        vegsub$height, pch=20, xlab="Height", 
