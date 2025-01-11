@@ -462,10 +462,11 @@ vegsub <- veg[which(veg$adjEasting >= ext(chm)[1] &
 
 ```{python p-vegsub}
 
-vegsub = veg.loc[~(veg["adjEasting"] >= chm.bounds[0]) &
-                 ~(veg["adjEasting"] <= chm.bounds[1]) &
-                 ~(veg["adjNorthing"] >= chm.bounds[2]) & 
-                 ~(veg["adjNorthing"] <= chm.bounds[3])]
+vegsub = veg.loc[(veg["adjEasting"] >= chm.bounds[0]) &
+                 (veg["adjEasting"] <= chm.bounds[1]) &
+                 (veg["adjNorthing"] >= chm.bounds[2]) & 
+                 (veg["adjNorthing"] <= chm.bounds[3])]
+vegsub = vegsub.reset_index(drop=True)
 
 ```
 
@@ -505,10 +506,48 @@ cor(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
 
 ```
 
+#### Python
+
+The `sample()` function from the `rasterio` package gets the values 
+from the tile at the given coordinates.
+
+```{python p-no-buffer-chm}
+
+valCHM = list(chm.sample(tuple(zip(vegsub["adjEasting"], vegsub["adjNorthing"]))))
+
+fig, ax = plt.subplots()
+
+ax.plot((0,50), (0,50), linewidth=1, color="black")
+ax.scatter(vegsub.height, valCHM, s=1)
+
+ax.set_xlabel("Height")
+ax.set_ylabel("Canopy height model")
+
+plt.show()
+
+```
+
+How strong is the correlation between the ground and lidar 
+measurements?
+
+```{python p-corr-no-buffer}
+
+CHMlist = np.array([c.tolist()[0] for c in valCHM])
+idx = np.isfinite(vegsub.height) & np.isfinite(CHMlist)
+np.corrcoef(vegsub.height[idx], CHMlist[idx])[0,1]
+
+```
+
+### {-}
+
+### Canopy height within a buffer of mapped tree locations {.tabset}
+
 Now we remember there is uncertainty in the location of each tree, so the 
 precise pixel it corresponds to might not be the right one. Let's try 
 adding a buffer to the extraction function, to get the tallest tree within 
 the uncertainty of the location of each tree.
+
+#### R
 
 ```{r buffer-chm}
 
@@ -531,6 +570,32 @@ cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM,
     vegsub$height, use="complete")
 
 ```
+
+#### Python
+
+```{python p-buffer-chm}
+
+valCHMbuff <- extract(chm, 
+                  buffer(vect(cbind(vegsub$adjEasting,
+                  vegsub$adjNorthing)),
+                  width=vegsub$adjCoordinateUncertainty),
+                  fun=max)
+
+plot(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM~
+       vegsub$height, pch=20, xlab="Height", 
+     ylab="Canopy height model")
+lines(c(0,50), c(0,50), col="grey")
+
+```
+
+```{python p-corr-buffer}
+
+cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM, 
+    vegsub$height, use="complete")
+
+```
+
+### {-}
 
 Adding the buffer has actually made our correlation slightly worse. Let's 
 think about the data.
