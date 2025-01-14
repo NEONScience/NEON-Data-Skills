@@ -56,9 +56,14 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## AOP GEE Data Access
 
-AOP has currently added a subset of AOP Level 3 (tiled) data products at over 10 NEON sites spanning 9 years (as of July 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
+AOP has currently added a subset of AOP Level 3 (tiled) data products at over 50 NEON sites spanning 10 years on GEE (as of Jan 2025). The NEON data products that have been made available on GEE can be currently be found on the GEE datasets page, if you search for "NEON" as follows:
 
-The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the Acronym and Revision Number, shown in the table below. For example, the Surface Directional Reflectance can be found under the path `projects/neon-prod-earthengine/assets/HSI_REFL/001`. The table below summarizes the Acronyms and Revisions for each data product, and can be used as a reference for reading in AOP GEE datasets. You will learn how to access and read in these data products in the next part of this lesson. 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_datasets_neon_search.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_datasets_neon_search.png" alt="Finding NEON data through the Google Earth Engine Datasets Search Bar."></a>
+</figure>
+
+In the code editor, NEON datasets can be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the Acronym and Revision Number, shown in the table below. For example, the Surface Directional Reflectance can be found under the path `projects/neon-prod-earthengine/assets/HSI_REFL/001`. The table below summarizes the Acronyms and Revisions for each data product, and can be used as a reference for reading in AOP GEE datasets. You will learn how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Revision | Data Product      | Data Product ID |
 |---------|----------|-------------------|-----------------|
