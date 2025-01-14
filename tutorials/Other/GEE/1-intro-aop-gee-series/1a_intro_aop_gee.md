@@ -27,7 +27,7 @@ Google Earth Engine (GEE) is a free and powerful cloud-computing platform for ca
 
 NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the Bidirectional reflectance as that becomes available, we are only adding this data upon request. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
 
-It will take time for the full archive of AOP data to be added to GEE, but NEON has been ramping up data additions starting in Fall 2024. This tutorial shows you how to see which data are currently available. If there are certain NEON site(s) and year(s) of data you wish to have added to Google Earth Engine sooner, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
+It will take time for the full archive of AOP data to be added to GEE, but NEON has been ramping up data additions starting in Fall 2024. This tutorial shows you how to find which data are currently available. If there are certain NEON site(s) and year(s) of data you wish to have added to Google Earth Engine sooner, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -203,6 +203,7 @@ Look in the Console for the properties, you can expand by clicking on the arrow 
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG" alt="SDR Image Properties."></a>
 </figure>
 
+## Determine Release Tag Information
 When working with NEON data, whether downloaded from the Data Portal, or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is part of a release, the property `RELEASE_YEAR` will display the year of the release. Use the code below to display this information for the MCRA 2021 directional reflectance data. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
 
 ```
