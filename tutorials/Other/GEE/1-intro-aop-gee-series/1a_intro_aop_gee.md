@@ -1,4 +1,3 @@
-![image](https://github.com/user-attachments/assets/379ea702-7ed0-4650-8e2e-5046739a2714)---
 syncID: cd3f3df4c3684bc29cf6feea5cfebe59
 title: "Introduction to AOP Public Datasets in Google Earth Engine (GEE)"
 description: "Introductory tutorial on exploring AOP Image Collections in Earth Engine."
@@ -128,7 +127,6 @@ Information about the image collections can also be found in a slightly more use
 </figure>
 
 Note that the end of the description includes a link to the Data Product landing page on the NEON Data Portal, as well as the Quick Start Guide, which includes links to all the documentation pertaining to this NEON data product, including the Algorithm Theoretical Basis Documents (ATBDs). Click on the other tabs to explore more about this data product. These tabs include `DESCRIPTION`, `BANDS`, `IMAGE PROPERTIES`, `TERMS OF USE`, AND `CITATIONS`.   
-
 
 **TIP:** You can search for NEON data products through Code Editor by typing "NEON" in the search bar as shown below:
 
