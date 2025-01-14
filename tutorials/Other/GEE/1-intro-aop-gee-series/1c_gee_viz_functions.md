@@ -142,12 +142,9 @@ Note that the first half of this function is just pulling out relevant informati
 </figure>
 
 ## Function including Cloud-Masking and Weather QA Layers
-Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the reflectance data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
+Next we can build upon this function to include some other pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, and masking the reflectance data to include only the clear-weather (<10% cloud cover) data. We can add the weather QA and clear-weather masked datasets as Layers to the Map.
 
 ```javascript
-// Next we can build upon this function to add the Weather QA layer and
-// call the cloud-masking function and add the clear-weather data layers to the Map
-
 // Define a palette for the weather - to match NEON AOP's weather color conventions
 // This will be used in the visualization parameters for the Weather QA layer
 // green (<10% cloud cover), yellow (10-50% cloud cover), red (>50% cloud cover)
