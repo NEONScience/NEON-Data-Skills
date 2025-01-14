@@ -130,7 +130,7 @@ Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 
 ## Plot acquisition dates
 
-We can apply the same concepts to explore another one of the QA bands, this time let's look at the `Acquisition_Date`. This may be useful if you are trying to find the dates that correspond to field data you've collected, or you want to scale up to satellite data, for example. To determine the minimum and maximum dates, you can use `reduceRegion` with the reducer `ee.Reducer.minMax()` as follows. Then use these values in the visualization parameters.
+We can apply the same concepts to explore another one of the QA bands, this time let's look at the `Acquisition_Date`. This may be useful if you are trying to find the dates that correspond to field data you've collected, or you want to scale up to satellite data, for example. To determine the minimum and maximum dates, you can use `reduceRegion` with the reducer `ee.Reducer.minMax()` as follows. Then use these start and end date values in the visualization parameters. You can choose not to display a layer by default by including a "0" as the last input of `Map.addLayer`; you may not wish to show every layer by default if you are plotting many layers. Once you run the code, to toggle the layer on, find the Layers tap in the upper right corner of the Map Window and check the box to the left of the layer you want to display. 
 	
 ```javascript	
 // Extract acquisition dates QA band
@@ -141,7 +141,6 @@ var minMaxValues = soapDates.reduceRegion({reducer: ee.Reducer.minMax(),maxPixel
 print('min and max dates', minMaxValues);
 	
 // Map acquisition dates, don't display layer by default
-var soapDates = soapSDR.select(['Acquisition_Date']);
 Map.addLayer(soapDates,
             {min:20190612, max:20190616, opacity: 0.5},
             'SOAP 2019 Acquisition Dates',0);
