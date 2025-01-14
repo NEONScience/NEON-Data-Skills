@@ -129,6 +129,9 @@ function addNISImage(image) {
 sdr_col.evaluate(function(sdr_col) {
   sdr_col.features.map(addNISImage);
 })
+
+// Center the map on site and set zoom level (11)
+Map.centerObject(site_center, 11);
 ```
 
 Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. Note that defining this function alone will not display anything on the map, you will need to call (`evaluate`) the function.
