@@ -124,9 +124,14 @@ function addNISImage(image) {
   // add this layer to the map using the true-color (RGB) visualization parameters
   Map.addLayer(imageId, sdr_vis_params, fileName + ' Refl RGB - All Flightlines')
 }
+
+// call the addNISimages function
+sdr_col.evaluate(function(sdr_col) {
+  sdr_col.features.map(addNISImage);
+})
 ```
 
-Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. Note that defining this function will not display anything on the map, you will need to call the function, which we will show at the end of the next code chunk.
+Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. Note that defining this function alone will not display anything on the map, you will need to call (`evaluate`) the function.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function1_refl_rgb.png">
@@ -174,13 +179,6 @@ function addClearNISImages(image) {
 //call the clearNISImages function
 sdr_col.evaluate(function(sdr_col) {
   sdr_col.features.map(addClearNISImages);
-})
-
-// call the addNISimages function
-// see this link for an explanation of what is occurring:
-// https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine
-sdr_col.evaluate(function(sdr_col) {
-  sdr_col.features.map(addNISImage);
 })
 
 // Center the map on site and set zoom level (11)
