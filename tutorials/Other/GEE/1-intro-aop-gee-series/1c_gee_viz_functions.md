@@ -46,7 +46,7 @@ If this is your first time using GEE, we recommend checking out the Google Devel
 
 
 ## GEE Function and Mapping Syntax
-Let's get started! First let's take a look at the syntax for writing user-defined functions in GEE. If you are familiar with other programming languages, this should look somewhat familiar. The function requires input argument(s) `args` and returns an `output`.
+Let's get started! First let's take a look at the syntax for writing user-defined functions in GEE. If you are familiar with other programming languages, this should look somewhat familiar. The function requires input argument(s) `args` and returns an `output`. **Note:** Do not try to run the 2 code chunks below, these are just to demonstrate the key components of a function.
 
 ```javascript
 var functionName = function(args) {
@@ -126,7 +126,7 @@ function addNISImage(image) {
 }
 ```
 
-Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. 
+Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. Note that defining this function will not display anything on the map, you will need to call the function, which we will show at the end of the next code chunk.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function1_refl_rgb.png">
