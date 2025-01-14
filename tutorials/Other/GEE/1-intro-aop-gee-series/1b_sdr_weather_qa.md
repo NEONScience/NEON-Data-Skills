@@ -130,7 +130,9 @@ Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 
 ## Plot acquisition dates
 
-We can apply the same concepts to explore another one of the QA bands, this time let's look at the `Acquisition_Date`. This may be useful if you are trying to find the dates that correspond to field data you've collected, or you want to scale up to satellite data, for example. To determine the minimum and maximum dates, you can use `reduceRegion` with the reducer `ee.Reducer.minMax()` as follows. Then use these start and end date values in the visualization parameters. You can choose not to display a layer by default by including a "0" as the last input of `Map.addLayer`; you may not wish to show every layer by default if you are plotting many layers. Once you run the code, to toggle the layer on, find the **`Layers`** tab in the upper right corner of the Map Window and check the box to the left of the layer you want to display. You can click on the lock icon to make it so that the Layers full display stays open (by default it minimizes).
+We can apply the same concepts to explore another one of the QA bands, this time let's look at the `Acquisition_Date`. This may be useful if you are trying to find the dates that correspond to field data you've collected, or you want to scale up to satellite data, for example. To determine the minimum and maximum dates, you can use `reduceRegion` with the reducer `ee.Reducer.minMax()` as follows. Then use these start and end date values in the visualization parameters. 
+
+**Tip:** You may not wish to show every layer by default if you are plotting many layers. You can choose not to display a layer by default by including a "0" as the last input of `Map.addLayer`. Once you run the code, to toggle the layer on, find the **`Layers`** tab in the upper right corner of the Map Window and check the box to the left of the layer you want to display. You can click on the lock icon to make it so that the Layers full display stays open (by default it minimizes).
 	
 ```javascript	
 // Extract acquisition dates QA band
