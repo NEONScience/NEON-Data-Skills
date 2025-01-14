@@ -1,4 +1,4 @@
----
+![image](https://github.com/user-attachments/assets/379ea702-7ed0-4650-8e2e-5046739a2714)---
 syncID: cd3f3df4c3684bc29cf6feea5cfebe59
 title: "Introduction to AOP Public Datasets in Google Earth Engine (GEE)"
 description: "Introductory tutorial on exploring AOP Image Collections in Earth Engine."
@@ -22,7 +22,7 @@ Google Earth Engine (GEE) is a free and powerful cloud-computing platform for ca
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png" alt="Earth Engine Code Editor Components."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png" alt="NEON Datasets in the GEE Publisher Catalog."></a>
 </figure>
 
 NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the Bidirectional reflectance as that becomes available, we are only adding this data upon request. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
@@ -128,6 +128,14 @@ Information about the image collections can also be found in a slightly more use
 </figure>
 
 Note that the end of the description includes a link to the Data Product landing page on the NEON Data Portal, as well as the Quick Start Guide, which includes links to all the documentation pertaining to this NEON data product, including the Algorithm Theoretical Basis Documents (ATBDs). Click on the other tabs to explore more about this data product. These tabs include `DESCRIPTION`, `BANDS`, `IMAGE PROPERTIES`, `TERMS OF USE`, AND `CITATIONS`.   
+
+
+**TIP:** You can search for NEON data products through Code Editor by typing "NEON" in the search bar as shown below:
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_code_editor_neon_search.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_code_editor_neon_search.png" alt="Finding NEON data through the Code Editor Search Bar."></a>
+</figure>
 
 ## AOP GEE Data Availability
 
