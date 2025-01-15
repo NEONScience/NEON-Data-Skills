@@ -50,7 +50,8 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## Functions to Read in SDR and CHM Image Collections
 
-Let's get started. The code in the beginning of this lesson should look familiar from the previous tutorials in this series. In this first chunk of code, we will the center location of GRSM, and read in the fire perimeter as a FeatureCollection.
+Let's get started. The code in the beginning of this lesson should look familiar from the previous tutorials in this series. In this first chunk of code, we will the center location of GRSM, and read in the fire perimeter as a FeatureCollection. We will also define some custom color palettes that are pulled from <a href="https://github.com/gee-community/ee-palettes" target="_blank">GitHub gee-community/ee-palettes</a>. These custom palettes are not required, but will help make a nice visualization. 
+
 
 ```javascript
 // Specify center location and flight box for GRSM (https://www.neonscience.org/field-sites/grsm)
@@ -58,6 +59,12 @@ var site_center = ee.Geometry.Point([-83.5, 35.7])
 
 // Read in the Chimney Tops fire perimeter shapefile
 var ct_fire_boundary = ee.FeatureCollection('projects/neon-sandbox-dataflow-ee/assets/chimney_tops_fire')
+
+// Custom color palettes - https://github.com/gee-community/ee-palettes
+var palettes = require('users/gena/packages:palettes');
+var chm_palette = palettes.colorbrewer.Greens[5]
+var dchm_palette = palettes.colorbrewer.RdBu[7]
+var dnbr_palette = palettes.colorbrewer.RdYlGn[9].reverse()
 ```
 
 Next, we'll read in the SDR image collection, and then write a function to mask out the cloudy weather data, and use the `map` feature to apply this to our SDR collection at GRSM. 
