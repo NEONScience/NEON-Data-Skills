@@ -49,13 +49,14 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 First read in the AOP directional reflectance data and the Landsat 8 data, filtering the AOP data by the site (GRSM) and filtering the Landsat data by the Chimney Tops Fire region of interest, and by date.
 
 ```javascript
-// Specify center location and for GRSM
+// Specify center location for GRSM
+// Site lat/lon can be found on the field site page: https://www.neonscience.org/field-sites/grsm
 var site_center = ee.Geometry.Point([-83.5, 35.7]); 
 
 // Create region of interest (roi)
 var roi = ee.FeatureCollection('projects/neon-sandbox-dataflow-ee/assets/chimney_tops_fire')
 
-// Read in the  Image Collection
+// Read in the reflectance Image Collection
 var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterMetadata('NEON_SITE', 'equals', 'GRSM')
 
