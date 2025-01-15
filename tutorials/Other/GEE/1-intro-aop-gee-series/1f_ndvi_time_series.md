@@ -46,7 +46,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## Read in AOP and Landsat 8 Surface Reflectance Image Collections
 
-First read in the AOP SDR data and the Landsat 8 data, filtering by the site center point / region of interest, and by date.
+First read in the AOP directional reflectance data and the Landsat 8 data, filtering the AOP data by the site (GRSM) and filtering the Landsat data by the Chimney Tops Fire region of interest, and by date.
 
 ```javascript
 // Specify center location and for GRSM
@@ -55,9 +55,9 @@ var site_center = ee.Geometry.Point([-83.5, 35.7]);
 // Create region of interest (roi)
 var roi = ee.FeatureCollection('projects/neon-sandbox-dataflow-ee/assets/chimney_tops_fire')
 
-// Read in the SDR Image Collection
+// Read in the  Image Collection
 var sdr_col = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
-  .filterBounds(site_center);
+  .filterMetadata('NEON_SITE', 'equals', 'GRSM')
 
 // Read in Landsat 8 Surface Reflectance Image Collection
 var l8sr = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
@@ -67,7 +67,7 @@ var l8sr = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
 
 ## Cloud Mask Function for Landsat 8 Data
 
-Next we can create a function to pre-process the Landsat 8 data, which applies scaling and cloud / saturated data masking. Don't worry too much about the details here, but the main thing to be aware of is that different satellite image collections handle the QA information differently. Landsat (and other satellites) often use something called "bitmasking" to store QA information, which is a space-efficient method for storing additional information. This cloud-masking function can be found on the earthengine-api GitHub examples <a href="https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js" target="_blank">here</a>.
+Next we can create a function to pre-process the Landsat 8 data, which applies scaling and cloud / saturated data masking. Don't worry too much about the details here, but the main thing to be aware of is that different satellite image collections handle the QA information differently. Landsat (and other satellites) often use something called "bitmasking" to store QA information, which is a space-efficient storage method. This cloud-masking function can be found on the earthengine-api GitHub examples <a href="https://github.com/google/earthengine-api/blob/master/javascript/src/examples/CloudMasking/Landsat8SurfaceReflectance.js" target="_blank">here</a>.
 
 ```javascript
 // cloud masking function for Landsat 8 Collection 2 
