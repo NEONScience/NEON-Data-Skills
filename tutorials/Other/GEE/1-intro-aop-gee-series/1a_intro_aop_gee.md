@@ -86,7 +86,7 @@ Once you have set up your Google Earth Engine account you can navigate to the <a
 
 AOP data can currently be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the five available AOP datasets, or `ImageCollections`.
 
-An <a href="https://developers.google.com/earth-engine/guides/ic_creating" target="_blank">ImageCollection</a> is simply a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Data Catalog</a>. Currently, NEON AOP data cannot be discovered in the main GEE data catalog (this is coming soon!), so the following steps will walk you through how to find available AOP data.
+An <a href="https://developers.google.com/earth-engine/guides/ic_creating" target="_blank">ImageCollection</a> is simply a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Data Catalog</a>. The following steps will walk you through how to read in AOP Image Collections in the Code Editor.
 
 In your code editor, copy and run the following lines of code to create 5 `ImageCollection` variables containing the Surface Directional Reflectance (HSI_REFL/001), Surface Bidirectional Reflectance (HSI_REFL/002), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. 
 
