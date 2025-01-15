@@ -25,7 +25,7 @@ Google Earth Engine (GEE) is a free and powerful cloud-computing platform for ca
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png" alt="NEON Datasets in the GEE Publisher Catalog."></a>
 </figure>
 
-NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the Bidirectional reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2024, bidirectional data is only availabe for AOP data collected between 2022-2024. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
+NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (BRDF and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2024, bidirectional data is only availabe for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
 
 It will take time for the full archive of AOP data to be added to GEE, but NEON has been ramping up data additions starting in Fall 2024. This tutorial shows you how to find which data are currently available. If there are certain NEON sites and years of data you would like to see added to Google Earth Engine sooner, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
 
@@ -204,18 +204,20 @@ Look in the Console for the properties, you can expand by clicking on the arrow 
 </figure>
 
 ## Determine Release Tag Information
-When working with NEON data, whether downloaded from the Data Portal, or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is part of a release, the property `RELEASE_YEAR` will display the year of the release. Use the code below to display this information for the MCRA 2021 directional reflectance data. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
+
+When working with NEON data, whether downloaded from the Data Portal or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is released, the property `RELEASE_YEAR` will display the year of the release. The code chunk below shows how to display the release information for the MCRA 2021 directional reflectance data. 
 
 ```
 // determine the release information for this image
-// see https://www.neonscience.org/data-samples/data-management/data-revisions-releases
 var release_status = properties.select(['PROVISIONAL_RELEASED']);
 print('MCRA 2021 Directional Reflectance Release Status:', release_status)
 var release_year = properties.select(['RELEASE_YEAR']);
 print('MCRA 2021 Directional Reflectance Release Year:', release_year)
 ```
 
-In this example, the data is part of `RELEASE-2024`.
+In this example, the data is part of `RELEASE-2024`. 
+
+For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page. There is a short period each year in January where AOP data on the NEON Data Portal may be in flux in preparation for an upcoming data release (typically end of January). GEE datasets are planned to be kept up to date with the current release, however there may be a lag period between the annual release and data updates on GEE. Data on GEE should be updated to match the current release by the end of February each year. For current information around the release status and data quality issue notices, you can follow <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank">NEON Data Notifications</a>.
 
 ## Plot a True Color Image
 
