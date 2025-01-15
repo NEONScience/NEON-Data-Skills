@@ -274,7 +274,7 @@ Map.addLayer(sdr_dNBR_2016_2021, {min: -1, max: 1, palette: dnbr_palette}, 'dNBR
 
 The differenced Normalized Burn Ratio (dNBR) does a great job of highlighting the burned areas (in red).
 
-On your own, we encourage you to dig into the code from this tutorial and expand upon it according to your scientific interests. Think of some questions you have about this dataset and think about how you might answer it using GEE. Modify these functions or try writing your own function to answer your question(s). For example, try out different reducers to compile other statistis to summarize the CHM and NBR differences, or see if there are any other datasets that you could bring in to expand your analysis. This is just the starting point!
+On your own, we encourage you to dig into the code from this tutorial and expand upon it according to your scientific interests. Think of some questions you have about this dataset and think about how you might answer it using GEE. Modify these functions or try writing your own function to answer your question(s). For example, try out different reducers to compile other statistics to summarize the CHM and NBR differences, or see if there are any other datasets that you could bring in to expand your analysis. This is just the starting point!
 
 ## Get Lesson Code
 
