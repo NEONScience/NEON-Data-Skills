@@ -42,7 +42,7 @@ And you will be able to:
  * Explore the NEON AOP GEE Image Collections
 
 ## Requirements
- * A gmail (@gmail.com) account.
+ * A Google or gmail (@gmail.com) account.
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Click on "Register a Noncommercial or Commercial Cloud Project", and on the next promp select "Unpaid Usage" and select the Project Type to create a free non-commercial account. For more information, refer to <a href="https://earthengine.google.com/noncommercial/" target="_blank">Noncommercial Earth Engine</a>.
  * A Google Cloud Project. See <a href="https://developers.google.com/earth-engine/cloud/earthengine_cloud_project_setup/" target="_blank"> Set up your Earth Engine enabled Cloud Project</a>.
  * A basic understanding of the GEE Code Editor and the GEE JavaScript API.
