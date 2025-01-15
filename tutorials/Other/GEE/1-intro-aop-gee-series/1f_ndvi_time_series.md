@@ -93,7 +93,7 @@ l8sr = l8sr.filterBounds(roi).map(maskL8sr)
 
 ## Merge AOP and Landsat 8 NDVI Collections
 
-Next we can plot the two datasets on the same chart. This code was modified from the Stack Overflow post: <a href="https://stackoverflow.com/questions/64776217/how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on" target="_blank">how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on</a>.
+Next we can plot the two datasets on the same chart. This code was modified from the <a href="https://stackoverflow.com/questions/64776217/how-to-combine-time-series-datasets-with-different-timesteps-in-a-single-plot-on" target="_blank">Stack Overflow post</a>.
 
 ```javascript
 // compute ndvi bands to add to each collection
