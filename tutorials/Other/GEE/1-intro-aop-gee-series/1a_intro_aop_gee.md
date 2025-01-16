@@ -198,7 +198,7 @@ var clbj2021_refl_properties = refl001_CLBJ_2021.toDictionary()
 print('CLBJ 2021 Directional Reflectance Properties:', clbj2021_refl_properties)
 ```
 
-Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band (Bands 001 - 426). You may wish to refer to this wavelength information to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image.
+Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band (Bands 001 - 426). You may wish to refer to this wavelength information to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image. For a full description of what each of the Image Properties mean, you can look at the `IMAGE PROPERTIES` tab as explained in the previous section, or find it in the <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_001#image-properties" target="_blank">Earth Engine Data Catalog</a>. 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG">
@@ -298,7 +298,7 @@ You can toggle between the two layers by selecting the "Layers" tab in the upper
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_refl002_comparison.png" alt="CLBJ Directional & Bidirectional Reflectance Comparison."></a>
 </figure>
 
-The BRDF- and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines, as we can see with these datasets at CLBJ.
+The BRDF and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines, as we can see with these datasets at CLBJ, where the 2021 directional reflectance data (right) has some visible vertical artifacts, while the 2022 bidirectional reflectance  (left) looks much more seamless. For most NEON sites, the flight lines are oriented N-S so the stripes will be vertical, but there are a few sites with slightly different flight plans.
 
 ## A Quick Recap
 
