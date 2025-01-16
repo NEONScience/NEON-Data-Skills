@@ -308,4 +308,4 @@ It doesn't seem like we've done much so far, but this is a already great achieve
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/6dac70b411f46e4275f1fbb20eaaa65" target="_blank">Into to AOP GEE Image Collections</a>
+<a href="https://code.earthengine.google.com/b95426f65e870b34eef64404e34ace54" target="_blank">Into to AOP GEE Image Collections</a>
