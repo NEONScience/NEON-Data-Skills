@@ -172,8 +172,8 @@ print('NEON Images in the RGB Camera Collection',
 In the **Console** tab to the right of the code, you will see a list of all available images. Expand each List to see the data available for each Image Collection. The names of the all the images follow the format `YEAR_SITE_#`, so you can identify the site and year of data this way. The number at the end is the Visit #; AOP typically visits each site 3 out of every 5 years, so the visit number indicates the cumulative number of times AOP has visited that site. Occasionally, AOP may re-visit a site twice in the same year.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG" alt="Available AOP Images"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images_with_code.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images_with_code.PNG" alt="Available AOP Images"></a>
 </figure>
 
 ## Filter by Image Properties and Display a True Color Image
