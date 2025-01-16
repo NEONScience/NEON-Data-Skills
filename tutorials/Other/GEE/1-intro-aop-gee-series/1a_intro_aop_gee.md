@@ -298,7 +298,7 @@ You can toggle between the two layers by selecting the "Layers" tab in the upper
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_refl002_comparison.png" alt="CLBJ Directional & Bidirectional Reflectance Comparison."></a>
 </figure>
 
-The BRDF and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines, as we can see with these datasets at CLBJ, where the 2021 directional reflectance data (right) has some visible vertical artifacts, while the 2022 bidirectional reflectance  (left) looks much more seamless. For most NEON sites, the flight lines are oriented N-S so the stripes will be vertical, but there are a few sites with slightly different flight plans.
+The BRDF and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines, as we can see with these datasets at CLBJ, where the 2022 bidirectional reflectance (left) looks much more seamless than the 2021 directional reflectance data (right), which has some visible vertical artifacts. For most NEON sites, the flight lines are oriented N-S so the stripes in the directional reflectance data will be vertical, but there are a few sites with slightly different flight plans.
 
 ## A Quick Recap
 
