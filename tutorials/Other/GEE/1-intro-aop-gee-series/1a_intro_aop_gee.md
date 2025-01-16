@@ -25,7 +25,7 @@ Google Earth Engine (GEE) is a free and powerful cloud-computing platform for ca
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png" alt="NEON Datasets in the GEE Publisher Catalog."></a>
 </figure>
 
-NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (BRDF and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2024, bidirectional data is only availabe for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
+NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (BRDF and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2025, bidirectional data is only availabe for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
 
 It will take time for the full archive of AOP data to be added to GEE, but NEON has been ramping up data additions starting in Fall 2024. This tutorial shows you how to find which data are currently available. If there are certain NEON sites and years of data you would like to see added to Google Earth Engine sooner, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
 
@@ -37,9 +37,10 @@ After completing this activity, you will become familiar with:
  * GEE Image Collections
 
 And you will be able to:
- * Write and run basic JavaScript code in code editor 
+ * Write and run basic JavaScript code in the GEE Code Editor 
  * Discover which NEON AOP datasets are available in GEE
  * Explore the NEON AOP GEE Image Collections
+ * Plot an RGB image of a reflectance dataset
 
 ## Requirements
  * A Google or gmail (@gmail.com) account.
@@ -234,7 +235,7 @@ var rgb_vis = {min: 0, max: 1260, gamma: 0.8};
 Map.setCenter(-122.15, 44.27, 13);
 
 // add this RGB layer to the Map and give it a title
-Map.addLayer(refl001_MCRA_2021_RGB, rgb_vis, 'MCRA 2021 RGB Reflectance Imagery');
+Map.addLayer(refl001_MCRA_2021_RGB, rgb_vis, 'MCRA 2021 Directional Reflectance RGB');
 ```
 
 When you run the code you should now see the true color images on the map! You can zoom in and out and explore some of the other interactive options on your own.
