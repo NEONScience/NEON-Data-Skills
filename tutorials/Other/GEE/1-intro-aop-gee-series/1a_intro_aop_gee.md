@@ -25,8 +25,7 @@ Google Earth Engine (GEE) is a free and powerful cloud-computing platform for ca
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png" alt="NEON Datasets in the GEE Publisher Catalog."></a>
 </figure>
 
-NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (BRDF* and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2025, bidirectional data is only availabLe for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
-* BRDF = Bidirectional Reflectance Distribution Function
+NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (Bidirectional Reflectance Distribution Function (BRDF) and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2025, bidirectional data is only availabLe for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
 
 It will take time for the full archive of AOP data to be added to GEE, but NEON has been ramping up data additions starting in Fall 2024. This tutorial shows you how to find which data are currently available. If there are certain NEON sites and years of data you would like to see added to Google Earth Engine sooner, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
 
@@ -252,7 +251,9 @@ When you run the code you should now see the true color images on the map! You c
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_rgb.png" alt="CLBJ 2021 Directional Reflectance RGB Image."></a>
 </figure>
 
-Lastly, let's also look at a bidirectional data product at the same site, and you can explore the differences between the directional and bidirectional reflectance. The BRDF- and topographic corrections typically visibly improve striping between adjacent flightlines.
+## Compare Directional and Bidirectional Reflectance
+
+Lastly, let's also look at a bidirectional data product at the same site, and you can explore the differences between the directional and bidirectional reflectance. We will also display the release information for this data. 
 
 ```javascript
 // read in a bidirectional reflectance image at the NEON site CLBJ in 2022
@@ -281,7 +282,16 @@ var refl002_CLBJ_2022_RGB = refl002_CLBJ_2022.select(['B053', 'B035', 'B019']);
 Map.addLayer(refl002_CLBJ_2022_RGB, refl_rgb_vis, 'CLBJ 2022 Bidirectional Reflectance RGB');
 ```
 
-You can toggle between the two layers by selecting the "Layers" tab in the upper right corner of the Map window. Check and uncheck the layers to see the differences. What observations can you make? 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/console_error.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/console_error.png" alt="CLBJ 2021 Directional Reflectance RGB Image."></a>
+</figure>
+
+If your code has any errors they will display in the Console tab in red. In this example, we tried to print out a property that did not exist because the data is Provisional, so there is no release year. Bidirectional reflectance data will remain provisional for all of 2025, since it is a new data product (as of 2024), and is planned to be incorporated into RELEASE-2026.
+
+You can toggle between the two layers by selecting the "Layers" tab in the upper right corner of the Map window. Check and uncheck the two layers (2021 and 2022) to see the differences. What observations can you make? 
+
+The BRDF- and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines.
 
 ## A Quick Recap
 
