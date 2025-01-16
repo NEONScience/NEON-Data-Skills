@@ -287,15 +287,22 @@ Map.addLayer(refl002_CLBJ_2022_RGB, refl_rgb_vis, 'CLBJ 2022 Bidirectional Refle
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/console_error.png" alt="CLBJ 2021 Directional Reflectance RGB Image."></a>
 </figure>
 
-If your code has any errors they will display in the Console tab in red. In this example, we tried to print out a property that did not exist because the data is Provisional, so there is no release year. Bidirectional reflectance data will remain provisional for all of 2025, since it is a new data product (as of 2024), and is planned to be incorporated into RELEASE-2026.
+If your code has any errors they will display in the **Console** tab in red. In this example, we tried to print out a property that does not exist because the data is Provisional, so there is no `RELEASE_YEAR`. You can comment out that line of code to prevent the error from displaying. If your code is not running as expected, errors displayed in the Console can be helpful for troubleshooting, as it will tell you where your code failed. 
 
-You can toggle between the two layers by selecting the "Layers" tab in the upper right corner of the Map window. Check and uncheck the two layers (2021 and 2022) to see the differences. What observations can you make? 
+Note that bidirectional reflectance data will remain provisional in 2025, since it is a new data product (as of 2024), and is planned to be incorporated into RELEASE-2026.
 
-The BRDF- and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines.
+You can toggle between the two layers by selecting the "Layers" tab in the upper right corner of the Map window. Check and uncheck the two layers (2021 and 2022) to see the differences. You can also use the slider to the right of the layer name to make one layer partially transparent. What observations can you make about these two datasets?
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_refl002_comparison.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_refl002_comparison.png" alt="CLBJ Directional & Bidirectional Reflectance Comparison."></a>
+</figure>
+
+The BRDF- and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines, as we can see with these datasets at CLBJ.
 
 ## A Quick Recap
 
-You did it! You now have a basic understanding of the GEE code editor and its different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display information about the collection. You learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite). And finally, you explored some of the differences between the directional and bidirectional (BRDF- and topographic corrected) reflectance data products at the site CLBJ.
+You did it! You now have a basic understanding of the GEE Code Editor and its different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your session, and navigate through the ImageCollection **Asset details** to display information about the collection. You learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite). And finally, you explored some of the differences between the directional and bidirectional (BRDF- and topographic corrected) reflectance data products at the site CLBJ.
 
 It doesn't seem like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is more involved. One of the major challenges to working with AOP reflectance data is its large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral, lidar, and camera data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
 
