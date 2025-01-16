@@ -5,7 +5,7 @@ description: "Introductory tutorial on exploring AOP Image Collections in Earth 
 dateCreated: 2023-05-24
 authors: Bridget Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
-estimatedTime: 20 minutes
+estimatedTime: 30 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, camera, remote-sensing
 languageTool: GEE, JavaScript
@@ -18,9 +18,16 @@ urlTitle: intro-aop-gee-image-collections
 
 <div id="ds-introduction" markdown="1">
 
-Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets, which as of Summer 2024 are being added to Google Earth Engine as publicly available datasets. NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the Bidirectional reflectance as that becomes available, we are only adding this data upon request. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
+Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets that have been added to Google Earth Engine as <a href="https://developers.google.com/earth-engine/datasets/publisher" target="_blank">Publisher Datasets</a>. 
 
-It will take time for the full archive of AOP data to GEE, but NEON is ramping up data additions in the second half of 2024. This tutorial shows you how to see which data are currently available. If you wish to add certain NEON site(s) and year(s) of data into Google Earth Engine, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png" alt="NEON Datasets in the GEE Publisher Catalog."></a>
+</figure>
+
+NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (BRDF and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2024, bidirectional data is only availabe for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
+
+It will take time for the full archive of AOP data to be added to GEE, but NEON has been ramping up data additions starting in Fall 2024. This tutorial shows you how to find which data are currently available. If there are certain NEON sites and years of data you would like to see added to Google Earth Engine sooner, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -35,7 +42,7 @@ And you will be able to:
  * Explore the NEON AOP GEE Image Collections
 
 ## Requirements
- * A gmail (@gmail.com) account.
+ * A Google or gmail (@gmail.com) account.
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Click on "Register a Noncommercial or Commercial Cloud Project", and on the next promp select "Unpaid Usage" and select the Project Type to create a free non-commercial account. For more information, refer to <a href="https://earthengine.google.com/noncommercial/" target="_blank">Noncommercial Earth Engine</a>.
  * A Google Cloud Project. See <a href="https://developers.google.com/earth-engine/cloud/earthengine_cloud_project_setup/" target="_blank"> Set up your Earth Engine enabled Cloud Project</a>.
  * A basic understanding of the GEE Code Editor and the GEE JavaScript API.
@@ -49,9 +56,14 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## AOP GEE Data Access
 
-AOP has currently added a subset of AOP Level 3 (tiled) data products at over 10 NEON sites spanning 9 years (as of July 2023) on GEE. This data has been converted to Cloud Optimized GeoTIFF (COG) format. NEON L3 lidar and derived spectral indices are available in geotiff raster format, so are relatively straightforward to add to GEE, however the hyperspectral data is available in hdf5 (hierarchical data) format, and have been converted to the COG format prior to being added to GEE.
+AOP has currently added a subset of AOP Level 3 (tiled) data products at over 50 NEON sites spanning 10 years on GEE (as of Jan 2025). The NEON data products that have been made available on GEE can be currently be found on the GEE datasets page, if you search for "NEON" as follows:
 
-The NEON data products that have been made available on GEE can be currently be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the Acronym and Revision Number, shown in the table below. For example, the Surface Directional Reflectance can be found under the path `projects/neon-prod-earthengine/assets/HSI_REFL/001`. The table below summarizes the Acronyms and Revisions for each data product, and can be used as a reference for reading in AOP GEE datasets. You will learn how to access and read in these data products in the next part of this lesson. 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_datasets_neon_search.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_datasets_neon_search.png" alt="Finding NEON data through the Google Earth Engine Datasets Search Bar."></a>
+</figure>
+
+In the code editor, NEON datasets can be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the Acronym and Revision Number, shown in the table below. For example, the Surface Directional Reflectance can be found under the path `projects/neon-prod-earthengine/assets/HSI_REFL/001`. The table below summarizes the Acronyms and Revisions for each data product, and can be used as a reference for reading in AOP GEE datasets. You will learn how to access and read in these data products in the next part of this lesson. 
 
 | Acronym | Revision | Data Product      | Data Product ID |
 |---------|----------|-------------------|-----------------|
@@ -67,16 +79,16 @@ Once you have set up your Google Earth Engine account you can navigate to the <a
 
 <figure>
 	<a href="https://developers.google.com/earth-engine/images/Code_editor_diagram.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/1a_intro/code_editor_diagram.png" alt="Earth Engine Code Editor Components."></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/code_editor_diagram.png" alt="Earth Engine Code Editor Components."></a>
 </figure>
 
 ## Read AOP Data Collections into GEE using `ee.ImageCollection`
 
-AOP data can currently be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the four available AOP datasets, or `ImageCollections`.
+AOP data can currently be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the five available AOP datasets, or `ImageCollections`.
 
-An <a href="https://developers.google.com/earth-engine/guides/ic_creating" target="_blank">ImageCollection</a> is simply a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Data Catalog</a>. Currently, NEON AOP data cannot be discovered in the main GEE data catalog (this is coming soon!), so the following steps will walk you through how to find available AOP data.
+An <a href="https://developers.google.com/earth-engine/guides/ic_creating" target="_blank">ImageCollection</a> is simply a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Data Catalog</a>. The following steps will walk you through how to read in AOP Image Collections in the Code Editor.
 
-In your code editor, copy and run the following lines of code to create 3 `ImageCollection` variables containing the Surface Directional Reflectance (SDR), Camera Imagery (RGB) and Digital Surface and Terrain Model (DEM) raster data sets. 
+In your code editor, copy and run the following lines of code to create 5 `ImageCollection` variables containing the Surface Directional Reflectance (HSI_REFL/001), Surface Bidirectional Reflectance (HSI_REFL/002), Camera Imagery (RGB), Canopy Height Model (CHM), and Digital Elevation Model (DEM) raster data sets. 
 
 ```javascript
 //read in the AOP image collections as variables
@@ -113,18 +125,25 @@ If you click `Convert`, the line of code will disappear and the variable will be
 
 Note that each of these imported variables can now be expanded, using the arrow to the left of each. These variables now show associated information including *type*, *id*, and *version*. 
 
-Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link, eg. `projects/neon-prod-earthengine/CHM/001`. Below we'll show the window that pops-up when you click on the CHM link. We encourage you to explore all of the AOP datasets similarly. **Note:** when the GEE datasets become public, you will be able to search for the NEON AOP image collections through the search bar on the <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Earth Engine Data Catalog</a> webpage.
+Information about the image collections can also be found in a slightly more user-friendly format if you click on the blue link, eg. `projects/neon-prod-earthengine/CHM/001`. Below we'll show the window that pops-up when you click on the CHM link. We encourage you to explore all of the AOP datasets similarly. **Note:** You can also search for the NEON AOP image collections through the search bar on the <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Earth Engine Data Catalog</a> webpage. The dataset page also contains all the information about the data product, eg. <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CHM_001" target="_blank">NEON Canopy Height Model (CHM)</a>.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_chm_asset_details.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_chm_asset_details.png" alt="NEON CHM Asset Description."></a>
 </figure>
 
-Note that the end of the description includes a link to the Data Product landing page on the NEON Data Portal, as well as the Quick Start Guide, which includes links to all the documentation pertaining to this NEON data product, including the Algorithm Theoretical Basis Documents (ATBDs). Click on the other tabs to explore more about this data product. These tabs include `DESCRIPTION`, `BANDS`, `IMAGE PROPERTIES`, `TERMS OF USE`, AND `CITATIONS`.   
+The end of the description includes a link to the Data Product landing page on the NEON Data Portal, as well as the Quick Start Guide, which includes links to all the documentation pertaining to this NEON data product, including the Algorithm Theoretical Basis Documents (ATBDs). Click on the other tabs to explore more about this data product. These tabs include `DESCRIPTION`, `BANDS`, `IMAGE PROPERTIES`, `TERMS OF USE`, AND `CITATIONS`.   
+
+**TIP:** You can also search for NEON data products through Code Editor by typing "NEON" in the search bar as shown below:
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_code_editor_neon_search.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_code_editor_neon_search.png" alt="Finding NEON data through the Code Editor Search Bar."></a>
+</figure>
 
 ## AOP GEE Data Availability
 
-Since we are adding AOP data to GEE on a rolling basis, the first thing you may want to do after reading in the image collections is to see what datasets are currently available on GEE. A quick way to do this is shown below:
+Since we are adding AOP data to GEE on a rolling basis, the first thing you may want to do after reading in the image collections is to determine which datasets are currently available on GEE. A quick way to do this is shown below:
 
 ```javascript
 // list all available images in the NEON Surface Directional Reflectance Image Collection:
@@ -148,7 +167,7 @@ print('NEON Images in the RGB Camera Collection',
       rgb.aggregate_array('system:index'))
 ```
 
-In the **Console** tab to the right of the code, you will see a list of all available images. Expand each List to see the data available for each Image Collection. The names of the all the images follow the format `YEAR_SITE_#`, so you can identify the site and year of data this way. The number at the end is the Visit #; AOP typically visits each site 3 out of every 4-5 years, so the visit number indicates the number of times AOP has visited that site. Occasionally, AOP may re-visit a site twice in the same year.
+In the **Console** tab to the right of the code, you will see a list of all available images. Expand each List to see the data available for each Image Collection. The names of the all the images follow the format `YEAR_SITE_#`, so you can identify the site and year of data this way. The number at the end is the Visit #; AOP typically visits each site 3 out of every 5 years, so the visit number indicates the cumulative number of times AOP has visited that site. Occasionally, AOP may re-visit a site twice in the same year.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG">
@@ -184,18 +203,21 @@ Look in the Console for the properties, you can expand by clicking on the arrow 
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG" alt="SDR Image Properties."></a>
 </figure>
 
-When working with NEON data, whether downloaded from the Data Portal, or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is released, the property `RELEASE_YEAR` will display the year of the release. Use the code below to display this information for the MCRA 2021 directional reflectance data. For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page.
+## Determine Release Tag Information
+
+When working with NEON data, whether downloaded from the Data Portal or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is released, the property `RELEASE_YEAR` will display the year of the release. The code chunk below shows how to display the release information for the MCRA 2021 directional reflectance data. 
 
 ```
 // determine the release information for this image
-// see https://www.neonscience.org/data-samples/data-management/data-revisions-releases
 var release_status = properties.select(['PROVISIONAL_RELEASED']);
 print('MCRA 2021 Directional Reflectance Release Status:', release_status)
 var release_year = properties.select(['RELEASE_YEAR']);
 print('MCRA 2021 Directional Reflectance Release Year:', release_year)
 ```
 
-In this example, the data is part of `RELEASE-2024`.
+In this example, the data is part of `RELEASE-2024`. 
+
+For more information on NEON releases, refer to the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">NEON Data Product Revisions and Releases</a> page. There is a short period each year in January where AOP data on the NEON Data Portal may be in flux in preparation for an upcoming data release (typically end of January). GEE datasets are planned to be kept up to date with the current release, however there may be a lag period between the annual release and data updates on GEE. Data on GEE should be updated to match the current release by the end of February each year. For current information around the release status and data quality issue notices, you can follow <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank">NEON Data Notifications</a>.
 
 ## Plot a True Color Image
 
@@ -224,10 +246,10 @@ When you run the code you should now see the true color images on the map! You c
 
 ## A Quick Recap
 
-You did it! You now have a basic understanding of the GEE code editor and it's different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display information about the collection. Lastly, you learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite).
+You did it! You now have a basic understanding of the GEE code editor and its different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display information about the collection. Lastly, you learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite).
 
-It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is more involved. One of the major challenges to working with AOP reflectance data is it's large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral, lidar, and camera data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
+It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is more involved. One of the major challenges to working with AOP reflectance data is its large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral, lidar, and camera data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/6dac70b411f46e34275f1fbb20eaaa65" target="_blank">Into to AOP GEE Image Collections</a>
+<a href="https://code.earthengine.google.com/6dac70b411f46e4275f1fbb20eaaa65" target="_blank">Into to AOP GEE Image Collections</a>

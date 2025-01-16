@@ -44,9 +44,9 @@ After completing this activity, you will be able to:
 
 </div>
 
-## Read in the AOP SDR 2019 Dataset at SOAP
+## Read in the AOP Surface Directional Reflectance 2019 Dataset at SOAP
 
-We will start at our ending point of the last tutorial. For this exercise, we will read in data from the NEON site <a href="https://www.neonscience.org/field-sites/soap" target="_blank">Soaproot Saddle (SOAP)</a> collected in 2019: 
+For this exercise, we will read in directional reflectance data from the NEON site <a href="https://www.neonscience.org/field-sites/soap" target="_blank">Soaproot Saddle (SOAP)</a> collected in 2019: 
 
 ```javascript
 // Filter image collection by date and site to pull out a single image
@@ -57,7 +57,7 @@ var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/HSI_REFL
 ```
 ## Display the QA Bands
 
-From the previous lesson, recall that the SDR images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The data bands all follow the naming convetion B001, B002, ..., B426, and the QA bands start with something other than the letter "B", so we can use that information to extract the QA bands.
+From the previous lesson, recall that the reflectance images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The data bands all follow the naming convetion B001, B002, ..., B426, and the QA bands start with something other than the letter "B", so we can use that information to extract the QA bands.
 
 ```javascript
 // Pull out and display only the qa bands (these all start with something other than B)
@@ -71,7 +71,7 @@ print('QA Bands',soapSDR_qa)
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG" alt="QA Bands"></a>
 </figure>
 
-Most of these QA bands are inputs to and outputs from the Atmospheric Correction (ATCOR). We will expand upon these further, and encourage you to read more details about these data in the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance Algorithm Theoritical Basis Document</a>. For the purposes of this exercise, we will focus on the Weather Quality Indicator band. Note that you can explore each of the QA bands, following similar steps below, adjusting the band names and values accordingly.
+Most of these QA bands are inputs to and outputs from the Atmospheric Correction (ATCOR), the process which converts radiance to atmospherically corrected reflectance. We will elaborate on these QA bands further, and encourage you to read more details about these data in the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance Algorithm Theoritical Basis Document</a>. For the purposes of this exercise, we will focus on the Weather Quality Indicator band. Note that you can explore each of the QA bands, following similar steps below, adjusting the band names and values accordingly.
 
 ## Read in the `Weather_Quality_Indicator` Band
 
@@ -130,15 +130,19 @@ Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 
 ## Plot acquisition dates
 
-We can apply the same concepts to explore another one of the QA bands, this time let's look at the `Acquisition_Date`. This may be useful if you are trying to find the dates that correspond to field data you've collected, or you want to scale up to satellite data, for example. To determine the minimum and maximum dates, you can use `reduceRegion` with the reducer `ee.Reducer.minMax()` as follows. Then use these values in the visualization parameters.
+We can apply the same concepts to explore another one of the QA bands, this time let's look at the `Acquisition_Date`. This may be useful if you are trying to find the dates that correspond to field data you've collected, or you want to scale up to satellite data, for example. To determine the minimum and maximum dates, you can use `reduceRegion` with the reducer `ee.Reducer.minMax()` as follows. Then use these start and end date values in the visualization parameters. 
+
+**Tip:** You may not wish to show every layer by default if you are plotting many layers. You can choose not to display a layer by default by including a "0" as the last input of `Map.addLayer`. Once you run the code, to toggle the layer on, find the **`Layers`** tab in the upper right corner of the Map Window and check the box to the left of the layer you want to display. You can click on the lock icon to make it so that the Layers full display stays open (by default it minimizes).
 	
 ```javascript	
+// Extract acquisition dates QA band
+var soapDates = soapSDR.select(['Acquisition_Date']);
+
 // Get the minimum and maximum values of the soapDates band
 var minMaxValues = soapDates.reduceRegion({reducer: ee.Reducer.minMax(),maxPixels: 1e10})
 print('min and max dates', minMaxValues);
 	
-// Extract acquisition dates and map, don't display layer by default
-var soapDates = soapSDR.select(['Acquisition_Date']);
+// Map acquisition dates, don't display layer by default
 Map.addLayer(soapDates,
             {min:20190612, max:20190616, opacity: 0.5},
             'SOAP 2019 Acquisition Dates',0);
@@ -151,7 +155,7 @@ Map.addLayer(soapDates,
 	
 ## Recap
 
-In this lesson you learned how to read in Weather Quality Information from the Surface Directional Reflectance (SDR) QA bands in GEE. You learned to mask data to keep only data collected in the cleares sky conditions (<10% cloud cover), and plot the three weather quality classes. You also learned how to find the other QA bands, and following a similar approach could explore each of these bands similarly. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for interpreting the data and carrying out subsequent data analysis.
+In this lesson you learned how to read in Weather Quality Information from the Reflectance QA bands in GEE. You learned to mask data to keep only data collected in the clearest sky conditions (<10% cloud cover), and plot the three weather quality classes. You also learned how to find the other QA bands, and following a similar approach could explore each of these bands similarly. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for interpreting the data and carrying out subsequent data analysis.
 
 ## Get Lesson Code
 

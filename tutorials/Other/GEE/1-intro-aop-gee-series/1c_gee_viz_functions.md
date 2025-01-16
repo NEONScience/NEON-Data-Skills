@@ -18,7 +18,7 @@ urlTitle: intro-gee-functions
 
 ## Writing a Function to Visualize AOP Reflectance Image Collections
 
-In the earlier <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-sdr-weather-qa-gee" target="_blank">Reflectance pre-processing tutorial</a>, we showed how to read in a band of data containing weather quality information and apply cloud-masking using that band. In this tutorial, we will show you a more simplified way of doing this, using functions so we can more easily apply that operation to an Image Collection. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code repeatedly, it may be an opportunity to create a function. For example, in the previous tutorial, we repeated lines of code to pull in different years of data at SRER, the only difference being the year and the variable names for each year. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and reproducible. 
+In the earlier <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-sdr-weather-qa-gee" target="_blank">Reflectance pre-processing tutorial</a>, we showed how to read in a band of data containing weather quality information and apply cloud-masking using that band. In this tutorial, we will show you a more simplified way of doing this, using functions so we can more easily apply that operation to an Image Collection. This is called "refactoring". In any coding language, if you notice you are writing very similar lines of code repeatedly, it may be an opportunity to create a function. As you become more proficient with GEE coding, it is good practice to start writing functions to make your scripts more readable and reproducible. 
 
 <div id="ds-objectives" markdown="1">
 
@@ -46,7 +46,7 @@ If this is your first time using GEE, we recommend checking out the Google Devel
 
 
 ## GEE Function and Mapping Syntax
-Let's get started! First let's take a look at the syntax for writing user-defined functions in GEE. If you are familiar with other programming languages, this should look somewhat familiar. The function requires input argument(s) `args` and returns an `output`.
+Let's get started! First let's take a look at the syntax for writing user-defined functions in GEE. If you are familiar with other programming languages, this should look somewhat familiar. The function requires input argument(s) `args` and returns an `output`. **Note:** Do not try to run the two code chunks below, these are just to demonstrate the key components of a function and how you can call or "map" that function.
 
 ```javascript
 var functionName = function(args) {
@@ -124,9 +124,17 @@ function addNISImage(image) {
   // add this layer to the map using the true-color (RGB) visualization parameters
   Map.addLayer(imageId, sdr_vis_params, fileName + ' Refl RGB - All Flightlines')
 }
+
+// call the addNISimages function
+sdr_col.evaluate(function(sdr_col) {
+  sdr_col.features.map(addNISImage);
+})
+
+// Center the map on site and set zoom level (11)
+Map.centerObject(site_center, 11);
 ```
 
-Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. 
+Note that the first half of this function is just pulling out relevant information about the site in order to properly label the layer on the Map display. Note that defining this function alone will not display anything on the map, you will need to call (`evaluate`) the function.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function1_refl_rgb.png">
@@ -134,12 +142,9 @@ Note that the first half of this function is just pulling out relevant informati
 </figure>
 
 ## Function including Cloud-Masking and Weather QA Layers
-Next we can build upon this function to include some small pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, plotting it, and masking the reflectance data to include only the clear-weather (<10% cloud cover) data and add that masked dataset to the Map.
+Next we can build upon this function to include some other pre-processing steps, such as selecting the `Weather_Quality_Indicator` band, and masking the reflectance data to include only the clear-weather (<10% cloud cover) data. We can add the weather QA and clear-weather masked datasets as Layers to the Map.
 
 ```javascript
-// Next we can build upon this function to add the Weather QA layer and
-// call the cloud-masking function and add the clear-weather data layers to the Map
-
 // Define a palette for the weather - to match NEON AOP's weather color conventions
 // This will be used in the visualization parameters for the Weather QA layer
 // green (<10% cloud cover), yellow (10-50% cloud cover), red (>50% cloud cover)
@@ -174,13 +179,6 @@ function addClearNISImages(image) {
 //call the clearNISImages function
 sdr_col.evaluate(function(sdr_col) {
   sdr_col.features.map(addClearNISImages);
-})
-
-// call the addNISimages function
-// see this link for an explanation of what is occurring:
-// https://gis.stackexchange.com/questions/284610/add-display-all-images-of-mycollection-in-google-earth-engine
-sdr_col.evaluate(function(sdr_col) {
-  sdr_col.features.map(addNISImage);
 })
 
 // Center the map on site and set zoom level (11)
