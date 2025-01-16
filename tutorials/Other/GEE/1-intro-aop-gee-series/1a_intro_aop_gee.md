@@ -58,7 +58,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## AOP GEE Data Access
 
-AOP has currently added a subset of AOP Level 3 (tiled) data products at over 50 NEON sites spanning 10 years on GEE (as of Jan 2025). The NEON data products that have been made available on GEE can be currently be found on the GEE datasets page, if you search for "NEON" as follows:
+AOP has currently added a subset of AOP Level 3 (tiled) data products at over 50 NEON sites spanning 10 years on GEE (as of Jan 2025). The NEON data products that have been made available on GEE can be currently be found on the <a href="https://developers.google.com/earth-engine/datasets/" target="_blank"> GEE Datasets page</a>, if you search for "NEON" as follows:
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_datasets_neon_search.png">
