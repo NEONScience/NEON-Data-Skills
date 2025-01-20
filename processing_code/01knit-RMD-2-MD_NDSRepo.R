@@ -14,7 +14,7 @@ require(markdown)
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
-          "R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data",
+          "R/biodiversity/biorepository",
           "R/NEON-general/neon-code-packages/neonUtilities",
           "R/NEON-general/neon-code-packages/NEON-API-Token/neon-api-tokens-tutorial",
           "R/Phenocam/phenocam-tools/getting-started-phenocamapi",
@@ -24,7 +24,7 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[4]
+subDir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"

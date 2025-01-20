@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Exploring sample availability at the NEON Biorepository</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Exploring sample availability at the NEON Biorepository</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<h2 id="learning-objectives">Learning Objectives</h2>
+<p>In this tutorial, we will learn how to develop a sample list to optimally answer a research question based on NEON data product and NEON Biorepository sample availability.</p>
+<ol>
+<li>
+<p>Outline a broad research question.</p>
+</li>
+<li>
+<p>Download related data from the main NEON data portal using the <code>neonUtilities</code> R package.</p>
+</li>
+<li>
+<p>Compare NEON data availability across multiple data products in order to narrow research scope.</p>
+</li>
+<li>
+<p>Identify NEON Biorepository samples that match the research scope of interest using <a href="https://biorepo.neonscience.org/portal/index.php" target="_blank">NEON Biorepository</a> data.</p>
+</li>
+<li>
+<p>Visualize our request in an interactive map.</p>
+</li>
+</ol>
+<h2 id="research-question">Research question</h2>
+<p>We are interested in testing for relationships between the diet of small mammals and the carbon and nitrogen stable isotope ratios in co-occurring plant communities in a portion of the eastern United States. NEON provides extensive information about stable isotopes from samples collected from the canopy and in litter traps. While NEON does not measure small mammal diets as part of its focal protocols, NEON archives both hair and fecal samples that researchers can use to gain these insights.</p>
+<p><strong>What samples from the NEON Biorepository can be requested in order to conduct this study?</strong></p>
+<p>To answer this this question, we need to understand where there is spatial and temporal overlap in measurements of canopy foliar chemistry, litter chemistry, and mammal sampling.</p>
+<p>We will attempt to develop a list of samples following these criteria:</p>
+<ul>
+<li>
+<p>Site and year combinations for which carbon nitrogen ratio measurements are available for <em>both</em> canopy foliage and litter</p>
+</li>
+<li>
+<p>Common species for which we can achieve a minimum viable sample size for our study</p>
+</li>
+<li>
+<p>Both a hair and a fecal sample were collected from the same individual</p>
+</li>
+</ul>
+<h2 id="background-information-on-the-neon-biorepository">Background information on the NEON Biorepository</h2>
+<p>The NEON Biorepository is located at Arizona State University and serves as the primary repository for the 100,000 NEON samples and specimens collected across all 81 NEON field sites each year.</p>
+<p>The NEON Biorepository data portal allows users to search and download records associated with NEON samples and specimens, request samples and specimens for research, and publish sample-associated data. The NEON Biorepository data portal is built on open-source <a href="https://symbiota.org" target="_blank">Symbiota</a> software. <strong>Symbiota</strong> is the most frequently used software in North America for managing natural history collections records.</p>
+<p>Symbiota portals publish sample, specimen, and observation data following the <a href="https://dwc.tdwg.org/" target="_blank">Darwin Core Standard</a> developed by Biodiversity Information Standards (TDWG). This data standard is a stable, straightforward, and flexible framework for compiling biodiversity data from varied sources.</p>
+<h2 id="getting-started">Getting Started</h2>
+<p>If you do not have the required packages installed previously, use the <code>install.packages()</code> function to do so.</p>
+<pre><code>install.packages('tidyverse')
+
+install.packages('neonUtilities')
+
+install.packages('curl')
+
+install.packages('leaflet')
+
+install.packages('leaflet.minicharts')
+
+install.packages('lubridate')
+
+install.packages('ggplot2')
+</code></pre>
+<p>Once installed, load the packages.</p>
+<pre><code>library(tidyverse)
+
+library(neonUtilities)
+
+library(curl)
+
+library(leaflet)
+
+library(leaflet.minicharts)
+
+library(lubridate)
+
+library(ggplot2)
+</code></pre>
+<h2 id="obtain-relevant-neon-terrestrial-observation-system-data">Obtain relevant NEON Terrestrial Observation System data</h2>
+<p>In order to answer our question, we need to know which NEON sites and years correspond to available carbon and nitrogen stable isotope data for canopy foliage and litter samples. We will use the <code>loadByProduct()</code> function in the
+<code>neonUtilities</code> package to download all of the data from these two data products from the main NEON data portal. This requires that we know the NEON data product IDs for each relevant data product.</p>
+<p><strong>NEON Plant Foliar Traits:</strong> <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">DP1.10026.001</a></p>
+<p><strong>NEON Litterfall and fine woody debris production and chemistry:</strong> <a href="https://data.neonscience.org/data-products/DP1.10033.001" target="_blank">DP1.10033.001</a></p>
+<p>Because we are interested in the a portion of the eastern United States, we will subset the available data to sites in NEON Domains 1, 2, and 7.</p>
+<p>This download may take a few minutes. While not required, it is recommended that you use a <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">NEON API token</a> to achieve faster download speeds.</p>
+<p>Note that we have chosen to include <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Provisional data</a> for this exploratory analysis of sample and data availability. If you are interested in ensuring repeatability of analysis results, you should limit your download to data in a <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Release</a>.</p>
+<pre><code> NEON.cfc &lt;- loadByProduct(dpID=&quot;DP1.10026.001&quot;,
+                    include.provisional=TRUE,
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
+                    check.size=FALSE)
+
+ 
+
+ NEON.ltr &lt;- loadByProduct(dpID=&quot;DP1.10033.001&quot;,
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
+                    check.size=FALSE)
+</code></pre>
+<p>Let’s take a look at what is included in each NEON data product download. We will extract and focus on the table that has collated all of the records for individual traps.</p>
+<pre><code># What's in a download?
+
+
+
+names(NEON.cfc)
+
+##  [1] &quot;categoricalCodes_10026&quot;      &quot;cfc_carbonNitrogen&quot;          &quot;cfc_chemistrySubsampling&quot;   
+##  [4] &quot;cfc_chlorophyll&quot;             &quot;cfc_elements&quot;                &quot;cfc_fieldData&quot;              
+##  [7] &quot;cfc_lignin&quot;                  &quot;cfc_LMA&quot;                     &quot;cfc_shapefile&quot;              
+## [10] &quot;citation_10026_PROVISIONAL&quot;  &quot;citation_10026_RELEASE-2024&quot; &quot;issueLog_10026&quot;             
+## [13] &quot;readme_10026&quot;                &quot;validation_10026&quot;            &quot;variables_10026&quot;
+
+names(NEON.ltr)
+
+##  [1] &quot;categoricalCodes_10033&quot;      &quot;citation_10033_RELEASE-2024&quot; &quot;issueLog_10033&quot;             
+##  [4] &quot;ltr_chemistrySubsampling&quot;    &quot;ltr_fielddata&quot;               &quot;ltr_litterCarbonNitrogen&quot;   
+##  [7] &quot;ltr_litterLignin&quot;            &quot;ltr_massdata&quot;                &quot;ltr_pertrap&quot;                
+## [10] &quot;readme_10033&quot;                &quot;validation_10033&quot;            &quot;variables_10033&quot;
+</code></pre>
+<p>We can see that the data downloads for each product include several tables. The Quick Start Guides on any NEON data product description page are especially useful for understanding these tables, as are the “variables” and “readme” files included in data downloads. It is recommended that anyone who plans to use NEON data in their work carefully review the associated reading materials.</p>
+<h1 id="narrow-the-spatial-and-temporal-scope-based-on-available-data">Narrow the spatial and temporal scope based on available data</h1>
+<p>For our purpose, we are interested in the files containing measurements of carbon and nitrogen, so we will extract those data tables.</p>
+<pre><code>cfc &lt;- NEON.cfc$cfc_carbonNitrogen
+
+ltr &lt;- NEON.ltr$ltr_litterCarbonNitrogen
+</code></pre>
+<p>We will summarize the available data to find of year by site combinations for which both foliar and litter chemistry measurements are available.</p>
+<pre><code>summary.cfc &lt;- cfc %&gt;% 
+              mutate(year=year(collectDate)) %&gt;% 
+              group_by(siteID,year) %&gt;% 
+              summarise(n=length(uid),meanCN=mean(CNratio,na.rm=TRUE))
+
+
+
+summary.cfc
+
+## # A tibble: 13 × 4
+## # Groups:   siteID [8]
+##    siteID  year     n meanCN
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+##  1 BART    2022    44   36.1
+##  2 BLAN    2020    48   24.0
+##  3 GRSM    2016    45   25.6
+##  4 GRSM    2021    55   26.1
+##  5 HARV    2018    45   33.5
+##  6 MLBS    2018    45   23.2
+##  7 MLBS    2023    46   22.9
+##  8 ORNL    2017    42   29.6
+##  9 ORNL    2022    58   27.5
+## 10 SCBI    2017    44   21.3
+## 11 SCBI    2022    46   14.8
+## 12 SERC    2016    36   26.6
+## 13 SERC    2021    58   29.9
+
+summary.ltr &lt;- ltr %&gt;% 
+              mutate(year=year(collectDate)) %&gt;% 
+              group_by(siteID,year) %&gt;% 
+              summarise(n=length(uid),meanCN=mean(CNratio,na.rm=TRUE)) 
+
+summary.ltr
+
+## # A tibble: 11 × 4
+## # Groups:   siteID [8]
+##    siteID  year     n meanCN
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+##  1 BART    2016    37   98.6
+##  2 BART    2022    27   77.2
+##  3 BLAN    2020    15   39.5
+##  4 GRSM    2021    14   71.7
+##  5 HARV    2018    58   64.8
+##  6 MLBS    2018    19   42.3
+##  7 ORNL    2017    25   62.9
+##  8 ORNL    2022    20   72.5
+##  9 SCBI    2017    13   59.5
+## 10 SCBI    2022    17   47.0
+## 11 SERC    2021    12   72.7
+</code></pre>
+<p>We can see that there are more year by site combinations for which CN ratio data exist from canopy foliage than from litter samples. Since we are interested in studying both components of the ecosystem, let’s subset our data to only those instances for which both sets of data are available. To do this we need to join our datasets by site and year.</p>
+<pre><code>CN &lt;- full_join(summary.cfc,summary.ltr,
+                  join_by(&quot;siteID&quot;==&quot;siteID&quot;,&quot;year&quot;==&quot;year&quot;),
+                  suffix = c(&quot;.cfc&quot;,&quot;.ltr&quot;)) %&gt;%
+                  filter(meanCN.cfc&gt;0,meanCN.ltr&gt;0)
+</code></pre>
+<p>We will then select the most recent year of data from each of the site x year combinations and add a column for a new “site by year” variable.</p>
+<pre><code>CN &lt;- CN %&gt;%
+    	filter(!duplicated(siteID,fromLast = TRUE)) %&gt;%
+    	mutate(siteYear=paste(siteID,year,sep=&quot;.&quot;))
+</code></pre>
+<p>We have identified 8 site by year combinations for which we would like to obtain paired mammal hair and fecal samples for further study! Now we will look for available mammal samples.</p>
+<h1 id="load-and-explore-neon-biorepository-data">Load and explore NEON Biorepository data</h1>
+<p>Here, we read in a csv file of occurrence records downloaded from the NEON Biorepository data portal. The results are located in the <a href="https://github.com/kyule/neon-biorepo-tutorial" target="_blank">Github repository</a> associated with this tutorial. This represents all small mammal hair and fecal samples from Domains 1, 2, and 7 archived at the NEON Biorepository.</p>
+<p>Up to date results for the same search terms can be found at any time <a href="https://biorepo.neonscience.org/portal/collections/list.php?db=26%2C27&datasetid=2%2C13%2C8&includeothercatnum=1&usethes=1&taxontype=1" target="_blank">here</a>.</p>
+<pre><code>biorepo&lt;-read.csv(curl(&quot;https://github.com/kyule/neon-biorepo-tutorial/raw/main/biorepoOccurrences_FecalAndHairSamples_20250102.csv&quot;))
+</code></pre>
+<p>Let’s look at what information is included in a Darwin Core occurrence record. What variables exist in the records?</p>
+<pre><code>names(biorepo)
+
+##  [1] &quot;id&quot;                             &quot;institutionCode&quot;               
+##  [3] &quot;collectionCode&quot;                 &quot;ownerInstitutionCode&quot;          
+##  [5] &quot;basisOfRecord&quot;                  &quot;occurrenceID&quot;                  
+##  [7] &quot;catalogNumber&quot;                  &quot;otherCatalogNumbers&quot;           
+##  [9] &quot;higherClassification&quot;           &quot;kingdom&quot;                       
+## [11] &quot;phylum&quot;                         &quot;class&quot;                         
+## [13] &quot;order&quot;                          &quot;family&quot;                        
+## [15] &quot;scientificName&quot;                 &quot;taxonID&quot;                       
+## [17] &quot;scientificNameAuthorship&quot;       &quot;genus&quot;                         
+## [19] &quot;subgenus&quot;                       &quot;specificEpithet&quot;               
+## [21] &quot;verbatimTaxonRank&quot;              &quot;infraspecificEpithet&quot;          
+## [23] &quot;taxonRank&quot;                      &quot;identifiedBy&quot;                  
+## [25] &quot;dateIdentified&quot;                 &quot;identificationReferences&quot;      
+## [27] &quot;identificationRemarks&quot;          &quot;taxonRemarks&quot;                  
+## [29] &quot;identificationQualifier&quot;        &quot;typeStatus&quot;                    
+## [31] &quot;recordedBy&quot;                     &quot;associatedCollectors&quot;          
+## [33] &quot;recordNumber&quot;                   &quot;eventDate&quot;                     
+## [35] &quot;eventDate2&quot;                     &quot;year&quot;                          
+## [37] &quot;month&quot;                          &quot;day&quot;                           
+## [39] &quot;startDayOfYear&quot;                 &quot;endDayOfYear&quot;                  
+## [41] &quot;verbatimEventDate&quot;              &quot;occurrenceRemarks&quot;             
+## [43] &quot;habitat&quot;                        &quot;substrate&quot;                     
+## [45] &quot;verbatimAttributes&quot;             &quot;fieldNumber&quot;                   
+## [47] &quot;eventID&quot;                        &quot;informationWithheld&quot;           
+## [49] &quot;dataGeneralizations&quot;            &quot;dynamicProperties&quot;             
+## [51] &quot;associatedOccurrences&quot;          &quot;associatedSequences&quot;           
+## [53] &quot;associatedTaxa&quot;                 &quot;reproductiveCondition&quot;         
+## [55] &quot;establishmentMeans&quot;             &quot;cultivationStatus&quot;             
+## [57] &quot;lifeStage&quot;                      &quot;sex&quot;                           
+## [59] &quot;individualCount&quot;                &quot;samplingProtocol&quot;              
+## [61] &quot;preparations&quot;                   &quot;locationID&quot;                    
+## [63] &quot;continent&quot;                      &quot;waterBody&quot;                     
+## [65] &quot;islandGroup&quot;                    &quot;island&quot;                        
+## [67] &quot;country&quot;                        &quot;stateProvince&quot;                 
+## [69] &quot;county&quot;                         &quot;municipality&quot;                  
+## [71] &quot;locality&quot;                       &quot;locationRemarks&quot;               
+## [73] &quot;localitySecurity&quot;               &quot;localitySecurityReason&quot;        
+## [75] &quot;decimalLatitude&quot;                &quot;decimalLongitude&quot;              
+## [77] &quot;geodeticDatum&quot;                  &quot;coordinateUncertaintyInMeters&quot; 
+## [79] &quot;verbatimCoordinates&quot;            &quot;georeferencedBy&quot;               
+## [81] &quot;georeferenceProtocol&quot;           &quot;georeferenceSources&quot;           
+## [83] &quot;georeferenceVerificationStatus&quot; &quot;georeferenceRemarks&quot;           
+## [85] &quot;minimumElevationInMeters&quot;       &quot;maximumElevationInMeters&quot;      
+## [87] &quot;minimumDepthInMeters&quot;           &quot;maximumDepthInMeters&quot;          
+## [89] &quot;verbatimDepth&quot;                  &quot;verbatimElevation&quot;             
+## [91] &quot;disposition&quot;                    &quot;language&quot;                      
+## [93] &quot;recordEnteredBy&quot;                &quot;modified&quot;                      
+## [95] &quot;sourcePrimaryKey.dbpk&quot;          &quot;collID&quot;                        
+## [97] &quot;recordID&quot;                       &quot;references&quot;
+</code></pre>
+<p>We see that a large number of Darwin Core fields are present in the results that outline the who, what, where, when, and more of each sample. For fun, let’s explore the data. Try grouping or summarizing by any fields that interest you.</p>
+<pre><code># How many samples are included in the results for each collection, species, and sex?
+
+
+
+biorepo %&gt;% 
+  group_by(collectionCode,scientificName,sex) %&gt;% 
+  count()
+
+## # A tibble: 83 × 4
+## # Groups:   collectionCode, scientificName, sex [83]
+##    collectionCode scientificName            sex         n
+##    &lt;chr&gt;          &lt;chr&gt;                     &lt;chr&gt;   &lt;int&gt;
+##  1 MAMC-FE        &quot;&quot;                        Male        1
+##  2 MAMC-FE        &quot;Clethrionomys gapperi&quot;   Female     15
+##  3 MAMC-FE        &quot;Clethrionomys gapperi&quot;   Male        7
+##  4 MAMC-FE        &quot;Clethrionomys gapperi&quot;   Unknown     2
+##  5 MAMC-FE        &quot;Microtus pennsylvanicus&quot; Female     33
+##  6 MAMC-FE        &quot;Microtus pennsylvanicus&quot; Male       34
+##  7 MAMC-FE        &quot;Microtus pinetorum&quot;      Female      8
+##  8 MAMC-FE        &quot;Microtus pinetorum&quot;      Male        6
+##  9 MAMC-FE        &quot;Mus musculus&quot;            Female     38
+## 10 MAMC-FE        &quot;Mus musculus&quot;            Male       46
+## # ℹ 73 more rows
+</code></pre>
+<p><em>An aside on taxonomic identifications:</em> We see several different taxa represented within the results. Most samples are associated with a species-level determination. However, some small mammal species are very difficult to identify while live in the field at some sites. Therefore, some individuals are identified only to genus and others are given a “/” taxon. The latter represent uncertain identification between two species that are difficult to distinguish at a given field site. For example, individuals identified as <em>Peromyscus leucopus/maniculatus</em> could not be confidently determined to be either <em>P. maniculatus</em> or <em>P. leucopus</em> in the field. We will narrow our data to only samples for which a species level identification was made below. Many specimens are also given identification qualifiers, such as “cf. species,” which indicates some uncertainty in the field determination. We will ignore those notes for today, but we encourage any researcher interested in NEON small mammal samples to contact the NEON Bioreposity staff (<a href="mailto:biorepo@asu.edu">biorepo@asu.edu</a>) to better understand species-level identification confidence. When possible, we are often interested in collaborating with researchers on efforts to confirm identifications.</p>
+<pre><code>biorepo &lt;- biorepo %&gt;% 
+              filter(!grepl(&quot;/&quot;,scientificName),!is.na(specificEpithet))
+</code></pre>
+<h1 id="narrow-the-results-to-a-set-of-samples-that-fits-our-research-question">Narrow the results to a set of samples that fits our research question</h1>
+<p>We want to include only samples collected from the same site by year combinations we are interested in based on CN ratio data, so we create a site by year column and filter the results.</p>
+<pre><code>biorepo &lt;- biorepo %&gt;% 
+              mutate(siteID=substr(locationID,1,4)) %&gt;% 
+              mutate(siteYear=paste(siteID,year,sep=&quot;.&quot;)) %&gt;%
+              filter(siteYear %in% CN$siteYear)
+</code></pre>
+<p>Different collectionCodes correspond to different sample types.</p>
+<p>“MAMC-HA” corresponds to the
+<a href="https://biorepo.neonscience.org/portal/collections/misc/collprofiles.php?collid=27" target="_blank">Mammal Hair Sample Collection</a>.</p>
+<p>“MAMC-FE” corresponds to the
+<a href="https://biorepo.neonscience.org/portal/collections/misc/collprofiles.php?collid=26" target="_blank">Mammal Fecal Sample Collection</a>.</p>
+<p>We will separate the hair and fecal samples into seperate data frames for ease of use.</p>
+<pre><code># Extract the hair and fecal samples
+
+
+
+hair &lt;- biorepo %&gt;%
+          filter(collectionCode==&quot;MAMC-HA&quot;)
+
+
+
+fecal &lt;- biorepo %&gt;%
+          filter(collectionCode==&quot;MAMC-FE&quot;)
+</code></pre>
+<p>We see that there are a large number of samples that fit the site and year criteria of our study. We know that we want to focus on common species because we cannot fully deplete NEON Biorepository resources for future researchers (<a href="https://biorepo.neonscience.org/portal/misc/samplepolicy.php" target="_blank">Sample Use Policy</a>), and we want to make sure we have sufficient within species replication for our analyses (and likely have our own resource constraints!). Therefore, we can subset to species with the most available hair samples.</p>
+<p>First we will find how common different species, select the 2 most common species for each site, and add a site by species column</p>
+<pre><code>hairBySpecies &lt;- hair %&gt;% 
+                  group_by(siteID,scientificName) %&gt;% 
+                  count() %&gt;% 
+                  arrange(desc(n)) %&gt;%
+                  group_by(siteID) %&gt;%
+                  slice(1:2) %&gt;% 
+                  mutate(siteSp=paste(siteID,scientificName,sep=&quot;_&quot;))
+</code></pre>
+<p>Now we will filter the hair and fecal samples by these site by species combinations</p>
+<pre><code>hair &lt;- hair %&gt;% 
+          mutate(siteSp=paste(siteID,scientificName,sep=&quot;_&quot;)) %&gt;%
+          filter(siteSp %in% hairBySpecies$siteSp)
+
+
+
+fecal &lt;- fecal %&gt;% 
+          mutate(siteSp=paste(siteID,scientificName,sep=&quot;_&quot;)) %&gt;%
+          filter(siteSp %in% hairBySpecies$siteSp)
+</code></pre>
+<p>We now need to determine which fecal and hair samples are associated with the same individual. We can determine this based on the “associatedOccurrences” field in the NEON Biorepository occurrences field. This field provides url links to samples that can be related in a variety of ways based on <a href="https://dwc.tdwg.org/terms/" target="_blank">Darwin Core controlled terminology</a>.</p>
+<p>These urls are pipe delimited and contain the “catalogNumber” for related samples. The only relationship between  mammal hair and fecal samples in the NEON Biorepository data portal is “derivedFromSameIndividual.” We will extract relationships from the “associatedOccurrences” field to create a new data frame of catalogNumbers of paired samples. The code provided below is a for loop that cycles through the sample data.</p>
+<pre><code>sampleMatches &lt;- data.frame(hair=c(),fecal=c())
+
+
+
+for (i in 1:nrow(fecal)){
+  matchHair &lt;- hair$catalogNumber[grepl(fecal$catalogNumber[i],hair$associatedOccurrences)][1]
+  
+  if(is.na(matchHair) == FALSE){
+    sampleMatches &lt;- rbind(sampleMatches,data.frame(hair=matchHair,fecal=fecal$catalogNumber[i]))
+  }
+  
+}
+</code></pre>
+<p>We will remove duplicate samples from this list.</p>
+<pre><code>sampleMatches &lt;- sampleMatches %&gt;% filter(!duplicated(hair))
+</code></pre>
+<p>We find more than 350 unique individuals with paired hair and fecal samples meeting our criteria so far. Let’s summarize by the number of samples across site by species combinations and filter to those combinations for which 10 or more individuals are available.</p>
+<p>First, we grab the rest of the data associated with the hair samples</p>
+<pre><code># Grab the rest of the data associated with the hair samples
+
+
+
+hairMatches &lt;- sampleMatches %&gt;% 
+                	left_join(hair,join_by(&quot;hair&quot;==&quot;catalogNumber&quot;)) 
+</code></pre>
+<p>Then, we filter to the combinations for which we can obtain 10 or more paired samples and subset the matching samples</p>
+<pre><code>hairMatchSummary &lt;- hairMatches %&gt;%
+                		group_by(siteSp) %&gt;% 
+                		count() %&gt;% 
+                		filter(n&gt;=10)
+
+                
+
+
+
+hairMatches &lt;- hairMatches %&gt;%
+            		filter(siteSp %in% hairMatchSummary$siteSp)
+</code></pre>
+<h1 id="finalize-a-sample-list">Finalize a sample list</h1>
+<p>To finalize the list, we randomly select a sample size of 10 for each species and site combination.</p>
+<pre><code>set.seed(85705)
+
+hairMatchSet &lt;-  hairMatches[sample(nrow(hairMatches)),] %&gt;%
+                	arrange(desc(siteSp)) %&gt;% group_by(siteSp) %&gt;% 
+                	slice(1:10)
+</code></pre>
+<p>We now want to create a data frame representing the full list of samples we would like to request for our project.</p>
+<pre><code># Filter the full data sets to those involved in the request of interest
+
+
+
+request &lt;- biorepo %&gt;%
+                filter(catalogNumber %in% c(hairMatchSet$hair,hairMatchSet$fecal))
+</code></pre>
+<p>We now have a list of 140 samples we could request from the NEON Biorepository via the <a href="https://biorepo.neonscience.org/portal/misc/samplerequest.php" target="_blank">Sample Request Form</a>.</p>
+<p>What other ways may we want to have manipulated or subset the data for our question?</p>
+<h1 id="visualize-our-request">Visualize our request</h1>
+<p>We might be interested in creating a visualization for a grant proposal in which we planned to use these samples.</p>
+<p>To map our samples, let’s first create a dataframe with the average geographic location across the selected samples and the CN ratio data.</p>
+<pre><code>mapSummary &lt;- hairMatchSet %&gt;%
+				group_by(siteID) %&gt;% 
+				summarise(lat=mean(decimalLatitude),lng=mean(decimalLongitude)) %&gt;% 					  left_join(CN,join_by(&quot;siteID&quot;==&quot;siteID&quot;))
+</code></pre>
+<p>Next, let’s add the species to this data frame.</p>
+<pre><code>mapSummaryWithSpecies &lt;- hairMatchSet %&gt;%
+						group_by(siteID,scientificName) %&gt;%
+						count() %&gt;%
+						left_join(mapSummary,join_by(&quot;siteID&quot;==&quot;siteID&quot;)) %&gt;% 
+						spread(scientificName, n)
+</code></pre>
+<p>Create a base map for our data and add minicharts of the species and CN ratio of canopy foliage</p>
+<pre><code>basemap &lt;- leaflet() %&gt;% 
+				addTiles() %&gt;%
+				addProviderTiles(providers$CartoDB.PositronNoLabels) %&gt;% 
+				setView(lng = -75, lat = 42, zoom = 5)
+
+
+
+speciesByCN &lt;- basemap %&gt;% 
+				  addMinicharts(mapSummaryWithSpecies$lng, mapSummaryWithSpecies$lat,
+				  type ='pie',
+				  chartdata = mapSummaryWithSpecies[,10:12],
+				  width = mapSummaryWithSpecies$meanCN.cfc/2)
+
+
+
+speciesByCN
+
+## Error in path.expand(path): invalid 'path' argument
+</code></pre>
+<p>We see that we have a good representation of <em>P. leucopus</em> across our study area. For a strong species-specific analysis we may choose to focus on this species and investigate the CN ratios present at sites where it is present.</p>
+<pre><code>PleucSites &lt;- mapSummaryWithSpecies[!is.na(mapSummaryWithSpecies$`Peromyscus leucopus`), ]
+
+
+
+ggplot(PleucSites, aes(x = meanCN.ltr, y = meanCN.cfc)) +
+  geom_point() +
+  labs(
+    x = &quot;Litter CN ratio&quot;,
+    y = &quot;Canopy Foliage CN ratio&quot;,
+  ) +
+  theme_minimal() 
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/biorepository/rfigs/plot-1.png" alt=" " /></p>
+<p>We see approximately 2-fold variation in both litter and canopy foliage CN ratios across these sites, indicating that a wide range of isotopic environments can be studied.</p>
+<p>This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a href="https://biorepo.neonscience.org/portal/index.php" target="_blank">NEON Biorepository Data Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out to <a href="mailto:biorepo@asu.edu">biorepo@asu.edu</a> or fill out the <a href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.</p>
+</div>
+</body>
+</html>
