@@ -9,7 +9,7 @@ estimatedTime: 30 minutes
 packagesLibraries: 
 topics: lidar, hyperspectral, camera, remote-sensing
 languageTool: GEE, JavaScript
-dataProduct: DP3.30006.001, DP3.30010.001, DP3.30015.001 DP3.30024.001
+dataProduct: DP3.30006.001, DP3.30006.002, DP3.30010.001, DP3.30015.001 DP3.30024.001
 code1: 
 tutorialSeries: aop-gee2023
 urlTitle: intro-aop-gee-image-collections
@@ -25,7 +25,7 @@ Google Earth Engine (GEE) is a free and powerful cloud-computing platform for ca
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/neon_datasets_gee_catalog.png" alt="NEON Datasets in the GEE Publisher Catalog."></a>
 </figure>
 
-NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (BRDF and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2024, bidirectional data is only availabe for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
+NEON is planning to add the full archive of AOP L3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Surface Bidirectional Reflectance</a>, <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">LiDAR Elevation</a>, <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a>, and <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">High-resolution orthorectified camera imagery</a>. Since the L3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Surface Directional Reflectance</a> is being replaced by the bidirectional (Bidirectional Reflectance Distribution Function (BRDF) and topographic corrected) reflectance as that becomes available, we are only adding directional reflectance data to GEE upon request. As of January 2025, bidirectional data is only available for AOP data collected between 2022-2024, but re-processing of older AOP data (2013-2021) will begin in early 2025. Please see the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-brdf-refl-h5-py" target="_blank">Introduction to Bidirectional Hyperspectral Reflectance Data in Python</a> for more information on the differences between the directional and bidirectional reflectance data products.
 
 It will take time for the full archive of AOP data to be added to GEE, but NEON has been ramping up data additions starting in Fall 2024. This tutorial shows you how to find which data are currently available. If there are certain NEON sites and years of data you would like to see added to Google Earth Engine sooner, use the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us</a> form to request this, and include "Google Earth Engine Remote Sensing Data" in the text. 
 
@@ -37,9 +37,11 @@ After completing this activity, you will become familiar with:
  * GEE Image Collections
 
 And you will be able to:
- * Write and run basic JavaScript code in code editor 
+ * Write and run basic JavaScript code in the GEE Code Editor 
  * Discover which NEON AOP datasets are available in GEE
  * Explore the NEON AOP GEE Image Collections
+ * Plot an RGB image of a reflectance dataset
+ * Compare bidirectional and directional reflectance datasets
 
 ## Requirements
  * A Google or gmail (@gmail.com) account.
@@ -56,7 +58,7 @@ If this is your first time using GEE, we recommend starting on the Google Develo
 
 ## AOP GEE Data Access
 
-AOP has currently added a subset of AOP Level 3 (tiled) data products at over 50 NEON sites spanning 10 years on GEE (as of Jan 2025). The NEON data products that have been made available on GEE can be currently be found on the GEE datasets page, if you search for "NEON" as follows:
+AOP has currently added a subset of AOP Level 3 (tiled) data products at over 50 NEON sites spanning 10 years on GEE (as of Jan 2025). The NEON data products that have been made available on GEE can be currently be found on the <a href="https://developers.google.com/earth-engine/datasets/" target="_blank"> GEE Datasets page</a>, if you search for "NEON" as follows:
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/gee_datasets_neon_search.png">
@@ -106,7 +108,7 @@ var dem = ee.ImageCollection('projects/neon-prod-earthengine/assets/DEM/001')
 
 A few tips for the working in the Code Editor: 
 - In the left panel of the code editor, there is a **Docs** tab which includes API documentation on built in functions, showing the expected input arguments. We encourage you to refer to this documentation, as well as the <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_01" target="_blank"> GEE JavaScript Tutorial</a> to familiarize yourself with GEE and the JavaScript programming language.
-- If you have an error in your code, a red error message will show up in the Console (in the right panel), which tells you the line that failed.
+- If you have an error in your code, a red error message will show up in the **Console** (in the right panel), which tells you the line that failed.
 - Save your code frequently! If you try to leave your code while it is unsaved, you will be prompted that there are unsaved changes in the editor.
 
 When you Run the code above (by clicking on the **Run** above the code editor), you will notice that the lines of code become underlined in red, the same as you would see for a spelling error in most text editors. If you hover over each of the lines of codes, you will see a message pop up that prompts you to Convert the variable into an import record.
@@ -170,19 +172,19 @@ print('NEON Images in the RGB Camera Collection',
 In the **Console** tab to the right of the code, you will see a list of all available images. Expand each List to see the data available for each Image Collection. The names of the all the images follow the format `YEAR_SITE_#`, so you can identify the site and year of data this way. The number at the end is the Visit #; AOP typically visits each site 3 out of every 5 years, so the visit number indicates the cumulative number of times AOP has visited that site. Occasionally, AOP may re-visit a site twice in the same year.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images.PNG" alt="Available AOP Images"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images_with_code.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images_with_code.PNG" alt="Available AOP Images"></a>
 </figure>
 
 ## Filter by Image Properties and Display a True Color Image
 
-Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties, such as the NEON site code, using `.filterMetadata`.
+Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties, such as the NEON site code, using `.filterMetadata`. For this example we'll pull in an image from the NEON site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">Lyndon B. Johnson National Grassland NEON (CLBJ)</a>.
 
 ```javascript
-// read in a single reflectance image at the NEON site MCRA in 2021
-var refl_MCRA_2021 = refl001
+// read in a single reflectance image at the NEON site CLBJ in 2021
+var refl001_CLBJ_2021 = refl001
   .filterDate('2021-01-01', '2021-12-31') // filter by date - 2021
-  .filterMetadata('NEON_SITE', 'equals', 'MCRA') // filter by site
+  .filterMetadata('NEON_SITE', 'equals', 'CLBJ') // filter by site
   .first(); // select the first one to pull out a single image
 ```
 
@@ -192,11 +194,11 @@ Next let's take a look at the Image Properties.
 
 ```
 // look at the image properties
-var properties = refl_MCRA_2021.toDictionary()
-print('MCRA 2021 Directional Reflectance Properties:', properties)
+var clbj2021_refl_properties = refl001_CLBJ_2021.toDictionary()
+print('CLBJ 2021 Directional Reflectance Properties:', clbj2021_refl_properties)
 ```
 
-Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band (Bands 001 - 426). You may wish to refer to this wavelength information to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image.
+Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band (Bands 001 - 426). You may wish to refer to this wavelength information to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image. For a full description of what each of the Image Properties mean, you can look at the `IMAGE PROPERTIES` tab as explained in the previous section, or find it in the <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_001#image-properties" target="_blank">Earth Engine Data Catalog</a>. 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/image_properties.PNG">
@@ -205,14 +207,15 @@ Look in the Console for the properties, you can expand by clicking on the arrow 
 
 ## Determine Release Tag Information
 
-When working with NEON data, whether downloaded from the Data Portal or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is released, the property `RELEASE_YEAR` will display the year of the release. The code chunk below shows how to display the release information for the MCRA 2021 directional reflectance data. 
+When working with NEON data, whether downloaded from the Data Portal or on GEE, we always recommend checking whether the data are Provisional or Released, and the release tag of the data. On GEE, this information is included in the image properties `PROVISIONAL_RELEASED` and `RELEASE_YEAR`. If the data is released, the property `RELEASE_YEAR` will display the year of the release. The code chunk below shows how to display the release information for the CLBJ 2021 directional reflectance data. 
 
 ```
 // determine the release information for this image
-var release_status = properties.select(['PROVISIONAL_RELEASED']);
-print('MCRA 2021 Directional Reflectance Release Status:', release_status)
-var release_year = properties.select(['RELEASE_YEAR']);
-print('MCRA 2021 Directional Reflectance Release Year:', release_year)
+var clbj2021_release_status = clbj2021_refl_properties.select(['PROVISIONAL_RELEASED']);
+print('CLBJ 2021 Directional Reflectance Release Status:', clbj2021_release_status)
+
+var clbj2021_release_year = clbj2021_refl_properties.select(['RELEASE_YEAR']);
+print('CLBJ 2021 Directional Reflectance Release Year:', clbj2021_release_year)
 ```
 
 In this example, the data is part of `RELEASE-2024`. 
@@ -221,35 +224,88 @@ For more information on NEON releases, refer to the <a href="https://www.neonsci
 
 ## Plot a True Color Image
 
-Finally, let's plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've read into the variable `refl_MCRA_2021`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`.
+Finally, let's plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've read into the variable `refl001_CBLJ_2021`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`. There are a couple ways you can center the Map to the location you want. One is to use `Map.centerObject` and you can provide the image you want to center; otherwise you can specify the latitude and longitude, shown commented-out in the code chunk below.
 
 ```javascript
 // pull out the red, green, and blue bands
-var refl001_MCRA_2021_RGB = refl_MCRA_2021.select(['B053', 'B035', 'B019']);
+var refl001_CLBJ_2021_RGB = refl001_CLBJ_2021.select(['B053', 'B035', 'B019']);
 
 // set visualization parameters
-var rgb_vis = {min: 0, max: 1260, gamma: 0.8};
+var refl_rgb_vis = {min: 0, max: 1260, gamma: 0.8};
 
-// center the map at the lat / lon of the site, set zoom to 13
-Map.setCenter(-122.15, 44.27, 13);
+// use centerObject to center on the reflectance data, 13 is the zoom level
+Map.centerObject(refl001_CLBJ_2021, 13)
+
+// alternatively you could specify the lat / lon of the site, set zoom to 13
+// you can find the field site lat/lon here https://www.neonscience.org/field-sites/clbj
+// Map.setCenter(-97.57, 33.40, 13);
 
 // add this RGB layer to the Map and give it a title
-Map.addLayer(refl001_MCRA_2021_RGB, rgb_vis, 'MCRA 2021 RGB Reflectance Imagery');
+Map.addLayer(refl001_CLBJ_2021_RGB, refl_rgb_vis, 'CLBJ 2021 Directional Reflectance RGB');
 ```
 
-When you run the code you should now see the true color images on the map! You can zoom in and out and explore some of the other interactive options on your own.
+When you run the code you should now see the true color image on the map! You can zoom in and out and explore some of the other interactive options on your own.
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/mcra_sdr_rgb.png" alt="MCRA Reflectance RGB Image."></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_rgb.png" alt="CLBJ 2021 Directional Reflectance RGB Image."></a>
 </figure>
+
+## Compare Directional and Bidirectional Reflectance
+
+Lastly, let's also look at a bidirectional data product at the same site, and you can explore the differences between the directional and bidirectional reflectance. We will also display the release information for this data. 
+
+```javascript
+// read in a bidirectional reflectance image at the NEON site CLBJ in 2022
+var refl002_CLBJ_2022 = refl002
+  .filterDate('2022-01-01', '2022-12-31') // filter by date - 2022
+  .filterMetadata('NEON_SITE', 'equals', 'CLBJ') // filter by site
+  .first(); // select the first one to pull out a single image
+
+// read the properties into a variable
+var clbj2022_refl_properties = refl002_CLBJ_2022.toDictionary()
+
+// determine the release information for this BRDF-corrected image
+var clbj2022_release_status = clbj2022_refl_properties.select(['PROVISIONAL_RELEASED']);
+print('CLBJ 2022 Bidirectional Reflectance Release Status:', clbj2022_release_status)
+
+// if you try to read in the release year, it will throw an error
+// since this data product is still PROVISIONAL, there is no release year
+// comment out these lines below to remove
+var clbj2022_release_year = clbj2022_refl_properties.select(['RELEASE_YEAR']);
+print('CLBJ 2022 Bidirectional Reflectance Release Year:', clbj2022_release_year)
+  
+// pull out the red, green, and blue bands
+var refl002_CLBJ_2022_RGB = refl002_CLBJ_2022.select(['B053', 'B035', 'B019']);
+
+// add this RGB layer to the Map and give it a title
+Map.addLayer(refl002_CLBJ_2022_RGB, refl_rgb_vis, 'CLBJ 2022 Bidirectional Reflectance RGB');
+```
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/console_error.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/console_error.png" alt="CLBJ 2021 Directional Reflectance RGB Image."></a>
+</figure>
+
+If your code has any errors they will display in the **Console** tab in red. In this example, we tried to print out a property that does not exist because the data is Provisional, so there is no `RELEASE_YEAR`. You can comment out the lines of code starting with `var clbj2022_release_year` to prevent the error from displaying. If your code is not running as expected, errors displayed in the Console can be helpful for troubleshooting, as it will tell you how and where your code failed. Print statements throughout the code can also be helpful.
+
+Note that bidirectional reflectance data will remain provisional in 2025, since it is a new data product (as of 2024), and is planned to be incorporated into RELEASE-2026.
+
+You can toggle between the two layers by selecting the "Layers" tab in the upper right corner of the Map window. Check and uncheck the two layers (2021 and 2022) to see the differences. You can also use the slider to the right of the layer name to make one layer partially transparent. What observations can you make about these two datasets?
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_refl002_comparison.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_refl002_comparison.png" alt="CLBJ Directional & Bidirectional Reflectance Comparison."></a>
+</figure>
+
+The BRDF and topographic corrections typically visibly improve striping (or BRDF effects) between adjacent flightlines, as we can see with these datasets at CLBJ, where the 2022 bidirectional reflectance (left) looks much more seamless than the 2021 directional reflectance data (right), which has some visible vertical artifacts. For most NEON sites, the flight lines are oriented N-S so the stripes in the directional reflectance data will be vertical, but there are a few sites with slightly different flight plans.
 
 ## A Quick Recap
 
-You did it! You now have a basic understanding of the GEE code editor and its different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your code editor session, and navigate through the ImageCollection **Asset details** to display information about the collection. Lastly, you learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite).
+You did it! You now have a basic understanding of the GEE Code Editor and its different components. You have also learned how to read a NEON AOP `ImageCollection` into a variable, import the variable into your session, and navigate through the ImageCollection **Asset details** to display information about the collection. You learned to read in an individual reflectance image, explore the image properties, and display a map of a true color image (RGB composite). And finally, you explored some of the differences between the directional and bidirectional (BRDF- and topographic corrected) reflectance data products at the site CLBJ.
 
-It doesn't look like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is more involved. One of the major challenges to working with AOP reflectance data is its large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral, lidar, and camera data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
+It doesn't seem like we've done much so far, but this is a already great achievement! With just a few lines of code, you can import an entire AOP hyperspectral dataset, which in most other coding environments, is more involved. One of the major challenges to working with AOP reflectance data is its large data volume, which typically requires high-performance computing environments to read in the data, visualize, and analyze it. There are also limited open-source tools for working with hyperspectral data; many of the established software suites require proprietary (and often expensive) licenses. In this lesson, with minimal code, we have loaded spectral, lidar, and camera data covering an entire AOP site, and are ready to start exploring and analyzing the data in a free geospatial cloud-computing platform. 
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/6dac70b411f46e4275f1fbb20eaaa65" target="_blank">Into to AOP GEE Image Collections</a>
+<a href="https://code.earthengine.google.com/b95426f65e870b34eef64404e34ace54" target="_blank">Into to AOP GEE Image Collections</a>
