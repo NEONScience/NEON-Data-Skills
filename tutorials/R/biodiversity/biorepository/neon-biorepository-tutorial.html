@@ -135,7 +135,7 @@ install.packages('lubridate')
 
 install.packages('ggplot2')
 </code></pre>
-<p>Otherwise, simply load the packages.</p>
+<p>Once installed, load the packages.</p>
 <pre><code>library(tidyverse)
 
 library(neonUtilities)
@@ -156,37 +156,40 @@ library(ggplot2)
 <p><strong>NEON Plant Foliar Traits:</strong> <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">DP1.10026.001</a></p>
 <p><strong>NEON Litterfall and fine woody debris production and chemistry:</strong> <a href="https://data.neonscience.org/data-products/DP1.10033.001" target="_blank">DP1.10033.001</a></p>
 <p>Because we are interested in the a portion of the eastern United States, we will subset the available data to sites in NEON Domains 1, 2, and 7.</p>
-<p>This download may take a few minutes. While not required, it is recommended that you use a <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">NEON API token</a> to achieve faster download speeds. For the tutorial, we specify that we are only interested in the carbon nitrogen data tables  However, it is recommended that researchers familiarize themselves with all tables in a given data product.</p>
-<p>Note that we have chosen to include <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Provisional data</a> for this exploratory analysis of sample and data availability. If you are interested in ensuring repeatability of analysis results, you should limit your download to Release data.</p>
+<p>This download may take a few minutes. While not required, it is recommended that you use a <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">NEON API token</a> to achieve faster download speeds.</p>
+<p>Note that we have chosen to include <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Provisional data</a> for this exploratory analysis of sample and data availability. If you are interested in ensuring repeatability of analysis results, you should limit your download to data in a <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Release</a>.</p>
 <pre><code> NEON.cfc &lt;- loadByProduct(dpID=&quot;DP1.10026.001&quot;,
                     include.provisional=TRUE,
-                    site=c('BLAN','BART','GRSM','HARV','MLBS','ORNL','SCBI','SERC'),
-                    tabl=&quot;cfc_carbonNitrogen&quot;,
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
                     check.size=FALSE)
 
-## Warning: Downloading only table cfc_carbonNitrogen. Downloading by table is not recommended unless you are already familiar with the data product and its contents.
+ 
 
  NEON.ltr &lt;- loadByProduct(dpID=&quot;DP1.10033.001&quot;,
-                    site=c('BLAN','BART','GRSM','HARV','MLBS','ORNL','SCBI','SERC'),
-                    tabl='ltr_litterCarbonNitrogen',
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
                     check.size=FALSE)
-
-## Warning: Downloading only table ltr_litterCarbonNitrogen. Downloading by table is not recommended unless you are already familiar with the data product and its contents.
 </code></pre>
-<p>Let’s take a look at what is included in each NEON data product download. We will extract and focus on the table that has colated all of the records for individual traps.</p>
+<p>Let’s take a look at what is included in each NEON data product download. We will extract and focus on the table that has collated all of the records for individual traps.</p>
 <pre><code># What's in a download?
 
 
 
 names(NEON.cfc)
 
-## [1] &quot;cfc_carbonNitrogen&quot;          &quot;citation_10026_PROVISIONAL&quot;  &quot;citation_10026_RELEASE-2024&quot;
-## [4] &quot;issueLog_10026&quot;              &quot;readme_10026&quot;                &quot;variables_10026&quot;
+##  [1] &quot;categoricalCodes_10026&quot;      &quot;cfc_carbonNitrogen&quot;          &quot;cfc_chemistrySubsampling&quot;   
+##  [4] &quot;cfc_chlorophyll&quot;             &quot;cfc_elements&quot;                &quot;cfc_fieldData&quot;              
+##  [7] &quot;cfc_lignin&quot;                  &quot;cfc_LMA&quot;                     &quot;cfc_shapefile&quot;              
+## [10] &quot;citation_10026_PROVISIONAL&quot;  &quot;citation_10026_RELEASE-2024&quot; &quot;issueLog_10026&quot;             
+## [13] &quot;readme_10026&quot;                &quot;validation_10026&quot;            &quot;variables_10026&quot;
 
 names(NEON.ltr)
 
-## [1] &quot;citation_10033_RELEASE-2024&quot; &quot;issueLog_10033&quot;              &quot;ltr_litterCarbonNitrogen&quot;   
-## [4] &quot;readme_10033&quot;                &quot;variables_10033&quot;
+##  [1] &quot;categoricalCodes_10033&quot;      &quot;citation_10033_RELEASE-2024&quot; &quot;issueLog_10033&quot;             
+##  [4] &quot;ltr_chemistrySubsampling&quot;    &quot;ltr_fielddata&quot;               &quot;ltr_litterCarbonNitrogen&quot;   
+##  [7] &quot;ltr_litterLignin&quot;            &quot;ltr_massdata&quot;                &quot;ltr_pertrap&quot;                
+## [10] &quot;readme_10033&quot;                &quot;validation_10033&quot;            &quot;variables_10033&quot;
 </code></pre>
 <p>We can see that the data downloads for each product include several tables. The Quick Start Guides on any NEON data product description page are especially useful for understanding these tables, as are the “variables” and “readme” files included in data downloads. It is recommended that anyone who plans to use NEON data in their work carefully review the associated reading materials.</p>
 <h1 id="narrow-the-spatial-and-temporal-scope-based-on-available-data">Narrow the spatial and temporal scope based on available data</h1>
@@ -205,9 +208,23 @@ ltr &lt;- NEON.ltr$ltr_litterCarbonNitrogen
 
 summary.cfc
 
-
-
-
+## # A tibble: 13 × 4
+## # Groups:   siteID [8]
+##    siteID  year     n meanCN
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+##  1 BART    2022    44   36.1
+##  2 BLAN    2020    48   24.0
+##  3 GRSM    2016    45   25.6
+##  4 GRSM    2021    55   26.1
+##  5 HARV    2018    45   33.5
+##  6 MLBS    2018    45   23.2
+##  7 MLBS    2023    46   22.9
+##  8 ORNL    2017    42   29.6
+##  9 ORNL    2022    58   27.5
+## 10 SCBI    2017    44   21.3
+## 11 SCBI    2022    46   14.8
+## 12 SERC    2016    36   26.6
+## 13 SERC    2021    58   29.9
 
 summary.ltr &lt;- ltr %&gt;% 
               mutate(year=year(collectDate)) %&gt;% 
@@ -215,6 +232,22 @@ summary.ltr &lt;- ltr %&gt;%
               summarise(n=length(uid),meanCN=mean(CNratio,na.rm=TRUE)) 
 
 summary.ltr
+
+## # A tibble: 11 × 4
+## # Groups:   siteID [8]
+##    siteID  year     n meanCN
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+##  1 BART    2016    37   98.6
+##  2 BART    2022    27   77.2
+##  3 BLAN    2020    15   39.5
+##  4 GRSM    2021    14   71.7
+##  5 HARV    2018    58   64.8
+##  6 MLBS    2018    19   42.3
+##  7 ORNL    2017    25   62.9
+##  8 ORNL    2022    20   72.5
+##  9 SCBI    2017    13   59.5
+## 10 SCBI    2022    17   47.0
+## 11 SERC    2021    12   72.7
 </code></pre>
 <p>We can see that there are more year by site combinations for which CN ratio data exist from canopy foliage than from litter samples. Since we are interested in studying both components of the ecosystem, let’s subset our data to only those instances for which both sets of data are available. To do this we need to join our datasets by site and year.</p>
 <pre><code>CN &lt;- full_join(summary.cfc,summary.ltr,
@@ -451,7 +484,7 @@ speciesByCN &lt;- basemap %&gt;%
 
 speciesByCN
 
-## Error in loadNamespace(name): there is no package called 'webshot'
+## Error in path.expand(path): invalid 'path' argument
 </code></pre>
 <p>We see that we have a good representation of <em>P. leucopus</em> across our study area. For a strong species-specific analysis we may choose to focus on this species and investigate the CN ratios present at sites where it is present.</p>
 <pre><code>PleucSites &lt;- mapSummaryWithSpecies[!is.na(mapSummaryWithSpecies$`Peromyscus leucopus`), ]
@@ -468,7 +501,7 @@ ggplot(PleucSites, aes(x = meanCN.ltr, y = meanCN.cfc)) +
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/biorepository/rfigs/plot-1.png" alt=" " /></p>
 <p>We see approximately 2-fold variation in both litter and canopy foliage CN ratios across these sites, indicating that a wide range of isotopic environments can be studied.</p>
-<p>This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a> href=“<a href="https://biorepo.neonscience.org/portal/index.php">https://biorepo.neonscience.org/portal/index.php</a>” target=”_blank”&gt;NEON Biorepository Data Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out to <a href="mailto:biorepo@asu.edu">biorepo@asu.edu</a> or fill out the <a> href=“<a href="https://www.neonscience.org/about/contact-neon-biorepository">https://www.neonscience.org/about/contact-neon-biorepository</a>” target=”_blank”&gt;NEON Biorepository Contact Form</a> with any inquiries about NEON samples.</p>
+<p>This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a href="https://biorepo.neonscience.org/portal/index.php" target="_blank">NEON Biorepository Data Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out to <a href="mailto:biorepo@asu.edu">biorepo@asu.edu</a> or fill out the <a href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.</p>
 </div>
 </body>
 </html>

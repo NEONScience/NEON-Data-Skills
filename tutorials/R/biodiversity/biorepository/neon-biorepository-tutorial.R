@@ -32,13 +32,13 @@ library(ggplot2)
 
  NEON.cfc <- loadByProduct(dpID="DP1.10026.001",
                     include.provisional=TRUE,
-                    site=c('BLAN','BART','GRSM','HARV','MLBS','ORNL','SCBI','SERC'),
-                    tabl="cfc_carbonNitrogen",
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
                     check.size=FALSE)
  
  NEON.ltr <- loadByProduct(dpID="DP1.10033.001",
-                    site=c('BLAN','BART','GRSM','HARV','MLBS','ORNL','SCBI','SERC'),
-                    tabl='ltr_litterCarbonNitrogen',
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
                     check.size=FALSE)
 
 
@@ -58,7 +58,7 @@ ltr <- NEON.ltr$ltr_litterCarbonNitrogen
 
 
 
-## ----summarise-CN-data,message=FALSE,warning=FALSE,results='hide',eval=TRUE---------------------
+## ----summarise-CN-data,message=FALSE,warning=FALSE,eval=TRUE------------------------------------
 
 summary.cfc <- cfc %>% 
               mutate(year=year(collectDate)) %>% 

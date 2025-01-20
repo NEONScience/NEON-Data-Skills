@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 36f28672bd02458cb13c02ee26156d41
 title: "Exploring sample availability at the NEON Biorepository"
 description: "Get a list of available samples at the NEON Biorepository based on data availability and research criteria."
 dateCreated: 2025-01-02
@@ -75,7 +75,7 @@ install.packages('ggplot2')
 
 ```
 
-Otherwise, simply load the packages.
+Once installed, load the packages.
 
 ```{r load-packages, message=FALSE, warning=FALSE,eval=TRUE}
 
@@ -100,26 +100,26 @@ In order to answer our question, we need to know which NEON sites and years corr
 
 Because we are interested in the a portion of the eastern United States, we will subset the available data to sites in NEON Domains 1, 2, and 7.
 
-This download may take a few minutes. While not required, it is recommended that you use a <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">NEON API token</a> to achieve faster download speeds. For the tutorial, we specify that we are only interested in the carbon nitrogen data tables  However, it is recommended that researchers familiarize themselves with all tables in a given data product.
+This download may take a few minutes. While not required, it is recommended that you use a <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">NEON API token</a> to achieve faster download speeds.
 
-Note that we have chosen to include <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Provisional data</a> for this exploratory analysis of sample and data availability. If you are interested in ensuring repeatability of analysis results, you should limit your download to Release data. 
+Note that we have chosen to include <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Provisional data</a> for this exploratory analysis of sample and data availability. If you are interested in ensuring repeatability of analysis results, you should limit your download to data in a <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Release</a>. 
 
 
 ```{r download-Data-New, message=TRUE, warning=FALSE, paged.print=FALSE, results='hide'}
 
  NEON.cfc <- loadByProduct(dpID="DP1.10026.001",
                     include.provisional=TRUE,
-                    site=c('BLAN','BART','GRSM','HARV','MLBS','ORNL','SCBI','SERC'),
-                    tabl="cfc_carbonNitrogen",
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
                     check.size=FALSE)
  
  NEON.ltr <- loadByProduct(dpID="DP1.10033.001",
-                    site=c('BLAN','BART','GRSM','HARV','MLBS','ORNL','SCBI','SERC'),
-                    tabl='ltr_litterCarbonNitrogen',
+                    site=c('BLAN','BART','GRSM','HARV',
+                           'MLBS','ORNL','SCBI','SERC'),
                     check.size=FALSE)
 ```
 
-Let's take a look at what is included in each NEON data product download. We will extract and focus on the table that has colated all of the records for individual traps.
+Let's take a look at what is included in each NEON data product download. We will extract and focus on the table that has collated all of the records for individual traps.
 
 ```{r investigate-NEON-data, message=FALSE, eval=TRUE}
 
@@ -145,7 +145,7 @@ ltr <- NEON.ltr$ltr_litterCarbonNitrogen
 
 We will summarize the available data to find of year by site combinations for which both foliar and litter chemistry measurements are available.
 
-```{r summarise-CN-data,message=FALSE,warning=FALSE,results='hide',eval=TRUE}
+```{r summarise-CN-data,message=FALSE,warning=FALSE,eval=TRUE}
 
 summary.cfc <- cfc %>% 
               mutate(year=year(collectDate)) %>% 
@@ -454,6 +454,6 @@ ggplot(PleucSites, aes(x = meanCN.ltr, y = meanCN.cfc)) +
 
 We see approximately 2-fold variation in both litter and canopy foliage CN ratios across these sites, indicating that a wide range of isotopic environments can be studied.
 
-This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a> href="https://biorepo.neonscience.org/portal/index.php" target="_blank">NEON Biorepository Data Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out to biorepo@asu.edu or fill out the <a> href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.
+This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a href="https://biorepo.neonscience.org/portal/index.php" target="_blank">NEON Biorepository Data Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out to biorepo@asu.edu or fill out the <a href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.
 
 
