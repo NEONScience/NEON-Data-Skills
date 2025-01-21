@@ -5,19 +5,36 @@ dateCreated: '2024-12-31'
 ---
 
 
-This data tutorial provides instruction on working with two different NEON 
-data products to estimate tree height: 
+An extremely common task for remote sensing researchers is to connect 
+remote sensing data with data on the ground. This might be a research 
+question in itself - what reflectance wavelengths are most closely 
+correlated with a particular ground feature? - or a ground-truthing for 
+extrapolation and prediction, or development or testing of a model.
+
+This tutorial explores the relationship between a Lidar-derived canopy 
+height model and tree heights measured from the ground, because these 
+two datasets provide a straightforward introduction to thinking about 
+how to relate different sources of data. They are a good exemplar for 
+the two major components of connecting airborne and ground data:
+
+1. The mechanics: Finding the remotely sensed pixels that correspond to a given ground measurement
+2. The science: Considering biases in each data source, and the ways the measurements might differ even if neither is incorrect
+
+We will explore these issues between these two datasets, and you can use 
+what you learn here as a roadmap for making similar comparisons between 
+different datasets.
+
+The two NEON data products that estimate tree height: 
 
 * **DP3.30015.001, Ecosystem structure**, aka Canopy Height Model (CHM) 
 * **DP1.10098.001, Vegetation structure**
 
 The <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">CHM data</a> are derived from the Lidar point cloud data collected by the remote sensing platform. 
-The <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">vegetation structure data</a> are collected by by field staff on the ground. We will be using data from the Wind River Experimental Forest NEON field site located in Washington state. The 
-predominant vegetation there are tall evergreen conifers. 
+The <a href="https://data.neonscience.org/data-products/DP1.10098.001" target="_blank">vegetation structure data</a> are collected by by field staff on the ground.
 
-If you are coming to this exercise after following tutorials on data 
-download and formatting, and therefore already have the needed data, 
-skip ahead to section 4.
+We will be using data from the Wind River Experimental Forest (WREF) NEON 
+field site located in Washington state. The 
+predominant vegetation there is tall evergreen conifers. 
 
 <div id="ds-objectives" markdown="1">
 
