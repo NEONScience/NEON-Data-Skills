@@ -87,6 +87,7 @@ When you've entered the code, you should see the message:
     Successfully saved authorization token.
 ``` 
 
+Once you've successfully authorized GEE, you can initialize as follows:
 
 ```python
 ee.Initialize()
