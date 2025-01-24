@@ -47,7 +47,7 @@ The NEON GEE lessons linked below may provide some helpful context. The first le
  * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
 
 For more information on the `geemap` Python package, please refer to the following resources:
-</div>
+
 - <a href="https://book.geemap.org/" target="_blank">geemap book</a>
 - <a href="https://www.youtube.com/@giswqs" target="_blank">geemap YouTube channel</a>
 
