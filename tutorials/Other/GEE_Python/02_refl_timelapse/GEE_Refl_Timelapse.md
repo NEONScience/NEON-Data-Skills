@@ -64,12 +64,12 @@ ee.Authenticate()
 
 <p>To authorize access needed by Earth Engine, open the following
         URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=YgLVqY6EZQQa8TIEdgZAOGcqXLKcgtZCQDBtcdQoEk0&tc=T1-TmSDdiyMEPg5hon9_3xWAhGIjhwWwOnB92sEPiqQ&cc=A-kiHJOTX3FzO3VnhMz9YJOXAn1NHFCed2I3vsStaYw>https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&request_id=YgLVqY6EZQQa8TIEdgZAOGcqXLKcgtZCQDBtcdQoEk0&tc=T1-TmSDdiyMEPg5hon9_3xWAhGIjhwWwOnB92sEPiqQ&cc=A-kiHJOTX3FzO3VnhMz9YJOXAn1NHFCed2I3vsStaYw</a></p>
+        <p><a href=https://code.earthengine.google.com/client-auth...</a></p>
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
 
 
-    Enter verification code:  4/1ASVgi3KHdXqUZt6fsIOP8kmlF278PCQEH8ccxihhEAmqI2H9vLpkaqILWRM
+    Enter verification code:  
     
 
     
