@@ -48,8 +48,8 @@ The NEON GEE lessons linked below may provide some helpful context. The first le
 
 For more information on the `geemap` Python package, please refer to the following resources:
 
-- <a href="https://book.geemap.org/" target="_blank">geemap book</a>
-- <a href="https://www.youtube.com/@giswqs" target="_blank">geemap YouTube channel</a>
+* <a href="https://book.geemap.org/" target="_blank">geemap book</a>
+* <a href="https://www.youtube.com/@giswqs" target="_blank">geemap YouTube channel</a>
 
 </div>
 
