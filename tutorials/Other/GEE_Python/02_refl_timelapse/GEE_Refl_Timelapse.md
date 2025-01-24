@@ -10,7 +10,7 @@ packagesLibraries: earthengine-api, geemap
 topics:
 languagesTool: Python, Google Earth Engine
 dataProduct: DP3.30006.001, DP3.30006.002
-code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/02_sdr_timelapse/GEE_SDR_Functions_Timelapse.ipynb
+code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/02_refl_timelapse/GEE_Refl_Timelapse.ipynb
 tutorialSeries: 
 urlTitle: aop-refl-py-geemap
 ---
@@ -355,10 +355,9 @@ Map
     Adding GRSM 2021 Directional Reflectance
     
 
-
-
-
-    Map(center=[35.65, -83.5], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
+<figure>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>GRSM Reflectance True-Color Images</figcaption></a></figure> 
 
 
 
@@ -413,8 +412,8 @@ Map
     
 
 <figure>
-  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>CLBJ Reflectance True-Color Images</figcaption></a></figure> 
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_weather_layers.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_weather_layers.png" alt="CLBJ Map Layer" width="500"><figcaption>GRSM Reflectance Weather Quality Indicator Layers</figcaption></a></figure> 
 
 
 
