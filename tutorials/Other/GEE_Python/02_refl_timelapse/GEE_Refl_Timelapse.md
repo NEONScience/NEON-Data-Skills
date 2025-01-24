@@ -412,10 +412,9 @@ Map
     Adding GRSM 2021 Cloud Cover Layer
     
 
-
-
-
-    Map(center=[35.65, -83.5], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…
+<figure>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>CLBJ Reflectance True-Color Images</figcaption></a></figure> 
 
 
 
@@ -469,9 +468,9 @@ Map
 ```
 
 
-
-
-    Map(center=[33.36477599782718, -97.60670493430632], controls=(WidgetControl(options=['position', 'transparent_…
+<figure>
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/clbj_map_layer.png">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/clbj_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>CLBJ Reflectance True-Color Images</figcaption></a></figure> 
 
 
 
@@ -543,8 +542,8 @@ cartoee.get_image_collection_gif(
 ```
 
 <figure>
-  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif" alt="CLBJ Timelapse" width="500"><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption></a></figure> 
+  <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/clbj_gee_timelapse.gif">
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/clbj_gee_timelapse.gif" alt="CLBJ Timelapse" width="500"><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption></a></figure> 
 
 ### Recap
 
