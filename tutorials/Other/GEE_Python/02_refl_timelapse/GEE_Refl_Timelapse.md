@@ -357,7 +357,7 @@ Map
 
 <figure>
   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>GRSM Reflectance True-Color Images</figcaption></a></figure> 
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_map_layer.png" alt="GRSM Reflectance Layers" width="500"><figcaption>GRSM Reflectance True-Color Images</figcaption></a></figure> 
 
 
 
@@ -413,11 +413,12 @@ Map
 
 <figure>
   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_weather_layers.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_weather_layers.png" alt="CLBJ Map Layer" width="500"><figcaption>GRSM Reflectance Weather Quality Indicator Layers</figcaption></a></figure> 
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/grsm_weather_layers.png" alt="GRSM Weather Quality Layers" width="600"><figcaption>GRSM Reflectance Weather Quality Indicator Layers</figcaption></a></figure> 
 
 
+You can toggle on and off layers by selecting or deselecting each in the **Layers** window in the upper right corner.
 
-Now let's add the full image collection (all years) for a different site as a Map Layer. For this example, we'll use the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">Lyndon B. Johnson National Grassland (CLBJ)</a>, as there are 5 years of reflectance data ingested in GEE for that site. This is a nice example for displaying the time-lapse feature in the interactive map.
+Now let's add a full image collection (all years) for a different site onto the Map. For this example, we'll use the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">Lyndon B. Johnson National Grassland (CLBJ)</a>, as there are 5 years of reflectance data ingested in GEE for that site. This is a nice example for displaying the time-lapse feature in the interactive map.
 
 
 ```python
@@ -469,7 +470,7 @@ Map
 
 <figure>
   <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/clbj_map_layer.png">
-  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/clbj_map_layer.png" alt="CLBJ Map Layer" width="500"><figcaption>CLBJ Reflectance True-Color Images</figcaption></a></figure> 
+  <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/refl_timelapse_gee_py/clbj_map_layer.png" alt="CLBJ Reflectance Layers" width="500"><figcaption>CLBJ Reflectance True-Color Images</figcaption></a></figure> 
 
 
 
