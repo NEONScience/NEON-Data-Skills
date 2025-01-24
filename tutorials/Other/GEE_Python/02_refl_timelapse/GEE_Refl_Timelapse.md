@@ -42,7 +42,7 @@ Notes:
   
 ### Additional Resources
 
-The NEON GEE lessons linked below may provide some helpful context. The first lesson is also in Python, and the 2nd link is to a tutorial series provides a more in-depth overview of NEON data in GEE using the JavaScript API and Code Editor. 
+The NEON GEE lessons linked below may provide some helpful context. The first lesson is also in Python, and the 2nd link is to a tutorial series that provides a more in-depth overview of NEON data in GEE using the JavaScript API and Code Editor. 
  * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-py-intro" target="_blank">Intro to AOP Datasets in Google Earth Engine (GEE) using Python</a>
  * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
 
@@ -71,9 +71,8 @@ ee.Authenticate()
 ```
 
 
-<p>To authorize access needed by Earth Engine, open the following
-        URL in a web browser and follow the instructions:</p>
-        <p><a href=https://code.earthengine.google.com</a></p>
+<p>To authorize access needed by Earth Engine, open the following URL in a web browser and follow the instructions:</p>
+
         <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 
 
