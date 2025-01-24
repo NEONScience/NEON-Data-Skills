@@ -54,6 +54,8 @@ For more information on the `geemap` Python package, please refer to the followi
 </div>
 
 
+First, let's import the required Python packages. 
+
 ```python
 import os
 import ee
