@@ -88,13 +88,16 @@ setwd(wd)
 ### Python
 
 There are a variety of spatial packages available in Python; 
-we'll use `rasterio`. We'll also use several modules that 
-are installed automatically with standard Python installations.
+we'll use `rasterio` and `rioxarray`. We'll also use several modules 
+that are installed automatically with standard Python installations.
 
 ```{python p-install_packages, eval=FALSE}
 
 pip install neonutilities
+pip install geopandas
 pip install rasterio
+pip install rioxarray
+pip install rasterstats
 
 ```
 
@@ -105,7 +108,11 @@ Now load packages.
 import neonutilities as nu
 import pandas as pd
 import numpy as np
+import rasterstats as rs
+import geopandas as gpd
+import rioxarray as rxr
 import matplotlib.pyplot as plt
+import matplotlib.collections
 import rasterio
 import requests
 import os
@@ -404,7 +411,7 @@ relevant tiles).
 
 The download will include several metadata files as well as the data 
 tile. Load the data tile into the environment using the `terra` package 
-in R and the `rasterio` package in Python.
+in R and the `rasterio` and `rioxarray`` packages in Python.
 
 ### R
 
@@ -435,8 +442,17 @@ nu.by_tile_aop(dpid="DP3.30015.001", site="WREF", year="2017",
           easting=list(veg75.adjEasting), 
           northing=list(veg75.adjNorthing),
           check_size=False, savepath=os.getcwd())
+```
+
+We'll read in versions of the tile in both `rasterio` and `rioxarray` 
+to enable the different data extractions we'll need to do later in the 
+tutorial.
+
+```{python p-read-chm}
 
 chm = rasterio.open(os.getcwd() + "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif")
+
+chmx = rxr.open_rasterio(os.getcwd() + "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif").squeeze()
 
 ```
 
@@ -590,21 +606,46 @@ cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM,
 
 #### Python
 
+To extract values using a buffer in Python, we need to create a 
+shapefile of the buffered locations, and then extract the maximum 
+value for each area in the shapefile.
+
 ```{python p-buffer-chm}
 
-valCHM = list(chm.sample(tuple(zip(vegsub["adjEasting"], vegsub["adjNorthing"]))))
+vegloc = vegsub[["individualID","adjEasting","adjNorthing","adjCoordinateUncertainty"]]
+gdf = gpd.GeoDataFrame(
+       vegloc, geometry=gpd.points_from_xy(vegloc.adjEasting, vegloc.adjNorthing))
+gdf["geometry"] = gdf.geometry.buffer(0.9)
+gdf.to_file(os.getcwd() + "/trees_with_buffer.shp")
 
-plot(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM~
-       vegsub$height, pch=20, xlab="Height", 
-     ylab="Canopy height model")
-lines(c(0,50), c(0,50), col="grey")
+chm_height = rs.zonal_stats(os.getcwd() + "/trees_with_buffer.shp", chmx.values, 
+                            affine=chmx.rio.transform(), 
+                            nodata=-999, stats="max")
+valCHMbuff = [h["max"] for h in chm_height]
+
+```
+
+And plot the results:
+
+```{python p-plot-buffer-chm}
+
+fig, ax = plt.subplots()
+
+ax.plot((0,50), (0,50), linewidth=1, color="black")
+ax.scatter(vegsub.height, valCHMbuff, s=1)
+
+ax.set_xlabel("Height")
+ax.set_ylabel("Canopy height model")
+
+plt.show()
 
 ```
 
 ```{python p-corr-buffer}
 
-cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM, 
-    vegsub$height, use="complete")
+CHMbufflist = np.array(valCHMbuff)
+idx = np.isfinite(vegsub.height) & np.isfinite(CHMbufflist)
+np.corrcoef(vegsub.height[idx], CHMbufflist[idx])[0,1]
 
 ```
 
@@ -629,6 +670,8 @@ How to exclude understory plants from this analysis? Again, there are many
 possible approaches. We'll try out two, one map-centric and one 
 tree-centric.
 
+### Compare maximum height within 10 meter pixels {.tabset}
+
 Starting with the map-centric approach: select a pixel size, and aggregate 
 both the vegetation structure data and the CHM data to find the tallest point 
 in each pixel. Let's try this with 10m pixels.
@@ -637,6 +680,8 @@ Start by rounding the coordinates of the vegetation structure data, to create
 10m bins. Use `floor()` instead of `round()` so each tree ends up in the pixel 
 with the same numbering as the raster pixels (the rasters/pixels are 
 numbered by their southwest corners).
+
+#### R
 
 ```{r round-x-y}
 
@@ -692,12 +737,101 @@ cor(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
 
 ```
 
+#### Python
+
+```{python p-round-x-y}
+
+vegsub["easting10"] = 10*np.floor(vegsub.adjEasting/10)
+vegsub["northing10"] = 10*np.floor(vegsub.adjNorthing/10)
+vegsubloc = vegsub[["height","easting10","northing10"]]
+
+```
+
+Use the `groupby()` function to get the tallest tree in each 10m bin.
+
+```{python p-vegbin}
+
+vegbin = vegsubloc.groupby(["easting10", "northing10"]).max().add_suffix('_max').reset_index()
+
+```
+
+To get the CHM values for the 10m bins, use the `warp.reproject()` method 
+in the `rasterio` package.
+
+```{python p-CHM-10}
+
+target_res = (10, 10)
+
+with rasterio.open(os.getcwd() + "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif") as src:
+     data, transform = rasterio.warp.reproject(source=src.read(),
+                                src_transform=src.transform,
+                                src_crs=src.crs,
+                                dst_crs=src.crs,
+                                dst_nodata=src.nodata,
+                                dst_resolution=target_res,
+                                resampling=Resampling.max)
+     profile = src.profile
+     profile.update(transform=transform, driver='GTiff',
+                    height=data.shape[1], width=data.shape[2])
+
+     with rasterio.open(os.getcwd() + '/CHM_10m.tif', 'w', **profile) as dst:
+                    dst.write(data)
+
+chm10 = rasterio.open(os.getcwd() + '/CHM_10m.tif')
+
+```
+
+Let's take a look at the lower-resolution image we get as a result.
+
+```{python p-vegbin-plot}
+
+plt.imshow(chm10.read(1))
+plt.show()
+
+```
+
+Use the `sample()` function again to get the values from the pixel 
+corresponding to each maximum tree height estimate. 
+Our grids are numbered by the corners, so add 5 to each tree 
+coordinate to make sure it's in the correct pixel.
+
+```{python p-adj-tree-coord}
+
+valCHM10 = list(chm10.sample(tuple(zip(vegbin["easting10"]+5, vegbin["northing10"]+5))))
+
+fig, ax = plt.subplots()
+
+ax.plot((0,50), (0,50), linewidth=1, color="black")
+ax.scatter(vegbin.height_max, valCHM10, s=1)
+
+ax.set_xlabel("Height")
+ax.set_ylabel("Canopy height model")
+
+plt.show()
+
+```
+
+```{python p-cor-2}
+
+CHM10list = np.array([c.tolist()[0] for c in valCHM10])
+idx = np.isfinite(vegbin.height_max) & np.isfinite(CHM10list)
+np.corrcoef(vegbin.height_max[idx], CHM10list[idx])[0,1]
+
+```
+
+### {-}
+
 The understory points are thinned out substantially, but so are the rest. 
 We've lost a lot of data by going to a lower resolution.
 
 Let's try and see if we can identify the tallest trees by another approach, 
-using the trees as the starting point instead of map area. Start by sorting 
-the veg structure data by height.
+using the trees as the starting point instead of map area.
+
+### Find the top-of-canopy trees and compare to model {.tabset}
+
+Start by sorting the veg structure data by height.
+
+#### R
 
 ```{r vegsub-2}
 
@@ -755,25 +889,94 @@ cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
 
 ```
 
+#### Python
+
+```{python p-vegsub-2}
+
+vegfil = vegsub.sort_values(by="height", ascending=False, ignore_index=True)
+
+```
+
+Now, for each tree, let's estimate which nearby trees might be beneath 
+its canopy, and discard those points. To do this:
+
+1. Calculate the distance of each tree from the target tree.
+2. Pick a reasonable estimate for canopy size, and discard shorter trees 
+within that radius. The radius I used is 0.3 times the height, based on 
+some rudimentary googling about Douglas fir allometry. It could definitely 
+be improved on!
+3. Iterate over all trees.
+
+We'll use a simple `for` loop to do this:
+
+```{python p-vegfil}
+
+height = vegfil.height.reset_index()
+for i in vegfil.index:
+    if height.height[i] is None:
+        pass
+    else:
+        dist = np.sqrt(np.square(vegfil.adjEasting[i]-vegfil.adjEasting) + 
+                       np.square(vegfil.adjNorthing[i]-vegfil.adjNorthing))
+        idx = vegfil.index[(vegfil.height<height.height[i]) & (dist<0.3*height.height[i])]
+        height.loc[idx, "height"] = None
+
+```
+
+Now extract the raster values, as above.
+
+```{python p-filter-chm}
+
+filterCHM = list(chm.sample(tuple(zip(vegfil["adjEasting"], vegfil["adjNorthing"]))))
+
+fig, ax = plt.subplots()
+
+ax.plot((0,50), (0,50), linewidth=1, color="black")
+ax.scatter(height.height, filterCHM, s=1)
+
+ax.set_xlabel("Height")
+ax.set_ylabel("Canopy height model")
+
+plt.show()
+
+```
+
+```{python p-cor-3}
+
+filCHMlist = np.array([c.tolist()[0] for c in filterCHM])
+idx = np.isfinite(height.height) & np.isfinite(filCHMlist)
+np.corrcoef(height.height[idx], filCHMlist[idx])[0,1]
+
+```
+
+### {-}
+
 This is quite a bit better! There are still several understory points we 
 failed to exclude, but we were able to filter out most of the understory 
 without losing so many overstory points.
 
-Let's try one last thing. The `plantStatus` field in the veg structure data 
+### Remove dead trees {.tabset}
+
+Let's try one more thing. The `plantStatus` field in the veg structure data 
 indicates whether a plant is dead, broken, or otherwise damaged. In theory, 
 a dead or broken tree can still be the tallest thing around, but it's less 
 likely, and it's also less likely to get a good Lidar return. Exclude all 
 trees that aren't alive:
 
+#### R
+
 ```{r live-trees}
 
 vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
+
 filterCHM <- extract(chm, 
                      cbind(vegfil$adjEasting, 
                            vegfil$adjNorthing))
+
 plot(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM~
        vegfil$height, pch=20, 
      xlab="Height", ylab="Canopy height model")
+
 lines(c(0,50), c(0,50), col="grey")
 
 ```
@@ -785,16 +988,111 @@ cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
 
 ```
 
+#### Python
+
+```{python p-live-trees}
+
+idx = vegfil.index[vegfil.plantStatus!="Live"]
+height.loc[idx, "height"] = None
+
+fig, ax = plt.subplots()
+
+ax.plot((0,50), (0,50), linewidth=1, color="black")
+ax.scatter(height.height, filterCHM, s=1)
+
+ax.set_xlabel("Height")
+ax.set_ylabel("Canopy height model")
+
+plt.show()
+
+```
+
+```{python p-cor-4}
+
+idx = np.isfinite(height.height) & np.isfinite(filCHMlist)
+np.corrcoef(height.height[idx], filCHMlist[idx])[0,1]
+
+```
+
+### {-}
+
 Nice!
 
-One final note: however we slice the data, there is a noticeable bias 
-even in the strongly correlated values. The CHM heights are generally a 
-bit shorter than the ground-based estimates of tree height. There are 
-two biases in the CHM data that contribute to this. (1) Lidar returns 
-from short-statured vegetation are difficult to distinguish from the 
-ground, so the "ground" estimated by Lidar is generally a bit higher 
-than the true ground surface, and (2) the height estimate from Lidar 
-represents the highest return, but the highest return may slightly 
-miss the actual tallest point on a given tree. This is especially 
-likely to happen with conifers, which are the top-of-canopy trees at 
-Wind River.
+### Use canopy position data {.tabset}
+
+Finally, there is an alternative way to determine which trees are at 
+the top of the canopy: it's in the vegetation structure data! There is 
+a data field for `canopyPosition`. Let's subset to only the trees 
+described as `"Full sun"`.
+
+#### R
+
+```{r canopy}
+
+```
+
+#### Python
+
+```{python p-canopy}
+
+vegtop = vegsub.loc[vegsub.canopyPosition=="Full sun"]
+topCHM = list(chm.sample(tuple(zip(vegtop["adjEasting"], vegtop["adjNorthing"]))))
+
+fig, ax = plt.subplots()
+
+ax.plot((0,50), (0,50), linewidth=1, color="black")
+ax.scatter(vegtop.height, topCHM, s=1)
+
+ax.set_xlabel("Height")
+ax.set_ylabel("Canopy height model")
+
+plt.show()
+
+```
+
+```{python p-cor-5}
+
+topCHMlist = np.array([c.tolist()[0] for c in topCHM])
+idx = np.isfinite(vegtop.height) & np.isfinite(topCHMlist)
+np.corrcoef(vegtop.height[idx], topCHMlist[idx])[0,1]
+
+```
+
+### {-}
+
+Using all the data collected on the ground helps a lot! We left this 
+option for last because in the early days of NEON data collection, 
+the `canopyPosition` field was only recorded intermittently, so we 
+may have discarded trees erroneously. But as time goes on, this 
+dataset will continue to improve.
+# CKL: rephrase this, and review data - do all individualIDs have a canopyPosition now?
+
+### Final thoughts on intercomparison
+
+This tutorial has explored different ways of relating remotely 
+sensed to ground-based data. Although some of the options we tried 
+resulted in stronger correlations than others, the approach you 
+choose will probably depend most on the research questions you are 
+trying to answer. The goal of this tutorial has been to help you 
+think through the possibilities, and identify some of the pitfalls 
+and biases.
+
+Speaking of biases: however we slice the data, there is a noticeable 
+bias even in the strongly correlated values. The CHM heights are 
+generally a bit shorter than the ground-based estimates of tree height. 
+There are two biases in the CHM data that contribute to this. (1) Lidar 
+returns from short-statured vegetation are difficult to distinguish 
+from returns from the ground itself, so the "ground" estimated by Lidar 
+is often a bit higher than the true ground surface, and (2) the height 
+estimate from Lidar represents the highest return, but the highest return 
+may slightly miss the actual tallest point on a given tree. This is 
+especially likely to happen with conifers, which are the top-of-canopy 
+trees at Wind River.
+
+Finally, as you explore other types of both remote sensing and ground 
+data, keep in mind that the two datasets we examined here, tree height 
+and canopy height model, are an unusual pair in that both are 
+measuring the same quantity in the same units. Attempting to relate 
+remote sensing and ground data can be much more complicated in other 
+scenarios, such as the relationships between leaf chemistry and 
+reflectance indices.
