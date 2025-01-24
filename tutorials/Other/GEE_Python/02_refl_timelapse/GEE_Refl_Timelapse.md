@@ -70,19 +70,22 @@ In order to use Earth Engine from within this Jupyter Notebook, we need to first
 ee.Authenticate()
 ```
 
+```python
 
-<p>To authorize access needed by Earth Engine, open the following URL in a web browser and follow the instructions:</p>
+    To authorize access needed by Earth Engine, open the following URL in a web browser and follow the instructions:
 
-        <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
+    The authorization workflow will generate a code, which you should paste in the box below.
+```
 
-
-
+```python
     Enter verification code:  
-    
+```   
 
-    
+When you've entered the code, you should see the message:
+
+```python
     Successfully saved authorization token.
-    
+``` 
 
 
 ```python
