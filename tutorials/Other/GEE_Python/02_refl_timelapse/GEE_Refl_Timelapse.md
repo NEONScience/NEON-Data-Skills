@@ -89,7 +89,7 @@ ee.Authenticate()
 ee.Initialize()
 ```
 
-First let's take a look at the available reflectance datasets - these come in 2 varieties: directional, and bidirectional. The bidirectional reflectance data have Bidirectional Reflectance Distribution Function (BRDF) and topographic corrections applied. The next few chunks of code show how you can do some initial data exploration, and determine what sites and how many years of data per site are available.
+First let's take a look at the available reflectance datasets - these come in 2 varieties: directional, and bidirectional. The bidirectional reflectance data have Bidirectional Reflectance Distribution Function (BRDF) and topographic corrections applied. The next few chunks of code show how you can do some initial data exploration, and determine what sites and how many years of data are available per site.
 
 
 ```python
