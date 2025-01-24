@@ -41,6 +41,13 @@ Notes:
 - If cartopy is not installing using `conda install` or `pip install`, you may need to find the wheel file specific to your Python version, eg. `pip install Cartopy-0.20.2-cp39-cp39-win_amd64.whl`.
   
 ### Additional Resources
+
+The NEON GEE lessons linked below may provide some helpful context. The first lesson is also in Python, and the 2nd link is to a tutorial series provides a more in-depth overview of NEON data in GEE using the JavaScript API and Code Editor. 
+ * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-py-intro" target="_blank">Intro to AOP Datasets in Google Earth Engine (GEE) using Python</a>
+ * <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
+
+For more information on the `geemap` Python package, please refer to the following resources:
+</div>
 - <a href="https://book.geemap.org/" target="_blank">geemap book</a>
 - <a href="https://www.youtube.com/@giswqs" target="_blank">geemap YouTube channel</a>
 
