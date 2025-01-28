@@ -156,7 +156,7 @@ function calcImagePca(image, numComponents, samplePoints) {
 
 ### Apply PCA and Export Results
 
-Now we'll apply PCA and export the results:
+Now we'll apply PCA and export the results. Change the `assetId` tag below to one of your cloud projects.
 
 ```javascript
 // Apply PCA to the hyperspectral image
