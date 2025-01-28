@@ -16,7 +16,10 @@ urlTitle: aop-gee-refl-pca
 
 ---
 
-Google Earth Engine has a number of built in machine learning tools that are designed to work with multi-band raster data. This simplifies more complex analyses like classification (eg. classifying land types or species). In this example, we demonstrate species classification using a random forest machine learning model, using NEON AOP reflectance and ecosystem structure (CHM) data, and TOS (Terrestrial Observation System) woody vegetation data to train the model. For this example, we'll use airshed boundary of the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">CLBJ</a> (Lyndon B. Johnson National Grassland in north-central Texas).
+
+The principal components (PC) transform is a spectral rotation that takes spectrally correlated image data and outputs uncorrelated data. This can be a useful tool, especially for high-dimensional AOP data, which is comprised of 426 bands and 380+ valid bands (excluding the water vapor and noisy bands). Many of these bands may be correlated, so PCA can be a useful first step for redicuing dimensionality and creating a more manageable (smaller) dataset to work with for further analysis.
+
+For this example, we'll use bidirectional reflectance data over the NEON site <a href="https://www.neonscience.org/field-sites/liro" target="_blank">Little Rock Lake (LIRO)</a> in Wisconsin.
 
 <div id="ds-objectives" markdown="1">
 
