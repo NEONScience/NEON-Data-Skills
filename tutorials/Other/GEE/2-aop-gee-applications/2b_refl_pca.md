@@ -74,6 +74,12 @@ Map.addLayer(reflLIRO_2022view, {min:103, max:1160}, 'Original RGB');
 
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee/2b_refl_pca/liro_rgb.png" alt="LIRO Reflectance RGB Image"></a>
+</figure>
+
+
 ### Set up Sampling for PCA
 
 PCA requires representative samples to compute the covariance matrix. We'll collect 500 random samples:
