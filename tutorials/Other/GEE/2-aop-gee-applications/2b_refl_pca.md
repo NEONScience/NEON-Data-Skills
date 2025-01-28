@@ -70,3 +70,108 @@ Map.centerObject(reflLIRO_2022, 12);
 Map.addLayer(reflLIRO_2022view, {min:103, max:1160}, 'Original RGB');
 
 ```
+
+### Set up Sampling for PCA
+
+PCA requires representative samples to compute the covariance matrix. We'll collect 500 random samples:
+
+
+```javascript
+
+var numberOfSamples = 500;
+
+var sample = reflLIRO_2022.sample({
+  region: reflLIRO_2022.geometry(),
+  scale: 10,
+  numPixels: numberOfSamples,
+  seed: 1,
+  geometries: true
+});
+
+var samplePoints = ee.FeatureCollection(sample);
+
+```
+
+### Create Helper Functions
+
+We need two main helper functions: one to generate band names and another to perform the PCA:
+
+```javascript
+
+// Function to generate names for the principal component bands
+// Example: PC1, PC2, PC3, etc.
+function getNewBandNames(prefix, num) {
+    return ee.List.sequence(1, num).map(function(i) {
+        return ee.String(prefix).cat(ee.Number(i).int().format());
+    });
+}
+
+/// Function to perform Principal Component Analysis
+function calcImagePca(image, numComponents, samplePoints) {
+    // Convert the image into an array for matrix operations
+    var arrayImage = image.toArray();
+    var region = samplePoints.geometry();
+    
+    // Calculate mean values for each band
+    var meanDict = image.reduceRegion({
+        reducer: ee.Reducer.mean(),
+        geometry: region,
+        scale: 10,
+        maxPixels: 1e13,
+        bestEffort: true,
+        tileScale: 16                               // Parameter to prevent computation timeout
+    });
+    
+    // Center the data by subtracting the mean
+    var meanImage = ee.Image.constant(meanDict.values(image.bandNames()));
+    var meanArray = meanImage.toArray().arrayRepeat(0, 1);
+    var meanCentered = arrayImage.subtract(meanArray);
+    
+    // Calculate the covariance matrix
+    var covar = meanCentered.reduceRegion({
+        reducer: ee.Reducer.centeredCovariance(),
+        geometry: region,
+        scale: 10,
+        maxPixels: 1e13,
+        bestEffort: true,
+        tileScale: 16
+    });
+    
+    // Compute eigenvalues and eigenvectors
+    var covarArray = ee.Array(covar.get('array'));
+    var eigens = covarArray.eigen();
+    var eigenVectors = eigens.slice(1, 1);  // Extract eigenvectors
+    
+    // Project the mean-centered data onto the eigenvectors
+    var principalComponents = ee.Image(eigenVectors)
+        .matrixMultiply(meanCentered.toArray(1));
+    
+    // Return the desired number of components
+    return principalComponents
+        .arrayProject([0])  // Project the array to 2D
+        .arraySlice(0, 0, numComponents); // Select the first n components
+}
+```
+
+
+### Apply PCA and Export Results
+
+Now we'll apply PCA and export the results:
+
+```javascript
+// Apply PCA to the hyperspectral image
+var numComponents = 5;                              // Number of components to retain
+var pcaImage = calcImagePca(reflLIRO_2022, numComponents, samplePoints);
+var bandNames = getNewBandNames('PC', numComponents);
+var finalPcaImage = pcaImage.arrayFlatten([bandNames]);  // Convert to regular image
+
+// Export the PCA results to Earth Engine Assets
+// This step may take several minutes to complete
+Export.image.toAsset({
+    image: finalPcaImage,
+    description: 'PCA_LIRO_2022',
+    assetId: 'projects/neon-sandbox-dataflow-ee/assets/PCA_LIRO_2022',
+    scale: 1,                                       // Output resolution in meters
+    maxPixels: 1e13                                 // Increase max pixels for large exports
+});
+```
