@@ -17,7 +17,7 @@ urlTitle: aop-gee-refl-pca
 ---
 
 
-The principal components (PC) transform is a spectral rotation that takes spectrally correlated image data and outputs uncorrelated data. This can be a useful tool, especially for high-dimensional AOP data, which is comprised of 426 bands and 380+ valid bands (excluding the water vapor and noisy bands). Many of these bands may be correlated, so PCA can be a useful first step for redicuing dimensionality and creating a more manageable (smaller) dataset to work with for further analysis.
+The principal components (PC) transform is a spectral rotation that takes spectrally correlated image data and outputs uncorrelated data. This can be a useful tool, especially for the high-dimensional AOP data, which is comprised of 426 bands (~380 valid bands, excluding the water vapor and noisy bands). Many of these bands may be correlated, so PCA can be a useful first step for reducing dimensionality and creating a more manageable (smaller) dataset to work with for further analysis, without reducing the essential information.
 
 For this example, we'll use bidirectional reflectance data over the NEON site <a href="https://www.neonscience.org/field-sites/liro" target="_blank">Little Rock Lake (LIRO)</a> in Wisconsin.
 
