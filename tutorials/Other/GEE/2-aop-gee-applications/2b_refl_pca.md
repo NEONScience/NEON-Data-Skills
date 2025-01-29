@@ -195,7 +195,7 @@ After the export completes, run this second script to visualize the results:
 var reflLIRO_2022view = ee.ImageCollection("projects/neon-prod-earthengine/assets/HSI_REFL/002")
     .filterMetadata('NEON_SITE', 'equals', 'LIRO')  // Select LIRO experimental forest site
     .filterDate("2022-01-01", "2022-12-31")         // Select 2022 data
-    .first()                                         // Get first (and likely only) image
+    .first()                                        // Get first (and likely only) image
     .select(['B053', 'B035', 'B019']);              // Select bands for natural color display
 
 // Load the pre-computed PCA results from Earth Engine Assets
@@ -212,7 +212,7 @@ Map.centerObject(reflLIRO_2022view, 12);
 // Start with the original RGB image as the base layer
 Map.addLayer(reflLIRO_2022view, 
     {min: 103, max: 1160},                          // Set visualization parameters
-    'Original RGB');                                 // Layer name in the Layer Manager
+    'Original RGB');                                // Layer name in the Layer Manager
 
 // Add the first principal component on top
 // PC1 typically contains the most variance/information from the original bands
@@ -226,13 +226,13 @@ Map.addLayer(pcaAsset,
 
 ### Interpreting Principal Components
 
-- PC1: Usually represents overall brightness/albedo variations (typically 90%+ of variance)
-- PC2: Often highlights vegetation vs. non-vegetation contrasts
-- PC3: May reveal subtle features not visible in original bands
+**PC1**: Usually represents overall brightness/albedo variations (typically 90%+ of variance)
+**PC2**: Often highlights vegetation vs. non-vegetation contrasts
+**PC3**: May reveal subtle features not visible in original bands
 
 ### On your own:
 
-1. Compare PC1 with the original RGB to understand major landscape features
+1. Compare PC1 with the original RGB image to understand major landscape features
 2. Look for patterns in PC2 and PC3 that might reveal hidden information
 3. Consider how different PCs might be useful for your specific research questions
 
@@ -250,8 +250,8 @@ If you encounter "User memory limit exceeded", try the following:
 ### Export Issues
 
 If the export fails:
-- Check project permissions
 - Verify the asset path is valid
+- Check project permissions
 - Try increasing `maxPixels`
 - Allow sufficient time for processing
 
@@ -270,10 +270,12 @@ In this lesson you:
 
 - Learned how to implement PCA on hyperspectral data in GEE
 - Created a workflow that handles large datasets efficiently
-- Exported and visualized transformed data
+- Visualized and exported transformed data
 - Gained experience interpreting PCA results
 
 
 ## Get Lesson Code
 
-[Link to code repository or reference]
+<a href="https://code.earthengine.google.com/1b47039e0663bfe8eb16c8bb0f4e49f2" target="_blank">Reflectance PCA Analysis: Part 1</a>
+
+<a href="https://code.earthengine.google.com/f7a2af2ad3b35c7fb3d8c6215ca374b9" target="_blank">Reflectance PCA Analysis: Part 2</a>
