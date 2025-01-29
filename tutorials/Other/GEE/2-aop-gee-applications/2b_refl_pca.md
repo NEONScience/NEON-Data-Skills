@@ -33,15 +33,14 @@ After completing this activity, you will be able to:
 
 ## Requirements
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/register/
- * An understanding of the GEE code editor and the GEE JavaScript API.
- * Optionally, complete the first three GEE tutorials in this tutorial series: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
+ * An understanding of the GEE code editor and the GEE JavaScript API. See <a href="https://developers.google.com/earth-engine/guides/playground" target="_blank">Earth Engine Code Editor</a> for a basic introduction.
+ * Optionally, complete the first three GEE tutorials in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine Tutorial Series</a>
  * A basic understanding of dimensionality reduction and PCA concepts. If this is your first time working with PCA, we recommend reviewing this concept in the context of hyperspectral data analysis.
 
 ## Additional Resources
 
-The links below to the earth engine guides may assist you as you work through this lesson.
+The link below to the earth engine Eigen Analysis guide may assist you as you work through this lesson.
  * <a href="https://developers.google.com/earth-engine/guides/arrays_eigen_analysis" target="_blank"> Earth Engine Principal Components (Eigen) Analysis </a>
- * <a href="https://developers.google.com/earth-engine/guides/machine-learning" target="_blank"> Earth Engine Machine Learning Guide </a>
 
 </div>
 
