@@ -30,6 +30,7 @@ After completing this activity, you will be able to:
 * Export and load PCA results as Earth Engine assets
 * Compare original hyperspectral bands with PCA-transformed data
 * Interpret the information content in different principal components
+* Understand some basic troubleshooting steps in case you run into errors
 
 ## Requirements
  * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/register/
