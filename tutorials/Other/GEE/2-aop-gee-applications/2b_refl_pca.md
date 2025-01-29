@@ -230,9 +230,9 @@ Map.addLayer(pcaAsset,
 
 ### Interpreting Principal Components
 
-**PC1**: Usually represents overall brightness/albedo variations (typically 90%+ of variance)
-**PC2**: Often highlights vegetation vs. non-vegetation contrasts
-**PC3**: May reveal subtle features not visible in original bands
+- **PC1**: Usually represents overall brightness/albedo variations (typically 90%+ of variance)
+- **PC2**: Often highlights vegetation vs. non-vegetation contrasts
+- **PC3**: May reveal subtle features not visible in original bands
 
 ### On your own:
 
