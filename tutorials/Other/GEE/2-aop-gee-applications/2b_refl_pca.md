@@ -221,6 +221,11 @@ Map.addLayer(pcaAsset,
     'PC1 from Asset');                              // Layer name in the Layer Manager
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pca.PNG">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pca.PNG" alt="LIRO Reflectance PCA Image"></a>
+</figure>
+
 ## Understanding the Results
 
 ### Interpreting Principal Components
