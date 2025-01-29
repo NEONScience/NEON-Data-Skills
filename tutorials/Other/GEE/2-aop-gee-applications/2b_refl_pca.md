@@ -223,8 +223,8 @@ Map.addLayer(pcaAsset,
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pca.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pca.PNG" alt="LIRO Reflectance PCA Image"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pc1_pc2_comparison.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pc1_pc2_comparison.png" alt="LIRO Reflectance Principal Components 1 & 2"></a>
 </figure>
 
 ## Understanding the Results
@@ -283,4 +283,4 @@ In this lesson you:
 
 <a href="https://code.earthengine.google.com/1b47039e0663bfe8eb16c8bb0f4e49f2" target="_blank">Reflectance PCA Analysis: Part 1</a>
 
-<a href="https://code.earthengine.google.com/f7a2af2ad3b35c7fb3d8c6215ca374b9" target="_blank">Reflectance PCA Analysis: Part 2</a>
+<a href="https://code.earthengine.google.com/c75ab1206454c43ed5709e20bfb93905" target="_blank">Reflectance PCA Analysis: Part 2</a>
