@@ -174,8 +174,8 @@ var pcaImage = calcImagePca(reflLIRO_2022, numComponents, samplePoints);
 var bandNames = getNewBandNames('PC', numComponents);
 var finalPcaImage = pcaImage.arrayFlatten([bandNames]);  // Convert to regular image
 
-// Export the PCA results to Earth Engine Assets
-// This step may take several minutes to complete
+// Export the PCA results to Earth Engine Assets, changing the assetId so that it points to your cloud project
+// This step may take around 10 minutes to complete
 Export.image.toAsset({
     image: finalPcaImage,
     description: 'PCA_LIRO_2022',
@@ -185,9 +185,11 @@ Export.image.toAsset({
 });
 ```
 
-## Script 2: Visualizing PCA Results
+## Script 2: Visualizing PCA Results and K-Means Classification
 
-After the export completes, run this second script to visualize the results:
+### Part 1: Visualizing PCA Results
+
+After the export completes, run this second script to visualize the Principal Components:
 
 ```javascript
 // Load the original hyperspectral image, selecting bands for RGB visualization
@@ -200,34 +202,46 @@ var reflLIRO_2022view = ee.ImageCollection("projects/neon-prod-earthengine/asset
 
 // Load the pre-computed PCA results from Earth Engine Assets
 // This asset was created by Script 1 and contains the first 5 principal components
-var pcaAsset = ee.Image('projects/neon-sandbox-dataflow-ee/assets/PCA_LIRO_2022_1m');
+var pcaAsset = ee.Image('projects/neon-sandbox-dataflow-ee/assets/PCA_LIRO_2022');
 
 print("PCA image - top 5 PCA bands", pcaAsset)
 
 // Center the map on our study area
 // Zoom level 12 provides a good overview of the LIRO site
-Map.centerObject(reflLIRO_2022view, 12);
+Map.centerObject(reflLIRO_2022view, 13);
 
 // Add layers to the map
 // Start with the original RGB image as the base layer
 Map.addLayer(reflLIRO_2022view, 
     {min: 103, max: 1160},                          // Set visualization parameters
-    'Original RGB');                                // Layer name in the Layer Manager
+    'Original RGB');                                 // Layer name in the Layer Manager
 
-// Add the first principal component on top
+// Pull in the palettes package and create a spectral color palette for visualization
+var palettes = require('users/gena/packages:palettes');
+var pc1_palette = palettes.colorbrewer.Spectral[9]
+
+// Add the first and second principal components as layers
 // PC1 typically contains the most variance/information from the original bands
-Map.addLayer(pcaAsset, 
-    {bands: ['PC1'],                                // Display only the first component
-     min: -7000, max: 40000},                       // Set stretch values for good contrast
-    'PC1 from Asset');                              // Layer name in the Layer Manager
+Map.addLayer(pcaAsset,
+    {bands: ['PC1'],                                // Display the first component
+     min: -7000, max: 40000,                        // Set stretch values for good contrast
+    palette: pc1_palette,},                         // Add a the pc1_palette
+    'PC1');                                         // Layer name
+
+Map.addLayer(pcaAsset,
+    {bands: ['PC2'],                                // Display the second component
+     min: -7000, max: 40000,                        // Set stretch values for good contrast
+    palette: pc1_palette,},                         // Add a the pc1_palette
+    'PC1');                                         // Layer name
+
+// Note: You can toggle layer visibility and adjust transparency
+// using the Layer Manager panel in the upper right of the map
 ```
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pc1_pc2_comparison.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/2b_refl_pca/liro_pc1_pc2_comparison.png" alt="LIRO Reflectance Principal Components 1 & 2"></a>
 </figure>
-
-## Understanding the Results
 
 ### Interpreting Principal Components
 
@@ -238,8 +252,74 @@ Map.addLayer(pcaAsset,
 ### On your own:
 
 1. Compare PC1 with the original RGB image to understand major landscape features
-2. Look for patterns in PC2 and PC3 that might reveal hidden information
+2. Add PC3 to the map as a layer, and look for patterns in PC2 and PC3 that might reveal hidden information
 3. Consider how different PCs might be useful for your specific research questions
+
+### Part 2: K-Means Classification
+
+Now that we've run the PCA, we can use the condensed 5-band version of the data instead of the full hyperspectral dataset. We can now run some additional operations, such as a k-means clustering analysis. The code below shows how to do this:
+
+```javascript
+// Create training dataset from PCA results
+var training = pcaAsset.sample({
+    region: pcaAsset.geometry(),
+    scale: 10,
+    numPixels: 5000,
+    seed: 123
+});
+
+// Function to perform clustering with different numbers of clusters
+function performClustering(numClusters) {
+    // Train the clusterer
+    var clusterer = ee.Clusterer.wekaKMeans({
+        nClusters: numClusters,
+        seed: 123
+    }).train(training);
+    
+    // Cluster the PCA image
+    var clustered = pcaAsset.cluster(clusterer);
+    
+    // Add clustered image to map
+    Map.addLayer(clustered.randomVisualizer(), {}, 
+        'Clusters (k=' + numClusters + ')');
+    
+    return clustered;
+}
+
+// Try different numbers of clusters
+var clusters5 = performClustering(5);
+var clusters7 = performClustering(7);
+var clusters10 = performClustering(10);
+
+// Optional: Calculate and export cluster statistics
+var calculateClusterStats = function(clusteredImage, numClusters) {
+    // Calculate area per cluster
+    var areaImage = ee.Image.pixelArea().addBands(clusteredImage);
+    var areas = areaImage.reduceRegion({
+        reducer: ee.Reducer.sum().group({
+            groupField: 1,
+            groupName: 'cluster',
+        }),
+        geometry: pcaAsset.geometry(),
+        scale: 10,
+        maxPixels: 1e13
+    });
+    
+    print('Cluster areas (m²) for k=' + numClusters, areas);
+};
+
+calculateClusterStats(clusters5, 5);
+calculateClusterStats(clusters7, 7);
+calculateClusterStats(clusters10, 10);
+
+// Uncomment to export clustered results to your Google Drive, if desired
+// Export.image.toDrive({
+//     image: clusters5,
+//     description: 'LIRO_PCA_Clusters_k5',
+//     scale: 5,
+//     maxPixels: 1e13
+// });
+```
 
 ## Troubleshooting Tips
 
