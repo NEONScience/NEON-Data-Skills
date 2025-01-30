@@ -327,6 +327,8 @@ calculateClusterStats(clusters10, 10);
 
 ## Troubleshooting Tips
 
+If you run into any code errors or issues with the code, we suggest following the tips below. Errors will show up in Red in the Console, and adding print statements in the code can help you find out where the errors are occuring, if it's not obvious from the message.
+
 ### Memory Limits
 
 If you encounter "User memory limit exceeded", try the following:
@@ -342,7 +344,7 @@ If the export fails:
 - Verify the asset path is valid
 - Check project permissions
 - Try increasing `maxPixels`
-- Allow sufficient time for processing
+- Allow sufficient time for processing (exports can take 10 minutes to over an hour, for some of the larger sites)
 
 
 ### Visualization Problems
@@ -366,6 +368,6 @@ In this lesson you:
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/1b47039e0663bfe8eb16c8bb0f4e49f2" target="_blank">Reflectance PCA Analysis: Part 1</a>
+<a href="https://code.earthengine.google.com/1b47039e0663bfe8eb16c8bb0f4e49f2" target="_blank">Reflectance PCA Analysis & KMeans Classification: Part 1</a>
 
-<a href="https://code.earthengine.google.com/c75ab1206454c43ed5709e20bfb93905" target="_blank">Reflectance PCA Analysis: Part 2</a>
+<a href="https://code.earthengine.google.com/3abefc028c260b0ac9eba07a3ba72099" target="_blank">Reflectance PCA Analysis & KMeans Classification: Part 2</a>
