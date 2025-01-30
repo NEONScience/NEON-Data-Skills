@@ -30,6 +30,7 @@ After completing this activity, you will be able to:
 * Export and load PCA results as Earth Engine assets
 * Compare original hyperspectral bands with PCA-transformed data
 * Interpret the information content in different principal components
+* Run a k-means clustering classification on the transformed dataset
 * Understand some basic troubleshooting steps in case you run into errors
 
 ## Requirements
@@ -40,8 +41,9 @@ After completing this activity, you will be able to:
 
 ## Additional Resources
 
-The link below to the earth engine Eigen Analysis guide may assist you as you work through this lesson.
- * <a href="https://developers.google.com/earth-engine/guides/arrays_eigen_analysis" target="_blank"> Earth Engine Principal Components (Eigen) Analysis </a>
+The links below to the Earth Engine Eigen Analysis guide and KMeans documentation may provide some context as you work through this lesson.
+ * <a href="https://developers.google.com/earth-engine/guides/arrays_eigen_analysis" target="_blank"> Earth Engine Principal Components (Eigen) Analysis Guide</a>
+ * <a href="https://developers.google.com/earth-engine/apidocs/ee-algorithms-image-segmentation-kmeans" target="_blank"> Earth Engine Image Segmetation KMeans</a> 
 
 </div>
 
@@ -82,7 +84,7 @@ Map.addLayer(reflLIRO_2022view, {min:103, max:1160}, 'Original RGB');
 
 ### Set up Sampling for PCA
 
-PCA requires representative samples to compute the covariance matrix. We'll collect 500 random samples:
+You can run PCA on an entire image, but this would be very  memory intensive. Instead, we can use representative samples to compute the covariance matrix, which will provide similar results but run much more quickly. For this example, we'll collect 500 random samples. On your own you can try out different sample sizes to get a better understanding of the trade-offs.
 
 
 ```javascript
@@ -103,7 +105,7 @@ var samplePoints = ee.FeatureCollection(sample);
 
 ### Create Helper Functions
 
-We need two main helper functions: one to generate band names and another to perform the PCA:
+We need two main helper functions to generate the PCA. The first function generates band names and the second calculates the PCA.
 
 ```javascript
 
@@ -165,7 +167,7 @@ function calcImagePca(image, numComponents, samplePoints) {
 
 ### Apply PCA and Export Results
 
-Now we'll apply PCA and export the results. Change the `assetId` tag below to one of your cloud projects.
+Now we'll apply the PCA to the LIRO hyperspectral image and export the results. Change the `assetId` tag below to point to one of your cloud projects. This step can take several minutes (up to ~10 minutes) to complete.
 
 ```javascript
 // Apply PCA to the hyperspectral image
@@ -186,6 +188,8 @@ Export.image.toAsset({
 ```
 
 ## Script 2: Visualizing PCA Results and K-Means Classification
+
+Now that we've exported the 5 principal components, let's try to understand the results. We will then apply a K-means clustering algorithm to carry out a basic classification, to show that we can run a similar analysis on the dimensionally-reduced dataset.
 
 ### Part 1: Visualizing PCA Results
 
@@ -257,7 +261,7 @@ Map.addLayer(pcaAsset,
 
 ### Part 2: K-Means Classification
 
-Now that we've run the PCA, we can use the condensed 5-band version of the data instead of the full hyperspectral dataset. We can now run some additional operations, such as a k-means clustering analysis. The code below shows how to do this:
+Now that we've run the PCA, we can use the condensed 5-band version of the data instead of the full hyperspectral dataset for further analysis. In this example, we'll show how to run a k-means clustering analysis. Kmeans is a popular clustering algorithm ... The code below shows how to do this:
 
 ```javascript
 // Create training dataset from PCA results
