@@ -261,7 +261,7 @@ Map.addLayer(pcaAsset,
 
 ### Part 2: K-Means Classification
 
-Now that we've run the PCA, we can use the condensed 5-band version of the data instead of the full hyperspectral dataset for further analysis. In this example, we'll show how to run a k-means clustering analysis. Kmeans is a popular clustering algorithm ... The code below shows how to do this:
+Now that we've run the PCA, we can use the condensed 5-band version of the data instead of the full hyperspectral dataset for further analysis. In this example, we'll show how to run a k-means clustering analysis. Kmeans is a popular unsupervized clustering algorithm for carrying out classification when you don't have training data. The code below shows how to do this:
 
 ```javascript
 // Create training dataset from PCA results
@@ -357,10 +357,11 @@ If the PCA results don't display:
 
 In this lesson you:
 
-- Learned how to implement PCA on hyperspectral data in GEE
 - Created a workflow that handles large datasets efficiently
+- Learned how to implement PCA on hyperspectral data in GEE
 - Visualized and exported transformed data
 - Gained experience interpreting PCA results
+- Gained experience running k-Means clustering and interpreting results
 
 
 ## Get Lesson Code
