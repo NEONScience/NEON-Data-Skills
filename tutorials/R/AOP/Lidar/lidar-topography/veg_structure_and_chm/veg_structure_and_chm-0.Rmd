@@ -1,0 +1,31 @@
+---
+syncID: d2d126173eeb4494a06e35aa34bd2196
+title: "Compare tree height measured from the ground to a Lidar-based Canopy Height Model"
+description: "Investigate the relationship between two methods for measuring canopy height"
+dateCreated: 2019-5-21
+authors: Claire K. Lunch
+contributors: Kelley A. McCahill
+estimatedTime: 1 hour
+packagesLibraries: terra, neonUtilities, neonOS, geoNEON
+topics: vegetation-structure, ecosystem-structure, canopy-height-model
+languagesTool: R
+dataProduct: DP1.10098.001, DP3.30015.001
+code1: 
+tutorialSeries: 
+urlTitle: tree-heights-veg-structure-chm
+---
+
+
+```{r setup, echo=FALSE}
+
+library(htmltools)
+
+```
+
+
+```{r html, echo=FALSE, warning=FALSE, message=FALSE}
+
+htmltools::includeHTML("https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/refs/heads/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/veg_structure_and_chm-content.html")
+
+```
+
