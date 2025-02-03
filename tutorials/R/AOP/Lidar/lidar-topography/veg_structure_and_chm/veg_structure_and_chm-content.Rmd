@@ -81,7 +81,6 @@ options(stringsAsFactors=F)
 # set working directory
 # adapt directory path for your system
 wd <- "~/data"
-setwd(wd)
 
 ```
 
@@ -114,6 +113,8 @@ import rioxarray as rxr
 import matplotlib.pyplot as plt
 import matplotlib.collections
 import rasterio
+from rasterio import sample
+from rasterio.enums import Resampling
 import requests
 import os
 
@@ -147,7 +148,7 @@ possible function inputs.
 veglist <- loadByProduct(dpID="DP1.10098.001", 
                          site="WREF", 
                          package="basic", 
-                         release="RELEASE-2023",
+                         release="RELEASE-2024",
                          check.size = FALSE)
 
 ```
@@ -173,7 +174,7 @@ nearly all the inputs are the same.
 veglist = nu.load_by_product(dpid="DP1.10098.001", 
                          site="WREF", 
                          package="basic", 
-                         release="RELEASE-2023",
+                         release="RELEASE-2024",
                          check_size = False)
 
 ```
@@ -224,12 +225,10 @@ for i in vegpoints:
     easting.append(vreslist["data"]["locationUtmEasting"])
     northing.append(vreslist["data"]["locationUtmNorthing"])
     props = pd.DataFrame.from_dict(vreslist["data"]["locationProperties"])
-    coordinateUncertainty.append(props.loc[props["locationPropertyName"]==
-                                         "Value for Coordinate uncertainty"]
-                                 ["locationPropertyValue"])
-    elevationUncertainty.append(props.loc[props["locationPropertyName"]==
-                                         "Value for Elevation uncertainty"]
-                                 ["locationPropertyValue"])
+    cuprop = props.loc[props["locationPropertyName"]=="Value for Coordinate uncertainty"]["locationPropertyValue"]
+    coordinateUncertainty.append(cuprop[cuprop.index[0]])
+    euprop = props.loc[props["locationPropertyName"]=="Value for Elevation uncertainty"]["locationPropertyValue"]
+    elevationUncertainty.append(euprop[euprop.index[0]])
 
 ptdct = dict(points=vegpoints, 
              easting=easting, 
@@ -317,22 +316,36 @@ veg = vegmap.join(veglist["vst_apparentindividual"],
 
 ### Make a stem map {.tabset}
 
-Let's see what the data look like! Make a stem map of the plants in 
-plot WREF_075. Each tree is mapped by a circle matching its size.
+Let's see what the data look like! Make a stem map, where each tree 
+is mapped by a circle matching its size. This won't look informative 
+at the scale of the entire site, so we'll subset to a single plot, 
+WREF_075.
 
-Note that in both languages the input to the "circle" function is a 
-radius, but `stemDiameter` is just that, a diameter, so we will need to 
-divide by two. And `stemDiameter` is in centimeters, but the mapping 
-scale is in meters, so we also need to divide by 100 to get the scale 
-right.
+In addition to looking at only one plot, we'll also target a single 
+year. We want to match height measurements from the ground to remote 
+sensing flights, so we need to pick a year when WREF was flown. 
+We'll use 2017. Use the `eventID` field from  
+`vst_apparentindividual` to find the 2017 measurements. We use the 
+`eventID` rather than the `date` because sampling bouts for 
+vegetation structure are carried out in the winter, to avoid the 
+growing season, and can sometimes extend into the following 
+calendar year.
+
+Note that in both languages the input to the function that draws a 
+circle is a radius, but `stemDiameter` is just that, a diameter, so 
+we will need to divide by two. And `stemDiameter` is in centimeters, 
+but the mapping scale is in meters, so we also need to divide by 100 
+to get the scale right.
 
 #### R
 
 ```{r plot-1}
 
-symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
-        veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
+veg2017 <- veg[which(veg$eventID.y=="vst_WREF_2017"),]
+
+symbols(veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
+        veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")], 
+        circles=veg2017$stemDiameter[which(veg2017$plotID=="WREF_075")]/100/2, 
         inches=F, xlab="Easting", ylab="Northing")
 
 ```
@@ -342,13 +355,13 @@ in blue:
 
 ```{r plot-2}
 
-symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
-        veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$stemDiameter[which(veg$plotID=="WREF_075")]/100/2, 
+symbols(veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
+        veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")], 
+        circles=veg2017$stemDiameter[which(veg2017$plotID=="WREF_075")]/100/2, 
         inches=F, xlab="Easting", ylab="Northing")
-symbols(veg$adjEasting[which(veg$plotID=="WREF_075")], 
-        veg$adjNorthing[which(veg$plotID=="WREF_075")], 
-        circles=veg$adjCoordinateUncertainty[which(veg$plotID=="WREF_075")], 
+symbols(veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
+        veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")], 
+        circles=veg2017$adjCoordinateUncertainty[which(veg2017$plotID=="WREF_075")], 
         inches=F, add=T, fg="lightblue")
 
 ```
@@ -357,7 +370,8 @@ symbols(veg$adjEasting[which(veg$plotID=="WREF_075")],
 
 ```{python p-plot-1}
 
-veg75 = veg.loc[veg["plotID_AI"]=="WREF_075"]
+veg2017 = veg.loc[veg["eventID_AI"]=="vst_WREF_2017"]
+veg75 = veg2017.loc[veg2017["plotID_AI"]=="WREF_075"]
 
 fig, ax = plt.subplots()
 
@@ -417,9 +431,9 @@ in R and the `rasterio` and `rioxarray`` packages in Python.
 
 ```{r get-chm, results="hide"}
 
-byTileAOP(dpID="DP3.30015.001", site="WREF", year="2017", 
-          easting=veg$adjEasting[which(veg$plotID=="WREF_075")], 
-          northing=veg$adjNorthing[which(veg$plotID=="WREF_075")],
+byTileAOP(dpID="DP3.30015.001", site="WREF", year=2017, 
+          easting=veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
+          northing=veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")],
           check.size=FALSE, savepath=wd)
 
 chm <- rast(paste0(wd, "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
@@ -442,6 +456,7 @@ nu.by_tile_aop(dpid="DP3.30015.001", site="WREF", year="2017",
           easting=list(veg75.adjEasting), 
           northing=list(veg75.adjNorthing),
           check_size=False, savepath=os.getcwd())
+          
 ```
 
 We'll read in versions of the tile in both `rasterio` and `rioxarray` 
@@ -480,14 +495,18 @@ First, subset the vegetation structure data to only the trees that fall
 within this tile. This step isn't strictly necessary, but it will make 
 the processing faster.
 
+Note that although we downloaded this tile by targeting plot WREF_075, 
+there are other plots in the area covered by this tile - from here 
+forward, we're working with all measured trees within the tile area.
+
 #### R
 
 ```{r vegsub}
 
-vegsub <- veg[which(veg$adjEasting >= ext(chm)[1] &
-                      veg$adjEasting <= ext(chm)[2] &
-                      veg$adjNorthing >= ext(chm)[3] & 
-                      veg$adjNorthing <= ext(chm)[4]),]
+vegsub <- veg2017[which(veg2017$adjEasting >= ext(chm)[1] &
+                        veg2017$adjEasting <= ext(chm)[2] &
+                        veg2017$adjNorthing >= ext(chm)[3] & 
+                        veg2017$adjNorthing <= ext(chm)[4]),]
 
 ```
 
@@ -495,10 +514,10 @@ vegsub <- veg[which(veg$adjEasting >= ext(chm)[1] &
 
 ```{python p-vegsub}
 
-vegsub = veg.loc[(veg["adjEasting"] >= chm.bounds[0]) &
-                 (veg["adjEasting"] <= chm.bounds[1]) &
-                 (veg["adjNorthing"] >= chm.bounds[2]) & 
-                 (veg["adjNorthing"] <= chm.bounds[3])]
+vegsub = veg2017.loc[(veg2017["adjEasting"] >= chm.bounds[0]) &
+                 (veg2017["adjEasting"] <= chm.bounds[1]) &
+                 (veg2017["adjNorthing"] >= chm.bounds[2]) & 
+                 (veg2017["adjNorthing"] <= chm.bounds[3])]
 vegsub = vegsub.reset_index(drop=True)
 
 ```
@@ -541,12 +560,15 @@ cor(valCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
 
 #### Python
 
-The `sample()` function from the `rasterio` package gets the values 
-from the tile at the given coordinates.
+The `sample_gen()` function from the `rasterio.sample` module gets 
+the values from the tile at the given coordinates.
 
 ```{python p-no-buffer-chm}
 
-valCHM = list(chm.sample(tuple(zip(vegsub["adjEasting"], vegsub["adjNorthing"]))))
+valCHM = list(sample.sample_gen(chm, 
+                                tuple(zip(vegsub["adjEasting"], 
+                                          vegsub["adjNorthing"])),
+                                masked=True))
 
 fig, ax = plt.subplots()
 
@@ -566,8 +588,9 @@ measurements?
 ```{python p-corr-no-buffer}
 
 CHMlist = np.array([c.tolist()[0] for c in valCHM])
-idx = np.isfinite(vegsub.height) & np.isfinite(CHMlist)
-np.corrcoef(vegsub.height[idx], CHMlist[idx])[0,1]
+idx = np.intersect1d(np.where(np.isfinite(vegsub.height)), 
+                     np.where(CHMlist != None))
+np.corrcoef(vegsub.height[idx], list(CHMlist[idx]))[0,1]
 
 ```
 
@@ -613,14 +636,19 @@ value for each area in the shapefile.
 ```{python p-buffer-chm}
 
 vegloc = vegsub[["individualID","adjEasting","adjNorthing","adjCoordinateUncertainty"]]
+v = vegloc.rename(columns={"individualID": "indID", "adjEasting": "easting",
+               "adjNorthing": "northing", "adjCoordinateUncertainty": "coordUnc"},
+               inplace=False)
+               
 gdf = gpd.GeoDataFrame(
-       vegloc, geometry=gpd.points_from_xy(vegloc.adjEasting, vegloc.adjNorthing))
-gdf["geometry"] = gdf.geometry.buffer(0.9)
+       v, geometry=gpd.points_from_xy(v.easting, v.northing))
+gdf["geometry"] = gdf["geometry"].buffer(distance=gdf["coordUnc"])
 gdf.to_file(os.getcwd() + "/trees_with_buffer.shp")
 
 chm_height = rs.zonal_stats(os.getcwd() + "/trees_with_buffer.shp", chmx.values, 
                             affine=chmx.rio.transform(), 
-                            nodata=-999, stats="max")
+                            nodata=-9999, stats="max")
+
 valCHMbuff = [h["max"] for h in chm_height]
 
 ```
@@ -644,15 +672,16 @@ plt.show()
 ```{python p-corr-buffer}
 
 CHMbufflist = np.array(valCHMbuff)
-idx = np.isfinite(vegsub.height) & np.isfinite(CHMbufflist)
-np.corrcoef(vegsub.height[idx], CHMbufflist[idx])[0,1]
+idx = np.intersect1d(np.where(np.isfinite(vegsub.height)), 
+                     np.where(CHMbufflist != None))
+np.corrcoef(vegsub.height[idx], list(CHMbufflist[idx]))[0,1]
 
 ```
 
 ### {-}
 
-Adding the buffer has actually made our correlation slightly worse. Let's 
-think about the data.
+Adding the buffer has actually made our correlation slightly weaker. 
+Let's think about the data.
 
 There are a lot of points clustered on the 1-1 line, but there is also a 
 cloud of points above the line, where the measured height is lower than 
@@ -797,7 +826,9 @@ coordinate to make sure it's in the correct pixel.
 
 ```{python p-adj-tree-coord}
 
-valCHM10 = list(chm10.sample(tuple(zip(vegbin["easting10"]+5, vegbin["northing10"]+5))))
+valCHM10 = list(sample.sample_gen(chm10, tuple(zip(vegbin["easting10"]+5,
+                                                   vegbin["northing10"]+5)),
+                                                   masked=True))
 
 fig, ax = plt.subplots()
 
@@ -814,15 +845,17 @@ plt.show()
 ```{python p-cor-2}
 
 CHM10list = np.array([c.tolist()[0] for c in valCHM10])
-idx = np.isfinite(vegbin.height_max) & np.isfinite(CHM10list)
-np.corrcoef(vegbin.height_max[idx], CHM10list[idx])[0,1]
+idx = np.intersect1d(np.where(np.isfinite(vegbin.height_max)), 
+                     np.where(CHM10list != None))
+np.corrcoef(vegbin.height_max[idx], list(CHM10list[idx]))[0,1]
 
 ```
 
 ### {-}
 
-The understory points are thinned out substantially, but so are the rest. 
-We've lost a lot of data by going to a lower resolution.
+The understory points are thinned out substantially, but so are the rest, 
+and we've lost a lot of the shorter points. We've lost a lot of data 
+overall by going to a lower resolution.
 
 Let's try and see if we can identify the tallest trees by another approach, 
 using the trees as the starting point instead of map area.
@@ -927,7 +960,9 @@ Now extract the raster values, as above.
 
 ```{python p-filter-chm}
 
-filterCHM = list(chm.sample(tuple(zip(vegfil["adjEasting"], vegfil["adjNorthing"]))))
+filterCHM = list(sample.sample_gen(chm, tuple(zip(vegfil["adjEasting"],
+                                                  vegfil["adjNorthing"])),
+                                                  masked=True))
 
 fig, ax = plt.subplots()
 
@@ -944,8 +979,9 @@ plt.show()
 ```{python p-cor-3}
 
 filCHMlist = np.array([c.tolist()[0] for c in filterCHM])
-idx = np.isfinite(height.height) & np.isfinite(filCHMlist)
-np.corrcoef(height.height[idx], filCHMlist[idx])[0,1]
+idx = np.intersect1d(np.where(np.isfinite(height.height)), 
+                     np.where(filCHMlist != None))
+np.corrcoef(height.height[idx], list(filCHMlist[idx]))[0,1]
 
 ```
 
@@ -1009,63 +1045,15 @@ plt.show()
 
 ```{python p-cor-4}
 
-idx = np.isfinite(height.height) & np.isfinite(filCHMlist)
-np.corrcoef(height.height[idx], filCHMlist[idx])[0,1]
+idx = np.intersect1d(np.where(np.isfinite(height.height)), 
+                     np.where(filCHMlist != None))
+np.corrcoef(height.height[idx], list(filCHMlist[idx]))[0,1]
 
 ```
 
 ### {-}
 
 Nice!
-
-### Use canopy position data {.tabset}
-
-Finally, there is an alternative way to determine which trees are at 
-the top of the canopy: it's in the vegetation structure data! There is 
-a data field for `canopyPosition`. Let's subset to only the trees 
-described as `"Full sun"`.
-
-#### R
-
-```{r canopy}
-
-```
-
-#### Python
-
-```{python p-canopy}
-
-vegtop = vegsub.loc[vegsub.canopyPosition=="Full sun"]
-topCHM = list(chm.sample(tuple(zip(vegtop["adjEasting"], vegtop["adjNorthing"]))))
-
-fig, ax = plt.subplots()
-
-ax.plot((0,50), (0,50), linewidth=1, color="black")
-ax.scatter(vegtop.height, topCHM, s=1)
-
-ax.set_xlabel("Height")
-ax.set_ylabel("Canopy height model")
-
-plt.show()
-
-```
-
-```{python p-cor-5}
-
-topCHMlist = np.array([c.tolist()[0] for c in topCHM])
-idx = np.isfinite(vegtop.height) & np.isfinite(topCHMlist)
-np.corrcoef(vegtop.height[idx], topCHMlist[idx])[0,1]
-
-```
-
-### {-}
-
-Using all the data collected on the ground helps a lot! We left this 
-option for last because in the early days of NEON data collection, 
-the `canopyPosition` field was only recorded intermittently, so we 
-may have discarded trees erroneously. But as time goes on, this 
-dataset will continue to improve.
-# CKL: rephrase this, and review data - do all individualIDs have a canopyPosition now?
 
 ### Final thoughts on intercomparison
 
@@ -1081,7 +1069,7 @@ Speaking of biases: however we slice the data, there is a noticeable
 bias even in the strongly correlated values. The CHM heights are 
 generally a bit shorter than the ground-based estimates of tree height. 
 There are two biases in the CHM data that contribute to this. (1) Lidar 
-returns from short-statured vegetation are difficult to distinguish 
+returns from short-stature vegetation are difficult to distinguish 
 from returns from the ground itself, so the "ground" estimated by Lidar 
 is often a bit higher than the true ground surface, and (2) the height 
 estimate from Lidar represents the highest return, but the highest return 
