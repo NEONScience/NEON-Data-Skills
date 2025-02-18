@@ -60,7 +60,9 @@ If you are new to NEON hyperspectral reflectance data, we recommend going throug
 
 More details about the surface directional reflectance data product can be found on the data product page, linked below.
 - <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic</a>
-In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of the AOP data products. Please refer to the ATBDs below for a more in-depth understanding  of the reflectance data.- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD</a>
+
+In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of the AOP data products. Please refer to the ATBDs below for a more in-depth understanding  of the reflectance data.
+- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD</a>
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a>
 
 **Download the Topographic and BRDF Corrections ATBD:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" class="link--button link--arrow">Topographic and BRDF Corrections ATBD</a>
@@ -120,7 +122,7 @@ As you can see, there are some differences in the HDF5 structure between the .00
 | Logs | Log file names reflect the Flight Line #, corresonding to the L1 Reflectance Tile | Log file names reflect the time stamp of the flight line |
 | Logs | BRDF logs added (BRDF_COEFFS_JSON_for_Hytools and BRDF_Config_JSON_for_Hytools) | No BRDF logs |
 
-Now that you have a high-level picture of what has change between the directional and bidirectional reflectance revisionsd, let's take amore detailed  look at th contents of thee bidirectional reflectance data in Python. 
+Now that you have a high-level picture of what has changed between the directional and bidirectional reflectance revisions, let's take a more detailed look at the contents of the bidirectional reflectance data in Python. 
 
 In Python, you can look inside the HDF5 dataset with the `h5py visititems` function. The `list_dataset` function defined below displays all datasets stored in the hdf5 file and their locations within the hdf5 file:
 
