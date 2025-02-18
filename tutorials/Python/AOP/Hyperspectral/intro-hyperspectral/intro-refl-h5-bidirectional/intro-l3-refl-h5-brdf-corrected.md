@@ -25,7 +25,7 @@ The new bidirectional data includes some slight modifications to the H5 contents
 
 <div id="ds-objectives" markdown="1">
     
-### Learning Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -50,9 +50,10 @@ You can download this data from the NEON Data portal, using the Python neonutili
 
 **Download the LI Bidirectional Reflectance Tile:** <a href="https://storage.googleapis.com/neon-aop-provisional-products/2022/FullSite/D05/2022_LIRO_3/L3/Spectrometer/Reflectance/NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5" class="link--button link--arrow">NEON_D05_LIRO_DP3_290000_5097000_reflectance.h5</a>
 
-### Additional Resources
+## Additional Resources
 
-#### Hyperspectral Resources
+
+### Hyperspectral Resources
 If you are new to NEON hyperspectral reflectance data, we recommend going through the tutorial series below, or at least the first lesson. This series uses the directional reflectance data (DP3.30006.001), but the same principles apply.
 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-python" target="_blank">Introduction to Hyperspectral Remote Sensing Data in Python</a>
@@ -66,7 +67,7 @@ In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical
 
 **Download the Topographic and BRDF Corrections ATBD:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" class="link--button link--arrow">Topographic and BRDF Corrections ATBD</a>
 
-#### Setting up a NEON Data Portal User Account and Token
+### Setting up a NEON Data Portal User Account and Token
 Finally, if you haven't set up a user account and token on the NEON Data Portal, please refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a>. Using a token when downloading data via the API (including when using the neonutilities package) links your downloads to your user account and also enables faster download speeds. For more information about token usage and benefits, see the <a href="https://data.neonscience.org/data-api/" target="_blank">NEON API documentation page</a>. 
 
 
