@@ -165,9 +165,9 @@ liro_2022_refl_exts = get_aop_tile_extents('DP3.30006.002','LIRO',2022)
 
 This shows the Easting and Northing Bounds (minimum and maximum values). Type `print(liro_2022_refl_exts)` to display a complete list of all the UTM coordinates of the tiles. Not all of the AOP flight boxes are rectangular in shape, so for these sites that have an irregular polygon shape, it may help to see the full list of available tiles. Likewise, in some years, AOP may not obtain complete coverage of a site, due to poor weather or other logistical constraints.
 
-Next let's use `by_tile_aop` to download a bidirectional reflectance tile. We highly encourage using a token for larger AOP downloads, such as the reflectance data. Refer to the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a> tutorial to set up a User Account and Token, if you haven't already done so.
+Next let's use `by_tile_aop` to download a bidirectional reflectance tile. We highly encourage using a token for larger AOP downloads, such as the reflectance data. Refer to the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a> tutorial to set up a User Account and Token, if you haven't already done so. Once you have a token, you can copy it into the variable `NEON_TOKEN` to use it in any downloads, as shown below.
 
-By default, this function will display the total size of the data to be download and ask you if you want to proceed. Type `y` for yes to continue with the download. Optionally, you can set the input parameter `check_size=False` if you want to download data regardless of the size. The download may take up to a minute or two to complete.
+By default, the `by_tile_aop` function displays the total size of the data to be download and ask you if you want to proceed. Type `y` for yes to continue with the download. Optionally, you can set the input parameter `check_size=False` if you want to download data regardless of the size. The download may take up to a minute or two to complete.
 
 `NEON_TOKEN="YOUR_TOKEN_HERE"`
 
@@ -180,7 +180,7 @@ by_tile_aop(dpid='DP3.30006.002',
             northing=5097001,
             include_provisional=True,
             savepath='./data',
-            token=os.environ.get("NEON_TOKEN"))
+            token=NEON_TOKEN)
 ```
 
     Provisional data are included. To exclude provisional data, use input parameter include_provisional=False.
