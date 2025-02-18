@@ -361,7 +361,7 @@ We will also highlight some of the new and updated datasets that differ from the
 - `Reflectance/Metadata/Logs/L004-1_20220623/BRDF_Config_JSON_for_Hytools`
 
 
-The function below pulls out some spatial information about the dataset that will come in handy for plotting. Please refer to the ... lesson for more details about this spatial information.
+The function below pulls out some spatial information about the dataset that will come in handy for plotting.
 
 
 ```python
@@ -407,7 +407,7 @@ map_info
 
 
 
-Now that we have the spatial information, let's start looking at the data. To start, we can pull out all the Ancillary_Imagery data into a Python dictionary as follows:
+Now that we have the spatial information, we can start looking at the data. To start, we can pull out all the Ancillary_Imagery data into a Python dictionary as follows:
 
 
 ```python
