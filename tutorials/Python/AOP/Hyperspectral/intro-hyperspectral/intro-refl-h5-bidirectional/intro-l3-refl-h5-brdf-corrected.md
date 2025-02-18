@@ -67,9 +67,7 @@ In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical
 **Download the Topographic and BRDF Corrections ATBD:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" class="link--button link--arrow">Topographic and BRDF Corrections ATBD</a>
 
 #### Setting up a NEON Data Portal User Account and Token
-Finally, if you haven't set up a user account and token on the NEON Data Portal, please refer to the lesson below. Using a token when downloading data via the API (including when using the neonutilities package), links your downloads to your user account and also enables faster download speeds. For more information about token usage and benefits, see the <a href="https://data.neonscience.org/data-api/" target="_blank">NEON API documentation page</a>. 
-
-<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a>
+Finally, if you haven't set up a user account and token on the NEON Data Portal, please refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a>. Using a token when downloading data via the API (including when using the neonutilities package) links your downloads to your user account and also enables faster download speeds. For more information about token usage and benefits, see the <a href="https://data.neonscience.org/data-api/" target="_blank">NEON API documentation page</a>. 
 
 
 </div>
