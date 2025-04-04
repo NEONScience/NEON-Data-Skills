@@ -10,7 +10,7 @@ estimatedTime: 2 hours
 packagesLibraries: neonUtilities, ggplot2, zoo
 topics: data-management, rep-sci
 languageTool: R, API
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-neon-ais-data/clean-neon-ais-data.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/clean-NEON-AIS-data.R
 tutorialSeries:
 urlTitle: clean-neon-ais-data
 ---
