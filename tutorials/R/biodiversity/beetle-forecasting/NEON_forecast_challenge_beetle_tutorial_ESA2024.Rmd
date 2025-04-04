@@ -32,7 +32,7 @@ knitr::opts_chunk$set(eval=TRUE, error=FALSE, warning=FALSE, message=FALSE)
 This tutorial is intended to be used by ecological forecasters at any stage of expertise and may be used as a learning tool as an introduction to forecasting properties of ecological populations or communities. Below, we provide code for introductory examples to walk through the entire process of creating and submitting a forecast to the NEON Ecological Forecasting challenge. This includes: 
 
  1. Accessing target datasets of NEON ground beetle richness and abundance
- 2. Accessing climate forecast data to use as drivers in models predicting beetle data 
+ 2. Accessing weather forecast data to use as drivers in models predicting beetle data 
  3. How to use the `fable` package for R to specify and fit models
  4. How to submit a forecast to the forecast challenge 
  
@@ -101,7 +101,7 @@ Ecologists are interested in tracking changes in the **number of individual orga
 
 Ecologists are also interested in tracking changes in the **number of species over time** (Species richness over time without species identity) and in species turnover over time steps where the identity of the species is known. In the example above there are three species (A,B,C) but over time this can change if for example Species C  was to decline from 10 to zero individuals then the species richness would be 2, or increase if two previously unobserved species (D & E) arrive into the community, the species richness would be 4. Note that the loss of species A and the arrival of D and E gives a net species richness of 4, but without keeping track of the identity of the species we may be unaware of how community composition is changing over time.
 
-Ecological communities change for many reasons and so it is important to understand the drivers of changes in abundance or species richness by adding environmental variables into the models. By knowing how species change over time we can use the driving variables to predict, or forecast, the values for the abundance and species richness variables for the ecological communities into the future.
+Ecological communities change for many reasons and so it is important to understand the drivers of changes in abundance or species richness by adding abiotic variables into the models. By knowing how species change over time we can use the driving variables to predict, or forecast, the values for the abundance and species richness variables for the ecological communities into the future.
 
 ### Overview of the [Beetle Communities](https://projects.ecoforecast.org/neon4cast-docs/Beetles.html) theme
 
@@ -214,19 +214,19 @@ targets_train <- targets %>%
 
 ### Example forecasts: some simple models
 
-In this tutorial, we will begin by producing two "null model" forecasts using functions available in the `fable` package for R. The `MEAN` null model will forecast abundance based on the historical mean and standard deviation in the training data. The `NAIVE` null model is a random walk model that generates a forecast based on the current observation plus process uncertainty. We will then use the `TSLM` function to create simple linear regression models to predict beetle abundances using daily temperature (mean daily temperature at 2m height) and precipitation (daily cumulative precipitation) estimates produced from CMIP6 climate model runs from 1950-2050. While these data do not represent actual observations of temperature and precipitation at the NEON site, they have been fit to historical data, so past dates in the simulated data should capture general trends at the site and values for future dates should represent a realistic forecast of climate variables into the future. 
+In this tutorial, we will begin by producing two "null model" forecasts using functions available in the `fable` package for R. The `MEAN` null model will forecast abundance based on the historical mean and standard deviation in the training data. The `NAIVE` null model is a random walk model that generates a forecast based on the current observation plus process uncertainty. We will then use the `TSLM` function to create simple linear regression models to predict beetle abundances using daily temperature (mean daily temperature at 2m height) and precipitation (daily cumulative precipitation) estimates produced from CMIP6 model runs from 1950-2050. While these data do not represent actual observations of temperature and precipitation at the NEON site, they have been fit to historical data, so past dates in the simulated data should capture general trends at the site and values for future dates should represent a realistic forecast of meteorological variables into the future. 
 
 An overview of the models we will fit to the data in this tutorial:
 
 * Null models
   - `fable::MEAN()`: Historical mean and standard deviation
   - `fable::NAIVE()`: Random walk model assuming future data are current data plus process uncertainty
-* Regression models with climate drivers (accessed from https://open-meteo.com/)
-  - Temperature: Daily mean temperature from CMIP6 climate model runs 
+* Regression models with meteorology drivers (accessed from https://open-meteo.com/)
+  - Temperature: Daily mean temperature from CMIP6 model runs 
   - Precipitation: Daily cumulative precipitation from CMIP6 model runs
   - Temperature + Precipitation
   
-Here, we use CMIP6 data climate drivers as both training and forecasting data for simplicity and the ability to generate forecasts further into the future compared to other target data with shorter data latencies. 
+Here, we use CMIP6 data drivers as both training and forecasting data for simplicity and the ability to generate forecasts further into the future compared to other target data with shorter data latencies. 
   
 At the end of this tutorial, we will compare the performance of our best regression model against the two null models. 
 
@@ -260,17 +260,17 @@ Note the difference in the scale of the y-axis between the two forecasts. How mi
 
 ### Forecast beetle abundance: regression models
 
-Regression on climate model outputs allows us to make predictions about future field seasons based on CMIP6 projections. We downloaded climate model outputs from https://open-meto.com using the `RopenMeto` package, which you can install using: `remotes::install_github("FLARE-forecast/RopenMeteo")`. More information about the simulations that produced the climate drivers used in this example can be found [here](https://openmeteo.substack.com/p/climate-change-api). 
+Regression on meteorological model outputs allows us to make predictions about future field seasons based on CMIP6 projections. We downloaded model outputs from https://open-meto.com using the `RopenMeto` package, which you can install using: `remotes::install_github("FLARE-forecast/RopenMeteo")`. More information about the simulations that produced the drivers used in this example can be found [here](https://openmeteo.substack.com/). 
 
-So we do not overwhelm the open-meteo API, we have made the climate data used in this tutorial available as a [Community Data resource on the CyVerse Data Store](https://de.cyverse.org/data/ds/iplant/home/shared/NEON/ESA2024/forecasting_beetles_workshop?type=folder&resourceId=af152ca6-dc9b-11ee-aacd-90e2ba675364).
+So we do not overwhelm the open-meteo API, we have made the data used in this tutorial available as a [Community Data resource on the CyVerse Data Store](https://de.cyverse.org/data/ds/iplant/home/shared/NEON/ESA2024/forecasting_beetles_workshop?type=folder&resourceId=af152ca6-dc9b-11ee-aacd-90e2ba675364).
 
-The climate data we're using in this example were generated by the CMCC_CM2_VHR4 climate model.
+The data we're using in this example were generated by the CMCC_CM2_VHR4 meteorological model.
 
-Other predictor variables beyond climate data are appropriate for forecasting. Just remember that the driver data for forecasting are an out-of-sample observation (also forecasted) such that it can be used to generate a prediction of beetle richness and abundance. That is why NEON's meteorological data from OSBS are not used to generate beetle forecasts, as we can only observe up to the current time that the forecast starts. Additionally, the hand-off from directly observed meteorological data to forecasted climate data introduces additional uncertainty to forecasts that we have currently omitted. For the sake of simplicity, we have trained the data on past CMIP6 model projections that have been corrected to the nearest observations and then forecasted with CMIP6's CMCC_CM2_VHR4 model projection ensembles. 
+Other predictor variables beyond meteorology data are appropriate for forecasting. Just remember that the driver data for forecasting are an out-of-sample observation (also forecasted) such that it can be used to generate a prediction of beetle richness and abundance. That is why NEON's meteorological data from OSBS are not used to generate beetle forecasts, as we can only observe up to the current time that the forecast starts. Additionally, the hand-off from directly observed meteorological data to forecasted data introduces additional uncertainty to forecasts that we have currently omitted. For the sake of simplicity, we have trained the data on past CMIP6 model projections that have been corrected to the nearest observations and then forecasted with CMIP6's CMCC_CM2_VHR4 model projection ensembles. 
 
-```{r get climate data}
+```{r get meteo data}
 
-# Get climate data
+# Get meteorology data
 path_to_clim_data <- "https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2024/forecasting_beetles_workshop/modeled_climate_2012-2050_OSBS_CMCC_CM2_VHR4.csv"
 
 clim_long <- read_csv(path_to_clim_data)  %>%
@@ -288,8 +288,8 @@ clim_wide <- clim_long %>%
 ```
 
 Let's take a look at the data. The dotted line indicates our `forecast_startdate`. 
-```{r plot climate data, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: modeled climate data at OSBS"}
-# visualize climate data
+```{r plot clim data, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: modeled meteorology data at OSBS"}
+# visualize meteorology data
 clim_long_ts %>%
   ggplot(aes(datetime, prediction)) + 
   geom_line() +
@@ -302,7 +302,8 @@ clim_long_ts %>%
 ```
 
 
-Next, we will break up the climate data into a training set (`clim_past`) and a dataset to use for forecasting (`clim_future`). 
+Next, we will break up the meteorology data into a training set (`clim_past`) and a dataset to use for forecasting (`clim_future`). 
+
 ```{r eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE}
 # subset into past and future datasets, based on forecast_startdate
 clim_past <- clim_wide %>%
@@ -316,9 +317,10 @@ clim_future <- clim_wide %>%
 ```
 
 
-Now, combine target and climate data to make a training dataset.
+Now, combine target and meteorology data to make a training dataset.
+
 ```{r eval=TRUE, echo = TRUE, error=FALSE, warning=FALSE, message=FALSE}
-# combine target and climate data into a training dataset
+# combine target and meteorology data into a training dataset
 targets_clim_train <- targets_train %>%
   left_join(clim_past)
 ```
@@ -357,7 +359,7 @@ mod_best_lm <- mod_fit_candidates %>% select(mod_temp)
 report(mod_best_lm)
 
 # make a forecast
-# filter "future" climate data to target climate model
+# filter "future" meteorology data to target model
 fc_best_lm <- mod_best_lm %>%
   fabletools::forecast(
     new_data = 

@@ -30,7 +30,7 @@ dateCreated: 2024-07-30
 This tutorial is intended to be used by ecological forecasters at any stage of expertise and may be used as a learning tool as an introduction to forecasting properties of ecological populations or communities. Below, we provide code for introductory examples to walk through the entire process of creating and submitting a forecast to the NEON Ecological Forecasting challenge. This includes: 
 
  1. Accessing target datasets of NEON ground beetle richness and abundance
- 2. Accessing climate forecast data to use as drivers in models predicting beetle data 
+ 2. Accessing weather forecast data to use as drivers in models predicting beetle data 
  3. How to use the `fable` package for R to specify and fit models
  4. How to submit a forecast to the forecast challenge 
  
@@ -79,7 +79,7 @@ Then load the packages.
 
     version$version.string
 
-    ## [1] "R version 4.3.2 (2023-10-31 ucrt)"
+    ## [1] "R version 4.4.3 (2025-02-28)"
 
     library(tidyverse)
 
@@ -112,7 +112,7 @@ Ecologists are interested in tracking changes in the **number of individual orga
 
 Ecologists are also interested in tracking changes in the **number of species over time** (Species richness over time without species identity) and in species turnover over time steps where the identity of the species is known. In the example above there are three species (A,B,C) but over time this can change if for example Species C  was to decline from 10 to zero individuals then the species richness would be 2, or increase if two previously unobserved species (D & E) arrive into the community, the species richness would be 4. Note that the loss of species A and the arrival of D and E gives a net species richness of 4, but without keeping track of the identity of the species we may be unaware of how community composition is changing over time.
 
-Ecological communities change for many reasons and so it is important to understand the drivers of changes in abundance or species richness by adding environmental variables into the models. By knowing how species change over time we can use the driving variables to predict, or forecast, the values for the abundance and species richness variables for the ecological communities into the future.
+Ecological communities change for many reasons and so it is important to understand the drivers of changes in abundance or species richness by adding abiotic variables into the models. By knowing how species change over time we can use the driving variables to predict, or forecast, the values for the abundance and species richness variables for the ecological communities into the future.
 
 ### Overview of the [Beetle Communities](https://projects.ecoforecast.org/neon4cast-docs/Beetles.html) theme
 
@@ -204,20 +204,20 @@ Let's take a look at the targets data!
 
     targets[100:110,]
 
-    ## # A tibble: 11 x 6
-    ##    project_id site_id datetime   duration variable  observation
-    ##    <chr>      <chr>   <date>     <chr>    <chr>           <dbl>
-    ##  1 neon4cast  OSBS    2017-06-12 P1W      richness       7     
-    ##  2 neon4cast  OSBS    2017-06-26 P1W      abundance      0.0821
-    ##  3 neon4cast  OSBS    2017-06-26 P1W      richness      10     
-    ##  4 neon4cast  OSBS    2017-07-10 P1W      abundance      0.0446
-    ##  5 neon4cast  OSBS    2017-07-10 P1W      richness       6     
-    ##  6 neon4cast  OSBS    2017-07-24 P1W      abundance      0.114 
-    ##  7 neon4cast  OSBS    2017-07-24 P1W      richness       8     
-    ##  8 neon4cast  OSBS    2017-08-07 P1W      abundance      0.0196
-    ##  9 neon4cast  OSBS    2017-08-07 P1W      richness       4     
-    ## 10 neon4cast  OSBS    2017-08-21 P1W      abundance      0.0375
-    ## 11 neon4cast  OSBS    2017-08-21 P1W      richness       6
+    ## # A tibble: 11 × 6
+    ##    project_id site_id datetime duration variable observation
+    ##    <chr>      <chr>   <date>   <chr>    <chr>          <dbl>
+    ##  1 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  2 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  3 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  4 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  5 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  6 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  7 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  8 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##  9 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ## 10 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ## 11 <NA>       <NA>    NA       <NA>     <NA>              NA
 
 It is good practice to examine the dataset before proceeding with analysis:
 
@@ -247,19 +247,19 @@ We will train our forecast models on target data from the beginning of the datas
 
 ### Example forecasts: some simple models
 
-In this tutorial, we will begin by producing two "null model" forecasts using functions available in the `fable` package for R. The `MEAN` null model will forecast abundance based on the historical mean and standard deviation in the training data. The `NAIVE` null model is a random walk model that generates a forecast based on the current observation plus process uncertainty. We will then use the `TSLM` function to create simple linear regression models to predict beetle abundances using daily temperature (mean daily temperature at 2m height) and precipitation (daily cumulative precipitation) estimates produced from CMIP6 climate model runs from 1950-2050. While these data do not represent actual observations of temperature and precipitation at the NEON site, they have been fit to historical data, so past dates in the simulated data should capture general trends at the site and values for future dates should represent a realistic forecast of climate variables into the future. 
+In this tutorial, we will begin by producing two "null model" forecasts using functions available in the `fable` package for R. The `MEAN` null model will forecast abundance based on the historical mean and standard deviation in the training data. The `NAIVE` null model is a random walk model that generates a forecast based on the current observation plus process uncertainty. We will then use the `TSLM` function to create simple linear regression models to predict beetle abundances using daily temperature (mean daily temperature at 2m height) and precipitation (daily cumulative precipitation) estimates produced from CMIP6 model runs from 1950-2050. While these data do not represent actual observations of temperature and precipitation at the NEON site, they have been fit to historical data, so past dates in the simulated data should capture general trends at the site and values for future dates should represent a realistic forecast of meteorological variables into the future. 
 
 An overview of the models we will fit to the data in this tutorial:
 
 * Null models
   - `fable::MEAN()`: Historical mean and standard deviation
   - `fable::NAIVE()`: Random walk model assuming future data are current data plus process uncertainty
-* Regression models with climate drivers (accessed from https://open-meteo.com/)
-  - Temperature: Daily mean temperature from CMIP6 climate model runs 
+* Regression models with meteorology drivers (accessed from https://open-meteo.com/)
+  - Temperature: Daily mean temperature from CMIP6 model runs 
   - Precipitation: Daily cumulative precipitation from CMIP6 model runs
   - Temperature + Precipitation
   
-Here, we use CMIP6 data climate drivers as both training and forecasting data for simplicity and the ability to generate forecasts further into the future compared to other target data with shorter data latencies. 
+Here, we use CMIP6 data drivers as both training and forecasting data for simplicity and the ability to generate forecasts further into the future compared to other target data with shorter data latencies. 
   
 At the end of this tutorial, we will compare the performance of our best regression model against the two null models. 
 
@@ -302,16 +302,16 @@ Note the difference in the scale of the y-axis between the two forecasts. How mi
 
 ### Forecast beetle abundance: regression models
 
-Regression on climate model outputs allows us to make predictions about future field seasons based on CMIP6 projections. We downloaded climate model outputs from https://open-meto.com using the `RopenMeto` package, which you can install using: `remotes::install_github("FLARE-forecast/RopenMeteo")`. More information about the simulations that produced the climate drivers used in this example can be found [here](https://openmeteo.substack.com/p/climate-change-api). 
+Regression on meteorological model outputs allows us to make predictions about future field seasons based on CMIP6 projections. We downloaded model outputs from https://open-meto.com using the `RopenMeto` package, which you can install using: `remotes::install_github("FLARE-forecast/RopenMeteo")`. More information about the simulations that produced the drivers used in this example can be found [here](https://openmeteo.substack.com/). 
 
-So we do not overwhelm the open-meteo API, we have made the climate data used in this tutorial available as a [Community Data resource on the CyVerse Data Store](https://de.cyverse.org/data/ds/iplant/home/shared/NEON/ESA2024/forecasting_beetles_workshop?type=folder&resourceId=af152ca6-dc9b-11ee-aacd-90e2ba675364).
+So we do not overwhelm the open-meteo API, we have made the data used in this tutorial available as a [Community Data resource on the CyVerse Data Store](https://de.cyverse.org/data/ds/iplant/home/shared/NEON/ESA2024/forecasting_beetles_workshop?type=folder&resourceId=af152ca6-dc9b-11ee-aacd-90e2ba675364).
 
-The climate data we're using in this example were generated by the CMCC_CM2_VHR4 climate model.
+The data we're using in this example were generated by the CMCC_CM2_VHR4 meteorological model.
 
-Other predictor variables beyond climate data are appropriate for forecasting. Just remember that the driver data for forecasting are an out-of-sample observation (also forecasted) such that it can be used to generate a prediction of beetle richness and abundance. That is why NEON's meteorological data from OSBS are not used to generate beetle forecasts, as we can only observe up to the current time that the forecast starts. Additionally, the hand-off from directly observed meteorological data to forecasted climate data introduces additional uncertainty to forecasts that we have currently omitted. For the sake of simplicity, we have trained the data on past CMIP6 model projections that have been corrected to the nearest observations and then forecasted with CMIP6's CMCC_CM2_VHR4 model projection ensembles. 
+Other predictor variables beyond meteorology data are appropriate for forecasting. Just remember that the driver data for forecasting are an out-of-sample observation (also forecasted) such that it can be used to generate a prediction of beetle richness and abundance. That is why NEON's meteorological data from OSBS are not used to generate beetle forecasts, as we can only observe up to the current time that the forecast starts. Additionally, the hand-off from directly observed meteorological data to forecasted data introduces additional uncertainty to forecasts that we have currently omitted. For the sake of simplicity, we have trained the data on past CMIP6 model projections that have been corrected to the nearest observations and then forecasted with CMIP6's CMCC_CM2_VHR4 model projection ensembles. 
 
 
-    # Get climate data
+    # Get meteorology data
 
     path_to_clim_data <- "https://data.cyverse.org/dav-anon/iplant/projects/NEON/ESA2024/forecasting_beetles_workshop/modeled_climate_2012-2050_OSBS_CMCC_CM2_VHR4.csv"
 
@@ -338,7 +338,7 @@ Other predictor variables beyond climate data are appropriate for forecasting. J
 
 Let's take a look at the data. The dotted line indicates our `forecast_startdate`. 
 
-    # visualize climate data
+    # visualize meteorology data
 
     clim_long_ts %>%
       ggplot(aes(datetime, prediction)) + 
@@ -350,12 +350,13 @@ Let's take a look at the data. The dotted line indicates our `forecast_startdate
       theme(legend.position = "none")
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot climate data-1.png" alt="Figure: modeled climate data at OSBS"  />
-<p class="caption">Figure: modeled climate data at OSBS</p>
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot clim data-1.png" alt="Figure: modeled meteorology data at OSBS"  />
+<p class="caption">Figure: modeled meteorology data at OSBS</p>
 </div>
 
 
-Next, we will break up the climate data into a training set (`clim_past`) and a dataset to use for forecasting (`clim_future`). 
+Next, we will break up the meteorology data into a training set (`clim_past`) and a dataset to use for forecasting (`clim_future`). 
+
 
     # subset into past and future datasets, based on forecast_startdate
 
@@ -370,9 +371,10 @@ Next, we will break up the climate data into a training set (`clim_past`) and a 
              datetime <= forecast_enddate)
 
 
-Now, combine target and climate data to make a training dataset.
+Now, combine target and meteorology data to make a training dataset.
 
-    # combine target and climate data into a training dataset
+
+    # combine target and meteorology data into a training dataset
 
     targets_clim_train <- targets_train %>%
       left_join(clim_past)
@@ -394,12 +396,12 @@ Next, specify and fit simple linear regression models using `fable::TSLM()`, and
     fabletools::report(mod_fit_candidates) %>%
       select(`.model`, AIC)
 
-    ## # A tibble: 3 x 2
+    ## # A tibble: 3 × 2
     ##   .model            AIC
     ##   <chr>           <dbl>
-    ## 1 mod_temp        -610.
-    ## 2 mod_precip      -606.
-    ## 3 mod_temp_precip -608.
+    ## 1 mod_temp        -129.
+    ## 2 mod_precip      -128.
+    ## 3 mod_temp_precip -127.
 
 Now, plot the predicted versus observed abundance data.
 
@@ -432,23 +434,21 @@ We could use all of these models to make an ensemble forecast, but for simplicit
     ## Transformation: log1p(abundance) 
     ## 
     ## Residuals:
-    ##      Min       1Q   Median       3Q      Max 
-    ## -0.07759 -0.04002 -0.01051  0.02192  0.28585 
+    ##       Min        1Q    Median        3Q       Max 
+    ## -0.088452 -0.038339 -0.015457 -0.002563  0.281881 
     ## 
     ## Coefficients:
-    ##                      Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)         -0.031335   0.051783  -0.605   0.5463  
-    ## temperature_2m_mean  0.003947   0.002029   1.945   0.0544 .
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ##                      Estimate Std. Error t value Pr(>|t|)
+    ## (Intercept)         -0.128599   0.198481  -0.648    0.523
+    ## temperature_2m_mean  0.007980   0.007614   1.048    0.305
     ## 
-    ## Residual standard error: 0.0645 on 110 degrees of freedom
-    ## Multiple R-squared: 0.03324,	Adjusted R-squared: 0.02445
-    ## F-statistic: 3.782 on 1 and 110 DF, p-value: 0.054357
+    ## Residual standard error: 0.08527 on 25 degrees of freedom
+    ## Multiple R-squared: 0.04208,	Adjusted R-squared: 0.003768
+    ## F-statistic: 1.098 on 1 and 25 DF, p-value: 0.30466
 
     # make a forecast
 
-    # filter "future" climate data to target climate model
+    # filter "future" meteorology data to target model
 
     fc_best_lm <- mod_best_lm %>%
       fabletools::forecast(
@@ -513,15 +513,15 @@ What does the content of the submission look like?
 
     head(fc_best_lm_efi)
 
-    ## # A tibble: 6 x 10
-    ##   datetime   site_id parameter model_id                    family   variable  prediction project_id reference_datetime duration
-    ##   <date>     <chr>   <chr>     <chr>                       <chr>    <chr>          <dbl> <chr>      <chr>              <chr>   
-    ## 1 2022-01-01 OSBS    1         bet_abund_example_tslm_temp ensemble abundance     0.0603 neon4cast  2022-01-01         P1W     
-    ## 2 2022-01-01 OSBS    2         bet_abund_example_tslm_temp ensemble abundance     0.135  neon4cast  2022-01-01         P1W     
-    ## 3 2022-01-01 OSBS    3         bet_abund_example_tslm_temp ensemble abundance     0.0213 neon4cast  2022-01-01         P1W     
-    ## 4 2022-01-01 OSBS    4         bet_abund_example_tslm_temp ensemble abundance     0.147  neon4cast  2022-01-01         P1W     
-    ## 5 2022-01-01 OSBS    5         bet_abund_example_tslm_temp ensemble abundance     0.108  neon4cast  2022-01-01         P1W     
-    ## 6 2022-01-01 OSBS    6         bet_abund_example_tslm_temp ensemble abundance     0.150  neon4cast  2022-01-01         P1W
+    ## # A tibble: 6 × 10
+    ##   datetime   site_id parameter model_id     family variable prediction project_id reference_datetime duration
+    ##   <date>     <chr>   <chr>     <chr>        <chr>  <chr>         <dbl> <chr>      <chr>              <chr>   
+    ## 1 2022-01-01 OSBS    1         bet_abund_e… ensem… abundan…    -0.0629 neon4cast  2022-01-01         P1W     
+    ## 2 2022-01-01 OSBS    2         bet_abund_e… ensem… abundan…     0.134  neon4cast  2022-01-01         P1W     
+    ## 3 2022-01-01 OSBS    3         bet_abund_e… ensem… abundan…    -0.122  neon4cast  2022-01-01         P1W     
+    ## 4 2022-01-01 OSBS    4         bet_abund_e… ensem… abundan…    -0.0430 neon4cast  2022-01-01         P1W     
+    ## 5 2022-01-01 OSBS    5         bet_abund_e… ensem… abundan…     0.0954 neon4cast  2022-01-01         P1W     
+    ## 6 2022-01-01 OSBS    6         bet_abund_e… ensem… abundan…    -0.0189 neon4cast  2022-01-01         P1W
 
 
     # visualize the EFI-formatted submission
@@ -685,16 +685,15 @@ For immediate feedback, we can use the targets data from 2022 to score our forec
 
     head(mod_scores)
 
-    ## # A tibble: 6 x 17
-    ##   model_id reference_datetime site_id datetime   family variable observation   crps  logs   mean median     sd quantile97.5 quantile02.5 quantile90
-    ##   <chr>    <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl> <dbl>  <dbl>  <dbl>  <dbl>        <dbl>        <dbl>      <dbl>
-    ## 1 bet_abu~ 2022-01-01         OSBS    2022-04-04 sample abundan~      0.102  0.0171 -1.74 0.0797 0.0797 0.0562        0.146      -0.0111      0.145
-    ## 2 bet_abu~ 2022-01-01         OSBS    2022-04-18 sample abundan~      0.188  0.123   1.27 0.0345 0.0434 0.0579        0.111      -0.0339      0.105
-    ## 3 bet_abu~ 2022-01-01         OSBS    2022-04-25 sample abundan~      0.0877 0.0208 -1.60 0.0594 0.0717 0.0616        0.134      -0.0346      0.133
-    ## 4 bet_abu~ 2022-01-01         OSBS    2022-05-02 sample abundan~      0.0857 0.0270 -1.42 0.0519 0.0367 0.0584        0.160      -0.0153      0.147
-    ## 5 bet_abu~ 2022-01-01         OSBS    2022-05-16 sample abundan~      0.0786 0.0166 -1.70 0.0738 0.0622 0.0659        0.156      -0.0411      0.154
-    ## 6 bet_abu~ 2022-01-01         OSBS    2022-05-30 sample abundan~      0.133  0.0376 -1.07 0.0763 0.0691 0.106         0.230      -0.0817      0.225
-    ## # i 2 more variables: quantile10 <dbl>, horizon <drtn>
+    ## # A tibble: 4 × 17
+    ##   model_id      reference_datetime site_id datetime   family variable observation   crps   logs   mean median
+    ##   <chr>         <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+    ## 1 bet_abund_ex… 2022-01-01         OSBS    2022-04-04 sample abundan…      0.102  0.0345 -1.51  0.0347 0.0449
+    ## 2 bet_abund_ex… 2022-01-01         OSBS    2022-04-18 sample abundan…      0.188  0.107  -0.487 0.0236 0.0307
+    ## 3 bet_abund_ex… 2022-01-01         OSBS    2022-04-25 sample abundan…      0.0877 0.0190 -1.59  0.109  0.103 
+    ## 4 bet_abund_ex… 2022-01-01         OSBS    2022-08-08 sample abundan…      0.169  0.0465 -1.08  0.101  0.0870
+    ## # ℹ 6 more variables: sd <dbl>, quantile97.5 <dbl>, quantile02.5 <dbl>, quantile90 <dbl>, quantile10 <dbl>,
+    ## #   horizon <drtn>
 
 Are these scores better than our null models? Here, we will score the `mod_mean` and `mod_naive` models, and combine the null model scores with the scores for our `best_lm` forecast above. Then we can compare. 
 
