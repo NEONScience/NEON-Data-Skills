@@ -155,8 +155,6 @@ by the winds to other areas. Some soil types, like clay, can dry to a
 near-impermeable brick causing water to flow across the top instead of sinking 
 into the soils. 
 
-**Optional Data Activity** <a href="https://www.neonscience.org/da-viz-nclimdiv-palmer-drought-data-r" target="_blank">Visualize <b>Palmer Drought Severity Index Data </b> in R to Better Understand the 2013 Colorado Floods</a>.
-
 ### Atmospheric Conditions
 In early September 2013, a slow moving cold front moved through Colorado
 intersecting with a warm, humid front. The clash between the cold and warm
