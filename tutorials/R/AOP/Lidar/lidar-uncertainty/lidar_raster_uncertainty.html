@@ -447,7 +447,7 @@ hist(dsm_diff_masked_veg, breaks = 250, xlim = c(masked_xlim_lower, masked_xlim_
      ylab = &quot;Frequency&quot;, col = &quot;lightblue&quot;, border = &quot;black&quot;)
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/masked-dsm-histogram-1.png" alt=" " />
-The results show a similar mean difference of near zero, but an extremely high standard deviation of 1.381 m! Since the DSM represents the top of the tree canopy, this provides the level of uncertainty we can expect in the canopy height in forests characteristic of the PRIN site using NEON LiDAR data.</p>
+The results show a similar mean difference of near zero, but an extremely high standard deviation of 1.381 m! Since the DSM represents the top of the tree canopy, this provides the level of uncertainty we can expect in the canopy height in forests characteristic of the PRIN site using NEON lidar data.</p>
 <p>Next we’ll calculate the statistics and plot the histogram of the DTM vegetated areas.</p>
 <pre><code># Apply the veg mask to the DTM difference raster
 
@@ -491,13 +491,13 @@ hist(dtm_diff_masked_veg, breaks = 250, xlim = c(masked_xlim_lower, masked_xlim_
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/masked-dtm-histogram-1.png" alt=" " /></p>
 <p>Although the variation of the DTM is lower than in the DSM, it is still larger
-than expected for LiDAR. This is because under vegetation there may not be much
+than expected for lidar. This is because under vegetation there may not be much
 laser energy reaching the ground, and the points that reach the ground may return
 with lower signal. The sparsity of points leads to surface interpolation over
 larger distances, which can miss variations in the topography. Since the
-distribution of LIDAR points varied on each day, this resulted in different
+distribution of lidar points varied on each day, this resulted in different
 terrain representations and an uncertainty in the ground surface. This shows
-that the accuracy of LiDAR DTMs is reduced when there is vegetation present.</p>
+that the accuracy of lidar DTMs is reduced when there is vegetation present.</p>
 <p>Finally, let’s look at the DTM difference on only the ground points (where CHM = 0).</p>
 <pre><code>ground_mask &lt;- chm1 == 0
 
@@ -545,8 +545,8 @@ hist(dsm_diff_masked_ground, breaks = 500, xlim = c(masked_xlim_lower, masked_xl
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/dsm-diff-masked-ground-hist-1.png" alt=" " /></p>
 <p>In the open ground scenario we are able to see the error characteristics we expect,
 with a mean difference of ~ 0 m and a variation of 0.21 m.</p>
-<p>This shows that the uncertainty we expect in the NEON LiDAR system (~0.15 m) is only
-valid in bare, open, hard-surfaces. We cannot expect the LiDAR to be as accurate
+<p>This shows that the uncertainty we expect in the NEON lidar system (~0.15 m) is only
+valid in bare, open, hard-surfaces. We cannot expect the lidar to be as accurate
 when vegetation is present. Quantifying the top of the canopy is particularly
 difficult and can lead to uncertainty in excess of 1 m for any given pixel.</p>
 <div id="ds-challenge" markdown="1">
