@@ -221,7 +221,10 @@ We can use terra::rast` to read in all these files.
 
     plot(dsm2, main = "2016_PRIN_2 DSM")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/plot-dsm-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_rasters.png" alt=" "  />
+<p class="PRIN 2016 DSM Maps"> </p>
+</div>
 
 
     # Reset the plotting area
