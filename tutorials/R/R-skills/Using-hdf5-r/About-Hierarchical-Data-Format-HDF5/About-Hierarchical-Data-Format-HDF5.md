@@ -135,7 +135,7 @@ a site or for many sites
 spatial information associated with it - all in the same file)
 * A multi or hyperspectral spatial dataset that contains hundreds of bands.
 * Field data for several sites characterizing insects, mammals, vegetation and 
-climate.
+meteorology.
 * A set of images that cover one or more areas (each image can have unique 
 spatial information associated with it)
 * And much more!

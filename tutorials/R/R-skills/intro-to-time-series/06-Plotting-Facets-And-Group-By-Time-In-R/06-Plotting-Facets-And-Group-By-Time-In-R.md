@@ -394,7 +394,7 @@ region which means we need to manually define each time period.
 
 In the next coding section, we will add a season column to our data using a
 manually defined query. Our field site is Harvard Forest (Massachusetts),
-located in the northeastern portion of the United States. Based on the climate
+located in the northeastern portion of the United States. Based on the weather 
 of this region, we can divide the year into 4 seasons as follows: 
 
  * Winter: December - February

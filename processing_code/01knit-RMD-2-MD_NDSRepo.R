@@ -16,7 +16,7 @@ require(markdown)
 dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
           "R/biodiversity/biorepository",
           "R/NEON-general/neon-code-packages/neonUtilities",
-          "R/biodiversity/beetle-forecasting",
+          "R/soils/soil-microbe-biomass",
           "R/AOP/Lidar/lidar-topography/veg_structure_and_chm",
           "/Other/Concept-intros/test_tabs_figures")
 

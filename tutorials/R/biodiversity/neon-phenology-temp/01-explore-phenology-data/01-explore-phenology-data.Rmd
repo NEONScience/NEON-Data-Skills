@@ -96,7 +96,7 @@ NEON employs status-based monitoring, in which the phenological condition of an
 individual is reported any time that individual is observed. At every observations 
 bout, records are generated for every phenophase that is occurring and for every 
 phenophase not occurring. With this approach, events (such as leaf emergence in 
-Mediterranean climates, or flowering in many desert species) that may occur 
+Mediterranean zones, or flowering in many desert species) that may occur 
 multiple times during a single year, can be captured. Continuous reporting of
 phenophase status enables quantification of the duration of phenophases rather 
 than just their date of onset while allows enabling the explicit quantification 
@@ -643,7 +643,7 @@ Now that we see that there are differences in and shifts in phenophases, what
 are the drivers of phenophases?
 
 The NEON phenology measurements track sensitive and easily observed indicators 
-of biotic responses to climate variability by monitoring the timing and duration 
+of biotic responses to meteorological variability by monitoring the timing and duration 
 of phenological stages in plant communities. Plant phenology is affected by forces 
 such as temperature, timing and duration of pest infestations and disease outbreaks, 
 water fluxes, nutrient budgets, carbon dynamics, and food availability and has 

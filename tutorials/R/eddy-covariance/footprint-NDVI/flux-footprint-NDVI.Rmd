@@ -46,7 +46,7 @@ extrapolating flux data across a larger landscape.
 NEON remote sensing flights follow a detailed schedule, as described 
 on the <a href="https://www.neonscience.org/data-collection/flight-schedules-coverage" target="_blank">flight schedule page</a>. Although flights are generally 
 carried out at a similar time of year at each site over time, weather 
-conditions can shift the exact date, and local climate and phenology 
+conditions can shift the exact date, and local weather and phenology 
 may result in flights capturing slightly different conditions on the 
 ground in different years. And of course, local conditions each year 
 may result in different vegetation and soil conditions even at the same 

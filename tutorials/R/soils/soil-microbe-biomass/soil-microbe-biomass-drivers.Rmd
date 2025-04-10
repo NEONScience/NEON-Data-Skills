@@ -66,7 +66,7 @@ needed for the function are:
 Since microbial biomass is only measured a few times per year in ten plots the amounts of data is relatively small so we'll download all available data by not specifying start and end dates. Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">cheat sheet</a> 
 for the `neonUtilities` package for more details if desired.
 
-```{r soildata, results="hide"}
+```{r soildata, results="hide", message=FALSE}
 
 microb <- loadByProduct(dpID = "DP1.10104.001", 
                         site = "GUAN", 
@@ -221,6 +221,6 @@ legend("topleft", legend=soilPlots, col=colors, pch=1, bty="n")
 
 ```
 
-There's a lot of noise, but generally there appears to be a positive relationship between soil moisture and microbial biomass. Given the warm but relatively dry climate at GUAN it is perhaps not surprising that microbial biomass increases when more water is available in the soil.
+There's a lot of noise, but generally there appears to be a positive relationship between soil moisture and microbial biomass. Given the warm but relatively dry conditions at GUAN it is perhaps not surprising that microbial biomass increases when more water is available in the soil.
 
-It is likely that many other factors besides soil temperature and moisture also influence microbial biomass. Some of these relationships could be further explored using these data products (e.g., soil pH or organic carbon content) as well as other NEON data (e.g., root biomass). In addition, NEON data from across the US could be used to identify the dominant drivers of microbial biomass in different climates.
+It is likely that many other factors besides soil temperature and moisture also influence microbial biomass. Some of these relationships could be further explored using these data products (e.g., soil pH or organic carbon content) as well as other NEON data (e.g., root biomass). In addition, NEON data from across the US could be used to identify the dominant drivers of microbial biomass in different meteorological zones.
