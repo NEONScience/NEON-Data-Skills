@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 6234ea3dc95549b8b29b01dd23885880
 title: "Exploring Uncertainty in Lidar Raster Data using R"
 description: "Analyze the difference between lidar rasters to assess uncertainty."
 dateCreated: 2025-04-10
