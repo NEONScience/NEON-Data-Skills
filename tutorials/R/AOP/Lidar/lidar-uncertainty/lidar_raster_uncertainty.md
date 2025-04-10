@@ -239,7 +239,10 @@ We can use terra::rast` to read in all these files.
 
     plot(dtm2, main = "2016_PRIN_2 DTM")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/plot-dtm-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_rasters.png" alt=" "  />
+<p class="PRIN 2016 DTM Maps"> </p>
+</div>
 
 Since we want to know what changed between the two days, we will difference the sets of rasters (i.e. DSM1 - DSM2)
 
@@ -287,7 +290,10 @@ raster to see if we can get a better idea of what's going on.
 
     hist(dsm_diff, breaks = 100, main = "Histogram of DSM Difference", xlab = "Height Difference (m)", ylab = "Frequency", col = "lightblue", border = "black")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/dsm-diff-hist-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_hist1.png" alt=" "  />
+<p class="PRIN 2016 DSM Differene Histogram"> </p>
+</div>
 
 The histogram has long tails, obscuring the distribution near the center. To 
 constrain the x-limits of the histogram we will use the mean and standard 
@@ -311,7 +317,11 @@ deviations above and below the mean.
          main = "Histogram of Difference DSM", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/dsm-diff-hist-zoomed-in-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_hist2.png" alt=" "  />
+<p class="PRIN 2016 DSM Difference Histogram, Zoomed In"> </p>
+</div>
+
 The histogram shows a wide variation in DSM differences, with those at the 95% 
 limit at around +/- 1.5 m. Let's take a look at the spatial distribution of the 
 errors by plotting a map of the difference between the two DSMs. Here we'll also
@@ -334,7 +344,11 @@ colorbar to 95% of the observations.
          axes = TRUE, 
          legend = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/spatial-distribution-dsm-diff-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_map.png" alt=" "  />
+<p class="PRIN 2016 DSM Difference Map"> </p>
+</div>
+
 It looks like there is a spatial pattern in the distribution of errors. Now let's take a
 look at the statistics (mean, standard deviation), histogram and map for the difference in DTMs.
 
@@ -377,7 +391,11 @@ look at the statistics (mean, standard deviation), histogram and map for the dif
          axes = TRUE, 
          legend = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/spatial-distribution-dtm-diff-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_diff_map.png" alt=" "  />
+<p class="PRIN 2016 DTM Difference Map"> </p>
+</div>
+
 The overall magnitude of differences are smaller than in the DSM but the same 
 spatial pattern of the error is evident.
 
@@ -396,7 +414,10 @@ Now, we'll plot the Canopy Height Model (CHM) of the same area. In the CHM, the 
 
     plot(chm2, main = "2016_PRIN_2 CHM")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/plot-chm-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_chm_rasters.png" alt=" "  />
+<p class="PRIN 2016 DTM Difference Map"> </p>
+</div>
 
 From the CHM, it appears the spatial distribution of error patterns follow the location of vegetation.
 
@@ -448,7 +469,11 @@ Now let's isolate only the pixels in the difference DSM that correspond to veget
          main = "Histogram of Difference DSM in Vegetated Areas", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/masked-dsm-histogram-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_veg_hist.png" alt=" "  />
+<p class="PRIN 2016 DSM Difference Histogram, Masked by Vegetation Pixels"> </p>
+</div>
+
 The results show a similar mean difference of near zero, but an extremely high standard deviation of 1.381 m! Since the DSM represents the top of the tree canopy, this provides the level of uncertainty we can expect in the canopy height in forests characteristic of the PRIN site using NEON lidar data.
 
 Next we'll calculate the statistics and plot the histogram of the DTM vegetated areas.
@@ -495,7 +520,10 @@ DSM variation (0.163 m). Let's look at the histogram.
          main = "Histogram of Difference DTM in Vegetated Areas", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/masked-dtm-histogram-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_diff_veg_hist.png" alt=" "  />
+<p class="PRIN 2016 DTM Difference Histogram, Masked by Vegetation Pixels"> </p>
+</div>
 
 Although the variation of the DTM is lower than in the DSM, it is still larger 
 than expected for lidar. This is because under vegetation there may not be much 
@@ -552,7 +580,10 @@ Finally, let's look at the DTM difference on only the ground points (where CHM =
          main = "Histogram of Difference DTM over Ground Pixels", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/dsm-diff-masked-ground-hist-1.png)
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_diff_ground_hist.png" alt=" "  />
+<p class="PRIN 2016 DTM Difference Histogram, Masked by Ground Pixels"> </p>
+</div>
 
 In the open ground scenario we are able to see the error characteristics we expect, 
 with a mean difference of ~ 0 m and a variation of 0.21 m.
