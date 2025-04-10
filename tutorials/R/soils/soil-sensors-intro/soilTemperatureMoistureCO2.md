@@ -28,7 +28,7 @@ data products to investigate controls on soil CO<sub>2</sub> concentrations:
 
 <a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Soil temperature</a>, <a href="https://data.neonscience.org/data-products/DP1.00094.001" target="_blank">soil water content</a>, and <a href="https://data.neonscience.org/data-products/DP1.00095.001" target="_blank">soil CO<sub>2</sub> concentration</a> are measured in each of the five sensor-based soil plots at each NEON terrestrial site. Vertical profiles of soil temperature (up to 9 measurement levels per plot) and soil water content (up to 8 levels) are measured from near the soil surface down to 2 m deep or restrictive feature if shallower. Soil CO<sub>2</sub> concentrations are measured at three different surface soil depths, typically <20 cm deep. Within each soil plot all these measurements are made within a few meters of one-another.
 
-We will be using data from the <a href="https://www.neonscience.org/field-sites/srer" target="_blank">Santa Rita Experimental Range</a> (SRER) site in Arizona. The site is in the Sonoran Desert and is characterized by a semi-arid, hot climate. Winters are short and mild, while summers are long and hot.
+We will be using data from the <a href="https://www.neonscience.org/field-sites/srer" target="_blank">Santa Rita Experimental Range</a> (SRER) site in Arizona. The site is in the Sonoran Desert. Winters are short and mild, while summers are long and hot.
 
 <div id="ds-objectives" markdown="1">
 
@@ -80,7 +80,7 @@ Note that this will download files totaling approximately 200 MB. If this is too
                         timeIndex="30",
                         check.size=F)
 
-    ## Attempting to stack soil sensor data. Note that due to the number of soil sensors at each site, data volume is very high for these data. Consider dividing data processing into chunks, using the nCores= parameter to parallelize stacking, and/or using a high-performance system.
+    
 
     swc <- loadByProduct(dpID="DP1.00094.001", 
                          startdate="2021-01", 
@@ -90,7 +90,7 @@ Note that this will download files totaling approximately 200 MB. If this is too
                          timeIndex="30", 
                          check.size=F)
 
-    ## Attempting to stack soil sensor data. Note that due to the number of soil sensors at each site, data volume is very high for these data. Consider dividing data processing into chunks, using the nCores= parameter to parallelize stacking, and/or using a high-performance system.
+    
 
     co2 <- loadByProduct(dpID="DP1.00095.001", 
                          startdate="2021-01", 
@@ -120,40 +120,45 @@ Next let's identify the exact measurement depth so we can add that to the plot l
     head(st$sensor_positions_00041)
 
     ##    siteID HOR.VER sensorLocationID                  sensorLocationDescription positionStartDateTime
+    ##    <char>  <char>           <char>                                     <char>                <char>
     ## 1:   SRER 001.501     CFGLOC104513 Santa Rita Soil Temp Profile SP1, Z1 Depth  2010-01-01T00:00:00Z
     ## 2:   SRER 001.502     CFGLOC104515 Santa Rita Soil Temp Profile SP1, Z2 Depth  2010-01-01T00:00:00Z
     ## 3:   SRER 001.503     CFGLOC104518 Santa Rita Soil Temp Profile SP1, Z3 Depth  2010-01-01T00:00:00Z
     ## 4:   SRER 001.504     CFGLOC104520 Santa Rita Soil Temp Profile SP1, Z4 Depth  2010-01-01T00:00:00Z
     ## 5:   SRER 001.505     CFGLOC104522 Santa Rita Soil Temp Profile SP1, Z5 Depth  2010-01-01T00:00:00Z
     ## 6:   SRER 001.506     CFGLOC104524 Santa Rita Soil Temp Profile SP1, Z6 Depth  2010-01-01T00:00:00Z
-    ##    positionEndDateTime referenceLocationID referenceLocationIDDescription referenceLocationIDStartDateTime
-    ## 1:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1             2010-01-01T00:00:00Z
-    ## 2:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1             2010-01-01T00:00:00Z
-    ## 3:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1             2010-01-01T00:00:00Z
-    ## 4:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1             2010-01-01T00:00:00Z
-    ## 5:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1             2010-01-01T00:00:00Z
-    ## 6:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1             2010-01-01T00:00:00Z
-    ##    referenceLocationIDEndDateTime xOffset yOffset zOffset pitch roll azimuth locationReferenceLatitude
-    ## 1:                             NA    0.97     2.7   -0.02   0.6    0      30                  31.91062
-    ## 2:                             NA    0.97     2.7   -0.06   0.6    0      30                  31.91062
-    ## 3:                             NA    0.97     2.7   -0.16   0.6    0      30                  31.91062
-    ## 4:                             NA    0.97     2.7   -0.26   0.6    0      30                  31.91062
-    ## 5:                             NA    0.97     2.7   -0.56   0.6    0      30                  31.91062
-    ## 6:                             NA    0.97     2.7   -0.96   0.6    0      30                  31.91062
-    ##    locationReferenceLongitude locationReferenceElevation eastOffset northOffset xAzimuth yAzimuth
-    ## 1:                  -110.8353                     999.36      -1.85        2.19       30      300
-    ## 2:                  -110.8353                     999.36      -1.85        2.19       30      300
-    ## 3:                  -110.8353                     999.36      -1.85        2.19       30      300
-    ## 4:                  -110.8353                     999.36      -1.85        2.19       30      300
-    ## 5:                  -110.8353                     999.36      -1.85        2.19       30      300
-    ## 6:                  -110.8353                     999.36      -1.85        2.19       30      300
-    ##     publicationDate
-    ## 1: 20221210T203358Z
-    ## 2: 20221210T203358Z
-    ## 3: 20221210T203358Z
-    ## 4: 20221210T203358Z
-    ## 5: 20221210T203358Z
-    ## 6: 20221210T203358Z
+    ##    positionEndDateTime referenceLocationID referenceLocationIDDescription
+    ##                 <lgcl>              <char>                         <char>
+    ## 1:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1
+    ## 2:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1
+    ## 3:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1
+    ## 4:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1
+    ## 5:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1
+    ## 6:                  NA        SOILPL104501      Santa Rita Soil Plot, SP1
+    ##    referenceLocationIDStartDateTime referenceLocationIDEndDateTime xOffset yOffset zOffset pitch  roll
+    ##                              <char>                         <lgcl>   <num>   <num>   <num> <num> <int>
+    ## 1:             2010-01-01T00:00:00Z                             NA    0.97     2.7   -0.02   0.6     0
+    ## 2:             2010-01-01T00:00:00Z                             NA    0.97     2.7   -0.06   0.6     0
+    ## 3:             2010-01-01T00:00:00Z                             NA    0.97     2.7   -0.16   0.6     0
+    ## 4:             2010-01-01T00:00:00Z                             NA    0.97     2.7   -0.26   0.6     0
+    ## 5:             2010-01-01T00:00:00Z                             NA    0.97     2.7   -0.56   0.6     0
+    ## 6:             2010-01-01T00:00:00Z                             NA    0.97     2.7   -0.96   0.6     0
+    ##    azimuth locationReferenceLatitude locationReferenceLongitude locationReferenceElevation eastOffset
+    ##      <int>                     <num>                      <num>                      <num>      <num>
+    ## 1:      30                  31.91062                  -110.8353                     999.36      -1.85
+    ## 2:      30                  31.91062                  -110.8353                     999.36      -1.85
+    ## 3:      30                  31.91062                  -110.8353                     999.36      -1.85
+    ## 4:      30                  31.91062                  -110.8353                     999.36      -1.85
+    ## 5:      30                  31.91062                  -110.8353                     999.36      -1.85
+    ## 6:      30                  31.91062                  -110.8353                     999.36      -1.85
+    ##    northOffset xAzimuth yAzimuth  publicationDate
+    ##          <num>    <int>    <int>           <char>
+    ## 1:        2.19       30      300 20221210T203358Z
+    ## 2:        2.19       30      300 20221210T203358Z
+    ## 3:        2.19       30      300 20221210T203358Z
+    ## 4:        2.19       30      300 20221210T203358Z
+    ## 5:        2.19       30      300 20221210T203358Z
+    ## 6:        2.19       30      300 20221210T203358Z
 
 We just want to know the depth (zOffset) of the sensor at soil plot 1 measurement level 2 (HOR.VER = "001.502") so we'll filter that value.
 
@@ -161,6 +166,7 @@ We just want to know the depth (zOffset) of the sensor at soil plot 1 measuremen
     st$sensor_positions_00041[grep("001.502", st$sensor_positions_00041$HOR.VER), "zOffset"]
 
     ##    zOffset
+    ##      <num>
     ## 1:   -0.06
 
 This shows a zOffset of -0.06, indicating that the measurement was 0.06 m (6 cm) below the soil surface. Now let's see what the data look like! Make a time series plot of soil temperature at SRER soil plot 1 measurement level 2 and add a legend indicating the sensor was at 6 cm.
@@ -227,7 +233,7 @@ Looks good except the superscripts are partially cut off on the y-axis label. Le
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/soil-sensors-intro/rfigs/swc-plot-2-1.png)
 
-That's better. Soil water content shows typical patterns of sharp rises in moisture (presumably from rain events) followed by gradual declines as the soil dries. Soil moisture has a bimodal distribution being higher during winter and late summer, which is consistent with the climate at SRER with winter rain as well as late summer thunderstorms.
+That's better. Soil water content shows typical patterns of sharp rises in moisture (presumably from rain events) followed by gradual declines as the soil dries. Soil moisture has a bimodal distribution being higher during winter and late summer, which is consistent with meteorology at SRER with winter rain as well as late summer thunderstorms.
 
 ## 5. Soil CO<sub>2</sub> concentration
 
@@ -272,6 +278,7 @@ Next let's find out the depths of these measurements by identifying the rows cor
     co2$sensor_positions_00095[rows, c("zOffset")]
 
     ##    zOffset
+    ##      <num>
     ## 1:   -0.02
     ## 2:   -0.05
     ## 3:   -0.19

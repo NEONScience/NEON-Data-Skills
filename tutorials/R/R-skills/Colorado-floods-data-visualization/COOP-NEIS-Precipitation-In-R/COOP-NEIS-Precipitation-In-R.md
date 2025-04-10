@@ -49,7 +49,7 @@ RStudio to write your code.
 ### Data to Download 
 
 Part of this lesson is to access and download the data directly from NOAA's 
-National Climate Divisional Database. If instead you would prefer to download the data as a single compressed file, it can be downloaded from the 
+NCEI Database. If instead you would prefer to download the data as a single compressed file, it can be downloaded from the 
 <a href="https://ndownloader.figshare.com/files/6780978"> NEON Data Skills account on FigShare</a>.
 
 
@@ -78,10 +78,9 @@ this important flood driver.
 ## Where can we get precipitation data? 
 
 The precipitation data are obtained through 
- <a href="http://www.ncdc.noaa.gov/" target="_blank">NOAA's National Centers for Environmental Information</a> 
-(formerly the National Climatic Data Center). There are numerous climatic 
+ <a href="http://www.ncdc.noaa.gov/" target="_blank">NOAA's NECI database</a>. There are numerous 
 datasets that can be found and downloaded via the 
-<a href="http://www.ncdc.noaa.gov/cdo-web/search" target="_blank">Climate Data Online Search portal</a>. 
+<a href="http://www.ncdc.noaa.gov/cdo-web/search" target="_blank">CDO Search portal</a>. 
 
 The precipitation data that we will use is from the 
 <a href="https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/cooperative-observer-network-coop" target="_blank">Cooperative Observer Network (COOP)</a>. 
@@ -111,8 +110,7 @@ and download it in the .csv (Comma Separated Values) format.
 ## Obtain the Data
 
 If you have not already opened the 
-<a href="http://www.ncdc.noaa.gov/cdo-web/search" target="_blank">Climate Data
-Online Search portal</a>, do so now. 
+<a href="http://www.ncdc.noaa.gov/cdo-web/search" target="_blank">CDO Search portal</a>, do so now. 
 
 Note: If you are using the pre-compiled data subset that can be downloaded as a 
 compressed file above, you should still read through this section to know where 
@@ -146,7 +144,7 @@ shown in the image below, we selected:
    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/disturb-events-co13/NCEI_DownloadData_ScreenShot.png"
 alt = "Data search interface of the selected Boulder, CO site, which allows the user to select the Weather Observation Type/Dataset, date range, and station identifier.">
    </a>
-   <figcaption> Climate Data Online search page for the central Boulder, CO, station:050843
+   <figcaption> CDO search page for the central Boulder, CO, station:050843
    </figcaption>
 </figure>
 

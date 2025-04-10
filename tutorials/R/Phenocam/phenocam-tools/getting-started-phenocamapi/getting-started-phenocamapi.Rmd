@@ -48,7 +48,7 @@ directly from the server:
 
 Each PhenoCam site has specific metadata including but not limited to how a site 
 is set up and where it is located, what vegetation type is visible from the 
-camera, and its climate regime. Each PhenoCam may have zero to several Regions 
+camera, and its meteorological regime. Each PhenoCam may have zero to several Regions 
 of Interest (ROIs) per vegetation type. The *phenocamapi* package is an 
 interface to interact with the PhenoCam server to extract those data and 
 process them in an R environment.
@@ -113,7 +113,7 @@ plot the data.
 # removing the sites with unknown MAT and MAP values
 phenos <- phenos[!((MAT_worldclim == -9999)|(MAP_worldclim == -9999))]
 
-# Making a plot showing all sites by their vegetation type (represented as different symbols and colors) plotting across climate (MAT and MAP) space. Refer to table to identify vegetation type acronyms.
+# Making a plot showing all sites by their vegetation type (represented as different symbols and colors) plotting across meteorology (MAT and MAP) space. Refer to table to identify vegetation type acronyms.
 phenos[primary_veg_type=='DB', plot(MAT_worldclim, MAP_worldclim, pch = 19, col = 'green', xlim = c(-5, 27), ylim = c(0, 4000))]
 phenos[primary_veg_type=='DN', points(MAT_worldclim, MAP_worldclim, pch = 1, col = 'darkgreen')]
 phenos[primary_veg_type=='EN', points(MAT_worldclim, MAP_worldclim, pch = 17, col = 'brown')]

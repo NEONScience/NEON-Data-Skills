@@ -417,8 +417,8 @@ minimum temps, mean temperature or maximum temps depending on your question.
 In the context of phenology, minimum temperatures might be very important if you
 are interested in a species that is very frost susceptible. Any days with a 
 minimum temperature below 0C could dramatically change the phenophase. For other 
-species or climates, maximum thresholds may be very important. Or you might be most
-interested in the daily mean.
+species or meteorological zones, maximum thresholds may be very important. Or you 
+might be mostinterested in the daily mean.
 
 And note that you can combine different input values with different aggregation 
 functions - for example, you could calculate the minimum of the half-hourly 

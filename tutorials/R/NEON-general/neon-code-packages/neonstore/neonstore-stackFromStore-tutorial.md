@@ -116,7 +116,7 @@ a permanent environment variable, see the final section in the
 ## Download Data
 
 Let's imagine we're attempting to predict ecosystem carbon fluxes based 
-on plant community composition and climate. We'll need to download three 
+on plant community composition and meteorology. We'll need to download three 
 data products: Bundled eddy covariance (DP4.00200.001), Plant presence 
 and percent cover (DP1.10058.001), and Single-aspirated air temperature 
 (DP1.00002.001).
