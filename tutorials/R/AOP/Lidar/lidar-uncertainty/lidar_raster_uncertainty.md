@@ -105,8 +105,6 @@ Surface Model (DSM) and the Digital Terrain Model (DTM).
 
     library(neonUtilities)
 
-    library(ggplot2)
-
 Set the working directory so you know where to download data.
 
 
@@ -175,7 +173,7 @@ Now we can read in the files. You can move the files to a different location (eg
 
     dtm_file2 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
 
-We can use terra::rast` to read in all these files. 
+We can use `terra::rast` to read in all these files. 
 
 
     # assign raster to object
