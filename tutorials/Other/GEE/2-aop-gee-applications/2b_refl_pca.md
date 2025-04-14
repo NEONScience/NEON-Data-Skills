@@ -167,7 +167,7 @@ function calcImagePca(image, numComponents, samplePoints) {
 
 ### Apply PCA and Export Results
 
-Now we'll apply the PCA to the LIRO hyperspectral image and export the results. Change the `assetId` tag below to point to one of your cloud projects. This step can take several minutes (up to ~10 minutes) to complete.
+Now we'll apply the PCA to the LIRO hyperspectral image and export the results. Change the `assetId` tag below to point to your cloud project. This exporting step can take several minutes to complete, and longer if you are using a larger AOP image.
 
 ```javascript
 // Apply PCA to the hyperspectral image
@@ -181,7 +181,7 @@ var finalPcaImage = pcaImage.arrayFlatten([bandNames]);  // Convert to regular i
 Export.image.toAsset({
     image: finalPcaImage,
     description: 'PCA_LIRO_2022',
-    assetId: 'projects/neon-sandbox-dataflow-ee/assets/PCA_LIRO_2022',
+    assetId: 'projects/neon-sandbox-dataflow-ee/assets/PCA_LIRO_2022', // change this to your cloud project
     scale: 1,                                       // Output resolution in meters
     maxPixels: 1e13                                 // Increase max pixels for large exports
 });
