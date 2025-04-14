@@ -28,11 +28,12 @@ and assess the uncertainty between data collected over the same area on differen
 
 After completing this tutorial, you will be able to:
 
-* Load several L3 Lidar tif files
-* Difference the tif files
-* Create histograms of the DSM, DTM, and CHM differences
-* Remove vegetated areas of DSM & DTMs using the CHM
+* Load several L3 lidar geotiff files
+* Difference lidar raster geotiff files
+* Create histograms raster differences (DTM and DSM)
+* Mask out vegetated areas of DSM & DTMs using the CHM
 * Compare difference in DSM and DTMs over vegetated and ground pixels
+* Use this approach as a framework for understanding lidar raster uncertainty
 
  
 ## Things You’ll Need To Complete This Tutorial
