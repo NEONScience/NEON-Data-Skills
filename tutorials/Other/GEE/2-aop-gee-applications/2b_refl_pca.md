@@ -344,7 +344,7 @@ If you run into any code errors or issues with the code, we suggest following th
 
 ### Memory Limits
 
-If you encounter "User memory limit exceeded", try the following:
+If you encounter "User memory limit exceeded" in the `calcImagePca` function, try the following:
 
 - Increase the `scale` parameter (try 20 or 30)
 - Increase `tileScale` up to 16
@@ -353,7 +353,7 @@ If you encounter "User memory limit exceeded", try the following:
 
 ### Export Issues
 
-If the export fails:
+If the export fails in `Export.image.toAsset` (at the end of Script 1):
 - Verify the asset path is valid
 - Check project permissions
 - Try increasing `maxPixels`
