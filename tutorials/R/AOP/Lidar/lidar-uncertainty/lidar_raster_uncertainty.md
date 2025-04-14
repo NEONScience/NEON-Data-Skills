@@ -50,23 +50,18 @@ on your computer to complete this tutorial.
 
 Lidar raster data are downloaded using the R `neonUtilities::byTileAOP` function in the script.
 
-These remote sensing data files provide information on the vegetation at the 
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/PRIN" target="_blank"> Pringle Creek</a> in Texas.
+These remote sensing data files provide information on the vegetation at NEON's
+<a href="https://www.neonscience.org/field-sites/PRIN" target="_blank"> Pringle Creek (PRIN)</a> site in Texas.
 The complete datasets can be downloaded using `neonUtilities::byFileAOP`, or accessed from the 
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
-
-
-This tutorial is designed for you to set your working directory to the directory
-created by unzipping this file.
 
 ****
 
 **Set Working Directory:** This lesson will walk you through setting the working 
 directory before downloading the datasets from neonUtilities.
 
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
+An overview of setting the working directory in R can be found 
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank">here.</a>
 
 **R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce 
 skills. If available, the code for challenge solutions is found in the downloadable R 
@@ -81,22 +76,9 @@ What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 
 </div>
 
-## Create a lidar-derived Canopy Height Model (CHM)
-
-The National Ecological Observatory Network (NEON) will provide lidar-derived 
-data products as one of its many free ecological data products. These products 
-will come in the 
-<a href="http://trac.osgeo.org/geotiff/" target="_blank">GeoTIFF</a> 
-format, which is a .tif raster format that is spatially located on the earth. 
-
-In this tutorial, we create a Canopy Height Model. The 
-<a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">Canopy Height Model (CHM)</a>,
-represents the heights of the trees on the ground. We can derive the CHM 
-by subtracting the ground elevation from the elevation of the top of the surface 
-(or the tops of the trees). 
-
-We will use the `terra` R package to work with the the lidar-derived Digital 
-Surface Model (DSM) and the Digital Terrain Model (DTM). 
+Let's get started! First, we will load the required packages. We will use the 
+`terra` R package to work with the the lidar-derived rasters: the Digital Surface 
+Model (DSM), Digital Terrain Model (DTM), and Canopy Height Model (CHM).
 
 
     # Load needed packages
@@ -112,7 +94,9 @@ Set the working directory so you know where to download data.
 
     setwd(wd)
 
-We can use the `neonUtilities` function `byTileAOP` to download a single DTM and DSM tile at PRIN. Both the DTM and DSM are delivered under the <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR (DP3.30024.001)</a> data product.
+We can use the `neonUtilities` function `byTileAOP` to download a single CHM, DTM, and DSM tile at PRIN. 
+The CHM is delivered under the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure (DP3.30015.001)</a> data product. Both the DTM and DSM are delivered 
+under the <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR (DP3.30024.001)</a> data product.
 
 You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (607000, 3696000), which will download the tile with the lower left corner (607000, 3696000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). You can set `check.size=FALSE` if you want to download without a prompt. This example will not be very large (~8MB), since it is only downloading two single-band rasters (plus some associated metadata).
 
