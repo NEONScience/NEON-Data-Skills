@@ -373,7 +373,7 @@ If the PCA results don't display:
 
 ## Acnowledgements and References
 
-Thanks to Kel Markert, Google Cloud, for input in ...
+Thanks to Kel Markert, Google Cloud, for his help in developing the representative sampling code as a memory-efficient option to compute PCA.
 
 This tutorial was made with help from AI, which pulled from the following sources:
 
