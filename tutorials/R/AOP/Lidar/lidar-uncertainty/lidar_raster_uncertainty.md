@@ -591,6 +591,6 @@ Repeat this analysis for a site that was flown twice in the same year, but with 
 
 * 2023 SOAP (Visit 6: Riegl Q780, Visit 7: Optech Galaxy Prime)
 
-Tip: You may wish to read this FAQ: Have AOP sensors changed over the years? How do different sensors affect the data? This discusses the differences between lidar sensors that NEON AOP operates, and some of the implications for the data products derived from the lidar sensor.
+Tip: You may wish to read this <a href="https://www.neonscience.org/about/faq" target="_blank">NEON FAQ</a>: *Have AOP sensors changed over the years? How do different sensors affect the data?* This discusses the differences between lidar sensors that NEON AOP operates, and some of the implications for the data products derived from the lidar sensor.
 
 </div>
