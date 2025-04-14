@@ -377,26 +377,26 @@ Thanks to Kel Markert, Google Cloud, for his help in developing the representati
 
 This tutorial was made with help from AI, which pulled from the following sources:
 
-Green, A. A., Berman, M., Switzer, P., & Craig, M. D. (1988). A transformation for ordering multispectral data in terms of image quality with implications for noise removal. IEEE Transactions on Geoscience and Remote Sensing, 26(1), 65-74.
-- *Classic paper introducing PCA for dimensionality reduction in remote sensing*
-
-Plaza, A., Benediktsson, J. A., Boardman, J. W., Brazile, J., Bruzzone, L., Camps-Valls, G., ... & Trianni, G. (2009). Recent advances in techniques for hyperspectral image processing. Remote Sensing of Environment, 113, S110-S122.
-- *Comprehensive review of hyperspectral processing techniques including PCA*
-
-Deschamps, B., McNairn, H., Shang, J., & Jiao, X. (2012). Towards operational radar-only crop type classification: comparison of a traditional decision tree with a random forest classifier. Canadian Journal of Remote Sensing, 38(1), 60-68.
-- *Application of PCA and clustering for classification*
-
-Wang, J., & Chang, C. I. (2006). Independent component analysis-based dimensionality reduction with applications in hyperspectral image analysis. IEEE Transactions on Geoscience and Remote Sensing, 44(6), 1586-1600.
-- *Comparison of PCA with other dimensionality reduction techniques*
-
 Cawse-Nicholson, K., Townsend, P.A., Schimel, D. et al. (2021). NASA's surface biology and geology designated observable: A perspective on surface imaging algorithms. Remote Sensing of Environment, 257, 112349.
 - *Paper discussing hyperspectral imaging algorithms including preprocessing workflows*
 
 Datt, B., McVicar, T. R., Van Niel, T. G., Jupp, D. L., & Pearlman, J. S. (2003). Preprocessing EO-1 Hyperion hyperspectral data to support the application of agricultural indexes. IEEE Transactions on Geoscience and Remote Sensing, 41(6), 1246-1259.
 - *Discusses preprocessing steps for hyperspectral data*
 
+Deschamps, B., McNairn, H., Shang, J., & Jiao, X. (2012). Towards operational radar-only crop type classification: comparison of a traditional decision tree with a random forest classifier. Canadian Journal of Remote Sensing, 38(1), 60-68.
+- *Application of PCA and clustering for classification*
+  
+Green, A. A., Berman, M., Switzer, P., & Craig, M. D. (1988). A transformation for ordering multispectral data in terms of image quality with implications for noise removal. IEEE Transactions on Geoscience and Remote Sensing, 26(1), 65-74.
+- *Classic paper introducing PCA for dimensionality reduction in remote sensing*
+
 National Ecological Observatory Network. (2023). Data Tutorial: Introduction to Hyperspectral Remote Sensing Data. https://www.neonscience.org/resources/learning-hub/tutorials/hsi-hdf5-r
 - *NEON's introduction to hyperspectral data*
+  
+Plaza, A., Benediktsson, J. A., Boardman, J. W., Brazile, J., Bruzzone, L., Camps-Valls, G., ... & Trianni, G. (2009). Recent advances in techniques for hyperspectral image processing. Remote Sensing of Environment, 113, S110-S122.
+- *Comprehensive review of hyperspectral processing techniques including PCA*
+
+Wang, J., & Chang, C. I. (2006). Independent component analysis-based dimensionality reduction with applications in hyperspectral image analysis. IEEE Transactions on Geoscience and Remote Sensing, 44(6), 1586-1600.
+- *Comparison of PCA with other dimensionality reduction techniques*
 
 
 ## Get Lesson Code
