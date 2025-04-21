@@ -23,7 +23,9 @@ dateCreated: 'YYYY-MM-DD'
 ---
 ```
 
-For all of the non-tabbed content, write in Rmarkdown as usual.
+While you're developing the tutorial, you can set `output: html_document` and knit locally to see what the tabs will look like. Remember to switch to html_fragment once the tutorial is ready to go. 
+
+For all of the non-tabbed content (discussion and instruction between the code blocks), write in Rmarkdown as usual.
 
 #### Creating tabs
 
