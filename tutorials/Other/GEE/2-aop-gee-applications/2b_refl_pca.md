@@ -371,9 +371,9 @@ If the PCA results don't display:
 </div>
 
 
-## Acnowledgements and References
+## Acknowledgment and References
 
-Thanks to Kel Markert, Google Cloud, for his help in developing the representative sampling code as a memory-efficient option to compute PCA.
+Thanks to Kel Markert (Google Cloud Geographer), for his help in developing the representative sampling code as a memory-efficient option to compute PCA.
 
 This tutorial was made with help from AI, which pulled from the following sources:
 
