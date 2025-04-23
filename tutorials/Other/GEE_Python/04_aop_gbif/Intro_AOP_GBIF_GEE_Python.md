@@ -308,9 +308,9 @@ Now if you open this new html, you should be able to see the Carabidae Trap Reco
     <figcaption>Great Smokey Mountain NBR overlaid with GBIF Carabidae Trap Records</figcaption></a>
 </figure>
 
-## Part 1: Additional Analysis
+## Part 2: Additional Analysis
 
-In this next step, we'll see if we can gain any insights as to if and how the fire impacted the GBIF records.
+In this next section, we'll see if we can gain any insights as to if and how the fire impacted the GBIF records.
 
 This next chunk of code vectorizes the burn scar mask, which is then used ...
 
