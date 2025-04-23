@@ -17,7 +17,7 @@ urlTitle: aop-gbif-gee-py
 
 ## Exploring NEON AOP (Airborne Operations Platform) and BioRepository Data Together
 
-In this tutorial, we will pull in NEON AOP hyperspectral data collected in 2016 and 2017 at the NEON <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">GRSM (Great Smokey Mountains)</a> site. Between the 2016 and 2017 data collections, the <a href="https://www.neonscience.org/impact/observatory-blog/neons-great-smoky-mountains-data-will-capture-tennessee-fire-impacts-local" target="_blank">Chimney Tops Fire</a> occurred within the flight box, leaving a prominent burn scar. We will use the GEE (Google Earth Engine) Python API to explore the burn scar using the NBR (Normalized Burn Ratio) to set a threshold to identify burned and unburned areas. We will then us the <a href="https://github.com/gbif/pygbif" target="_blank">PyGBIF</a> API (Python Global Biodiversity Information Facility) to pull records from the NEON BioRepository to see if and/or how Carabid beetle traps in the domain were impacted by the fires.
+In this tutorial, we will pull in NEON AOP hyperspectral data collected in 2016 and 2017 at the NEON <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">GRSM (Great Smokey Mountains)</a> site. Between the 2016 and 2017 data collections, the <a href="https://www.neonscience.org/impact/observatory-blog/neons-great-smoky-mountains-data-will-capture-tennessee-fire-impacts-local" target="_blank">Chimney Tops Fire</a> occurred within the flight box, leaving a prominent burn scar. We will use the GEE (Google Earth Engine) Python API to explore the burn scar using the NBR (Normalized Burn Ratio) to set a threshold to identify burned and unburned areas. We will then use the <a href="https://github.com/gbif/pygbif" target="_blank">PyGBIF</a> API (Python Global Biodiversity Information Facility) to pull records from the NEON BioRepository to see if and/or how Carabid beetle traps within the site were impacted by the fires.
 
 <div id="ds-objectives" markdown="1">
 
@@ -94,7 +94,7 @@ ee.Initialize()
 
 
 ```python
-# Define an area of interest, for the imagery, I will simply be using a centroid because I want all
+# Define an area of interest, for the imagery, you can use a centroid to get all
 # the imagery from GRSM domain. You can using a bounding box, shapefiles, etc. if you want a more granular
 # control of the geographic area
 site_center = ee.Geometry.Point([-83.5, 35.7])
