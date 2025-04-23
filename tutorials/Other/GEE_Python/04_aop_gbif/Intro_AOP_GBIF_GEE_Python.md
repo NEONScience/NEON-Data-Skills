@@ -1,7 +1,7 @@
 ---
 syncID: 
 title: "Intro to working with AOP remote sensing and GBIF occurence data in Google Earth Engine Python (geemap)"
-description: "Explore AOP reflectance along iwth "
+description: "Explore AOP reflectance along with GBIF Carabid beetle trap occurence data"
 dateCreated: 2023-04-23
 authors: Kit Lewers
 contributors: Bridget Hass
@@ -17,7 +17,7 @@ urlTitle: aop-gbif-gee-py
 
 ## Exploring NEON AOP (Airborne Operations Platform) and BioRepository Data Together
 
-In this tutorial, we will pull in NEON AOP hyperspectral data collected in 2016 and 2017 at the NEON <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">GRSM (Great Smokey Mountains)</a> site. Between the 2016 and 2017 data collections, the <a href="https://www.neonscience.org/impact/observatory-blog/neons-great-smoky-mountains-data-will-capture-tennessee-fire-impacts-local" target="_blank">Chimney Tops Fire</a> occurred within the flight box, leaving a prominent burn scar. We will use the GEE (Google Earth Engine) Python API to explore the burn scar using the NBR (Normalized Burn Ratio) to set a threshold to identify burned and unburned areas. We will then use the <a href="https://github.com/gbif/pygbif" target="_blank">PyGBIF</a> API (Python Global Biodiversity Information Facility) to pull records from the NEON BioRepository to see if and/or how Carabid beetle traps within the site were impacted by the fires.
+In this tutorial, we will pull in NEON AOP hyperspectral data collected in 2016 and 2017 at the NEON <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">GRSM (Great Smokey Mountains)</a> site. Between the 2016 and 2017 data collections, the <a href="https://www.neonscience.org/impact/observatory-blog/neons-great-smoky-mountains-data-will-capture-tennessee-fire-impacts-local" target="_blank">Chimney Tops Fire</a> occurred within the flight box, leaving a prominent burn scar. We will use the GEE (Google Earth Engine) Python API to explore the burn scar using the NBR (Normalized Burn Ratio) to set a threshold to identify burned and unburned areas. We will then use the <a href="https://github.com/gbif/pygbif" target="_blank">PyGBIF</a> API (Python Global Biodiversity Information Facility) to pull records from the NEON Biorepository to see if and/or how Carabid beetle traps within the site were impacted by the fires.
 
 <div id="ds-objectives" markdown="1">
 
