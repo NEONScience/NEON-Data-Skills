@@ -39,12 +39,9 @@ After completing this tutorial, you will be able to:
 
 ### Download Data
 
-This tutorial uses a AOP Hyperspectral Surface Bidirectional Reflectance tile (1 km x 1 km) from the NEON <a href="https://www.neonscience.org/field-sites/serc" target="blank">Smithsonian Environmental Research Center (SERC)</a> site.
+This tutorial uses am AOP <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="blank">Hyperspectral Surface Bidirectional Reflectance</a> tile (1 km x 1 km) from the NEON <a href="https://www.neonscience.org/field-sites/serc" target="blank">Smithsonian Environmental Research Center (SERC)</a> site.
 
-Spectrometer orthorectified surface bidirectional reflectance - mosaic
-https://data.neonscience.org/data-products/DP3.30006.002
-
-Data will be downloaded as part of the lesson using the Python `neonutilities` package
+The data required for this lesson will be downloaded in the beginning of the tutorial using the Python `neonutilities` package.
 
 </div>
 
