@@ -159,10 +159,8 @@ nu.by_tile_aop(dpid='DP3.30006.002',
     Provisional data are included. To exclude provisional data, use input parameter include_provisional=False.
     
 
-    Continuing will download 2 files totaling approximately 692.0 MB. Do you want to proceed? (y/n)  n
+    Continuing will download 2 files totaling approximately 692.0 MB. Do you want to proceed? (y/n)  y
     
-
-    Download halted
     
 
 Let's see what data were downloaded.
@@ -209,11 +207,7 @@ sys.path.insert(0, '../python_modules')
 # import the neon_aop_hyperspectral module, the semicolon supresses an empty plot from displaying
 import neon_aop_hyperspectral as neon_hs;
 ```
-
-
-    
-![png](output_14_0.png)
-    
+   
 
 
 
@@ -366,96 +360,7 @@ print("--- It took %s minutes to run kmeans on the reflectance data ---" % round
     k-means iteration 2 - 135441 pixels reassigned.
     spectral:INFO: k-means iteration 3 - 54918 pixels reassigned.
     k-means iteration 3 - 54918 pixels reassigned.
-    spectral:INFO: k-means iteration 4 - 37397 pixels reassigned.
-    k-means iteration 4 - 37397 pixels reassigned.
-    spectral:INFO: k-means iteration 5 - 25964 pixels reassigned.
-    k-means iteration 5 - 25964 pixels reassigned.
-    spectral:INFO: k-means iteration 6 - 22079 pixels reassigned.
-    k-means iteration 6 - 22079 pixels reassigned.
-    spectral:INFO: k-means iteration 7 - 20998 pixels reassigned.
-    k-means iteration 7 - 20998 pixels reassigned.
-    spectral:INFO: k-means iteration 8 - 21289 pixels reassigned.
-    k-means iteration 8 - 21289 pixels reassigned.
-    spectral:INFO: k-means iteration 9 - 23434 pixels reassigned.
-    k-means iteration 9 - 23434 pixels reassigned.
-    spectral:INFO: k-means iteration 10 - 29612 pixels reassigned.
-    k-means iteration 10 - 29612 pixels reassigned.
-    spectral:INFO: k-means iteration 11 - 45403 pixels reassigned.
-    k-means iteration 11 - 45403 pixels reassigned.
-    spectral:INFO: k-means iteration 12 - 84615 pixels reassigned.
-    k-means iteration 12 - 84615 pixels reassigned.
-    spectral:INFO: k-means iteration 13 - 84172 pixels reassigned.
-    k-means iteration 13 - 84172 pixels reassigned.
-    spectral:INFO: k-means iteration 14 - 47605 pixels reassigned.
-    k-means iteration 14 - 47605 pixels reassigned.
-    spectral:INFO: k-means iteration 15 - 27624 pixels reassigned.
-    k-means iteration 15 - 27624 pixels reassigned.
-    spectral:INFO: k-means iteration 16 - 22031 pixels reassigned.
-    k-means iteration 16 - 22031 pixels reassigned.
-    spectral:INFO: k-means iteration 17 - 22968 pixels reassigned.
-    k-means iteration 17 - 22968 pixels reassigned.
-    spectral:INFO: k-means iteration 18 - 27731 pixels reassigned.
-    k-means iteration 18 - 27731 pixels reassigned.
-    spectral:INFO: k-means iteration 19 - 31293 pixels reassigned.
-    k-means iteration 19 - 31293 pixels reassigned.
-    spectral:INFO: k-means iteration 20 - 30422 pixels reassigned.
-    k-means iteration 20 - 30422 pixels reassigned.
-    spectral:INFO: k-means iteration 21 - 25540 pixels reassigned.
-    k-means iteration 21 - 25540 pixels reassigned.
-    spectral:INFO: k-means iteration 22 - 20758 pixels reassigned.
-    k-means iteration 22 - 20758 pixels reassigned.
-    spectral:INFO: k-means iteration 23 - 16314 pixels reassigned.
-    k-means iteration 23 - 16314 pixels reassigned.
-    spectral:INFO: k-means iteration 24 - 13115 pixels reassigned.
-    k-means iteration 24 - 13115 pixels reassigned.
-    spectral:INFO: k-means iteration 25 - 10736 pixels reassigned.
-    k-means iteration 25 - 10736 pixels reassigned.
-    spectral:INFO: k-means iteration 26 - 9101 pixels reassigned.
-    k-means iteration 26 - 9101 pixels reassigned.
-    spectral:INFO: k-means iteration 27 - 7706 pixels reassigned.
-    k-means iteration 27 - 7706 pixels reassigned.
-    spectral:INFO: k-means iteration 28 - 6495 pixels reassigned.
-    k-means iteration 28 - 6495 pixels reassigned.
-    spectral:INFO: k-means iteration 29 - 5433 pixels reassigned.
-    k-means iteration 29 - 5433 pixels reassigned.
-    spectral:INFO: k-means iteration 30 - 4656 pixels reassigned.
-    k-means iteration 30 - 4656 pixels reassigned.
-    spectral:INFO: k-means iteration 31 - 4038 pixels reassigned.
-    k-means iteration 31 - 4038 pixels reassigned.
-    spectral:INFO: k-means iteration 32 - 3661 pixels reassigned.
-    k-means iteration 32 - 3661 pixels reassigned.
-    spectral:INFO: k-means iteration 33 - 3356 pixels reassigned.
-    k-means iteration 33 - 3356 pixels reassigned.
-    spectral:INFO: k-means iteration 34 - 3216 pixels reassigned.
-    k-means iteration 34 - 3216 pixels reassigned.
-    spectral:INFO: k-means iteration 35 - 3158 pixels reassigned.
-    k-means iteration 35 - 3158 pixels reassigned.
-    spectral:INFO: k-means iteration 36 - 3301 pixels reassigned.
-    k-means iteration 36 - 3301 pixels reassigned.
-    spectral:INFO: k-means iteration 37 - 3525 pixels reassigned.
-    k-means iteration 37 - 3525 pixels reassigned.
-    spectral:INFO: k-means iteration 38 - 3994 pixels reassigned.
-    k-means iteration 38 - 3994 pixels reassigned.
-    spectral:INFO: k-means iteration 39 - 5053 pixels reassigned.
-    k-means iteration 39 - 5053 pixels reassigned.
-    spectral:INFO: k-means iteration 40 - 7114 pixels reassigned.
-    k-means iteration 40 - 7114 pixels reassigned.
-    spectral:INFO: k-means iteration 41 - 11187 pixels reassigned.
-    k-means iteration 41 - 11187 pixels reassigned.
-    spectral:INFO: k-means iteration 42 - 18680 pixels reassigned.
-    k-means iteration 42 - 18680 pixels reassigned.
-    spectral:INFO: k-means iteration 43 - 27140 pixels reassigned.
-    k-means iteration 43 - 27140 pixels reassigned.
-    spectral:INFO: k-means iteration 44 - 31803 pixels reassigned.
-    k-means iteration 44 - 31803 pixels reassigned.
-    spectral:INFO: k-means iteration 45 - 29972 pixels reassigned.
-    k-means iteration 45 - 29972 pixels reassigned.
-    spectral:INFO: k-means iteration 46 - 24678 pixels reassigned.
-    k-means iteration 46 - 24678 pixels reassigned.
-    spectral:INFO: k-means iteration 47 - 19487 pixels reassigned.
-    k-means iteration 47 - 19487 pixels reassigned.
-    spectral:INFO: k-means iteration 48 - 15623 pixels reassigned.
-    k-means iteration 48 - 15623 pixels reassigned.
+    ...
     spectral:INFO: k-means iteration 49 - 12934 pixels reassigned.
     k-means iteration 49 - 12934 pixels reassigned.
     spectral:INFO: k-means iteration 50 - 10783 pixels reassigned.
@@ -487,96 +392,7 @@ print("--- It took %s minutes to run kmeans on the reflectance data ---" % round
     k-means iteration 2 - 7684 pixels reassigned.
     spectral:INFO: k-means iteration 3 - 6552 pixels reassigned.
     k-means iteration 3 - 6552 pixels reassigned.
-    spectral:INFO: k-means iteration 4 - 5462 pixels reassigned.
-    k-means iteration 4 - 5462 pixels reassigned.
-    spectral:INFO: k-means iteration 5 - 4681 pixels reassigned.
-    k-means iteration 5 - 4681 pixels reassigned.
-    spectral:INFO: k-means iteration 6 - 4011 pixels reassigned.
-    k-means iteration 6 - 4011 pixels reassigned.
-    spectral:INFO: k-means iteration 7 - 3325 pixels reassigned.
-    k-means iteration 7 - 3325 pixels reassigned.
-    spectral:INFO: k-means iteration 8 - 2843 pixels reassigned.
-    k-means iteration 8 - 2843 pixels reassigned.
-    spectral:INFO: k-means iteration 9 - 2411 pixels reassigned.
-    k-means iteration 9 - 2411 pixels reassigned.
-    spectral:INFO: k-means iteration 10 - 2089 pixels reassigned.
-    k-means iteration 10 - 2089 pixels reassigned.
-    spectral:INFO: k-means iteration 11 - 1742 pixels reassigned.
-    k-means iteration 11 - 1742 pixels reassigned.
-    spectral:INFO: k-means iteration 12 - 1482 pixels reassigned.
-    k-means iteration 12 - 1482 pixels reassigned.
-    spectral:INFO: k-means iteration 13 - 1257 pixels reassigned.
-    k-means iteration 13 - 1257 pixels reassigned.
-    spectral:INFO: k-means iteration 14 - 1109 pixels reassigned.
-    k-means iteration 14 - 1109 pixels reassigned.
-    spectral:INFO: k-means iteration 15 - 960 pixels reassigned.
-    k-means iteration 15 - 960 pixels reassigned.
-    spectral:INFO: k-means iteration 16 - 781 pixels reassigned.
-    k-means iteration 16 - 781 pixels reassigned.
-    spectral:INFO: k-means iteration 17 - 615 pixels reassigned.
-    k-means iteration 17 - 615 pixels reassigned.
-    spectral:INFO: k-means iteration 18 - 557 pixels reassigned.
-    k-means iteration 18 - 557 pixels reassigned.
-    spectral:INFO: k-means iteration 19 - 476 pixels reassigned.
-    k-means iteration 19 - 476 pixels reassigned.
-    spectral:INFO: k-means iteration 20 - 398 pixels reassigned.
-    k-means iteration 20 - 398 pixels reassigned.
-    spectral:INFO: k-means iteration 21 - 345 pixels reassigned.
-    k-means iteration 21 - 345 pixels reassigned.
-    spectral:INFO: k-means iteration 22 - 318 pixels reassigned.
-    k-means iteration 22 - 318 pixels reassigned.
-    spectral:INFO: k-means iteration 23 - 253 pixels reassigned.
-    k-means iteration 23 - 253 pixels reassigned.
-    spectral:INFO: k-means iteration 24 - 208 pixels reassigned.
-    k-means iteration 24 - 208 pixels reassigned.
-    spectral:INFO: k-means iteration 25 - 174 pixels reassigned.
-    k-means iteration 25 - 174 pixels reassigned.
-    spectral:INFO: k-means iteration 26 - 178 pixels reassigned.
-    k-means iteration 26 - 178 pixels reassigned.
-    spectral:INFO: k-means iteration 27 - 149 pixels reassigned.
-    k-means iteration 27 - 149 pixels reassigned.
-    spectral:INFO: k-means iteration 28 - 140 pixels reassigned.
-    k-means iteration 28 - 140 pixels reassigned.
-    spectral:INFO: k-means iteration 29 - 118 pixels reassigned.
-    k-means iteration 29 - 118 pixels reassigned.
-    spectral:INFO: k-means iteration 30 - 96 pixels reassigned.
-    k-means iteration 30 - 96 pixels reassigned.
-    spectral:INFO: k-means iteration 31 - 103 pixels reassigned.
-    k-means iteration 31 - 103 pixels reassigned.
-    spectral:INFO: k-means iteration 32 - 88 pixels reassigned.
-    k-means iteration 32 - 88 pixels reassigned.
-    spectral:INFO: k-means iteration 33 - 73 pixels reassigned.
-    k-means iteration 33 - 73 pixels reassigned.
-    spectral:INFO: k-means iteration 34 - 59 pixels reassigned.
-    k-means iteration 34 - 59 pixels reassigned.
-    spectral:INFO: k-means iteration 35 - 61 pixels reassigned.
-    k-means iteration 35 - 61 pixels reassigned.
-    spectral:INFO: k-means iteration 36 - 42 pixels reassigned.
-    k-means iteration 36 - 42 pixels reassigned.
-    spectral:INFO: k-means iteration 37 - 32 pixels reassigned.
-    k-means iteration 37 - 32 pixels reassigned.
-    spectral:INFO: k-means iteration 38 - 37 pixels reassigned.
-    k-means iteration 38 - 37 pixels reassigned.
-    spectral:INFO: k-means iteration 39 - 36 pixels reassigned.
-    k-means iteration 39 - 36 pixels reassigned.
-    spectral:INFO: k-means iteration 40 - 36 pixels reassigned.
-    k-means iteration 40 - 36 pixels reassigned.
-    spectral:INFO: k-means iteration 41 - 28 pixels reassigned.
-    k-means iteration 41 - 28 pixels reassigned.
-    spectral:INFO: k-means iteration 42 - 24 pixels reassigned.
-    k-means iteration 42 - 24 pixels reassigned.
-    spectral:INFO: k-means iteration 43 - 27 pixels reassigned.
-    k-means iteration 43 - 27 pixels reassigned.
-    spectral:INFO: k-means iteration 44 - 25 pixels reassigned.
-    k-means iteration 44 - 25 pixels reassigned.
-    spectral:INFO: k-means iteration 45 - 21 pixels reassigned.
-    k-means iteration 45 - 21 pixels reassigned.
-    spectral:INFO: k-means iteration 46 - 14 pixels reassigned.
-    k-means iteration 46 - 14 pixels reassigned.
-    spectral:INFO: k-means iteration 47 - 12 pixels reassigned.
-    k-means iteration 47 - 12 pixels reassigned.
-    spectral:INFO: k-means iteration 48 - 16 pixels reassigned.
-    k-means iteration 48 - 16 pixels reassigned.
+    ...
     spectral:INFO: k-means iteration 49 - 11 pixels reassigned.
     k-means iteration 49 - 11 pixels reassigned.
     spectral:INFO: k-means iteration 50 - 13 pixels reassigned.
@@ -616,7 +432,7 @@ pylab.ylabel('Reflectance');
 
 
     
-![png](output_29_0.png)
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_29_0.png)
     
 
 
@@ -631,8 +447,8 @@ view.show_data;
 ```
 
 
-    
-![png](output_31_0.png)
+
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_31_0.png)  
     
 
 
@@ -644,7 +460,7 @@ view.show_data;
 
 
     
-![png](output_32_0.png)
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_32_0.png) 
     
 
 
@@ -654,6 +470,7 @@ When dealing with NEON hyperspectral data, we first want to remove the water vap
 
 1. What do you think the spectral classes in the figure you just created represent? 
 2. Try using a different number of clusters in the `kmeans` algorithm (e.g., 3 or 10) to see what spectral classes and classifications result. 
+3. Try subsetting the reflectance by a different factor (eg. 3 or 5) and see how the results change. What is the minimum number of bands required to achieve the same clustering results?
 
 ## Principal Component Analysis (PCA)
 
@@ -668,7 +485,7 @@ xdata = pc.transform(refl_clean)
 
 
     
-![png](output_36_0.png)
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_36_0.png) 
     
 
 
@@ -698,6 +515,6 @@ v = imshow(img_pc[:,:,:3], stretch_all=True, extent=refl_metadata['extent']);
 
 
     
-![png](output_39_1.png)
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_39_1.png) 
     
 
