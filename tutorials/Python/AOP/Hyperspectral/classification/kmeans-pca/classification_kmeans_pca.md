@@ -34,12 +34,12 @@ After completing this tutorial, you will be able to:
 * **requests**
 
 ### For visualization (optional)
-`pip install wxPython`
-`pip install PyOpenGL PyOpenGL_accelerate`
+* `pip install wxPython`
+* `pip install PyOpenGL PyOpenGL_accelerate`
 
 ### Download Data
 
-This tutorial uses a AOP Hyperspectral Surface Bidirectional Reflectance tile (1 km x 1 km) from the NEON <a href="https://www.neonscience.org/field-sites/serc" target="blank">Smithsonian Environmental Research Center(SERC)</a> site.
+This tutorial uses a AOP Hyperspectral Surface Bidirectional Reflectance tile (1 km x 1 km) from the NEON <a href="https://www.neonscience.org/field-sites/serc" target="blank">Smithsonian Environmental Research Center (SERC)</a> site.
 
 Spectrometer orthorectified surface bidirectional reflectance - mosaic
 https://data.neonscience.org/data-products/DP3.30006.002
@@ -83,44 +83,23 @@ Read more about PCA with
 
 ## Set up
 
-To run this notebook, the following Python packages need to be installed. You can install required packages from command line `pip install spectra scikit-learn cvxopt`.
+To run this notebook, the following Python packages need to be installed. You can install required packages from the command line (prior to opening your notebook), e.g. `pip install gdal h5py neonutilities scikit-learn spectral requests`.
 
-or if already in a Jupyter Notebook, run the following code in a Notebook code cell. 
+or if already in a Jupyter Notebook, run `!pip install` with the same packages.
  
 Packages:
+- gdal
+- h5py
 - neonutilities
+- requests
 - spectral
-- scikit-learn (optional)
-
-```python 
-import sys
-!{sys.executable} -m pip install spectral
-!conda install --yes --prefix {sys.prefix} scikit-learn
-!conda install --yes --prefix {sys.prefix} cvxopt 
-```
-
-In order to make use of the interactive graphics capabilities of `spectralpython`, such as `N-Dimensional Feature Display`, you work in a Python 3.6 environment (as of July 2018). 
-
-For more, read from <a href="http://www.spectralpython.net/graphics.html" target="_blank">Spectral Python</a>.
+- scikit-learn
 
 **Optional:**
 
-**matplotlib wx backend** (for 3-D visualization of PCA, requires Python 3.6)
-Find out more on 
-<a href="https://stackoverflow.com/questions/42007164/how-to-install-wxpython-phoenix-for-python-3-6" target="_blank"> StackOverflow</a>. 
+In order to make use of the interactive graphics capabilities of `spectralpython`, such as `N-Dimensional Feature Display`, you will need some additional packages. These are not required to complete this lesson.
 
-```python 
-conda install -c newville wxpython-phoenix
-```
-
-**Managing Conda Environments**
-- **nb_conda_kernels** package provides a separate jupyter kernel for each conda environment
-- Find out more on 
-<a href="https://conda.io/docs/user-guide/tasks/manage-environments.html" target="_blank"> Conda docs</a>. 
-
-```python 
-conda install -c conda-forge nb_conda_kernels
-```
+For more information, refer to <a href="http://www.spectralpython.net/graphics.html" target="_blank">Spectral Python Graphics</a>.
 
 First, import the required packages and set display preferences:
 
@@ -160,7 +139,7 @@ nu.by_tile_aop(dpid='DP3.30006.002',
     
 
     Continuing will download 2 files totaling approximately 692.0 MB. Do you want to proceed? (y/n)  y
-    
+
     
 
 Let's see what data were downloaded.
@@ -174,12 +153,12 @@ for root, dirs, files in os.walk(data_dir):
             print(os.path.join(root, name))  # printing file name
 ```
 
-    C:\Users\bhass\data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D02\2022_SERC_6\L3\Spectrometer\Reflectance\NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5
+    ~\data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D02\2022_SERC_6\L3\Spectrometer\Reflectance\NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5
     
 
 
 ```python
-h5_tile = r'C:\Users\bhass\data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D02\2022_SERC_6\L3\Spectrometer\Reflectance\NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5'
+h5_tile = r'~\data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D02\2022_SERC_6\L3\Spectrometer\Reflectance\NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5'
 ```
 
 
@@ -207,7 +186,7 @@ sys.path.insert(0, '../python_modules')
 # import the neon_aop_hyperspectral module, the semicolon supresses an empty plot from displaying
 import neon_aop_hyperspectral as neon_hs;
 ```
-   
+  
 
 
 
@@ -374,7 +353,11 @@ print("--- It took %s minutes to run kmeans on the reflectance data ---" % round
 
 Note that the algorithm still had on the order of 10000 clusters reassigning, when the 50 iterations were reached. You may extend the # of iterations.
 
+<div>
+
 **Data Tip**: You can iterrupt the algorithm with a keyboard interrupt (CTRL-C) if you notice that the number of reassigned pixels drops off. Kmeans catches the `KeyboardInterrupt` exception and returns the clusters generated at the end of the previous iteration. If you are running the algorithm interactively, this feature allows you to set the max number of iterations to an arbitrarily high number and then stop the algorithm when the clusters have converged to an acceptable level. If you happen to set the max number of iterations too small (many pixels are still migrating at the end of the final iteration), you cancall kmeans again to resume processing by passing the cluster centers generated by the previous call as the optional `start_clusters` argument to the function.
+
+</div>
 
 Let's try that now:
 
@@ -393,7 +376,6 @@ print("--- It took %s minutes to run kmeans on the reflectance data ---" % round
     spectral:INFO: k-means iteration 3 - 6552 pixels reassigned.
     k-means iteration 3 - 6552 pixels reassigned.
     ...
-    spectral:INFO: k-means iteration 49 - 11 pixels reassigned.
     k-means iteration 49 - 11 pixels reassigned.
     spectral:INFO: k-means iteration 50 - 13 pixels reassigned.
     k-means iteration 50 - 13 pixels reassigned.
@@ -447,8 +429,9 @@ view.show_data;
 ```
 
 
-
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_31_0.png)  
+    
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_31_0.png)
+    
     
 
 
@@ -460,7 +443,7 @@ view.show_data;
 
 
     
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_32_0.png) 
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_32_0.png)
     
 
 
@@ -470,51 +453,51 @@ When dealing with NEON hyperspectral data, we first want to remove the water vap
 
 1. What do you think the spectral classes in the figure you just created represent? 
 2. Try using a different number of clusters in the `kmeans` algorithm (e.g., 3 or 10) to see what spectral classes and classifications result. 
-3. Try subsetting the reflectance by a different factor (eg. 3 or 5) and see how the results change. What is the minimum number of bands required to achieve the same clustering results?
 
 ## Principal Component Analysis (PCA)
+
+This next section follows the <a href="https://www.spectralpython.net/algorithms.html#dimensionality-reduction" target="blank">Spectral Python Dimensionality Reduction</a> section closely.
 
 Many of the bands within hyperspectral images are often strongly correlated. The principal components transformation represents a linear transformation of the original image bands to a set of new, uncorrelated features. These new features correspond to the eigenvectors of the image covariance matrix, where the associated eigenvalue represents the variance in the direction of the eigenvector. A very large percentage of the image variance can be captured in a relatively small number of principal components (compared to the original number of bands) .
 
 
 ```python
 pc = principal_components(refl_clean)
-pc_view = imshow(pc.cov)
+pc_view = imshow(pc.cov, extent=refl_metadata['extent'])
 xdata = pc.transform(refl_clean)
 ```
 
 
     
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_36_0.png) 
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_36_0.png)
     
 
 
-In the covariance matrix display, lighter values indicate strong positive covariance, darker values indicate strong negative covariance, and grey values indicate covariance near zero.
+In the covariance matrix display, lighter values indicate strong positive covariance, darker values indicate strong negative covariance, and grey values indicate covariance near zero. 
+
+To reduce dimensionality using principal components, we can sort the eigenvalues in descending order and then retain enough eigenvalues (anD corresponding eigenvectors) to capture a desired fraction of the total image variance. We then reduce the dimensionality of the image pixels by projecting them onto the remaining eigenvectors. We will choose to retain a minimum of 99.9% of the total image variance.
 
 
 ```python
-pcdata = pc.reduce(num=3).transform(refl_clean)
-```
-
-
-```python
-pc_99 = pc.reduce(fraction=0.99)
+pc_999 = pc.reduce(fraction=0.999)
 
 # How many eigenvalues are left?
-print('# of eigenvalues:',len(pc_99.eigenvalues))
+print('# of eigenvalues:',len(pc_999.eigenvalues))
 
-img_pc = pc_99.transform(refl_clean)
+img_pc = pc_999.transform(refl_clean)
 print(img_pc.shape)
 
 v = imshow(img_pc[:,:,:3], stretch_all=True, extent=refl_metadata['extent']);
 ```
 
-    # of eigenvalues: 3
-    (1000, 1000, 3)
+    # of eigenvalues: 9
+    (1000, 1000, 9)
     
 
 
     
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_39_1.png) 
-    
+![png](./classification_kmeans_pca_files/classification_kmeans_pca_39_1.png)
 
+You can see that even though we've only retained a subset of the bands, a lot of the details about the scene are still visible.
+
+If you had training data, you could use a Gaussian maximum likelihood classifier (GMLC) for the reduced principal components to train and classify against the training data.
