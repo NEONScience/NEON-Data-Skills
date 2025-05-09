@@ -198,6 +198,8 @@ print("--- It took %s seconds to read in the data ---" % round((time() - start_t
     --- It took 27.0 seconds to read in the data ---
     
 
+The next few cells show how you can look at the contents, values, and dimensions of the `refl_metadata`, `wavelengths`, and `refl` variables, respectively.
+
 
 ```python
 refl_metadata
@@ -444,12 +446,11 @@ view.show_data;
     
 
 
-When dealing with NEON hyperspectral data, we first want to remove the water vapor & noisy bands, keeping only the valid bands. To speed up the classification algorithms for demonstration purposes, we'll look at a subset of the data using `read_subimage`, a built in method to subset by area and bands. Type `help(img.read_subimage)` to see how it works. 
-
-## Challenges: K-Means
+## Challenge Questions: K-Means
 
 1. What do you think the spectral classes in the figure you just created represent? 
 2. Try using a different number of clusters in the `kmeans` algorithm (e.g., 3 or 10) to see what spectral classes and classifications result. 
+3. Try using  different (higher) subset_factor in the `clean_neon_refl_data` function, like 3 or 5. Does this factor change the final classes that are created in the kmeans algorithm? By how much can you subset the data by and still achieve similar classification results?
 
 ## Principal Component Analysis (PCA)
 
