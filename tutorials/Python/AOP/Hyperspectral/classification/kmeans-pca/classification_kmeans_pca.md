@@ -63,8 +63,8 @@ Read more on KMeans clustering from <a href="http://www.spectralpython.net/algor
 To visualize how the algorithm works, it's easier look at a 2D data set. In the example below, watch how the cluster centers shift with progressive iterations, 
 
  <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/KMeans2D.gif">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/KMeans2D.gif"></a>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-spectral-py/classification/kmeans2d.gif">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-spectral-py/classification/kmeans2d"></a>
 	<figcaption> KMeans clustering demonstration Source: <a href="https://sandipanweb.wordpress.com/2017/03/19/hard-soft-clustering-with-k-means-weighted-k-means-and-gmm-em/" target="_blank">Sandipan Deyn</a>
 	</figcaption>
 </figure>
@@ -411,9 +411,8 @@ pylab.xlabel('Wavelength (nm)')
 pylab.ylabel('Reflectance');
 ```
 
-
-    
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_29_0.png)
+  
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/classification/kmeans-pca/classification_kmeans_pca_files/classification_kmeans_pca_29_0.png)
     
 
 
@@ -429,7 +428,7 @@ view.show_data;
 
 
     
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_31_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/classification/kmeans-pca/classification_kmeans_pca_files/classification_kmeans_pca_31_0.png)
     
     
 
@@ -442,7 +441,7 @@ view.show_data;
 
 
     
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_32_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/classification/kmeans-pca/classification_kmeans_pca_files/classification_kmeans_pca_32_0.png)
     
 
 
@@ -467,7 +466,7 @@ xdata = pc.transform(refl_clean)
 
 
     
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_36_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/classification/kmeans-pca/classification_kmeans_pca_files/classification_kmeans_pca_36_0.png)
     
 
 
@@ -494,8 +493,12 @@ v = imshow(img_pc[:,:,:3], stretch_all=True, extent=refl_metadata['extent']);
 
 
     
-![png](./classification_kmeans_pca_files/classification_kmeans_pca_39_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/classification/kmeans-pca/classification_kmeans_pca_files/classification_kmeans_pca_39_1.png)
 
 You can see that even though we've only retained a subset of the bands, a lot of the details about the scene are still visible.
 
 If you had training data, you could use a Gaussian maximum likelihood classifier (GMLC) for the reduced principal components to train and classify against the training data.
+
+## Challenge Questions: PCA
+
+1. Run the k-means classification after running PCA and see if you get similar results. Does / how does reducing the data dimensionality affect the classification results?
