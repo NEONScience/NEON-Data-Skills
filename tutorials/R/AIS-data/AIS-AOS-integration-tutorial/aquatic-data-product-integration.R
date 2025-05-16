@@ -1,119 +1,21 @@
----
-syncID: 
-title: "Linking NEON aquatic observational and instrument data to answer critical questions in aquatic ecology at the continental scale"	
-description: "Exercises highlighting NEON's Aquatic Instrumented Subsystem (AIS) and Aquatic Observational Subsystem (AOS) data products and integrating data products from the two subsystems to examine case studies from NEON Atlantic Neotropical Domain (Domain 04, Puerto Rico)."	
-dateCreated: 2025-05-16
-authors: Zachary L. Nickerson
-contributors: Stephanie M. Parker, Robert T. Hensley, Nicolas M. Harrison
-estimatedTime: 3 hours
-packagesLibraries: neonUtilities, neonOS, tidyverse, plotly, vegan, base64enc
-topics: data-manipulation, data-visualization, data-analysis
-subtopics: organisms, hydrology, chemistry, morphology, aquatic
-languagesTool: R
-dataProduct: DP1.20120.001, DP4.00130.001, DP4.00131.001, DP1.20093.001, DP1.20288.001
-code1: 
-tutorialSeries: 
-urlTitle: aquatic-data-product-integration
----
-
-<div id="ds-objectives" markdown="1"
-
-## Objectives
-
-After completing this activity, you will be able to:
-
-* Download NEON AIS and AOS data using the `neonUtilities` package.
-* Understand downloaded data packages and load them into R for analyses.
-* Understand the similarities and linkages between different NEON data products.
-* Join data sets within and between data products by standardized variables.
-* Plot instrumented and observational data in the same plotting field.
-
-## Things You'll Need To Complete This Tutorial
-
-To complete this tutorial you will need R (version >3.4) and, 
-preferably, RStudio loaded on your computer.
-
-### Install R Packages
-
-* **neonUtilities**: Basic functions for accessing NEON data
-* **neonOS**: Basic data wrangling for NEON Observational Data
-* **tidyverse**: Collection of R packages designed for data science
-* **plotly**: Tool for creating interactive, web-based visualizations
-* **vegan**: Functions for analyzing ecological data
-* **base64enc**: Tools for base64 encoding
-
-These packages are on CRAN and can be installed by 
-`install.packages()`.
-
-### Additional Resources
-
-* <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
-* <a href="https://github.com/NEONScience/NEON-OS-data-processing" target="_blank">GitHub repository for neonOS</a>
-
-</div>
-
-## Introduction
-
-### Tutorial Overview
-
-This tutorial covers downloading NEON Aquatic Instrument Subsystem (AIS) and 
-Aquatic Observation Subsystem (AOS) data products using the `neonUtilities` R 
-package, as well as basic instruction in beginning to explore and work with the 
-downloaded data. This includes navigating data packages documentation, 
-summarizing data for plotting and analysis, combining data within and between 
-data products, and visualizing AIS and AOS data separately and together. 
-
-### Helpful Links
-
-Getting started with NEON data: https://www.neonscience.org/resources/getting-started-neon-data-resources
-
-Contact us form: https://www.neonscience.org/about/contact-us
-
-Teaching Modules: https://www.neonscience.org/resources/learning-hub/teaching-modules <br />
-QUBES modules: https://qubeshub.org/community/groups/neon/educational_resources <br />
-EDDIE modules : https://serc.carleton.edu/eddie/macrosystems/index.html
-
-Spatial data and maps: https://neon.maps.arcgis.com/home/index.html
-
-NEON data portal: https://data.neonscience.org/
-
-NEONScience GitHub repo: https://github.com/NEONScience <br />
-SFS 2025 NEON Workshop GitHub repo:
-<https://github.com/NEONScience/WORKSHOP-SFS-2025>
-
-## Download Files and Load Directly to R: loadByProduct()
-
-The most popular function in `neonUtilities` is `loadByProduct()`. 
-This function downloads data from the NEON API, merges the site-by-month 
-files, and loads the resulting data tables into the R environment, 
-assigning each data type to the appropriate R class. This is a popular 
-choice because it ensures you're always working with the most up-to-date data, 
-and it ends with ready-to-use tables in R. However, if you use it in
-a workflow you run repeatedly, keep in mind it will re-download the 
-data every time.
-
-Before we get the NEON data, we need to install (if not already done) and load 
-the neonUtilities R package, as well as other packages we will use in the 
-analysis. 
-
-```{r setup, include=FALSE}
+## ----setup, include=FALSE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 require(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
-```
 
-```{r set-up-env, eval=F}
-# # Install neonUtilities package if you have not yet.
-# install.packages("neonUtilities")
-# install.packages("neonOS")
-# install.packages("tidyverse")
-# install.packages("plotly")
-# install.packages("vegan")
-# install.packages("base64enc")
 
-```
+## ----set-up-env, eval=F-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# # # Install neonUtilities package if you have not yet.
+# # install.packages("neonUtilities")
+# # install.packages("neonOS")
+# # install.packages("tidyverse")
+# # install.packages("plotly")
+# # install.packages("vegan")
+# # install.packages("base64enc")
+# 
 
-```{r load-packages}
+
+## ----load-packages----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
 
@@ -125,124 +27,9 @@ library(plotly)
 library(vegan)
 library(base64enc)
 
-```
 
-The inputs to `loadByProduct()` control which data to download and how 
-to manage the processing. The following are frequently used inputs: 
 
-* `dpID`: the data product ID, e.g. DP1.20288.001
-* `site`: defaults to "all", meaning all sites with available data; 
-can be a vector of 4-letter NEON site codes, e.g. 
-`c("MART","ARIK","BARC")`.
-* `startdate` and `enddate`: defaults to NA, meaning all dates 
-with available data; or a date in the form YYYY-MM, e.g. 
-2017-06. Since NEON data are provided in month packages, finer 
-scale querying is not available. Both start and end date are 
-inclusive.
-* `package`: either basic or expanded data package. Expanded data 
-packages generally include additional information about data 
-quality, such as individual quality flag test results. Not every 
-NEON data product has an expanded package; if the expanded package 
-is requested but there isn't one, the basic package will be 
-downloaded.
-* `release`: The data release to be downloaded; either 'current' 
-or the name of a release, e.g. 'RELEASE-2021'. 'current' returns 
-provisional data in addition to the most recent release. To 
-download only provisional data, use release='PROVISIONAL'. 
-Defaults to 'current'. See 
-https://www.neonscience.org/data-samples/data-management/data-revisions-releases 
-for more information.
-* `include.provisional`: Should provisional data be included in the downloaded
-files? Defaults to F.
-* `timeIndex`: defaults to "all", to download all data; or the 
-number of minutes in the averaging interval. See example below; 
-only applicable to IS data.
-* `check.size`: T or F; should the function pause before downloading 
-data and warn you about the size of your download? Defaults to T; if 
-you are using this function within a script or batch process you 
-will want to set this to F.
-* `token`: this allows you to input your NEON API token to obtain faster 
-downloads. 
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
-
-There are additional inputs you can learn about in the 
-<a href="https//:www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
-
-The `dpID` is the data product identifier of the data you want to 
-download. The DPID can be found on the 
-<a href="http://data.neonscience.org/data-products/explore" target="_blank">
-Explore Data Products page</a>.
-
-It will be in the form DP#.#####.###. For this tutorial, we'll use some data
-products collected in NEON's aquatics program: 
-
-* DP1.20120.001: Macroinvertebrate collection
-* DP4.00130.001: Continuous discharge
-
-Now it's time to consider the NEON field site of interest. If not specified, 
-the default will download a data product from all sites. The following are 
-4-letter site codes for NEON's 34 aquatics sites as of 2025:
-
-* ARIK = Arikaree River CO        
-* BARC = Barco Lake FL          
-* BIGC = Upper Big Creek CA       
-* BLDE = Black Deer Creek WY      
-* BLUE = Blue River OK            
-* BLWA = Black Warrior River AL    
-* CARI = Caribou Creek AK         
-* COMO = Como Creek CO          
-* CRAM = Crampton Lake WI         
-* CUPE = Rio Cupeyes PR           
-* FLNT = Flint River GA           
-* GUIL = Rio Yahuecas PR      
-* HOPB = Lower Hop Brook MA       
-* KING = Kings Creek KS         
-* LECO = LeConte Creek TN         
-* LEWI = Lewis Run VA             
-* LIRO = Little Rock Lake WI      
-* MART = Martha Creek WA
-* MAYF = Mayfield Creek AL        
-* MCDI = McDiffett Creek KS    
-* MCRA = McRae Creek OR           
-* OKSR = Oksrukuyik Creek AK      
-* POSE = Posey Creek VA           
-* PRIN = Pringle Creek TX       
-* PRLA = Prairie Lake ND          
-* PRPO = Prairie Pothole ND     
-* REDB = Red Butte Creek UT       
-* SUGG = Suggs Lake FL            
-* SYCA = Sycamore Creek AZ        
-* TECR = Teakettle Creek CA        
-* TOMB = Lower Tombigbee River AL  
-* TOOK = Toolik Lake AK         
-* WALK = Walker Branch TN         
-* WLOU = West St Louis Creek CO       
-
-In this exercise, we will pull data from NEON Atlantic Neotropical Domain (D04).
-The aquatic sites in D04 are Rio Cupeyes (CUPE) and Rio Yahuecas (GUIL). Just 
-substitute the 4-letter site code for any other site at the end of the url. 
-
-* [Learn more about the Rio Cupeyes site (D04-CUPE)](https://www.neonscience.org/field-sites/cupe)
-* [Learn more about the Rio Yahuecas site (D04-GUIL)](https://www.neonscience.org/field-sites/guil)
-
-Now let us download our data. We will focus our exercise on data collected from
-2021-10-01 through 2024-09-30 (water years 2022, 2023, 2024). If you are not 
-using a NEON token to download your data, neonUtilities will ignore the `token`
-input. We set `check.size = F` so that the script runs well but remember you
-always want to check your download size first. For this exercise, we will focus
-on the following data products:
-
-**AIS Data Products:**
-
-* Continuous discharge ([DP4.00130.001](https://data.neonscience.org/data-products/DP4.00130.001))
-
-**AOS Data Products:**
-
-* Macroinvertebrate collection ([DP1.20120.001](https://data.neonscience.org/data-products/DP1.20120.001))
-
-## Download AOS Data Products
-
-```{r download-data-inv, results='hide'}
+## ----download-data-inv, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Macroinvertebrate collection
 inv <- neonUtilities::loadByProduct(dpID="DP1.20120.001",
                                     site=c("CUPE","GUIL"), 
@@ -254,98 +41,41 @@ inv <- neonUtilities::loadByProduct(dpID="DP1.20120.001",
                                     token = Sys.getenv("NEON_TOKEN"),
                                     check.size = F)
 
-```
 
-## Files Associated with Downloads
 
-The data we've downloaded comes as an object that is a named list of objects. 
-To work with each of them, select them from the list using the `$` operator. 
-
-```{r names-inv}
+## ----names-inv--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(inv)
 
-```
 
-We can see that there are 10 objects in the downloaded macroinvertebrate 
-collection data.
 
-* Three dataframes of data:
-  * `inv_fieldData`
-  * `inv_persample`
-  * `inv_taxonomyProcessed`
-* Five metadata files:
-  * `categoricalCodes_20120`
-  * `issueLog_20120`
-  * `readme_20120`
-  * `validation_20120`
-  * `variables_20120`
-* Two data citations:
-  * `citation_20120_PROVISIONAL`
-  * `citation_20120_RELEASE-2025`
-
-If you'd like you can use the `$` operator to assign an object from an item in 
-the list. If you prefer to extract each table from the list and work with it as 
-independent objects, which we will do, you can use the `list2env()` function. 
-
-```{r unlist-inv}
+## ----unlist-inv-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(inv,envir = .GlobalEnv)
 
-```
 
-### Explore: Data Citations
 
-Citing sources correctly helps the NEON user community maintain transparency, 
-openness, and trust, while also providing a benefit of being able to track the 
-impact of NEON on scientific research. Thus, each download of NEON data comes
-with proper citations custom to to the download that align with NEON's 
-[data citation guidelines](https://www.neonscience.org/data-samples/guidelines-policies/citing)
-
-```{r view-citation}
+## ----view-citation----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # view formatted citations for DP1.20120.001 download
 cat(citation_20120_PROVISIONAL)
 
 cat(`citation_20120_RELEASE-2025`)
 
-```
 
-### Explore: Metadata
 
-* **categoricalCodes_xxxxx**: Some variables in the data tables are published as
-strings and constrained to a standardized list of values (LOV). This file shows
-all the LOV options for variables published in this data product.
-* **issueLog_xxxxx**: Issues that may impact data quality, or changes to a data
-product that affects all sites, are reported in this file.
-* **readme_xxxxx**: The readme file provides important information relevant to 
-the data product and the specific instance of downloading the data.
-* **validation_xxxxx**: If any fields require validation prior to publication, 
-those validation rules are reported in this table
-* **variables_xxxxx**: This file contains all the variables found in the 
-associated data table(s). This includes full definitions, units, and other 
-important information. 
-
-```{r view-vars}
+## ----view-vars--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # view the entire dataframe in your R environment
 view(variables_20120)
 
-```
 
-### Explore: Dataframes
 
-There will always be one or more dataframes that include the primary data of the
-data product you downloaded. Multiple dataframes are available when there are 
-related datatables for a single data product.
-
-```{r view-df}
+## ----view-df----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # view the entire dataframe in your R environment
 view(inv_fieldData)
 
-```
 
-## Download AIS Data Products
 
-```{r download-data-csd, results='hide'}
+## ----download-data-csd, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Continuous discharge
 csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                     site=c("CUPE","GUIL"), 
@@ -357,54 +87,21 @@ csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                     token = Sys.getenv("NEON_TOKEN"),
                                     check.size = F)
 
-```
-Let's see what files are included with an AIS data product download
 
-```{r names-csd}
+
+## ----names-csd--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(csd)
 
-```
-This AIS data product contains 1 data table available in the basic package:
 
-* `csd_continuousDischarge`
-  * Continuous discharge (streamflow) data at a 1 minute interval. Being a Level
-  4 data product, this data has been cleaned and gap-filled.
 
-Additionally, there are a couple of metadata file types included in AIS data 
-product downloads that are not included in AOS data product downloads:
-
-* **sensor_postions_xxxxx**: This file contains information about the 
-coordinates of each sensor, relative to a reference location.
-* **science_review_flags_xxxxx**: This file contains information on quality
-flags added to the data following expert review for data that are determined to 
-be suspect due to known adverse conditions not captured by automated flagging.
-
-Let's unpack the AIS data product to the environment:
-
-```{r unlist-csd}
+## ----unlist-csd-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(csd, .GlobalEnv)
 
-```
 
-## Wrangling AOS Data
 
-The `neonOS` R package was developed to aid in wrangling NEON Observational
-Subsystem (OS) data products. Two functions used in this exercise are:
-
-* `removeDups()`
-* `joinTableNEON()`
-
-### Removing Duplicates from OS Data
-
-Duplicates can arise in data, but the `neonOS::removeDups()` function identifies
-duplicates in a data table based on primary key information reported in the 
-`variables_xxxxx` files included in each data download.
-
-Let's check for duplicates in macroinvertebrate collection data
-
-```{r id-dups}
+## ----id-dups----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # what are the primary keys in inv_fieldData?
 message("Primary keys in inv_fieldData are: ",
         paste(variables_20120$fieldName[
@@ -441,55 +138,15 @@ message("Primary keys in inv_taxonomyProcessed are: ",
 inv_taxonomyProcessed_dups <- neonOS::removeDups(inv_taxonomyProcessed,
                                          variables_20120)
 
-```
 
-Thankfully, there are no duplicates in any of the AOS tables used in this 
-exercise!
 
-### Joining OS Data Tables
-
-Every NEON data product comes with a Quick Start Guide (QSG). The QSGs contain 
-basic information to help users familiarize themselves with the data products, 
-including description of the data contents, data quality information, common 
-calculations or transformations, and, where relevant, algorithm description 
-and/or table joining instructions.
-
-The QSG for Macroinvertebrate collection can be found on the data product
-landing page: https://data.neonscience.org/data-products/DP1.20120.001
-
-The `neonOS::joinTableNEON()` function uses the table joining information in the
-QSG to quickly join two related NEON data tables from the same data product
-
-```{r table-join}
+## ----table-join-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # join inv_fieldData and inv_taxonomyProcessed
 inv_fieldTaxJoined <- neonOS::joinTableNEON(inv_fieldData,inv_taxonomyProcessed)
 
-```
 
-Now, with field and taxonomy data joined. Individual taxon identifications are
-easily linked to field data such as collection latitude/longitude, habitat type,
-sampler type, and substratum class.
 
-## Wrangling AIS Data
-
-### Data from Different Sensor Locations (HOR)
-
-NEON often collects the same type of data from sensors in different locations. 
-These data are delivered together but you will frequently want to plot the data 
-separately or only include data from one sensor in your analysis. NEON uses the 
-`horizontalPosition` variable in the data tables to describe which sensor 
-data is collected from. The `horizontalPosition` is always a three digit number 
-for AIS data.
-
-The Continuous discharge data product is derived from a single 
-`horizontalPosition`, which corresponds to the sensor co-located with the staff 
-gauge at the site. This is also the location at which all empirical discharge
-measurements are taken.
-
-Let's see from which `horizontalPosition` the Continuous discharge data is
-published.
-
-```{r csd-hor}
+## ----csd-hor----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # use dplyr from the tidyverse collection to get all unique horizontal positions
 csd_hor <- csd_continuousDischarge%>%
   dplyr::distinct(siteID,stationHorizontalID)
@@ -502,22 +159,9 @@ max(csd_continuousDischarge$endDate[
   &csd_continuousDischarge$stationHorizontalID=="110"
 ])
 
-```
 
-At CUPE, the continuous discharge data are published from the 110 position, which
-is defined as 'water level sensors mounted to a staff gauge at stream sites'.
 
-At GUIL, until 2022-12-12, the continuous discharge data were published from the
-110 position. On 2022-12-12, the position changed to 132, which is defined as 
-'stand-alone water level sensors at downstream (S2) locations at stream sites.'
-
-### Average continuous discharge to 15-min interval
-
-To make the continuous discharge data easier to work with for this exercise, 
-let's use different packages from the `tidyverse` collection to create a 15-min 
-averaged table.
-
-```{r 15-min-summ}
+## ----15-min-summ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 15-min average of continuous discharge data
 CSD_15min <- csd_continuousDischarge%>%
   dplyr::mutate(roundDate=lubridate::round_date(endDate,"15 min"))%>%
@@ -525,48 +169,9 @@ CSD_15min <- csd_continuousDischarge%>%
   dplyr::summarise(dischargeMean=mean(continuousDischarge,na.rm=T),
                    dischargeCountQF=sum(dischargeFinalQFSciRvw,na.rm = T))
 
-```
 
-Notice that we included a summation of the science review quality flag 
-(QFSciRvw; binary: 1 = flag, 0 = no flag) fields in the new table.
 
-## Plot Data
-
-Now that we have wrangled the data a bit to make it easier to work with, let's 
-make some initial plots to see the AOS and AIS data separately before we begin 
-to investigate questions that involve integrating the data.
-
-### AOS Macroinvertebrate abundance and richness
-
-First, we remove the records collected outside of normal sampling bouts as 
-a grab sample. In cases where the NEON field ecologists see interesting
-organisms that would not be captured using standard field sampling methods, 
-they can collect a grab sample to be identified by the expert taxonomists. 
-
-Next, we calculate macroinvertebrate abundance per square meter and taxon
-richness per sampling bout. This allows us to compare macroinvertebrate
-data among different samplerTypes and habitatTypes.
-
-We use the `vegan` R package to calculate richness, evenness, and both the 
-Shannon and Simpson biodiversity indicies in this exercise. Though we only 
-focus on richness in the plots, users are encouraged to alter the variables
-to view other indices. For a more detailed dive into NEON biodiversity analyses,
-see the following NEON tutorial:
-
-[Explore and work with NEON biodiversity data from aquatic ecosystems](https://www.neonscience.org/resources/learning-hub/tutorials/aquatic-diversity-macroinvertebrates)
-
-Sampler types (e.g., surber, hand corer, kicknet) are strongly associated with 
-habitat (i.e., riffle, run, pool) and substrata. At some NEON sites, like D04 
-CUPE, the same sampler is used in two habitat types (surber in riffle and run) 
-because all habitats at the site have the same cobble substrata. Data users 
-should look at the data to determine how they want to discriminate between 
-sampler or habitat type.
-
-For this exercise, we split abundance and richness by `habitatType`. To split 
-instead by `samplerType`, simply do a find+replace of 
-'habitatType' -> 'samplerType' throughout the code.
-
-```{r aos-plot}
+## ----aos-plot---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ### SHOW BREAKDOWN OF SAMPLER TYPE BY HABITAT TYPE AT EACH SITE ###
 
 sampler_habitat_summ <- inv_fieldTaxJoined%>%
@@ -740,14 +345,9 @@ inv_diversity_summ%>%
   labs(title="Mean number of macroinvertebrate taxa per bout",
        y= "Taxon Richness", x = "Bout")
 
-```
 
-### AIS Continuous discharge timseries
 
-Now, let's visualize the cleaned and gap-filled continuous discharge timeseries
-for the two NEON D04 sites.
-
-```{r csd-plot}
+## ----csd-plot---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CSD_15min%>%
   ggplot2::ggplot(aes(x=roundDate,y=dischargeMean))+
   ggplot2::geom_line()+
@@ -756,27 +356,9 @@ CSD_15min%>%
   labs(title="Continuous Discharge for Water Years 2022-2024",
        y= "Discharge (L/s)", x = "Date")
 
-```
 
-## Visualize AOS and AIS Data Together
 
-Next, we will use the R package `plotly` to make fun interactive plots allowing
-us to view AOS and AIS data in the same plotting field. There is a
-lot of code here to correctly format the plot in a way to provide as much info 
-and be as interactive as possible in a single plotting field.
-
-The `plotly` package allows us to interact with the plots in the following ways:
-
-* Zoom and pan along the x- and y-axes
-* Switch discharge timeseries between linear and log scale
-* Turn on/off traces in the plot by clicking the legend entries 
-* Scroll long each individual y-axis
-
-### INV Abundance and Richness + Discharge Over Time
-
-Click on traces to display or hide them. (Note: INV traces defaulted to hidden)
-
-```{r aos-ais-plot, out.width='100%', out.height='600px'}
+## ----aos-ais-plot, out.width='100%', out.height='600px'---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # choose the site(s) you want to plot
 siteToPlot <- c("CUPE","GUIL")
 
@@ -869,60 +451,9 @@ for(s in 1:length(siteToPlot)){
   
 }
 
-```
 
-What kind of observations can be made when examining AIS discharge and AOS
-macroinvertebrate data on the same plotting field at NEON's two neotropical 
-aquatic sites?
 
-The standardized spatiotemporal design of NEON's aquatic data products allows
-one to easily run the same analysis for any NEON site. Given that all of NEON's 
-24 stream sites publish both AIS continuous discharge and AOS macroinvertebrate
-collection data products, users can substitute any two NEON stream site IDs into
-this exercise to assess the relationship between stream discharge and
-macroinvertebrate abundance and richness.
-
-Visit the [Explore NEON Field Sites](https://www.neonscience.org/field-sites/explore-field-sites)
-webpage to learn more about the different NEON aquatic sites. To run this 
-exercise on a different combination of two sites, use find+replace to change the
-site IDs throughout the code.
-
-## Further Exploration
-
-Now, we can take what we have learned about NEON AOS and AIS data and look at
-other case studies using different NEON data products.
-
-### Case Study 1: Examine relationships between discharge, sediment particle size distribution, and macroinvertebrate abundance/diversity at 2 sites impacted by hurricanes.
-
-In September 2022, Hurricane Fiona struck land in Puerto Rico as a Category 1 
-hurricane. Two NEON D04 aquatic sites were impacted. Here, we scale three data 
-products across time to get an integrated look at how Hurricane Fiona (red line)
-affected the hydrology, morphology, and biology of two streams.
-
-![](images/fionaNEON.png){width="100%"}
-Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with 
-approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. 
-Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf
-
-For this case study, we will look again at the relationship between stream
-discharge and macroinvertebrate abundance and richness with the hurricane event
-highlighted. We will compare the effects of the hurricane on stream hydrology 
-and biology between the two sites.
-
-We will also bring in a third NEON aquatic data product:
-
-* Stream morphology maps ([DP4.00131.001](https://data.neonscience.org/data-products/DP4.00131.001))
-
-From the Stream morphology maps data product, we will examine the effect of 
-Hurricane Fiona on streambed particle size distribution, expanding our 
-exploration of NEON aquatic data to uncover linkages between the hydrology, 
-morphology, and biology of NEON streams.
-
-According to NOAA, Hurricane Fiona traveled through Puerto Rico between 18-21
-September, 2022. Let's highlight that event in our combined AOS and AIS plots by
-adding a red vertical dashed line on 2022-09-19.
-
-```{r highlight-fiona, out.width='100%', out.height='600px'}
+## ----highlight-fiona, out.width='100%', out.height='600px'------------------------------------------------------------------------------------------------------------------------------------------------------------
 # identify the date of Fiona
 fionaDate <- "2022-09-19"
 
@@ -950,12 +481,9 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
                        name="Fiona",
                        line=list(color='red',dash='dash'))
 
-```
 
-Next, we will use the `neonUtilities` function `loadByProduct()` to load data
-from the Stream morphology maps data product into R.
 
-```{r download-data-geo, results='hide'}
+## ----download-data-geo, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Stream morphology maps
 # the expanded download package is needed to read in the geo_pebbleCount table
 geo <- neonUtilities::loadByProduct(dpID="DP4.00131.001",
@@ -971,19 +499,9 @@ geo <- neonUtilities::loadByProduct(dpID="DP4.00131.001",
 # unlist the variables and add to the global environment
 list2env(geo,envir = .GlobalEnv)
 
-```
 
-There are many data tables included in this Level 4 AOS download package, 
-but we are only interested in using one table for this exercise:
 
-* `geo_pebbleCount`
-  * Sediment particle size data collected during pebble count sampling. Pebble 
-  count surveys are conducted once per year, typically during periods of 
-  baseflow at a given site.
-
-Check for duplicates in geo_pebbleCount using `neonOS::removeDups()`.
-
-```{r id-dups-geo}
+## ----id-dups-geo------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # what are the primary keys in geo_pebbleCount?
 message("Primary keys in geo_pebbleCount are: ",
         paste(variables_00131$fieldName[
@@ -995,15 +513,9 @@ message("Primary keys in geo_pebbleCount are: ",
 # identify duplicates in geo_pebbleCount
 geo_pebbleCount_dups <- neonOS::removeDups(geo_pebbleCount,
                                            variables_00131)
-```
 
-There are no duplicates! Let's proceed.
 
-Next, let's wrangle the data and plot cumulative frequency curves to visualize
-particle size distributions for NEON D04 aquatic sites across water years 2022,
-2023, and 2024.
-
-```{r wrangle-plot-geo}
+## ----wrangle-plot-geo-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # we want to plot the frequency of `pebbleSize`
 # `pebbleSize` is published as a categorical variable (range of size - mm)
 # For plotting purposes, convert `pebbleSize` to numeric (lower number in range)
@@ -1094,12 +606,9 @@ geo_pebbleCount_freqCumm%>%
        x = "Particle Size (mm)", y = "Cumulative Frequency (%)") +
   ggplot2::facet_wrap(~siteID)
 
-```
 
-To effectively view the particle size distribution data with the other two data
-products, we will embed them as `ggplot` subplots in the larger `plotly` plot.
 
-```{r highlight-fiona-psd, out.width='100%', out.height='800px'}
+## ----highlight-fiona-psd, out.width='100%', out.height='800px'--------------------------------------------------------------------------------------------------------------------------------------------------------
 # generate small, simple subplots of each pebble count survey
 # loop through each site and year to make plot and save to the working directory
 # for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
@@ -1170,56 +679,9 @@ AOS_AIS_plot_GUIL_Fiona%>%
     
     ))
 
-```
 
-**Discussion**: With the three data products viewed together in relation to the
-Hurricane Fiona event, there are several observations that can be made:
 
-* Hydrology
-  * Both sites were hit with heavy rain, with CUPE discharge reaching nearly 
-  20,000 L/s at its peak. 
-  * Sensor infrastructure at GUIL was temporarily compromised during the storm, 
-  resulting in a data gap.
-
-* Morphology
-  * The sediment particle size distribution data suggests that CUPE sediment 
-  remained relatively stable pre- and post-storm, while GUIL showed heavier loss
-  of small sediment via scouring.
-  
-* Biology
-  * While both sites show a large decrease in macroinvertebrate abundance 
-  post-storm, GUIL shows a more negative effect to macroinvertebrate diversity 
-  relative to CUPE.
-  * Both sites show a trend back to pre-storm abundance and diversity numbers by
-  the following spring bout.
-  
-By integrating data products across time, we observe disparate effects of 
-Hurricane Fiona on NEON D04 sites, with a potential relationship being revealed
-between the stability of the streambed substrate and the loss of 
-macroinvertebrate diversity immediately following a major precipitation event.
-
-### Case Study 2: Can relationships between sensor measurements and discrete water chemistry data be used to expand the temporal extent of ecologically-relevant analytes?
-
-We are going to switch gears to a different kind of integration between AOS and
-AIS data. We evaluate the relationship between high-frequency fluorescent 
-dissolved organic matter (fDOM) AIS data and dissolved organic carbon (DOC) data
-analyzed from AOS water chemistry grab samples to model a continuous DOC 
-timeseries at D04 CUPE.
-
-The data products downloaded here are:
-
-**AIS Data Products:**
-
-* Water quality ([DP1.20288.001](https://data.neonscience.org/data-products/DP1.20288.001))
-
-**AOS Data Products:**
-
-* Chemical properties of surface water ([DP1.20093.001](https://data.neonscience.org/data-products/DP1.20093.001))
-
-First, download AOS data, run the duplicate check, and plot the data. We will
-stick with the 2021-10-01 to 2024-09-30 time range.
-
-```{r download-swc, results='hide'}
+## ----download-swc, results='hide'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Chemical properties of surface water
 swc <- neonUtilities::loadByProduct(dpID="DP1.20093.001",
                                     site=c("CUPE"), 
@@ -1234,15 +696,9 @@ swc <- neonUtilities::loadByProduct(dpID="DP1.20093.001",
 # unlist the variables and add to the global environment
 list2env(swc,envir = .GlobalEnv)
 
-```
 
-The data table we are interested in here is:
 
-* `swc_externalLabDataByAnalyte`
-  * Long-format results of chemical analysis of up to 28 unique analytes from
-  surface water and groundwater grab samples.
-
-```{r wrangle-plot-swc}
+## ----wrangle-plot-swc-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
 message("Primary keys in swc_externalLabDataByAnalyte are: ",
@@ -1275,12 +731,9 @@ DOC%>%
                 y = "DOC (mg/L)",
                 x = "Date")
 
-```
 
-Next, download AIS data, subset to the appropriate `horizontalPosition`, wrangle
-the data for analysis, and plot the data.
 
-```{r download-waq, results='hide'}
+## ----download-waq, results='hide'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Water quality
 waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001",
                                     site=c("CUPE"), 
@@ -1295,16 +748,9 @@ waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001",
 # unlist the variables and add to the global environment
 list2env(waq,envir = .GlobalEnv)
 
-```
 
-The data table we are interested in here is:
 
-* `waq_instantaneous`
-  * Wide-format table published many water quality metrics in wide-format,
-  including fDOM, dissolved oxygen, specific conductance, pH, chlorophyll, and
-  turbidity.
-
-```{r wrangle-plot-waq}
+## ----wrangle-plot-waq-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # `waq_instantaneous` table published many water quality metrics in wide-format
 # other than fDOM, many other metrics are published in `waq_instantaneous`
 # including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity
@@ -1337,24 +783,18 @@ fDOM_15min%>%
                 y = "fDOM (QSU)",
                 x = "Date")
 
-```
 
-Both data products are published in Coordinated Universal Time (UTC), as are all
-AOS and AIS data, which makes joining across tables easy. Let's join the AOS and
-AIS data into a single data frame from which we will model the two variables.
 
-```{r join-aos-ais}
+## ----join-aos-ais-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # round DOC `collectDate` to the nearest 15 minute timestamp
 DOC$roundDate <- lubridate::round_date(DOC$collectDate,"15 min")
 
 # perform a left-join, which will join an AIS DOC record to every AIS fDOM 
 # record based on matching timestamps
 fDOM_DOC_join <- dplyr::left_join(fDOM_15min,DOC,by="roundDate")
-```
 
-Create a linear regression to analyze the correlation of the two variables
 
-```{r linear-regression}
+## ----linear-regression------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # use `lm` function to create a linear regression: DOC~fDOM
 model <- lm(analyteConcentration~mean_fDOM,data=fDOM_DOC_join)
 
@@ -1371,13 +811,9 @@ fDOM_DOC_join%>%
                 y = "DOC (mg/L)",
                 x = "fDOM (QSU)")
 
-```
 
-Given relatively high AIS data completeness and a correlative relationship 
-between AOS-DOC and AIS-fDOM, Let's model DOC vs. fDOM from 2021-10-01 to 
-2024-09-30. We will add modelled continuous DOC as a column in the joined table.
 
-```{r model-doc}
+## ----model-doc--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # predict continuous doc based on the linear regression model coefficients
 fDOM_DOC_join$fit <- predict(model,
                              newdata = fDOM_DOC_join,
@@ -1388,14 +824,9 @@ conf_int <- predict(model, newdata = fDOM_DOC_join, interval = "confidence")
 fDOM_DOC_join$lwr <- conf_int[, "lwr"]
 fDOM_DOC_join$upr <- conf_int[, "upr"]
 
-```
 
-With the modeled data added to our joined data table, let's plot the resulting
-modeled DOC w/ uncertainty on the same plotting field as the DOC measured from 
-water chemistry grab samples. We will make this plot using `plotly` so we can
-zoom in to see how well the AOS-DOC and modeled continuous DOC match up.
 
-```{r plot-model-doc, out.width='100%', out.height='600px'}
+## ----plot-model-doc, out.width='100%', out.height='600px'-------------------------------------------------------------------------------------------------------------------------------------------------------------
 # create plot
 plotly::plot_ly(data=fDOM_DOC_join)%>%
   
@@ -1427,21 +858,4 @@ plotly::plot_ly(data=fDOM_DOC_join)%>%
                              orientation = 'h',
                              x=0.5,y=-0.2))
 
-```
 
-**Discussion**: This study shows the possibility of integrating AIS and AOS data
-to expand the temporal scale of estimated DOC in stream sites. At CUPE, 
-estimated DOC matches well with grab sample DOC across mid-range values, with 
-uncertainty increasing at the low and high ends of the timeseries. The 
-relationship will continue to be expanded upon, following NEON’s flow-weighted 
-sampling design.
-
-The standardized nature of NEON data products and site designs allow for this 
-and other analyses to be scaled across the observatory, revealing similarities 
-and differences in the relationship across sites, and allowing for more detailed
-investigation of carbon dynamics in freshwater systems across the United States.
-
-This analysis can be conducted for any of the 24 stream sites across the NEON
-observatory simply by changing the `site` input variable in `loadByProduct()`.
-Try out this analysis at your favorite site! What environmental factors could
-contribute to the quality of this relationship at different NEON stream sites?
