@@ -325,7 +325,7 @@ those validation rules are reported in this table
 associated data table(s). This includes full definitions, units, and other 
 important information. 
 
-```{r view-vars}
+```{r view-vars, eval=FALSE}
 # view the entire dataframe in your R environment
 view(variables_20120)
 
@@ -337,7 +337,7 @@ There will always be one or more dataframes that include the primary data of the
 data product you downloaded. Multiple dataframes are available when there are 
 related datatables for a single data product.
 
-```{r view-df}
+```{r view-df, eval=FALSE}
 # view the entire dataframe in your R environment
 view(inv_fieldData)
 
@@ -365,6 +365,7 @@ Let's see what files are included with an AIS data product download
 names(csd)
 
 ```
+
 This AIS data product contains 1 data table available in the basic package:
 
 * `csd_continuousDischarge`
@@ -776,13 +777,13 @@ The `plotly` package allows us to interact with the plots in the following ways:
 
 Click on traces to display or hide them. (Note: INV traces defaulted to hidden)
 
-```{r aos-ais-plot, out.width='100%', out.height='600px'}
+```{r aos-ais-plot, out.width='100%', out.height='600px', fig.height=4, fig.width=8}
 # choose the site(s) you want to plot
 siteToPlot <- c("CUPE","GUIL")
 
 for(s in 1:length(siteToPlot)){
   # begin the plot code
-  CSD_15min%>%
+  AOS_AIS_plot <- CSD_15min%>%
     dplyr::filter(siteID==siteToPlot[s])%>%
     plotly::plot_ly()%>%
     # add trace for continuous discharge
@@ -867,9 +868,30 @@ for(s in 1:length(siteToPlot)){
               method='relayout',
               args=list(list(yaxis=list(type='log'))))))))
   
+  assign(paste0("AOS_AIS_plot_",siteToPlot[s]),AOS_AIS_plot)
 }
 
+# show plot at CUPE
+AOS_AIS_plot_CUPE
+
+# show plot at GUIL
+AOS_AIS_plot_GUIL
+
+
 ```
+
+```{r save-plotly-to-graphics, include=FALSE}
+
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_CUPE),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/cupe-discharge-macroinv-abundance-richness.html")
+
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html")
+
+```
+
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html" alt=" "  />
+<p class="GUIL Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
+</div>
 
 What kind of observations can be made when examining AIS discharge and AOS
 macroinvertebrate data on the same plotting field at NEON's two neotropical 
@@ -899,7 +921,12 @@ hurricane. Two NEON D04 aquatic sites were impacted. Here, we scale three data
 products across time to get an integrated look at how Hurricane Fiona (red line)
 affected the hydrology, morphology, and biology of two streams.
 
-![](images/fionaNEON.png){width="100%"}
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
+<p class="Hurricane Fiona Impact Map"> </p>
+</div>
+
+
 Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with 
 approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. 
 Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf
@@ -922,7 +949,7 @@ According to NOAA, Hurricane Fiona traveled through Puerto Rico between 18-21
 September, 2022. Let's highlight that event in our combined AOS and AIS plots by
 adding a red vertical dashed line on 2022-09-19.
 
-```{r highlight-fiona, out.width='100%', out.height='600px'}
+```{r highlight-fiona, out.width='100%', out.height='600px', fig.height=4, fig.width=6}
 # identify the date of Fiona
 fionaDate <- "2022-09-19"
 
@@ -1268,12 +1295,14 @@ DOC <- swc_externalLabDataByAnalyte%>%
   dplyr::filter(analyte=="DOC")
 
 # plot a timeseries of DOC
-DOC%>%
+DOC_plot <- DOC%>%
   ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::labs(title = "Dissolved organic carbon (DOC) over time",
                 y = "DOC (mg/L)",
                 x = "Date")
+
+DOC_plot
 
 ```
 
@@ -1330,12 +1359,14 @@ fDOM_15min <- WAQ_102%>%
   summarize(mean_fDOM=mean(rawCalibratedfDOM))
 
 # plot a timeseries of fDOM
-fDOM_15min%>%
+fDOM_plot <- fDOM_15min%>%
   ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
   ggplot2::geom_line()+
   ggplot2::labs(title = "fluorescent dissolved organic matter (fDOM) over time",
                 y = "fDOM (QSU)",
                 x = "Date")
+
+fDOM_plot
 
 ```
 
@@ -1362,7 +1393,7 @@ model <- lm(analyteConcentration~mean_fDOM,data=fDOM_DOC_join)
 print(summary(model))
 
 # show a plot of the relationship with a linear trendline added
-fDOM_DOC_join%>%
+fDOM_DOC_plot <- fDOM_DOC_join%>%
   ggplot2::ggplot(aes(x=mean_fDOM,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::geom_smooth(method="lm",se=T)+
@@ -1370,6 +1401,8 @@ fDOM_DOC_join%>%
   ggplot2::labs(title = "AOS-DOC vs. AIS-fDOM",
                 y = "DOC (mg/L)",
                 x = "fDOM (QSU)")
+
+fDOM_DOC_plot
 
 ```
 

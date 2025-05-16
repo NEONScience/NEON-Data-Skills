@@ -1,21 +1,21 @@
-## ----setup, include=FALSE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----setup, include=FALSE---------------------------------------------------------------------------------------------------------------------------
 require(knitr)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 
 
-## ----set-up-env, eval=F-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# # # Install neonUtilities package if you have not yet.
-# # install.packages("neonUtilities")
-# # install.packages("neonOS")
-# # install.packages("tidyverse")
-# # install.packages("plotly")
-# # install.packages("vegan")
-# # install.packages("base64enc")
-# 
+## ----set-up-env, eval=F-----------------------------------------------------------------------------------------------------------------------------
+## # # Install neonUtilities package if you have not yet.
+## # install.packages("neonUtilities")
+## # install.packages("neonOS")
+## # install.packages("tidyverse")
+## # install.packages("plotly")
+## # install.packages("vegan")
+## # install.packages("base64enc")
+## 
 
 
-## ----load-packages----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----load-packages----------------------------------------------------------------------------------------------------------------------------------
 # Set global option to NOT convert all character variables to factors
 options(stringsAsFactors=F)
 
@@ -29,7 +29,7 @@ library(base64enc)
 
 
 
-## ----download-data-inv, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-data-inv, results='hide'--------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Macroinvertebrate collection
 inv <- neonUtilities::loadByProduct(dpID="DP1.20120.001",
                                     site=c("CUPE","GUIL"), 
@@ -43,19 +43,19 @@ inv <- neonUtilities::loadByProduct(dpID="DP1.20120.001",
 
 
 
-## ----names-inv--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----names-inv--------------------------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(inv)
 
 
 
-## ----unlist-inv-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----unlist-inv-------------------------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(inv,envir = .GlobalEnv)
 
 
 
-## ----view-citation----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-citation----------------------------------------------------------------------------------------------------------------------------------
 # view formatted citations for DP1.20120.001 download
 cat(citation_20120_PROVISIONAL)
 
@@ -63,19 +63,19 @@ cat(`citation_20120_RELEASE-2025`)
 
 
 
-## ----view-vars--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# view the entire dataframe in your R environment
-view(variables_20120)
+## ----view-vars, eval=FALSE--------------------------------------------------------------------------------------------------------------------------
+## # view the entire dataframe in your R environment
+## view(variables_20120)
+## 
 
 
+## ----view-df, eval=FALSE----------------------------------------------------------------------------------------------------------------------------
+## # view the entire dataframe in your R environment
+## view(inv_fieldData)
+## 
 
-## ----view-df----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# view the entire dataframe in your R environment
-view(inv_fieldData)
 
-
-
-## ----download-data-csd, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-data-csd, results='hide'--------------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Continuous discharge
 csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                     site=c("CUPE","GUIL"), 
@@ -89,19 +89,19 @@ csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
 
 
 
-## ----names-csd--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----names-csd--------------------------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(csd)
 
 
 
-## ----unlist-csd-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----unlist-csd-------------------------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(csd, .GlobalEnv)
 
 
 
-## ----id-dups----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----id-dups----------------------------------------------------------------------------------------------------------------------------------------
 # what are the primary keys in inv_fieldData?
 message("Primary keys in inv_fieldData are: ",
         paste(variables_20120$fieldName[
@@ -140,13 +140,13 @@ inv_taxonomyProcessed_dups <- neonOS::removeDups(inv_taxonomyProcessed,
 
 
 
-## ----table-join-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----table-join-------------------------------------------------------------------------------------------------------------------------------------
 # join inv_fieldData and inv_taxonomyProcessed
 inv_fieldTaxJoined <- neonOS::joinTableNEON(inv_fieldData,inv_taxonomyProcessed)
 
 
 
-## ----csd-hor----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----csd-hor----------------------------------------------------------------------------------------------------------------------------------------
 # use dplyr from the tidyverse collection to get all unique horizontal positions
 csd_hor <- csd_continuousDischarge%>%
   dplyr::distinct(siteID,stationHorizontalID)
@@ -161,7 +161,7 @@ max(csd_continuousDischarge$endDate[
 
 
 
-## ----15-min-summ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----15-min-summ------------------------------------------------------------------------------------------------------------------------------------
 # 15-min average of continuous discharge data
 CSD_15min <- csd_continuousDischarge%>%
   dplyr::mutate(roundDate=lubridate::round_date(endDate,"15 min"))%>%
@@ -171,7 +171,7 @@ CSD_15min <- csd_continuousDischarge%>%
 
 
 
-## ----aos-plot---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----aos-plot---------------------------------------------------------------------------------------------------------------------------------------
 ### SHOW BREAKDOWN OF SAMPLER TYPE BY HABITAT TYPE AT EACH SITE ###
 
 sampler_habitat_summ <- inv_fieldTaxJoined%>%
@@ -347,7 +347,7 @@ inv_diversity_summ%>%
 
 
 
-## ----csd-plot---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----csd-plot---------------------------------------------------------------------------------------------------------------------------------------
 CSD_15min%>%
   ggplot2::ggplot(aes(x=roundDate,y=dischargeMean))+
   ggplot2::geom_line()+
@@ -358,13 +358,13 @@ CSD_15min%>%
 
 
 
-## ----aos-ais-plot, out.width='100%', out.height='600px'---------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----aos-ais-plot, out.width='100%', out.height='600px', fig.height=4, fig.width=8------------------------------------------------------------------
 # choose the site(s) you want to plot
 siteToPlot <- c("CUPE","GUIL")
 
 for(s in 1:length(siteToPlot)){
   # begin the plot code
-  CSD_15min%>%
+  AOS_AIS_plot <- CSD_15min%>%
     dplyr::filter(siteID==siteToPlot[s])%>%
     plotly::plot_ly()%>%
     # add trace for continuous discharge
@@ -449,11 +449,27 @@ for(s in 1:length(siteToPlot)){
               method='relayout',
               args=list(list(yaxis=list(type='log'))))))))
   
+  assign(paste0("AOS_AIS_plot_",siteToPlot[s]),AOS_AIS_plot)
 }
 
+# show plot at CUPE
+AOS_AIS_plot_CUPE
+
+# show plot at GUIL
+AOS_AIS_plot_GUIL
 
 
-## ----highlight-fiona, out.width='100%', out.height='600px'------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+## ----save-plotly-to-graphics, include=FALSE---------------------------------------------------------------------------------------------------------
+
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_CUPE),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/cupe-discharge-macroinv-abundance-richness.html")
+
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html")
+
+
+
+## ----highlight-fiona, out.width='100%', out.height='600px', fig.height=4, fig.width=6---------------------------------------------------------------
 # identify the date of Fiona
 fionaDate <- "2022-09-19"
 
@@ -483,7 +499,7 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
 
 
 
-## ----download-data-geo, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-data-geo, results='hide'--------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Stream morphology maps
 # the expanded download package is needed to read in the geo_pebbleCount table
 geo <- neonUtilities::loadByProduct(dpID="DP4.00131.001",
@@ -501,7 +517,7 @@ list2env(geo,envir = .GlobalEnv)
 
 
 
-## ----id-dups-geo------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----id-dups-geo------------------------------------------------------------------------------------------------------------------------------------
 # what are the primary keys in geo_pebbleCount?
 message("Primary keys in geo_pebbleCount are: ",
         paste(variables_00131$fieldName[
@@ -515,7 +531,7 @@ geo_pebbleCount_dups <- neonOS::removeDups(geo_pebbleCount,
                                            variables_00131)
 
 
-## ----wrangle-plot-geo-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----wrangle-plot-geo-------------------------------------------------------------------------------------------------------------------------------
 # we want to plot the frequency of `pebbleSize`
 # `pebbleSize` is published as a categorical variable (range of size - mm)
 # For plotting purposes, convert `pebbleSize` to numeric (lower number in range)
@@ -608,7 +624,7 @@ geo_pebbleCount_freqCumm%>%
 
 
 
-## ----highlight-fiona-psd, out.width='100%', out.height='800px'--------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----highlight-fiona-psd, out.width='100%', out.height='800px'--------------------------------------------------------------------------------------
 # generate small, simple subplots of each pebble count survey
 # loop through each site and year to make plot and save to the working directory
 # for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
@@ -681,7 +697,7 @@ AOS_AIS_plot_GUIL_Fiona%>%
 
 
 
-## ----download-swc, results='hide'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-swc, results='hide'-------------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Chemical properties of surface water
 swc <- neonUtilities::loadByProduct(dpID="DP1.20093.001",
                                     site=c("CUPE"), 
@@ -698,7 +714,7 @@ list2env(swc,envir = .GlobalEnv)
 
 
 
-## ----wrangle-plot-swc-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----wrangle-plot-swc-------------------------------------------------------------------------------------------------------------------------------
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
 message("Primary keys in swc_externalLabDataByAnalyte are: ",
@@ -724,16 +740,18 @@ DOC <- swc_externalLabDataByAnalyte%>%
   dplyr::filter(analyte=="DOC")
 
 # plot a timeseries of DOC
-DOC%>%
+DOC_plot <- DOC%>%
   ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::labs(title = "Dissolved organic carbon (DOC) over time",
                 y = "DOC (mg/L)",
                 x = "Date")
 
+DOC_plot
 
 
-## ----download-waq, results='hide'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## ----download-waq, results='hide'-------------------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Water quality
 waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001",
                                     site=c("CUPE"), 
@@ -750,7 +768,7 @@ list2env(waq,envir = .GlobalEnv)
 
 
 
-## ----wrangle-plot-waq-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----wrangle-plot-waq-------------------------------------------------------------------------------------------------------------------------------
 # `waq_instantaneous` table published many water quality metrics in wide-format
 # other than fDOM, many other metrics are published in `waq_instantaneous`
 # including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity
@@ -776,16 +794,18 @@ fDOM_15min <- WAQ_102%>%
   summarize(mean_fDOM=mean(rawCalibratedfDOM))
 
 # plot a timeseries of fDOM
-fDOM_15min%>%
+fDOM_plot <- fDOM_15min%>%
   ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
   ggplot2::geom_line()+
   ggplot2::labs(title = "fluorescent dissolved organic matter (fDOM) over time",
                 y = "fDOM (QSU)",
                 x = "Date")
 
+fDOM_plot
 
 
-## ----join-aos-ais-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## ----join-aos-ais-----------------------------------------------------------------------------------------------------------------------------------
 # round DOC `collectDate` to the nearest 15 minute timestamp
 DOC$roundDate <- lubridate::round_date(DOC$collectDate,"15 min")
 
@@ -794,7 +814,7 @@ DOC$roundDate <- lubridate::round_date(DOC$collectDate,"15 min")
 fDOM_DOC_join <- dplyr::left_join(fDOM_15min,DOC,by="roundDate")
 
 
-## ----linear-regression------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----linear-regression------------------------------------------------------------------------------------------------------------------------------
 # use `lm` function to create a linear regression: DOC~fDOM
 model <- lm(analyteConcentration~mean_fDOM,data=fDOM_DOC_join)
 
@@ -802,7 +822,7 @@ model <- lm(analyteConcentration~mean_fDOM,data=fDOM_DOC_join)
 print(summary(model))
 
 # show a plot of the relationship with a linear trendline added
-fDOM_DOC_join%>%
+fDOM_DOC_plot <- fDOM_DOC_join%>%
   ggplot2::ggplot(aes(x=mean_fDOM,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::geom_smooth(method="lm",se=T)+
@@ -811,9 +831,11 @@ fDOM_DOC_join%>%
                 y = "DOC (mg/L)",
                 x = "fDOM (QSU)")
 
+fDOM_DOC_plot
 
 
-## ----model-doc--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+## ----model-doc--------------------------------------------------------------------------------------------------------------------------------------
 # predict continuous doc based on the linear regression model coefficients
 fDOM_DOC_join$fit <- predict(model,
                              newdata = fDOM_DOC_join,
@@ -826,7 +848,7 @@ fDOM_DOC_join$upr <- conf_int[, "upr"]
 
 
 
-## ----plot-model-doc, out.width='100%', out.height='600px'-------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-model-doc, out.width='100%', out.height='600px'-------------------------------------------------------------------------------------------
 # create plot
 plotly::plot_ly(data=fDOM_DOC_join)%>%
   

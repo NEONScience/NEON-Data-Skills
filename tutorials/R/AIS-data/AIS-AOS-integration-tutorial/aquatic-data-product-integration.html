@@ -306,8 +306,9 @@ To work with each of them, select them from the list using the <code>$</code> op
 
 names(inv)
 
-##  [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_PROVISIONAL&quot;  &quot;citation_20120_RELEASE-2025&quot; &quot;inv_fieldData&quot;               &quot;inv_persample&quot;               &quot;inv_taxonomyProcessed&quot;       &quot;issueLog_20120&quot;             
-##  [8] &quot;readme_20120&quot;                &quot;validation_20120&quot;            &quot;variables_20120&quot;
+##  [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_PROVISIONAL&quot;  &quot;citation_20120_RELEASE-2025&quot; &quot;inv_fieldData&quot;              
+##  [5] &quot;inv_persample&quot;               &quot;inv_taxonomyProcessed&quot;       &quot;issueLog_20120&quot;              &quot;readme_20120&quot;               
+##  [9] &quot;validation_20120&quot;            &quot;variables_20120&quot;
 </code></pre>
 <p>We can see that there are 10 objects in the downloaded macroinvertebrate
 collection data.</p>
@@ -430,8 +431,9 @@ csd &lt;- neonUtilities::loadByProduct(dpID=&quot;DP4.00130.001&quot;,
 
 names(csd)
 
-## [1] &quot;categoricalCodes_00130&quot;      &quot;citation_00130_PROVISIONAL&quot;  &quot;citation_00130_RELEASE-2025&quot; &quot;csd_continuousDischarge&quot;     &quot;issueLog_00130&quot;              &quot;readme_00130&quot;                &quot;science_review_flags_00130&quot; 
-## [8] &quot;sensor_positions_00130&quot;      &quot;variables_00130&quot;
+## [1] &quot;categoricalCodes_00130&quot;      &quot;citation_00130_PROVISIONAL&quot;  &quot;citation_00130_RELEASE-2025&quot; &quot;csd_continuousDischarge&quot;    
+## [5] &quot;issueLog_00130&quot;              &quot;readme_00130&quot;                &quot;science_review_flags_00130&quot;  &quot;sensor_positions_00130&quot;     
+## [9] &quot;variables_00130&quot;
 </code></pre>
 <p>This AIS data product contains 1 data table available in the basic package:</p>
 <ul>
@@ -897,7 +899,7 @@ siteToPlot &lt;- c(&quot;CUPE&quot;,&quot;GUIL&quot;)
 
 for(s in 1:length(siteToPlot)){
   # begin the plot code
-  CSD_15min%&gt;%
+  AOS_AIS_plot &lt;- CSD_15min%&gt;%
     dplyr::filter(siteID==siteToPlot[s])%&gt;%
     plotly::plot_ly()%&gt;%
     # add trace for continuous discharge
@@ -982,8 +984,31 @@ for(s in 1:length(siteToPlot)){
               method='relayout',
               args=list(list(yaxis=list(type='log'))))))))
   
+  assign(paste0(&quot;AOS_AIS_plot_&quot;,siteToPlot[s]),AOS_AIS_plot)
 }
+
+
+
+# show plot at CUPE
+
+AOS_AIS_plot_CUPE
 </code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-1.png" alt=" " width="100%" height="600px" />
+<p class="caption"> </p>
+</div>
+<pre><code># show plot at GUIL
+
+AOS_AIS_plot_GUIL
+</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-2.png" alt=" " width="100%" height="600px" />
+<p class="caption"> </p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html" alt=" "  />
+<p class="GUIL Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
+</div>
 <p>What kind of observations can be made when examining AIS discharge and AOS
 macroinvertebrate data on the same plotting field at NEON’s two neotropical
 aquatic sites?</p>
@@ -1043,7 +1068,7 @@ AOS_AIS_plot_CUPE_Fiona &lt;- AOS_AIS_plot_CUPE%&gt;%
                        name=&quot;Fiona&quot;,
                        line=list(color='red',dash='dash'))
 
-## Error: object 'AOS_AIS_plot_CUPE' not found
+
 
 # highlight Fiona at GUIL
 
@@ -1057,8 +1082,6 @@ AOS_AIS_plot_GUIL_Fiona &lt;- AOS_AIS_plot_GUIL%&gt;%
                          na.rm = T),
                        name=&quot;Fiona&quot;,
                        line=list(color='red',dash='dash'))
-
-## Error: object 'AOS_AIS_plot_GUIL' not found
 </code></pre>
 <p>Next, we will use the <code>neonUtilities</code> function <code>loadByProduct()</code> to load data
 from the Stream morphology maps data product into R.</p>
@@ -1309,10 +1332,12 @@ AOS_AIS_plot_CUPE_Fiona%&gt;%
          xanchor = &quot;left&quot;, yanchor = &quot;bottom&quot;)
     
     ))
-
-## Error: object 'AOS_AIS_plot_CUPE_Fiona' not found
-
-# re-generate the GUIL plot with particle size distribution subplots added
+</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-1.png" alt=" " width="100%" height="800px" />
+<p class="caption"> </p>
+</div>
+<pre><code># re-generate the GUIL plot with particle size distribution subplots added
 
 AOS_AIS_plot_GUIL_Fiona%&gt;%
   layout(images=list(
@@ -1336,9 +1361,11 @@ AOS_AIS_plot_GUIL_Fiona%&gt;%
          xanchor = &quot;left&quot;, yanchor = &quot;bottom&quot;)
     
     ))
-
-## Error: object 'AOS_AIS_plot_GUIL_Fiona' not found
 </code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-2.png" alt=" " width="100%" height="800px" />
+<p class="caption"> </p>
+</div>
 <p><strong>Discussion</strong>: With the three data products viewed together in relation to the
 Hurricane Fiona event, there are several observations that can be made:</p>
 <ul>
@@ -1433,20 +1460,23 @@ variables_20093)</p>
 <h1 id="lab-data-is-published-long-format-with-28-analytes-analyzed">lab data is published <code>long-format</code> with 28 analytes analyzed</h1>
 <h1 id="show-all-the-analytes-published-in-the-lab-data">show all the analytes published in the lab data</h1>
 <p>print(unique(swc_externalLabDataByAnalyte$analyte))</p>
-<h2 id="1-tdp-so4-tp-nh4-n-mg-no2-n-f-si">[1] “TDP”                    “SO4”                    “TP”                     “NH4 - N”                “Mg”                     “NO2 - N”                “F”                      “Si”</h2>
-<h2 id="9-tds-uv-absorbance-254-nm-cl-ca-tn-uv-absorbance-280-nm-no3-no2-n-tss">[9] “TDS”                    “UV Absorbance (254 nm)” “Cl”                     “Ca”                     “TN”                     “UV Absorbance (280 nm)” “NO3+NO2 - N”            “TSS”</h2>
-<h2 id="17-tpc-tdn-na-br-mn-fe-doc-dic">[17] “TPC”                    “TDN”                    “Na”                     “Br”                     “Mn”                     “Fe”                     “DOC”                    “DIC”</h2>
-<h2 id="25-k-ortho-p-toc-tpn">[25] “K”                      “Ortho - P”              “TOC”                    “TPN”</h2>
+<h2 id="1-tdp-so4-tp-nh4-n-mg">[1] “TDP”                    “SO4”                    “TP”                     “NH4 - N”                “Mg”</h2>
+<h2 id="6-no2-n-f-si-tds-uv-absorbance-254-nm">[6] “NO2 - N”                “F”                      “Si”                     “TDS”                    “UV Absorbance (254 nm)”</h2>
+<h2 id="11-cl-ca-tn-uv-absorbance-280-nm-no3-no2-n">[11] “Cl”                     “Ca”                     “TN”                     “UV Absorbance (280 nm)” “NO3+NO2 - N”</h2>
+<h2 id="16-tss-tpc-tdn-na-br">[16] “TSS”                    “TPC”                    “TDN”                    “Na”                     “Br”</h2>
+<h2 id="21-mn-fe-doc-dic-k">[21] “Mn”                     “Fe”                     “DOC”                    “DIC”                    “K”</h2>
+<h2 id="26-ortho-p-toc-tpn">[26] “Ortho - P”              “TOC”                    “TPN”</h2>
 <h1 id="for-this-exercise-subset-lab-data-to-only-dissolved-organic-carbon-doc">for this exercise, subset lab data to only dissolved organic carbon (DOC)</h1>
 <p>DOC &lt;- swc_externalLabDataByAnalyte%&gt;%
 dplyr::filter(analyte==“DOC”)</p>
 <h1 id="plot-a-timeseries-of-doc">plot a timeseries of DOC</h1>
-<p>DOC%&gt;%
+<p>DOC_plot &lt;- DOC%&gt;%
 ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
 ggplot2::geom_point()+
 ggplot2::labs(title = “Dissolved organic carbon (DOC) over time”,
 y = “DOC (mg/L)”,
 x = “Date”)</p>
+<p>DOC_plot</p>
 </li>
 </ul>
 </li>
@@ -1499,12 +1529,13 @@ dplyr::filter(horizontalPosition==102)</p>
 group_by(siteID,roundDate)%&gt;%
 summarize(mean_fDOM=mean(rawCalibratedfDOM))</p>
 <h1 id="plot-a-timeseries-of-fdom">plot a timeseries of fDOM</h1>
-<p>fDOM_15min%&gt;%
+<p>fDOM_plot &lt;- fDOM_15min%&gt;%
 ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
 ggplot2::geom_line()+
 ggplot2::labs(title = “fluorescent dissolved organic matter (fDOM) over time”,
 y = “fDOM (QSU)”,
 x = “Date”)</p>
+<p>fDOM_plot</p>
 </li>
 </ul>
 </li>
@@ -1558,7 +1589,7 @@ print(summary(model))
 
 # show a plot of the relationship with a linear trendline added
 
-fDOM_DOC_join%&gt;%
+fDOM_DOC_plot &lt;- fDOM_DOC_join%&gt;%
   ggplot2::ggplot(aes(x=mean_fDOM,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::geom_smooth(method=&quot;lm&quot;,se=T)+
@@ -1566,6 +1597,10 @@ fDOM_DOC_join%&gt;%
   ggplot2::labs(title = &quot;AOS-DOC vs. AIS-fDOM&quot;,
                 y = &quot;DOC (mg/L)&quot;,
                 x = &quot;fDOM (QSU)&quot;)
+
+
+
+fDOM_DOC_plot
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/linear-regression-1.png" alt=" " /></p>
 <p>Given relatively high AIS data completeness and a correlative relationship
@@ -1622,9 +1657,11 @@ plotly::plot_ly(data=fDOM_DOC_join)%&gt;%
                              yanchor = 'top',
                              orientation = 'h',
                              x=0.5,y=-0.2))
-
-## Error in path.expand(path): invalid 'path' argument
 </code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/plot-model-doc-1.png" alt=" " width="100%" height="600px" />
+<p class="caption"> </p>
+</div>
 <p><strong>Discussion</strong>: This study shows the possibility of integrating AIS and AOS data
 to expand the temporal scale of estimated DOC in stream sites. At CUPE,
 estimated DOC matches well with grab sample DOC across mid-range values, with
