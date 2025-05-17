@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 06b3c4df2b1d407fba6af95f813d1ff1
 title: "Linking NEON aquatic observational and instrument data to answer critical questions in aquatic ecology at the continental scale"	
 description: "Exercises highlighting NEON's Aquatic Instrumented Subsystem (AIS) and Aquatic Observational Subsystem (AOS) data products and integrating data products from the two subsystems to examine case studies from NEON Atlantic Neotropical Domain (Domain 04, Puerto Rico)."	
 dateCreated: 2025-05-16
