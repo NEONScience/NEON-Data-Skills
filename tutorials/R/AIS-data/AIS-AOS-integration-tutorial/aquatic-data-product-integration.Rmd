@@ -1263,15 +1263,14 @@ list2env(swc,envir = .GlobalEnv)
 
 ```
 
-The data table we are interested in here is:
-
-* `swc_externalLabDataByAnalyte`
-  * Long-format results of chemical analysis of up to 28 unique analytes from
-  surface water and groundwater grab samples.
+The data table we are interested in here is `swc_externalLabDataByAnalyte`: 
+"Long-format results of chemical analysis of up to 28 unique analytes from 
+surface water and groundwater grab samples."
 
 ```{r wrangle-plot-swc}
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
+
 message("Primary keys in swc_externalLabDataByAnalyte are: ",
         paste(variables_20093$fieldName[
           variables_20093$table=="swc_externalLabDataByAnalyte"
@@ -1279,6 +1278,7 @@ message("Primary keys in swc_externalLabDataByAnalyte are: ",
         ],
         collapse = ", ")
         )
+
 # identify duplicates in swc_externalLabDataByAnalyte
 swc_externalLabDataByAnalyte_dups <- neonOS::removeDups(
   swc_externalLabDataByAnalyte,
@@ -1326,12 +1326,9 @@ list2env(waq,envir = .GlobalEnv)
 
 ```
 
-The data table we are interested in here is:
-
-* `waq_instantaneous`
-  * Wide-format table published many water quality metrics in wide-format,
-  including fDOM, dissolved oxygen, specific conductance, pH, chlorophyll, and
-  turbidity.
+The data table we are interested in here is `waq_instantaneous`: "Wide-format table 
+published many water quality metrics in wide-format, including fDOM, dissolved oxygen, 
+specific conductance, pH, chlorophyll, and turbidity."
 
 ```{r wrangle-plot-waq}
 # `waq_instantaneous` table published many water quality metrics in wide-format

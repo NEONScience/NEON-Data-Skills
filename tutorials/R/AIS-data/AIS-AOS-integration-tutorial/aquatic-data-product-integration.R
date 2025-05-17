@@ -717,6 +717,7 @@ list2env(swc,envir = .GlobalEnv)
 ## ----wrangle-plot-swc-------------------------------------------------------------------------------------------------------------------------------
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
+
 message("Primary keys in swc_externalLabDataByAnalyte are: ",
         paste(variables_20093$fieldName[
           variables_20093$table=="swc_externalLabDataByAnalyte"
@@ -724,6 +725,7 @@ message("Primary keys in swc_externalLabDataByAnalyte are: ",
         ],
         collapse = ", ")
         )
+
 # identify duplicates in swc_externalLabDataByAnalyte
 swc_externalLabDataByAnalyte_dups <- neonOS::removeDups(
   swc_externalLabDataByAnalyte,

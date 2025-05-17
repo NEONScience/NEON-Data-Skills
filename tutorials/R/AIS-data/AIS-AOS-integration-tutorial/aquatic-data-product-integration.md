@@ -998,26 +998,23 @@ Click on traces to display or hide them. (Note: INV traces defaulted to hidden)
 
     AOS_AIS_plot_CUPE
 
-<div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-1.png" alt=" " width="100%" height="600px" />
-<p class="caption"> </p>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/cupe-discharge-macroinv-abundance-richness.png" alt=" "  />
+<p class="CUPE Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
 </div>
 
     # show plot at GUIL
 
     AOS_AIS_plot_GUIL
 
-<div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-2.png" alt=" " width="100%" height="600px" />
-<p class="caption"> </p>
-</div>
-
-
-
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.png" alt=" "  />
 <p class="GUIL Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
 </div>
+
+
+
+
 
 What kind of observations can be made when examining AIS discharge and AOS
 macroinvertebrate data on the same plotting field at NEON's two neotropical 
@@ -1047,7 +1044,12 @@ hurricane. Two NEON D04 aquatic sites were impacted. Here, we scale three data
 products across time to get an integrated look at how Hurricane Fiona (red line)
 affected the hydrology, morphology, and biology of two streams.
 
-![](images/fionaNEON.png){width="100%"}
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
+<p class="Hurricane Fiona Impact Map"> </p>
+</div>
+
+
 Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with 
 approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. 
 Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf
@@ -1362,10 +1364,11 @@ products, we will embed them as `ggplot` subplots in the larger `plotly` plot.
         
         ))
 
-<div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-1.png" alt=" " width="100%" height="800px" />
-<p class="caption"> </p>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/cupe-discharge-macroinv-abundance-richness-fiona.png" alt=" "  />
+<p class="CUPE Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
 </div>
+
 
     # re-generate the GUIL plot with particle size distribution subplots added
 
@@ -1392,9 +1395,9 @@ products, we will embed them as `ggplot` subplots in the larger `plotly` plot.
         
         ))
 
-<div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-2.png" alt=" " width="100%" height="800px" />
-<p class="caption"> </p>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness-fiona.png" alt=" "  />
+<p class="GUIL Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
 </div>
 
 **Discussion**: With the three data products viewed together in relation to the
@@ -1463,16 +1466,16 @@ stick with the 2021-10-01 to 2024-09-30 time range.
 
     list2env(swc,envir = .GlobalEnv)
 
-The data table we are interested in here is:
-
-* `swc_externalLabDataByAnalyte`
-  * Long-format results of chemical analysis of up to 28 unique analytes from
-  surface water and groundwater grab samples.
+The data table we are interested in here is `swc_externalLabDataByAnalyte`: 
+"Long-format results of chemical analysis of up to 28 unique analytes from 
+surface water and groundwater grab samples."
 
 
     # check if there are duplicate DOC records
 
     # what are the primary keys in swc_externalLabDataByAnalyte?
+
+    
 
     message("Primary keys in swc_externalLabDataByAnalyte are: ",
             paste(variables_20093$fieldName[
@@ -1481,6 +1484,8 @@ The data table we are interested in here is:
             ],
             collapse = ", ")
             )
+
+    
 
     # identify duplicates in swc_externalLabDataByAnalyte
 
@@ -1551,12 +1556,9 @@ the data for analysis, and plot the data.
 
     list2env(waq,envir = .GlobalEnv)
 
-The data table we are interested in here is:
-
-* `waq_instantaneous`
-  * Wide-format table published many water quality metrics in wide-format,
-  including fDOM, dissolved oxygen, specific conductance, pH, chlorophyll, and
-  turbidity.
+The data table we are interested in here is `waq_instantaneous`: "Wide-format table 
+published many water quality metrics in wide-format, including fDOM, dissolved oxygen, 
+specific conductance, pH, chlorophyll, and turbidity."
 
 
     # `waq_instantaneous` table published many water quality metrics in wide-format
@@ -1736,10 +1738,13 @@ zoom in to see how well the AOS-DOC and modeled continuous DOC match up.
                                  orientation = 'h',
                                  x=0.5,y=-0.2))
 
-<div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/plot-model-doc-1.png" alt=" " width="100%" height="600px" />
-<p class="caption"> </p>
+
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/DOC_modelled_grab_sample.png" alt=" "  />
+<p class="CUPE Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
 </div>
+
+
 
 **Discussion**: This study shows the possibility of integrating AIS and AOS data
 to expand the temporal scale of estimated DOC in stream sites. At CUPE, 
