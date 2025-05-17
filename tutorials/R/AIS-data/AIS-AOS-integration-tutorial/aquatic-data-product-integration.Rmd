@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 06b3c4df2b1d407fba6af95f813d1ff1
 title: "Linking NEON aquatic observational and instrument data to answer critical questions in aquatic ecology at the continental scale"	
 description: "Exercises highlighting NEON's Aquatic Instrumented Subsystem (AIS) and Aquatic Observational Subsystem (AOS) data products and integrating data products from the two subsystems to examine case studies from NEON Atlantic Neotropical Domain (Domain 04, Puerto Rico)."	
 dateCreated: 2025-05-16
@@ -11,14 +11,15 @@ topics: data-manipulation, data-visualization, data-analysis
 subtopics: organisms, hydrology, chemistry, morphology, aquatic
 languagesTool: R
 dataProduct: DP1.20120.001, DP4.00130.001, DP4.00131.001, DP1.20093.001, DP1.20288.001
-code1: 
+code1: https://github.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/aquatic-data-product-integration.R
 tutorialSeries: 
 urlTitle: aquatic-data-product-integration
 ---
 
-<div id="ds-objectives" markdown="1"
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+
+## Learning Objectives
 
 After completing this activity, you will be able to:
 
@@ -965,6 +966,8 @@ AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE%>%
                        name="Fiona",
                        line=list(color='red',dash='dash'))
 
+AOS_AIS_plot_CUPE_Fiona
+
 # highlight Fiona at GUIL
 AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
   # add dashed vertical line to plot created in previous exercise
@@ -976,6 +979,8 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
                          na.rm = T),
                        name="Fiona",
                        line=list(color='red',dash='dash'))
+
+AOS_AIS_plot_GUIL_Fiona
 
 ```
 
