@@ -11,12 +11,13 @@ topics: data-manipulation, data-visualization, data-analysis
 subtopics: organisms, hydrology, chemistry, morphology, aquatic
 languagesTool: R
 dataProduct: DP1.20120.001, DP4.00130.001, DP4.00131.001, DP1.20093.001, DP1.20288.001
-code1: 
+code1: https://github.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/aquatic-data-product-integration.R
 tutorialSeries: 
 urlTitle: aquatic-data-product-integration
 ---
 
 <div id="ds-objectives" markdown="1"
+
 
 ## Objectives
 
