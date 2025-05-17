@@ -16,10 +16,9 @@ tutorialSeries:
 urlTitle: aquatic-data-product-integration
 ---
 
-<div id="ds-objectives" markdown="1"
+<div id="ds-objectives" markdown="1">
 
-
-## Objectives
+## Learning Objectives
 
 After completing this activity, you will be able to:
 
