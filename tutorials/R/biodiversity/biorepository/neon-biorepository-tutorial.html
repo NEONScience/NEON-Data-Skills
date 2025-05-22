@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="generator" content="litedown 0.7">
 <title>Exploring sample availability at the NEON Biorepository</title>
 <style type="text/css">
 body {
@@ -11,76 +12,108 @@ body {
   margin: auto;
   padding: 1em;
   line-height: 1.5;
-  box-sizing: border-box;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
-body, .footnotes, code { font-size: .9em; }
+body, .abstract, code, .footnotes, footer, #refs, .caption { font-size: .9em; }
 li li { font-size: .95em; }
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+ul:has(li > input[type="checkbox"]) { list-style: none; padding-left: 1em; }
+*, :before, :after { box-sizing: border-box; }
+a { color: steelblue; }
 pre, img { max-width: 100%; }
-pre, pre:hover {
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-pre code {
-  display: block;
-  overflow-x: auto;
-}
+pre { white-space: pre-wrap; word-break: break-word; }
+pre code { display: block; padding: 1em; overflow-x: auto; }
 code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
-:not(pre) > code, code[class] { background-color: #F8F8F8; }
-code.language-undefined, pre > code:not([class]) {
-  background-color: inherit;
-  border: 1px solid #eee;
+:not(pre, th) > code, code[class], div > .caption { background: #f8f8f8; }
+pre > code:is(:not([class]), .language-plain, .language-none, .plain), .box, .figure, .table { background: inherit; border: 1px solid #eee; }
+pre > code {
+  &.message { border-color: #9eeaf9; }
+  &.warning { background: #fff3cd; border-color: #fff3cd; }
+  &.error { background: #f8d7da; border-color: #f8d7da; }
 }
+.fenced-chunk { border-left: 1px solid #666; }
+.code-fence {
+  opacity: .4;
+  border: 1px dashed #666;
+  border-left: 2px solid;
+  &:hover { opacity: inherit; }
+}
+.box, .figure, .table, table { margin: 1em auto; }
+div > .caption { padding: 1px 1em; }
+.figure { p:has(img, svg), pre:has(svg) { text-align: center; } }
+.flex-col { display: flex; justify-content: space-between; }
 table {
-  margin: auto;
-  border-top: 1px solid #666;
+  &:only-child:not(.table > *) { margin: auto; }
+  th, td { padding: 5px; font-variant-numeric: tabular-nums; }
+  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+  thead th { border-bottom: 1px solid #ddd; }
+  &:not(.datatable-table) {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
 }
-table thead th { border-bottom: 1px solid #ddd; }
-th, td { padding: 5px; }
-thead, tfoot, tr:nth-child(even) { background: #eee; }
 blockquote {
   color: #666;
   margin: 0;
-  padding-left: 1em;
-  border-left: 0.5em solid #eee;
+  padding: 1px 1em;
+  border-left: .5em solid #eee;
 }
 hr, .footnotes::before { border: 1px dashed #ddd; }
 .frontmatter { text-align: center; }
-#TOC .numbered li { list-style: none; }
-#TOC .numbered { padding-left: 0; }
-#TOC .numbered ul { padding-left: 1em; }
-table, .body h2 { border-bottom: 1px solid #666; }
+#TOC {
+  a { text-decoration: none; }
+  ul { list-style: none; padding-left: 1em; }
+  & > ul { padding: 0; }
+  ul ul { border-left: 1px solid lightsteelblue; }
+}
+.body h2 { border-bottom: 1px solid #666; }
 .body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
-.footnote-ref a::before { content: "["; }
-.footnote-ref a::after { content: "]"; }
-section.footnotes::before {
-  content: "";
-  display: block;
-  max-width: 20em;
+.main-number::after { content: "."; }
+span[class^="ref-number-"] { font-weight: bold; }
+.ref-number-fig::after, .ref-number-tab::after { content: ":"; }
+.cross-ref-chp::before { content: "Chapter "; }
+.cross-ref-sec::before { content: "Section "; }
+.cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
+.cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
+.cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
+.abstract, #refs {
+  &::before { display: block; margin: 1em auto; font-weight: bold; }
+}
+.abstract::before { content: "Abstract"; text-align: center; }
+#refs::before { content: "Bibliography"; font-size: 1.5em; }
+.ref-paren-open::before { content: "("; }
+.ref-paren-close::after { content: ")"; }
+.ref-semicolon::after { content: "; "; }
+.ref-and::after { content: " and "; }
+.ref-et-al::after { content: " et al."; font-style: italic; }
+.footnote-ref a {
+  &::before { content: "["; }
+  &::after { content: "]"; }
+}
+section.footnotes {
+  margin-top: 2em;
+  &::before { content: ""; display: block; max-width: 20em; }
+}
+.fade {
+  background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
+  opacity: 0.6;
 }
 
 @media print {
-  body {
-    font-size: 12pt;
-    max-width: 100%;
-  }
-  tr, img { page-break-inside: avoid; }
+  body { max-width: 100%; }
+  tr, img { break-inside: avoid; }
 }
 @media only screen and (min-width: 992px) {
-  pre { white-space: pre; }
+  body:not(.pagesjs) pre:has(.line-numbers):not(:hover) { white-space: pre; }
 }
 </style>
 </head>
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Exploring sample availability at the NEON Biorepository</h1></div>
-<div class="author"><h2></h2></div>
-<div class="date"><h3></h3></div>
 </div>
 <div class="body">
-<h2 id="learning-objectives">Learning Objectives</h2>
+<h2 id="sec:learning-objectives">Learning Objectives</h2>
 <p>In this tutorial, we will learn how to develop a sample list to optimally answer a research question based on NEON data product and NEON Biorepository sample availability.</p>
 <ol>
 <li>
@@ -99,7 +132,7 @@ section.footnotes::before {
 <p>Visualize our request in an interactive map.</p>
 </li>
 </ol>
-<h2 id="research-question">Research question</h2>
+<h2 id="sec:research-question">Research question</h2>
 <p>We are interested in testing for relationships between the diet of small mammals and the carbon and nitrogen stable isotope ratios in co-occurring plant communities in a portion of the eastern United States. NEON provides extensive information about stable isotopes from samples collected from the canopy and in litter traps. While NEON does not measure small mammal diets as part of its focal protocols, NEON archives both hair and fecal samples that researchers can use to gain these insights.</p>
 <p><strong>What samples from the NEON Biorepository can be requested in order to conduct this study?</strong></p>
 <p>To answer this this question, we need to understand where there is spatial and temporal overlap in measurements of canopy foliar chemistry, litter chemistry, and mammal sampling.</p>
@@ -115,11 +148,11 @@ section.footnotes::before {
 <p>Both a hair and a fecal sample were collected from the same individual</p>
 </li>
 </ul>
-<h2 id="background-information-on-the-neon-biorepository">Background information on the NEON Biorepository</h2>
+<h2 id="sec:background-information-on-the-neon-biorepository">Background information on the NEON Biorepository</h2>
 <p>The NEON Biorepository is located at Arizona State University and serves as the primary repository for the 100,000 NEON samples and specimens collected across all 81 NEON field sites each year.</p>
 <p>The NEON Biorepository data portal allows users to search and download records associated with NEON samples and specimens, request samples and specimens for research, and publish sample-associated data. The NEON Biorepository data portal is built on open-source <a href="https://symbiota.org" target="_blank">Symbiota</a> software. <strong>Symbiota</strong> is the most frequently used software in North America for managing natural history collections records.</p>
 <p>Symbiota portals publish sample, specimen, and observation data following the <a href="https://dwc.tdwg.org/" target="_blank">Darwin Core Standard</a> developed by Biodiversity Information Standards (TDWG). This data standard is a stable, straightforward, and flexible framework for compiling biodiversity data from varied sources.</p>
-<h2 id="getting-started">Getting Started</h2>
+<h2 id="sec:getting-started">Getting Started</h2>
 <p>If you do not have the required packages installed previously, use the <code>install.packages()</code> function to do so.</p>
 <pre><code>install.packages('tidyverse')
 
@@ -150,7 +183,7 @@ library(lubridate)
 
 library(ggplot2)
 </code></pre>
-<h2 id="obtain-relevant-neon-terrestrial-observation-system-data">Obtain relevant NEON Terrestrial Observation System data</h2>
+<h2 id="sec:obtain-relevant-neon-terrestrial-observation-system-data">Obtain relevant NEON Terrestrial Observation System data</h2>
 <p>In order to answer our question, we need to know which NEON sites and years correspond to available carbon and nitrogen stable isotope data for canopy foliage and litter samples. We will use the <code>loadByProduct()</code> function in the
 <code>neonUtilities</code> package to download all of the data from these two data products from the main NEON data portal. This requires that we know the NEON data product IDs for each relevant data product.</p>
 <p><strong>NEON Plant Foliar Traits:</strong> <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">DP1.10026.001</a></p>
@@ -181,18 +214,18 @@ names(NEON.cfc)
 ##  [1] &quot;categoricalCodes_10026&quot;      &quot;cfc_carbonNitrogen&quot;          &quot;cfc_chemistrySubsampling&quot;   
 ##  [4] &quot;cfc_chlorophyll&quot;             &quot;cfc_elements&quot;                &quot;cfc_fieldData&quot;              
 ##  [7] &quot;cfc_lignin&quot;                  &quot;cfc_LMA&quot;                     &quot;cfc_shapefile&quot;              
-## [10] &quot;citation_10026_PROVISIONAL&quot;  &quot;citation_10026_RELEASE-2024&quot; &quot;issueLog_10026&quot;             
+## [10] &quot;citation_10026_PROVISIONAL&quot;  &quot;citation_10026_RELEASE-2025&quot; &quot;issueLog_10026&quot;             
 ## [13] &quot;readme_10026&quot;                &quot;validation_10026&quot;            &quot;variables_10026&quot;
 
 names(NEON.ltr)
 
-##  [1] &quot;categoricalCodes_10033&quot;      &quot;citation_10033_RELEASE-2024&quot; &quot;issueLog_10033&quot;             
+##  [1] &quot;categoricalCodes_10033&quot;      &quot;citation_10033_RELEASE-2025&quot; &quot;issueLog_10033&quot;             
 ##  [4] &quot;ltr_chemistrySubsampling&quot;    &quot;ltr_fielddata&quot;               &quot;ltr_litterCarbonNitrogen&quot;   
 ##  [7] &quot;ltr_litterLignin&quot;            &quot;ltr_massdata&quot;                &quot;ltr_pertrap&quot;                
 ## [10] &quot;readme_10033&quot;                &quot;validation_10033&quot;            &quot;variables_10033&quot;
 </code></pre>
 <p>We can see that the data downloads for each product include several tables. The Quick Start Guides on any NEON data product description page are especially useful for understanding these tables, as are the “variables” and “readme” files included in data downloads. It is recommended that anyone who plans to use NEON data in their work carefully review the associated reading materials.</p>
-<h1 id="narrow-the-spatial-and-temporal-scope-based-on-available-data">Narrow the spatial and temporal scope based on available data</h1>
+<h2 id="sec:narrow-the-spatial-and-temporal-scope-based-on-available-data">Narrow the spatial and temporal scope based on available data</h2>
 <p>For our purpose, we are interested in the files containing measurements of carbon and nitrogen, so we will extract those data tables.</p>
 <pre><code>cfc &lt;- NEON.cfc$cfc_carbonNitrogen
 
@@ -208,7 +241,7 @@ ltr &lt;- NEON.ltr$ltr_litterCarbonNitrogen
 
 summary.cfc
 
-## # A tibble: 13 × 4
+## # A tibble: 14 × 4
 ## # Groups:   siteID [8]
 ##    siteID  year     n meanCN
 ##    &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
@@ -217,14 +250,15 @@ summary.cfc
 ##  3 GRSM    2016    45   25.6
 ##  4 GRSM    2021    55   26.1
 ##  5 HARV    2018    45   33.5
-##  6 MLBS    2018    45   23.2
-##  7 MLBS    2023    46   22.9
-##  8 ORNL    2017    42   29.6
-##  9 ORNL    2022    58   27.5
-## 10 SCBI    2017    44   21.3
-## 11 SCBI    2022    46   14.8
-## 12 SERC    2016    36   26.6
-## 13 SERC    2021    58   29.9
+##  6 HARV    2024    60   36.0
+##  7 MLBS    2018    45   23.2
+##  8 MLBS    2023    46   22.9
+##  9 ORNL    2017    42   29.6
+## 10 ORNL    2022    58   27.5
+## 11 SCBI    2017    44   21.3
+## 12 SCBI    2022    46   14.8
+## 13 SERC    2016    36   26.6
+## 14 SERC    2021    58   29.9
 
 summary.ltr &lt;- ltr %&gt;% 
               mutate(year=year(collectDate)) %&gt;% 
@@ -233,7 +267,7 @@ summary.ltr &lt;- ltr %&gt;%
 
 summary.ltr
 
-## # A tibble: 11 × 4
+## # A tibble: 12 × 4
 ## # Groups:   siteID [8]
 ##    siteID  year     n meanCN
 ##    &lt;chr&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
@@ -243,11 +277,12 @@ summary.ltr
 ##  4 GRSM    2021    14   71.7
 ##  5 HARV    2018    58   64.8
 ##  6 MLBS    2018    19   42.3
-##  7 ORNL    2017    25   62.9
-##  8 ORNL    2022    20   72.5
-##  9 SCBI    2017    13   59.5
-## 10 SCBI    2022    17   47.0
-## 11 SERC    2021    12   72.7
+##  7 MLBS    2023    31   62.6
+##  8 ORNL    2017    25   62.9
+##  9 ORNL    2022    20   72.5
+## 10 SCBI    2017    13   59.5
+## 11 SCBI    2022    17   47.0
+## 12 SERC    2021    12   72.7
 </code></pre>
 <p>We can see that there are more year by site combinations for which CN ratio data exist from canopy foliage than from litter samples. Since we are interested in studying both components of the ecosystem, let’s subset our data to only those instances for which both sets of data are available. To do this we need to join our datasets by site and year.</p>
 <pre><code>CN &lt;- full_join(summary.cfc,summary.ltr,
@@ -261,7 +296,7 @@ summary.ltr
     	mutate(siteYear=paste(siteID,year,sep=&quot;.&quot;))
 </code></pre>
 <p>We have identified 8 site by year combinations for which we would like to obtain paired mammal hair and fecal samples for further study! Now we will look for available mammal samples.</p>
-<h1 id="load-and-explore-neon-biorepository-data">Load and explore NEON Biorepository data</h1>
+<h2 id="sec:load-and-explore-neon-biorepository-data">Load and explore NEON Biorepository data</h2>
 <p>Here, we read in a csv file of occurrence records downloaded from the NEON Biorepository data portal. The results are located in the <a href="https://github.com/kyule/neon-biorepo-tutorial" target="_blank">Github repository</a> associated with this tutorial. This represents all small mammal hair and fecal samples from Domains 1, 2, and 7 archived at the NEON Biorepository.</p>
 <p>Up to date results for the same search terms can be found at any time <a href="https://biorepo.neonscience.org/portal/collections/list.php?db=26%2C27&datasetid=2%2C13%2C8&includeothercatnum=1&usethes=1&taxontype=1" target="_blank">here</a>.</p>
 <pre><code>biorepo&lt;-read.csv(curl(&quot;https://github.com/kyule/neon-biorepo-tutorial/raw/main/biorepoOccurrences_FecalAndHairSamples_20250102.csv&quot;))
@@ -269,54 +304,38 @@ summary.ltr
 <p>Let’s look at what information is included in a Darwin Core occurrence record. What variables exist in the records?</p>
 <pre><code>names(biorepo)
 
-##  [1] &quot;id&quot;                             &quot;institutionCode&quot;               
-##  [3] &quot;collectionCode&quot;                 &quot;ownerInstitutionCode&quot;          
-##  [5] &quot;basisOfRecord&quot;                  &quot;occurrenceID&quot;                  
-##  [7] &quot;catalogNumber&quot;                  &quot;otherCatalogNumbers&quot;           
-##  [9] &quot;higherClassification&quot;           &quot;kingdom&quot;                       
-## [11] &quot;phylum&quot;                         &quot;class&quot;                         
-## [13] &quot;order&quot;                          &quot;family&quot;                        
-## [15] &quot;scientificName&quot;                 &quot;taxonID&quot;                       
-## [17] &quot;scientificNameAuthorship&quot;       &quot;genus&quot;                         
-## [19] &quot;subgenus&quot;                       &quot;specificEpithet&quot;               
-## [21] &quot;verbatimTaxonRank&quot;              &quot;infraspecificEpithet&quot;          
-## [23] &quot;taxonRank&quot;                      &quot;identifiedBy&quot;                  
-## [25] &quot;dateIdentified&quot;                 &quot;identificationReferences&quot;      
-## [27] &quot;identificationRemarks&quot;          &quot;taxonRemarks&quot;                  
-## [29] &quot;identificationQualifier&quot;        &quot;typeStatus&quot;                    
-## [31] &quot;recordedBy&quot;                     &quot;associatedCollectors&quot;          
-## [33] &quot;recordNumber&quot;                   &quot;eventDate&quot;                     
-## [35] &quot;eventDate2&quot;                     &quot;year&quot;                          
-## [37] &quot;month&quot;                          &quot;day&quot;                           
-## [39] &quot;startDayOfYear&quot;                 &quot;endDayOfYear&quot;                  
-## [41] &quot;verbatimEventDate&quot;              &quot;occurrenceRemarks&quot;             
-## [43] &quot;habitat&quot;                        &quot;substrate&quot;                     
-## [45] &quot;verbatimAttributes&quot;             &quot;fieldNumber&quot;                   
-## [47] &quot;eventID&quot;                        &quot;informationWithheld&quot;           
-## [49] &quot;dataGeneralizations&quot;            &quot;dynamicProperties&quot;             
-## [51] &quot;associatedOccurrences&quot;          &quot;associatedSequences&quot;           
-## [53] &quot;associatedTaxa&quot;                 &quot;reproductiveCondition&quot;         
-## [55] &quot;establishmentMeans&quot;             &quot;cultivationStatus&quot;             
-## [57] &quot;lifeStage&quot;                      &quot;sex&quot;                           
-## [59] &quot;individualCount&quot;                &quot;samplingProtocol&quot;              
-## [61] &quot;preparations&quot;                   &quot;locationID&quot;                    
-## [63] &quot;continent&quot;                      &quot;waterBody&quot;                     
-## [65] &quot;islandGroup&quot;                    &quot;island&quot;                        
-## [67] &quot;country&quot;                        &quot;stateProvince&quot;                 
-## [69] &quot;county&quot;                         &quot;municipality&quot;                  
-## [71] &quot;locality&quot;                       &quot;locationRemarks&quot;               
-## [73] &quot;localitySecurity&quot;               &quot;localitySecurityReason&quot;        
-## [75] &quot;decimalLatitude&quot;                &quot;decimalLongitude&quot;              
-## [77] &quot;geodeticDatum&quot;                  &quot;coordinateUncertaintyInMeters&quot; 
-## [79] &quot;verbatimCoordinates&quot;            &quot;georeferencedBy&quot;               
-## [81] &quot;georeferenceProtocol&quot;           &quot;georeferenceSources&quot;           
-## [83] &quot;georeferenceVerificationStatus&quot; &quot;georeferenceRemarks&quot;           
-## [85] &quot;minimumElevationInMeters&quot;       &quot;maximumElevationInMeters&quot;      
-## [87] &quot;minimumDepthInMeters&quot;           &quot;maximumDepthInMeters&quot;          
-## [89] &quot;verbatimDepth&quot;                  &quot;verbatimElevation&quot;             
-## [91] &quot;disposition&quot;                    &quot;language&quot;                      
-## [93] &quot;recordEnteredBy&quot;                &quot;modified&quot;                      
-## [95] &quot;sourcePrimaryKey.dbpk&quot;          &quot;collID&quot;                        
+##  [1] &quot;id&quot;                             &quot;institutionCode&quot;                &quot;collectionCode&quot;                
+##  [4] &quot;ownerInstitutionCode&quot;           &quot;basisOfRecord&quot;                  &quot;occurrenceID&quot;                  
+##  [7] &quot;catalogNumber&quot;                  &quot;otherCatalogNumbers&quot;            &quot;higherClassification&quot;          
+## [10] &quot;kingdom&quot;                        &quot;phylum&quot;                         &quot;class&quot;                         
+## [13] &quot;order&quot;                          &quot;family&quot;                         &quot;scientificName&quot;                
+## [16] &quot;taxonID&quot;                        &quot;scientificNameAuthorship&quot;       &quot;genus&quot;                         
+## [19] &quot;subgenus&quot;                       &quot;specificEpithet&quot;                &quot;verbatimTaxonRank&quot;             
+## [22] &quot;infraspecificEpithet&quot;           &quot;taxonRank&quot;                      &quot;identifiedBy&quot;                  
+## [25] &quot;dateIdentified&quot;                 &quot;identificationReferences&quot;       &quot;identificationRemarks&quot;         
+## [28] &quot;taxonRemarks&quot;                   &quot;identificationQualifier&quot;        &quot;typeStatus&quot;                    
+## [31] &quot;recordedBy&quot;                     &quot;associatedCollectors&quot;           &quot;recordNumber&quot;                  
+## [34] &quot;eventDate&quot;                      &quot;eventDate2&quot;                     &quot;year&quot;                          
+## [37] &quot;month&quot;                          &quot;day&quot;                            &quot;startDayOfYear&quot;                
+## [40] &quot;endDayOfYear&quot;                   &quot;verbatimEventDate&quot;              &quot;occurrenceRemarks&quot;             
+## [43] &quot;habitat&quot;                        &quot;substrate&quot;                      &quot;verbatimAttributes&quot;            
+## [46] &quot;fieldNumber&quot;                    &quot;eventID&quot;                        &quot;informationWithheld&quot;           
+## [49] &quot;dataGeneralizations&quot;            &quot;dynamicProperties&quot;              &quot;associatedOccurrences&quot;         
+## [52] &quot;associatedSequences&quot;            &quot;associatedTaxa&quot;                 &quot;reproductiveCondition&quot;         
+## [55] &quot;establishmentMeans&quot;             &quot;cultivationStatus&quot;              &quot;lifeStage&quot;                     
+## [58] &quot;sex&quot;                            &quot;individualCount&quot;                &quot;samplingProtocol&quot;              
+## [61] &quot;preparations&quot;                   &quot;locationID&quot;                     &quot;continent&quot;                     
+## [64] &quot;waterBody&quot;                      &quot;islandGroup&quot;                    &quot;island&quot;                        
+## [67] &quot;country&quot;                        &quot;stateProvince&quot;                  &quot;county&quot;                        
+## [70] &quot;municipality&quot;                   &quot;locality&quot;                       &quot;locationRemarks&quot;               
+## [73] &quot;localitySecurity&quot;               &quot;localitySecurityReason&quot;         &quot;decimalLatitude&quot;               
+## [76] &quot;decimalLongitude&quot;               &quot;geodeticDatum&quot;                  &quot;coordinateUncertaintyInMeters&quot; 
+## [79] &quot;verbatimCoordinates&quot;            &quot;georeferencedBy&quot;                &quot;georeferenceProtocol&quot;          
+## [82] &quot;georeferenceSources&quot;            &quot;georeferenceVerificationStatus&quot; &quot;georeferenceRemarks&quot;           
+## [85] &quot;minimumElevationInMeters&quot;       &quot;maximumElevationInMeters&quot;       &quot;minimumDepthInMeters&quot;          
+## [88] &quot;maximumDepthInMeters&quot;           &quot;verbatimDepth&quot;                  &quot;verbatimElevation&quot;             
+## [91] &quot;disposition&quot;                    &quot;language&quot;                       &quot;recordEnteredBy&quot;               
+## [94] &quot;modified&quot;                       &quot;sourcePrimaryKey.dbpk&quot;          &quot;collID&quot;                        
 ## [97] &quot;recordID&quot;                       &quot;references&quot;
 </code></pre>
 <p>We see that a large number of Darwin Core fields are present in the results that outline the who, what, where, when, and more of each sample. For fun, let’s explore the data. Try grouping or summarizing by any fields that interest you.</p>
@@ -348,7 +367,7 @@ biorepo %&gt;%
 <pre><code>biorepo &lt;- biorepo %&gt;% 
               filter(!grepl(&quot;/&quot;,scientificName),!is.na(specificEpithet))
 </code></pre>
-<h1 id="narrow-the-results-to-a-set-of-samples-that-fits-our-research-question">Narrow the results to a set of samples that fits our research question</h1>
+<h2 id="sec:narrow-the-results-to-a-set-of-samples-that-fits-our-research-question">Narrow the results to a set of samples that fits our research question</h2>
 <p>We want to include only samples collected from the same site by year combinations we are interested in based on CN ratio data, so we create a site by year column and filter the results.</p>
 <pre><code>biorepo &lt;- biorepo %&gt;% 
               mutate(siteID=substr(locationID,1,4)) %&gt;% 
@@ -434,7 +453,7 @@ hairMatches &lt;- sampleMatches %&gt;%
 hairMatches &lt;- hairMatches %&gt;%
             		filter(siteSp %in% hairMatchSummary$siteSp)
 </code></pre>
-<h1 id="finalize-a-sample-list">Finalize a sample list</h1>
+<h2 id="sec:finalize-a-sample-list">Finalize a sample list</h2>
 <p>To finalize the list, we randomly select a sample size of 10 for each species and site combination.</p>
 <pre><code>set.seed(85705)
 
@@ -452,7 +471,7 @@ request &lt;- biorepo %&gt;%
 </code></pre>
 <p>We now have a list of 140 samples we could request from the NEON Biorepository via the <a href="https://biorepo.neonscience.org/portal/misc/samplerequest.php" target="_blank">Sample Request Form</a>.</p>
 <p>What other ways may we want to have manipulated or subset the data for our question?</p>
-<h1 id="visualize-our-request">Visualize our request</h1>
+<h2 id="sec:visualize-our-request">Visualize our request</h2>
 <p>We might be interested in creating a visualization for a grant proposal in which we planned to use these samples.</p>
 <p>To map our samples, let’s first create a dataframe with the average geographic location across the selected samples and the CN ratio data.</p>
 <pre><code>mapSummary &lt;- hairMatchSet %&gt;%
@@ -483,10 +502,9 @@ speciesByCN &lt;- basemap %&gt;%
 
 
 speciesByCN
-
-## Error in path.expand(path): invalid 'path' argument
 </code></pre>
-<p>We see that we have a good representation of <em>P. leucopus</em> across our study area. For a strong species-specific analysis we may choose to focus on this species and investigate the CN ratios present at sites where it is present.</p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/biorepository/rfigs/map-1.png" alt=" " />
+We see that we have a good representation of <em>P. leucopus</em> across our study area. For a strong species-specific analysis we may choose to focus on this species and investigate the CN ratios present at sites where it is present.</p>
 <pre><code>PleucSites &lt;- mapSummaryWithSpecies[!is.na(mapSummaryWithSpecies$`Peromyscus leucopus`), ]
 
 
