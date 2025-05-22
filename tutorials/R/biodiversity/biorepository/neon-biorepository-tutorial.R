@@ -1,22 +1,22 @@
-## ----setup, include=FALSE-----------------------------------------------------------------------
+## ----setup, include=FALSE------------------------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 
 
-## ----install-packages, message=FALSE, warning=FALSE,eval=FALSE----------------------------------
-## 
-## install.packages('tidyverse')
-## install.packages('neonUtilities')
-## install.packages('curl')
-## install.packages('leaflet')
-## install.packages('leaflet.minicharts')
-## install.packages('lubridate')
-## install.packages('ggplot2')
-## 
+## ----install-packages, message=FALSE, warning=FALSE,eval=FALSE-----------------------------------------
+# 
+# install.packages('tidyverse')
+# install.packages('neonUtilities')
+# install.packages('curl')
+# install.packages('leaflet')
+# install.packages('leaflet.minicharts')
+# install.packages('lubridate')
+# install.packages('ggplot2')
+# 
 
 
-## ----load-packages, message=FALSE, warning=FALSE,eval=TRUE--------------------------------------
+## ----load-packages, message=FALSE, warning=FALSE,eval=TRUE---------------------------------------------
 
 library(tidyverse)
 library(neonUtilities)
@@ -28,7 +28,7 @@ library(ggplot2)
 
 
 
-## ----download-Data-New, message=TRUE, warning=FALSE, paged.print=FALSE, results='hide'----------
+## ----download-Data-New, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'----------------
 
  NEON.cfc <- loadByProduct(dpID="DP1.10026.001",
                     include.provisional=TRUE,
@@ -42,7 +42,7 @@ library(ggplot2)
                     check.size=FALSE)
 
 
-## ----investigate-NEON-data, message=FALSE, eval=TRUE--------------------------------------------
+## ----investigate-NEON-data, message=FALSE, eval=TRUE---------------------------------------------------
 
 # What's in a download?
 
@@ -51,14 +51,14 @@ names(NEON.ltr)
 
 
 
-## ----extract-CN-data, message=FALSE,eval=TRUE---------------------------------------------------
+## ----extract-CN-data, message=FALSE,eval=TRUE----------------------------------------------------------
 
 cfc <- NEON.cfc$cfc_carbonNitrogen
 ltr <- NEON.ltr$ltr_litterCarbonNitrogen
 
 
 
-## ----summarise-CN-data,message=FALSE,warning=FALSE,eval=TRUE------------------------------------
+## ----summarise-CN-data,message=FALSE,warning=FALSE,eval=TRUE-------------------------------------------
 
 summary.cfc <- cfc %>% 
               mutate(year=year(collectDate)) %>% 
@@ -76,7 +76,7 @@ summary.ltr
 
 
 
-## ----join-cfc-ltr-data,message=FALSE,eval=TRUE--------------------------------------------------
+## ----join-cfc-ltr-data,message=FALSE,eval=TRUE---------------------------------------------------------
 
 CN <- full_join(summary.cfc,summary.ltr,
                   join_by("siteID"=="siteID","year"=="year"),
@@ -85,7 +85,7 @@ CN <- full_join(summary.cfc,summary.ltr,
 
 
 
-## ----filter-cfc-ltr-data,message=FALSE,eval=TRUE------------------------------------------------
+## ----filter-cfc-ltr-data,message=FALSE,eval=TRUE-------------------------------------------------------
 
 CN <- CN %>%
     	filter(!duplicated(siteID,fromLast = TRUE)) %>%
@@ -93,20 +93,20 @@ CN <- CN %>%
 
 
 
-## ----load-data, message=FALSE, warning=FALSE,eval=TRUE------------------------------------------
+## ----load-data, message=FALSE, warning=FALSE,eval=TRUE-------------------------------------------------
 
 biorepo<-read.csv(curl("https://github.com/kyule/neon-biorepo-tutorial/raw/main/biorepoOccurrences_FecalAndHairSamples_20250102.csv"))
 
 
 
-## ----investigate-biorepo-download,message=FALSE,eval=TRUE---------------------------------------
+## ----investigate-biorepo-download,message=FALSE,eval=TRUE----------------------------------------------
 
 
 names(biorepo)
 
 
 
-## ----summarize-biorepo-data,message=FALSE,eval=TRUE---------------------------------------------
+## ----summarize-biorepo-data,message=FALSE,eval=TRUE----------------------------------------------------
 # How many samples are included in the results for each collection, species, and sex?
 
 biorepo %>% 
@@ -115,14 +115,14 @@ biorepo %>%
 
 
 
-## ----filter-uncertain-identification,message=FALSE,eval=TRUE------------------------------------
+## ----filter-uncertain-identification,message=FALSE,eval=TRUE-------------------------------------------
 
 biorepo <- biorepo %>% 
               filter(!grepl("/",scientificName),!is.na(specificEpithet))
 
 
 
-## ----prepare-biorepo-dataset,message=FALSE,eval=TRUE--------------------------------------------
+## ----prepare-biorepo-dataset,message=FALSE,eval=TRUE---------------------------------------------------
 
 biorepo <- biorepo %>% 
               mutate(siteID=substr(locationID,1,4)) %>% 
@@ -131,7 +131,7 @@ biorepo <- biorepo %>%
 
 
 
-## ----seperate-collections,message=FALSE,eval=TRUE-----------------------------------------------
+## ----seperate-collections,message=FALSE,eval=TRUE------------------------------------------------------
 
 # Extract the hair and fecal samples
 
@@ -143,7 +143,7 @@ fecal <- biorepo %>%
 
 
 
-## ----collections-by-species-site-combinations,message=FALSE,eval=TRUE---------------------------
+## ----collections-by-species-site-combinations,message=FALSE,eval=TRUE----------------------------------
 
 hairBySpecies <- hair %>% 
                   group_by(siteID,scientificName) %>% 
@@ -155,7 +155,7 @@ hairBySpecies <- hair %>%
 
 
 
-## ----filter-by-species-site-combinations,message=FALSE,eval=TRUE--------------------------------
+## ----filter-by-species-site-combinations,message=FALSE,eval=TRUE---------------------------------------
 
 
 hair <- hair %>% 
@@ -168,7 +168,7 @@ fecal <- fecal %>%
 
 
 
-## ----match-hair-fecal-samples,message=FALSE,eval=TRUE-------------------------------------------
+## ----match-hair-fecal-samples,message=FALSE,eval=TRUE--------------------------------------------------
 
 sampleMatches <- data.frame(hair=c(),fecal=c())
 
@@ -183,14 +183,14 @@ for (i in 1:nrow(fecal)){
 
 
 
-## ----remove-duplicates,message=FALSE,eval=TRUE--------------------------------------------------
+## ----remove-duplicates,message=FALSE,eval=TRUE---------------------------------------------------------
 
 sampleMatches <- sampleMatches %>% filter(!duplicated(hair))
 
 
 
 
-## ----grab-full-data,message=FALSE,eval=TRUE-----------------------------------------------------
+## ----grab-full-data,message=FALSE,eval=TRUE------------------------------------------------------------
 
 
 # Grab the rest of the data associated with the hair samples
@@ -201,7 +201,7 @@ hairMatches <- sampleMatches %>%
 
 
 
-## ----filter-available-sample-size,message=FALSE,eval=TRUE---------------------------------------
+## ----filter-available-sample-size,message=FALSE,eval=TRUE----------------------------------------------
 
 
 hairMatchSummary <- hairMatches %>%
@@ -217,7 +217,7 @@ hairMatches <- hairMatches %>%
 
 
 
-## ----choose-sample, message=FALSE,eval=TRUE-----------------------------------------------------
+## ----choose-sample, message=FALSE,eval=TRUE------------------------------------------------------------
 
 set.seed(85705)
 hairMatchSet <-  hairMatches[sample(nrow(hairMatches)),] %>%
@@ -225,7 +225,7 @@ hairMatchSet <-  hairMatches[sample(nrow(hairMatches)),] %>%
                 	slice(1:10)
 
 
-## ----full-request,message=FALSE,eval=TRUE-------------------------------------------------------
+## ----full-request,message=FALSE,eval=TRUE--------------------------------------------------------------
 
 # Filter the full data sets to those involved in the request of interest
 
@@ -234,14 +234,14 @@ request <- biorepo %>%
 
 
 
-## ----map-summary,message=FALSE,eval=TRUE--------------------------------------------------------
+## ----map-summary,message=FALSE,eval=TRUE---------------------------------------------------------------
 
 mapSummary <- hairMatchSet %>%
 				group_by(siteID) %>% 
 				summarise(lat=mean(decimalLatitude),lng=mean(decimalLongitude)) %>% 					  left_join(CN,join_by("siteID"=="siteID"))
 
 
-## ----add-species,message=FALSE,eval=TRUE--------------------------------------------------------
+## ----add-species,message=FALSE,eval=TRUE---------------------------------------------------------------
 
 mapSummaryWithSpecies <- hairMatchSet %>%
 						group_by(siteID,scientificName) %>%
@@ -251,7 +251,7 @@ mapSummaryWithSpecies <- hairMatchSet %>%
 					
 
 
-## ----map,message=FALSE,eval=TRUE----------------------------------------------------------------
+## ----map,message=TRUE,eval=TRUE------------------------------------------------------------------------
 
 basemap <- leaflet() %>% 
 				addTiles() %>%
@@ -268,7 +268,7 @@ speciesByCN
 
 
 
-## ----plot,eval=TRUE-----------------------------------------------------------------------------
+## ----plot,eval=TRUE------------------------------------------------------------------------------------
 
 
 PleucSites <- mapSummaryWithSpecies[!is.na(mapSummaryWithSpecies$`Peromyscus leucopus`), ]

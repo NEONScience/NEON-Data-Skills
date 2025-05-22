@@ -133,19 +133,19 @@ Let's take a look at what is included in each NEON data product download. We wil
     ##  [1] "categoricalCodes_10026"      "cfc_carbonNitrogen"          "cfc_chemistrySubsampling"   
     ##  [4] "cfc_chlorophyll"             "cfc_elements"                "cfc_fieldData"              
     ##  [7] "cfc_lignin"                  "cfc_LMA"                     "cfc_shapefile"              
-    ## [10] "citation_10026_PROVISIONAL"  "citation_10026_RELEASE-2024" "issueLog_10026"             
+    ## [10] "citation_10026_PROVISIONAL"  "citation_10026_RELEASE-2025" "issueLog_10026"             
     ## [13] "readme_10026"                "validation_10026"            "variables_10026"
 
     names(NEON.ltr)
 
-    ##  [1] "categoricalCodes_10033"      "citation_10033_RELEASE-2024" "issueLog_10033"             
+    ##  [1] "categoricalCodes_10033"      "citation_10033_RELEASE-2025" "issueLog_10033"             
     ##  [4] "ltr_chemistrySubsampling"    "ltr_fielddata"               "ltr_litterCarbonNitrogen"   
     ##  [7] "ltr_litterLignin"            "ltr_massdata"                "ltr_pertrap"                
     ## [10] "readme_10033"                "validation_10033"            "variables_10033"
 
 We can see that the data downloads for each product include several tables. The Quick Start Guides on any NEON data product description page are especially useful for understanding these tables, as are the "variables" and "readme" files included in data downloads. It is recommended that anyone who plans to use NEON data in their work carefully review the associated reading materials. 
 
-# Narrow the spatial and temporal scope based on available data
+## Narrow the spatial and temporal scope based on available data
 
 For our purpose, we are interested in the files containing measurements of carbon and nitrogen, so we will extract those data tables.
 
@@ -166,7 +166,7 @@ We will summarize the available data to find of year by site combinations for wh
 
     summary.cfc
 
-    ## # A tibble: 13 × 4
+    ## # A tibble: 14 × 4
     ## # Groups:   siteID [8]
     ##    siteID  year     n meanCN
     ##    <chr>  <dbl> <int>  <dbl>
@@ -175,14 +175,15 @@ We will summarize the available data to find of year by site combinations for wh
     ##  3 GRSM    2016    45   25.6
     ##  4 GRSM    2021    55   26.1
     ##  5 HARV    2018    45   33.5
-    ##  6 MLBS    2018    45   23.2
-    ##  7 MLBS    2023    46   22.9
-    ##  8 ORNL    2017    42   29.6
-    ##  9 ORNL    2022    58   27.5
-    ## 10 SCBI    2017    44   21.3
-    ## 11 SCBI    2022    46   14.8
-    ## 12 SERC    2016    36   26.6
-    ## 13 SERC    2021    58   29.9
+    ##  6 HARV    2024    60   36.0
+    ##  7 MLBS    2018    45   23.2
+    ##  8 MLBS    2023    46   22.9
+    ##  9 ORNL    2017    42   29.6
+    ## 10 ORNL    2022    58   27.5
+    ## 11 SCBI    2017    44   21.3
+    ## 12 SCBI    2022    46   14.8
+    ## 13 SERC    2016    36   26.6
+    ## 14 SERC    2021    58   29.9
 
     summary.ltr <- ltr %>% 
                   mutate(year=year(collectDate)) %>% 
@@ -191,7 +192,7 @@ We will summarize the available data to find of year by site combinations for wh
 
     summary.ltr
 
-    ## # A tibble: 11 × 4
+    ## # A tibble: 12 × 4
     ## # Groups:   siteID [8]
     ##    siteID  year     n meanCN
     ##    <chr>  <dbl> <int>  <dbl>
@@ -201,11 +202,12 @@ We will summarize the available data to find of year by site combinations for wh
     ##  4 GRSM    2021    14   71.7
     ##  5 HARV    2018    58   64.8
     ##  6 MLBS    2018    19   42.3
-    ##  7 ORNL    2017    25   62.9
-    ##  8 ORNL    2022    20   72.5
-    ##  9 SCBI    2017    13   59.5
-    ## 10 SCBI    2022    17   47.0
-    ## 11 SERC    2021    12   72.7
+    ##  7 MLBS    2023    31   62.6
+    ##  8 ORNL    2017    25   62.9
+    ##  9 ORNL    2022    20   72.5
+    ## 10 SCBI    2017    13   59.5
+    ## 11 SCBI    2022    17   47.0
+    ## 12 SERC    2021    12   72.7
 
 We can see that there are more year by site combinations for which CN ratio data exist from canopy foliage than from litter samples. Since we are interested in studying both components of the ecosystem, let's subset our data to only those instances for which both sets of data are available. To do this we need to join our datasets by site and year. 
 
@@ -225,7 +227,7 @@ We will then select the most recent year of data from each of the site x year co
 
 We have identified 8 site by year combinations for which we would like to obtain paired mammal hair and fecal samples for further study! Now we will look for available mammal samples.
 
-# Load and explore NEON Biorepository data
+## Load and explore NEON Biorepository data
 
 Here, we read in a csv file of occurrence records downloaded from the NEON Biorepository data portal. The results are located in the <a href="https://github.com/kyule/neon-biorepo-tutorial" target="_blank">Github repository</a> associated with this tutorial. This represents all small mammal hair and fecal samples from Domains 1, 2, and 7 archived at the NEON Biorepository.
 
@@ -240,54 +242,38 @@ Let's look at what information is included in a Darwin Core occurrence record. W
 
     names(biorepo)
 
-    ##  [1] "id"                             "institutionCode"               
-    ##  [3] "collectionCode"                 "ownerInstitutionCode"          
-    ##  [5] "basisOfRecord"                  "occurrenceID"                  
-    ##  [7] "catalogNumber"                  "otherCatalogNumbers"           
-    ##  [9] "higherClassification"           "kingdom"                       
-    ## [11] "phylum"                         "class"                         
-    ## [13] "order"                          "family"                        
-    ## [15] "scientificName"                 "taxonID"                       
-    ## [17] "scientificNameAuthorship"       "genus"                         
-    ## [19] "subgenus"                       "specificEpithet"               
-    ## [21] "verbatimTaxonRank"              "infraspecificEpithet"          
-    ## [23] "taxonRank"                      "identifiedBy"                  
-    ## [25] "dateIdentified"                 "identificationReferences"      
-    ## [27] "identificationRemarks"          "taxonRemarks"                  
-    ## [29] "identificationQualifier"        "typeStatus"                    
-    ## [31] "recordedBy"                     "associatedCollectors"          
-    ## [33] "recordNumber"                   "eventDate"                     
-    ## [35] "eventDate2"                     "year"                          
-    ## [37] "month"                          "day"                           
-    ## [39] "startDayOfYear"                 "endDayOfYear"                  
-    ## [41] "verbatimEventDate"              "occurrenceRemarks"             
-    ## [43] "habitat"                        "substrate"                     
-    ## [45] "verbatimAttributes"             "fieldNumber"                   
-    ## [47] "eventID"                        "informationWithheld"           
-    ## [49] "dataGeneralizations"            "dynamicProperties"             
-    ## [51] "associatedOccurrences"          "associatedSequences"           
-    ## [53] "associatedTaxa"                 "reproductiveCondition"         
-    ## [55] "establishmentMeans"             "cultivationStatus"             
-    ## [57] "lifeStage"                      "sex"                           
-    ## [59] "individualCount"                "samplingProtocol"              
-    ## [61] "preparations"                   "locationID"                    
-    ## [63] "continent"                      "waterBody"                     
-    ## [65] "islandGroup"                    "island"                        
-    ## [67] "country"                        "stateProvince"                 
-    ## [69] "county"                         "municipality"                  
-    ## [71] "locality"                       "locationRemarks"               
-    ## [73] "localitySecurity"               "localitySecurityReason"        
-    ## [75] "decimalLatitude"                "decimalLongitude"              
-    ## [77] "geodeticDatum"                  "coordinateUncertaintyInMeters" 
-    ## [79] "verbatimCoordinates"            "georeferencedBy"               
-    ## [81] "georeferenceProtocol"           "georeferenceSources"           
-    ## [83] "georeferenceVerificationStatus" "georeferenceRemarks"           
-    ## [85] "minimumElevationInMeters"       "maximumElevationInMeters"      
-    ## [87] "minimumDepthInMeters"           "maximumDepthInMeters"          
-    ## [89] "verbatimDepth"                  "verbatimElevation"             
-    ## [91] "disposition"                    "language"                      
-    ## [93] "recordEnteredBy"                "modified"                      
-    ## [95] "sourcePrimaryKey.dbpk"          "collID"                        
+    ##  [1] "id"                             "institutionCode"                "collectionCode"                
+    ##  [4] "ownerInstitutionCode"           "basisOfRecord"                  "occurrenceID"                  
+    ##  [7] "catalogNumber"                  "otherCatalogNumbers"            "higherClassification"          
+    ## [10] "kingdom"                        "phylum"                         "class"                         
+    ## [13] "order"                          "family"                         "scientificName"                
+    ## [16] "taxonID"                        "scientificNameAuthorship"       "genus"                         
+    ## [19] "subgenus"                       "specificEpithet"                "verbatimTaxonRank"             
+    ## [22] "infraspecificEpithet"           "taxonRank"                      "identifiedBy"                  
+    ## [25] "dateIdentified"                 "identificationReferences"       "identificationRemarks"         
+    ## [28] "taxonRemarks"                   "identificationQualifier"        "typeStatus"                    
+    ## [31] "recordedBy"                     "associatedCollectors"           "recordNumber"                  
+    ## [34] "eventDate"                      "eventDate2"                     "year"                          
+    ## [37] "month"                          "day"                            "startDayOfYear"                
+    ## [40] "endDayOfYear"                   "verbatimEventDate"              "occurrenceRemarks"             
+    ## [43] "habitat"                        "substrate"                      "verbatimAttributes"            
+    ## [46] "fieldNumber"                    "eventID"                        "informationWithheld"           
+    ## [49] "dataGeneralizations"            "dynamicProperties"              "associatedOccurrences"         
+    ## [52] "associatedSequences"            "associatedTaxa"                 "reproductiveCondition"         
+    ## [55] "establishmentMeans"             "cultivationStatus"              "lifeStage"                     
+    ## [58] "sex"                            "individualCount"                "samplingProtocol"              
+    ## [61] "preparations"                   "locationID"                     "continent"                     
+    ## [64] "waterBody"                      "islandGroup"                    "island"                        
+    ## [67] "country"                        "stateProvince"                  "county"                        
+    ## [70] "municipality"                   "locality"                       "locationRemarks"               
+    ## [73] "localitySecurity"               "localitySecurityReason"         "decimalLatitude"               
+    ## [76] "decimalLongitude"               "geodeticDatum"                  "coordinateUncertaintyInMeters" 
+    ## [79] "verbatimCoordinates"            "georeferencedBy"                "georeferenceProtocol"          
+    ## [82] "georeferenceSources"            "georeferenceVerificationStatus" "georeferenceRemarks"           
+    ## [85] "minimumElevationInMeters"       "maximumElevationInMeters"       "minimumDepthInMeters"          
+    ## [88] "maximumDepthInMeters"           "verbatimDepth"                  "verbatimElevation"             
+    ## [91] "disposition"                    "language"                       "recordEnteredBy"               
+    ## [94] "modified"                       "sourcePrimaryKey.dbpk"          "collID"                        
     ## [97] "recordID"                       "references"
 
 We see that a large number of Darwin Core fields are present in the results that outline the who, what, where, when, and more of each sample. For fun, let's explore the data. Try grouping or summarizing by any fields that interest you.
@@ -323,7 +309,7 @@ _An aside on taxonomic identifications:_ We see several different taxa represent
     biorepo <- biorepo %>% 
                   filter(!grepl("/",scientificName),!is.na(specificEpithet))
 
-# Narrow the results to a set of samples that fits our research question
+## Narrow the results to a set of samples that fits our research question
 
 We want to include only samples collected from the same site by year combinations we are interested in based on CN ratio data, so we create a site by year column and filter the results.
 
@@ -437,7 +423,7 @@ Then, we filter to the combinations for which we can obtain 10 or more paired sa
     hairMatches <- hairMatches %>%
                 		filter(siteSp %in% hairMatchSummary$siteSp)
 
-# Finalize a sample list
+## Finalize a sample list
 
 To finalize the list, we randomly select a sample size of 10 for each species and site combination.
 
@@ -463,7 +449,7 @@ We now have a list of 140 samples we could request from the NEON Biorepository v
 
 What other ways may we want to have manipulated or subset the data for our question?
 
-# Visualize our request
+## Visualize our request
 
 We might be interested in creating a visualization for a grant proposal in which we planned to use these samples.
 
@@ -505,7 +491,7 @@ Create a base map for our data and add minicharts of the species and CN ratio of
 
     speciesByCN
 
-    ## Error in path.expand(path): invalid 'path' argument
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/biorepository/rfigs/map-1.png)
 We see that we have a good representation of _P. leucopus_ across our study area. For a strong species-specific analysis we may choose to focus on this species and investigate the CN ratios present at sites where it is present.
 
 
