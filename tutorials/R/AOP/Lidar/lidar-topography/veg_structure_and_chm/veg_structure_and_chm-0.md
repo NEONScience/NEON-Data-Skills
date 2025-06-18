@@ -1,7 +1,7 @@
 ---
 syncID: d2d126173eeb4494a06e35aa34bd2196
 title: "Compare tree height measured from the ground to a Lidar-based Canopy Height Model"
-description: "Investigate the relationship between two methods for measuring canopy height"
+description: "Investigate the relationship between two methods for measuring canopy height."
 dateCreated: 2019-5-21
 authors: Claire K. Lunch
 contributors: Kelley A. McCahill
