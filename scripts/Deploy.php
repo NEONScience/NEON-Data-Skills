@@ -20,7 +20,12 @@ printf(
     !empty($commitHash) ? "$commitHash" : 'empty'
 );
 
-foreach (findTutorialMarkdownFiles($commitHash) as $markdownFile) {
+$markdownFiles = findTutorialMarkdownFiles($commitHash);
+if (empty($markdownFiles)) {
+    print("No markdown files found.\n");
+}
+
+foreach ($markdownFiles as $markdownFile) {
     if (!file_exists($markdownFile)) {
         print("File not found.\n");
         continue;
@@ -60,7 +65,7 @@ $newCommitHash = shell_exec('git rev-parse HEAD');
 
 if ($commitHash !== $newCommitHash) {
     printf(
-        "The updated imported commit hash %s!\n",
+        "The updated imported commit hash is %s!\n",
         $newCommitHash
     );
     setLastImportCommitHash($newCommitHash);
