@@ -53,11 +53,9 @@ Data and additional scripts required for this lesson are downloaded programmatic
 
 ### Other Set-Up Requirements
 
-Set up a **NEON user account and token**, if you haven't already done so. Follow the tutorial below to learn how to do this (check the Python tabs in the code cells for the Python syntax.
+Set up a **NEON user account and token**, if you haven't already done so. Follow the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a> to learn how to do this (check the Python tabs in the code cells for the Python syntax).
 
-<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a>. 
-
-Note: for this tutorial, we have set up the token as an environment variable, following "Option 2: Set token as environment variable" in the linked lesson.
+**Note**: for this lesson, we have set up the token as an environment variable, following "Option 2: Set token as environment variable" in the linked tutorial above.
 
 ### Additional Resources
 If you are new to AOP hyperspectral data, we recommend exploring the following tutorial series:
