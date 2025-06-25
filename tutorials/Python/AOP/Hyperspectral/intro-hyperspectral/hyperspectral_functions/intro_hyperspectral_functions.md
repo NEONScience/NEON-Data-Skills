@@ -203,14 +203,12 @@ nu.list_available_dates('DP3.30006.002','DSNY') # BRDF and topographic corrected
 
     Directional reflectance data availability:
     
-
     RELEASE-2025 Available Dates: 2014-05, 2016-09, 2017-09, 2018-10, 2019-04, 2021-09
-    PROVISIONAL Available Dates: 2023-04
     
-
-    
+        
     Bidirectional reflectance data availability:
     
+    PROVISIONAL Available Dates: 2023-04
 
 Next we can also look at the tile extents so we can roughly determine the valid values to enter for the easting and northing, which are input parameters to the `by_tile_aop` function. First, let's set our NEON token as follows:
 
@@ -278,7 +276,7 @@ nu.by_tile_aop(dpid='DP3.30006.002',
     Continuing will download 2 NEON data files totaling approximately 713.3 MB. Do you want to proceed? (y/n)  y
     
 
-    
+Define some functions that will help us explore the files that were downloaded. You can also look in the File Explorer (Windows) or Finder (Mac) to check out the contents more interactively.   
     
 
 
