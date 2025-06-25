@@ -48,14 +48,10 @@ You will need a current version of Python (3.9+) to complete this tutorial. We a
 
 ### Data
 
-Data and additional scripts required for this lesson are downloaded programmatically as part of the tutorial.
+Data and additional scripts required for this lesson are downloaded programmatically as part of the tutorial. The data used in this lesson were collected over NEON's
+<a href="https://www.neonscience.org/field-sites/dsny" target="_blank">Disney Wilderness Preserve (DSNY)</a> field site in 2023. The dataset can also be downloaded from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
-The data used in this lesson were collected over NEON's
-<a href="https://www.neonscience.org/field-sites/dsny" target="_blank">Disney Wilderness Preserve (DSNY)</a> field site and processed at NEON headquarters.
-
-The dataset can also be downloaded from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
-
-### Other Requirements
+### Other Set-Up Requirements
 
 Set up a **NEON user account and token**, if you haven't already done so. Follow the tutorial below to learn how to do this (check the Python tabs in the code cells for the Python syntax.
 
