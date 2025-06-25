@@ -1,57 +1,77 @@
 ---
 syncID: e046a83d83f2042d8b40dea1b20fd6779
-title: "Read in and visualize hyperspectral data in Python"
+title: "Read in and visualize hyperspectral data in Python using functions"
 description: "Learn to efficiently work with tiled NEON AOP hyperspectral data in Python using functions."
 dateCreated: 2017-06-19 
 authors: Bridget Hass
 contributors: Tristan Goulden
 estimatedTime: 1 hour
-packagesLibraries: h5py, requests, skimage
+packagesLibraries: h5py, requests, skikit-image, neonutilities, pandas, python-dotenv
 topics: hyperspectral, remote-sensing, hdf5
 languagesTool: Python
-dataProduct: NEON.DP3.30006.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/into_hyperspectral_functions.ipynb
+dataProduct: NEON.DP3.30006.001, NEON.DP3.30006.002
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/into-hyperspectral/hyperspectral_functions.ipynb
 tutorialSeries: 
 urlTitle: refl-functions-py
 ---
 
-In this tutorial, you will learn how to efficiently read in hyperspectral surface directional reflectance hdf5 data and metadata, plot a single band and Red-Green-Blue (RGB) band combinations of a reflectance data tile using Python functions created for working with and visualizing NEON AOP hyperspectral data.
+In this tutorial, you will learn how to efficiently read in hdf5 reflectance data and metadata, plot a single band and Red-Green-Blue (RGB) band combinations of a reflectance data tile using Python functions created for working with and visualizing NEON AOP hyperspectral data.
 
-This tutorial works with the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a> data product. 
+This tutorial uses the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic</a> data product. 
 
 
 <div id="ds-ojectives" markdown="1">
 
-### Learning Objectives
+### Objectives
+
 After completing this tutorial, you will be able to:
 
-* Work with Python modules and functions
-* Read in tiled NEON AOP reflectance hdf5 data and associated metadata
+* Work with custom Python modules and functions for AOP data
+* Download and read in tiled NEON AOP reflectance hdf5 data and associated metadata
 * Plot a single band of reflectance data
 * Stack and plot 3-band combinations to visualize true color and false color images
 
 ### Install Python Packages
 
 * **h5py**
-* **gdal** 
+* **gdal**
+* **neonutilities**
+* **pandas**
+* **python-dotenv**
 * **requests**
+* **scikit-image**
 
 ### Data
 
 Data and additional scripts required for this lesson are downloaded programmatically as part of the tutorial.
 
-The data used in this tutorial were collected over NEON's <a href="https://www.neonscience.org/field-sites/dsny" target="_blank">Disney Wilderness Preserve (DSNY)</a> field site and processed at NEON headquarters.
+The data used in this lesson were collected over NEON's
+<a href="https://www.neonscience.org/field-sites/dsny" target="_blank">Disney Wilderness Preserve (DSNY)</a> field site and processed at NEON headquarters.
 
 The dataset can also be downloaded from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
+### Requirements
+
+Set up a **NEON user account and token**, if you haven't already done so. Follow the tutorial below to learn how to do this (check the Python tabs in the code cells for the Python syntax.
+
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a>. 
+
+Note: for this tutorial, we have set up the token as an environment variable, following "Option 2: Set token as environment variable" in the linked lesson.
+
+### Recommended Resources
+If you are new to AOP hyperspectral data, we recommend exploring the following tutorial series:
+
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-python" target="_blank">Introduction to Hyperspectral Remote Sensing Data in Python</a>
+
 </div>
 
-We can combine any three bands from the NEON reflectance data to make an RGB image that will depict different information about the Earth's surface. A **natural color** image, made with bands from the red, green, and blue wavelengths looks close to what we would see with the naked eye. We can also choose band combinations from other wavelenghts, and map them to the red, blue, 
-and green colors to highlight different features. A **false color** image is made with one or more bands from a non-visible portion of the electromagnetic spectrum that are mapped to red, green, and blue colors. These images can display other information about the landscape that is not easily seen with a natural color image. 
+## Background
+
+We can combine any three bands from the NEON reflectance data to make an RGB image that will depict different information about the Earth's surface. A **natural color** image, made with bands from the red, green, and blue wavelengths looks close to what we would see with the naked eye. We can also choose band combinations from other wavelenghts, and map them to the red, blue, and green colors to highlight different features. A **false color** image is made with one or more bands from a non-visible portion of the electromagnetic spectrum that are mapped to red, green, and blue colors. These images can display other information about the landscape that is not easily seen with a natural color image. 
 
 The NASA Goddard Media Studio video "Peeling Back Landsat's Layers of Data" gives a good quick overview of natural and false color band combinations. Note that the Landsat multispectral sensor collects information from 11 bands, while NEON AOP hyperspectral data captures information spanning 426 bands!
 
-#### Peeling Back Landsat's Layers of Data Video
+### Peeling Back Landsat's Layers of Data Video
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/YP0et8l_bvY" frameborder="0" allowfullscreen></iframe>
 
@@ -66,20 +86,22 @@ The NASA Goddard Media Studio video "Peeling Back Landsat's Layers of Data" give
 
 ## Load Function Module
 
-First we can import the required packages and the `neon_aop_hyperspectral` module, which includes a number of functions which we will use to read in the hyperspectral hdf5 data as well as visualize the data.
+First, import the required packages and the `neon_aop_hyperspectral` module, which includes functions that we will use to read in and visualize the hyperspectral hdf5 data.
 
 
 ```python
+import dotenv
+import h5py
+import matplotlib.pyplot as plt
+import neonutilities as nu
+import numpy as np
 import os
+import requests
 import sys
 import time
-import h5py
-import requests
-import numpy as np
-import matplotlib.pyplot as plt
 ```
 
-This next function is a handy way to download the Python module and data that we will be using for this lesson. This uses the `requests` package.
+This next function is a handy way to download the Python module that we will be use in this lesson. This uses the `requests` package.
 
 
 ```python
@@ -93,7 +115,7 @@ def download_url(url,download_dir):
     file_object.write(r.content)
 ```
 
-Download the module from its location on GitHub, add the python_modules to the path and import the neon_aop_hyperspectral.py module.
+Download the module from its location on GitHub, add the `../python_modules` directory to the path and import the `neon_aop_hyperspectral.py` module as `neon_hs`.
 
 
 ```python
@@ -102,13 +124,15 @@ download_url(module_url,'../python_modules')
 # os.listdir('../python_modules') #optionally show the contents of this directory to confirm the file downloaded
 
 sys.path.insert(0, '../python_modules')
-# import the neon_aop_hyperspectral module, the semicolon supresses an empty plot from displaying
-import neon_aop_hyperspectral as neon_hs;
+# import the neon_aop_hyperspectral module
+import neon_aop_hyperspectral as neon_hs
 ```
+    
+
 
 The first function we will use is `aop_h5refl2array`. We encourage you to look through the code to understand what it is doing behind the scenes. This function automates the steps required to read AOP hdf5 reflectance files into a Python numpy array. This function also cleans the data: it sets any no data values within the reflectance tile to `nan` (not a number) and applies the reflectance scale factor so the final array that is returned represents unitless scaled reflectance, with values ranging between 0 and 1 (0-100%). 
 
-If you forget what this function does, or don't want to scroll up to read the docstrings, remember you can use `help` or `?` to display the associated docstrings. 
+**Data Tip:** If you forget the inputs to a function or want to see more details on what the function does, you can use `help()` or `?` to display the associated docstrings. 
 
 
 ```python
@@ -167,47 +191,194 @@ help(neon_hs.aop_h5refl2array)
     
     
 
-Now that we have an idea of how this function works, let's try it out. First, let's download a file. For this tutorial, we will use requests to download from the public link where the data is stored on the cloud (Google Cloud Storage). This downloads to a data folder in the working directory, but you can download it to a different location if you prefer.
+Now that we have an idea of how this function works, let's try it out. First, we need to download a reflectance file. We can download a single 1 km x 1 km reflectance data tile for the DSNY site using the `neonutilities` `by_tile_aop` function as shown below. This downloads to a data folder specified in `savepath`. Before downloading a tile, let's take a quick look at when data were collected (and are avaiable) at this site using the `list_available_dates` function.
 
 
 ```python
-# define the data_url to point to the cloud storage location of the the hyperspectral hdf5 data file
-data_url = "https://storage.googleapis.com/neon-aop-products/2021/FullSite/D03/2021_DSNY_6/L3/Spectrometer/Reflectance/NEON_D03_DSNY_DP3_454000_3113000_reflectance.h5"
+# display dates of available data for the directional and bidirectional reflectance data at DNSY
+print('Directional reflectance data availability:')
+nu.list_available_dates('DP3.30006.001','DSNY') # directional reflectance data ends with .001
+print('\nBidirectional reflectance data availability:')
+nu.list_available_dates('DP3.30006.002','DSNY') # BRDF and topographic corrected reflectance data ends with .002
+```
+
+    Directional reflectance data availability:
+    
+
+    RELEASE-2025 Available Dates: 2014-05, 2016-09, 2017-09, 2018-10, 2019-04, 2021-09
+    PROVISIONAL Available Dates: 2023-04
+    
+
+    
+    Bidirectional reflectance data availability:
+    
+
+Next we can also look at the tile extents so we can roughly determine the valid values to enter for the easting and northing, which are input parameters to the `by_tile_aop` function. First, let's set our NEON token as follows:
+
+dotenv.set_key(dotenv_path=".env",
+key_to_set="NEON_TOKEN",
+value_to_set="YOUR_TOKEN_HERE")
+
+
+```python
+dotenv.load_dotenv()
+my_token=os.environ.get("NEON_TOKEN")
+# optionally display the token to double check
+# print('my token: ',my_token)
 ```
 
 
 ```python
-# download the h5 data and display how much time it took to download (uncomment 1st and 3rd lines)
-# start_time = time.time()
-download_url(data_url,'.\data')
-# print("--- It took %s seconds to download the data ---" % round((time.time() - start_time),1))
+dsny_bounds = nu.get_aop_tile_extents('DP3.30006.002','DSNY','2023',token=my_token)
+```
+
+    Easting Bounds: (451000, 464000)
+    Northing Bounds: (3099000, 3114000)
+    
+
+
+```python
+# display the first and last UTM coordinates of the DSNY site:
+print('First 3 coordinates:\n',dsny_bounds[:3])
+print('Last 3 coordinates:\n',dsny_bounds[-3:])
+```
+
+    First 3 coordinates:
+     [(451000, 3103000), (451000, 3104000), (451000, 3105000)]
+    Last 3 coordinates:
+     [(463000, 3112000), (464000, 3108000), (464000, 3111000)]
+    
+
+Set up the data directory where we want to download our data. 
+
+**Data Tip**: If are working from a Windows Operating System (OS), there may be a path length limitation which might cause an error in downloading, since the neon download function maintains the full folder structure the data, as it is stored on Google Cloud Storage (GCS). If you see the following warning: "`UserWarning: Filepaths on Windows are limited to 260 characters. Attempting to download a filepath that is 291 characters long. Set the working or savepath directory to be closer to the root directory or enable long path support in Windows.`", you will either need to enable long path support in Windows (a quick online search will show you how to do this) or set the `savepath` directory so that it is shorter. You can use `os.path.abspath` to see the full path, if you have specified a relative path. For this example, we will set a short `savepath` by creating a `neon_data` directly directly under the home directory as follows:
+
+
+```python
+home_dir = os.path.expanduser('~')
+data_dir = os.path.join(home_dir,'neon_data')
+# optionally display the full path to the data_dir as follows:
+# os.path.abspath(data_dir)
 ```
 
 
 ```python
-# display the contents in the ./data folder to confirm the download completed
-os.listdir('./data')
+nu.by_tile_aop(dpid='DP3.30006.002',
+               site='DSNY',
+               year='2023',
+               easting=454000,
+               northing=3113000,
+               include_provisional=True,
+               savepath=data_dir,
+               token=my_token)
+```
+
+    Provisional NEON data are included. To exclude provisional data, use input parameter include_provisional=False.
+    
+
+    Continuing will download 2 NEON data files totaling approximately 713.3 MB. Do you want to proceed? (y/n)  y
+    
+
+    
+    
+
+
+```python
+def list_data_subfolders(data_dir):
+    """
+    Recursively finds and lists subfolders within a directory that contain data (files)
+    and excludes subfolders that only contain other subfolders.
+
+    Args:
+        data_dir: The path to the root directory to search.
+
+    Returns:
+        A list of paths to the subfolders containing data.
+    """
+    data_subfolders = []
+    for root, dirs, files in os.walk(data_dir):
+        # Check if the current directory has both subdirectories and files
+        if dirs and files:
+            # Iterate through subdirectories to find those that contain files
+            for dir_name in dirs:
+                dir_path = os.path.join(root, dir_name)
+                if any(os.path.isfile(os.path.join(dir_path, f)) for f in os.listdir(dir_path)):
+                    data_subfolders.append(dir_path)
+        # If the current directory has no subdirectories, but has files, we still want to keep the directory.
+        elif files:
+            if root != data_dir:  # Avoid adding the root directory itself if it has files
+                data_subfolders.append(root)
+
+    return data_subfolders
+
+def list_data_files(data_dir):
+    """
+    Lists all files within a specified directory and its subdirectories.
+
+    Args:
+        data_dir (str): The path to the data directory to start the search from.
+
+    Returns:
+        list: A list of full paths to all files found.
+    """
+    all_files = []
+    for root, _, files in os.walk(data_dir):
+        for file in files:
+            full_path = os.path.join(root, file)
+            all_files.append(full_path)
+    return all_files
+```
+
+We can use these functions to explore the contents of the data that were downloaded. You can also go into File Explorer (Windows) or Finder (Mac) to explore the contents in a more interactive way.
+
+
+```python
+neon_data_subfolders = list_data_subfolders(data_dir)
+# display the paths starting with `neon_data` to shorten:
+neon_subfolders_short = [f.replace(home_dir,'') for f in neon_data_subfolders]
+neon_subfolders_short
 ```
 
 
 
 
-    ['NEON_D03_DSNY_DP3_454000_3113000_reflectance.h5']
+    ['\\neon_data\\DP3.30006.002\\neon-aop-provisional-products\\2023\\FullSite\\D03\\2023_DSNY_7\\L3\\Spectrometer\\Reflectance',
+     '\\neon_data\\DP3.30006.002\\neon-publication\\NEON.DOM.SITE.DP3.30006.002\\DSNY\\20230401T000000--20230501T000000\\basic']
+
+
+
+Data were downloaded into two nested subfolders. The reflectance data is saved in the path `2023\FullSite\D03\2023_DSNY_7\L3\Spectrometer\Reflectance`. This is the standard format where you can expect to find L3 data. Note that before 2023 there is a `neon-aop-provisional-products` folder. This is because the DSNY data from 2023 is available provisionally. If the data were released, it would be found under `neon-aop-products`. 
+
+Next let's use the `list_data_files` function to see the actual files that we downloaded. If you included a larger range of points in the Easting and Northing, or used `by_file_aop`, this list could be much longer.
+
+
+```python
+downloaded_refl_files = list_data_files(data_dir)
+# display the files starting with `neon_data` to shorten:
+downloaded_refl_files_short = [f.replace(home_dir,'') for f in downloaded_refl_files]
+downloaded_refl_files_short
+```
+
+
+
+
+    ['\\neon_data\\DP3.30006.002\\citation_DP3.30006.002_PROVISIONAL.txt',
+     '\\neon_data\\DP3.30006.002\\issueLog_DP3.30006.002.csv',
+     '\\neon_data\\DP3.30006.002\\neon-aop-provisional-products\\2023\\FullSite\\D03\\2023_DSNY_7\\L3\\Spectrometer\\Reflectance\\NEON_D03_DSNY_DP3_454000_3113000_bidirectional_reflectance.h5',
+     '\\neon_data\\DP3.30006.002\\neon-publication\\NEON.DOM.SITE.DP3.30006.002\\DSNY\\20230401T000000--20230501T000000\\basic\\NEON.D03.DSNY.DP3.30006.002.readme.20241220T001434Z.txt']
 
 
 
 
 ```python
 # read the h5 reflectance file (including the full path) to the variable h5_file_name
-h5_file_name = data_url.split('/')[-1]
-h5_tile = os.path.join(".\data",h5_file_name)
-print(f'h5_tile: {h5_tile}')
+# h5_file_name = data_url.split('/')[-1]
+h5_tiles = [f for f in downloaded_refl_files if f.endswith('.h5')]
+h5_tile = h5_tiles[0]
+# print(f'h5_tile: {h5_tile}')
 ```
 
-    h5_tile: .\data\NEON_D03_DSNY_DP3_454000_3113000_reflectance.h5
-    
-
-Now that we've specified our reflectance tile, we can call `aop_h5refl2array` to read in the reflectance tile as a python array called `refl` , the metadata into a dictionary called `refl_metadata`, and the wavelengths into an array.
+Now that we've specified our reflectance tile, we can call `aop_h5refl2array` to read in the reflectance tile as a python array called `refl`, the metadata into a dictionary called `refl_metadata`, and the wavelengths into an array. Let's read it it and then take a quick look at the metadata and the first 5 wavelength values.
 
 
 ```python
@@ -217,8 +388,8 @@ refl, refl_metadata, wavelengths = neon_hs.aop_h5refl2array(h5_tile,'Reflectance
 print("--- It took %s seconds to read in the data ---" % round((time.time() - start_time),0))
 ```
 
-    Reading in  .\data\NEON_D03_DSNY_DP3_454000_3113000_reflectance.h5
-    --- It took 7.0 seconds to read in the data ---
+    Reading in  C:\Users\bhass\neon_data\DP3.30006.002\neon-aop-provisional-products\2023\FullSite\D03\2023_DSNY_7\L3\Spectrometer\Reflectance\NEON_D03_DSNY_DP3_454000_3113000_bidirectional_reflectance.h5
+    --- It took 23.0 seconds to read in the data ---
     
 
 
@@ -243,7 +414,7 @@ refl_metadata
       'xMax': 455000.0,
       'yMin': 3113000.0,
       'yMax': 3114000.0},
-     'source': '.\\data\\NEON_D03_DSNY_DP3_454000_3113000_reflectance.h5'}
+     'source': 'C:\\Users\\bhass\\neon_data\\DP3.30006.002\\neon-aop-provisional-products\\2023\\FullSite\\D03\\2023_DSNY_7\\L3\\Spectrometer\\Reflectance\\NEON_D03_DSNY_DP3_454000_3113000_bidirectional_reflectance.h5'}
 
 
 
@@ -256,7 +427,7 @@ wavelengths[:5]
 
 
 
-    array([383.884 , 388.8917, 393.8995, 398.9072, 403.915 ], dtype=float32)
+    array([383.884003, 388.891693, 393.899506, 398.907196, 403.915009])
 
 
 
@@ -274,7 +445,7 @@ refl.shape
 
 
 
-## `plot_aop_refl`: plot a single band of the reflectance data
+## Plot a single band of the reflectance data using `plot_aop_refl`: 
 
 Next we'll use the function `plot_aop_refl` to plot a single band of reflectance data. You can use `help` to understand the required inputs and data types for each of these; only the band and spatial extent are required inputs, the rest are optional inputs. If specified, these optional inputs allow you to set the range color values, specify the axis, add a title, colorbar, colorbar title, and change the colormap (default is to plot in greyscale). 
 
@@ -294,8 +465,8 @@ neon_hs.plot_aop_refl(band56/refl_metadata['scale_factor'],
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_24_0.png)
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_35_0.png)
     
 
 
@@ -341,7 +512,7 @@ print('Band 19: %.1f' %(wavelengths[18]),'nm')
     Band 19: 474.0 nm
     
 
-## plot_aop_rgb: plot an RGB band combination
+## Plot an RGB band combination using `plot_aop_rgb`: 
 
 Next, we can use the function `plot_aop_rgb` to plot the band stack as follows:
 
@@ -355,7 +526,7 @@ neon_hs.plot_aop_rgb(rgb,
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_30_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_41_0.png)
     
 
 
@@ -379,8 +550,7 @@ neon_hs.plot_aop_rgb(cir,
                      plot_title='DSNY Color Infrared Image')
 ```
 
-    Clipping input data to the valid range for imshow with RGB data ([0..1] for floats or [0..255] for integers).
-    
+       
 
     Band 90 Center Wavelength = 829.6 nm
     Band 34 Center Wavelength = 549.1 nm
@@ -389,17 +559,19 @@ neon_hs.plot_aop_rgb(cir,
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_32_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions_files/intro_hyperspectral_functions_43_2.png)
     
 
+
+## Recap
+
+Congratulations! You have successfully downloaded a NEON reflectance tile using the `neonutilities` `by_tile_aop` function. You have also pulled in some pre-defined functions and used these to read in and visualize the reflectance data. You are now well poised to start carrying out more in-depth analysis using the hyperspectral data with Python.
 
 ## References
 
 Kekesi, Alex et al. 
-<a href="https://svs.gsfc.nasa.gov/vis/a010000/a011400/a011491/" target="_blank"> "NASA | Peeling Back Landsat's Layers of Data". </a>
-https://svs.gsfc.nasa.gov/vis/a010000/a011400/a011491/. Published on Feb 24, 2014.
+<a href="https://www.youtube.com/watch?v=YP0et8l_bvY/" target="_blank"> "NASA | Peeling Back Landsat's Layers of Data"</a>. Published on Feb 24, 2014.
 
 Riebeek, Holli. 
-<a href="https://earthobservatory.nasa.gov/Features/FalseColor/" target="_blank"> "Why is that Forest Red and that Cloud Blue? How to Interpret a False-Color Satellite Image" </a> 
-https://earthobservatory.nasa.gov/Features/FalseColor/ 
+<a href="https://earthobservatory.nasa.gov/Features/FalseColor/" target="_blank"> "Why is that Forest Red and that Cloud Blue? How to Interpret a False-Color Satellite Image" </a>. Published on March 4, 2014.
 
