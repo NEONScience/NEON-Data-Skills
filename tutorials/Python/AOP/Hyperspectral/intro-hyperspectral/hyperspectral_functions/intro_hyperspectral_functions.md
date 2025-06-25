@@ -250,7 +250,7 @@ print('Last 3 coordinates:\n',dsny_bounds[-3:])
 
 Set up the data directory where we want to download our data. 
 
-**Data Tip**: If are working from a Windows Operating System (OS), there may be a path length limitation which might cause an error in downloading, since the neon download function maintains the full folder structure the data, as it is stored on Google Cloud Storage (GCS). If you see the following warning: "`UserWarning: Filepaths on Windows are limited to 260 characters. Attempting to download a filepath that is 291 characters long. Set the working or savepath directory to be closer to the root directory or enable long path support in Windows.`", you will either need to enable long path support in Windows (a quick online search will show you how to do this) or set the `savepath` directory so that it is shorter. You can use `os.path.abspath` to see the full path, if you have specified a relative path. For this example, we will set a short `savepath` by creating a `neon_data` directly directly under the home directory as follows:
+**Data Tip**: If you are working from a Windows Operating System (OS), there may be a path length limitation which might cause an error in downloading, since the neon download function maintains the full folder structure the data, as it is stored on Google Cloud Storage (GCS). If you see the following warning: "`UserWarning: Filepaths on Windows are limited to 260 characters. Attempting to download a filepath that is 291 characters long. Set the working or savepath directory to be closer to the root directory or enable long path support in Windows.`", you will either need to enable long path support in Windows (a quick online search will show you how to do this) or set the `savepath` directory so that it is shorter. You can use `os.path.abspath` to see the full path, if you have specified a relative path. For this example, we will set a short `savepath` by creating a `neon_data` directly directly under the home directory as follows:
 
 
 ```python
@@ -444,9 +444,9 @@ refl.shape
 
 
 
-## Plot a single band of the reflectance data using `plot_aop_refl`: 
+## Plot a single band
 
-Next we'll use the function `plot_aop_refl` to plot a single band of reflectance data. You can use `help` to understand the required inputs and data types for each of these; only the band and spatial extent are required inputs, the rest are optional inputs. If specified, these optional inputs allow you to set the range color values, specify the axis, add a title, colorbar, colorbar title, and change the colormap (default is to plot in greyscale). 
+Next we'll use the function `plot_aop_refl` to plot a single band of the reflectance data. You can use `help` to understand the required inputs and data types for each of these; only the band and spatial extent are required inputs, the rest are optional inputs. If specified, these optional inputs allow you to set the range color values, specify the axis, add a title, colorbar, colorbar title, and change the colormap (default is to plot in greyscale). 
 
 
 ```python
@@ -511,7 +511,7 @@ print('Band 19: %.1f' %(wavelengths[18]),'nm')
     Band 19: 474.0 nm
     
 
-## Plot an RGB band combination using `plot_aop_rgb`: 
+## Plot an RGB band combination
 
 Next, we can use the function `plot_aop_rgb` to plot the band stack as follows:
 
