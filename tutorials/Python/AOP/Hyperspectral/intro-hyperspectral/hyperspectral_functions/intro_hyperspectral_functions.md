@@ -21,7 +21,7 @@ This tutorial uses the Level 3 <a href="https://data.neonscience.org/data-produc
 
 <div id="ds-objectives" markdown="1">
 
-### Learning Objectives
+## Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -29,6 +29,12 @@ After completing this tutorial, you will be able to:
 * Download and read in tiled NEON AOP reflectance hdf5 data and associated metadata
 * Plot a single band of reflectance data
 * Stack and plot 3-band combinations to visualize true color and false color images
+
+## Things you'll need to complete this tutorial
+
+### Python
+
+You will need a current version of Python (3.9+) to complete this tutorial. We also recommend the Jupyter Notebook IDE to follow along with this notebook.
 
 ### Install Python Packages
 
@@ -49,7 +55,7 @@ The data used in this lesson were collected over NEON's
 
 The dataset can also be downloaded from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
-### Requirements
+### Other Requirements
 
 Set up a **NEON user account and token**, if you haven't already done so. Follow the tutorial below to learn how to do this (check the Python tabs in the code cells for the Python syntax.
 
@@ -57,7 +63,7 @@ Set up a **NEON user account and token**, if you haven't already done so. Follow
 
 Note: for this tutorial, we have set up the token as an environment variable, following "Option 2: Set token as environment variable" in the linked lesson.
 
-### Recommended Resources
+### Additional Resources
 If you are new to AOP hyperspectral data, we recommend exploring the following tutorial series:
 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-python" target="_blank">Introduction to Hyperspectral Remote Sensing Data in Python</a>
