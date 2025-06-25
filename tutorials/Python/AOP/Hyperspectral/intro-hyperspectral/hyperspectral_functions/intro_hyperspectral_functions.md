@@ -10,7 +10,7 @@ packagesLibraries: h5py, requests, skikit-image, neonutilities, pandas, python-d
 topics: hyperspectral, remote-sensing, hdf5
 languagesTool: Python
 dataProduct: NEON.DP3.30006.001, NEON.DP3.30006.002
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/into-hyperspectral/hyperspectral_functions.ipynb
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/hyperspectral_functions/intro_hyperspectral_functions.ipynb
 tutorialSeries: 
 urlTitle: refl-functions-py
 ---
@@ -21,6 +21,7 @@ This tutorial uses the Level 3 <a href="https://data.neonscience.org/data-produc
 
 
 <div id="ds-ojectives" markdown="1">
+
 
 ### Objectives
 
