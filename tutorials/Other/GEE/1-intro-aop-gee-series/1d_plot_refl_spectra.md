@@ -129,7 +129,7 @@ Map.onClick(function(coords) {
 });
 ```
 
-When you run this code, (linked at the bottom), you will see the SOAP 2021 directional reflectance layer show up in the Map panel, along with a white figure panel. When you click anywhere in the image, the empty figure will be populated with the spectral signature of the pixel you clicked on.
+When you run this code (linked at the bottom), you will see the SOAP 2021 directional reflectance layer show up in the Map panel, along with an empty white figure panel in the lower left corner. When you click anywhere in the reflectance image, the empty figure panel will be populated with the spectral signature of the pixel you clicked on.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png">
