@@ -69,7 +69,7 @@ AOP has currently added a subset of AOP Level 3 (tiled) data products at over 50
 
 In the code editor, NEON datasets can be accessed through the `projects/neon-prod-earthengine` folder with an appended suffix of the Acronym and Revision Number, shown in the table below. For example, the Surface Directional Reflectance can be found under the path `projects/neon-prod-earthengine/assets/HSI_REFL/001`. The table below summarizes the GEE and NEON Data Portal IDs for each data product, and can be used as a reference for reading in AOP GEE datasets. You will learn how to access and read in these data products in the next part of this lesson. 
 
-| GEE Acronym/Revision | Data Product      | Data Product ID |
+| GEE Acronym/Revision | Data Product Name | Data Product ID |
 |----------------------|-------------------|-----------------|
 | <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_001" target="_blank">HSI_REFL/001</a> | Surface Directional Reflectance | <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a> |
 | <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_002" target="_blank">HSI_REFL/002</a> | Surface Bidirectional Reflectance | <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">DP3.30006.002</a> |
