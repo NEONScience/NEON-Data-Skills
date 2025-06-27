@@ -16,7 +16,7 @@ urlTitle: intro-aop-gee-image-collections
 
 ---
 
-<div id="ds-introduction" markdown="1">
+## NEON AOP Data in Google Earth Engine
 
 Google Earth Engine (GEE) is a free and powerful cloud-computing platform for carrying out remote sensing and geospatial data analysis. In this tutorial, we introduce you to the NEON AOP datasets that have been added to Google Earth Engine as <a href="https://developers.google.com/earth-engine/datasets/publisher" target="_blank">Publisher Datasets</a>. 
 
@@ -87,7 +87,7 @@ Once you have set up your Google Earth Engine account you can navigate to the <a
 	</a>
 </figure>
 
-## Read AOP Data Collections into GEE using `ee.ImageCollection`
+## Read AOP Data Collections into GEE
 
 AOP data can currently be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the five available AOP datasets, or `ImageCollections`.
 
@@ -184,7 +184,7 @@ In the **Console** tab to the right of the code, you will see a list of all avai
 	</a>
 </figure>
 
-## Filter by Image Properties and Display a True Color Image
+## Filter by Image Properties
 
 Next, we can explore some filtering options to pull out individual images from an Image Collection. In the example shown below, we can filter by the date (`.filterDate`) by providing a date range, and filter by other properties, such as the NEON site code, using `.filterMetadata`. For this example we'll pull in an image from the NEON site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">Lyndon B. Johnson National Grassland NEON (CLBJ)</a>.
 
