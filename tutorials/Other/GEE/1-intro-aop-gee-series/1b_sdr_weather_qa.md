@@ -155,7 +155,11 @@ Map.addLayer(soapDates,
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG" alt="SOAP 2019 Acquisition Dates" style="max-width: 100%; height: auto;">
 	</a>
 </figure>
-	
+
+## Other QA considerations
+
+This lesson is intended to give you a quick introduction to some of the QA factors to consider when working with NEON AOP data, and is not meant to be comprehensive. When working with hyperspectral data, there are also invalid and noisy bands that you will likely want to remove before working with the full spectra (these bad bands are not unique to NEON hyperspectral data; for example NASA AVIRIS and EMIT hyperpsectral data have the same limitiations). Please see the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-plot-spectra" target="_blank">Plot spectral signatures of AOP Reflectance data in GEE</a> for more details on these "bad bands". The Algorithm Theoretical Basis Documents (ATBDs) for the directional and bidirectional reflectance datasets, linked from the NEON Data Product Pages and from the Quick Guides linked in the descriptions in the <a href="https://developers.google.com/earth-engine/datasets/publisher/neon-prod-earthengine" target="_blank">NEON Publisher Datasets</a> pages on GEE, provide more comprehensive details on how these data products were derived and QA factors to consider. When pairing NEON data with satellite data, you will also need to factor in differences such as the atmospheric correction used, and other corrections that may or may not be applied (e.g. BRDF and topographic corrections) to both/all datasets you are integrating.
+ 
 ## Recap
 
 In this lesson you learned how to read in Weather Quality Information from the Reflectance QA bands in GEE. You learned to mask data to keep only the imagery collected in the clearest sky conditions (<10% cloud cover), and plot the three weather quality classes. You also learned how to find the other QA bands. Following a similar approach, you can explore each of the QA bands similarly. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for interpreting the data and carrying out subsequent data analysis.
