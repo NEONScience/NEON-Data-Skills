@@ -186,15 +186,16 @@ Map.centerObject(site_center, 11);
 ```
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function2_weather_qa.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function2_weather_qa.png" alt="JERC Clear QA Function Output"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1c_refl_viz_functions/jerc_function2_weather_qa.png" alt="JERC Clear QA Function Output" style="max-width: 100%; height: auto;">
+	</a>
 </figure>
 
 In the "Layers" tab, select and de-select the Map Layers to look at the data and the weather QA information for all of the years. This figure shows the weather quality information at JERC in 2019, where the data were collected in mixed cloud conditions. Flight operators prioritize flying the area over NEON plots in the best weather conditions when possible. As explained in the previous lesson, when working with AOP reflectance data, the weather conditions during the flights are one of the most important quality considerations. 
 
 ## Recap
 
-This lesson showed examples of two functions that demonstrate how to use functional programming to add layers to a Map. 
-As explained in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03#introduction-to-functional-programming" target="_blank"> introduction-to-functional-programming</a>, "Earth Engine uses a parallel processing system to carry out computation across a large number of machines...The use of for-loops is discouraged in Earth Engine. The same results can be achieved using a map() operation where you specify a function that can be independently applied to each element. This allows the system to distribute the processing to different machines." The examples presented in this lesson show some examples of how to make use of that map operation in lieu of a for loop.
+This lesson showed how to make two functions that demonstrate using functional programming to add layers to a Map. 
+As explained in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03#introduction-to-functional-programming" target="_blank"> introduction-to-functional-programming</a>, "Earth Engine uses a parallel processing system to carry out computation across a large number of machines...The use of for-loops is discouraged in Earth Engine. The same results can be achieved using a `map()` operation where you specify a function that can be independently applied to each element. This allows the system to distribute the processing to different machines." The examples presented in this lesson show how to make use of that map operation in lieu of a for loop.
 
 ## Get Lesson Code
 
