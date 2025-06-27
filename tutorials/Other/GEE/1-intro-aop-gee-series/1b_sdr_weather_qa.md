@@ -20,7 +20,7 @@ Since reflectance data is generated from a passive energy source (the sun), data
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.png" alt="In-flight cloud photos">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.png" alt="In-flight cloud photos" style="max-width: 100%; height: auto;">
 	<figcaption>Cloud cover percentage during AOP flights. Left: green (<10%), Middle: yellow (10-50%), Right: red (>50%).</figcaption>
 	</a>
 </figure>  
@@ -57,7 +57,7 @@ var soapSDR = ee.ImageCollection("projects/neon-prod-earthengine/assets/HSI_REFL
 ```
 ## Display the QA Bands
 
-From the previous lesson, recall that the reflectance images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The data bands all follow the naming convetion B001, B002, ..., B426, and the QA bands start with something other than the letter "B", so we can use that information to extract the QA bands.
+From the previous lesson, recall that the reflectance images include 442 bands. Bands 0-425 are the data bands, which store the spectral reflectance values for each wavelength recorded by the NEON Imaging Spectrometer (NIS). The remaining bands (426-441) contain metadata and QA information that are important for understanding and properly interpreting the hyperspectral data. The data bands all follow the naming convention B001, B002, ..., B426, and the QA bands have more descriptive names that start with something other than the letter "B", so we can use that information to extract the QA bands.
 
 ```javascript
 // Pull out and display only the qa bands (these all start with something other than B)
@@ -68,7 +68,8 @@ print('QA Bands',soapSDR_qa)
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG" alt="QA Bands"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/qa_bands.PNG" alt="Reflectance QA Bands" style="max-width: 100%; height: auto;">
+	</a>
 </figure>
 
 Most of these QA bands are inputs to and outputs from the Atmospheric Correction (ATCOR), the process which converts radiance to atmospherically corrected reflectance. We will elaborate on these QA bands further, and encourage you to read more details about these data in the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance Algorithm Theoritical Basis Document</a>. For the purposes of this exercise, we will focus on the Weather Quality Indicator band. Note that you can explore each of the QA bands, following similar steps below, adjusting the band names and values accordingly.
@@ -125,7 +126,8 @@ Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2019 Reflectance RGB');
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_clear_sdr_weather_map.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_clear_sdr_weather_map.PNG" alt="GEE Map of SOAP Weather Quality Map and Clear Reflectance Data"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_clear_sdr_weather_map.PNG" alt="GEE Map of SOAP Weather Quality Map and Clear Reflectance Data" style="max-width: 100%; height: auto;">
+	</a>
 </figure>
 
 ## Plot acquisition dates
@@ -150,12 +152,13 @@ Map.addLayer(soapDates,
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG" alt="SOAP 2019 Acquisition Dates"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/soap_acquisition_dates.PNG" alt="SOAP 2019 Acquisition Dates" style="max-width: 100%; height: auto;">
+	</a>
 </figure>
 	
 ## Recap
 
-In this lesson you learned how to read in Weather Quality Information from the Reflectance QA bands in GEE. You learned to mask data to keep only data collected in the clearest sky conditions (<10% cloud cover), and plot the three weather quality classes. You also learned how to find the other QA bands, and following a similar approach could explore each of these bands similarly. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for interpreting the data and carrying out subsequent data analysis.
+In this lesson you learned how to read in Weather Quality Information from the Reflectance QA bands in GEE. You learned to mask data to keep only the imagery collected in the clearest sky conditions (<10% cloud cover), and plot the three weather quality classes. You also learned how to find the other QA bands. Following a similar approach, you can explore each of the QA bands similarly. Filtering by the weather quality is an important first pre-processing step to working with NEON hyperspectral data, and is essential for interpreting the data and carrying out subsequent data analysis.
 
 ## Get Lesson Code
 
