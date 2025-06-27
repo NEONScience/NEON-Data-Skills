@@ -5,11 +5,11 @@ description: "Interactively plot the spectral signature of an AOP reflectance da
 dateCreated: 2022-04-15
 authors: Bridget Hass, John Musinsky
 contributors: Tristan Goulden, Lukas Straube
-estimatedTime: 45 minutes
+estimatedTime: 30 minutes
 packagesLibraries: 
-topics: hyperspectral, remote-sensing
-languageTool: GEE
-dataProduct: DP3.30006.001
+topics: hyperspectral, remote-sensing, reflectance
+languageTool: GEE, JavaScript
+dataProduct: DP3.30006.001, DP3.30006.002
 code1: 
 tutorialSeries: aop-gee2023
 urlTitle: aop-gee-plot-spectra
@@ -49,8 +49,8 @@ var soapSDR_RGB = soapSDR.select(['B053', 'B035', 'B019']);
 // Display the SDR image
 Map.addLayer(soapSDR_RGB, {min:103, max:1160}, 'SOAP 2021 Reflectance RGB');
 
-// Center the map at the lat / lon of the site, set zoom to 12
-Map.setCenter(-119.25, 37.06, 12);
+// Center the map around the soapSDR_RGB object, set zoom to 12
+Map.centerObject(soapSDR_RGB, 12);
 ```
 
 ## Extract data bands
@@ -133,8 +133,25 @@ When you run this code, (linked at the bottom), you will see the SOAP 2021 direc
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png" alt="SOAP Specral Signature"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png" alt="SOAP Spectral Signature" style="max-width: 100%; height: auto;">
+	</a>
 </figure>
+
+## QA Considerations - Bad and Noisy Bands
+
+Let's zoom in on the spectral signature figure to take a closer look. Specifically, you can easily spot some QA considerations that are important to factor in if you intend to work with all 426 bands of data.
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_plot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1d_plot_spectra/soap_spectral_signature.png" alt="Spectral Signature, Highlighting Water Vapor and Noisy Bands" style="max-width: 100%; height: auto;">
+	</a>
+</figure>
+
+### Water Vapor Band Windows
+We can see from the spectral profile above that the reflectance values dip to below zero around ~1400 nm and ~1800 nm. These are water vapor band windows, resulting from water vapor which absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm. The atmospheric correction that converts radiance to reflectance subsequently results in a spike at these two bands, and are invalid values. They are set to -100 for the reflectance data in GEE. For more details on these bands, please refer to the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/plot-refl-spectra-py" target="_blank">Plot a Spectral Signature from Reflectance Data in Python</a> tutorial. Note that in the hyperspectral data as downloaded from the NEON Data Portal does not set these water vapor band windows to -100, so this is one difference between the dataset on GEE and the dataset as stored in hdf5 format.
+
+### Noisy Bands
+You may also notice that the reflectance values the beginning (~380 nm) and end (~2500 nm) spike up, relative to the other nearby bands. This is not a feature of the data. The first and last bands are more prone to have noisy values due to imperfect calibration of the sensor at the lowest and highest reflectance bands. Best practice is to leave out the first and last 5-10 bands of data; you can inspect a spectral signature plot to determine how many bands to remove.
 
 ## Recap
 
