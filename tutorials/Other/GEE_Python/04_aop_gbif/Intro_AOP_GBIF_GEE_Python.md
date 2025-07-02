@@ -99,32 +99,6 @@ ee.Initialize()
 # ee.Initialize(`gcp-project-name`)
 ```
 
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
-
 #### Find Available NEON Hyperspectral Imagery on GEE
 
 This next chunk of code shows how to find the available data on GEE at the Great Smokey Mountain (GRSM) site. Note that NEON data availability on GEE may not directly match availabilty on the NEON Data Portal, as of 2025. Additional data can be added to GEE upon request by emailing listaopgee@battelleecology.org. 
@@ -185,31 +159,6 @@ else:
 ```
 
 
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
-
     Available AOP Image IDs: ['2013_CPER_1', '2014_HARV_2', '2014_JERC_1', '2015_MLBS_1', '2015_TALL_1', '2016_CLBJ_1', '2016_GRSM_2', '2016_HARV_3', '2016_JERC_2', '2016_SERC_1', '2016_TALL_2', '2017_CLBJ_2', '2017_CPER_3', '2017_GRSM_3', '2017_HARV_4', '2017_JERC_3', '2017_MLBS_2', '2017_OAES_2', '2017_SERC_3', '2017_SRER_1', '2017_TALL_3', '2018_GUAN_1', '2018_HARV_5', '2018_JERC_4', '2018_MCRA_1', '2018_MLBS_3', '2018_OAES_3', '2018_SRER_2', '2018_TALL_4', '2019_CLBJ_4', '2019_HARV_6', '2019_HEAL_3', '2019_JERC_5', '2019_JORN_3', '2019_NIWO_3', '2019_OAES_4', '2019_SERC_4', '2019_SOAP_4', '2019_SRER_3', '2019_TALL_5', '2020_CPER_5', '2020_CPER_7', '2020_NIWO_4', '2020_RMNP_3', '2020_YELL_3', '2021_ABBY_4', '2021_BONA_4', '2021_CLBJ_5', '2021_CPER_8', '2021_HEAL_4', '2021_JERC_6', '2021_JORN_4', '2021_MCRA_2', '2021_OAES_5', '2021_OSBS_6', '2021_SERC_5', '2021_SJER_5', '2021_SOAP_5', '2021_SRER_4', '2021_TALL_6']
     AOP images matching search criteria: {('2016', 'GRSM'): ['2016_GRSM_2'], ('2017', 'GRSM'): ['2017_GRSM_3']}
     
@@ -255,31 +204,6 @@ NBR_Map.to_html(filename=html_nbr_filename)
 
 print(f"NBR visualization saved: {html_nbr_filename}")
 ```
-
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
 
 
     NBR computed for AOP image: 2016_GRSM_2
@@ -362,31 +286,6 @@ carabid_gdf.drop(columns='geometry').to_csv("gbif_carabids_grsm_2016_2017.csv", 
 ```
 
 
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
-
     INFO:Created 417 records
     
 
@@ -413,32 +312,6 @@ output_html = "GRSM_GBIF_NBR_Map.html"
 NBR_Map.to_html(filename=output_html)
 print(f"Combined map saved as: {output_html}")
 ```
-
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
 
     Combined map saved as: GRSM_GBIF_NBR_Map.html
     
@@ -536,32 +409,6 @@ print(f"Burn scar map saved as: {output_html}")
 # print("Export of burn scar shapefile initiated.")
 ```
 
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
-
     Burn scar map saved as: GRSM_Burn_Scar_Map.html
     
 
@@ -611,30 +458,6 @@ plt.ylabel("Species")
 plt.title("Species Presence/Absence Heatmap")
 plt.show()
 ```
-
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
 
 
 
@@ -731,32 +554,6 @@ Map = geemap.Map(center=[35.7, -83.5], zoom=11)
 Map.addLayer(traps, {}, 'Unique Points')
 ```
 
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
-
     Number of unique points: 4
     
 
@@ -810,32 +607,6 @@ geojson_filename = "Trap_Burn_Percentage_Export.geojson"
 gdf_traps.to_file(geojson_filename, driver="GeoJSON")
 print(f"Data exported as GeoJSON: {geojson_filename}")
 ```
-
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
 
     INFO:Created 4 records
     
@@ -947,34 +718,6 @@ for ax in axes.flat[n_sites:]:
 plt.tight_layout()
 plt.show()
 ```
-
-
-
-<style>
-    .geemap-dark {
-        --jp-widgets-color: white;
-        --jp-widgets-label-color: white;
-        --jp-ui-font-color1: white;
-        --jp-layout-color2: #454545;
-        background-color: #383838;
-    }
-
-    .geemap-dark .jupyter-button {
-        --jp-layout-color3: #383838;
-    }
-
-    .geemap-colab {
-        background-color: var(--colab-primary-surface-color, white);
-    }
-
-    .geemap-colab .jupyter-button {
-        --jp-layout-color3: var(--colab-primary-surface-color, white);
-    }
-</style>
-
-
-
-
     
 ![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_30_1.png)
     
