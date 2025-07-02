@@ -670,7 +670,7 @@ plt.show()
 
 
     
-![png](intro_aop_gbif_gee_files/intro_aop_gbif_gee_23_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_23_2.png)
     
 
 
@@ -976,7 +976,7 @@ plt.show()
 
 
     
-![png](intro_aop_gbif_gee_files/intro_aop_gbif_gee_30_1.png)
+![png]([intro_aop_gbif_gee_files/](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_30_1.png)
     
 
 
