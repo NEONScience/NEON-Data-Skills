@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 464ac0a0b63e4e679c6f6f36ca5130c7
 title: "Intro to working with AOP remote sensing and GBIF occurence data in Google Earth Engine Python (geemap)"
 description: "Explore AOP reflectance along with GBIF Carabid beetle trap occurence data"
 dateCreated: 2023-04-23
