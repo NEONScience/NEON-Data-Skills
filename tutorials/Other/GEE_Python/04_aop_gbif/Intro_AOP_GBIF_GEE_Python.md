@@ -15,7 +15,7 @@ tutorialSeries:
 urlTitle: aop-gbif-gee-py
 ---
 
-## Exploring NEON AOP (Airborne Operations Platform) and Biorepository Data Together
+## Exploring NEON AOP (Airborne Observation Platform) and Biorepository Data Together
 
 In this tutorial, we will use NEON airborne hyperspectral data collected in 2016 and 2017 at the NEON <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">GRSM (Great Smokey Mountains)</a> site to map the area affected by the <a href="https://www.neonscience.org/impact/observatory-blog/neons-great-smoky-mountains-data-will-capture-tennessee-fire-impacts-local" target="_blank">Chimney Tops Fire</a>. We will use the GEE (Google Earth Engine) Python API to explore the burn scar using the NBR (Normalized Burn Ratio) to set a threshold to identify burned and unburned areas. We will then use the <a href="https://pygbif.readthedocs.io/" target="_blank">pygbif</a> (Python Global Biodiversity Information Facility) library to pull records from the NEON Biorepository to see if and/or how Carabid beetle communities in the domain were impacted by the fires.
 
