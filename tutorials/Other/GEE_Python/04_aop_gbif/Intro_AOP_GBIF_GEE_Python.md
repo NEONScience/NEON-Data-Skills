@@ -1,13 +1,13 @@
 ---
-syncID: 
-title: "Intro to working with AOP remote sensing and GBIF occurence data in Google Earth Engine Python (geemap)"
-description: "Explore AOP reflectance along with GBIF Carabid beetle trap occurence data"
-dateCreated: 2023-04-23
+syncID: 464ac0a0b63e4e679c6f6f36ca5130c7
+title: "Exploring NEON AOP remote sensing and GBIF occurrence data in Google Earth Engine Python (geemap) to assess the impacts of a wildfire"
+description: "Explore AOP reflectance along with "
+dateCreated: 2025-04-24
 authors: Kit Lewers
-contributors: Bridget Hass
+contributors: Chandra Earl, Kelsey Yule, Bridget Hass
 estimatedTime: 1 hour
-packagesLibraries: earthengine-api, geemap, geopandas, pygbif, shapely
-topics:
+packagesLibraries: earthengine-api, geemap, geopandas, pygbif, shapely, seaborn
+topics: biorepository, beetles, remote-sensing
 languagesTool: Python, Google Earth Engine
 dataProducts: DP3.30006.001, DP3.30006.002
 code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/04_aop_gbif_gee_py/Intro_AOP_GBIF_GEE_Python.ipynb
@@ -15,9 +15,21 @@ tutorialSeries:
 urlTitle: aop-gbif-gee-py
 ---
 
-## Exploring NEON AOP (Airborne Operations Platform) and BioRepository Data Together
+## Exploring NEON AOP (Airborne Observation Platform) and Biorepository Data Together
 
-In this tutorial, we will pull in NEON AOP hyperspectral data collected in 2016 and 2017 at the NEON <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">GRSM (Great Smokey Mountains)</a> site. Between the 2016 and 2017 data collections, the <a href="https://www.neonscience.org/impact/observatory-blog/neons-great-smoky-mountains-data-will-capture-tennessee-fire-impacts-local" target="_blank">Chimney Tops Fire</a> occurred within the flight box, leaving a prominent burn scar. We will use the GEE (Google Earth Engine) Python API to explore the burn scar using the NBR (Normalized Burn Ratio) to set a threshold to identify burned and unburned areas. We will then use the <a href="https://github.com/gbif/pygbif" target="_blank">PyGBIF</a> API (Python Global Biodiversity Information Facility) to pull records from the NEON Biorepository to see if and/or how Carabid beetle traps within the site were impacted by the fires.
+In this tutorial, we will use NEON airborne hyperspectral data collected in 2016 and 2017 at the NEON <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">GRSM (Great Smokey Mountains)</a> site to map the area affected by the <a href="https://www.neonscience.org/impact/observatory-blog/neons-great-smoky-mountains-data-will-capture-tennessee-fire-impacts-local" target="_blank">Chimney Tops Fire</a>. We will use the GEE (Google Earth Engine) Python API to explore the burn scar using the NBR (Normalized Burn Ratio) to set a threshold to identify burned and unburned areas. We will then use the <a href="https://pygbif.readthedocs.io/" target="_blank">pygbif</a> (Python Global Biodiversity Information Facility) library to pull records from the NEON Biorepository to see if and/or how Carabid beetle communities in the domain were impacted by the fires.
+
+This workflow illustrates how NEON’s open data products—airborne remote sensing and biodiversity occurrence records—can be integrated to explore species-level responses to spatially explicit disturbances. By overlaying mapped burn areas with species occurrence data, we can assess whether wildfire affected the composition or distribution of ground beetle communities. Beyond this specific case, the approach highlights the potential of combining ecological and remote sensing data to investigate landscape-scale disturbance impacts, recovery dynamics, and long-term changes in community structure.
+
+### Background
+#### NEON Airborne Observation Platform and Google Earth Engine
+ <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">Airborne remote sensing</a> surveys are conducted over NEON field sites during peak greenness and provide quantitative information on land cover and changes to ecological structure and chemistry. The surveys are supported by the NEON Airborne Observation Platform (AOP), which collects regional-scale landscape information at the NEON field sites. The AOP maps areas where NEON's observational and instrumented sampling is occurring and allows relationships to be drawn between NEON's detailed in-situ observations to the broader environmental and ecological conditions. AOP data are available on the NEON Data Portal, and can also be downloaded programmatically using the <a href="https://pypi.org/project/neonutilities/" target="_blank">Python neonutilities</a> or <a href="https://cran.r-project.org/web/packages/neonUtilities/index.html" target="_blank">R neonUtilities</a> packages, and a subset of the data are also made available on <a href="https://developers.google.com/earth-engine/datasets/publisher/neon-prod-earthengine" target="_blank">Google Earth Engine Publisher Datasets</a>. This tutorial demonstrates working with full-site hyperspectral data that are available on GEE, using the Python API.
+
+#### Ground Beetles and the NEON Biorepository
+Ground beetles (Coleoptera: Carabidae) are widely recognized as effective bioindicators due to their sensitivity to environmental changes, particularly in relation to environmental changes, vegetation structure, and habitat disturbance. They are highly diverse, relatively easy to sample, and their community composition often reflect changes in local and landscape-scale conditions. Following natural or anthropogenic disturbances, beetle communities typically shift — favoring small-bodied, mobile, and ecologically flexible species in the early stages of recovery. As the habitat stabilizes over time, habitat specialists become more prevalent. Tracking these changes in species composition and abundance offers insight into ecosystem processes and can help assess the trajectory of recovery or the effectiveness of restoration efforts.
+
+At NEON field sites, Carabid beetles are captured biweekly during the growing season using pitfall traps. The trap contents are then sorted, with Carabids separated and identified to the species level. Select specimens are preserved as individual pinned reference vouchers, while the rest are stored in 95% ethanol for long-term archiving. Non-Carabid material from the traps is also retained for future use. All specimens are ultimately stored in the <a href="https://biorepo.neonscience.org/portal/" target="_blank">NEON Biorepository</a>, housed at Arizona State University, for long-term storage and curation. The NEON Biorepository makes these datasets available via <a href="https://www.gbif.org/" target="_blank">GBIF</a>, a global platform that aggregates biodiversity data from thousands of sources.
+
 
 <div id="ds-objectives" markdown="1">
 
@@ -26,9 +38,9 @@ After completing this tutorial, you will be able to use Python to:
 
 * Read in multiple visits and visualize AOP reflectance datasets
 * Calculate NBR (Normalized Burn Ratio) from reflectance data
-* Read in GBIF Occurence Records using the pygbif package
+* Read in GBIF Occurrence Records using the pygbif package
 * Visualize AOP Imagery and GBIF records together
-* Conduct exploratory analysis to see if and how the fire impacted the beetle traps
+* Conduct exploratory analysis to see if and how the fire impacted Carabid species composition
 
 ### Requirements
 
@@ -42,6 +54,7 @@ To follow along with this code, you will need to:
 - `pip install pygbif`
 - `pip install geopandas`
 - `pip install shapely`
+- `pip install seaborn`
 
 ### Additional Resources
 - <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-py-intro" target="_blank">Intro to AOP Datasets in Google Earth Engine (GEE) using Python</a>
@@ -53,50 +66,49 @@ To follow along with this code, you will need to:
 
 
 
-## Part 1: Reading in and Visualizing AOP Imagery and GBIF Occurence Records
+## Part 1: Reading in and Visualizing AOP Imagery and GBIF Occurrence Records
 
-#### Step 1: Import required packages
+Let's get started! First we'll read in and visualize the AOP surface bidirectional reflectance data at the Great Smokey Mountains site, using GEE in Python.
+
+#### Import required packages
 
 
 ```python
-from pygbif import occurrences as gbif_occ
 import geopandas as gpd
 import json
-import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from pygbif import occurrences as gbif_occ
+import seaborn as sns
 from shapely.geometry import Polygon
 from shapely import wkt
-```
 
-
-```python
+# GEE packages
 import ee
 import geemap
 ```
 
-To use the `ee` package, you will first need to Authenticate and Initialize
+To use the `ee` package, you will first need to Authenticate and Initialize. When you initialize you can specify your Google Cloud Platform (GCP) project name, or otherwise you will need to specify it as part of the intialization process.
 
 
 ```python
 ee.Authenticate()
-```
-
-
-
-
-```python
 ee.Initialize()
-#ee.Initialize(`gcp-project-name`)
+# optionally specify the project name
+# ee.Initialize(`gcp-project-name`)
 ```
 
+#### Find Available NEON Hyperspectral Imagery on GEE
 
-#### Step 2: Pull NEON Imagery from GEE
+This next chunk of code shows how to find the available data on GEE at the Great Smokey Mountain (GRSM) site. Note that NEON data availability on GEE may not directly match availabilty on the NEON Data Portal, as of 2025. Additional data can be added to GEE upon request by emailing listaopgee@battelleecology.org. 
 
 
 ```python
-# Define an area of interest, for the imagery, you can use a centroid to get all
+# Define an area of interest, for the imagery, I will simply be using a centroid because I want all
 # the imagery from GRSM domain. You can using a bounding box, shapefiles, etc. if you want a more granular
 # control of the geographic area
+
 site_center = ee.Geometry.Point([-83.5, 35.7])
 
 # Load Hyperspectral AOP Image Collection
@@ -129,8 +141,8 @@ def filter_aop_images(years, domains):
 
     return filtered_results
 
-# Define years and domains that you want to look at (NOTE: this code can be used from multiple years
-# and domains)
+# Define years and domains that you want to look at (NOTE: this code can be used to look at 
+# multiple years and domains)
 years_input = ["2016", "2017"]  # Add multiple years here
 domains_input = ["GRSM"]  # Add multiple domains here
 
@@ -144,7 +156,6 @@ if not filtered_images:
     print(f"No AOP images found for the selected years and domains.")
 else:
     print(f"AOP images matching search criteria: {filtered_images}")
-
 ```
 
 
@@ -152,7 +163,9 @@ else:
     AOP images matching search criteria: {('2016', 'GRSM'): ['2016_GRSM_2'], ('2017', 'GRSM'): ['2017_GRSM_3']}
     
 
-#### Step 2: Calculate NBR (Normalized Burn Ratio) and visualize for 2016 and 2017 imagery
+#### Calculate NBR (Normalized Burn Ratio) and visualize for 2016 and 2017 imagery
+
+The Normalized Burn Ratio is a standard index derived from multi or hyperspectral data to indicate burn severity. We will use the GEE `normalizedDifference` method to calculate NBR from the AOP hyperspectral data and visualize this in 2016 and 2017 to display the impact from the Chimney Tops Fire on the landscape.
 
 
 ```python
@@ -198,7 +211,7 @@ print(f"NBR visualization saved: {html_nbr_filename}")
     NBR visualization saved: AOP_NBR_2016_2017_GRSM.html
     
 
-You can open up the html to interactively view the 2016 and 2017 NBR images. You should see something the following:
+You can open up the html to interactively view the 2016 and 2017 NBR images. You should see something like the following:
 
 <table><tr>
 <td> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/aop_gbif/GRSM_2016_NBR.png" width="600"> </td>
@@ -207,13 +220,15 @@ You can open up the html to interactively view the 2016 and 2017 NBR images. You
 <figcaption>Normalized Burn Ratio (NBR) at the NEON GRSM site before the Chimney Tops Fire (2016, left) and after the fire (2017, right).  
 </figcaption>
 
-#### Reading in GBIF Occurences Data
+#### Read in GBIF Occurrence Data
 
-Next we'll read in the carabid beetle records from `pygbif occurences`, imported as `gbif_occ` and create a geodataframe from those data.
+Primary biodiversity data, also known as occurrence data, consist of records documenting observations of specific species at particular locations and times. These records form the foundation for understanding species distributions, tracking biodiversity changes over time, and supporting ecological and conservation research.
+
+To begin exploring these patterns, we'll read in the carabid beetle occurrence records using `gbif_occ` and create a geodataframe from those data.
 
 
 ```python
-# GRSM centroid and bounding box parameters
+# Specify GRSM centroid and bounding box parameters
 latitude, longitude = 35.6118, -83.4895
 bbox_size_deg = 0.09  # Approx. 10 km (~0.09 degrees)
 
@@ -271,11 +286,12 @@ carabid_gdf.drop(columns='geometry').to_csv("gbif_carabids_grsm_2016_2017.csv", 
 ```
 
 
-
-    INFO:Created 416 records
+    INFO:Created 417 records
     
 
 #### Visualize AOP Imagery and GBIF records together
+
+This last cell combines the AOP NBR map along with the GBIF records, so you can see where those records occured.
 
 
 ```python
@@ -304,15 +320,15 @@ Now if you open this new html, you should be able to see the Carabidae Trap Reco
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/aop_gbif/GRSM_NBR_Carabidae_Trap_Records.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/aop_gbif/GRSM_NBR_Carabidae_Trap_Records.png" alt="GRSM NBR and GBIF Traps" width="800">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/aop_gbif/GRSM_NBR_Carabidae_Trap_Records.png" alt="GRSM Trap Records" width="800">
     <figcaption>Great Smokey Mountain NBR overlaid with GBIF Carabidae Trap Records</figcaption></a>
 </figure>
 
-## Part 2: Additional Analysis
+## Part 2: Additional Analysis - Impact of the Fire on GBIF Records
 
-In this next section, we'll see if we can gain any insights as to if and how the fire impacted the GBIF records.
+In this next section, we'll see if we can gain any insights as to if and how the fire impacted the beetle trap records.
 
-This next chunk of code vectorizes the burn scar mask, which is then used ...
+This next chunk of code vectorizes the burn scar mask, which we can then use to assess differences in the GBIF occurrence data relative to burn percentages for a given location.
 
 
 ```python
@@ -393,7 +409,6 @@ print(f"Burn scar map saved as: {output_html}")
 # print("Export of burn scar shapefile initiated.")
 ```
 
-
     Burn scar map saved as: GRSM_Burn_Scar_Map.html
     
 
@@ -405,107 +420,97 @@ If you open this next html, you can see the vectorized burn scar.
     <figcaption>Great Smokey Mountains Chimney Tops Fire Burn Scar</figcaption></a>
 </figure>
 
-#### Compare overall trap collections abundance from 2016 to 2017
+#### Compare GBIF presence / absence data from 2016 to 2017
+
+Next, we will compare species presence data from GBIF for ground beetles collected before and after the fire, using 2016 (pre-fire) and 2017 (post-fire) records. By examining which species were detected in each year, we can infer absences and explore changes in community composition following the disturbance, shedding light on how the fire may have influenced beetle species richness.
+
 
 
 ```python
-# Load the GBIF records from your GeoJSON file
-gdf = gpd.read_file("gbif_carabids_grsm_2016_2017.geojson")
+# Load the GBIF records
+gbif_geojson = "gbif_carabids_grsm_2016_2017.geojson"
+occ_gdf = gpd.read_file(gbif_geojson)
 
-# Create a new column that identifies each unique location by combining latitude and longitude as a string.
-# Adjust formatting as needed.
-gdf['location'] = gdf['latitude'].astype(str) + ", " + gdf['longitude'].astype(str)
+# Create a presence flag by dropping duplicate species–year pairs
+presence_df = (
+    occ_gdf[['species', 'year']]
+    .drop_duplicates()           # keep one row per species/year
+    .assign(presence=1)          # mark presence
+)
 
-# Group by year and location, counting the number of occurrences (abundance) per location for each year.
-abundance_by_loc = gdf.groupby(['year', 'location']).size().reset_index(name='count')
+# Pivot so each species is a row, columns are years, values are presence (1) or absence (0)
+presence_pivot = (
+    presence_df
+    .pivot(index='species', columns='year', values='presence')
+    .fillna(0)
+    .astype(int)
+)
 
-# Pivot the grouped DataFrame so that each unique location is a row and the columns are the counts for each year.
-pivot_abundance = abundance_by_loc.pivot(index='location', columns='year', values='count').fillna(0)
+# Display the presence data
+print('presence data:')
+print(presence_pivot)
 
-# For clarity, sort the locations (this step is optional and dependent on your preference)
-pivot_abundance = pivot_abundance.sort_index()
-
-# Plot a grouped bar chart (histogram style) with unique locations on the x-axis and counts as bar heights.
-ax = pivot_abundance.plot(kind='bar', figsize=(14, 7))
-
-ax.set_xlabel("Lat, Long Location")
-ax.set_ylabel("Abundance (Count)")
-ax.set_title("Abundance per Unique Location in 2016 vs 2017")
-ax.legend(title="Year")
-plt.xticks(rotation=90)  # Rotate x-axis labels for better readability
-
-plt.tight_layout()
+# Plot a heatmap of the presence/absence data
+plt.figure(figsize=(8, max(4, len(presence_pivot) * 0.3)))
+sns.heatmap(presence_pivot, cmap='Greys', cbar=False, linewidths=.5, linecolor='lightgray')
+plt.xlabel("Year")
+plt.ylabel("Species")
+plt.title("Species Presence/Absence Heatmap")
 plt.show()
 ```
+
+
+
+    presence data:
+    year                       2016  2017
+    species                              
+    Amphasia interstitialis       0     1
+    Anillinus langdoni            0     1
+    Aulacopodus brouni            1     0
+    Carabus goryi                 1     1
+    Cyclotrachelus freitagi       1     1
+    Cyclotrachelus sigillatus     1     1
+    Cylindera unipunctata         1     1
+    Dicaelus dilatatus            1     1
+    Dicaelus politus              0     1
+    Dicaelus teter                1     1
+    Galerita bicolor              1     0
+    Gastrellarius blanchardi      1     0
+    Notiophilus aeneus            0     1
+    Pasimachus punctulatus        1     1
+    Pterostichus acutipes         1     1
+    Pterostichus coracinus        1     0
+    Pterostichus moestus          1     0
+    Pterostichus stygicus         1     0
+    Pterostichus tristis          1     1
+    Scaphinotus andrewsii         1     0
+    Scaphinotus guyotii           1     0
+    Sphaeroderus bicarinatus      1     1
+    Sphaeroderus canadensis       1     0
+    Sphaeroderus stenostomus      1     1
+    Tachys laevus                 1     0
     
-![png](intro_aop_gbif_gee_files/intro_aop_gbif_gee_25_1.png)
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_23_2.png)
     
 
 
-We can see that the abundances in 2017 are lower than 2016 at all four plots.
+We can see that the species richness in 2017 is lower than 2016 at all four plots.
 
-#### Compare species from year to year
+#### NBR values as a proxy for burn severity compared to trap areas
+
+In this next chunk of code, we'll find the unique sites and visualize them to make sure they are consistent across years.
+
 
 
 ```python
 # Load the GBIF records from your GeoJSON file
 gbif_geojson = "gbif_carabids_grsm_2016_2017.geojson"
-gdf = gpd.read_file(gbif_geojson)
-
-# Preview the data to ensure species and year fields are present
-print(gdf.head())
-
-# Group the data by species and year, and count the number of occurrences per group
-# This creates a DataFrame with species as index and each year as a column.
-species_counts = gdf.groupby(["species", "year"]).size().unstack(fill_value=0)
-
-# Display the DataFrame to verify the counts (optional)
-# print(species_counts)
-
-# Plotting the counts in a grouped bar chart
-ax = species_counts.plot(kind='bar', figsize=(12, 8))
-
-# Add labels and title
-ax.set_xlabel("Species")
-ax.set_ylabel("Number of Occurrences")
-ax.set_title("Carabidae Species Occurrences: 2016 vs 2017")
-ax.legend(title="Year")
-
-plt.tight_layout()
-plt.show();
-```
-
-
-                        species   latitude  longitude  year       eventID  \
-    0   Cyclotrachelus freitagi  35.664490 -83.524234  2016  GRSM.2016.18   
-    1     Pterostichus acutipes  35.679121 -83.482275  2016  GRSM.2016.18   
-    2  Gastrellarius blanchardi  35.664490 -83.524234  2016  GRSM.2016.18   
-    3             Tachys laevus  35.664490 -83.524234  2016  GRSM.2016.18   
-    4  Sphaeroderus bicarinatus  35.670778 -83.481653  2016  GRSM.2016.18   
-    
-                         geometry  
-    0  POINT (-83.52423 35.66449)  
-    1  POINT (-83.48228 35.67912)  
-    2  POINT (-83.52423 35.66449)  
-    3  POINT (-83.52423 35.66449)  
-    4  POINT (-83.48165 35.67078)  
-    
-
-
-    
-![png](intro_aop_gbif_gee_files/intro_aop_gbif_gee_28_2.png)
-    
-
-
-#### NBR values as a proxy for burn severity compared to trap areas
-
-
-```python
-# Specify the local path to your GeoJSON file.
-geojson_path = './gbif_carabids_grsm_2016_2017.geojson'
 
 # Open and load the GeoJSON as a Python dictionary.
-with open(geojson_path, 'r') as f:
+with open(gbif_geojson, 'r') as f:
     geojson_data = json.load(f)
 
 # Extract unique coordinate pairs from the features.
@@ -539,29 +544,20 @@ unique_geojson = {
     "features": unique_features
 }
 
-print("Number of unique trap points:", len(unique_features))
+print("Number of unique points:", len(unique_features))
 
 # Create an Earth Engine FeatureCollection from the unique GeoJSON.
 traps = ee.FeatureCollection(unique_geojson)
 
 # (Optional) Visualize the unique trap points using geemap.
 Map = geemap.Map(center=[35.7, -83.5], zoom=11)
-Map.addLayer(traps, {}, 'Unique Trap Coordinates')
-Map
+Map.addLayer(traps, {}, 'Unique Points')
 ```
 
-    Number of unique trap points: 4
+    Number of unique points: 4
     
 
-
-
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/aop_gbif/GRSM_Trap_Locations.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/aop_gbif/GRSM_Trap_Locations.png" alt="GRSM Trap Locations" width="800">
-    <figcaption>GBIF Trap Locations</figcaption></a>
-</figure>
-
-
+We can use the burn mask to compute the number of burned pixels (burn percentage) within 300 meters of the unique points as follows. You can export this as a .csv or geojson file.
 
 
 ```python
@@ -589,7 +585,7 @@ traps_with_burn = traps_buffered.map(calculate_burn_percentage)
 # print('Burn percentages for trap buffers:', traps_with_burn.limit(10).getInfo())
 
 # (Optional) Visualize the trap areas with burn percentage values on your existing map.
-NBR_Map.addLayer(traps_with_burn, {}, 'Trap Areas with Burn %')
+# NBR_Map.addLayer(traps_with_burn, {}, 'Trap Areas with Burn %')
 
 # Convert the Earth Engine FeatureCollection (with burn percentages) to a GeoDataFrame
 gdf_traps = geemap.ee_to_gdf(traps_with_burn)
@@ -600,14 +596,14 @@ print(gdf_traps.head())
 # For CSV export, the geometry column may be better exported as WKT.
 gdf_traps_csv = gdf_traps.copy()
 gdf_traps_csv['geometry'] = gdf_traps_csv['geometry'].apply(lambda geom: geom.wkt if geom is not None else None)
-csv_filename = "Trap_Burn_Percentages.csv"
+csv_filename = "Trap_Burn_Percentage_Export.csv"
 gdf_traps_csv.to_csv(csv_filename, index=False)
 print(f"Data exported as CSV: {csv_filename}")
 
 # Option 2: Export as GeoJSON using GeoPandas.
 # Here, we'll export the GeoDataFrame directly as a GeoJSON file.
-geojson_filename = "Trap_Burn_Percentages.geojson"
-# (Make sure the geometry column contains proper shapely geometries; if you already converted to WKT above, use the original gdf_traps.)
+geojson_filename = "Trap_Burn_Percentage_Export.geojson"
+# Note: Make sure the geometry column contains proper shapely geometries; if you already converted to WKT above, use the original gdf_traps.)
 gdf_traps.to_file(geojson_filename, driver="GeoJSON")
 print(f"Data exported as GeoJSON: {geojson_filename}")
 ```
@@ -621,138 +617,122 @@ print(f"Data exported as GeoJSON: {geojson_filename}")
     1  POLYGON ((-83.48557 35.67878, -83.48532 35.678...  23.721914
     2  POLYGON ((-83.48495 35.67043, -83.4847 35.6697...   9.383024
     3  POLYGON ((-83.5354 35.68425, -83.53515 35.6835...  13.115131
-    Data exported as CSV: Trap_Burn_Percentages.csv
-    Data exported as GeoJSON: Trap_Burn_Percentages.geojson
+    Data exported as CSV: Trap_Burn_Percentage_Export.csv
+    Data exported as GeoJSON: Trap_Burn_Percentage_Export.geojson
     
+
+Finally, let's look at the presence/absence data at each of these plots, to see if there are any trends depending on the burn percentages calculated above.
 
 
 ```python
-# ================================
-# Step 1: Process occurrence data
-# ================================
+# ---------------------------------------
+# 1) Load occurrences and tag each record with its trap `site`
+# ---------------------------------------
 
-# Load the GBIF records from your GeoJSON file
-occurrences_gdf = gpd.read_file("gbif_carabids_grsm_2016_2017.geojson")
+occ_gdf = gpd.read_file("gbif_carabids_grsm_2016_2017.geojson")
 
-# Create a new column that identifies each unique trap location.
-# (We round the coordinates to 6 decimals to avoid slight floating-point mismatches.)
-occurrences_gdf['location'] = occurrences_gdf['latitude'].round(6).astype(str) + ", " + occurrences_gdf['longitude'].round(6).astype(str)
+occ_gdf['site'] = (
+    occ_gdf['latitude'].round(6).astype(str) + ", " +
+    occ_gdf['longitude'].round(6).astype(str)
+)
 
-# Group by year and location to count the number of occurrences per trap for each year.
-occurrence_counts = occurrences_gdf.groupby(['year', 'location']).size().reset_index(name='count')
+all_species = sorted(occ_gdf['species'].unique())
 
-# Pivot the table so that each row is a unique trap (location) with columns for 2016 and 2017.
-pivot_abundance = occurrence_counts.pivot(index='location', columns='year', values='count').fillna(0)
-pivot_abundance = pivot_abundance.sort_index().reset_index()
-
-print("Occurrence data (pivot table):")
-print(pivot_abundance)
-
-
-# ============================================
-# Step 2: Load and process burn percentage data
-# ============================================
-
-# Load your exported CSV from Earth Engine.
-# This file is assumed to be generated from your export task ("Trap_Burn_Percentage_Export.csv").
-df_burn = pd.read_csv("Trap_Burn_Percentages.csv")
-
-# Convert the geometry column (assumed to be in WKT format) into shapely geometry objects.
-# The CSV export from EE typically includes a column "geometry" with WKT strings.
+# ---------------------------------------
+# 2) Load burn‐percentage data & build a site → burn_pct lookup
+# ---------------------------------------
+df_burn = pd.read_csv("Trap_Burn_Percentage_Export.csv")
 df_burn['geometry'] = df_burn['geometry'].apply(wkt.loads)
-
-# Create a GeoDataFrame from the burn data.
 gdf_burn = gpd.GeoDataFrame(df_burn, geometry='geometry', crs="EPSG:4326")
 
-# Compute the centroid for each (buffer) polygon.
+# Compute centroids so we can recreate the same "site" key
 gdf_burn['centroid'] = gdf_burn.geometry.centroid
-
-# Extract longitude and latitude from the centroids and round for consistent merging.
-gdf_burn['lon'] = gdf_burn.centroid.x.round(6)
 gdf_burn['lat'] = gdf_burn.centroid.y.round(6)
+gdf_burn['lon'] = gdf_burn.centroid.x.round(6)
+gdf_burn['site'] = gdf_burn['lat'].astype(str) + ", " + gdf_burn['lon'].astype(str)
 
-# Create a location string to match the occurrence data formatting.
-gdf_burn['location'] = gdf_burn['lat'].astype(str) + ", " + gdf_burn['lon'].astype(str)
+# Build a dict: site → burn percentage
+burn_mapping = gdf_burn.set_index('site')['burn_pct'].to_dict()
 
-# Keep only the necessary columns (location and burn percentage)
-burn_data = gdf_burn[['location', 'burn_pct']]
+# ---------------------------------------
+# 3) Prepare subplots (2×2 for four sites)
+# ---------------------------------------
+sites = occ_gdf['site'].unique()
+n_sites = len(sites)
+n_cols = 2
+n_rows = int(np.ceil(n_sites / n_cols))
+fig, axes = plt.subplots(n_rows, n_cols, figsize=(n_cols * 6, n_rows * 8))
 
-print("Burn percentage data:")
-print(burn_data)
+# ---------------------------------------
+# 4) Loop over each site, build presence/absence, and plot
+# ---------------------------------------
+for ax, site in zip(axes.flat, sites):
+    # Filter to that site
+    occ_site = occ_gdf[occ_gdf['site'] == site]
+    
+    # One row per species-year
+    presence = (
+        occ_site[['species', 'year']]
+        .drop_duplicates()
+        .assign(presence=1)
+    )
+    
+    # Pivot into species × year
+    pivot = (
+        presence
+        .pivot(index='species', columns='year', values='presence')
+        .fillna(0)
+        .astype(int)
+    )
+    
+    # Ensure both years are columns
+    for yr in [2016, 2017]:
+        if yr not in pivot.columns:
+            pivot[yr] = 0
+    pivot = pivot[[2016, 2017]]
 
+    pivot = pivot.reindex(index=all_species, fill_value=0)
+    
+    # Plot heatmap
+    sns.heatmap(
+        pivot,
+        cmap='Greys',
+        cbar=False,
+        linewidths=0.5,
+        linecolor='lightgray',
+        ax=ax
+    )
+    
+    # Get burn percentage for this site
+    burn_pct = burn_mapping.get(site, 0.0)
+    
+    # Update title to include site and burn %
+    ax.set_title(f"Site {site}\nBurn: {burn_pct:.1f}%", fontsize=12)
+    ax.set_xlabel("Year")
+    ax.set_ylabel("Species")
 
-# ===============================================
-# Step 3: Merge occurrence and burn percentage data
-# ===============================================
-
-# Merge the pivot abundance table with the burn data on the "location" column.
-merged_df = pd.merge(pivot_abundance, burn_data, on='location', how='left')
-
-print("Merged data:")
-print(merged_df)
-
-
-# ===================================================
-# Step 4: Create the visualization (grouped bar chart)
-# ===================================================
-
-fig, ax = plt.subplots(figsize=(14, 7))
-
-# Use the index (0, 1, 2, ...) for unique traps.
-x_positions = range(len(merged_df))
-bar_width = 0.35
-
-# Plot bars for each year. We assume the pivot table columns are either integer years or strings.
-# If needed, adjust the column names accordingly.
-year2016 = merged_df[2016] if 2016 in merged_df.columns else merged_df['2016']
-year2017 = merged_df[2017] if 2017 in merged_df.columns else merged_df['2017']
-
-bars1 = ax.bar([i - bar_width/2 for i in x_positions], year2016, bar_width, label='2016', color='blue')
-bars2 = ax.bar([i + bar_width/2 for i in x_positions], year2017, bar_width, label='2017', color='orange')
-
-# Annotate each group with the burn percentage.
-for i, row in merged_df.iterrows():
-    # Get the maximum occurrence count between the two years for placement of text.
-    max_count = max(row[2016] if 2016 in merged_df.columns else row['2016'], 
-                    row[2017] if 2017 in merged_df.columns else row['2017'])
-    ax.text(i, max_count + 0.5, f"Burn: {row['burn_pct']:.1f}%", ha='center', va='bottom', fontsize=10)
-
-# Set the x-axis tick labels to be the location strings (which are "lat, long").
-ax.set_xticks(x_positions)
-ax.set_xticklabels(merged_df['location'], rotation=90)
-ax.set_xlabel("Trap (Lat, Long)")
-ax.set_ylabel("Occurrence Count")
-ax.set_title("Trap Occurrence (2016 vs 2017) with Burn Scar %")
-ax.legend()
+# Turn off any extra axes (if fewer than 4 sites)
+for ax in axes.flat[n_sites:]:
+    ax.axis('off')
 
 plt.tight_layout()
 plt.show()
-
 ```
-
-
-    Occurrence data (pivot table):
-    year               location  2016  2017
-    0      35.66449, -83.524234    59    24
-    1     35.670778, -83.481653    99    45
-    2     35.679121, -83.482275    63    42
-    3     35.684589, -83.532102    53    31
-    Burn percentage data:
-                    location   burn_pct
-    0   35.66449, -83.524234   5.093100
-    1  35.679121, -83.482275  23.721914
-    2  35.670778, -83.481653   9.383024
-    3  35.684589, -83.532102  13.115131
-    Merged data:
-                    location  2016  2017   burn_pct
-    0   35.66449, -83.524234    59    24   5.093100
-    1  35.670778, -83.481653    99    45   9.383024
-    2  35.679121, -83.482275    63    42  23.721914
-    3  35.684589, -83.532102    53    31  13.115131
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_30_1.png)
     
 
 
-    
-![png](intro_aop_gbif_gee_files/intro_aop_gbif_gee_32_2.png)
-    
+### Questions - on your own:
+- What are some trends you can find from looking at these four plots, broken out by burn percentage?
+- Are there any species-specific findings you can determine or hypotheses you can make from these heatmaps?
 
+### Recap
+
+Congratulations! In this lesson you have learned how to work with GBIF and NEON AOP data together, using `geemap` and `pygbif`, and have gone through an example to assess impacts of a wildfire on beetle trap occurrence data.
+
+**Author Contact**:
+
+Kit Lewers
+- Kristen.Lewers@colorado.edu
+- https://github.com/kllewers
