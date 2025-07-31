@@ -40,10 +40,10 @@ More detailed information about NEON's airborne sampling design can be found in 
 
 **Download the NEON Shapefiles:** 
 
-The lesson shows how to programmatically download the NEON shapefiles, but you can also download them as follows
+The lesson shows how to programmatically download the NEON shapefiles, but you can also download them by clicking on the following links:
 
-AOP Flight Box Boundaries: <a href="https://www.neonscience.org/sites/default/files/AOP_flightBoxes_0.zip" class="link--button link--arrow">AOP_FlightBoxes.zip</a>
-TOS Sampling Boundaries: <a href="https://www.neonscience.org/sites/default/files/Field_Sampling_Boundaries_202503.zip" class="link--button link--arrow">TOS_SamplingBoundaries.zip</a>
+- AOP Flight Box Boundaries: <a href="https://www.neonscience.org/sites/default/files/AOP_flightBoxes_0.zip" class="link--button link--arrow">AOP_FlightBoxes.zip</a>
+- TOS Sampling Boundaries: <a href="https://www.neonscience.org/sites/default/files/Field_Sampling_Boundaries_202503.zip" class="link--button link--arrow">TOS_SamplingBoundaries.zip</a>
 
 **Learning Objectives**  
 - Explore NEON airborne and field (instrumented, observational) shapefiles to understand what colloated data are available
