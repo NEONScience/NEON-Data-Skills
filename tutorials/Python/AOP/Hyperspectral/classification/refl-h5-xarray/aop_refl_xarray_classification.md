@@ -33,12 +33,17 @@ NEON surveys sites spanning the continental US, during peak phenological greenne
 More detailed information about NEON's airborne sampling design can be found in the paper: [Spanning scales: The airborne spatial and temporal sampling design of the National Ecological Observatory Network](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13942).
 
 **Requirements**  
- - *No Python setup requirements if connected to the workshop cloud instance!*  
- - **Local Only** Set up Python Environment - See **setup_instructions.md** in the `/setup/` folder to set up a local compatible Python environment
+ - *No Python setup requirements if connected to the workshop Openscapes cloud instance!*  
+ - **Local Only** Set up Python Environment - See **requirements.txt** in ___ to set up a local compatible Python environment.
 
  - NEON API Token (optional, but strongly recommended), see [NEON API Tokens Tutorial](https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial) for more details on how to create and set up your token in Python (and R). Once you create your token (on the [NEON User Accounts](https://www.neonscience.org/about/user-accounts)) page, this notebook will show you how to set it as an environment variable and use it for downloading AOP data.
 
-**Download the NEON Flight Boundary Shapefile:** <a href="https://www.neonscience.org/sites/default/files/AOP_flightBoxes_0.zip" class="link--button link--arrow">AOP_flightBoxes.zip</a>
+**Download the NEON Shapefiles:** 
+
+The lesson shows how to programmatically download the NEON shapefiles, but you can also download them as follows
+
+AOP Flight Box Boundaries: <a href="https://www.neonscience.org/sites/default/files/AOP_flightBoxes_0.zip" class="link--button link--arrow">AOP_FlightBoxes.zip</a>
+TOS Sampling Boundaries: <a href="https://www.neonscience.org/sites/default/files/Field_Sampling_Boundaries_202503.zip" class="link--button link--arrow">TOS_SamplingBoundaries.zip</a>
 
 **Learning Objectives**  
 - Explore NEON airborne and field (instrumented, observational) shapefiles to understand what colloated data are available
@@ -46,7 +51,7 @@ More detailed information about NEON's airborne sampling design can be found in 
 - Use a custom function to convert reflectance data into an xarray dataset
 - Create some interactive visualizations of reflectance data
 - Run a random forest model to classify trees using reflectance data and data generated from vegetation structure (as the training data set)
-- Evaluate model results
+- Evaluate classification model results
 - Understand data QA considerations and potential steps to improve classification results
 
 **Tutorial Outline**  
