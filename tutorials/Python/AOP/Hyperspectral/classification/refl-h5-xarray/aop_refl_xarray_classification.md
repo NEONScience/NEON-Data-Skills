@@ -2014,7 +2014,7 @@ After re-shaping, we can make a figure to display what the spectra look like for
 
 
 ```python
-# Assuming reflectance_df is your DataFrame and wavelength columns start with 'refl_'
+# Melt (re-shape) the dataframe; wavelength columns start with 'refl_'
 melted_df = reflectance_df.melt(
     id_vars=['family', 'adjEasting', 'adjNorthing'],
     value_vars=[col for col in reflectance_df.columns if col.startswith('refl_')],
@@ -2025,6 +2025,7 @@ melted_df = reflectance_df.melt(
 # Convert 'wavelength' from 'refl_XXX' to integer
 melted_df['wavelength'] = melted_df['wavelength'].str.replace('refl_', '').astype(int)
 
+# Create a summary dataframe that aggregates statistics (mean, min, and max)
 summary_df = (
     melted_df
     .groupby(['family', 'wavelength'])
@@ -2038,6 +2039,7 @@ plt.figure(figsize=(12, 7))
 # Create a color palette
 palette = sns.color_palette('hls', n_colors=summary_df['family'].nunique())
 
+# Plot the mean reflectance spectra for each family, filling with semi-transparent color between the min and max values
 for i, (family, group) in enumerate(summary_df.groupby('family')):
     # print(family)
     if family in ['Fagaceae','Magnoliaceae','Hamamelidaceae','Juglandaceae','Aceraceae']:
