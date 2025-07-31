@@ -10,7 +10,7 @@ packagesLibraries:
 topics: hyperspectral, remote-sensing
 languageTool: GEE
 dataProduct: DP1.10098.001, DP3.30006.001, DP3.30006.002
-code1: 
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/classification/refl-h5-xarray/aop_refl_xarray_classification.ipynb
 tutorialSeries: 
 urlTitle: refl-classification-pyxarray
 
