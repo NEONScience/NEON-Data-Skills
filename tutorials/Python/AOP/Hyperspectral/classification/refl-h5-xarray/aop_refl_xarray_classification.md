@@ -2781,3 +2781,7 @@ cb.ax.set_xticklabels(family_names,fontsize=6)
 cb.set_label('Family')
 plt.show()
 ```
+
+### Acknowledgements
+
+Much of this tutorial was inspired by and adapated from the [NASA VITALS GitHub Repository](https://github.com/nasa/VITALS/tree/main/python). Thank you!
