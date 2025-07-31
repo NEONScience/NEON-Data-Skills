@@ -1004,7 +1004,7 @@ map3
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_tiles.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_tiles.png" alt="AOP SERC Flight Box" style="max-width: 100%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_tiles.png" alt="SERC AOP Tiles" style="max-width: 100%; height: auto;">
 	<figcaption>AOP, OS, and IS polygons at the SERC site.</figcaption>
 	</a>
 </figure> 
@@ -1287,6 +1287,13 @@ serc_rgb_plot = serc_rgb_plot.opts(
 serc_rgb_plot
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_rgb.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_rgb.png" alt="SERC RGB" style="max-width: 100%; height: auto;">
+	<figcaption>SERC True Color (RGB) Image</figcaption>
+	</a>
+</figure> 
+
  
 ### 4.4 Plot the weather quality indicator data
 
@@ -1350,6 +1357,12 @@ serc_refl_false_color.hvplot.rgb(y='y',x='x',bands='wavelengths',
                          frame_width=480, frame_height=480).opts(xformatter='%.0f', yformatter='%.0f')
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_false_color.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_false_color.png" alt="SERC False Color Image" style="max-width: 100%; height: auto;">
+	<figcaption>SERC False Color Image</figcaption>
+	</a>
+</figure> 
 
 ### 4.6 Make an interactive spectral signature plot
 
