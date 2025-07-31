@@ -440,7 +440,7 @@ map1
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_flightbox.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_flightbox.png" alt="AOP SERC Flight Box" style="max-width: 100%; height: auto;">
-	<figcaption>AOP flight box polygon at the SERC site.</figcaption>
+	<figcaption>AOP flight box polygon at the SERC site</figcaption>
 	</a>
 </figure> 
 
@@ -833,7 +833,7 @@ map2
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_os_is_shapefiles.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_os_is_shapefiles.png" alt="AOP SERC Flight Box" style="max-width: 100%; height: auto;">
-	<figcaption>AOP, OS, and IS polygons at the SERC site.</figcaption>
+	<figcaption>AOP, OS, and IS polygons at the SERC site</figcaption>
 	</a>
 </figure> 
 
@@ -1005,7 +1005,7 @@ map3
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_tiles.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_aop_tiles.png" alt="SERC AOP Tiles" style="max-width: 100%; height: auto;">
-	<figcaption>AOP, OS, and IS polygons at the SERC site.</figcaption>
+	<figcaption>SERC AOP Tile Boundaries overlain on NEON Polygons</figcaption>
 	</a>
 </figure> 
 
@@ -1244,7 +1244,7 @@ serc_refl_xr
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_refl_xarray.png">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_refl_xarray.png" alt="SERC xarray" style="max-width: 100%; height: auto;">
-	<figcaption>SERC Reflectance xarray object</figcaption>
+	<figcaption>SERC reflectance xarray object</figcaption>
 	</a>
 </figure> 
 
