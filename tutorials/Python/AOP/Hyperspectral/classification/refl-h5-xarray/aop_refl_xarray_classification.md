@@ -16,7 +16,7 @@ urlTitle: refl-classification-pyxarray
 
 ---
 
-# Tree Classification with NEON Airborne Imaging Spectrometer Data using Python xarray
+<div id="ds-objectives" markdown="1">
 
 **Summary**  
 
@@ -56,6 +56,8 @@ More detailed information about NEON's airborne sampling design can be found in 
 3. Find available NEON reflectance data at SERC and download
 4. Read in and visualize reflectance data interactively
 5. Create a random forest model to predict the tree families from the reflectance spectra
+
+</div>
 
 ## 1. Setup
 
@@ -270,19 +272,6 @@ aop_flightboxes[aop_flightboxes.siteID == site_id]
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -336,19 +325,6 @@ site_aop_polygon # display site polygon
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -497,19 +473,6 @@ neon_terr_bounds.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -609,19 +572,6 @@ site_terr_bounds.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -693,19 +643,6 @@ neon_tower_airshed.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -805,19 +742,6 @@ site_tower_bounds.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1022,19 +946,6 @@ aop_tile_boundaries.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1330,531 +1241,14 @@ Display the dataset. You can use the up and down arrows to the left of the table
 serc_refl_xr
 ```
 
-
-
-
-<div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
-<defs>
-<symbol id="icon-database" viewBox="0 0 32 32">
-<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
-<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-</symbol>
-<symbol id="icon-file-text2" viewBox="0 0 32 32">
-<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
-<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-</symbol>
-</defs>
-</svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
-
-:root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
-}
-
-html[theme=dark],
-body[data-theme=dark],
-body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1F1F1F;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
-}
-
-.xr-wrap {
-  display: block !important;
-  min-width: 300px;
-  max-width: 700px;
-}
-
-.xr-text-repr-fallback {
-  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
-  display: none;
-}
-
-.xr-header {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 4px;
-  border-bottom: solid 1px var(--xr-border-color);
-}
-
-.xr-header > div,
-.xr-header > ul {
-  display: inline;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.xr-obj-type,
-.xr-array-name {
-  margin-left: 2px;
-  margin-right: 10px;
-}
-
-.xr-obj-type {
-  color: var(--xr-font-color2);
-}
-
-.xr-sections {
-  padding-left: 0 !important;
-  display: grid;
-  grid-template-columns: 150px auto auto 1fr 20px 20px;
-}
-
-.xr-section-item {
-  display: contents;
-}
-
-.xr-section-item input {
-  display: none;
-}
-
-.xr-section-item input + label {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-item input:enabled + label {
-  cursor: pointer;
-  color: var(--xr-font-color2);
-}
-
-.xr-section-item input:enabled + label:hover {
-  color: var(--xr-font-color0);
-}
-
-.xr-section-summary {
-  grid-column: 1;
-  color: var(--xr-font-color2);
-  font-weight: 500;
-}
-
-.xr-section-summary > span {
-  display: inline-block;
-  padding-left: 0.5em;
-}
-
-.xr-section-summary-in:disabled + label {
-  color: var(--xr-font-color2);
-}
-
-.xr-section-summary-in + label:before {
-  display: inline-block;
-  content: '►';
-  font-size: 11px;
-  width: 15px;
-  text-align: center;
-}
-
-.xr-section-summary-in:disabled + label:before {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-summary-in:checked + label:before {
-  content: '▼';
-}
-
-.xr-section-summary-in:checked + label > span {
-  display: none;
-}
-
-.xr-section-summary,
-.xr-section-inline-details {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-.xr-section-inline-details {
-  grid-column: 2 / -1;
-}
-
-.xr-section-details {
-  display: none;
-  grid-column: 1 / -1;
-  margin-bottom: 5px;
-}
-
-.xr-section-summary-in:checked ~ .xr-section-details {
-  display: contents;
-}
-
-.xr-array-wrap {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 20px auto;
-}
-
-.xr-array-wrap > label {
-  grid-column: 1;
-  vertical-align: top;
-}
-
-.xr-preview {
-  color: var(--xr-font-color3);
-}
-
-.xr-array-preview,
-.xr-array-data {
-  padding: 0 5px !important;
-  grid-column: 2;
-}
-
-.xr-array-data,
-.xr-array-in:checked ~ .xr-array-preview {
-  display: none;
-}
-
-.xr-array-in:checked ~ .xr-array-data,
-.xr-array-preview {
-  display: inline-block;
-}
-
-.xr-dim-list {
-  display: inline-block !important;
-  list-style: none;
-  padding: 0 !important;
-  margin: 0;
-}
-
-.xr-dim-list li {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-}
-
-.xr-dim-list:before {
-  content: '(';
-}
-
-.xr-dim-list:after {
-  content: ')';
-}
-
-.xr-dim-list li:not(:last-child):after {
-  content: ',';
-  padding-right: 5px;
-}
-
-.xr-has-index {
-  font-weight: bold;
-}
-
-.xr-var-list,
-.xr-var-item {
-  display: contents;
-}
-
-.xr-var-item > div,
-.xr-var-item label,
-.xr-var-item > .xr-var-name span {
-  background-color: var(--xr-background-color-row-even);
-  margin-bottom: 0;
-}
-
-.xr-var-item > .xr-var-name:hover span {
-  padding-right: 5px;
-}
-
-.xr-var-list > li:nth-child(odd) > div,
-.xr-var-list > li:nth-child(odd) > label,
-.xr-var-list > li:nth-child(odd) > .xr-var-name span {
-  background-color: var(--xr-background-color-row-odd);
-}
-
-.xr-var-name {
-  grid-column: 1;
-}
-
-.xr-var-dims {
-  grid-column: 2;
-}
-
-.xr-var-dtype {
-  grid-column: 3;
-  text-align: right;
-  color: var(--xr-font-color2);
-}
-
-.xr-var-preview {
-  grid-column: 4;
-}
-
-.xr-index-preview {
-  grid-column: 2 / 5;
-  color: var(--xr-font-color2);
-}
-
-.xr-var-name,
-.xr-var-dims,
-.xr-var-dtype,
-.xr-preview,
-.xr-attrs dt {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 10px;
-}
-
-.xr-var-name:hover,
-.xr-var-dims:hover,
-.xr-var-dtype:hover,
-.xr-attrs dt:hover {
-  overflow: visible;
-  width: auto;
-  z-index: 1;
-}
-
-.xr-var-attrs,
-.xr-var-data,
-.xr-index-data {
-  display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
-}
-
-.xr-var-attrs-in:checked ~ .xr-var-attrs,
-.xr-var-data-in:checked ~ .xr-var-data,
-.xr-index-data-in:checked ~ .xr-index-data {
-  display: block;
-}
-
-.xr-var-data > table {
-  float: right;
-}
-
-.xr-var-name span,
-.xr-var-data,
-.xr-index-name div,
-.xr-index-data,
-.xr-attrs {
-  padding-left: 25px !important;
-}
-
-.xr-attrs,
-.xr-var-attrs,
-.xr-var-data,
-.xr-index-data {
-  grid-column: 1 / -1;
-}
-
-dl.xr-attrs {
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 125px auto;
-}
-
-.xr-attrs dt,
-.xr-attrs dd {
-  padding: 0;
-  margin: 0;
-  float: left;
-  padding-right: 10px;
-  width: auto;
-}
-
-.xr-attrs dt {
-  font-weight: normal;
-  grid-column: 1;
-}
-
-.xr-attrs dt:hover span {
-  display: inline-block;
-  background: var(--xr-background-color);
-  padding-right: 10px;
-}
-
-.xr-attrs dd {
-  grid-column: 2;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-.xr-icon-database,
-.xr-icon-file-text2,
-.xr-no-icon {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1em;
-  height: 1.5em !important;
-  stroke-width: 0;
-  stroke: currentColor;
-  fill: currentColor;
-}
-</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt; Size: 2GB
-Dimensions:                    (y: 1000, x: 1000, wavelengths: 426)
-Coordinates:
-  * y                          (y) float64 8kB 4.305e+06 4.305e+06 ... 4.306e+06
-  * x                          (x) float64 8kB 3.64e+05 3.64e+05 ... 3.65e+05
-  * wavelengths                (wavelengths) float64 3kB 381.9 ... 2.511e+03
-    fwhm                       (wavelengths) float64 3kB 5.674 5.673 ... 6.302
-    good_wavelengths           (wavelengths) float64 3kB 1.0 1.0 1.0 ... 0.0 0.0
-    spatial_ref                int32 4B 0
-Data variables:
-    reflectance                (y, x, wavelengths) float32 2GB 0.0021 ... nan
-    weather_quality_indicator  (y, x) int32 4MB 2 2 2 2 2 2 2 ... 2 2 2 2 2 2 2
-Attributes:
-    no_data_value:     -9999.0
-    scale_factor:      10000.0
-    bad_band_window1:  [1340 1445]
-    bad_band_window2:  [1790 1955]
-    projection:        +proj=UTM +zone=18 +ellps=WGS84 +datum=WGS84 +units=m ...
-    spatial_ref:       PROJCS[&quot;WGS_1984_UTM_Zone_18N&quot;,GEOGCS[&quot;GCS_WGS_1984&quot;,D...
-    EPSG:              32618</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-0321435d-9253-4656-b032-c7fac36a1a11' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-0321435d-9253-4656-b032-c7fac36a1a11' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>y</span>: 1000</li><li><span class='xr-has-index'>x</span>: 1000</li><li><span class='xr-has-index'>wavelengths</span>: 426</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-843a89ff-7c14-4e0f-aa66-4839644ab35b' class='xr-section-summary-in' type='checkbox'  checked><label for='section-843a89ff-7c14-4e0f-aa66-4839644ab35b' class='xr-section-summary' >Coordinates: <span>(6)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>y</span></div><div class='xr-var-dims'>(y)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>4.305e+06 4.305e+06 ... 4.306e+06</div><input id='attrs-be086411-a57a-49a2-bb55-3b93dceeb919' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-be086411-a57a-49a2-bb55-3b93dceeb919' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-526c872c-3f27-4642-945c-d586688bd4db' class='xr-var-data-in' type='checkbox'><label for='data-526c872c-3f27-4642-945c-d586688bd4db' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([4305000.      , 4305001.001001, 4305002.002002, ..., 4305997.997998,
-       4305998.998999, 4306000.      ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>x</span></div><div class='xr-var-dims'>(x)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>3.64e+05 3.64e+05 ... 3.65e+05</div><input id='attrs-4eb0cb6a-0616-4ebb-bc4c-0ac58b7191db' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-4eb0cb6a-0616-4ebb-bc4c-0ac58b7191db' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a3e07a66-a266-45f5-95fc-d20a130a610b' class='xr-var-data-in' type='checkbox'><label for='data-a3e07a66-a266-45f5-95fc-d20a130a610b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([364000.      , 364001.001001, 364002.002002, ..., 364997.997998,
-       364998.998999, 365000.      ])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>wavelengths</span></div><div class='xr-var-dims'>(wavelengths)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>381.9 386.9 ... 2.506e+03 2.511e+03</div><input id='attrs-bf89a3fb-1f8e-4372-95e8-0585d331ee2d' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-bf89a3fb-1f8e-4372-95e8-0585d331ee2d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-468df02a-b267-4552-8b62-868c5d61c0d8' class='xr-var-data-in' type='checkbox'><label for='data-468df02a-b267-4552-8b62-868c5d61c0d8' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([ 381.858398,  386.868896,  391.879395, ..., 2501.30249 , 2506.312988,
-       2511.323486])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>fwhm</span></div><div class='xr-var-dims'>(wavelengths)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>5.674 5.673 5.671 ... 6.298 6.302</div><input id='attrs-7f051972-446f-4e1b-aaac-519e73389125' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-7f051972-446f-4e1b-aaac-519e73389125' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-2c9ad341-7923-46fa-8161-56a9514c3460' class='xr-var-data-in' type='checkbox'><label for='data-2c9ad341-7923-46fa-8161-56a9514c3460' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([5.673991, 5.672635, 5.671291, 5.669962, 5.668645, 5.667343,
-       5.666053, 5.664777, 5.663514, 5.662264, 5.661028, 5.659805,
-       5.658596, 5.6574  , 5.656217, 5.655048, 5.653892, 5.65275 ,
-       5.65162 , 5.650505, 5.649402, 5.648313, 5.647237, 5.646175,
-       5.645126, 5.644091, 5.643068, 5.64206 , 5.641064, 5.640082,
-       5.639113, 5.638158, 5.637216, 5.636287, 5.635372, 5.63447 ,
-       5.633582, 5.632707, 5.631845, 5.630996, 5.630161, 5.62934 ,
-       5.628531, 5.627737, 5.626955, 5.626187, 5.625432, 5.624691,
-       5.623962, 5.623248, 5.622546, 5.621859, 5.621184, 5.620522,
-       5.619875, 5.61924 , 5.618619, 5.618011, 5.617417, 5.616836,
-       5.616269, 5.615714, 5.615173, 5.614646, 5.614131, 5.613631,
-       5.613143, 5.612669, 5.612209, 5.611762, 5.611328, 5.610907,
-       5.6105  , 5.610106, 5.609725, 5.609358, 5.609004, 5.608664,
-       5.608337, 5.608024, 5.607723, 5.607437, 5.607163, 5.606903,
-       5.606656, 5.606423, 5.606203, 5.605996, 5.605803, 5.605623,
-       5.605456, 5.605303, 5.605164, 5.605037, 5.604924, 5.604825,
-       5.604738, 5.604665, 5.604606, 5.604559, 5.604527, 5.604507,
-       5.604501, 5.604508, 5.604529, 5.604563, 5.60461 , 5.604671,
-       5.604745, 5.604833, 5.604933, 5.605048, 5.605175, 5.605316,
-       5.605471, 5.605638, 5.605819, 5.606014, 5.606222, 5.606443,
-...
-       5.882821, 5.885555, 5.888303, 5.891065, 5.89384 , 5.896628,
-       5.899429, 5.902244, 5.905073, 5.907914, 5.910769, 5.913638,
-       5.91652 , 5.919415, 5.922323, 5.925245, 5.92818 , 5.931129,
-       5.934091, 5.937067, 5.940055, 5.943058, 5.946073, 5.949102,
-       5.952144, 5.9552  , 5.958269, 5.961351, 5.964447, 5.967556,
-       5.970678, 5.973814, 5.976963, 5.980125, 5.983302, 5.986491,
-       5.989694, 5.992909, 5.996139, 5.999382, 6.002638, 6.005908,
-       6.00919 , 6.012486, 6.015796, 6.019119, 6.022456, 6.025805,
-       6.029169, 6.032545, 6.035935, 6.039338, 6.042755, 6.046185,
-       6.049628, 6.053084, 6.056554, 6.060038, 6.063535, 6.067045,
-       6.070569, 6.074105, 6.077656, 6.081219, 6.084796, 6.088387,
-       6.09199 , 6.095608, 6.099238, 6.102882, 6.106539, 6.11021 ,
-       6.113894, 6.117591, 6.121302, 6.125026, 6.128764, 6.132514,
-       6.136279, 6.140056, 6.143847, 6.147651, 6.151469, 6.1553  ,
-       6.159144, 6.163002, 6.166873, 6.170758, 6.174656, 6.178567,
-       6.182492, 6.18643 , 6.190381, 6.194346, 6.198324, 6.202315,
-       6.20632 , 6.210339, 6.21437 , 6.218415, 6.222474, 6.226545,
-       6.23063 , 6.234729, 6.238841, 6.242966, 6.247104, 6.251256,
-       6.255422, 6.2596  , 6.263792, 6.267998, 6.272216, 6.276449,
-       6.280694, 6.284953, 6.289225, 6.293511, 6.29781 , 6.302122])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>good_wavelengths</span></div><div class='xr-var-dims'>(wavelengths)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.0 1.0 1.0 1.0 ... 0.0 0.0 0.0 0.0</div><input id='attrs-ed7e4040-7abf-4128-9163-0c707108039e' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-ed7e4040-7abf-4128-9163-0c707108039e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-9e7fb133-2962-43c1-a604-d8a944b43f8f' class='xr-var-data-in' type='checkbox'><label for='data-9e7fb133-2962-43c1-a604-d8a944b43f8f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-       0., 0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0.,
-       0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-       0., 0., 0., 0., 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
-       1., 1., 1., 1., 1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
-       0.])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>spatial_ref</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int32</div><div class='xr-var-preview xr-preview'>0</div><input id='attrs-6d91fe5a-5ea9-42dd-a2c2-54e22359ffe0' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6d91fe5a-5ea9-42dd-a2c2-54e22359ffe0' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5a07f491-a605-49c2-8bc0-d5bd1ac1465d' class='xr-var-data-in' type='checkbox'><label for='data-5a07f491-a605-49c2-8bc0-d5bd1ac1465d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>crs_wkt :</span></dt><dd>PROJCS[&quot;WGS 84 / UTM zone 18N&quot;,GEOGCS[&quot;WGS 84&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],PRIMEM[&quot;Greenwich&quot;,0,AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],UNIT[&quot;degree&quot;,0.0174532925199433,AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]],PROJECTION[&quot;Transverse_Mercator&quot;],PARAMETER[&quot;latitude_of_origin&quot;,0],PARAMETER[&quot;central_meridian&quot;,-75],PARAMETER[&quot;scale_factor&quot;,0.9996],PARAMETER[&quot;false_easting&quot;,500000],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;metre&quot;,1,AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH],AUTHORITY[&quot;EPSG&quot;,&quot;32618&quot;]]</dd><dt><span>semi_major_axis :</span></dt><dd>6378137.0</dd><dt><span>semi_minor_axis :</span></dt><dd>6356752.314245179</dd><dt><span>inverse_flattening :</span></dt><dd>298.257223563</dd><dt><span>reference_ellipsoid_name :</span></dt><dd>WGS 84</dd><dt><span>longitude_of_prime_meridian :</span></dt><dd>0.0</dd><dt><span>prime_meridian_name :</span></dt><dd>Greenwich</dd><dt><span>geographic_crs_name :</span></dt><dd>WGS 84</dd><dt><span>horizontal_datum_name :</span></dt><dd>World Geodetic System 1984</dd><dt><span>projected_crs_name :</span></dt><dd>WGS 84 / UTM zone 18N</dd><dt><span>grid_mapping_name :</span></dt><dd>transverse_mercator</dd><dt><span>latitude_of_projection_origin :</span></dt><dd>0.0</dd><dt><span>longitude_of_central_meridian :</span></dt><dd>-75.0</dd><dt><span>false_easting :</span></dt><dd>500000.0</dd><dt><span>false_northing :</span></dt><dd>0.0</dd><dt><span>scale_factor_at_central_meridian :</span></dt><dd>0.9996</dd><dt><span>spatial_ref :</span></dt><dd>PROJCS[&quot;WGS 84 / UTM zone 18N&quot;,GEOGCS[&quot;WGS 84&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]],PRIMEM[&quot;Greenwich&quot;,0,AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]],UNIT[&quot;degree&quot;,0.0174532925199433,AUTHORITY[&quot;EPSG&quot;,&quot;9122&quot;]],AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]],PROJECTION[&quot;Transverse_Mercator&quot;],PARAMETER[&quot;latitude_of_origin&quot;,0],PARAMETER[&quot;central_meridian&quot;,-75],PARAMETER[&quot;scale_factor&quot;,0.9996],PARAMETER[&quot;false_easting&quot;,500000],PARAMETER[&quot;false_northing&quot;,0],UNIT[&quot;metre&quot;,1,AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH],AUTHORITY[&quot;EPSG&quot;,&quot;32618&quot;]]</dd></dl></div><div class='xr-var-data'><pre>array(0)</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-0f5d4312-02fe-42ae-a7d2-0090ccd492b5' class='xr-section-summary-in' type='checkbox'  checked><label for='section-0f5d4312-02fe-42ae-a7d2-0090ccd492b5' class='xr-section-summary' >Data variables: <span>(2)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>reflectance</span></div><div class='xr-var-dims'>(y, x, wavelengths)</div><div class='xr-var-dtype'>float32</div><div class='xr-var-preview xr-preview'>0.0021 0.0079 0.0125 ... nan nan</div><input id='attrs-723ccd01-6d06-4f62-905a-1ceaf43c9abc' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-723ccd01-6d06-4f62-905a-1ceaf43c9abc' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-03e8ae53-18bf-47c0-bda7-f038b00b7bca' class='xr-var-data-in' type='checkbox'><label for='data-03e8ae53-18bf-47c0-bda7-f038b00b7bca' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[[0.0021, 0.0079, 0.0125, ...,    nan,    nan,    nan],
-        [0.0019, 0.0091, 0.0175, ...,    nan,    nan,    nan],
-        [0.    , 0.0072, 0.0084, ...,    nan,    nan,    nan],
-        ...,
-        [0.0111, 0.0228, 0.0213, ...,    nan,    nan,    nan],
-        [0.0118, 0.0199, 0.022 , ...,    nan,    nan,    nan],
-        [0.0081, 0.0191, 0.0208, ...,    nan,    nan,    nan]],
-
-       [[0.0024, 0.0105, 0.0109, ...,    nan,    nan,    nan],
-        [0.0013, 0.0003, 0.0064, ...,    nan,    nan,    nan],
-        [0.    , 0.0082, 0.0072, ...,    nan,    nan,    nan],
-        ...,
-        [0.0059, 0.0197, 0.0215, ...,    nan,    nan,    nan],
-        [0.0067, 0.0192, 0.0204, ...,    nan,    nan,    nan],
-        [0.0109, 0.0238, 0.0228, ...,    nan,    nan,    nan]],
-
-       [[0.    , 0.0067, 0.0154, ...,    nan,    nan,    nan],
-        [0.0016, 0.0055, 0.0088, ...,    nan,    nan,    nan],
-        [0.002 , 0.0111, 0.0076, ...,    nan,    nan,    nan],
-        ...,
-...
-        [0.0032, 0.0091, 0.0129, ...,    nan,    nan,    nan],
-        [0.0036, 0.0108, 0.0162, ...,    nan,    nan,    nan],
-        [0.0026, 0.0099, 0.0135, ...,    nan,    nan,    nan]],
-
-       [[0.0073, 0.0099, 0.0089, ...,    nan,    nan,    nan],
-        [0.0004, 0.0147, 0.0128, ...,    nan,    nan,    nan],
-        [0.0029, 0.0121, 0.0128, ...,    nan,    nan,    nan],
-        ...,
-        [0.0067, 0.0147, 0.0095, ...,    nan,    nan,    nan],
-        [0.0068, 0.0149, 0.0097, ...,    nan,    nan,    nan],
-        [0.0015, 0.0133, 0.0146, ...,    nan,    nan,    nan]],
-
-       [[0.006 , 0.011 , 0.0125, ...,    nan,    nan,    nan],
-        [0.0071, 0.0157, 0.0121, ...,    nan,    nan,    nan],
-        [0.0022, 0.013 , 0.0107, ...,    nan,    nan,    nan],
-        ...,
-        [0.0037, 0.011 , 0.0155, ...,    nan,    nan,    nan],
-        [0.0038, 0.0113, 0.0158, ...,    nan,    nan,    nan],
-        [0.002 , 0.0099, 0.017 , ...,    nan,    nan,    nan]]],
-      dtype=float32)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>weather_quality_indicator</span></div><div class='xr-var-dims'>(y, x)</div><div class='xr-var-dtype'>int32</div><div class='xr-var-preview xr-preview'>2 2 2 2 2 2 2 2 ... 2 2 2 2 2 2 2 2</div><input id='attrs-596c3e1e-6f94-467d-8aea-79eda9ec50c4' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-596c3e1e-6f94-467d-8aea-79eda9ec50c4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5f4db268-b76d-485c-8ebc-be06d3d42d2a' class='xr-var-data-in' type='checkbox'><label for='data-5f4db268-b76d-485c-8ebc-be06d3d42d2a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[2, 2, 2, ..., 2, 2, 2],
-       [2, 2, 2, ..., 2, 2, 2],
-       [2, 2, 2, ..., 2, 2, 2],
-       ...,
-       [2, 2, 2, ..., 2, 2, 2],
-       [2, 2, 2, ..., 2, 2, 2],
-       [2, 2, 2, ..., 2, 2, 2]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-7aafc381-f758-4639-ad88-129c072e5a95' class='xr-section-summary-in' type='checkbox'  ><label for='section-7aafc381-f758-4639-ad88-129c072e5a95' class='xr-section-summary' >Indexes: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-index-name'><div>y</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-15522ebf-afe6-4bd1-ad5a-619acf0276be' class='xr-index-data-in' type='checkbox'/><label for='index-15522ebf-afe6-4bd1-ad5a-619acf0276be' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([        4305000.0, 4305001.001001001, 4305002.002002002,
-       4305003.003003003, 4305004.004004004, 4305005.005005005,
-       4305006.006006006, 4305007.007007007, 4305008.008008008,
-       4305009.009009009,
-       ...
-       4305990.990990991, 4305991.991991992, 4305992.992992993,
-       4305993.993993994, 4305994.994994995, 4305995.995995996,
-       4305996.996996997, 4305997.997997998, 4305998.998998999,
-               4306000.0],
-      dtype=&#x27;float64&#x27;, name=&#x27;y&#x27;, length=1000))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>x</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-9cc80752-35ed-4879-b3c9-da3655546032' class='xr-index-data-in' type='checkbox'/><label for='index-9cc80752-35ed-4879-b3c9-da3655546032' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([          364000.0,   364001.001001001, 364002.00200200203,
-         364003.003003003,   364004.004004004,   364005.005005005,
-       364006.00600600604,   364007.007007007,   364008.008008008,
-         364009.009009009,
-       ...
-         364990.990990991,   364991.991991992,   364992.992992993,
-       364993.99399399396,   364994.994994995,   364995.995995996,
-         364996.996996997,   364997.997997998,   364998.998998999,
-                 365000.0],
-      dtype=&#x27;float64&#x27;, name=&#x27;x&#x27;, length=1000))</pre></div></li><li class='xr-var-item'><div class='xr-index-name'><div>wavelengths</div></div><div class='xr-index-preview'>PandasIndex</div><div></div><input id='index-330f7743-e53b-49dc-8f2d-cef7520e1ef5' class='xr-index-data-in' type='checkbox'/><label for='index-330f7743-e53b-49dc-8f2d-cef7520e1ef5' title='Show/Hide index repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-index-data'><pre>PandasIndex(Index([ 381.858398,  386.868896,  391.879395,  396.889893,  401.900391,
-        406.910889,  411.921387,  416.932007,  421.942505,  426.953003,
-       ...
-       2466.229004, 2471.239502,     2476.25, 2481.260498, 2486.270996,
-       2491.281494, 2496.291992,  2501.30249, 2506.312988, 2511.323486],
-      dtype=&#x27;float64&#x27;, name=&#x27;wavelengths&#x27;, length=426))</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-d044cdb6-98cb-4860-9c76-18729a9eebfa' class='xr-section-summary-in' type='checkbox'  checked><label for='section-d044cdb6-98cb-4860-9c76-18729a9eebfa' class='xr-section-summary' >Attributes: <span>(7)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>no_data_value :</span></dt><dd>-9999.0</dd><dt><span>scale_factor :</span></dt><dd>10000.0</dd><dt><span>bad_band_window1 :</span></dt><dd>[1340 1445]</dd><dt><span>bad_band_window2 :</span></dt><dd>[1790 1955]</dd><dt><span>projection :</span></dt><dd>+proj=UTM +zone=18 +ellps=WGS84 +datum=WGS84 +units=m +no_defs</dd><dt><span>spatial_ref :</span></dt><dd>PROJCS[&quot;WGS_1984_UTM_Zone_18N&quot;,GEOGCS[&quot;GCS_WGS_1984&quot;,DATUM[&quot;D_WGS_1984&quot;,SPHEROID[&quot;WGS_1984&quot;,6378137.0,298.257223563]],PRIMEM[&quot;Greenwich&quot;,0.0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Transverse_Mercator&quot;],PARAMETER[&quot;False_Easting&quot;,500000.0],PARAMETER[&quot;False_Northing&quot;,0.0],PARAMETER[&quot;Central_Meridian&quot;,-75.0],PARAMETER[&quot;Scale_Factor&quot;,0.9996],PARAMETER[&quot;Latitude_Of_Origin&quot;,0.0],UNIT[&quot;Meter&quot;,1.0]]</dd><dt><span>EPSG :</span></dt><dd>32618</dd></dl></div></li></ul></div></div>
-
-
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_refl_xarray.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_refl_xarray.png" alt="SERC xarray" style="max-width: 100%; height: auto;">
+	<figcaption>SERC Reflectance xarray object</figcaption>
+	</a>
+</figure> 
+
+Next we can plot maps of the reflectance dataset. First we'll define a function `gamma_adjust` that helps with the color balancing.
 
 
 ```python
@@ -1905,6 +1299,7 @@ We can look at the weather conditions during the flight by displaying the `weath
 	</a>
 </figure>  
 
+
 Let's visualize this weather quality indicator data for this SERC tile using a transparent color on top of our RGB reflectance plot, following the same stop-light convention.
 
 
@@ -1929,6 +1324,13 @@ wqi_overlay = wqi.hvplot.image(
                                                                                  yformatter='%.0f')
 
 ```
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_wqi.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_wqi.png" alt="SERC WQI" style="max-width: 100%; height: auto;">
+	<figcaption>SERC Weather Quality Indicator</figcaption>
+	</a>
+</figure> 
 
 
 The cloud conditions for this tile are yellow, which indicates somewhere between 10-50% cloud cover, which is moderate. This is not ideal for reflectance data, but it is still usable. As we will use this data for classification, you would want to consider how the cloud cover may impact your results. You may wish to find a clear-weather (<10% cloud cover) tile to run classification, or at a minimum compare results between the two to better understand how cloud cover impacts the model.
@@ -2024,6 +1426,13 @@ hv.Layout(hover_dmap*click_dmap + map * points).cols(2).opts(
     hv.opts.Overlay(show_legend=False, show_title=False, fontscale=1.5, frame_height=480)
 )
 ```
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_spectral_plot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_spectral_plot.png" alt="SERC Interactive Spectral Plot" style="max-width: 100%; height: auto;">
+	<figcaption>SERC Interactive Spectral Plot</figcaption>
+	</a>
+</figure> 
 
 
 ## 5. Supervised Classification Using TOS Vegetation Structure Data
