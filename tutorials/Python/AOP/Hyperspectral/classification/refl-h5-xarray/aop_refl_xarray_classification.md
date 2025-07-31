@@ -1243,7 +1243,7 @@ serc_refl_xr
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_refl_xarray.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_refl_xarray.png" alt="SERC xarray" style="max-width: 100%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_refl_xarray.png" alt="SERC xarray" style="max-width: 75%; height: auto;">
 	<figcaption>SERC reflectance xarray object</figcaption>
 	</a>
 </figure> 
@@ -1289,7 +1289,7 @@ serc_rgb_plot
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_rgb.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_rgb.png" alt="SERC RGB" style="max-width: 100%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_rgb.png" alt="SERC RGB" style="max-width: 60%; height: auto;">
 	<figcaption>SERC True Color (RGB) Image</figcaption>
 	</a>
 </figure> 
@@ -1301,7 +1301,7 @@ We can look at the weather conditions during the flight by displaying the `weath
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.png" alt="In-flight cloud photos" style="max-width: 100%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1b_sdr_weather/flight_cloud_photos.png" alt="In-flight cloud photos" style="max-width: 60%; height: auto;">
 	<figcaption>Cloud cover percentage during AOP flights. Left: green (<10%), Middle: yellow (10-50%), Right: red (>50%).</figcaption>
 	</a>
 </figure>  
@@ -1334,7 +1334,7 @@ wqi_overlay = wqi.hvplot.image(
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_wqi.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_wqi.png" alt="SERC WQI" style="max-width: 100%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_wqi.png" alt="SERC WQI" style="max-width: 60%; height: auto;">
 	<figcaption>SERC Weather Quality Indicator</figcaption>
 	</a>
 </figure> 
@@ -1359,7 +1359,7 @@ serc_refl_false_color.hvplot.rgb(y='y',x='x',bands='wavelengths',
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_false_color.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_false_color.png" alt="SERC False Color Image" style="max-width: 100%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_false_color.png" alt="SERC False Color Image" style="max-width: 60%; height: auto;">
 	<figcaption>SERC False Color Image</figcaption>
 	</a>
 </figure> 
