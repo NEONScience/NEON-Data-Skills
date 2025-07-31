@@ -18,11 +18,11 @@ urlTitle: refl-classification-pyxarray
 
 <div id="ds-objectives" markdown="1">
 
-**Summary**  
+### Summary
 
-The National Ecological Observatory Network (NEON) Airborne Observation Platform (AOP) collects airborne remote sensing data, including hyperspectral reflectance data, over 81 sites across the United States and Puerto Rico. In this notebook we will show how to download and visualize reflectance data from NEON's [Smithsonian Environmental Research Center](https://www.neonscience.org/field-sites/serc) site (SERC) in Maryland. 
+The National Ecological Observatory Network (NEON) Airborne Observation Platform (AOP) collects airborne remote sensing data, including hyperspectral reflectance data, over 81 sites across the United States and Puerto Rico. In this notebook we will show how to download and visualize reflectance data from NEON's [Smithsonian Environmental Research Center](https://www.neonscience.org/field-sites/serc) site (SERC) in Maryland. We will then demonstrate how to run a supervised classification using the NEON Observational System (OS) Vegetation Structure data as training data, and evaluate the model results.
 
-**Background**
+### Background
 
 The **NEON Imaging Spectrometer (NIS)** is an airborne [imaging spectrometer](https://www.neonscience.org/data-collection/imaging-spectrometer) built by JPL (AVIRIS-NG) and operated by the National Ecological Observatory Network's (NEON) Airborne Observation Platform (AOP). NEON's hyperspectral sensors collect measurements of sunlight reflected from the Earth's surface in 426 narrow (~5 nm) spectral channels spanning wavelengths between ~ 380 - 2500 nm. NEON's remote sensing data is intended to map and answer questions about a landscape, with ecological applications including identifying and classifying plant species and communities, mapping vegetation health, detecting disease or invasive species, and mapping droughts, wildfires, or other natural disturbances and their impacts. 
 
@@ -32,20 +32,36 @@ NEON surveys sites spanning the continental US, during peak phenological greenne
 
 More detailed information about NEON's airborne sampling design can be found in the paper: [Spanning scales: The airborne spatial and temporal sampling design of the National Ecological Observatory Network](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13942).
 
-**Requirements**  
- - *No Python setup requirements if connected to the workshop Openscapes cloud instance!*  
+ ### Set Up Python Environment
+ - *No Python setup requirements if connected to the workshop Openscapes cloud instance!*
+   
  - **Local Only** Set up Python Environment - See **requirements.txt** in ___ to set up a local compatible Python environment.
 
+Using your preferred command line interface (command prompt, terminal, cmder, etc.) navigate to your local copy of the repository, then type the following to create a compatible Python environment.
+
+    For Windows:
+
+    ```cmd
+    conda create -n neon_aop -c conda-forge --yes python=3.10 fiona=1.8.22 gdal hvplot geoviews rioxarray rasterio jupyter geopandas jupyter_bokeh h5py spectral scikit-image scikitlearn jupyterlab seaborn
+    ```
+
+    For MacOSX:
+
+    ```cmd
+    conda create -n lpdaac_vitals -c conda-forge --yes python=3.10 gdal=3.7.2 hvplot geoviews rioxarray rasterio geopandas fiona=1.9.4 jupyter jupyter_bokeh h5py spectral scikit-image seaborn jupyterlab
+    ```
+
+ ### Create a NEON AOP Token
  - NEON API Token (optional, but strongly recommended), see [NEON API Tokens Tutorial](https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial) for more details on how to create and set up your token in Python (and R). Once you create your token (on the [NEON User Accounts](https://www.neonscience.org/about/user-accounts)) page, this notebook will show you how to set it as an environment variable and use it for downloading AOP data.
 
-**Download the NEON Shapefiles:** 
+### Optional: Download NEON Shapefiles
 
 The lesson shows how to programmatically download the NEON shapefiles, but you can also download them by clicking on the following links:
 
 - AOP Flight Box Boundaries: <a href="https://www.neonscience.org/sites/default/files/AOP_flightBoxes_0.zip" class="link--button link--arrow">AOP_FlightBoxes.zip</a>
 - TOS Sampling Boundaries: <a href="https://www.neonscience.org/sites/default/files/Field_Sampling_Boundaries_202503.zip" class="link--button link--arrow">TOS_SamplingBoundaries.zip</a>
 
-**Learning Objectives**  
+### Learning Objectives
 - Explore NEON airborne and field (instrumented, observational) shapefiles to understand what colloated data are available
 - Use the neonutilities package to determine available reflectance data and download
 - Use a custom function to convert reflectance data into an xarray dataset
@@ -54,7 +70,7 @@ The lesson shows how to programmatically download the NEON shapefiles, but you c
 - Evaluate classification model results
 - Understand data QA considerations and potential steps to improve classification results
 
-**Tutorial Outline**  
+### Tutorial Outline 
 
 1. Setup
 2. Visualize NEON AOP, OS, and IS shapefiles at SERC
