@@ -1441,8 +1441,8 @@ hv.Layout(hover_dmap*click_dmap + map * points).cols(2).opts(
 ```
 
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_spectral_plot.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/serc_spectral_plot.png" alt="SERC Interactive Spectral Plot" style="max-width: 100%; height: auto;">
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/interactive_spectral_plot.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-classification/xarray/interactive_spectral_plot.png" alt="SERC Interactive Spectral Plot" style="max-width: 100%; height: auto;">
 	<figcaption>SERC Interactive Spectral Plot</figcaption>
 	</a>
 </figure> 
