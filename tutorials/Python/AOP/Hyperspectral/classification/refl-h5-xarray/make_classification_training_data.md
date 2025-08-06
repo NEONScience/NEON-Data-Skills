@@ -223,7 +223,7 @@ veg_map.columns
 
 ### Combine location with tree traits
 
-Now we have the mapped locations of individuals in the `vst_mappingandtagging` table, and the annual measurements of tree dimensions such as height and diameter in the vst_apparentindividual table. To bring these measurements together, join the two tables. Refer to the <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP1.00001.001v2?inline=TRUE" target=_blank>Quick Start Guide for Vegetation Structure</a> for more information about the data tables and the joining instructions.
+Now we have the mapped locations of individuals in the `vst_mappingandtagging` table, and the taxa (species, or `taxonID`), family, scientific name, as well as annual measurements of tree dimensions such as height and diameter in the `vst_apparentindividual` table. To bring these measurements together, join the two tables. Refer to the <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP1.00001.001v2?inline=TRUE" target=_blank>Quick Start Guide for Vegetation Structure</a> for more information about the data tables and the joining instructions.
 
 
 ```python
