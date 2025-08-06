@@ -32,7 +32,9 @@ This notebook demonstrates how to generate a training dataset consisting of tree
 
 - The paper <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002700" target=_blank>Individual canopy tree species maps for the National Ecological Observatory Network</a> outlines methods for large-scale classification using NEON data. The associated NEON Science Seminar <a href="https://www.neonscience.org/get-involved/events/science-seminar-harnessing-neon-enable-future-forest-remote-sensing" target=_blank>Harnessing NEON to enable the future of forest remote sensing</a> may be a useful resource. This talk provides a high-level overview of modeling approaches for tree crown delineation and tree classification using NEON airborne remote sensing data. You can also watch the video below.
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Weru3hJbwTs&t=3s" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Weru3hJbwTs&t=3s" frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
 
 - Refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vE?inline=true" target=_blank> vegetation structure user guide</a> for more details on this data product, and to better understand the data quality flags, the sampling.
 
@@ -934,9 +936,7 @@ It looks like there are a number of species mapped in this tower plot. You can u
 - [ACRU](https://plants.usda.gov/plant-profile/ACRU): Red Maple (Acer rubrum L.)
 - [CAGL8](https://plants.usda.gov/plant-profile/CAGL8): Sweet pignut hickory (Carya glabra (Mill.))
 
-When carrying out classification, the species that only have small representation (1-5 samples) may not be modeled accurately due to a lack of sufficient training data. The challenge of mapping rarer species due to insufficient training data is well known (and is sometimes called the 'long-tail' effect) e.g. In the next tutorial, we will remove these poorly represented samples when we generate our model. 
-
-Zhang, C., Chen, Y., Xu, B. et al. Improving prediction of rare species’ distribution from community data. Sci Rep 10, 12230 (2020). https://doi.org/10.1038/s41598-020-69157-x
+When carrying out classification, the species that only have small representation (1-5 samples) may not be modeled accurately due to a lack of sufficient training data. The challenge of mapping rarer species due to insufficient training data is well known. In the next tutorial, we will remove these poorly represented samples before we generate our model. 
 
 ## Write training dataframe to csv file
 
