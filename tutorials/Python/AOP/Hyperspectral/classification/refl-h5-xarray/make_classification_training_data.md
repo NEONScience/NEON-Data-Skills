@@ -41,6 +41,7 @@ This notebook demonstrates how to generate a training dataset consisting of tree
 
 </div>
 
+Let's get started! First, import the required Python packages.
 
 ```python
 import matplotlib.pyplot as plt
