@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 6eb4422d262440408f7905d1dd3d1ae2
 title: "Make Training Data for Species Modeling from NEON TOS Vegetation Structure Data"
 description: "Create a training dataset for tree classification using TOS vegetation structure data."
 dateCreated: 2025-07-30
