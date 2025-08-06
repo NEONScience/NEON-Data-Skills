@@ -34,7 +34,7 @@ This notebook demonstrates how to generate a training dataset consisting of tree
 <iframe width="640" height="360" src="//www.youtube.com/watch?v=Weru3hJbwTs&t=3s" frameborder="0" allowfullscreen></iframe>
 
 
-- Refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vE?inline=true" target=_blank>Vegetation Structure User Guide</a> for more details on this data product, and to better understand the data quality flags, the sampling.
+- Refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vE?inline=true" target=_blank>Vegetation Structure User Guide</a> for more details on this data product, and to better understand the data quality flags.
 
 **Disclaimer**: this notebook is intended to provide an example of how to create an initial training data set for pairing with remote sensing data, and to conduct some exploratory analysis of the vegetation structure data. This does not incorporate outlier detection and removal, or comprehensive pre-processing steps. As part of creating a machine learning model, it is important to assess the training data quality and look for outliers or other potential data quality issues which may impact model results.
 
@@ -58,7 +58,7 @@ In this first section we’ll load the vegetation structure data, find the locat
 
 Download the vegetation structure data using the `load_by_product` function in the `neonutilities` package (imported as `nu`). Inputs to the function can be shown by typing `help(load_by_product)`.
   
-Refer to t  e<a href=https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf target=_blank R neonutilities cheat sheet</a>  or the neonUtilities package for more details and the complete index of possible function inputs. The cheat sheet is focused on the R package, but nearly all the inputs are the sam.e
+Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target=_blank>R neonutilities cheat sheet</a>  or the neonUtilities package for more details and the complete index of possible function inputs. The cheat sheet is focused on the R package, but nearly all the inputs are the sam.e
 
 Note that in this example, we will pull in all the woody vegetation data (collected over all years), but if you are trying to modeldata collected  in a single year, you can select just that year by specifying the `startdate` and `enddate`, or later filtering out the vegetation data by the` eventI`D We have set `check_size=False` since the data are not very large, but to check the size of what the data you are downloading first, you could omit this input, or set it to `True`..
 
