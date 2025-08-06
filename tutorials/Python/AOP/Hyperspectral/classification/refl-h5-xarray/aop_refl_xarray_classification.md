@@ -56,7 +56,7 @@ Using your preferred command line interface (command prompt, terminal, etc.) nav
     ```
 
  ### Create a NEON AOP Token
- - NEON API Token (optional, but strongly recommended), see [NEON API Tokens Tutorial](https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial) for more details on how to create and set up your token in Python (and R). Once you create your token (on the [NEON User Accounts](https://www.neonscience.org/about/user-accounts)) page, this notebook will show you how to set it as an environment variable and use it for downloading AOP data.
+ - NEON API Token (optional, but strongly recommended), see [NEON API Tokens Tutorial](https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial) for more details on how to create and set up your token in Python (and R). Once you create your token (on the [NEON User Accounts page](https://www.neonscience.org/about/user-accounts)), this notebook will show you how to set it as an environment variable and use it for downloading AOP data.
 
 ### Optional: Download NEON Shapefiles
 
@@ -2791,4 +2791,4 @@ plt.show()
 
 ### Acknowledgements
 
-Much of this tutorial was inspired by and adapated from the [NASA VITALS GitHub Repository](https://github.com/nasa/VITALS/tree/main/python). Thank you!
+Much of this tutorial was inspired by and adapated from the [NASA VITALS GitHub Repository](https://github.com/nasa/VITALS). Thank you!
