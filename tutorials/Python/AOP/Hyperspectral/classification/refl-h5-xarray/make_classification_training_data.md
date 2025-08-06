@@ -32,7 +32,7 @@ This notebook demonstrates how to generate a training dataset consisting of tree
 
 - The paper <a href="https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3002700" target=_blank>Individual canopy tree species maps for the National Ecological Observatory Network</a> outlines methods for large-scale classification using NEON data. The associated NEON Science Seminar <a href="https://www.neonscience.org/get-involved/events/science-seminar-harnessing-neon-enable-future-forest-remote-sensing" target=_blank>Harnessing NEON to enable the future of forest remote sensing</a> may be a useful resource. This talk provides a high-level overview of modeling approaches for tree crown delineation and tree classification using NEON airborne remote sensing data. You can also watch the video below.
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/Weru3hJbwTs" title="Science Seminar: Harnessing NEON to enable the future of forest remote sensing" frameborder="0" allowfullscreen></iframe>
+<iframe width="960" height="540" src="https://www.youtube.com/embed/Weru3hJbwTs" title="Science Seminar: Harnessing NEON to enable the future of forest remote sensing" frameborder="0" allowfullscreen></iframe>
 
 - Refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON_vegStructure_userGuide_vE?inline=true" target=_blank>Vegetation Structure User Guide</a> for more details on this data product, and to better understand the data quality flags.
 
@@ -1013,4 +1013,4 @@ plt.show()
 
 ## Recap
 
-In this lesson we have curated a training data set containing information about the tree family and species as well as its geographic location in UTM x, y coordinates. We can now pair this dataset with remote sensing data and create a model to predict the tree's family based off airborne spectral data. The next tutorial, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/refl-classification-pyxarray" target=_blank>DP1.10098.001</a>, will show how to do this!
+In this lesson we have curated a training data set containing information about the tree family and species as well as its geographic location in UTM x, y coordinates. We can now pair this dataset with remote sensing data and create a model to predict the tree's family based off airborne spectral data. The next tutorial, <a href="https://www.neonscience.org/resources/learning-hub/tutorials/refl-classification-pyxarray" target=_blank>Tree Classification with NEON Airborne Imaging Spectrometer Data using Python xarray</a>, will show how to do this!
