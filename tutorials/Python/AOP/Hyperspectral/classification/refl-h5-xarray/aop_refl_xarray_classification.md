@@ -18,7 +18,7 @@ urlTitle: refl-classification-pyxarray
 
 <div id="ds-objectives" markdown="1">
 
-### Summary
+## Summary
 
 The National Ecological Observatory Network (NEON) Airborne Observation Platform (AOP) collects airborne remote sensing data, including hyperspectral reflectance data, over 81 sites across the United States and Puerto Rico. In this notebook we will show how to download and visualize reflectance data from NEON's [Smithsonian Environmental Research Center](https://www.neonscience.org/field-sites/serc) site (SERC) in Maryland. We will then demonstrate how to run a supervised classification using the NEON Observational System (OS) Vegetation Structure data as training data, and evaluate the model results.
 
@@ -32,12 +32,16 @@ NEON surveys sites spanning the continental US, during peak phenological greenne
 
 More detailed information about NEON's airborne sampling design can be found in the paper: [Spanning scales: The airborne spatial and temporal sampling design of the National Ecological Observatory Network](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13942).
 
+## Prerequisites
+
+Before completing this tutorial, you need to have generated a training dataset from the TOS data following the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/classification-training-data" target=_blank>Make Training Data for Species Modeling from NEON TOS Vegetation Structure Data</a>.
+
  ### Set Up Python Environment
  - *No Python setup requirements if connected to the workshop Openscapes cloud instance!*
    
  - **Local Only** Set up Python Environment - See **requirements.txt** in ___ to set up a local compatible Python environment.
 
-Using your preferred command line interface (command prompt, terminal, cmder, etc.) navigate to your local copy of the repository, then type the following to create a compatible Python environment.
+Using your preferred command line interface (command prompt, terminal, etc.) navigate to your local copy of the repository, then type the following to create a compatible Python environment.
 
     For Windows:
 
@@ -58,10 +62,11 @@ Using your preferred command line interface (command prompt, terminal, cmder, et
 
 The lesson shows how to programmatically download the NEON shapefiles, but you can also download them by clicking on the following links:
 
-- AOP Flight Box Boundaries: <a href="https://www.neonscience.org/sites/default/files/AOP_flightBoxes_0.zip" class="link--button link--arrow">AOP_FlightBoxes.zip</a>
-- TOS Sampling Boundaries: <a href="https://www.neonscience.org/sites/default/files/Field_Sampling_Boundaries_202503.zip" class="link--button link--arrow">TOS_SamplingBoundaries.zip</a>
+AOP Flight Box Boundaries: <a href="https://www.neonscience.org/sites/default/files/AOP_flightBoxes_0.zip" class="link--button link--arrow">AOP_FlightBoxes.zip</a>
 
-### Learning Objectives
+TOS Sampling Boundaries: <a href="https://www.neonscience.org/sites/default/files/Field_Sampling_Boundaries_202503.zip" class="link--button link--arrow">TOS_SamplingBoundaries.zip</a>
+
+## Learning Objectives
 - Explore NEON airborne and field (instrumented, observational) shapefiles to understand what colloated data are available
 - Use the neonutilities package to determine available reflectance data and download
 - Use a custom function to convert reflectance data into an xarray dataset
@@ -70,7 +75,7 @@ The lesson shows how to programmatically download the NEON shapefiles, but you c
 - Evaluate classification model results
 - Understand data QA considerations and potential steps to improve classification results
 
-### Tutorial Outline 
+## Tutorial Outline 
 
 1. Setup
 2. Visualize NEON AOP, OS, and IS shapefiles at SERC
@@ -865,7 +870,7 @@ Above we can see the SOAP flightbox, and the exterior TOS boundary polygon which
 
 Finally we can look at the available NEON hyperspectral reflectance data, which are delivered as 1 km by 1 km hdf5 files (also called tiles) over the site. The next figure we make will make it clear why the files are called tiles. First, we will determine the available reflectance data, and then pull in some metadata shapefiles from another L3 AOP data product, derived from the lidar data.
 
-NEON hyperspectral reflectance data are currently available under two different revisions, as AOP is in the process of implementing a BRDF (Bidirectional Reflectance Distribution Function), but this has not been applied to the full archive of data yet. These data product IDs are DP3.30006.001 (directional surface reflectance), and DP3.30006.002 (bidirectional surface reflectance). The bidirectional surface reflectance data include BRDF and topographic corrections, which helps correct for differences in illumination throughout the flight. 
+NEON hyperspectral reflectance data are currently available under two different revisions, as AOP is in the process of implementing a BRDF (Bidirectional Reflectance Distribution Function), but this has not been applied to the full archive of data yet. These data product IDs are <a href="https://data.neonscience.org/data-products/DP3.30006.001" target=_blank>DP3.30006.001</a> (directional surface reflectance), and <a href="https://data.neonscience.org/data-products/DP3.30006.002" target=_blank>DP3.30006.002</a> (bidirectional surface reflectance). The bidirectional surface reflectance data include BRDF and topographic corrections, which helps correct for differences in illumination throughout the flight.  
 
 ### 3.1 Find available data
 Let's see what data are available at the SERC site for each of these data products using the `neonutilities` `list_available_dates` function as follows:
