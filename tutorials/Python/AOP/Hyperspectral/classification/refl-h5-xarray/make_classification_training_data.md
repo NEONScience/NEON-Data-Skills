@@ -54,7 +54,7 @@ To run this notebook, you will need the following Python packages, which can be 
 
 </div>
 
-# Download and Explore Vegetation Structure Data (DP1.10098.001)
+## 1. Download and Explore Vegetation Structure Data (DP1.10098.001)
 
 In this first section we’ll load the vegetation structure data, find the locations of the mapped trees, and join to the species and family observations.
 
@@ -159,7 +159,7 @@ print("\nCounts of each eventID:\n", eventID_counts)
 
 It looks like most of the trees were mapped in 2015 and 2016, which was when the SERC plots were first established. You could look at data only from one year, and compare to AOP data from the same year, or if you are not too worried about matching measurements to remote sensing data collected in the same year, you could use all years. We'll do the latter in this example.
 
-# Determine the geographic location of the surveyed vegetation
+## 2. Determine the geographic location of the surveyed vegetation
 
 Loop through all of the points in `veg_points` to determine the easting and northing from the <a href="https://data.neonscience.org/data-api/endpoints/locations/" target=_blank>NEON Locations API</a>.
 
@@ -336,7 +336,7 @@ len(veg_map)
 
     1211
 
-
+## 3. Filter to trees within an AOP tile extent
 
 Now create a new dataframe containing only the veg data that are within a single AOP tile (which are 1 km x 1 km in size). For this, you will need to know the bounds (minimum and maximum UTM easting and northing) of the area you are sampling. For this exercise, we will choose the AOP data with SW (lower left) UTM coordinates of 364000, 4305000. This tile encompasses the NEON tower at the SERC site.
 
@@ -765,7 +765,7 @@ It looks like there are a number of different species (and families) mapped in t
 
 When carrying out classification, the species that only have small representation (1-5 samples) may not be modeled accurately due to a lack of sufficient training data. The challenge of mapping rarer species due to insufficient training data is well known. In the next tutorial, we will remove these poorly represented samples before generating a model. 
 
-## Write training dataframe to csv file
+## 4. Write training dataframe to csv file
 
 Nonetheless, we have a fairly decent training dataset to work with. We can save the dataframe to a csv file called `serc_training_data.csv` as follows:
 
@@ -774,7 +774,7 @@ Nonetheless, we have a fairly decent training dataset to work with. We can save 
 veg_tower_tile_short.to_csv(r'.\data\serc_training_data.csv',index=False)
 ```
 
-## Plot trees in map view
+## 5. Plot tree families in map view
 
 Finally, we can make a quick plot using `seaborn` (imported as `sns`) to show the spatial distrubtion of the trees surveyed in this area, along with their species (`scientificName`). Most of this code helps improve the formatting and appearance of the figure; the first `sns.scatterplot` chunk is all you really need to do to plot the essentials.
 
