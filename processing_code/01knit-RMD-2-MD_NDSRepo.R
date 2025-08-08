@@ -24,7 +24,7 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[4]
+subDir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"
@@ -34,7 +34,7 @@ gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root
 # set working dir - this is where the data are located
 # this is also where a temporary dir is created by this
 # processing_code to generate documents and figures
-wd_processing_doc <- "/Users/clunch/data/"
+wd_processing_doc <- "/Users/clunch/data"
 
 # set the base url for images and links in the md file
 base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/"
@@ -68,7 +68,7 @@ setwd(wd_processing_doc)
 for (f in rmd.files) {
   
   ## to get rid of gitRepoPath root
-  subPath=sub(gitRepoPath, "", dirname(f) )
+  subPath <- sub(gitRepoPath, "", dirname(f) )
   
   tut_temp_dir <- paste0(wd_processing_doc, subPath)
   
@@ -96,7 +96,7 @@ for (f in rmd.files) {
   #file.copy(from = f, to=tut_temp_dir, overwrite = TRUE)
   
   # get the file's name to make output filenames
-  input=basename(f)
+  input <- basename(f)
   
   
   # setup path to images

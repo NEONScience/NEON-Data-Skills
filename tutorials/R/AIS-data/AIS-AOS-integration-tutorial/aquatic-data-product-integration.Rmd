@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 06b3c4df2b1d407fba6af95f813d1ff1
 title: "Linking NEON aquatic observational and instrument data to answer critical questions in aquatic ecology at the continental scale"	
 description: "Exercises highlighting NEON's Aquatic Instrumented Subsystem (AIS) and Aquatic Observational Subsystem (AOS) data products and integrating data products from the two subsystems to examine case studies from NEON Atlantic Neotropical Domain (Domain 04, Puerto Rico)."	
 dateCreated: 2025-05-16
@@ -11,14 +11,15 @@ topics: data-manipulation, data-visualization, data-analysis
 subtopics: organisms, hydrology, chemistry, morphology, aquatic
 languagesTool: R
 dataProduct: DP1.20120.001, DP4.00130.001, DP4.00131.001, DP1.20093.001, DP1.20288.001
-code1: 
+code1: https://github.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/aquatic-data-product-integration.R
 tutorialSeries: 
 urlTitle: aquatic-data-product-integration
 ---
 
-<div id="ds-objectives" markdown="1"
+<div id="ds-objectives" markdown="1">
 
-## Objectives
+
+## Learning Objectives
 
 After completing this activity, you will be able to:
 
@@ -325,7 +326,7 @@ those validation rules are reported in this table
 associated data table(s). This includes full definitions, units, and other 
 important information. 
 
-```{r view-vars}
+```{r view-vars, eval=FALSE}
 # view the entire dataframe in your R environment
 view(variables_20120)
 
@@ -337,7 +338,7 @@ There will always be one or more dataframes that include the primary data of the
 data product you downloaded. Multiple dataframes are available when there are 
 related datatables for a single data product.
 
-```{r view-df}
+```{r view-df, eval=FALSE}
 # view the entire dataframe in your R environment
 view(inv_fieldData)
 
@@ -365,6 +366,7 @@ Let's see what files are included with an AIS data product download
 names(csd)
 
 ```
+
 This AIS data product contains 1 data table available in the basic package:
 
 * `csd_continuousDischarge`
@@ -776,13 +778,13 @@ The `plotly` package allows us to interact with the plots in the following ways:
 
 Click on traces to display or hide them. (Note: INV traces defaulted to hidden)
 
-```{r aos-ais-plot, out.width='100%', out.height='600px'}
+```{r aos-ais-plot, out.width='100%', out.height='600px', fig.height=4, fig.width=8}
 # choose the site(s) you want to plot
 siteToPlot <- c("CUPE","GUIL")
 
 for(s in 1:length(siteToPlot)){
   # begin the plot code
-  CSD_15min%>%
+  AOS_AIS_plot <- CSD_15min%>%
     dplyr::filter(siteID==siteToPlot[s])%>%
     plotly::plot_ly()%>%
     # add trace for continuous discharge
@@ -867,9 +869,30 @@ for(s in 1:length(siteToPlot)){
               method='relayout',
               args=list(list(yaxis=list(type='log'))))))))
   
+  assign(paste0("AOS_AIS_plot_",siteToPlot[s]),AOS_AIS_plot)
 }
 
+# show plot at CUPE
+AOS_AIS_plot_CUPE
+
+# show plot at GUIL
+AOS_AIS_plot_GUIL
+
+
 ```
+
+```{r save-plotly-to-graphics, include=FALSE}
+
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_CUPE),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/cupe-discharge-macroinv-abundance-richness.html")
+
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html")
+
+```
+
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html" alt=" "  />
+<p class="GUIL Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
+</div>
 
 What kind of observations can be made when examining AIS discharge and AOS
 macroinvertebrate data on the same plotting field at NEON's two neotropical 
@@ -899,7 +922,12 @@ hurricane. Two NEON D04 aquatic sites were impacted. Here, we scale three data
 products across time to get an integrated look at how Hurricane Fiona (red line)
 affected the hydrology, morphology, and biology of two streams.
 
-![](images/fionaNEON.png){width="100%"}
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
+<p class="Hurricane Fiona Impact Map"> </p>
+</div>
+
+
 Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with 
 approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. 
 Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf
@@ -922,7 +950,7 @@ According to NOAA, Hurricane Fiona traveled through Puerto Rico between 18-21
 September, 2022. Let's highlight that event in our combined AOS and AIS plots by
 adding a red vertical dashed line on 2022-09-19.
 
-```{r highlight-fiona, out.width='100%', out.height='600px'}
+```{r highlight-fiona, out.width='100%', out.height='600px', fig.height=4, fig.width=6}
 # identify the date of Fiona
 fionaDate <- "2022-09-19"
 
@@ -938,6 +966,8 @@ AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE%>%
                        name="Fiona",
                        line=list(color='red',dash='dash'))
 
+AOS_AIS_plot_CUPE_Fiona
+
 # highlight Fiona at GUIL
 AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
   # add dashed vertical line to plot created in previous exercise
@@ -949,6 +979,8 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
                          na.rm = T),
                        name="Fiona",
                        line=list(color='red',dash='dash'))
+
+AOS_AIS_plot_GUIL_Fiona
 
 ```
 
@@ -1236,15 +1268,14 @@ list2env(swc,envir = .GlobalEnv)
 
 ```
 
-The data table we are interested in here is:
-
-* `swc_externalLabDataByAnalyte`
-  * Long-format results of chemical analysis of up to 28 unique analytes from
-  surface water and groundwater grab samples.
+The data table we are interested in here is `swc_externalLabDataByAnalyte`: 
+"Long-format results of chemical analysis of up to 28 unique analytes from 
+surface water and groundwater grab samples."
 
 ```{r wrangle-plot-swc}
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
+
 message("Primary keys in swc_externalLabDataByAnalyte are: ",
         paste(variables_20093$fieldName[
           variables_20093$table=="swc_externalLabDataByAnalyte"
@@ -1252,6 +1283,7 @@ message("Primary keys in swc_externalLabDataByAnalyte are: ",
         ],
         collapse = ", ")
         )
+
 # identify duplicates in swc_externalLabDataByAnalyte
 swc_externalLabDataByAnalyte_dups <- neonOS::removeDups(
   swc_externalLabDataByAnalyte,
@@ -1268,12 +1300,14 @@ DOC <- swc_externalLabDataByAnalyte%>%
   dplyr::filter(analyte=="DOC")
 
 # plot a timeseries of DOC
-DOC%>%
+DOC_plot <- DOC%>%
   ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::labs(title = "Dissolved organic carbon (DOC) over time",
                 y = "DOC (mg/L)",
                 x = "Date")
+
+DOC_plot
 
 ```
 
@@ -1297,12 +1331,9 @@ list2env(waq,envir = .GlobalEnv)
 
 ```
 
-The data table we are interested in here is:
-
-* `waq_instantaneous`
-  * Wide-format table published many water quality metrics in wide-format,
-  including fDOM, dissolved oxygen, specific conductance, pH, chlorophyll, and
-  turbidity.
+The data table we are interested in here is `waq_instantaneous`: "Wide-format table 
+published many water quality metrics in wide-format, including fDOM, dissolved oxygen, 
+specific conductance, pH, chlorophyll, and turbidity."
 
 ```{r wrangle-plot-waq}
 # `waq_instantaneous` table published many water quality metrics in wide-format
@@ -1330,12 +1361,14 @@ fDOM_15min <- WAQ_102%>%
   summarize(mean_fDOM=mean(rawCalibratedfDOM))
 
 # plot a timeseries of fDOM
-fDOM_15min%>%
+fDOM_plot <- fDOM_15min%>%
   ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
   ggplot2::geom_line()+
   ggplot2::labs(title = "fluorescent dissolved organic matter (fDOM) over time",
                 y = "fDOM (QSU)",
                 x = "Date")
+
+fDOM_plot
 
 ```
 
@@ -1362,7 +1395,7 @@ model <- lm(analyteConcentration~mean_fDOM,data=fDOM_DOC_join)
 print(summary(model))
 
 # show a plot of the relationship with a linear trendline added
-fDOM_DOC_join%>%
+fDOM_DOC_plot <- fDOM_DOC_join%>%
   ggplot2::ggplot(aes(x=mean_fDOM,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::geom_smooth(method="lm",se=T)+
@@ -1370,6 +1403,8 @@ fDOM_DOC_join%>%
   ggplot2::labs(title = "AOS-DOC vs. AIS-fDOM",
                 y = "DOC (mg/L)",
                 x = "fDOM (QSU)")
+
+fDOM_DOC_plot
 
 ```
 

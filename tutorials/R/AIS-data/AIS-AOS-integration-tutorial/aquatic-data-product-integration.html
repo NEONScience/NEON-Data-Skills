@@ -306,8 +306,9 @@ To work with each of them, select them from the list using the <code>$</code> op
 
 names(inv)
 
-##  [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_PROVISIONAL&quot;  &quot;citation_20120_RELEASE-2025&quot; &quot;inv_fieldData&quot;               &quot;inv_persample&quot;               &quot;inv_taxonomyProcessed&quot;       &quot;issueLog_20120&quot;             
-##  [8] &quot;readme_20120&quot;                &quot;validation_20120&quot;            &quot;variables_20120&quot;
+##  [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_PROVISIONAL&quot;  &quot;citation_20120_RELEASE-2025&quot; &quot;inv_fieldData&quot;              
+##  [5] &quot;inv_persample&quot;               &quot;inv_taxonomyProcessed&quot;       &quot;issueLog_20120&quot;              &quot;readme_20120&quot;               
+##  [9] &quot;validation_20120&quot;            &quot;variables_20120&quot;
 </code></pre>
 <p>We can see that there are 10 objects in the downloaded macroinvertebrate
 collection data.</p>
@@ -430,8 +431,9 @@ csd &lt;- neonUtilities::loadByProduct(dpID=&quot;DP4.00130.001&quot;,
 
 names(csd)
 
-## [1] &quot;categoricalCodes_00130&quot;      &quot;citation_00130_PROVISIONAL&quot;  &quot;citation_00130_RELEASE-2025&quot; &quot;csd_continuousDischarge&quot;     &quot;issueLog_00130&quot;              &quot;readme_00130&quot;                &quot;science_review_flags_00130&quot; 
-## [8] &quot;sensor_positions_00130&quot;      &quot;variables_00130&quot;
+## [1] &quot;categoricalCodes_00130&quot;      &quot;citation_00130_PROVISIONAL&quot;  &quot;citation_00130_RELEASE-2025&quot; &quot;csd_continuousDischarge&quot;    
+## [5] &quot;issueLog_00130&quot;              &quot;readme_00130&quot;                &quot;science_review_flags_00130&quot;  &quot;sensor_positions_00130&quot;     
+## [9] &quot;variables_00130&quot;
 </code></pre>
 <p>This AIS data product contains 1 data table available in the basic package:</p>
 <ul>
@@ -897,7 +899,7 @@ siteToPlot &lt;- c(&quot;CUPE&quot;,&quot;GUIL&quot;)
 
 for(s in 1:length(siteToPlot)){
   # begin the plot code
-  CSD_15min%&gt;%
+  AOS_AIS_plot &lt;- CSD_15min%&gt;%
     dplyr::filter(siteID==siteToPlot[s])%&gt;%
     plotly::plot_ly()%&gt;%
     # add trace for continuous discharge
@@ -982,8 +984,31 @@ for(s in 1:length(siteToPlot)){
               method='relayout',
               args=list(list(yaxis=list(type='log'))))))))
   
+  assign(paste0(&quot;AOS_AIS_plot_&quot;,siteToPlot[s]),AOS_AIS_plot)
 }
+
+
+
+# show plot at CUPE
+
+AOS_AIS_plot_CUPE
 </code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-1.png" alt=" " width="100%" height="600px" />
+<p class="caption"> </p>
+</div>
+<pre><code># show plot at GUIL
+
+AOS_AIS_plot_GUIL
+</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-2.png" alt=" " width="100%" height="600px" />
+<p class="caption"> </p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html" alt=" "  />
+<p class="GUIL Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
+</div>
 <p>What kind of observations can be made when examining AIS discharge and AOS
 macroinvertebrate data on the same plotting field at NEON’s two neotropical
 aquatic sites?</p>
@@ -1005,8 +1030,11 @@ other case studies using different NEON data products.</p>
 hurricane. Two NEON D04 aquatic sites were impacted. Here, we scale three data
 products across time to get an integrated look at how Hurricane Fiona (red line)
 affected the hydrology, morphology, and biology of two streams.</p>
-<p><img src="images/fionaNEON.png" alt="" width="100%" />
-Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
+<p class="Hurricane Fiona Impact Map"> </p>
+</div>
+<p>Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with
 approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL.
 Image source: <a href="https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf">https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf</a></p>
 <p>For this case study, we will look again at the relationship between stream
@@ -1043,7 +1071,7 @@ AOS_AIS_plot_CUPE_Fiona &lt;- AOS_AIS_plot_CUPE%&gt;%
                        name=&quot;Fiona&quot;,
                        line=list(color='red',dash='dash'))
 
-## Error: object 'AOS_AIS_plot_CUPE' not found
+
 
 # highlight Fiona at GUIL
 
@@ -1057,8 +1085,6 @@ AOS_AIS_plot_GUIL_Fiona &lt;- AOS_AIS_plot_GUIL%&gt;%
                          na.rm = T),
                        name=&quot;Fiona&quot;,
                        line=list(color='red',dash='dash'))
-
-## Error: object 'AOS_AIS_plot_GUIL' not found
 </code></pre>
 <p>Next, we will use the <code>neonUtilities</code> function <code>loadByProduct()</code> to load data
 from the Stream morphology maps data product into R.</p>
@@ -1309,10 +1335,12 @@ AOS_AIS_plot_CUPE_Fiona%&gt;%
          xanchor = &quot;left&quot;, yanchor = &quot;bottom&quot;)
     
     ))
-
-## Error: object 'AOS_AIS_plot_CUPE_Fiona' not found
-
-# re-generate the GUIL plot with particle size distribution subplots added
+</code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-1.png" alt=" " width="100%" height="800px" />
+<p class="caption"> </p>
+</div>
+<pre><code># re-generate the GUIL plot with particle size distribution subplots added
 
 AOS_AIS_plot_GUIL_Fiona%&gt;%
   layout(images=list(
@@ -1336,9 +1364,11 @@ AOS_AIS_plot_GUIL_Fiona%&gt;%
          xanchor = &quot;left&quot;, yanchor = &quot;bottom&quot;)
     
     ))
-
-## Error: object 'AOS_AIS_plot_GUIL_Fiona' not found
 </code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-2.png" alt=" " width="100%" height="800px" />
+<p class="caption"> </p>
+</div>
 <p><strong>Discussion</strong>: With the three data products viewed together in relation to the
 Hurricane Fiona event, there are several observations that can be made:</p>
 <ul>
@@ -1409,48 +1439,70 @@ swc &lt;- neonUtilities::loadByProduct(dpID=&quot;DP1.20093.001&quot;,
 
 list2env(swc,envir = .GlobalEnv)
 </code></pre>
-<p>The data table we are interested in here is:</p>
-<ul>
-<li><code>swc_externalLabDataByAnalyte</code>
-<ul>
-<li>
-<p>Long-format results of chemical analysis of up to 28 unique analytes from
-surface water and groundwater grab samples.</p>
-<h1 id="check-if-there-are-duplicate-doc-records">check if there are duplicate DOC records</h1>
-<h1 id="what-are-the-primary-keys-in-swc-externallabdatabyanalyte">what are the primary keys in swc_externalLabDataByAnalyte?</h1>
-<p>message(“Primary keys in swc_externalLabDataByAnalyte are: “,
-paste(variables_20093$fieldName[
-variables_20093$table==“swc_externalLabDataByAnalyte”
-&amp;variables_20093$primaryKey==“Y”
-],
-collapse = “, “)
-)</p>
-<h1 id="identify-duplicates-in-swc-externallabdatabyanalyte">identify duplicates in swc_externalLabDataByAnalyte</h1>
-<p>swc_externalLabDataByAnalyte_dups &lt;- neonOS::removeDups(
-swc_externalLabDataByAnalyte,
-variables_20093)</p>
-<h1 id="no-duplicates-great">no duplicates, great!</h1>
-<h1 id="lab-data-is-published-long-format-with-28-analytes-analyzed">lab data is published <code>long-format</code> with 28 analytes analyzed</h1>
-<h1 id="show-all-the-analytes-published-in-the-lab-data">show all the analytes published in the lab data</h1>
-<p>print(unique(swc_externalLabDataByAnalyte$analyte))</p>
-<h2 id="1-tdp-so4-tp-nh4-n-mg-no2-n-f-si">[1] “TDP”                    “SO4”                    “TP”                     “NH4 - N”                “Mg”                     “NO2 - N”                “F”                      “Si”</h2>
-<h2 id="9-tds-uv-absorbance-254-nm-cl-ca-tn-uv-absorbance-280-nm-no3-no2-n-tss">[9] “TDS”                    “UV Absorbance (254 nm)” “Cl”                     “Ca”                     “TN”                     “UV Absorbance (280 nm)” “NO3+NO2 - N”            “TSS”</h2>
-<h2 id="17-tpc-tdn-na-br-mn-fe-doc-dic">[17] “TPC”                    “TDN”                    “Na”                     “Br”                     “Mn”                     “Fe”                     “DOC”                    “DIC”</h2>
-<h2 id="25-k-ortho-p-toc-tpn">[25] “K”                      “Ortho - P”              “TOC”                    “TPN”</h2>
-<h1 id="for-this-exercise-subset-lab-data-to-only-dissolved-organic-carbon-doc">for this exercise, subset lab data to only dissolved organic carbon (DOC)</h1>
-<p>DOC &lt;- swc_externalLabDataByAnalyte%&gt;%
-dplyr::filter(analyte==“DOC”)</p>
-<h1 id="plot-a-timeseries-of-doc">plot a timeseries of DOC</h1>
-<p>DOC%&gt;%
-ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
-ggplot2::geom_point()+
-ggplot2::labs(title = “Dissolved organic carbon (DOC) over time”,
-y = “DOC (mg/L)”,
-x = “Date”)</p>
-</li>
-</ul>
-</li>
-</ul>
+<p>The data table we are interested in here is <code>swc_externalLabDataByAnalyte</code>:
+“Long-format results of chemical analysis of up to 28 unique analytes from
+surface water and groundwater grab samples.”</p>
+<pre><code># check if there are duplicate DOC records
+
+# what are the primary keys in swc_externalLabDataByAnalyte?
+
+
+
+message(&quot;Primary keys in swc_externalLabDataByAnalyte are: &quot;,
+        paste(variables_20093$fieldName[
+          variables_20093$table==&quot;swc_externalLabDataByAnalyte&quot;
+          &amp;variables_20093$primaryKey==&quot;Y&quot;
+        ],
+        collapse = &quot;, &quot;)
+        )
+
+
+
+# identify duplicates in swc_externalLabDataByAnalyte
+
+swc_externalLabDataByAnalyte_dups &lt;- neonOS::removeDups(
+  swc_externalLabDataByAnalyte,
+  variables_20093)
+
+
+
+# no duplicates, great!
+
+
+
+# lab data is published `long-format` with 28 analytes analyzed
+
+# show all the analytes published in the lab data
+
+print(unique(swc_externalLabDataByAnalyte$analyte))
+
+##  [1] &quot;TDP&quot;                    &quot;SO4&quot;                    &quot;TP&quot;                     &quot;NH4 - N&quot;                &quot;Mg&quot;                    
+##  [6] &quot;NO2 - N&quot;                &quot;F&quot;                      &quot;Si&quot;                     &quot;TDS&quot;                    &quot;UV Absorbance (254 nm)&quot;
+## [11] &quot;Cl&quot;                     &quot;Ca&quot;                     &quot;TN&quot;                     &quot;UV Absorbance (280 nm)&quot; &quot;NO3+NO2 - N&quot;           
+## [16] &quot;TSS&quot;                    &quot;TPC&quot;                    &quot;TDN&quot;                    &quot;Na&quot;                     &quot;Br&quot;                    
+## [21] &quot;Mn&quot;                     &quot;Fe&quot;                     &quot;DOC&quot;                    &quot;DIC&quot;                    &quot;K&quot;                     
+## [26] &quot;Ortho - P&quot;              &quot;TOC&quot;                    &quot;TPN&quot;
+
+# for this exercise, subset lab data to only dissolved organic carbon (DOC)
+
+DOC &lt;- swc_externalLabDataByAnalyte%&gt;%
+  dplyr::filter(analyte==&quot;DOC&quot;)
+
+
+
+# plot a timeseries of DOC
+
+DOC_plot &lt;- DOC%&gt;%
+  ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
+  ggplot2::geom_point()+
+  ggplot2::labs(title = &quot;Dissolved organic carbon (DOC) over time&quot;,
+                y = &quot;DOC (mg/L)&quot;,
+                x = &quot;Date&quot;)
+
+
+
+DOC_plot
+</code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-swc-1.png" alt=" " /></p>
 <p>Next, download AIS data, subset to the appropriate <code>horizontalPosition</code>, wrangle
 the data for analysis, and plot the data.</p>
@@ -1472,43 +1524,58 @@ waq &lt;- neonUtilities::loadByProduct(dpID=&quot;DP1.20288.001&quot;,
 
 list2env(waq,envir = .GlobalEnv)
 </code></pre>
-<p>The data table we are interested in here is:</p>
-<ul>
-<li><code>waq_instantaneous</code>
-<ul>
-<li>
-<p>Wide-format table published many water quality metrics in wide-format,
-including fDOM, dissolved oxygen, specific conductance, pH, chlorophyll, and
-turbidity.</p>
-<h1 id="waq-instantaneous-table-published-many-water-quality-metrics-in-wide-format"><code>waq_instantaneous</code> table published many water quality metrics in wide-format</h1>
-<h1 id="other-than-fdom-many-other-metrics-are-published-in-waq-instantaneous">other than fDOM, many other metrics are published in <code>waq_instantaneous</code></h1>
-<h1 id="including-dissolved-oxygen-specific-conductance-ph-chlorophyll-turbidity">including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity</h1>
-<h1 id="according-to-the-neon-ais-spatial-design-fdom-is-only-measured-at-the">according to the NEON AIS spatial design, fDOM is only measured at the</h1>
-<h1 id="downstream-sensor-set-s2-hor-102-subset-to-hor-102">downstream sensor set (S2, HOR = 102); subset to HOR 102</h1>
-<p>WAQ_102 &lt;- waq_instantaneous%&gt;%
-dplyr::filter(horizontalPosition==102)</p>
-<h1 id="waq-instantaneous-is-published-at-a-1-minute-temporal-resolution"><code>waq_instantaneous</code> is published at a 1 minute temporal resolution</h1>
-<h1 id="for-ease-of-plotting-let-s-create-a-15-minute-average-table">for ease of plotting, let’s create a 15-minute average table</h1>
-<p>fDOM_15min &lt;- WAQ_102%&gt;%</p>
-<h1 id="remove-null-records">remove NULL records</h1>
-<p>dplyr::filter(!is.na(rawCalibratedfDOM))%&gt;%</p>
-<h1 id="remove-records-with-a-final-qf">remove records with a final QF</h1>
-<p>dplyr::filter(fDOMFinalQF==0)%&gt;%</p>
-<h1 id="create-15-minute-average-of-fdom">create 15-minute average of fDOM</h1>
-<p>mutate(roundDate=lubridate::round_date(endDateTime,“15 min”))%&gt;%
-group_by(siteID,roundDate)%&gt;%
-summarize(mean_fDOM=mean(rawCalibratedfDOM))</p>
-<h1 id="plot-a-timeseries-of-fdom">plot a timeseries of fDOM</h1>
-<p>fDOM_15min%&gt;%
-ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
-ggplot2::geom_line()+
-ggplot2::labs(title = “fluorescent dissolved organic matter (fDOM) over time”,
-y = “fDOM (QSU)”,
-x = “Date”)</p>
-</li>
-</ul>
-</li>
-</ul>
+<p>The data table we are interested in here is <code>waq_instantaneous</code>: “Wide-format table
+published many water quality metrics in wide-format, including fDOM, dissolved oxygen,
+specific conductance, pH, chlorophyll, and turbidity.”</p>
+<pre><code># `waq_instantaneous` table published many water quality metrics in wide-format
+
+# other than fDOM, many other metrics are published in `waq_instantaneous`
+
+# including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity
+
+
+
+# according to the NEON AIS spatial design, fDOM is only measured at the 
+
+# downstream sensor set (S2, HOR = 102); subset to HOR 102
+
+WAQ_102 &lt;- waq_instantaneous%&gt;%
+  dplyr::filter(horizontalPosition==102)
+
+
+
+# `waq_instantaneous` is published at a 1 minute temporal resolution
+
+# for ease of plotting, let's create a 15-minute average table
+
+fDOM_15min &lt;- WAQ_102%&gt;%
+  
+  # remove NULL records
+  dplyr::filter(!is.na(rawCalibratedfDOM))%&gt;%
+  
+  # remove records with a final QF
+  dplyr::filter(fDOMFinalQF==0)%&gt;%
+  
+  # create 15-minute average of fDOM
+  mutate(roundDate=lubridate::round_date(endDateTime,&quot;15 min&quot;))%&gt;%
+  group_by(siteID,roundDate)%&gt;%
+  summarize(mean_fDOM=mean(rawCalibratedfDOM))
+
+
+
+# plot a timeseries of fDOM
+
+fDOM_plot &lt;- fDOM_15min%&gt;%
+  ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
+  ggplot2::geom_line()+
+  ggplot2::labs(title = &quot;fluorescent dissolved organic matter (fDOM) over time&quot;,
+                y = &quot;fDOM (QSU)&quot;,
+                x = &quot;Date&quot;)
+
+
+
+fDOM_plot
+</code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-waq-1.png" alt=" " /></p>
 <p>Both data products are published in Coordinated Universal Time (UTC), as are all
 AOS and AIS data, which makes joining across tables easy. Let’s join the AOS and
@@ -1558,7 +1625,7 @@ print(summary(model))
 
 # show a plot of the relationship with a linear trendline added
 
-fDOM_DOC_join%&gt;%
+fDOM_DOC_plot &lt;- fDOM_DOC_join%&gt;%
   ggplot2::ggplot(aes(x=mean_fDOM,y=analyteConcentration))+
   ggplot2::geom_point()+
   ggplot2::geom_smooth(method=&quot;lm&quot;,se=T)+
@@ -1566,6 +1633,10 @@ fDOM_DOC_join%&gt;%
   ggplot2::labs(title = &quot;AOS-DOC vs. AIS-fDOM&quot;,
                 y = &quot;DOC (mg/L)&quot;,
                 x = &quot;fDOM (QSU)&quot;)
+
+
+
+fDOM_DOC_plot
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/linear-regression-1.png" alt=" " /></p>
 <p>Given relatively high AIS data completeness and a correlative relationship
@@ -1622,9 +1693,11 @@ plotly::plot_ly(data=fDOM_DOC_join)%&gt;%
                              yanchor = 'top',
                              orientation = 'h',
                              x=0.5,y=-0.2))
-
-## Error in path.expand(path): invalid 'path' argument
 </code></pre>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/plot-model-doc-1.png" alt=" " width="100%" height="600px" />
+<p class="caption"> </p>
+</div>
 <p><strong>Discussion</strong>: This study shows the possibility of integrating AIS and AOS data
 to expand the temporal scale of estimated DOC in stream sites. At CUPE,
 estimated DOC matches well with grab sample DOC across mid-range values, with

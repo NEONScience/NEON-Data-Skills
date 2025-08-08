@@ -79,7 +79,7 @@ Then load the packages.
 
     version$version.string
 
-    ## [1] "R version 4.4.3 (2025-02-28)"
+    ## [1] "R version 4.4.3 (2025-02-28 ucrt)"
 
     library(tidyverse)
 
@@ -205,19 +205,19 @@ Let's take a look at the targets data!
     targets[100:110,]
 
     ## # A tibble: 11 × 6
-    ##    project_id site_id datetime duration variable observation
-    ##    <chr>      <chr>   <date>   <chr>    <chr>          <dbl>
-    ##  1 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  2 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  3 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  4 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  5 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  6 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  7 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  8 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ##  9 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ## 10 <NA>       <NA>    NA       <NA>     <NA>              NA
-    ## 11 <NA>       <NA>    NA       <NA>     <NA>              NA
+    ##    project_id site_id datetime   duration variable  observation
+    ##    <chr>      <chr>   <date>     <chr>    <chr>           <dbl>
+    ##  1 neon4cast  OSBS    2017-06-12 P1W      richness       7     
+    ##  2 neon4cast  OSBS    2017-06-26 P1W      abundance      0.0821
+    ##  3 neon4cast  OSBS    2017-06-26 P1W      richness      10     
+    ##  4 neon4cast  OSBS    2017-07-10 P1W      abundance      0.0446
+    ##  5 neon4cast  OSBS    2017-07-10 P1W      richness       6     
+    ##  6 neon4cast  OSBS    2017-07-24 P1W      abundance      0.114 
+    ##  7 neon4cast  OSBS    2017-07-24 P1W      richness       8     
+    ##  8 neon4cast  OSBS    2017-08-07 P1W      abundance      0.0196
+    ##  9 neon4cast  OSBS    2017-08-07 P1W      richness       4     
+    ## 10 neon4cast  OSBS    2017-08-21 P1W      abundance      0.0375
+    ## 11 neon4cast  OSBS    2017-08-21 P1W      richness       6
 
 It is good practice to examine the dataset before proceeding with analysis:
 
@@ -399,9 +399,9 @@ Next, specify and fit simple linear regression models using `fable::TSLM()`, and
     ## # A tibble: 3 × 2
     ##   .model            AIC
     ##   <chr>           <dbl>
-    ## 1 mod_temp        -129.
-    ## 2 mod_precip      -128.
-    ## 3 mod_temp_precip -127.
+    ## 1 mod_temp        -610.
+    ## 2 mod_precip      -606.
+    ## 3 mod_temp_precip -608.
 
 Now, plot the predicted versus observed abundance data.
 
@@ -434,17 +434,19 @@ We could use all of these models to make an ensemble forecast, but for simplicit
     ## Transformation: log1p(abundance) 
     ## 
     ## Residuals:
-    ##       Min        1Q    Median        3Q       Max 
-    ## -0.088452 -0.038339 -0.015457 -0.002563  0.281881 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -0.07759 -0.04002 -0.01051  0.02192  0.28585 
     ## 
     ## Coefficients:
-    ##                      Estimate Std. Error t value Pr(>|t|)
-    ## (Intercept)         -0.128599   0.198481  -0.648    0.523
-    ## temperature_2m_mean  0.007980   0.007614   1.048    0.305
+    ##                      Estimate Std. Error t value Pr(>|t|)  
+    ## (Intercept)         -0.031335   0.051783  -0.605   0.5463  
+    ## temperature_2m_mean  0.003947   0.002029   1.945   0.0544 .
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.08527 on 25 degrees of freedom
-    ## Multiple R-squared: 0.04208,	Adjusted R-squared: 0.003768
-    ## F-statistic: 1.098 on 1 and 25 DF, p-value: 0.30466
+    ## Residual standard error: 0.0645 on 110 degrees of freedom
+    ## Multiple R-squared: 0.03324,	Adjusted R-squared: 0.02445
+    ## F-statistic: 3.782 on 1 and 110 DF, p-value: 0.054357
 
     # make a forecast
 
@@ -514,14 +516,14 @@ What does the content of the submission look like?
     head(fc_best_lm_efi)
 
     ## # A tibble: 6 × 10
-    ##   datetime   site_id parameter model_id     family variable prediction project_id reference_datetime duration
-    ##   <date>     <chr>   <chr>     <chr>        <chr>  <chr>         <dbl> <chr>      <chr>              <chr>   
-    ## 1 2022-01-01 OSBS    1         bet_abund_e… ensem… abundan…    -0.0629 neon4cast  2022-01-01         P1W     
-    ## 2 2022-01-01 OSBS    2         bet_abund_e… ensem… abundan…     0.134  neon4cast  2022-01-01         P1W     
-    ## 3 2022-01-01 OSBS    3         bet_abund_e… ensem… abundan…    -0.122  neon4cast  2022-01-01         P1W     
-    ## 4 2022-01-01 OSBS    4         bet_abund_e… ensem… abundan…    -0.0430 neon4cast  2022-01-01         P1W     
-    ## 5 2022-01-01 OSBS    5         bet_abund_e… ensem… abundan…     0.0954 neon4cast  2022-01-01         P1W     
-    ## 6 2022-01-01 OSBS    6         bet_abund_e… ensem… abundan…    -0.0189 neon4cast  2022-01-01         P1W
+    ##   datetime   site_id parameter model_id                    family   variable  prediction project_id reference_datetime duration
+    ##   <date>     <chr>   <chr>     <chr>                       <chr>    <chr>          <dbl> <chr>      <chr>              <chr>   
+    ## 1 2022-01-01 OSBS    1         bet_abund_example_tslm_temp ensemble abundance    -0.0717 neon4cast  2022-01-01         P1W     
+    ## 2 2022-01-01 OSBS    2         bet_abund_example_tslm_temp ensemble abundance     0.0803 neon4cast  2022-01-01         P1W     
+    ## 3 2022-01-01 OSBS    3         bet_abund_example_tslm_temp ensemble abundance     0.0882 neon4cast  2022-01-01         P1W     
+    ## 4 2022-01-01 OSBS    4         bet_abund_example_tslm_temp ensemble abundance    -0.0219 neon4cast  2022-01-01         P1W     
+    ## 5 2022-01-01 OSBS    5         bet_abund_example_tslm_temp ensemble abundance     0.0817 neon4cast  2022-01-01         P1W     
+    ## 6 2022-01-01 OSBS    6         bet_abund_example_tslm_temp ensemble abundance     0.177  neon4cast  2022-01-01         P1W
 
 
     # visualize the EFI-formatted submission
@@ -685,15 +687,16 @@ For immediate feedback, we can use the targets data from 2022 to score our forec
 
     head(mod_scores)
 
-    ## # A tibble: 4 × 17
-    ##   model_id      reference_datetime site_id datetime   family variable observation   crps   logs   mean median
-    ##   <chr>         <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-    ## 1 bet_abund_ex… 2022-01-01         OSBS    2022-04-04 sample abundan…      0.102  0.0345 -1.51  0.0347 0.0449
-    ## 2 bet_abund_ex… 2022-01-01         OSBS    2022-04-18 sample abundan…      0.188  0.107  -0.487 0.0236 0.0307
-    ## 3 bet_abund_ex… 2022-01-01         OSBS    2022-04-25 sample abundan…      0.0877 0.0190 -1.59  0.109  0.103 
-    ## 4 bet_abund_ex… 2022-01-01         OSBS    2022-08-08 sample abundan…      0.169  0.0465 -1.08  0.101  0.0870
-    ## # ℹ 6 more variables: sd <dbl>, quantile97.5 <dbl>, quantile02.5 <dbl>, quantile90 <dbl>, quantile10 <dbl>,
-    ## #   horizon <drtn>
+    ## # A tibble: 6 × 17
+    ##   model_id             reference_datetime site_id datetime   family variable observation   crps   logs   mean median     sd quantile97.5
+    ##   <chr>                <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>        <dbl>
+    ## 1 bet_abund_example_t… 2022-01-01         OSBS    2022-04-04 sample abundan…      0.102  0.0351 -1.30  0.0435 0.0492 0.0750       0.149 
+    ## 2 bet_abund_example_t… 2022-01-01         OSBS    2022-04-18 sample abundan…      0.188  0.155  20.1   0.0166 0.0209 0.0312       0.0529
+    ## 3 bet_abund_example_t… 2022-01-01         OSBS    2022-04-25 sample abundan…      0.0877 0.0149 -1.77  0.0697 0.0759 0.0547       0.157 
+    ## 4 bet_abund_example_t… 2022-01-01         OSBS    2022-05-02 sample abundan…      0.0857 0.0358 -1.22  0.0306 0.0290 0.0639       0.133 
+    ## 5 bet_abund_example_t… 2022-01-01         OSBS    2022-05-16 sample abundan…      0.0786 0.0152 -1.81  0.100  0.0818 0.0559       0.185 
+    ## 6 bet_abund_example_t… 2022-01-01         OSBS    2022-05-30 sample abundan…      0.133  0.0594 -0.761 0.0511 0.0466 0.0440       0.118 
+    ## # ℹ 4 more variables: quantile02.5 <dbl>, quantile90 <dbl>, quantile10 <dbl>, horizon <drtn>
 
 Are these scores better than our null models? Here, we will score the `mod_mean` and `mod_naive` models, and combine the null model scores with the scores for our `best_lm` forecast above. Then we can compare. 
 

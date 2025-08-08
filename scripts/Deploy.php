@@ -16,12 +16,18 @@ const EXCLUDED_MARKDOWN_FILES = ["readme"];
 $commitHash = getLastImportCommitHash() ?? null;
 
 printf(
-    "The last imported commit hash %s!",
-    !empty($commitHash) ? $commitHash : 'is empty'
+    "The last imported commit hash is %s!\n",
+    !empty($commitHash) ? "$commitHash" : 'empty'
 );
 
-foreach (findTutorialMarkdownFiles($commitHash) as $markdownFile) {
+$markdownFiles = findTutorialMarkdownFiles($commitHash);
+if (empty($markdownFiles)) {
+    print("No markdown files found.\n");
+}
+
+foreach ($markdownFiles as $markdownFile) {
     if (!file_exists($markdownFile)) {
+        print("File not found.\n");
         continue;
     }
     $fileObject = new \SplFileObject($markdownFile);
@@ -31,6 +37,7 @@ foreach (findTutorialMarkdownFiles($commitHash) as $markdownFile) {
     );
 
     if (in_array($fileObjectName, EXCLUDED_MARKDOWN_FILES)) {
+        print("Excluded file found.\n");
         continue;
     }
 
@@ -46,13 +53,19 @@ foreach (findTutorialMarkdownFiles($commitHash) as $markdownFile) {
                 );
             }
         }
+        else {
+            print("Webhook URL not found.\n");
+        }
+    }
+    else {
+        print("There was an error processing the file.\n");
     }
 }
 $newCommitHash = shell_exec('git rev-parse HEAD');
 
 if ($commitHash !== $newCommitHash) {
     printf(
-        "The updated imported commit hash %s!",
+        "The updated imported commit hash is %s!\n",
         $newCommitHash
     );
     setLastImportCommitHash($newCommitHash);

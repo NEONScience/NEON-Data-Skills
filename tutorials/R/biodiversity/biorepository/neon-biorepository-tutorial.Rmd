@@ -105,7 +105,7 @@ This download may take a few minutes. While not required, it is recommended that
 Note that we have chosen to include <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Provisional data</a> for this exploratory analysis of sample and data availability. If you are interested in ensuring repeatability of analysis results, you should limit your download to data in a <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Release</a>. 
 
 
-```{r download-Data-New, message=TRUE, warning=FALSE, paged.print=FALSE, results='hide'}
+```{r download-Data-New, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
 
  NEON.cfc <- loadByProduct(dpID="DP1.10026.001",
                     include.provisional=TRUE,
@@ -132,7 +132,7 @@ names(NEON.ltr)
 
 We can see that the data downloads for each product include several tables. The Quick Start Guides on any NEON data product description page are especially useful for understanding these tables, as are the "variables" and "readme" files included in data downloads. It is recommended that anyone who plans to use NEON data in their work carefully review the associated reading materials. 
 
-# Narrow the spatial and temporal scope based on available data
+## Narrow the spatial and temporal scope based on available data
 
 For our purpose, we are interested in the files containing measurements of carbon and nitrogen, so we will extract those data tables.
 
@@ -187,7 +187,7 @@ CN <- CN %>%
 
 We have identified 8 site by year combinations for which we would like to obtain paired mammal hair and fecal samples for further study! Now we will look for available mammal samples.
 
-# Load and explore NEON Biorepository data
+## Load and explore NEON Biorepository data
 
 Here, we read in a csv file of occurrence records downloaded from the NEON Biorepository data portal. The results are located in the <a href="https://github.com/kyule/neon-biorepo-tutorial" target="_blank">Github repository</a> associated with this tutorial. This represents all small mammal hair and fecal samples from Domains 1, 2, and 7 archived at the NEON Biorepository.
 
@@ -229,7 +229,7 @@ biorepo <- biorepo %>%
 
 ```
 
-# Narrow the results to a set of samples that fits our research question
+## Narrow the results to a set of samples that fits our research question
 
 We want to include only samples collected from the same site by year combinations we are interested in based on CN ratio data, so we create a site by year column and filter the results.
 
@@ -361,7 +361,7 @@ hairMatches <- hairMatches %>%
 
 ```
 
-# Finalize a sample list
+## Finalize a sample list
 
 To finalize the list, we randomly select a sample size of 10 for each species and site combination.
 
@@ -389,7 +389,7 @@ We now have a list of 140 samples we could request from the NEON Biorepository v
 
 What other ways may we want to have manipulated or subset the data for our question?
 
-# Visualize our request
+## Visualize our request
 
 We might be interested in creating a visualization for a grant proposal in which we planned to use these samples.
 
@@ -418,7 +418,7 @@ mapSummaryWithSpecies <- hairMatchSet %>%
 Create a base map for our data and add minicharts of the species and CN ratio of canopy foliage
 
 
-```{r map,message=FALSE,eval=TRUE}
+```{r map,message=TRUE,eval=TRUE}
 
 basemap <- leaflet() %>% 
 				addTiles() %>%
