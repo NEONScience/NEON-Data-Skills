@@ -100,8 +100,6 @@ veg_dict = nu.load_by_product(dpid="DP1.10098.001",
     Downloading 23 NEON DP1.10098.001 files totaling approximately 40.0 MB.
     Downloading files
     100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 23/23 [00:24<00:00,  1.08s/it]
-    C:\Users\bhass\.conda\envs\lpdaac_vitals\lib\site-packages\neonutilities\unzip_and_stack.py:140: UserWarning: Filepaths on Windows are limited to 260 characters. Attempting to extract a filepath that is > 260 characters long. Move your working or savepath directory closer to the root directory or enable long path support in Windows.
-      warnings.warn(
     Stacking data files
     100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 4/4 [00:01<00:00,  2.36it/s]
     
