@@ -135,11 +135,14 @@ Define your token. You can set this up on your NEON user account page, https://d
 NEON_TOKEN='YOUR_TOKEN_HERE'
 ```
 
-method 2: set the token as an environment variable using the dotenv package
-```
+```python
+# method 2: set the token as an environment variable using the dotenv package
 dotenv.set_key(dotenv_path=".env",
-key_to_set="NEON_TOKEN",
+key_to_set="NEON_TOKEN",#
 value_to_set="YOUR_TOKEN_HERE")
+
+# to retrieve the token that you set as an environment variable, use:
+NEON_TOKEN=os.environ.get("NEON_TOKEN")
 ```
 
 ## 2. Visualize NEON AOP, OS, and IS shapefiles at SERC
@@ -426,7 +429,7 @@ value_to_set="YOUR TOKEN HERE")
 serc2025_utm_extents = nu.get_aop_tile_extents(refl_rev2_dpid, 
                                                site_id,
                                                year,
-                                               token=os.environ.get("NEON_TOKEN"))
+                                               token=NEON_TOKEN)
 ```
 
 The AOP collection over SERC in 2025 extends from UTM 358000 - 370000 m (Easting) and 4298000 - 4312000 m (Northing). To display a list of the extents of every tile, you can print `serc2025_utm_extents`. This is sometimes useful when trying to determine the extents of irregularly shaped sites.
@@ -440,14 +443,14 @@ nu.by_file_aop(dpid='DP3.30015.001', # Ecosystem Structure / CHM
                site=site_id,
                year=year,
                include_provisional=True,
-               token='NEON_TOKEN',
+               token=NEON_TOKEN,
                savepath='./data')
 ```
 
 
 ```python
 # Unzip the lidar tile boundary file
-with ZipFile(f"./data/shapefiles/2025_SERC_7_TileBoundary.zip", 'r') as zip_ref:
+with ZipFile(f"./data/DP3.30015.001/neon-aop-provisional-products/2025/FullSite/D02/2025_SERC_7/Metadata/DiscreteLidar/TileBoundary/2025_SERC_7_TileBoundary.zip",'r') as zip_ref:
     zip_ref.extractall('./data/shapefiles/2025_SERC_7_TileBoundary')
 ```
 
@@ -492,7 +495,7 @@ You can specify the download path using the `savepath` variable. Let's set it to
 
 The reflectance data are large in size (especially for an entire site's worth of data), so by default the download functions will display the expected download size and ask if you want to proceed with the download (y/n). The reflectance tile downloaded below is ~ 660 MB in size, so make sure you have enough space on your local disk (or cloud platform) before downloading. If you want to download without being prompted to continue, you can set the input variable `check_size=False`.
 
-By default the files will be downloaded following the same structure that they are stored in on Google Cloud Storage, so the actual data files are nested in sub-folders. We encourage you to navigate through the `data/DP3.30006.002` folder, and explore the additional metadata (such as QA reports) that are downloaded along with the data.
+By default the files will be downloaded following the same structure that they are stored in on Google Cloud Storage, so the actual data files are nested in sub-folders. We encourage you to navigate through the `./data/DP3.30006.002` folder, and explore the additional metadata (such as QA reports) that are downloaded along with the data.
 
 
 ```python
@@ -503,7 +506,7 @@ nu.by_tile_aop(dpid='DP3.30006.002',
                easting=364005,
                northing=4305005,
                include_provisional=True,
-               token='NEON_TOKEN',
+               token=NEON_TOKEN,
                savepath='./data')
 ```
 
@@ -512,7 +515,7 @@ You can either navigate to the download folder in File Explorer, or to programma
 
 ```python
 # see all files that were downloaded (including data, metadata, and READMEs):
-for root, dirs, files in os.walk(r'data\DP3.30006.002'):
+for root, dirs, files in os.walk(r'./data/DP3.30006.002'):
     for name in files:
         print(os.path.join(root, name))  # print file name
 ```
@@ -524,7 +527,7 @@ If you only want to see the names of the .h5 reflectance data you downloaded, yo
 
 ```python
 # see only the .h5 files that were downloaded
-for root, dirs, files in os.walk(r'.\data\DP3.30006.002'):
+for root, dirs, files in os.walk(r'./data/DP3.30006.002'):
     for name in files:
         if name.endswith('.h5'):
             print(os.path.join(root, name))  # print file name
