@@ -80,9 +80,9 @@ pip install rasterio
 
 ### Additional Resources
 
-* <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Tutorial for using neonUtilities from a Python environment.</a>
-* <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
-* <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users.
+* <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities R package</a>
+* <a href="https://github.com/NEONScience/NEON-utilities-python" target="_blank">GitHub repository for neonutilities Python package</a>
+* <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users. Focuses on the R package, but applicable to Python as well.
 
 </div>
 
@@ -297,7 +297,7 @@ We can see there is a lot of light attenuation through the canopy.
 
 At the start of this tutorial, we downloaded data from the NEON data portal. 
 NEON also provides an API, and the `neonUtilities` packages provide methods 
-for downloading programmatically in R.
+for downloading programmatically.
 
 The steps we carried out above - downloading from the portal, stacking the 
 downloaded files, and reading in to R or Python - can all be carried out in 
@@ -388,14 +388,15 @@ the data every time. See below for suggestions on saving the data locally
 to save time and compute resources.
 
 `loadByProduct()` works on most observational (OS) and sensor (IS) data, 
-but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
-data, and some of the data tables in the microbial data products. For 
-functions that download AOP data, see the final 
+but not on surface-atmosphere exchange (SAE) data and remote sensing (AOP) 
+data. For functions that download AOP data, see the final 
 section in this tutorial. For functions that work with SAE data, see 
 the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>.
 
 The inputs to `loadByProduct()` control which data to download and how 
-to manage the processing:
+to manage the processing. The list below shows the R syntax; in Python, 
+the inputs are the same but all lowercase (e.g. `dpid` instead of `dpID`) 
+and `.` is replaced by `_`.
 
 * `dpID`: the data product ID, e.g. DP1.00002.001
 * `site`: defaults to "all", meaning all sites with available data; 
@@ -429,16 +430,10 @@ you are using this function within a script or batch process you
 will want to set it to F.
 * `token`: Optional NEON API token for faster downloads. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial</a> 
 for instructions on using a token.
-* `nCores`: Number of cores to use for parallel processing. Defaults 
-to 1, i.e. no parallelization. Only available in R.
-* `forceParallel`: If the data volume to be processed does not meet 
-minimum requirements to run in parallel, this overrides. Only 
-available in R.
-* `progress`: Set to False to turn off the progress bar. Only 
-available in Python.
-* `cloud_mode`: Can be set to True if you are working in a cloud 
+* `progress`: Set to F to turn off progress bars.
+* `cloud.mode`: Can be set to T if you are working in a cloud 
 environment; enables more efficient data transfer from NEON's 
-cloud storage. Only available in Python.
+cloud storage.
 
 The `dpID` is the data product identifier of the data you want to 
 download. The DPID can be found on the 
@@ -547,7 +542,8 @@ Keep in mind that using `loadByProduct()` will re-download the data every
 time you run your code. In some cases this may be desirable, but it can be 
 a waste of time and compute resources. To come back to these data without 
 re-downloading, you'll want to save the tables locally. The most efficient 
-option is to save the named list in total.
+option is to save the named list in total - this will also preserve the 
+data types.
 
 #### R
 
@@ -589,7 +585,7 @@ the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neonst
 for more information.
 
 Now let's explore the aquatic plant data. OS data products 
-are simple in that the data generally tabular, and data volumes are 
+are simple in that the data are generally tabular, and data volumes are 
 lower than the other NEON data types, but they are complex in that 
 almost all consist of multiple tables containing information collected 
 at different times in different ways. For example, samples collected 
@@ -658,7 +654,7 @@ products it includes a section describing how to join the tables in the
 data product. Since it's a pdf file, `loadByProduct()` doesn't bring it in, 
 but you can view the Aquatic plant chemistry QSG on the 
 <a href="https://data.neonscience.org/data-products/DP1.20063.001" target="_blank">Product Details</a> 
-page. The `neonOS` package uses the information from the QSGs to provide 
+page. In R, the `neonOS` package uses the information from the QSGs to provide 
 an automated table-joining function, `joinTableNEON()`.
 
 ### Explore isotope data by species {.tabset}
