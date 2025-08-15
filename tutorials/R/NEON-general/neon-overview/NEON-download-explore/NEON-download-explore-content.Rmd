@@ -348,7 +348,7 @@ parlist = nu.load_by_product(dpid="DP1.00024.001",
 
 ## {-}
 
-### Explore loaded data
+### Explore loaded data {.tabset}
 
 The object returned by `loadByProduct()` in R is a named list, and the 
 object returned by `load_by_product()` in Python is a dictionary. The 
