@@ -16,10 +16,10 @@ urlTitle:
 ---
 
 This tutorial provides an introduction to working with NEON Mobile Deployment 
-Platform (MDP) data, using the `neonUtilities` R package. If you are new to NEON 
-data, we recommend starting with a more general tutorial, such as the 
-<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a> 
+Platform (MDP) data, using the `neonMDP` and `neonUtilities` R packages. If you are new to NEON data, we also recommend more general tutorials, such as the 
+<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a>
 or the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore tutorial</a>. 
+
 A key difference between public NEON data and MDP data is that MDP data are
 not retrieved from the NEON Data Portal. Rather, data are accessed directly from 
 a Google Cloud Storage bucket with a more complex directory structure than data
@@ -36,7 +36,7 @@ in a more traditional format.
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
 
-* Download and explore MDP data 
+* Download, compile, and export MDP data 
 
 ## Things You’ll Need To Complete This Tutorial
 
@@ -45,29 +45,20 @@ You will need a current version of R to complete this tutorial. We also recommen
 the RStudio IDE to work with R. 
 
 ### R Packages to Install
-Prior to starting the tutorial ensure that the following packages are installed. 
-* **neonMDP:** `install_github("NEONScience/NEON-mobile-deployment-platform/neonMDP")`
-* **neonUtilities:** `install.packages("neonUtilities")`
-* **fs:** `install.packages("fs")`
+Prior to starting the tutorial ensure that the following packages are installed.
 
-To work with the NEON flux data, we need the `rhdf5` package, 
-which is hosted on Bioconductor, and requires a different 
-installation process than CRAN packages:
+* **neonMDP:** `devtools::install_github('NEONScience/NEON-mobile-deployment/neonMDP')`
+* **neonUtilities (for now):** `devtools::install_github('NEONScience/NEON-utilities/neonUtilities')`
+* **neonUtilities (when updated in cran):** `install.packages("neonUtilities")`
+* **googleCloudStorageR:** `install.packages("googleCloudStorageR")`
 
 
-```{r install, eval=FALSE}
-
-install.packages('BiocManager')
-BiocManager::install('rhdf5')
-
-```
-
-
+Load the packages.
 ```{r package-load}
 
-options(stringsAsFactors=F)
-
 library(neonUtilities)
+library(neonMDP)
+library(googleCloudStorageR)
 
 ```
 
@@ -75,18 +66,109 @@ library(neonUtilities)
 
 
 ### Working Directory
-This lesson assumes that you have set your working 
-directory to the location where you want to download the MDP data. 
+This lesson will download MDP data to your working directory.
 
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a>
 
 
-## Download MDP data from Google Cloud Storage Bucket
+## Download Instrument Data from Google Cloud Storage Bucket
+
+First, we will download all Instrument System (IS) data from the GCS bucket. 
+IS data includes all automated sensors except for the Surface-Atmosphere 
+Exchange data, which will be downloaded in a separate section below.
+
+Change the bucket in the code below to the bucket set up for your MDP data, 
+then run this section once to download all existing IS data from the bucket.
+Note that the code will error if data have already been downloaded. 
+To retrieve new data each month, see "get new data" section below.
+
+```{r download-is-data}
+
+setGcsEnv(bucket='neon-rss-md04')
+downloadMDP('Publication')
+
+```
+
+## Stack IS Data 
+
+NEON data are provided in product-site-month increments. 
+The following code will stack (compile) the full timeseries of IS products. 
+MORE DESCRIPTION.
+Examples for three products are provided below. You can see which products are
+available by looking in the "Publication" folder of the working directory.
+
+If there are data from more than one site in the working directory, change 
+the `site=` parameter in the code snippets below from "all" to the 4-character 
+MDP site code (e.g. "MD04") that you want to explore. 
+
+```{r stack-is-data}
+
+# Relative Humidity
+rh <- stackFromStore(dpID='DP1.00098.001', filepaths=getwd(), site='all',
+                     startdate=NA, enddate=NA, package='basic')
+
+# Water Quality
+wq <- stackFromStore(dpID='DP1.20288.001', filepaths=getwd(), site='all',
+                     startdate=NA, enddate=NA, package='expanded')
+
+# Photosynthetically-active Radiation (Quantum Line)
+ql <- stackFromStore(dpID='DP1.00066.001', filepaths=getwd(), site='all',
+                     startdate=NA, enddate=NA, package='expanded')
+
+```
+
+## Download Surface-Atmosphere Exchange Data from Google Cloud Storage Bucket
+
+Now we will download all Surface-Atmosphere Exchange (SAE) data from the GCS bucket. 
+
+Change the bucket in the code below to the bucket set up for your MDP data, 
+then run this section once to download all existing SAE data from the bucket.
+Note that the code will error if data have already been downloaded. 
+To retrieve new data each month, see "get new data" section below.
+
+```{r download-sae-data}
+
+setGcsEnv(bucket='neon-rss-md04')
+downloadMDP('ods/dataproducts/DP4')
+
+```
+
+## Stack SAE Data 
+
+The following code will stack (compile) SAE products. MORE DESCRIPTION.
+
+If there are data from more than one site in the working directory, change 
+the `site=` parameter in the code snippets below from "all" to the 4-character 
+MDP site code (e.g. "MD04") that you want to explore. 
 
 
-## Load and Stack Data 
+```{r stack-sae-data}
 
+# NSAE data
+flux <- stackFromStore(dpID='DP4.00200.001', filepaths=paste(getwd(), 'ods', sep='/'), 
+                       site='all', startdate=NA, enddate=NA, package='basic', level='dp04')
+
+# isotope data
+iso <- stackFromStore(dpID='DP4.00200.001', filepaths=paste(getwd(), 'ods', sep='/'), site='all',
+                      startdate=NA, enddate=NA, package='basic', 
+                      level='dp01', timeIndex=30, var='dlta13CCo2')
+
+```
+
+## Get New Data
+
+To retrieve new data published to the bucket each month, change the bucket in 
+the code below to the bucket set up for your MDP data, then run this section.
+
+
+```{r download-new-data}
+
+setGcsEnv(bucket='neon-rss-md04')
+updateMDP('Publication')
+updateMDP('ods/dataproducts/DP4')
+
+```
 
 ## Explore Data by Accessing other NEON Tutorials 
 
