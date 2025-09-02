@@ -26,7 +26,7 @@ a Google Cloud Storage bucket with a more complex directory structure than data
 packages downloaded from the Portal. This tutorial will show a user how to 
 download the data from the bucket to a local data store and load it into the R 
 computing environment for exploration, proving entry points to other NEON 
-tutoraials which initially rely on data retrieval from the Portal. This tutorial
+tutorials which initially rely on data retrieval from the Portal. This tutorial
 will end with instructions to write the data loaded into the R environment to 
 .csv format should the user desire to work with the data in another application 
 in a more traditional format.
@@ -136,12 +136,16 @@ downloadMDP('ods/dataproducts/DP4')
 
 ## Stack SAE Data 
 
-The following code will stack (compile) SAE products. MORE DESCRIPTION.
+The following code will stack (compile) SAE products providing a complete 
+timeseries at the MDP site downloaded. The `stackFromStore` function utilizes
+the `stackEddy` function which is described in great detail in the 
+<a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a>. 
+The MDP data files are in the same format as described in the tutorial, below we
+show examples of stacking the Level 4 flux data and Level 1 isotopic ratios.
 
 If there are data from more than one site in the working directory, change 
 the `site=` parameter in the code snippets below from "all" to the 4-character 
 MDP site code (e.g. "MD04") that you want to explore. 
-
 
 ```{r stack-sae-data}
 
@@ -153,6 +157,16 @@ flux <- stackFromStore(dpID='DP4.00200.001', filepaths=paste(getwd(), 'ods', sep
 iso <- stackFromStore(dpID='DP4.00200.001', filepaths=paste(getwd(), 'ods', sep='/'), site='all',
                       startdate=NA, enddate=NA, package='basic', 
                       level='dp01', timeIndex=30, var='dlta13CCo2')
+
+```
+The resultant data lists will include the `variables` and `objDesc` tables to 
+help you interpret the data by describing term definitions and units for 
+variables.
+
+```{r stack-sae-data}
+
+# flux data variables
+flux$variables
 
 ```
 
@@ -172,6 +186,15 @@ updateMDP('ods/dataproducts/DP4')
 
 ## Explore Data by Accessing other NEON Tutorials 
 
+IS data tutorials...
+
+There are several SAE related tutorials, we feel the aforementioned 
+<a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a> is
+a great starting point. Another tutorial that may be of interest is the
+<a href="https://www.neonscience.org/eddy-diel-cycle" target="_blank"> Exploring diel carbon flux cycles</a>, which provides 
+a more comprehensive exploration of the carbon fluxes by looking at diel 
+patterns and highlighting how to utilize NEON quality flags to evaluate data 
+quality.
 
 ## Save Data in .csv Format 
 
