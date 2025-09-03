@@ -48,8 +48,7 @@ the RStudio IDE to work with R.
 Prior to starting the tutorial ensure that the following packages are installed.
 
 * **neonMDP:** `devtools::install_github('NEONScience/NEON-mobile-deployment/neonMDP')`
-* **neonUtilities (for now):** `devtools::install_github('NEONScience/NEON-utilities/neonUtilities')`
-* **neonUtilities (when updated in cran):** `install.packages("neonUtilities")`
+* **neonUtilities:** `install.packages("neonUtilities")`
 * **googleCloudStorageR:** `install.packages("googleCloudStorageR")`
 
 
