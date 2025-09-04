@@ -92,8 +92,8 @@ downloadMDP('Publication')
 ## Stack IS Data 
 
 NEON data are provided in product-site-month increments. 
-The following code will stack (compile) the full timeseries of IS products. 
-The stackfromStore function stacks data downloaded to the local environment, 
+The following code will stack (compile) the full time-series of IS products. 
+The `stackfromStore` function stacks data downloaded to the local environment, 
 which we did earlier.
 Examples for three products are provided below. You can see which products are
 available by looking in the "Publication" folder of the working directory.
@@ -148,7 +148,7 @@ downloadMDP('ods/dataproducts/DP4')
 ## Stack SAE Data 
 
 The following code will stack (compile) SAE products providing a complete 
-timeseries at the MDP site downloaded. The `stackFromStore` function utilizes
+time-series at the MDP site downloaded. The `stackFromStore` function utilizes
 the `stackEddy` function which is described in great detail in the 
 <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a>. 
 The MDP data files are in the same format as described in the tutorial, below we
@@ -198,7 +198,7 @@ updateMDP('ods/dataproducts/DP4')
 ## Explore Data by Accessing other NEON Tutorials 
 
 After stacking the IS data, you can transfer to the 
-< href="https://www.neonscience.org/resources/learning-hub/tutorials/get-started-neon-data-series-data-tutorials#jump-70" target="_blank">Explore Temperature data</a> section in the Get Started with NEON Data series of tutorials. The tutorial guides you through the data and metadata contents of the list output from the `stackFromStore` function for IS products, including how to interpret quality flags as well as do basic plotting and manipulation of data tables. 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/get-started-neon-data-series-data-tutorials#jump-70" target="_blank">Explore Temperature data</a> section in the Get Started with NEON Data series of tutorials. The tutorial guides you through the data and metadata contents of the list output from the `stackFromStore` function for IS products, including how to interpret quality flags as well as do basic plotting and manipulation of data tables. 
 
 There are several SAE related tutorials, we feel the aforementioned 
 <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a> is
@@ -209,7 +209,7 @@ patterns and highlighting how to utilize NEON quality flags to evaluate data
 quality.
 
 ## Save Data in .csv Format 
-If preferred, IS timeseries data compiled with the `stackFromStore` function can easily be written to .csv format. The following example code will write the 30-minute single-aspirated air temperature data to file.
+If preferred, IS time-series data compiled with the `stackFromStore` function can easily be written to .csv format. The following example code will write the 30-minute single-aspirated air temperature data to file.
 
 ```{r write-is-to-csv}
 
