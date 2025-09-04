@@ -92,31 +92,43 @@ downloadMDP('Publication')
 ## Stack IS Data 
 
 NEON data are provided in product-site-month increments. 
-The following code will stack (compile) the full timeseries of IS products. 
-MORE DESCRIPTION.
+The following code will stack (compile) the full time-series of IS products. 
+The `stackfromStore` function stacks data downloaded to the local environment, 
+which we did earlier.
 Examples for three products are provided below. You can see which products are
 available by looking in the "Publication" folder of the working directory.
 
 If there are data from more than one site in the working directory, change 
 the `site=` parameter in the code snippets below from "all" to the 4-character 
-MDP site code (e.g. "MD04") that you want to explore. 
+MDP site code (e.g. "MD04") that you want to explore. See the Help page for the `stackFromStore` function for descriptions of other options you may want to change (e.g. the stacked date range).
 
 ```{r stack-is-data}
 
+# Single-aspirated Air Temperature
+saat <- stackFromStore(dpID='DP1.00002.001', filepaths=getwd(), site='all',
+                     startdate=NA, enddate=NA, package='expanded')
+
 # Relative Humidity
 rh <- stackFromStore(dpID='DP1.00098.001', filepaths=getwd(), site='all',
-                     startdate=NA, enddate=NA, package='basic')
+                     startdate=NA, enddate=NA, package='expanded')
 
 # Water Quality
 wq <- stackFromStore(dpID='DP1.20288.001', filepaths=getwd(), site='all',
                      startdate=NA, enddate=NA, package='expanded')
 
-# Photosynthetically-active Radiation (Quantum Line)
-ql <- stackFromStore(dpID='DP1.00066.001', filepaths=getwd(), site='all',
-                     startdate=NA, enddate=NA, package='expanded')
+```
+The resultant data lists will include data frames containing time-series data
+along with other tables containing metadata. 
+
+```{r list-is-data}
+
+# 30-minute single-aspirated air temperature
+saat$SAAT_30min
+
+# variable descriptions for the single-aspirated air temperature data
+saat$variables_00002
 
 ```
-
 ## Download Surface-Atmosphere Exchange Data from Google Cloud Storage Bucket
 
 Now we will download all Surface-Atmosphere Exchange (SAE) data from the GCS bucket. 
@@ -136,7 +148,7 @@ downloadMDP('ods/dataproducts/DP4')
 ## Stack SAE Data 
 
 The following code will stack (compile) SAE products providing a complete 
-timeseries at the MDP site downloaded. The `stackFromStore` function utilizes
+time-series at the MDP site downloaded. The `stackFromStore` function utilizes
 the `stackEddy` function which is described in great detail in the 
 <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a>. 
 The MDP data files are in the same format as described in the tutorial, below we
@@ -144,7 +156,7 @@ show examples of stacking the Level 4 flux data and Level 1 isotopic ratios.
 
 If there are data from more than one site in the working directory, change 
 the `site=` parameter in the code snippets below from "all" to the 4-character 
-MDP site code (e.g. "MD04") that you want to explore. 
+MDP site code (e.g. "MD04") that you want to explore. See the Help page for the `stackFromStore` function for descriptions of other options you may want to change (e.g. the stacked date range).
 
 ```{r stack-sae-data}
 
@@ -162,7 +174,7 @@ The resultant data lists will include the `variables` and `objDesc` tables to
 help you interpret the data by describing term definitions and units for 
 variables.
 
-```{r stack-sae-data}
+```{r list-sae-data}
 
 # flux data variables
 flux$variables
@@ -185,7 +197,8 @@ updateMDP('ods/dataproducts/DP4')
 
 ## Explore Data by Accessing other NEON Tutorials 
 
-IS data tutorials...
+After stacking the IS data, you can transfer to the 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/get-started-neon-data-series-data-tutorials#jump-70" target="_blank">Explore Temperature data</a> section in the Get Started with NEON Data series of tutorials. The tutorial guides you through the data and metadata contents of the list output from the `stackFromStore` function for IS products, including how to interpret quality flags as well as do basic plotting and manipulation of data tables. 
 
 There are several SAE related tutorials, we feel the aforementioned 
 <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">Introduction to working with NEON eddy flux data</a> is
@@ -196,63 +209,20 @@ patterns and highlighting how to utilize NEON quality flags to evaluate data
 quality.
 
 ## Save Data in .csv Format 
+If preferred, IS time-series data compiled with the `stackFromStore` function can easily be written to .csv format. The following example code will write the 30-minute single-aspirated air temperature data to file.
 
+```{r write-is-to-csv}
 
-## Additional Resources
-You can list any additional resources you'd like to link to if needed. 
+write.csv(saat$SAAT_30min, file="SAAT_30min_stacked.csv", row.names=F)
 
-* <a href="URL Here" target="_blank"> Resource Name/a>,
- 
-</div>
+```
 
-Once all the information in the Info Box is complete, then the tutorial really 
-begins. H2 headers are used for page navigation on the website and should be used
-to denote important sections. H3 & H4 headers can be used for sub headers. 
+Writing out the stacked SAE data to .csv is similarly easy. The following example code will write the 30-minute CO<sub>2</sub> isotope data to file. Change the "MD04" site code to the 4-character 
+site code for your MDP. 
 
+```{r write-sae-to-csv}
 
-## Additional information about the YAML Header
+write.csv(iso$MD04, file="co2_isotopes_30min_stacked.csv", row.names=F)
 
-This header must be at the top of each tutorial so that all associated metadata 
-will appear correctly. (Spaces at beginning of each line only added so as not to render if this document is knit)
-
-    ---
-    syncID: sync-id-from-list - this will be added by NEON staff, you do not need to include
-    title: "Descriptive Title In Title Case"
-    description: "Descriptive text about the tutorial here. Must be all on one line no matter how long."
-    dateCreated: 2015-08-01
-    authors: Megan A. Jones, Each Author Separated by Commas, 
-    contributors: Jane Doe, Also Seperate, By Commas
-    estimatedTime: 1.5 hrs
-    packagesLibraries: raster, rhdf5, rgdal
-    *see list in processing_code/_data/packagesLibraries.yml for the correct list. If you would like to add a term please include in your PR message. 
-    topics: data-analysis, data-visualization, HDF5, spatial-data-gis 
-    *see list in processing_code/_data/tags.yml for the correct list. If you would like to add a term please include in your PR message. 
-    languagesTool: R, python
-    *see list in processing_code/_data/languagesTool.yml for the correct list. If you would like to add a term please include in your PR message. 
-    dataProduct: DP1.0001.01
-    *all NEON data products used in the tutorial written in the above format. (no .yml for this list). 
-    code1: a URL to where the code for this tutorial is located on GitHub. Don't worry about this field, a NEON Data Skills team member will populate this for you as a part of the publishing process
-    tutorialSeries: 
-    *if the tutorial is part of a series, this metadata isn't used by the Drupal site but is useful for tutorial management
-    urlTitle: styles-css 
-    *a short url that is descriptive but not long. This will become the 'slug' for the tutorial web page
-    ---
-
-## Styling 
-
-Our tutorials are styled with Markdown with a few exceptions (see links). 
-For a simple markdown overview, check out 
-<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">this cheatsheet</a>.
-
-We also use specific styling to improve accessibility of our materials and to match 
-NEONScience.org CSS. Please refer to the 
-<a href="https://github.com/NEONScience/NEON-Data-Skills/blob/master/tutorials/NDS-style-guide.md" target="_blank">NEON Data Skills Style Guide</a>. 
-In particular, please not that we html with target="_blank" for all links. We 
-do not use Markdown formatting for any links. 
-
-## Submission & Review 
-When you are ready for review of your tutorial, complete a Pull Request to the 
-NEONScience/NEON-Data-Skills repository. If you have questions on using a forking workflow in GitHub, please see there series: 
-<a href="https://www.neonscience.org/version-control-git-series" target="_blank"> More on Packages in R </a>– 
-
+```
 
