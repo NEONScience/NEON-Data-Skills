@@ -1,18 +1,17 @@
 ---
-title: "NEON MDP Data - Download and Explore"
-syncID: null
-description: null
-output: md_document
+title: "NEON Mobile Deployment Platform Data: Download and Explore"
+syncID: 35ed4c4378b24a52989a2091fd0fe6a6
+description: "Access, work with, and navigate data from NEON mobile deployment platforms."
 authors: Cove Sturtevant, Claire Lunch, David Durden, Chris Florian
-contributors: null
-estimatedTime: null
-packagesLibraries: null
-topics: null
-languagesTool: null
-dataProduct: null
-code1: null
+contributors: 
+estimatedTime: 30 minutes
+packagesLibraries: neonUtilities, neonMDP
+topics: 
+languagesTool: R, Google Cloud Storage
+dataProduct: 
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/MDP/mdp-download-and-explore.R
 tutorialSeries: null
-urlTitle: null
+urlTitle: mdp-intro-tutorial
 dateCreated: "2025-08-20"
 ---
 
