@@ -1,0 +1,151 @@
+---
+syncID: 
+title: "Working with NEON Site Management Data"
+description: "Access, work with, and navigate data from Site management and event reporting (DP1.10111.001)."
+dateCreated: 2025-09-04
+authors: Claire K. Lunch
+contributors: 
+estimatedTime: 40 minutes
+packagesLibraries: neonUtilities, geoNEON
+topics: 
+languageTool: R
+dataProduct: 
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/site-management/site-management.R
+tutorialSeries:
+urlTitle: site-management-tutorial
+
+---
+
+
+This tutorial will guide you through accessing, navigating, and working with the NEON data product Site management and event reporting (DP1.10111.001), including how to use code tools in the `neonUtilities` and `geoNEON` R packages designed specifically for this data product.
+
+If you are new to using NEON data, we recommend first following the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial to get familiar with NEON data formats and the `neonUtilities` package.
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+
+After completing this activity, you will be able to:
+
+ * Download site event data by site or by event type
+ * Access data related to the spatial extent of an event
+ * Understand the metadata associated with site events
+
+## Things You’ll Need To Complete This Tutorial
+
+To complete this tutorial, you will need a version of R (4.0 or higher) and, 
+preferably, RStudio loaded on your computer. This code may work with earlier 
+versions but it hasn't been tested.
+
+### Install R Packages
+
+* **neonUtilities:** `install.packages("neonUtilities")`
+* **devtools:** `install.packages("devtools")`
+* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
+
+## Additional Resources
+
+* Site management and event reporting <a href="https://data.neonscience.org/data-products/DP1.10111.001" target="_blank">details page</a>
+
+</div>
+
+
+## Site management and event reporting: Background
+
+Events often occur at NEON sites that have an impact on the local ecosystems, but that are not specifically captured in scheduled and planned NEON data collection. These events may be planned or unplanned - for example, controlled burns, wildfires, grazing rotations, and hurricanes. The Site management and event reporting data product is designed to record information about these events. Data are recorded on an ad hoc basis, driven by the occurrence of relevant events.
+
+#### Event duration and recording
+
+In order to match the publication model for NEON data products and to ensure events are published as quickly as possible, site management and event reporting data are recorded in thirty day intervals. This means events longer than one month will have multiple data records for one `eventID`. The `eventID`, which includes the site code, original start date, and event type, will remain the same for all records related to the same event. The original start date embedded in the `eventID` compared to the `startDate` field for the record indicates if there are related records for previous months. The `ongoingEvent` field indicates if a record for the next subsequent month is expected.
+
+Date uncertainty is captured in a record’s `estimatedOrActualDate` field. If the date is `estimated` additional comments are recorded in the `dateRemarks` field. The start and end date range includes any date uncertainty.
+
+## Set up R environment
+
+First install and load the necessary packages.
+
+```{r setup, eval=FALSE}
+
+# install packages. can skip this step if 
+# the packages are already installed
+install.packages("neonUtilities")
+install.packages("devtools")
+devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+
+# load packages
+library(neonUtilities)
+library(geoNEON)
+library(ggplot2)
+
+# set working directory
+# modify for your computer
+setwd("~/data")
+
+```
+
+```{r libraries, include=FALSE, results="hide"}
+
+library(neonUtilities)
+library(geoNEON)
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+```
+
+
+## Downloading event data: All events at a site
+
+The simplest way to access site event data is to download all the events for a particular site. Let's check out events at Jones Ecological Research Center in Georgia (JERC). We'll use `include.provisional=T` to get events up to the present.
+
+``` {r load-data, results="hide"}
+
+events <- loadByProduct(dpID="DP1.10111.001", 
+                     site="JERC",
+                     check.size=F,
+                     include.provisional=T)
+
+```
+
+The download includes the usual metadata files associated with NEON data, and a single data table: `sim_eventData`. Let's take a look at it.
+
+``` {r view-data}
+
+list2env(events, .GlobalEnv)
+head(sim_eventData)
+
+```
+
+Let's first check out the types of events recorded.
+
+``` {r view-types}
+
+unique(sim_eventData[,c("eventType", "methodTypeChoice")])
+
+```
+
+JERC is a managed site, so it's not surprising that many of the events recorded represent active management by the site hosts. When we look at an event like a controlled burn, we probably want to know exactly where this happened - which NEON sampling areas were affected?
+
+## Finding the spatial extent of an event
+
+How to approach the spatial distribution of an event depends on your scientific question. If you're working with data from NEON sampling plots, you might just want to know which plots are affected. You can find that information in the `locationID` field, which contains either one location or a comma-delimited list of locations for each record. Let's look at the locations associated with controlled burns in 2022.
+
+``` {r herb-locs}
+
+burn <- sim_eventData |>
+  filter(methodTypeChoice=="fire-controlledBurn" & 
+           year(endDate)=="2022")
+
+burn.locs <- unique(trimws(unlist(lapply(burn$locationID, 
+                                         strsplit, ",", 
+                                         fixed=T))))
+burn.locs
+
+```
+
+Now we have a list of NEON named locations. We can see if the plot(s) we are working with are on the list, and proceed accordingly.
+
+But what if we're interested in a broader picture? Maybe we're working with remote sensing data, and we want to get a sense of the overall burned area.
+
+
+
