@@ -1,6 +1,7 @@
 # Download and Explore NEON Data
 
 Author: Claire Lunch
+
 Contributor: Bridget Hass
 
 Last Updated: Sept 30, 2025
@@ -13,18 +14,18 @@ There are 3 basic categories of NEON data:
 
 1. Remote sensing (AOP) - Data collected by the airborne observation platform, e.g. LIDAR, surface reflectance
 2. Observational (OS) - Data collected by a human in the field, or in an analytical laboratory, e.g. beetle identification, foliar chemistry.
-3. Instrumentation (IS) - Data collected by an automated, streaming sensor, e.g.  net radiation, soil carbon dioxide. This category also includes the surface-atmosphere exchange (SAE) data, which are processed and structured in a unique way, distinct from other instrumentation data (see the introductory eddy flux data tutorial for details).
+3. Instrumentation (IS) - Data collected by an automated, streaming sensor, e.g.  net radiation, soil carbon dioxide. This category also includes the surface-atmosphere exchange (SAE) data, which are processed and structured in a unique way, distinct from other instrumentation data (see the [introductory eddy flux data](https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro) tutorial for details).
 
-This lesson covers all three types of data. The download procedures are similar for all types, but data navigation differs significantly by
+This lesson covers all three types of data. The download procedures are similar for all types, but data navigation differs significantly by data product.
 
 ### Objectives
 After completing this activity, you will be able to:
 
-- Download NEON data using the nuonUtilities packag- e.
-- Understand downloaNEON ded data sets and load them i or Python for analyses.
+- Download NEON data using the neonUtilities package.
+- Understand NEON data sets and load them into Python for analyses.
 
 ### Things You’ll Need To Complete This Tutorial
-For Python users, you will need to install Python 3.9+.
+You will need to install Python 3.9+ and the following packages, listed below.
 
 ### Required Packages
 - `neonutilities`: Basic functions for accessing NEON data
@@ -35,7 +36,7 @@ For Python users, you will need to install Python 3.9+.
 !pip install rasterio
 ```
 
-Import required packages
+Import required packages:
 
 
 ```python
@@ -48,6 +49,7 @@ import matplotlib.pyplot as plt
 ```
 
 ## Download Instrumented (IS) Data
+
 We will start by using `load_by_product` to download some Photosynthetically active radiation (PAR) (DP1.00024.001) data from September-November 2019 at Wind River Experimental Forest (WREF). To learn more about this function, type `nu.load_by_product?` or `help(nu.load_by_product)`.
 
 
@@ -433,7 +435,7 @@ Remote sensing data files are very large, so downloading them can take a long ti
 nu.by_tile_aop?
 ```
 
-You can see what years of data are available for a given site using nu.list_available_dates as follows:
+You can see what years of data are available for a given site using `nu.list_available_dates` as follows:
 
 
 ```python
@@ -446,7 +448,7 @@ nu.list_available_dates('DP3.30015.001','WREF')
 
 
 ```python
-You can also see the spatial extent of the data using nu.get_aop_tile_extents:
+You can also see the spatial extent of the data using `nu.get_aop_tile_extents`:
 ```
 
 
@@ -538,4 +540,4 @@ with rasterio.open(chm_file) as src:
 Now we can see canopy height across the downloaded tile; the tallest trees are over 60 meters, not surprising in the Pacific Northwest. There is a clearing or clear cut in the lower right quadrant.
 
 ## Next steps
-Now that you’ve learned the basics of downloading and understanding NEON data, where should you go to learn more? There are many more NEON tutorials to explore, including how to align remote sensing and ground-based measurements, a deep dive into the data quality flagging in the sensor data products, and much more. For a recommended suite of tutorials for new users, check out the Getting Started with NEON Data tutorial series.
+Now that you’ve learned the basics of downloading and understanding NEON data, where should you go to learn more? There are many more NEON tutorials to explore, including how to [align remote sensing and ground-based measurements](https://www.neonscience.org/resources/learning-hub/tutorials/tree-heights-veg-structure-chm), a deep dive into the data quality flagging in the sensor data products, and much more. For a recommended suite of tutorials for new users, check out the [Getting Started with NEON Data](https://www.neonscience.org/resources/learning-hub/tutorials/get-started-neon-data-series-data-tutorials) tutorial series.
