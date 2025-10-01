@@ -15,7 +15,7 @@ require(markdown)
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
           "R/biodiversity/biorepository",
-          "R/NEON-general/MDP",
+          "R/NEON-general/neon-overview/new-features-2025",
           "R/soils/soil-microbe-biomass",
           "R/AOP/Lidar/lidar-topography/veg_structure_and_chm",
           "/Other/Concept-intros/test_tabs_figures")
