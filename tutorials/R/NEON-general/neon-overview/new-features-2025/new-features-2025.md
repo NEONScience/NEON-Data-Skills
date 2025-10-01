@@ -35,11 +35,15 @@ First install and load the necessary packages.
 
     install.packages("neonUtilities")
 
+    install.packages("neonOS")
+
     install.packages("lubridate")
 
-    install.packages("devtools")
+    install.packages("ggplot2")
 
-    devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+    install.packages("dplyr")
+
+    install.packages("visNetwork")
 
     
 
@@ -47,11 +51,15 @@ First install and load the necessary packages.
 
     library(neonUtilities)
 
-    library(geoNEON)
+    library(neonOS)
 
     library(ggplot2)
 
     library(lubridate)
+
+    library(dplyr)
+
+    library(visNetwork)
 
 
 
@@ -80,8 +88,6 @@ Progress bars can now be suppressed in download functions in the `neonUtilities`
     
 
     list2env(soil, .GlobalEnv)
-
-    ## <environment: R_GlobalEnv>
 
 To start, we want to assess whether soil moisture is associated with different nitrogen content. Moisture data are in the `sls_soilMoisture` table, and nitrogen data are in the `sls_soilChemistry` table. We'll need to join the tables.
 
@@ -220,23 +226,18 @@ The community data are in the expanded data package.
 
     micro <- loadByProduct(dpID="DP1.10081.002", 
                          site="SOAP",
-                         startdate="2018-01",
+                         startdate="2018-05",
                          enddate="2024-12",
                          package="expanded",
                          include.provisional=T,
                          progress=F,
                          check.size=F)
 
-    ## 
-    ## NEON.D17.SOAP.DP1.10081.002.2018-05.expanded.20250129T000730Z.RELEASE-2025.zip could not be downloaded. Re-attempting.
-
     ## Stacking per-sample files. These files may be very large; download data in smaller subsets if performance problems are encountered.
 
     ## Variables file was not found or was inconsistent for table mct_soilPerSampleTaxonomy_ITS. Schema will be inferred; performance may be reduced.
 
     list2env(micro, .GlobalEnv)
-
-    ## <environment: R_GlobalEnv>
 
 Let's look at the distribution by phylum of fungal taxon units at SOAP.
 
@@ -266,7 +267,45 @@ We are very close to releasing the `neonPlants` package, which will facilitate u
 
 ## Samples
 
+We've seen above that not all soil samples have associated microbial data. Is there an efficient way to find out the downstream samples from a specific sample?
 
+The `neonOS` package includes a function to find the complete sample hierarchy for any given sample. This can be helpful for understanding sample relationships and for interfacing with the <a href="https://biorepo.neonscience.org" target="_blank">NEON Biorepository</a>.
+
+### Feature: Get sample hierarchies
+
+Let's look at the sample hierarchies from the first two soil samples in the dataset we downloaded. We'll use the `visNetwork` package (a public package not specific to NEON) to visualize the sample relationships.
+
+First sample:
+
+
+    samp <- getSampleTree(sls_soilCoreCollection$sampleID[1])
+
+    edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+
+    nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+
+    visNetwork(nodes, edges) |>
+      visEdges(arrows="to")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/new-features-2025/rfigs/get-sample-tree-1-1.png)
+
+Second sample:
+
+
+    samp <- getSampleTree(sls_soilCoreCollection$sampleID[2])
+
+    edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+
+    nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+
+    visNetwork(nodes, edges) |>
+      visEdges(arrows="to")
+
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/new-features-2025/rfigs/get-sample-tree-2-1.png)
+
+We can see the second sample tree is much simpler than the first - the soil core has two child samples, a soil moisture and a KCl extract sample. The first sample produced many subsamples, for moisture, pH, genetic archive, and sequencing, and the sequencing sample produced six subsamples of its own.
+
+Because you can only query one sample at a time this way, its capabilities to support analyses are limited. But it can be very helpful in understanding NEON's sample workflows and processes. And if you're working with Biorepository samples, you can use this to find the upstream samples from an archived sample. Your query can start with any sample in the hierarchy, it doesn't have to start at the top.
 
 ## Other languages and platforms
 

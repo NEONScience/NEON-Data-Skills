@@ -8,6 +8,7 @@
 rm(list=ls())
 require(knitr)
 require(markdown)
+options(timeout=300)
 
 # Choose the directory under 'tutorials' to knit
 # You can choose a high-level directory and this script will search

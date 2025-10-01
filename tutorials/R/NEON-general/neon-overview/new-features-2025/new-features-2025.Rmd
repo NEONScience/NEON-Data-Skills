@@ -33,25 +33,30 @@ First install and load the necessary packages.
 # install packages. can skip this step if 
 # the packages are already installed
 install.packages("neonUtilities")
+install.packages("neonOS")
 install.packages("lubridate")
-install.packages("devtools")
-devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("visNetwork")
 
 # load packages
 library(neonUtilities)
-library(geoNEON)
+library(neonOS)
 library(ggplot2)
 library(lubridate)
+library(dplyr)
+library(visNetwork)
 
 ```
 
 ```{r libraries, include=FALSE, results="hide"}
 
 library(neonUtilities)
-library(geoNEON)
+library(neonOS)
 library(ggplot2)
-library(dplyr)
 library(lubridate)
+library(dplyr)
+library(visNetwork)
 
 ```
 
@@ -68,7 +73,7 @@ We'll use soil data throughout as an example dataset to illustrate code features
 
 Progress bars can now be suppressed in download functions in the `neonUtilities` package. This can be helpful when running code in an automated workflow or batch script. Note that messages associated with progress will be suppressed along with the bars, but messages about exceptions or errors will still be printed to the console.
 
-``` {r load-data}
+``` {r load-data, results="hide"}
 
 soil <- loadByProduct(dpID="DP1.10086.001", 
                      site="SOAP",
@@ -178,11 +183,11 @@ We mentioned above that we are also interested in microbial communities. What mi
 
 The community data are in the expanded data package.
 
-``` {r load-microbe-data}
+``` {r load-microbe-data, results="hide"}
 
 micro <- loadByProduct(dpID="DP1.10081.002", 
                      site="SOAP",
-                     startdate="2018-01",
+                     startdate="2018-05",
                      enddate="2024-12",
                      package="expanded",
                      include.provisional=T,
@@ -222,7 +227,41 @@ We are very close to releasing the `neonPlants` package, which will facilitate u
 
 ## Samples
 
+We've seen above that not all soil samples have associated microbial data. Is there an efficient way to find out the downstream samples from a specific sample?
 
+The `neonOS` package includes a function to find the complete sample hierarchy for any given sample. This can be helpful for understanding sample relationships and for interfacing with the <a href="https://biorepo.neonscience.org" target="_blank">NEON Biorepository</a>.
+
+### Feature: Get sample hierarchies
+
+Let's look at the sample hierarchies from the first two soil samples in the dataset we downloaded. We'll use the `visNetwork` package (a public package not specific to NEON) to visualize the sample relationships.
+
+First sample:
+
+``` {r get-sample-tree-1}
+
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[1])
+edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+visNetwork(nodes, edges) |>
+  visEdges(arrows="to")
+
+```
+
+Second sample:
+
+``` {r get-sample-tree-2}
+
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[2])
+edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+visNetwork(nodes, edges) |>
+  visEdges(arrows="to")
+
+```
+
+We can see the second sample tree is much simpler than the first - the soil core has two child samples, a soil moisture and a KCl extract sample. The first sample produced many subsamples, for moisture, pH, genetic archive, and sequencing, and the sequencing sample produced six subsamples of its own.
+
+Because you can only query one sample at a time this way, its capabilities to support analyses are limited. But it can be very helpful in understanding NEON's sample workflows and processes. And if you're working with Biorepository samples, you can use this to find the upstream samples from an archived sample. Your query can start with any sample in the hierarchy, it doesn't have to start at the top.
 
 ## Other languages and platforms
 
