@@ -123,11 +123,15 @@ section.footnotes {
 
 install.packages(&quot;neonUtilities&quot;)
 
+install.packages(&quot;neonOS&quot;)
+
 install.packages(&quot;lubridate&quot;)
 
-install.packages(&quot;devtools&quot;)
+install.packages(&quot;ggplot2&quot;)
 
-devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
+install.packages(&quot;dplyr&quot;)
+
+install.packages(&quot;visNetwork&quot;)
 
 
 
@@ -135,11 +139,15 @@ devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
 
 library(neonUtilities)
 
-library(geoNEON)
+library(neonOS)
 
 library(ggplot2)
 
 library(lubridate)
+
+library(dplyr)
+
+library(visNetwork)
 </code></pre>
 <h2 id="sec:the-neonos-package">The neonOS package</h2>
 <p>The <code>neonOS</code> package provides functions specifically for working with NEON observational (OS) data products. NEON’s human-collected data present some unique challenges: the structure and data relationships within each product are unique, automation is more difficult, and sample relationships are often essential. The <code>neonOS</code> package contains functions for duplicate checking, table joining, and sample exploration.</p>
@@ -158,8 +166,6 @@ library(lubridate)
 
 
 list2env(soil, .GlobalEnv)
-
-## &lt;environment: R_GlobalEnv&gt;
 </code></pre>
 <p>To start, we want to assess whether soil moisture is associated with different nitrogen content. Moisture data are in the <code>sls_soilMoisture</code> table, and nitrogen data are in the <code>sls_soilChemistry</code> table. We’ll need to join the tables.</p>
 <p>But before joining, let’s check both tables for duplicates.</p>
@@ -266,23 +272,18 @@ points(nitrogenPercent~soilMoisture,
 <p>The community data are in the expanded data package.</p>
 <pre><code>micro &lt;- loadByProduct(dpID=&quot;DP1.10081.002&quot;, 
                      site=&quot;SOAP&quot;,
-                     startdate=&quot;2018-01&quot;,
+                     startdate=&quot;2018-05&quot;,
                      enddate=&quot;2024-12&quot;,
                      package=&quot;expanded&quot;,
                      include.provisional=T,
                      progress=F,
                      check.size=F)
 
-## 
-## NEON.D17.SOAP.DP1.10081.002.2018-05.expanded.20250129T000730Z.RELEASE-2025.zip could not be downloaded. Re-attempting.
-
 ## Stacking per-sample files. These files may be very large; download data in smaller subsets if performance problems are encountered.
 
 ## Variables file was not found or was inconsistent for table mct_soilPerSampleTaxonomy_ITS. Schema will be inferred; performance may be reduced.
 
 list2env(micro, .GlobalEnv)
-
-## &lt;environment: R_GlobalEnv&gt;
 </code></pre>
 <p>Let’s look at the distribution by phylum of fungal taxon units at SOAP.</p>
 <pre><code>gg &lt;- ggplot(mct_soilPerSampleTaxonomy_ITS, aes(phylum, individualCount)) +
@@ -302,6 +303,34 @@ gg
 <h3 id="sec:pending-feature-neonplants-r-package">Pending feature: neonPlants R package</h3>
 <p>We are very close to releasing the <code>neonPlants</code> package, which will facilitate use of NEON’s various plant data products, including both community and biomass data. Stay tuned!</p>
 <h2 id="sec:samples">Samples</h2>
+<p>We’ve seen above that not all soil samples have associated microbial data. Is there an efficient way to find out the downstream samples from a specific sample?</p>
+<p>The <code>neonOS</code> package includes a function to find the complete sample hierarchy for any given sample. This can be helpful for understanding sample relationships and for interfacing with the <a href="https://biorepo.neonscience.org" target="_blank">NEON Biorepository</a>.</p>
+<h3 id="sec:feature-get-sample-hierarchies">Feature: Get sample hierarchies</h3>
+<p>Let’s look at the sample hierarchies from the first two soil samples in the dataset we downloaded. We’ll use the <code>visNetwork</code> package (a public package not specific to NEON) to visualize the sample relationships.</p>
+<p>First sample:</p>
+<pre><code>samp &lt;- getSampleTree(sls_soilCoreCollection$sampleID[1])
+
+edges &lt;- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+
+nodes &lt;- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+
+visNetwork(nodes, edges) |&gt;
+  visEdges(arrows=&quot;to&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/new-features-2025/rfigs/get-sample-tree-1-1.png" alt=" " /></p>
+<p>Second sample:</p>
+<pre><code>samp &lt;- getSampleTree(sls_soilCoreCollection$sampleID[2])
+
+edges &lt;- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+
+nodes &lt;- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+
+visNetwork(nodes, edges) |&gt;
+  visEdges(arrows=&quot;to&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/new-features-2025/rfigs/get-sample-tree-2-1.png" alt=" " /></p>
+<p>We can see the second sample tree is much simpler than the first - the soil core has two child samples, a soil moisture and a KCl extract sample. The first sample produced many subsamples, for moisture, pH, genetic archive, and sequencing, and the sequencing sample produced six subsamples of its own.</p>
+<p>Because you can only query one sample at a time this way, its capabilities to support analyses are limited. But it can be very helpful in understanding NEON’s sample workflows and processes. And if you’re working with Biorepository samples, you can use this to find the upstream samples from an archived sample. Your query can start with any sample in the hierarchy, it doesn’t have to start at the top.</p>
 <h2 id="sec:other-languages-and-platforms">Other languages and platforms</h2>
 <h3 id="sec:feature-python-version-of-neonutilities">Feature: Python version of neonutilities</h3>
 <p>For years, neonUtilities has only been available in R, but as of 2024 we have a Python version!</p>

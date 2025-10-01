@@ -1,31 +1,36 @@
-## ----setup, eval=FALSE--------------------------------------------------------------------------------
+## ----setup, eval=FALSE-------------------------------------------------------------------------------
 # 
 # # install packages. can skip this step if
 # # the packages are already installed
 # install.packages("neonUtilities")
+# install.packages("neonOS")
 # install.packages("lubridate")
-# install.packages("devtools")
-# devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+# install.packages("ggplot2")
+# install.packages("dplyr")
+# install.packages("visNetwork")
 # 
 # # load packages
 # library(neonUtilities)
-# library(geoNEON)
+# library(neonOS)
 # library(ggplot2)
 # library(lubridate)
+# library(dplyr)
+# library(visNetwork)
 # 
 
 
-## ----libraries, include=FALSE, results="hide"---------------------------------------------------------
+## ----libraries, include=FALSE, results="hide"--------------------------------------------------------
 
 library(neonUtilities)
-library(geoNEON)
+library(neonOS)
 library(ggplot2)
-library(dplyr)
 library(lubridate)
+library(dplyr)
+library(visNetwork)
 
 
 
-## ----load-data----------------------------------------------------------------------------------------
+## ----load-data, results="hide"-----------------------------------------------------------------------
 
 soil <- loadByProduct(dpID="DP1.10086.001", 
                      site="SOAP",
@@ -39,7 +44,7 @@ list2env(soil, .GlobalEnv)
 
 
 
-## ----dups---------------------------------------------------------------------------------------------
+## ----dups--------------------------------------------------------------------------------------------
 
 moisturedups <- removeDups(sls_soilMoisture, 
                            variables_10086)
@@ -49,14 +54,14 @@ chemdups <- removeDups(sls_soilChemistry,
 
 
 
-## ----join-chem-moist----------------------------------------------------------------------------------
+## ----join-chem-moist---------------------------------------------------------------------------------
 
 moistchem <- joinTableNEON(sls_soilMoisture,
                            sls_soilChemistry)
 
 
 
-## ----plot-chem-moist----------------------------------------------------------------------------------
+## ----plot-chem-moist---------------------------------------------------------------------------------
 
 plot(nitrogenPercent~soilMoisture, 
      data=moistchem,
@@ -64,7 +69,7 @@ plot(nitrogenPercent~soilMoisture,
 
 
 
-## ----soap-fire----------------------------------------------------------------------------------------
+## ----soap-fire---------------------------------------------------------------------------------------
 
 sim <- byEventSIM("fire", site="SOAP")
 
@@ -72,13 +77,13 @@ sim$sim_eventData
 
 
 
-## ----chem-dates---------------------------------------------------------------------------------------
+## ----chem-dates--------------------------------------------------------------------------------------
 
 unique(year(sls_soilChemistry$collectDate))
 
 
 
-## ----plot-time----------------------------------------------------------------------------------------
+## ----plot-time---------------------------------------------------------------------------------------
 
 plot(nitrogenPercent~soilMoisture, 
      data=moistchem[which(year(moistchem$collectDate.y)==2018),],
@@ -89,11 +94,11 @@ points(nitrogenPercent~soilMoisture,
 
 
 
-## ----load-microbe-data--------------------------------------------------------------------------------
+## ----load-microbe-data, results="hide"---------------------------------------------------------------
 
 micro <- loadByProduct(dpID="DP1.10081.002", 
                      site="SOAP",
-                     startdate="2018-01",
+                     startdate="2018-05",
                      enddate="2024-12",
                      package="expanded",
                      include.provisional=T,
@@ -104,7 +109,7 @@ list2env(micro, .GlobalEnv)
 
 
 
-## ----plot-microbe-data--------------------------------------------------------------------------------
+## ----plot-microbe-data-------------------------------------------------------------------------------
 
 gg <- ggplot(mct_soilPerSampleTaxonomy_ITS, aes(phylum, individualCount)) +
   geom_col() +
@@ -113,8 +118,28 @@ gg
 
 
 
-## ----microbe-dates------------------------------------------------------------------------------------
+## ----microbe-dates-----------------------------------------------------------------------------------
 
 unique(year(mct_soilSampleMetadata_ITS$collectDate))
+
+
+
+## ----get-sample-tree-1-------------------------------------------------------------------------------
+
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[1])
+edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+visNetwork(nodes, edges) |>
+  visEdges(arrows="to")
+
+
+
+## ----get-sample-tree-2-------------------------------------------------------------------------------
+
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[2])
+edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+visNetwork(nodes, edges) |>
+  visEdges(arrows="to")
 
 
