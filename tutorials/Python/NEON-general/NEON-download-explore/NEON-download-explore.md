@@ -119,19 +119,6 @@ par30.head()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -301,7 +288,7 @@ plt.show()
 
 
     
-![png](output_12_0.png)
+![png](./NEON-download-explore_figs/output_12_0.png)
     
 
 
@@ -321,7 +308,7 @@ plt.show()
 
 
     
-![png](.\NEON-download-explore_figs\output_14_0.png)
+![png](./NEON-download-explore_figs/output_14_0.png)
     
 
 
@@ -400,7 +387,7 @@ plt.ylabel('d13C'); plt.xlabel('NEON SITE');
 
 
     
-![png](.\NEON-download-explore_figs\output_26_0.png)
+![png](./NEON-download-explore_figs/output_26_0.png)
     
 
 
@@ -431,7 +418,7 @@ plt.xticks(rotation=90); plt.ylabel('d13C');
 
 
     
-![png](.\NEON-download-explore_figs\output_30_0.png)
+![png](./NEON-download-explore_figs/output_30_0.png)
     
 
 
@@ -544,7 +531,7 @@ with rasterio.open(chm_file) as src:
 
 
     
-![png](.\\NEON-download-explore_figs\output_44_1.png)
+![png](./NEON-download-explore_figs/output_44_1.png)
     
 
 
