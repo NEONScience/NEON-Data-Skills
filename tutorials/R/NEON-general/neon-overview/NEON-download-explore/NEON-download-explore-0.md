@@ -319,7 +319,7 @@ of code using <code>loadByProduct()</code>:</p>
 </div>
 <div id="section-6" class="section level2 unnumbered">
 <h2 class="unnumbered"></h2>
-<div id="explore-loaded-data" class="section level3">
+<div id="explore-loaded-data" class="section level3 tabset">
 <h3>Explore loaded data</h3>
 <p>The object returned by <code>loadByProduct()</code> in R is a named
 list, and the object returned by <code>load_by_product()</code> in
