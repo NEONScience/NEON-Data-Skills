@@ -99,7 +99,7 @@ or
 </div>
 
 
-## Download and read in the reflectance dataset
+## Download the reflectance dataset
 
 To start, we will download the NEON bidirectional surface reflectance data (DP3.30006.002) which are provided in hdf5 (.h5) format. Use the neonutilities `by_tile_aop` function below to download the data from the portal. First, set up your token and explore the available data. We will set up the token as an environment variable and use the `dotenv` package to , but you can also hard-code it into the script if you prefer (with the caveat that this is less reproducible).
 
