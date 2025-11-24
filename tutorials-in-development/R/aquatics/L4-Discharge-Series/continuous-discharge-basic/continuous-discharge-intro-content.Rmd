@@ -23,7 +23,7 @@ After completing this activity, you will be able to:
     tables available for download
 -   Create a single continuous time series of discharge data for a site via 
     data aggregation and table joining
--   Plot continuous time series' of stage and discharge with associated
+-   Plot continuous time series of stage and discharge with associated
     uncertainties for the lifetime of a site
 
 ## Things You’ll Need To Complete This Tutorial
@@ -124,21 +124,23 @@ os.environ.setdefault('NEON_PAT',"YOUR_PAT")
 
 In this tutorial, we will focus on a single site, Lower Hop Brook (HOPB)
 in NEON Domain 01, but the workflow can be replicated for any site at
-which continuous discharge is published.
+which continuous discharge is published by changing the siteID.
 
 Visit the [NEON Data Portal landing page for Continuous discharge](https://data.neonscience.org/data-products/DP4.00130.001) 
 for an availability chart showing all the sites for which Continuous discharge 
 is published and the period of record for each site. 
 
-We will download all data across the lifetime of a site by not including
-a start or end date in the function. We will also download both RELEASED
-and PROVISIONAL data (see in-code comments). To learn more about the differences
-between released and provision data, visit
-<https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial>.
+For this tutorial we will download all data across the lifetime of a site 
+by commenting out the start and end date in the function. If you wish to 
+query a shorter period of time they can be un-commented. The NEON Data 
+Portal stores data in site\*month download packages, so date range inputs 
+are formatted as YYYY-MM.
 
-Start and end date variables are included, but commented out, in the code if you
-wish to query a shorter period of time. The NEON Data Portal stores data in
-site\*month download packages, so date range inputs are formatted as YYYY-MM.
+For this tutorial we will also download both RELEASED and PROVISIONAL data 
+by setting the include.provisinal argument to TRUE in the function.  To 
+download only RELEASED data this argument should be set to FALSE.
+To learn more about the differences between released and provision data, visit
+<https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial>.
 
 ### R
 
@@ -210,8 +212,8 @@ csd.keys()
 In this tutorial, we downloaded the `expanded` download package. What are the 
 files contained in this download package and why are they useful?
 
--   **data frame files**: Includes the primary data frames of the continuous 
-    discharge data product. We will dive deeper into data frames in the next 
+-   **csd_data_tables**: Includes the primary data tables of the continuous 
+    discharge data product. We will dive deeper into data tables in the next 
     section.
 -   **sensor_positions_00130**: Reports the geolocation of each sensor included 
     in the download.
@@ -235,7 +237,7 @@ files contained in this download package and why are they useful?
 
 ### Explore Data Tables {.tabset}
 
-The basic download package for DP4.00130.001 contains three data tables that 
+The basic download package for DP4.00130.001 contains two data tables that 
 report continuous discharge time series data modeled from in situ pressure 
 transducers and stage-discharge rating curves:
 
@@ -262,7 +264,8 @@ coefficients, uncertainty propagation, and data corrections.
 -   `csd_constantBiasShift`: Reports periods of continuous discharge data 
     corrected via constant bias shift and the magnitude of the shift.
 -   `csd_gapFillingRegression`: Reports the linear regression coefficients for
-    each unique relationship developed to correct NEON continuous discharge data.
+    each unique relationship developed to correct NEON continuous discharge data
+    using the method specified in the mapping table.
 
 At the Domain 08 - Tombigbee River (TOMB) site, a stage-discharge relationship 
 cannot be developed due to the influence of a downstream lock and dam system. 
@@ -335,7 +338,9 @@ display(csd['variables_00130'])
 
 ## Wrangle Stage & Discharge Data
 
-Some data wrangling and table joining are required in this data product to 
+This data product was updated from uncorrected 1 miunte values to corrected
+15-min averages.  Until these updates are fully applied backwards in time,
+some data wrangling and table joining are required in this data product to 
 produce a continuous time series of continuous discharge. The publication 
 history of this data product is explained in detail in the NEON User Guide to 
 Continuous Discharge (NEON.DP4.00130.001), which is published in the 
@@ -355,7 +360,7 @@ A good rule of thumb for managing NEON continuous discharge data:
 |:----------------------:|:----------------------:|:----------------------:|
 | csd_continuousDischarge | 1 minute | uncorrected data unchanged since RELEASE-2025 |
 | csd_15_min | 15 minute | if `release` = RELEASE-YYYY; corrected data first published in RELEASE-2026 |
-| csd_15_min | 15 minute | if `release` = PROVISIONAL; uncorrected data processed within new pipeline |
+| csd_15_min | 15 minute | if `release` = PROVISIONAL; uncorrected data processed within new pipeline | #' The last part of this line is not technically correct.  They need to look at the corection flag to see whether provisonal data is still uncorrected or not.
 
 ### Aggregate 1-minute Table to 15-minutes {.tabset}
 
@@ -481,8 +486,8 @@ csd_15_min_all = csd_15_min_all.sort_values(by='endDateTime')
 ## Plot Stage Data {.tabset}
 
 Continuous stage is modeled by developing a linear regression between empirical
-stage heights (staff gauge measurements) and continuous water column height
-calculated from the pressure transducer. Uncertainty is estimated for continuous
+staff stage heights (DP1.20267.001) and continuous water column height
+calculated from the pressure transducer (DP1.20016.001). Uncertainty is estimated for continuous
 stage by summing uncertainty associated with the calibration of the pressure 
 transducer (termed: nonsystematic) and uncertainty associated with fit of the 
 linear regression (termed: systematic).
@@ -493,6 +498,8 @@ ATBD for this data product (NEON.DOC.005403).
 Here, we will plot the continuous stage time series for the entire period of
 record, then plot a subset of data to zoom in on the time series to get a better
 visual of the associated uncertainty.
+
+#' Could we also include the staff gage measurments in these plots, liek we do for the test reports?
 
 ### R
 
@@ -585,6 +592,8 @@ ATBD for this data product (NEON.DOC.005403).
 Here, we will plot the continuous discharge time series for the entire period of
 record, then plot a subset of data to zoom in on the time series to get a better
 visual of the associated uncertainties.
+
+#' Similar to stage, could we also include the emperical discharge measuremnts in these plots?
 
 ### R
 
