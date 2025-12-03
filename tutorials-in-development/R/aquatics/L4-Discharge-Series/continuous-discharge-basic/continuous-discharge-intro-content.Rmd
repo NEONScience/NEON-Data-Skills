@@ -12,17 +12,16 @@ This tutorial covers...
 # Introduction to the NEON Continuous Discharge Data Product
 
 ::: {#ds-objectives markdown="1"}
-
 ## Objectives
 
 After completing this activity, you will be able to:
 
--   Download and explore the contents of the NEON Continuous discharge data 
-    product (DP4.00130.001)
--   Understand how the publication history of this data product influences the
-    tables available for download
--   Create a single continuous time series of discharge data for a site via 
-    data aggregation and table joining
+-   Download and explore the contents of the NEON Continuous discharge
+    data product (DP4.00130.001)
+-   Understand how the publication history of this data product
+    influences the tables available for download
+-   Create a single continuous time series of discharge data for a site
+    via data aggregation and table joining
 -   Plot continuous time series of stage and discharge with associated
     uncertainties for the lifetime of a site
 
@@ -124,22 +123,25 @@ os.environ.setdefault('NEON_PAT',"YOUR_PAT")
 
 In this tutorial, we will focus on a single site, Lower Hop Brook (HOPB)
 in NEON Domain 01, but the workflow can be replicated for any site at
-which continuous discharge is published by changing the siteID.
+which continuous discharge is published by changing the `site` input
+variable.
 
-Visit the [NEON Data Portal landing page for Continuous discharge](https://data.neonscience.org/data-products/DP4.00130.001) 
-for an availability chart showing all the sites for which Continuous discharge 
-is published and the period of record for each site. 
+Visit the [NEON Data Portal landing page for Continuous
+discharge](https://data.neonscience.org/data-products/DP4.00130.001) for
+an availability chart showing all the sites for which Continuous
+discharge is published and the period of record for each site.
 
-For this tutorial we will download all data across the lifetime of a site 
-by commenting out the start and end date in the function. If you wish to 
-query a shorter period of time they can be un-commented. The NEON Data 
-Portal stores data in site\*month download packages, so date range inputs 
-are formatted as YYYY-MM.
+For this tutorial we will download all data across the lifetime of a
+site by commenting out the start and end date in the function. If you
+wish to query a shorter period of time they can be un-commented. The
+NEON Data Portal stores data in site\*month download packages, so date
+range inputs are formatted as YYYY-MM.
 
-For this tutorial we will also download both RELEASED and PROVISIONAL data 
-by setting the include.provisinal argument to TRUE in the function. To 
-download only RELEASED data this argument should be set to FALSE.
-To learn more about the differences between released and provisional data, visit
+For this tutorial we will also download both RELEASED and PROVISIONAL
+data by setting the `include.provisinal` argument to 'true' in the
+function. To download only RELEASED data this argument should be set to
+'false'. To learn more about the differences between released and
+provisional data, visit
 <https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial>.
 
 ### R
@@ -156,10 +158,10 @@ csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                     check.size = F,
                                     token=Sys.getenv("NEON_PAT"))
 
-# Add in the 15-minute table because it is not yet published
+# Add in the 15-minute table because it is not yet published -- change to your local file path if you have this repo cloned
 csd$csd_15_min <- read.csv("C:/Users/nickerson/Documents/GitHub/NEON-Data-Skills/tutorials-in-development/R/aquatics/L4-Discharge-Series/continuous-discharge-basic/csd_15_min.csv", 
                            encoding = "UTF-8",
-                           header = T) # **NH** I'm confused by this step, probably because I'm just not getting it.  Where does do they get this .CSV?  Eventually users will be able to just get this through the neonUtils download, right?
+                           header = T)
 ```
 
 ### Python
@@ -176,7 +178,7 @@ csd = nu.load_by_product(dpid="DP4.00130.001",
                          check_size=False,
                          token=os.environ.get("NEON_PAT"))
 
-# Add in the 15-minute table because it is not yet published
+# Add in the 15-minute table because it is not yet published -- change to your local file path if you have this repo cloned
 csd['csd_15_min'] = pd.read_csv("C:/Users/nickerson/Documents/GitHub/NEON-Data-Skills/tutorials-in-development/R/aquatics/L4-Discharge-Series/continuous-discharge-basic/csd_15_min.csv",
                                 encoding="UTF-8")
 csd['csd_15_min']['endDateTime'] = pd.to_datetime(csd['csd_15_min']['endDateTime'], format='mixed', utc=True)
@@ -186,14 +188,15 @@ csd['csd_15_min']['endDateTime'] = pd.to_datetime(csd['csd_15_min']['endDateTime
 
 ## Navigate Data Download
 
-Downloads from the NEON Utilities R package and Python module contain multiple 
-files, including data tables, metadata, and data product documentation. Let's
-explore each set of files in turn.
+Downloads from the NEON Utilities R package and Python module contain
+multiple files, including data tables, metadata, and data product
+documentation. Let's explore each set of files in turn.
 
 ### Files Associated with Downloads {.tabset}
 
-The data we've downloaded comes as an object that is a named list/dictionary of 
-objects. Let's view the contents of the download package.
+The data we've downloaded comes as an object that is a named
+list/dictionary of objects. Let's view the contents of the download
+package.
 
 #### R
 
@@ -209,79 +212,88 @@ names(csd)
 csd.keys()
 ```
 
-In this tutorial, we downloaded the `expanded` download package. What are the 
-files contained in this download package and why are they useful?
+In this tutorial, we downloaded the `expanded` download package. What
+are the files contained in this download package and why are they
+useful?
 
--   **csd_data_tables**: Includes the primary data tables of the continuous 
-    discharge data product. We will dive deeper into data tables in the next 
-    section.
--   **sensor_positions_00130**: Reports the geolocation of each sensor included 
-    in the download.
--   **science_review_flags_00130**: Lists each science review flag (SRF) date 
-    range, flag value, and justification applied to the data included in this 
-    download.
--   **issueLog_00130**: Reports issues that may impact data quality, or changes 
-    to a data product that affects all sites.
--   **variables_00130**: This file contains all the variables found in the data 
-    table(s) included in this download. This includes full definitions, units, 
-    and other important information.
--   **categoricalCodes_00130**: Some variables in the data tables are published 
-    as strings and constrained to a standardized list of values (LOV). This file
-    shows all the LOV options for variables published in this data product.
--   **readme_00130**: The readme file provides important information relevant to
-    the data product and the specific instance of downloading the data.
--   **data citations**: At least one data citation file is included in each data
-    download, depending on the `release` function inputs and date range queried.
+-   **csd_data_tables**: Includes the primary data tables of the
+    continuous discharge data product. We will dive deeper into data
+    tables in the next section.
+-   **sensor_positions_00130**: Reports the geolocation of each sensor
+    included in the download.
+-   **science_review_flags_00130**: Lists each science review flag (SRF)
+    date range, flag value, and justification applied to the data
+    included in this download.
+-   **issueLog_00130**: Reports issues that may impact data quality, or
+    changes to a data product that affects all sites.
+-   **variables_00130**: This file contains all the variables found in
+    the data table(s) included in this download. This includes full
+    definitions, units, and other important information.
+-   **categoricalCodes_00130**: Some variables in the data tables are
+    published as strings and constrained to a standardized list of
+    values (LOV). This file shows all the LOV options for variables
+    published in this data product.
+-   **readme_00130**: The readme file provides important information
+    relevant to the data product and the specific instance of
+    downloading the data.
+-   **data citations**: At least one data citation file is included in
+    each data download, depending on the `release` function inputs and
+    date range queried.
 
 ###  {.unnumbered}
 
 ### Explore Data Tables {.tabset}
 
-The basic download package for DP4.00130.001 contains two data tables that 
-report continuous discharge time series data modeled from in situ pressure 
-transducers and stage-discharge rating curves:
+The basic download package for DP4.00130.001 contains two data tables
+that report continuous discharge time series data modeled from in situ
+pressure transducers and stage-discharge rating curves:
 
--   `csd_15_min`: Continuous discharge data averaged to 15-minute intervals. 
-    This table began being published in RELEASE-2026 and is available, for a 
-    given site, starting with the earliest date of corrected data.
--   `csd_continuousDischarge`: Instantaneous (1-minute) continuous discharge 
-    data. Beginning with RELEASE-2026, this table is available only before the 
-    earliest date of data correction for a given site.
+-   `csd_15_min`: Continuous discharge data averaged to 15-minute
+    intervals. This table began being published in RELEASE-2026 and is
+    available, for a given site, starting with the earliest date of
+    corrected data.
+-   `csd_continuousDischarge`: Instantaneous (1-minute) continuous
+    discharge data. Beginning with RELEASE-2026, this table is available
+    only before the earliest date of data correction for a given site.
 
 The expanded download package for DP4.00130.001 contains multiple
 additional tables that aid in understanding data relationships, model
 coefficients, uncertainty propagation, and data corrections.
 
--   `sdrc_gaugePressureRelationship`: Reports the relationship between measured 
-    gauge heights and calculated stage values derived from gauge height‐water 
-    column height linear regressions.
--   `csd_gaugeWaterColumnHeightRegression`: Reports the linear regression 
-    coefficients for each unique gauge height-water column height regression 
-    model developed to estimate stage from surface water pressure data.
--   `csd_dataGapToFillMethodMapping`: Reports periods of gaps or erroneous data 
-    in uncorrected continuous discharge data and the method used to correct the 
-    period.
--   `csd_constantBiasShift`: Reports periods of continuous discharge data 
-    corrected via constant bias shift and the magnitude of the shift.
--   `csd_gapFillingRegression`: Reports the linear regression coefficients for
-    each unique relationship developed to correct NEON continuous discharge data
-    using the method specified in the mapping table.
+-   `sdrc_gaugePressureRelationship`: Reports the relationship between
+    measured gauge heights and calculated stage values derived from
+    gauge height‐water column height linear regressions.
+-   `csd_gaugeWaterColumnHeightRegression`: Reports the linear
+    regression coefficients for each unique gauge height-water column
+    height regression model developed to estimate stage from surface
+    water pressure data.
+-   `csd_dataGapToFillMethodMapping`: Reports periods of gaps or
+    erroneous data in uncorrected continuous discharge data and the
+    method used to correct the period.
+-   `csd_constantBiasShift`: Reports periods of continuous discharge
+    data corrected via constant bias shift and the magnitude of the
+    shift.
+-   `csd_gapFillingRegression`: Reports the linear regression
+    coefficients for each unique relationship developed to correct NEON
+    continuous discharge data using the method specified in the mapping
+    table.
 
-At the Domain 08 - Tombigbee River (TOMB) site, a stage-discharge relationship 
-cannot be developed due to the influence of a downstream lock and dam system. 
-Therefore, the above tables are not published for TOMB. Rather, the following 
-tables are published for TOMB.
+At the Domain 08 - Tombigbee River (TOMB) site, a stage-discharge
+relationship cannot be developed due to the influence of a downstream
+lock and dam system. Therefore, the above tables are not published for
+TOMB. Rather, the following tables are published for TOMB.
 
--   `csd_continuousDischargeUSGS`: USGS discharge and associated uncertainty
-    based on the fit of USGS data with corresponding discharge measurements 
-    collected at TOMB.
--   `csd_dischargeRegressionUSGS`: Reports the linear regression coefficients 
-    for each unique relationship developed to estimate NEON discharge from USGS 
-    discharge.
+-   `csd_continuousDischargeUSGS`: USGS discharge and associated
+    uncertainty based on the fit of USGS data with corresponding
+    discharge measurements collected at TOMB.
+-   `csd_dischargeRegressionUSGS`: Reports the linear regression
+    coefficients for each unique relationship developed to estimate NEON
+    discharge from USGS discharge.
 
-Below, we will explore the first few rows of each high-frequency time series 
-table included in the basic download package. Add to the code below to also view
-those tables included in the expanded download package.
+Below, we will explore the first few rows of each high-frequency time
+series table included in the basic download package. Add to the code
+below to also view those tables included in the expanded download
+package.
 
 #### R
 
@@ -309,14 +321,14 @@ print(csd['csd_15_min'].head())
 
 ### Explore Variables {.tabset}
 
-The `variables_00130` file provides insight into the structure of each data 
-table and associated variables included in a download package. For the 
-Continuous discharge data product, it is crucial to understand the relationships
-between the **csd_continuousDischarge** and **csd_15_min** tables to aggregate 
-the two tables and produce a continuous timeseries. That is an exercise we will 
-conduct later in this tutorial. For now, view the variables file and familiarize 
-yourself with the different fields, data types, and units used in this data 
-product.
+The `variables_00130` file provides insight into the structure of each
+data table and associated variables included in a download package. For
+the Continuous discharge data product, it is crucial to understand the
+relationships between the **csd_continuousDischarge** and **csd_15_min**
+tables to aggregate the two tables and produce a continuous timeseries.
+That is an exercise we will conduct later in this tutorial. For now,
+view the variables file and familiarize yourself with the different
+fields, data types, and units used in this data product.
 
 #### R
 
@@ -338,36 +350,45 @@ display(csd['variables_00130'])
 
 ## Wrangle Stage & Discharge Data
 
-This data product was updated from uncorrected 1 minute values to corrected
-15-min averages. Until these updates are fully applied backwards in time,
-some data wrangling and table joining are required to 
-produce a continuous time series of continuous discharge. The publication 
-history of this data product is explained in detail in the NEON User Guide to 
-Continuous Discharge (NEON.DP4.00130.001), which is published in the 
-"Documentation" section of the [NEON Data Portal Landing Page](https://data.neonscience.org/data-products/DP4.00130.001)
+This data product was updated from uncorrected 1 minute values to
+corrected 15-min averages. Until these updates are fully applied
+backwards in time, some data wrangling and table joining are required to
+produce a continuous time series of continuous discharge. The
+publication history of this data product is explained in detail in the
+NEON User Guide to Continuous Discharge (NEON.DP4.00130.001), which is
+published in the "Documentation" section of the [NEON Data Portal
+Landing Page](https://data.neonscience.org/data-products/DP4.00130.001)
 for this data product.
 
-In brief, the `csd_15_min` table was first published beginning in 2026 (data 
-included in RELEASE-2026), and was published for data beginning (for most sites)
-in 2021-10 (beginning of WY 2022). Prior to the first date published for a site
-in `csd_15_min`, the `csd_continuousDischarge` table is published. As more WYs 
-are corrected prior to WY 2022, records in `csd_continuousDischarge` will be 
-removed from publication and replaced with corrected records in `csd_15_min`.
+In brief, the `csd_15_min` table was first published beginning in 2026
+(data included in RELEASE-2026), and was published for data beginning
+(for most sites) in 2021-10 (beginning of WY 2022). Prior to the first
+date published for a site in `csd_15_min`, the `csd_continuousDischarge`
+table is published. As more WYs are corrected prior to WY 2022, records
+in `csd_continuousDischarge` will be removed from publication and
+replaced with corrected records in `csd_15_min`.
 
 A good rule of thumb for managing NEON continuous discharge data:
 
 | Table | Frequency | Record Description |
 |:----------------------:|:----------------------:|:----------------------:|
 | csd_continuousDischarge | 1 minute | uncorrected data unchanged since RELEASE-2025 |
-| csd_15_min | 15 minute | if `release` = RELEASE-YYYY; corrected data first published in RELEASE-2026 |
-| csd_15_min | 15 minute | if `release` = PROVISIONAL; uncorrected data processed within new pipeline | #' The last part of this line is not technically correct.  They need to look at the corection flag to see whether provisonal data is still uncorrected or not.
+| csd_15_min | 15 minute | if `release` = RELEASE-YYYY, data processed within new pipeline; data corrections applied |
+| csd_15_min | 15 minute | if `release` = PROVISIONAL, data processed within new pipeline; determine status of data correction in the `dischargeCorrectionApplied` field\* |
+
+\* - PROVISIONAL data can be corrected prior to a subsequent data
+release. Do not assume all PROVISIONAL data are uncorrected. If the
+`csd_15_min:dischargeCorrectionApplied` field equals 1 or 0, the record
+has been reviewed for corrections and corrections were applied where
+appropriate. If the field is *NA*, the record has not been reviewed for
+corrections.
 
 ### Aggregate 1-minute Table to 15-minutes {.tabset}
 
-The first step to generating a continuous period of record for a site is to 
-aggregate the uncorrected 1-minute `csd_continuousDischarge` data to a 15-minute
-interval. We will use this opportunity to conform the column headers of the 
-aggregated table we create to fit those of `csd_15_min`.
+The first step to generating a continuous period of record for a site is
+to aggregate the uncorrected 1-minute `csd_continuousDischarge` data to
+a 15-minute interval. We will use this opportunity to conform the column
+headers of the aggregated table we create to fit those of `csd_15_min`.
 
 #### R
 
@@ -393,8 +414,7 @@ csd_15_min_agg <- csd$csd_continuousDischarge%>%
                                                  na.rm=T),
                    dischargeFinalQF=sum(dischargeFinalQF==1),
                    dischargeFinalQFSciRvw=sum(dischargeFinalQFSciRvw==1,
-                                              na.rm = T)
-)
+                                              na.rm = T))
 
 # Convert quality flag fields to 1 or NA
 csd_15_min_agg$dischargeFinalQF[
@@ -452,10 +472,10 @@ csd_15_min_agg.loc[csd_15_min_agg['dischargeFinalQFSciRvw'] == 0, 'dischargeFina
 
 ### Join Tables {.tabset}
 
-Because we conformed column headers in the uncorrected aggregated data, it 
-should now be relatively easy to join the data to the `csd_15_min`. Let's now 
-create a single data frame representing the entire period of record aggregated 
-to a 15-minute interval.
+Because we conformed column headers in the uncorrected aggregated data,
+it should now be relatively easy to join the data to the `csd_15_min`.
+Let's now create a single data frame representing the entire period of
+record aggregated to a 15-minute interval.
 
 #### R
 
@@ -485,21 +505,20 @@ csd_15_min_all = csd_15_min_all.sort_values(by='endDateTime')
 
 ## Plot Stage Data {.tabset}
 
-Continuous stage is modeled by developing a linear regression between empirical
-staff gauge heights (DP1.20267.001) and continuous water column height
-calculated using surface water pressure data (DP1.20016.001). Uncertainty is estimated for continuous
-stage by summing uncertainty associated with the calibration of the pressure 
-transducer (termed: nonsystematic) and uncertainty associated with the fit of the 
-linear regression (termed: systematic).
+Continuous stage is modeled by developing a linear regression between
+empirical staff gauge heights (DP1.20267.001) and continuous water
+column height calculated using surface water pressure data
+(DP1.20016.001). Uncertainty is estimated for continuous stage by
+summing uncertainty associated with the calibration of the pressure
+transducer (termed: nonsystematic) and uncertainty associated with the
+fit of the linear regression (termed: systematic).
 
-More details on the modeling algorithm for continuous stage can be found in the
-ATBD for this data product (NEON.DOC.005403).
+More details on the modeling algorithm for continuous stage can be found
+in the ATBD for this data product (NEON.DOC.005403).
 
-Here, we will plot the continuous stage time series for the entire period of
-record, then plot a subset of data to zoom in on the time series to get a better
-visual of the associated uncertainty.
-
-#' **BH** Could we also include the staff gage measurments in these plots, liek we do for the test reports?
+Here, we will plot the continuous stage time series for the entire
+period of record, then plot a subset of data to zoom in on the time
+series to get a better visual of the associated uncertainty.
 
 ### R
 
@@ -577,23 +596,25 @@ plt.show()
 
 ## Plot Discharge Data {.tabset}
 
-Continuous discharge is modeled within a Bayesian modeling framework using an
-executable (BaM) first developed and published by [Le Coz et al. in 2014](https://doi.org/10.1016/j.jhydrol.2013.11.016).
-The continuous stage series and inputs from the Stage-discharge rating curves
-data product (DP4.00133.001) are used to model continuous discharge. Two types
-of uncertainty are associated with continuous discharge:
+Continuous discharge is modeled within a Bayesian modeling framework
+using an executable (BaM) first developed and published by [Le Coz et
+al. in 2014](https://doi.org/10.1016/j.jhydrol.2013.11.016). The
+continuous stage series and inputs from the Stage-discharge rating
+curves data product (DP4.00133.001) are used to model continuous
+discharge. Two types of uncertainty are associated with continuous
+discharge:
 
-- Parametric uncertainty: derived from the uncertainty of the model priors
-- Remnant uncertainty: derived from how the model fits the observations
+-   Parametric uncertainty: derived from the uncertainty of the model
+    priors
+-   Remnant uncertainty: derived from how the model fits the
+    observations
 
-More details on the modeling algorithm for continuous discharge be found in the
-ATBD for this data product (NEON.DOC.005403).
+More details on the modeling algorithm for continuous discharge be found
+in the ATBD for this data product (NEON.DOC.005403).
 
-Here, we will plot the continuous discharge time series for the entire period of
-record, then plot a subset of data to zoom in on the time series to get a better
-visual of the associated uncertainties.
-
-#' **BH** Similar to stage, could we also include the emperical discharge measuremnts in these plots?
+Here, we will plot the continuous discharge time series for the entire
+period of record, then plot a subset of data to zoom in on the time
+series to get a better visual of the associated uncertainties.
 
 ### R
 
