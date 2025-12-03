@@ -102,7 +102,7 @@ import matplotlib.pyplot as plt
 ## Set NEON Data Portal Personal Access Token (PAT) {.tabset}
 
 It is recommended that NEON data users have a NEON Data Portal personal
-access token (PAT) set as an environment variable See instructions on
+access token (PAT) set as an environment variable. See instructions on
 obtaining a NEON PAT at
 <https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial>
 
@@ -137,9 +137,9 @@ Portal stores data in site\*month download packages, so date range inputs
 are formatted as YYYY-MM.
 
 For this tutorial we will also download both RELEASED and PROVISIONAL data 
-by setting the include.provisinal argument to TRUE in the function.  To 
+by setting the include.provisinal argument to TRUE in the function. To 
 download only RELEASED data this argument should be set to FALSE.
-To learn more about the differences between released and provision data, visit
+To learn more about the differences between released and provisional data, visit
 <https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial>.
 
 ### R
@@ -157,9 +157,9 @@ csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                     token=Sys.getenv("NEON_PAT"))
 
 # Add in the 15-minute table because it is not yet published
-csd$csd_15_min <- read.csv("C:/Users/nickerson/Documents/GitHub/NEON-Data-Skills/tutorials-in-development/R/aquatics/L4-Discharge-Series/continuous-discharge-basic/csd_15_min.csv",
+csd$csd_15_min <- read.csv("C:/Users/nickerson/Documents/GitHub/NEON-Data-Skills/tutorials-in-development/R/aquatics/L4-Discharge-Series/continuous-discharge-basic/csd_15_min.csv", 
                            encoding = "UTF-8",
-                           header = T)
+                           header = T) # **NH** I'm confused by this step, probably because I'm just not getting it.  Where does do they get this .CSV?  Eventually users will be able to just get this through the neonUtils download, right?
 ```
 
 ### Python
@@ -257,7 +257,7 @@ coefficients, uncertainty propagation, and data corrections.
     column height linear regressions.
 -   `csd_gaugeWaterColumnHeightRegression`: Reports the linear regression 
     coefficients for each unique gauge height-water column height regression 
-    model developed to estimate stage from pressure transducers.
+    model developed to estimate stage from surface water pressure data.
 -   `csd_dataGapToFillMethodMapping`: Reports periods of gaps or erroneous data 
     in uncorrected continuous discharge data and the method used to correct the 
     period.
@@ -314,7 +314,7 @@ table and associated variables included in a download package. For the
 Continuous discharge data product, it is crucial to understand the relationships
 between the **csd_continuousDischarge** and **csd_15_min** tables to aggregate 
 the two tables and produce a continuous timeseries. That is an exercise we will 
-conduct later in this tutorial. For now, view variables file and familiarize 
+conduct later in this tutorial. For now, view the variables file and familiarize 
 yourself with the different fields, data types, and units used in this data 
 product.
 
@@ -338,9 +338,9 @@ display(csd['variables_00130'])
 
 ## Wrangle Stage & Discharge Data
 
-This data product was updated from uncorrected 1 miunte values to corrected
-15-min averages.  Until these updates are fully applied backwards in time,
-some data wrangling and table joining are required in this data product to 
+This data product was updated from uncorrected 1 minute values to corrected
+15-min averages. Until these updates are fully applied backwards in time,
+some data wrangling and table joining are required to 
 produce a continuous time series of continuous discharge. The publication 
 history of this data product is explained in detail in the NEON User Guide to 
 Continuous Discharge (NEON.DP4.00130.001), which is published in the 
@@ -486,10 +486,10 @@ csd_15_min_all = csd_15_min_all.sort_values(by='endDateTime')
 ## Plot Stage Data {.tabset}
 
 Continuous stage is modeled by developing a linear regression between empirical
-staff stage heights (DP1.20267.001) and continuous water column height
-calculated from the pressure transducer (DP1.20016.001). Uncertainty is estimated for continuous
+staff gauge heights (DP1.20267.001) and continuous water column height
+calculated using surface water pressure data (DP1.20016.001). Uncertainty is estimated for continuous
 stage by summing uncertainty associated with the calibration of the pressure 
-transducer (termed: nonsystematic) and uncertainty associated with fit of the 
+transducer (termed: nonsystematic) and uncertainty associated with the fit of the 
 linear regression (termed: systematic).
 
 More details on the modeling algorithm for continuous stage can be found in the
@@ -499,7 +499,7 @@ Here, we will plot the continuous stage time series for the entire period of
 record, then plot a subset of data to zoom in on the time series to get a better
 visual of the associated uncertainty.
 
-#' Could we also include the staff gage measurments in these plots, liek we do for the test reports?
+#' **BH** Could we also include the staff gage measurments in these plots, liek we do for the test reports?
 
 ### R
 
@@ -593,7 +593,7 @@ Here, we will plot the continuous discharge time series for the entire period of
 record, then plot a subset of data to zoom in on the time series to get a better
 visual of the associated uncertainties.
 
-#' Similar to stage, could we also include the emperical discharge measuremnts in these plots?
+#' **BH** Similar to stage, could we also include the emperical discharge measuremnts in these plots?
 
 ### R
 
