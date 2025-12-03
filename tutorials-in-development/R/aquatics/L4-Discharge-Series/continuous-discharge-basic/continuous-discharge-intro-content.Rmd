@@ -23,7 +23,7 @@ After completing this activity, you will be able to:
 -   Create a single continuous time series of discharge data for a site
     via data aggregation and table joining
 -   Plot continuous time series of stage and discharge with associated
-    uncertainties for the lifetime of a site
+    uncertainties for the lifetime of a site.
 
 ## Things You’ll Need To Complete This Tutorial
 
