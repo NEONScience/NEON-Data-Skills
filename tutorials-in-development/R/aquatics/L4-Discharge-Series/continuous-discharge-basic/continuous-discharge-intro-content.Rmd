@@ -162,6 +162,10 @@ csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
 csd$csd_15_min <- read.csv("C:/Users/nickerson/Documents/GitHub/NEON-Data-Skills/tutorials-in-development/R/aquatics/L4-Discharge-Series/continuous-discharge-basic/csd_15_min.csv", 
                            encoding = "UTF-8",
                            header = T)
+csd$csd_15_min$startDateTime[nchar(csd$csd_15_min$startDateTime)==10] <- paste(csd$csd_15_min$startDateTime[nchar(csd$csd_15_min$startDateTime)==10],"00:00:00")
+csd$csd_15_min$endDateTime[nchar(csd$csd_15_min$endDateTime)==10] <- paste(csd$csd_15_min$endDateTime[nchar(csd$csd_15_min$endDateTime)==10],"00:00:00")
+csd$csd_15_min$startDateTime <- as.POSIXct(csd$csd_15_min$startDateTime,tz="UTC")
+csd$csd_15_min$endDateTime <- as.POSIXct(csd$csd_15_min$endDateTime,tz="UTC")
 ```
 
 ### Python
