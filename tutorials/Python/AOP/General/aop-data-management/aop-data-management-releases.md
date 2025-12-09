@@ -1,5 +1,5 @@
 ---
-syncID: 61ad1fc43ddd45b49cad1bca48656bbe
+syncID: c2701e89466943d7ae0996c65c7f853b
 title: "Best Practices for AOP Data Management and Understanding AOP Data Releases" 
 description: "Learn tips and tricks for handling large AOP data volumes and understand how AOP data releases differ from the rest of NEON"
 dateCreated: 2025-12-08 
