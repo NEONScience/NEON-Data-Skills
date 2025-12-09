@@ -33,7 +33,7 @@ DOIs for AOP data products for a given RELEASE will be `tombstoned` prior to eac
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-general/2023_tombstoned_aop_chm_screenshot.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-general/2023_tombstoned_aop_chm_screenshot.png"></a>
-    <figcaption>AOP Data RELEASE-2023 Tombstone Page</figcaption>
+    <figcaption>AOP Ecosystem Structure Data RELEASE-2023 Tombstone Page</figcaption>
 </figure>
 
 
