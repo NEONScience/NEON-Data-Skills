@@ -1,10 +1,10 @@
 ---
 syncID: c2701e89466943d7ae0996c65c7f853b
-title: "Best Practices for AOP Data Management and Understanding AOP Data Releases" 
-description: "Learn tips and tricks for handling large AOP data volumes and understand how AOP data releases differ from the rest of NEON"
+title: "Understanding AOP Data Releases and Best Practices for AOP Data Management" 
+description: "Understand how AOP data releases differ from the rest of NEON and learn tips and tricks for handling large AOP data volumes"
 dateCreated: 2025-12-08 
 authors: Bridget Hass
-contributors: 
+contributors: Claire Lunch, Christine Laney
 estimatedTime: 1 hour
 packagesLibraries: neonutilities
 topics: remote-sensing
