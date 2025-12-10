@@ -640,7 +640,9 @@ Below are some of the most important points to remember about AOP Data Releases,
 - For AOP data, whether you are using released or provisional data, if you need your results to be fully reproducible, you will need to archive the AOP data that you used. See the Large Data Packages section on the <a href="https://www.neonscience.org/data-samples/guidelines-policies/publishing-research-outputs" target="_blank">Publishing Research Outputs</a> page for suggestions about archiving large datasets.
 
 ### Release Transitions
-- There is an up to 6-week interim period for AOP in December and January each year between data releases. Check the Data Portal notifications and alerts in December and January before downloading AOP data to make sure your data downloads are not affected by this transition. The previous years' release citation should not be used during this time, instead use the PROVISIONAL citations. If you can, wait to download AOP data until the next release becomes available.
+- There is an up to 6-week interim period for AOP in December and January each year between data releases. Check the Data Portal notifications and alerts in December and January before downloading AOP data to make sure your data downloads are not affected by this transition.
+- If you can, wait to download AOP data until the next release becomes available.
+- The previous year's release citation should not be used for data downloaded during this interim period, instead use the PROVISIONAL citations.
 
 ## AOP Best Practices
 
