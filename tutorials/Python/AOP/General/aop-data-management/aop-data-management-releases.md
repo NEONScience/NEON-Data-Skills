@@ -20,7 +20,7 @@ urlTitle: aop-data-management-releases
 
 A NEON Data Release is a fixed set of data that does not change over time. Each data product in a Release is associated with a unique Digital Object Identifier (DOI) that can be used for data citation. Because the data in a Release do not change, analyses performed on those data are traceable and reproducible.
 
-NEON data are initially published under a Provisional status, meaning that data may be updated on an as-needed basis, without guarantee of reproducibility. Publishing Provisional data allows NEON to publish data rapidly while retaining the ability to make corrections or additions as the need is identified.
+NEON data are initially published under a Provisional status, meaning that data may be updated on an as-needed basis, without guarantee of reproducibility. Publishing Provisional data allows NEON to publish data rapidly while retaining the ability to make corrections or additions as the need is identified. Most of the time, unless issues are discovered in the Provisional data, the Provisional data will become Released - so Provisional data are still valid to use. If any issues are identified, they will be included in the data product issue logs.
 
 For more details about NEON Data Releases, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Understanding Releases and Provisional Data</a> tutorial and the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Data Product Revisions and Releases</a> web page.
 
