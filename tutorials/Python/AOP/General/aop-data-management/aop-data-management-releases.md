@@ -636,6 +636,7 @@ Below are some of the most important points to remember about AOP Data Releases,
 ### Provisional Data
 - Provisional data may be updated at any time and therefore do not have a static DOI. These data can still be (and should be) cited.
 - There is typically a 1-year lag period before newly published AOP data are released (so data collected in 2024 would not be available in a release until early 2026). This lag period may be longer in some cases, for example if AOP is providing a major algorithm update (such as reflectance data processed with BRDF and topographic corrections; these were first published in 2024 are remaining provisional through 2026).
+- Provisional does not mean problematic! Most data published provisionally are high-quality and, pending data review, will become released after the lag period with no changes. Refer to issue logs to understand if a given data product has any known issues.
 - For AOP data, whether you are using released or provisional data, if you need your results to be fully reproducible, you will need to archive the AOP data that you used. See the Large Data Packages section on the <a href="https://www.neonscience.org/data-samples/guidelines-policies/publishing-research-outputs" target="_blank">Publishing Research Outputs</a> page for suggestions about archiving large datasets.
 
 ## AOP Best Practices
