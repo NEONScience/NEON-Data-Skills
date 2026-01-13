@@ -23,7 +23,7 @@ After completing this activity, you will be able to:
 -   Create a single continuous time series of discharge data for a site
     via data aggregation and table joining
 -   Plot continuous time series of stage and discharge with associated
-    uncertainties for the lifetime of a site.
+    uncertainties for the lifetime of a site
 
 ## Things You’ll Need To Complete This Tutorial
 
@@ -55,7 +55,7 @@ install.packages("neonUtilities",
 ### Python
 
 -   **os**: Module allowing interaction with user's operating system
--   **neonutilities**: Module for working with data frames
+-   **pandas**: Module for working with data frames
 -   **neonutilities**: Basic functions for accessing NEON data
 -   **matplotlib**: Functions for plotting
 
@@ -70,12 +70,9 @@ pip install matplotlib
 
 ### Additional Resources
 
--   <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Tutorial
-    for using neonUtilities from a Python environment.</a>
--   <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub
-    repository for neonUtilities</a>
--   <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities
-    cheat sheet</a>. A quick reference guide for users.
+-   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Tutorial for using neonUtilities from both R and Python environments.</a>
+-   <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
+-   <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users.
 :::
 
 ## Set up: Load Packages {.tabset}
@@ -124,11 +121,8 @@ os.environ.setdefault('NEON_PAT',"YOUR_PAT")
 In this tutorial, we will focus on a single site, Lower Hop Brook (HOPB)
 in NEON Domain 01, but the workflow can be replicated for any site at
 which continuous discharge is published by changing the `site` input
-variable.
-
-Visit the [NEON Data Portal landing page for Continuous
-discharge](https://data.neonscience.org/data-products/DP4.00130.001) for
-an availability chart showing all the sites for which Continuous
+variable. Visit the <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">NEON Data Portal landing page for Continuous discharge</a> 
+for an availability chart showing all the sites for which Continuous
 discharge is published and the period of record for each site.
 
 For this tutorial we will download all data across the lifetime of a
@@ -151,21 +145,12 @@ provisional data, visit
 csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                     site="HOPB",
                                     # startdate="2020-10",
-                                    enddate="2021-09",# **ZN** Set an end date while testing with a local 15 minute table; comment out in final tutorial
+                                    # enddate="2021-09",
                                     release="current",# Downloads data from the most recent release
                                     include.provisional = T,# Includes provisional data
                                     package='expanded',
                                     check.size = F,
                                     token=Sys.getenv("NEON_PAT"))
-
-# Add in the 15-minute table because it is not yet published -- change to your local file path if you have this repo cloned
-csd$csd_15_min <- read.csv("C:/Users/nickerson/Documents/GitHub/NEON-Data-Skills/tutorials-in-development/R/aquatics/L4-Discharge-Series/continuous-discharge-basic/csd_15_min.csv", 
-                           encoding = "UTF-8",
-                           header = T)
-csd$csd_15_min$startDateTime[nchar(csd$csd_15_min$startDateTime)==10] <- paste(csd$csd_15_min$startDateTime[nchar(csd$csd_15_min$startDateTime)==10],"00:00:00")
-csd$csd_15_min$endDateTime[nchar(csd$csd_15_min$endDateTime)==10] <- paste(csd$csd_15_min$endDateTime[nchar(csd$csd_15_min$endDateTime)==10],"00:00:00")
-csd$csd_15_min$startDateTime <- as.POSIXct(csd$csd_15_min$startDateTime,tz="UTC")
-csd$csd_15_min$endDateTime <- as.POSIXct(csd$csd_15_min$endDateTime,tz="UTC")
 ```
 
 ### Python
@@ -175,17 +160,12 @@ csd$csd_15_min$endDateTime <- as.POSIXct(csd$csd_15_min$endDateTime,tz="UTC")
 csd = nu.load_by_product(dpid="DP4.00130.001",
                          site="HOPB",
                          # start_date="2020-10",
-                         end_date="2022-09",# Set an end date while testing with a local 15 minute table; comment out in final tutorial
+                         # end_date="2021-09",
                          release="current",
                          include_provisional=True,
                          package="expanded",
                          check_size=False,
                          token=os.environ.get("NEON_PAT"))
-
-# Add in the 15-minute table because it is not yet published -- change to your local file path if you have this repo cloned
-csd['csd_15_min'] = pd.read_csv("C:/Users/nickerson/Documents/GitHub/NEON-Data-Skills/tutorials-in-development/R/aquatics/L4-Discharge-Series/continuous-discharge-basic/csd_15_min.csv",
-                                encoding="UTF-8")
-csd['csd_15_min']['endDateTime'] = pd.to_datetime(csd['csd_15_min']['endDateTime'], format='mixed', utc=True)
 ```
 
 ##  {.unnumbered}
@@ -216,6 +196,8 @@ names(csd)
 csd.keys()
 ```
 
+###  {.unnumbered}
+
 In this tutorial, we downloaded the `expanded` download package. What
 are the files contained in this download package and why are they
 useful?
@@ -244,8 +226,6 @@ useful?
     each data download, depending on the `release` function inputs and
     date range queried.
 
-###  {.unnumbered}
-
 ### Explore Data Tables {.tabset}
 
 The basic download package for DP4.00130.001 contains two data tables
@@ -253,12 +233,9 @@ that report continuous discharge time series data modeled from in situ
 pressure transducers and stage-discharge rating curves:
 
 -   `csd_15_min`: Continuous discharge data averaged to 15-minute
-    intervals. This table began being published in RELEASE-2026 and is
-    available, for a given site, starting with the earliest date of
-    corrected data.
+    intervals.
 -   `csd_continuousDischarge`: Instantaneous (1-minute) continuous
-    discharge data. Beginning with RELEASE-2026, this table is available
-    only before the earliest date of data correction for a given site.
+    discharge data.
 
 The expanded download package for DP4.00130.001 contains multiple
 additional tables that aid in understanding data relationships, model
@@ -375,9 +352,9 @@ replaced with corrected records in `csd_15_min`.
 A good rule of thumb for managing NEON continuous discharge data:
 
 | Table | Frequency | Record Description |
-|:----------------------:|:----------------------:|:----------------------:|
+|:--:|:--:|:--:|
 | csd_continuousDischarge | 1 minute | uncorrected data unchanged since RELEASE-2025 |
-| csd_15_min | 15 minute | if `release` = RELEASE-YYYY, data processed within new pipeline; data corrections applied |
+| csd_15_min | 15 minute | if `release` = RELEASE-2026, data processed within new pipeline; data corrections applied |
 | csd_15_min | 15 minute | if `release` = PROVISIONAL, data processed within new pipeline; determine status of data correction in the `dischargeCorrectionApplied` field\* |
 
 \* - PROVISIONAL data can be corrected prior to a subsequent data
@@ -385,7 +362,8 @@ release. Do not assume all PROVISIONAL data are uncorrected. If the
 `csd_15_min:dischargeCorrectionApplied` field equals 1 or 0, the record
 has been reviewed for corrections and corrections were applied where
 appropriate. If the field is *NA*, the record has not been reviewed for
-corrections.
+corrections. More details on the definition and methods of correction can
+be found in the ATBD for this data product (NEON.DOC.005403)
 
 ### Aggregate 1-minute Table to 15-minutes {.tabset}
 
@@ -400,7 +378,7 @@ headers of the aggregated table we create to fit those of `csd_15_min`.
 # Use the tidyverse suite to round, group, and summarize data
 # Note: new column names match those published in 'csd_15_min'
 csd_15_min_agg <- csd$csd_continuousDischarge%>%
-  dplyr::mutate(endDateTime=lubridate::round_date(endDate,"15 min"))%>%
+  dplyr::mutate(endDateTime=lubridate::floor_date(endDate,"15 min"))%>%
   dplyr::group_by(siteID,endDateTime)%>%
   dplyr::summarise(stageContinuous=mean(equivalentStage,
                                         na.rm=T),
