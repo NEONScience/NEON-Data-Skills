@@ -32,11 +32,6 @@ You can follow either the R or Python code throughout this tutorial.
 -   For R users, we recommend using R version 4+ and RStudio.
 -   For Python users, we recommend using Python 3.9+.
 
-```{r setup, include=FALSE}
-library(reticulate)
-knitr::opts_chunk$set(dev="png")
-```
-
 ## Set up: Install Packages {.tabset}
 
 Packages only need to be installed once, you can skip this step after
@@ -48,8 +43,8 @@ the first time:
 -   **tidyverse**: Collection of R packages designed for data science
 
 ```{r install, eval=FALSE}
-install.packages("neonUtilities",
-                 "tidyverse")
+install.packages("neonUtilities")
+install.packages("tidyverse")
 ```
 
 ### Python
@@ -86,7 +81,7 @@ library(tidyverse)
 
 ### Python
 
-```{python p-import, eval=FALSE}
+```{python p-import, results="hide", message=FALSE}
 import os
 import pandas as pd
 import neonutilities as nu
@@ -98,9 +93,8 @@ import matplotlib.pyplot as plt
 ## Set NEON Data Portal Personal Access Token (PAT) {.tabset}
 
 It is recommended that NEON data users have a NEON Data Portal personal
-access token (PAT) set as an environment variable. See instructions on
-obtaining a NEON PAT at
-<https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial>
+access token (PAT) set as an environment variable. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial.</a>
+for instructions on obtaining a NEON PAT.
 
 ### R
 
@@ -110,7 +104,7 @@ Sys.setenv(NEON_PAT="YOUR_PAT")
 
 ### Python
 
-```{python p-envvar, eval=FALSE}
+```{python p-envvar, results="hide", message=FALSE}
 os.environ.setdefault('NEON_PAT',"YOUR_PAT")
 ```
 
@@ -121,9 +115,10 @@ os.environ.setdefault('NEON_PAT',"YOUR_PAT")
 In this tutorial, we will focus on a single site, Lower Hop Brook (HOPB)
 in NEON Domain 01, but the workflow can be replicated for any site at
 which continuous discharge is published by changing the `site` input
-variable. Visit the <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">NEON Data Portal landing page for Continuous discharge</a> 
-for an availability chart showing all the sites for which Continuous
-discharge is published and the period of record for each site.
+variable. Visit the <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">NEON Data Portal landing page</a> 
+for this data product. for an availability chart showing all the sites 
+for which Continuous discharge is published and the period of record for
+each site.
 
 For this tutorial we will download all data across the lifetime of a
 site by commenting out the start and end date in the function. If you
@@ -135,37 +130,38 @@ For this tutorial we will also download both RELEASED and PROVISIONAL
 data by setting the `include.provisinal` argument to 'true' in the
 function. To download only RELEASED data this argument should be set to
 'false'. To learn more about the differences between released and
-provisional data, visit
-<https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial>.
+provisional data, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Understanding Releases and Provisional Data</a>
+tutorial on the NEON website.
 
 ### R
 
 ```{r R-download, results="hide", message=FALSE}
 # Download continuous discharge data across the lifetime of a site
-csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
-                                    site="HOPB",
-                                    # startdate="2020-10",
-                                    # enddate="2021-09",
-                                    release="current",# Downloads data from the most recent release
-                                    include.provisional = T,# Includes provisional data
-                                    package='expanded',
-                                    check.size = F,
-                                    token=Sys.getenv("NEON_PAT"))
+csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
+                                      site="HOPB",
+                                      # startdate="2020-10",
+                                      # enddate="2021-09",
+                                      release="current",# Downloads data from the most recent release
+                                      include.provisional = T,# Includes provisional data
+                                      package='expanded',
+                                      check.size = F,
+                                      token=Sys.getenv("NEON_PAT"))
+
 ```
 
 ### Python
 
-```{python p-download, eval=FALSE}
+```{python p-download, results="hide", message=FALSE}
 # Download continuous discharge data across the lifetime of a site
-csd = nu.load_by_product(dpid="DP4.00130.001",
-                         site="HOPB",
-                         # start_date="2020-10",
-                         # end_date="2021-09",
-                         release="current",
-                         include_provisional=True,
-                         package="expanded",
-                         check_size=False,
-                         token=os.environ.get("NEON_PAT"))
+csd_py = nu.load_by_product(dpid="DP4.00130.001",
+                            site="HOPB",
+                            # start_date="2020-10",
+                            # end_date="2021-09",
+                            release="current",
+                            include_provisional=True,
+                            package="expanded",
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
 ```
 
 ##  {.unnumbered}
@@ -186,14 +182,14 @@ package.
 
 ```{r R-files, results="hide", message=FALSE}
 # Get all file names in the download package
-names(csd)
+names(csd_r)
 ```
 
 #### Python
 
-```{python p-files, eval=FALSE}
+```{python p-files, results="hide", message=FALSE}
 # Get all file names in the download package
-csd.keys()
+csd_py.keys()
 ```
 
 ###  {.unnumbered}
@@ -281,21 +277,21 @@ package.
 ```{r R-tables, results="hide", message=FALSE}
 # Print the first 5 records in each of the time series tables to view structure
 print("First 5 rows of csd_continuousDischarge")
-head(csd$csd_continuousDischarge)
+head(csd_r$csd_continuousDischarge)
 
 print("First 5 rows of csd_15_min")
-head(csd$csd_15_min)
+head(csd_r$csd_15_min)
 ```
 
 #### Python
 
-```{python p-tables, eval=FALSE}
+```{python p-tables, results="hide", message=FALSE}
 # Print the first 5 records in each of the time series tables to view structure
 print("First 5 rows of csd_continuousDischarge")
-print(csd['csd_continuousDischarge'].head())
+print(csd_py['csd_continuousDischarge'].head())
 
 print("First 5 rows of csd_15_min")
-print(csd['csd_15_min'].head())
+print(csd_py['csd_15_min'].head())
 ```
 
 ###  {.unnumbered}
@@ -315,14 +311,14 @@ fields, data types, and units used in this data product.
 
 ```{r R-variables, results="hide", message=FALSE}
 # View variables file to understand data table structure
-View(csd$variables_00130)
+View(csd_r$variables_00130)
 ```
 
 #### Python
 
-```{python p-variables, eval=FALSE}
+```{python p-variables, results="hide", message=FALSE}
 # View variables file to understand data table structure
-display(csd['variables_00130'])
+display(csd_py['variables_00130'])
 ```
 
 ###  {.unnumbered}
@@ -337,8 +333,7 @@ backwards in time, some data wrangling and table joining are required to
 produce a continuous time series of continuous discharge. The
 publication history of this data product is explained in detail in the
 NEON User Guide to Continuous Discharge (NEON.DP4.00130.001), which is
-published in the "Documentation" section of the [NEON Data Portal
-Landing Page](https://data.neonscience.org/data-products/DP4.00130.001)
+published in the "Documentation" section of the <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">NEON Data Portal landing page for Continuous discharge</a> 
 for this data product.
 
 In brief, the `csd_15_min` table was first published beginning in 2026
@@ -377,7 +372,7 @@ headers of the aggregated table we create to fit those of `csd_15_min`.
 ```{r R-aggregate, results="hide", message=FALSE}
 # Use the tidyverse suite to round, group, and summarize data
 # Note: new column names match those published in 'csd_15_min'
-csd_15_min_agg <- csd$csd_continuousDischarge%>%
+csd_15_min_agg <- csd_r$csd_continuousDischarge%>%
   dplyr::mutate(endDateTime=lubridate::floor_date(endDate,"15 min"))%>%
   dplyr::group_by(siteID,endDateTime)%>%
   dplyr::summarise(stageContinuous=mean(equivalentStage,
@@ -412,16 +407,16 @@ csd_15_min_agg$dischargeFinalQFSciRvw[
 
 #### Python
 
-```{python p-aggregate, eval=FALSE}
+```{python p-aggregate, results="hide", message=FALSE}
 # Use pandas to round, group, and summarize data
 # Note: new column names match those published in 'csd_15_min'
 
 # Convert endDate to datetime and round to 15 minutes
-csd['csd_continuousDischarge']['endDate'] = pd.to_datetime(csd['csd_continuousDischarge']['endDate'])
-csd['csd_continuousDischarge']['endDateTime'] = csd['csd_continuousDischarge']['endDate'].dt.round('15min')
+csd_py['csd_continuousDischarge']['endDate'] = pd.to_datetime(csd_py['csd_continuousDischarge']['endDate'])
+csd_py['csd_continuousDischarge']['endDateTime'] = csd_py['csd_continuousDischarge']['endDate'].dt.round('15min')
 
 # Group by siteID and endDateTime, then calculate aggregations
-csd_15_min_agg = csd['csd_continuousDischarge'].groupby(['siteID', 'endDateTime']).agg({
+csd_15_min_agg = csd_py['csd_continuousDischarge'].groupby(['siteID', 'endDateTime']).agg({
     'equivalentStage': 'mean',
     'stageUnc': 'mean',
     'maxpostDischarge': 'mean',
@@ -464,7 +459,7 @@ record aggregated to a 15-minute interval.
 ```{r R-join, results="hide", message=FALSE}
 # Merge aggregated table created earlier with csd_15_min from the download
 csd_15_min_all <- merge(csd_15_min_agg,
-                        csd$csd_15_min,
+                        csd_r$csd_15_min,
                         all = T)
 
 # Order the timeseries data by endDateTime
@@ -473,10 +468,10 @@ csd_15_min_all <- csd_15_min_all[order(csd_15_min_all$endDateTime),]
 
 #### Python
 
-```{python p-join, eval=FALSE}
+```{python p-join, results="hide", message=FALSE}
 # Merge aggregated table created earlier with csd_15_min from the download
 csd_15_min_all = pd.merge(csd_15_min_agg,
-                          csd['csd_15_min'],
+                          csd_py['csd_15_min'],
                           how='outer')
 
 # Order the timeseries data by endDateTime
@@ -536,7 +531,7 @@ csd_15_min_all%>%
 
 ### Python
 
-```{python p-plot-stage, eval=FALSE}
+```{python p-plot-stage, results="hide", message=FALSE, warning=FALSE}
 # Use matplotlib to plot continuous stage and uncertainty
 
 # Plot 1: Entire Period of Record
@@ -579,9 +574,9 @@ plt.show()
 ## Plot Discharge Data {.tabset}
 
 Continuous discharge is modeled within a Bayesian modeling framework
-using an executable (BaM) first developed and published by [Le Coz et
-al. in 2014](https://doi.org/10.1016/j.jhydrol.2013.11.016). The
-continuous stage series and inputs from the Stage-discharge rating
+using an executable (BaM) first developed and published by
+<a href="https://doi.org/10.1016/j.jhydrol.2013.11.016" target="_blank">Le Coz et al. in 2014</a>
+The continuous stage series and inputs from the Stage-discharge rating
 curves data product (DP4.00133.001) are used to model continuous
 discharge. Two types of uncertainty are associated with continuous
 discharge:
@@ -638,7 +633,7 @@ csd_15_min_all%>%
 
 ### Python
 
-```{python p-plot-discharge, eval=FALSE}
+```{python p-plot-discharge, results="hide", message=FALSE, warning=FALSE}
 # Use matplotlib to plot continuous discharge and uncertainty
 
 # Plot 1: Entire Period of Record

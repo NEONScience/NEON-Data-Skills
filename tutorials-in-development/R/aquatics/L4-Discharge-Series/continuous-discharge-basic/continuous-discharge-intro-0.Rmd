@@ -4,14 +4,14 @@ title: "Introduction to the NEON Continuous Discharge Data Product"
 description: Tutorial introducing users to NEON's Level 4 Continuous data product (DP4.00130.001)
 dateCreated: '2025-08-08'
 dataProducts: DP4.00130.001
-authors: Zachary L. Nickerson
-contributors:
+authors: Zachary Nickerson
+contributors: Robert Hensley, Nicholas Harrison
 estimatedTime: 1 hour
-packagesLibraries: neonUtilities
-topics: 
+packagesLibraries: neonUtilities, tidyverse
+topics: continuous discharge, timeseries visualization, table joining
 languageTool: R, API, Python
 code1: 
-tutorialSeries:
+tutorialSeries: null
 urlTitle: continuous-discharge-intro
 ---
 
