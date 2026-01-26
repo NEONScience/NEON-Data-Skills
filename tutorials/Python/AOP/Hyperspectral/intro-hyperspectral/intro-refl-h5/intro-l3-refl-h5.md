@@ -6,17 +6,17 @@ dateCreated: 2018-07-04
 authors: Bridget Hass
 contributors: Donal O'Leary
 estimatedTime: 1 hour
-packagesLibraries: h5py, gdal, requests, scikit-image, IPython, matplotlib, numpy
+packagesLibraries: numpy, h5py, matplotlib, neonutilities, scikit-image, ipywidgets
 topics: hyperspectral-remote-sensing, HDF5, remote-sensing, reflectance
 languagesTool: Python
-dataProduct: DP3.30006.001
+dataProduct: DP3.30006.001, DP3.30006.002
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5.ipynb
 tutorialSeries: intro-hsi-py-series
 urlTitle: neon-refl-h5-py
 ---
 
 
-In this introductory tutorial, we demonstrate how to read NEON AOP hyperspectral reflectance (Level 3, tiled) data in Python. This starts with the fundamental steps of reading in and exploring the HDF5 (h5) format that the reflectance data is delivered in. Then you will develop and practice skills to explore and visualize the spectral data. 
+In this introductory tutorial, we demonstrate how to read NEON AOP hyperspectral reflectance (Level 3, tiled) data in Python. This starts with the fundamental steps of downloading, reading in, and getting familiar with the HDF5 (h5) format that the reflectance data is delivered in. Then you will develop and practice skills to explore and visualize the spectral data. 
 
 <div id="ds-objectives" markdown="1">
     
@@ -24,49 +24,47 @@ In this introductory tutorial, we demonstrate how to read NEON AOP hyperspectral
 
 After completing this tutorial, you will be able to:
 
+* Use `neonutilities` `list_available_dates` to find available data and `by_tile_aop` to download a single reflectance tile
 * Use the package `h5py` and the `visititems` method to read a reflectance HDF5 file and view data attributes.
 * Read the data ignore value and scaling factor and apply these values to produce a "cleaned" reflectance array.
 * Plot a histogram of reflectance values to visualize the range and distribution of values.
 * Extract and plot a single band of reflectance data.
 * Apply a histogram stretch and adaptive equalization to improve the contrast of an image. 
 
-
 ### Install Python Packages
 
-If you don't already have these packages installed, you will need to do so, using `pip` or `conda` install:
-* **requests**
-* **gdal** 
-* **h5py**
-
-Standard packages used in this tutorial include:
 * **numpy**
-* **pandas**
 * **matplotlib** 
+* **h5py**
+* **python-dotenv**
+* **neonutilities**
+* **ipywidgets** (optional)
+* **scikit-image** (optional)
+
+### Set Up NEON User Account and Token
+
+To download data from NEON, we strongly recommend setting up a NEON User Account and creating a token. Using a token when downloading data via the API, including when using the `neonutilities` package, links your downloads to your user account, and also enables faster download speeds. Follow the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a> for complete instructions on setting up a token.
 
 ### Download Data
 
-To complete this tutorial, you will download and read in surface directional reflectance data collected at the NEON <a href="https://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center (SERC)</a> site in Maryland. This data can be downloaded by clicking the link below.
-
-**Download the SERC Directional Reflectance H5 Tile:** <a href="https://storage.googleapis.com/neon-aop-products/2021/FullSite/D02/2021_SERC_5/L3/Spectrometer/Reflectance/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5" class="link--button link--arrow">NEON_D02_SERC_DP3_368000_4306000_reflectance.h5</a>
+To complete this tutorial, you will download and read in surface directional reflectance data collected at the NEON <a href="https://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center (SERC)</a> site in Maryland. This data is downloaded in the first part of the tutorial, using the `neonutilities` `by_tile_aop` function.
 
 ### Additional Resources
-More details about the surface directional reflectance data product can be found on the data product page, linked below.
-- <a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">Spectrometer orthorectified surface directional reflectance - mosaic</a>
+More details about the surface bidirectional reflectance data product can be found on the data product page, linked below.
+- <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic</a>
 
-In addition, 
-NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a more in-depth understanding ofthe reflectance datad.
+In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of their data products. Please refer to the ATBDs below for a more in-depth understanding of the reflectance data.
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD</a>
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a>
 
 </div>
 
 
-Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this tutorial we explore how to extract 
-information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-products/DP3.30006.001" target="_blank">NEON Data Product Catalog</a>.
+Hyperspectral remote sensing data is a useful tool for measuring changes to our environment at the Earth’s surface. In this tutorial we explore how to extract information from a tile (1000m x 1000m x 426 bands) of NEON AOP orthorectified surface reflectance data, stored in hdf5 format. For more information on this data product, refer to the <a href="http://data.neonscience.org/data-products/DP3.30006.002" target="_blank">NEON Data Product Catalog</a>.
 
 #### Mapping the Invisible: Introduction to Spectral Remote Sensing
 
-For more information on spectral remote sensing watch this video. 
+For more information on spectral remote sensing watch the video below. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
 
@@ -79,35 +77,18 @@ First let's import the required packages:
 
 ```python
 import os
-import requests
+import dotenv
 import numpy as np
 import h5py
-from osgeo import gdal
 import matplotlib.pyplot as plt
+import neonutilities as nu
 ```
 
-## Read in the datasets
-To start, we download the NEON surface directional reflectance data (DP3.30006.001), which is provided in hdf5 (.h5) format. You can download the file by clicking on the download link at the top of this lesson. Place the file inside a "data" folder in your working directory, and double check the file is located in the correct location, as follows:
+<div id="ds-objectives" markdown="1">
 
-```python
-# display the contents in the ./data folder to confirm the download completed
-os.listdir('./data')
-```
+**Data Tip: Using `help` and `?`**
 
-
-
-
-    ['NEON_D02_SERC_DP3_368000_4306000_reflectance.h5']
-
-
-
-## Read in hdf5 file
-
-```f = h5py.File('file.h5','r')``` reads in an h5 file to the variable f. 
-
-### Using the help
-We will be using a number of built-in and user-defined functions and methods throughout the tutorial. If you are uncertain what a certain function does, or how to call it, you can type `help()` or type a 
-`?` at the end of the function or method and run the cell (either select Cell > Run Cells or Shift Enter with your cursor in the cell you want to run). The `?` will pop up a window at the bottom of the notebook displaying the function's `docstrings`, which includes information about the function and usage. We encourage you to use `help` and `?` throughout the tutorial as you come across functions you are unfamiliar with. Try out these commands:
+We will be using a number of built-in and user-defined functions and methods throughout the tutorial. If you are uncertain what a certain function does, or how to call it, you can type `help()` or type a `?` at the end of the function or method and run the cell (either select Cell > Run Cells or Shift Enter with your cursor in the cell you want to run). The `?` will pop up a window at the bottom of the notebook displaying the function's `docstrings`, which includes information about the function and usage. We encourage you to use `help` and `?` throughout the tutorial as you come across functions you are unfamiliar with. Try out these commands to learn more about the `h5py` function, for example:
 
 `help(h5py)`
 
@@ -115,12 +96,114 @@ or
 
 `h5py.File?`
 
+</div>
+
+
+## Download the reflectance dataset
+
+To start, we will download the NEON bidirectional surface reflectance data (DP3.30006.002) which are provided in hdf5 (.h5) format. Use the neonutilities `by_tile_aop` function below to download the data from the portal. First, set up your token and explore the available data. We will set up the token as an environment variable and use the `dotenv` package to , but you can also hard-code it into the script if you prefer (with the caveat that this is less reproducible).
+
+```python
+dotenv.set_key(dotenv_path = ".env",
+key_to_set = "NEON_TOKEN",
+value_to_set = "YOUR_TOKEN_HERE") # replace this string with the token copied from your NEON User Account page
+```
+
+
+```python
+dotenv.load_dotenv()
+```
+
+
+
+
+    True
+
+
+
+
+```python
+neon_token = os.environ.get("NEON_TOKEN")
+```
+
+Now that you have set up the token, you can use it in in the `by_tile_aop` function downloading. Before downloading data, we'll run a couple more `neonutilities` functions to determine what dates of data are available for the SERC site, as well as the spatial extent of the data. We'll start with `list_available_dates` to determine the available dates for the bidirectional reflectance data. This just requires the data product id (`dpid`) and site code (in this case, "SERC") for inputs.
+
+
+```python
+nu.list_available_dates('DP3.30006.002','SERC')
+```
+
+    PROVISIONAL Available Dates: 2022-05, 2025-06
+    
+
+Currently (as of Nov 2025) there are provisional data available at the SERC site in 2022 and 2025.
+
+We will also need to provide the easting and northing (in UTM) of the coordinates of the reflectance tile we want to download. To determine the tile extents, we can use the `get_aop_tile_extents` function as follows:
+
+
+```python
+serc2025_extents = nu.get_aop_tile_extents('DP3.30006.002','SERC','2025')
+# optionally use your token
+# serc2025_extents = nu.get_aop_tile_extents('DP3.30006.002','SERC','2025',token=neon_token)
+```
+
+    Easting Bounds: (358000, 370000)
+    Northing Bounds: (4298000, 4312000)
+    
+
+We'll select a single tile to download and explore, that covers some different land types: water, buildings, and vegetation. This tile has southwest coordinates of 368000 (easting) and 4306000 (northing). Use `help(nu.by_tile_aop)` for more details on the function and the required inputs. By default, if you leave out check_size, you will be prompted to continue downloading after seeing the size of the data. This data tile is under 700 MB, but always make sure to check that you have enough space locally before downloading AOP data, as they can be quite large in volume (especially when working with a full site or a larger portion of a site). Set your data download directory, we recommend setting this close to the root directory as the function will maintain the folder structure as it is organized on the cloud storage and the data are somewhat nested.
+
+
+```python
+home_dir = os.path.expanduser("~")
+data_dir = os.path.join(home_dir,'data')
+```
+
+
+```python
+nu.by_tile_aop(
+    dpid='DP3.30006.002',
+    site='SERC',
+    year='2025',
+    easting=368000,
+    northing=4306000,
+    include_provisional=True,
+    savepath=data_dir,
+    token=neon_token)
+```
+
+
+```python
+We can see where we downloaded the files using `os.walk` as follows:
+```
+
+
+```python
+# iterate over directory and subdirectory to get the complete list of h5 files
+for root, dirs, files in os.walk(data_dir):
+    for name in files:
+        if name.endswith('.h5'):
+            print(os.path.join(root, name))  # print full file name, including the path
+```
+
+    C:\Users\bhass\data\DP3.30006.002\neon-aop-provisional-products\2025\FullSite\D02\2025_SERC_7\L3\Spectrometer\Reflectance\NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5
+    
+
+Now that we've downloaded the data, we can read it in using the `h5py` package.
+
+## Read in hdf5 file
+
+```f = h5py.File('file.h5','r')``` reads in an h5 file to the variable f. 
+
 Now that we have an idea of how to use `h5py` to read in an h5 file, let's use this to explore the hyperspectral reflectance data. Note that if the h5 file is stored in a different directory than where you are running your notebook, you need to include the path (either relative or absolute) to the directory where that data file is stored. Use `os.path.join` to create the full path of the file. 
 
 
 ```python
-# Note that you may need to update this filepath for your local machine
-f = h5py.File('./data/NEON_D02_SERC_DP3_368000_4306000_reflectance.h5','r')
+# Note that you may need to update this filepath if you set a different path to download to
+f = h5py.File(os.path.join(data_dir,
+                           'DP3.30006.002','neon-aop-provisional-products','2025','FullSite',
+                           'D02','2025_SERC_7','L3','Spectrometer','Reflectance',
+                           'NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5'),'r')
 ```
 
 ## Explore NEON AOP HDF5 Reflectance Files
@@ -137,7 +220,8 @@ def list_dataset(name,node):
 f.visititems(list_dataset)
 ```
 
-    SERC/Reflectance/Metadata/Ancillary_Imagery/Aerosol_Optical_Depth
+    SERC/Reflectance/Metadata/Ancillary_Imagery/Acquisition_Date
+    SERC/Reflectance/Metadata/Ancillary_Imagery/Aerosol_Optical_Thickness
     SERC/Reflectance/Metadata/Ancillary_Imagery/Aspect
     SERC/Reflectance/Metadata/Ancillary_Imagery/Cast_Shadow
     SERC/Reflectance/Metadata/Ancillary_Imagery/Dark_Dense_Vegetation_Classification
@@ -155,28 +239,34 @@ f.visititems(list_dataset)
     SERC/Reflectance/Metadata/Coordinate_System/EPSG Code
     SERC/Reflectance/Metadata/Coordinate_System/Map_Info
     SERC/Reflectance/Metadata/Coordinate_System/Proj4
-    SERC/Reflectance/Metadata/Logs/150649/ATCOR_Input_file
-    SERC/Reflectance/Metadata/Logs/150649/ATCOR_Processing_Log
-    SERC/Reflectance/Metadata/Logs/150649/Shadow_Processing_Log
-    SERC/Reflectance/Metadata/Logs/150649/Skyview_Processing_Log
-    SERC/Reflectance/Metadata/Logs/150649/Solar_Azimuth_Angle
-    SERC/Reflectance/Metadata/Logs/150649/Solar_Zenith_Angle
-    SERC/Reflectance/Metadata/Logs/151125/ATCOR_Input_file
-    SERC/Reflectance/Metadata/Logs/151125/ATCOR_Processing_Log
-    SERC/Reflectance/Metadata/Logs/151125/Shadow_Processing_Log
-    SERC/Reflectance/Metadata/Logs/151125/Skyview_Processing_Log
-    SERC/Reflectance/Metadata/Logs/151125/Solar_Azimuth_Angle
-    SERC/Reflectance/Metadata/Logs/151125/Solar_Zenith_Angle
-    SERC/Reflectance/Metadata/Logs/151614/ATCOR_Input_file
-    SERC/Reflectance/Metadata/Logs/151614/ATCOR_Processing_Log
-    SERC/Reflectance/Metadata/Logs/151614/Shadow_Processing_Log
-    SERC/Reflectance/Metadata/Logs/151614/Skyview_Processing_Log
-    SERC/Reflectance/Metadata/Logs/151614/Solar_Azimuth_Angle
-    SERC/Reflectance/Metadata/Logs/151614/Solar_Zenith_Angle
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/ATCOR_Input_file
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/ATCOR_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/BRDF_COEFFS_JSON_for_Hytools
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/BRDF_Config_JSON_for_Hytools
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/Shadow_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/Skyview_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/Solar_Azimuth_Angle
+    SERC/Reflectance/Metadata/Logs/L003-1_20250612/Solar_Zenith_Angle
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/ATCOR_Input_file
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/ATCOR_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/BRDF_COEFFS_JSON_for_Hytools
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/BRDF_Config_JSON_for_Hytools
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/Shadow_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/Skyview_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/Solar_Azimuth_Angle
+    SERC/Reflectance/Metadata/Logs/L004-1_20250612/Solar_Zenith_Angle
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/ATCOR_Input_file
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/ATCOR_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/BRDF_COEFFS_JSON_for_Hytools
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/BRDF_Config_JSON_for_Hytools
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/Shadow_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/Skyview_Processing_Log
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/Solar_Azimuth_Angle
+    SERC/Reflectance/Metadata/Logs/L005-1_20250612/Solar_Zenith_Angle
     SERC/Reflectance/Metadata/Spectral_Data/FWHM
     SERC/Reflectance/Metadata/Spectral_Data/Wavelength
-    SERC/Reflectance/Metadata/to-sensor_azimuth_angle
-    SERC/Reflectance/Metadata/to-sensor_zenith_angle
+    SERC/Reflectance/Metadata/to-sensor_Azimuth_Angle
+    SERC/Reflectance/Metadata/to-sensor_Zenith_Angle
     SERC/Reflectance/Reflectance_Data
     
 
@@ -195,7 +285,7 @@ def ls_dataset(name,node):
         print(node)
 ```
 
-Data Tip: To see what the visititems method (or any method) does, type ? at the end, eg.
+**Data Tip:** To see what the `visititems` method does, type `?` at the end, eg.
 `f.visititems?`
 
 
@@ -203,46 +293,53 @@ Data Tip: To see what the visititems method (or any method) does, type ? at the 
 f.visititems(ls_dataset)
 ```
 
-    <HDF5 dataset "Aerosol_Optical_Depth": shape (1000, 1000), type "<i2">
+    <HDF5 dataset "Acquisition_Date": shape (1000, 1000), type "<i4">
+    <HDF5 dataset "Aerosol_Optical_Thickness": shape (1000, 1000), type "<f4">
     <HDF5 dataset "Aspect": shape (1000, 1000), type "<f4">
-    <HDF5 dataset "Cast_Shadow": shape (1000, 1000), type "|u1">
+    <HDF5 dataset "Cast_Shadow": shape (1000, 1000), type "<f4">
     <HDF5 dataset "Dark_Dense_Vegetation_Classification": shape (1000, 1000), type "|u1">
     <HDF5 dataset "Data_Selection_Index": shape (1000, 1000), type "<i4">
     <HDF5 dataset "Haze_Cloud_Water_Map": shape (1000, 1000), type "|u1">
-    <HDF5 dataset "Illumination_Factor": shape (1000, 1000), type "|u1">
+    <HDF5 dataset "Illumination_Factor": shape (1000, 1000), type "<f4">
     <HDF5 dataset "Path_Length": shape (1000, 1000), type "<f4">
-    <HDF5 dataset "Sky_View_Factor": shape (1000, 1000), type "|u1">
+    <HDF5 dataset "Sky_View_Factor": shape (1000, 1000), type "<f4">
     <HDF5 dataset "Slope": shape (1000, 1000), type "<f4">
     <HDF5 dataset "Smooth_Surface_Elevation": shape (1000, 1000), type "<f4">
-    <HDF5 dataset "Visibility_Index_Map": shape (1000, 1000), type "|u1">
+    <HDF5 dataset "Visibility_Index_Map": shape (1000, 1000), type "<f4">
     <HDF5 dataset "Water_Vapor_Column": shape (1000, 1000), type "<f4">
-    <HDF5 dataset "Weather_Quality_Indicator": shape (1000, 1000, 3), type "|u1">
+    <HDF5 dataset "Weather_Quality_Indicator": shape (1000, 1000), type "<i4">
     <HDF5 dataset "Coordinate_System_String": shape (), type "|O">
     <HDF5 dataset "EPSG Code": shape (), type "|O">
     <HDF5 dataset "Map_Info": shape (), type "|O">
     <HDF5 dataset "Proj4": shape (), type "|O">
     <HDF5 dataset "ATCOR_Input_file": shape (), type "|O">
     <HDF5 dataset "ATCOR_Processing_Log": shape (), type "|O">
+    <HDF5 dataset "BRDF_COEFFS_JSON_for_Hytools": shape (), type "|O">
+    <HDF5 dataset "BRDF_Config_JSON_for_Hytools": shape (), type "|O">
     <HDF5 dataset "Shadow_Processing_Log": shape (), type "|O">
     <HDF5 dataset "Skyview_Processing_Log": shape (), type "|O">
     <HDF5 dataset "Solar_Azimuth_Angle": shape (), type "<f4">
     <HDF5 dataset "Solar_Zenith_Angle": shape (), type "<f4">
     <HDF5 dataset "ATCOR_Input_file": shape (), type "|O">
     <HDF5 dataset "ATCOR_Processing_Log": shape (), type "|O">
+    <HDF5 dataset "BRDF_COEFFS_JSON_for_Hytools": shape (), type "|O">
+    <HDF5 dataset "BRDF_Config_JSON_for_Hytools": shape (), type "|O">
     <HDF5 dataset "Shadow_Processing_Log": shape (), type "|O">
     <HDF5 dataset "Skyview_Processing_Log": shape (), type "|O">
     <HDF5 dataset "Solar_Azimuth_Angle": shape (), type "<f4">
     <HDF5 dataset "Solar_Zenith_Angle": shape (), type "<f4">
     <HDF5 dataset "ATCOR_Input_file": shape (), type "|O">
     <HDF5 dataset "ATCOR_Processing_Log": shape (), type "|O">
+    <HDF5 dataset "BRDF_COEFFS_JSON_for_Hytools": shape (), type "|O">
+    <HDF5 dataset "BRDF_Config_JSON_for_Hytools": shape (), type "|O">
     <HDF5 dataset "Shadow_Processing_Log": shape (), type "|O">
     <HDF5 dataset "Skyview_Processing_Log": shape (), type "|O">
     <HDF5 dataset "Solar_Azimuth_Angle": shape (), type "<f4">
     <HDF5 dataset "Solar_Zenith_Angle": shape (), type "<f4">
-    <HDF5 dataset "FWHM": shape (426,), type "<f4">
-    <HDF5 dataset "Wavelength": shape (426,), type "<f4">
-    <HDF5 dataset "to-sensor_azimuth_angle": shape (1000, 1000), type "<f4">
-    <HDF5 dataset "to-sensor_zenith_angle": shape (1000, 1000), type "<f4">
+    <HDF5 dataset "FWHM": shape (426,), type "<f8">
+    <HDF5 dataset "Wavelength": shape (426,), type "<f8">
+    <HDF5 dataset "to-sensor_Azimuth_Angle": shape (1000, 1000), type "<f4">
+    <HDF5 dataset "to-sensor_Zenith_Angle": shape (1000, 1000), type "<f4">
     <HDF5 dataset "Reflectance_Data": shape (1000, 1000, 426), type "<i2">
     
 
@@ -284,11 +381,8 @@ This 3-D shape (1000,1000,426) corresponds to (y,x,bands), where (x,y) are the d
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/DataCube.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/DataCube.png"></a>
-    <figcaption> A "cube" showing a hyperspectral data set. Source: National Ecological Observatory Network
-    (NEON)  
-    </figcaption>
+    <figcaption> A data cube representation of a hyperspectral data set. Source: National Ecological Observatory Network (NEON)</figcaption>
 </figure>
-
 
 NEON hyperspectral data contain around 426 spectral bands, and when working with tiled data, the spatial dimensions are 1000 x 1000, where each pixel represents 1 meter. Now let's take a look at the wavelength values. First, we will extract wavelength information from the `serc_refl` variable that we created:
 
@@ -301,7 +395,7 @@ wavelengths = serc_refl['Metadata']['Spectral_Data']['Wavelength']
 print('wavelengths:',wavelengths)
 ```
 
-    wavelengths: <HDF5 dataset "Wavelength": shape (426,), type "<f4">
+    wavelengths: <HDF5 dataset "Wavelength": shape (426,), type "<f8">
     
 
 We can then use `numpy` (imported as `np`) to see the minimum and maximum wavelength values:
@@ -309,12 +403,12 @@ We can then use `numpy` (imported as `np`) to see the minimum and maximum wavele
 
 ```python
 # Display min & max wavelengths
-print('min wavelength:', np.amin(wavelengths),'nm')
-print('max wavelength:', np.amax(wavelengths),'nm')
+print('min wavelength:', round(np.amin(wavelengths),2),'nm')
+print('max wavelength:', round(np.amax(wavelengths),2),'nm')
 ```
 
-    min wavelength: 383.884 nm
-    max wavelength: 2512.1804 nm
+    min wavelength: 381.86 nm
+    max wavelength: 2511.32 nm
     
 
 Finally, we can determine the band widths (distance between center bands of two adjacent bands). Let's try this for the first two bands and the last two bands. Remember that Python uses 0-based indexing (`[0]` represents the first value in an array), and note that you can also use negative numbers to splice values from the end of an array (`[-1]` represents the last value in an array).
@@ -322,12 +416,12 @@ Finally, we can determine the band widths (distance between center bands of two 
 
 ```python
 #show the band widths between the first 2 bands and last 2 bands 
-print('band width between first 2 bands =',(wavelengths[1]-wavelengths[0]),'nm')
-print('band width between last 2 bands =',(wavelengths[-1]-wavelengths[-2]),'nm')
+print('band width between first 2 bands =',round(wavelengths[1]-wavelengths[0],3),'nm')
+print('band width between last 2 bands =',round(wavelengths[-1]-wavelengths[-2],3),'nm')
 ```
 
-    band width between first 2 bands = 5.0076904 nm
-    band width between last 2 bands = 5.0078125 nm
+    band width between first 2 bands = 5.01 nm
+    band width between last 2 bands = 5.01 nm
     
 
 The center wavelengths recorded in this hyperspectral cube range from 383.88 - 2512.18 nm, and each band covers a range of ~5 nm. Now let's extract spatial information, which is stored under `SERC/Reflectance/Metadata/Coordinate_System/Map_Info`:
@@ -335,23 +429,13 @@ The center wavelengths recorded in this hyperspectral cube range from 383.88 - 2
 
 ```python
 serc_mapInfo = serc_refl['Metadata']['Coordinate_System']['Map_Info']
-print('SERC Map Info:',serc_mapInfo)
+print('SERC Map Info:')
+print(serc_mapInfo[()].decode("utf-8")) # use decode to display the map info as a string
 ```
 
-    SERC Map Info: <HDF5 dataset "Map_Info": shape (), type "|O">
+    SERC Map Info:
+    UTM,  1.000,  1.000,  368000.000,  4307000.000,  1.000000e+00,  1.000000e+00,  18,  North,  WGS-84,  units=Meters, 0
     
-
-
-```python
-serc_mapInfo[()]
-```
-
-
-
-
-    b'UTM,  1.000,  1.000,       368000.00,       4307000.0,       1.0000000,       1.0000000,  18,  North,  WGS-84,  units=Meters, 0'
-
-
 
 **Understanding the output:**
 
@@ -365,11 +449,7 @@ Here we can spatial information about the reflectance data. Below is a break dow
 - `N` - UTM hemisphere (North for all NEON sites)
 - `WGS-84` - reference ellipoid
 
-Note that the letter `b` that appears before UTM signifies that the variable-length string data is stored in **b**inary format when it is written to the hdf5 file. Don't worry about it for now, as we will convert the numerical data we need into floating point numbers. For more information on hdf5 strings read the <a href="http://docs.h5py.org/en/latest/strings.html" target="_blank">h5py documentation</a>. 
-
-You can display this in as a string as follows:
-
-`serc_mapInfo[()].decode("utf-8")`
+Note that if you leave out hte `decode."utf-8"`, the letter `b` will appear before UTM, which signifies that the variable-length string data is stored in **b**inary format when it is written to the hdf5 file. Don't worry about it for now, as we will convert the numerical data we need into floating point numbers. For more information on hdf5 strings read the <a href="http://docs.h5py.org/en/latest/strings.html" target="_blank">h5py documentation</a>. 
 
 Let's extract relevant information from the `Map_Info` metadata to define the spatial extent of this dataset. To do this, we can use the `split` method to break up this string into separate values:
 
@@ -386,7 +466,7 @@ mapInfo_split = mapInfo_string.split(",")
 print(mapInfo_split)
 ```
 
-    ['UTM', '  1.000', '  1.000', '       368000.00', '       4307000.0', '       1.0000000', '       1.0000000', '  18', '  North', '  WGS-84', '  units=Meters', ' 0']
+    ['UTM', '  1.000', '  1.000', '  368000.000', '  4307000.000', '  1.000000e+00', '  1.000000e+00', '  18', '  North', '  WGS-84', '  units=Meters', ' 0']
     
 
 Now we can extract the spatial information we need from the map info values, convert them to the appropriate data type (float) and store it in a way that will enable us to access and apply it later when we want to plot the data: 
@@ -441,13 +521,13 @@ print('Band 56 Reflectance:\n',b56)
     b56 type: <class 'numpy.ndarray'>
     b56 shape: (1000, 1000)
     Band 56 Reflectance:
-     [[1045.  954.  926. ...  399.  386.  461.]
-     [ 877.  877.  993. ...  341.  379.  428.]
-     [ 768. 1849. 1932. ...  369.  380.  384.]
+     [[ 628.  647.  768. ...  464.  443.  384.]
+     [ 483.  580.  699. ...  424.  476.  466.]
+     [ 191.  471.  664. ...  422.  452.  472.]
      ...
-     [ 337.  254.  252. ...  421.  971. 1191.]
-     [ 340.  341.  329. ...  708. 1102. 1449.]
-     [ 334.  345.  341. ...  685.  862. 1382.]]
+     [ 291.  195.  229. ... 1188. 1293. 1178.]
+     [ 194.  218.  203. ... 1100. 1235. 1244.]
+     [ 164.  192.  216. ... 1106. 1230. 1260.]]
     
 
 Here we can see that we extracted a 2-D array (1000 x 1000) of the scaled reflectance data corresponding to the wavelength band 56. Before we can use the data, we need to clean it up a little. We'll show how to do this below. 
@@ -480,15 +560,15 @@ print('Cleaned Band 56 Reflectance:\n',b56)
 ```
 
     Scale Factor: 10000.0
-    Data Ignore Value: -9999.0
+    Data Ignore Value: -9999
     Cleaned Band 56 Reflectance:
-     [[0.1045 0.0954 0.0926 ... 0.0399 0.0386 0.0461]
-     [0.0877 0.0877 0.0993 ... 0.0341 0.0379 0.0428]
-     [0.0768 0.1849 0.1932 ... 0.0369 0.038  0.0384]
+     [[0.0628 0.0647 0.0768 ... 0.0464 0.0443 0.0384]
+     [0.0483 0.058  0.0699 ... 0.0424 0.0476 0.0466]
+     [0.0191 0.0471 0.0664 ... 0.0422 0.0452 0.0472]
      ...
-     [0.0337 0.0254 0.0252 ... 0.0421 0.0971 0.1191]
-     [0.034  0.0341 0.0329 ... 0.0708 0.1102 0.1449]
-     [0.0334 0.0345 0.0341 ... 0.0685 0.0862 0.1382]]
+     [0.0291 0.0195 0.0229 ... 0.1188 0.1293 0.1178]
+     [0.0194 0.0218 0.0203 ... 0.11   0.1235 0.1244]
+     [0.0164 0.0192 0.0216 ... 0.1106 0.123  0.126 ]]
     
 
 ## Plot single reflectance band
@@ -497,12 +577,12 @@ Now we can plot this band using the Python package ```matplotlib.pyplot```, whic
 
 
 ```python
-serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys') 
+serc_plot = plt.imshow(b56, extent=serc_ext, cmap='Greys') 
 ```
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5_files/intro-l3-refl-h5_47_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5_files/intro-l3-refl-h5_57_0.png)
     
 
 
@@ -519,7 +599,7 @@ plt.hist(b56[~np.isnan(b56)],50); #50 signifies the # of bins
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5_files/intro-l3-refl-h5_50_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5_files/intro-l3-refl-h5_60_0.png)
     
 
 
@@ -527,17 +607,15 @@ We can see that most of the reflectance values are < 0.4. In order to show more 
 
 
 ```python
-serc_plot = plt.imshow(b56,extent=serc_ext,cmap='Greys',clim=(0,0.4)) 
+serc_plot = plt.imshow(b56, extent=serc_ext, cmap='Greys', clim=(0, 0.2)) 
 plt.title('SERC Band 56 Reflectance');
 ```
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5_files/intro-l3-refl-h5_52_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5/intro-l3-refl-h5_files/intro-l3-refl-h5_62_0.png)
     
 
-
-Here you can see that adjusting the colorlimit displays features (eg. roads, buildings) much better than when we set the colormap limits to the entire range of reflectance values. 
 
 ## Optional Exercise: Image Processing -- Contrast Stretch & Histogram Equalization 
 
@@ -548,14 +626,12 @@ Histogram equalization is a method in image processing of contrast adjustment us
 The following code is adapted from scikit-image's tutorial
 <a href="http://scikit-image.org/docs/stable/auto_examples/color_exposure/plot_equalize.html#sphx-glr-auto-examples-color-exposure-plot-equalize-py" target="_blank"> Histogram Equalization</a>.
 
-Below we demonstrate a widget to interactively explore different linear contrast stretches:
-
-### Explore the contrast stretch feature interactively using IPython widgets: 
+Below we demonstrate how you can create a widget to interactively explore different linear contrast stretches.
 
 
 ```python
 from skimage import exposure
-from IPython.html.widgets import *
+from ipywidgets import interact
 
 def linearStretch(percent):
     pLow, pHigh = np.percentile(b56[~np.isnan(b56)], (percent,100-percent))
@@ -573,3 +649,9 @@ interact(linearStretch,percent=(0,50,1));
 
     interactive(children=(IntSlider(value=25, description='percent', max=50), Output()), _dom_classes=('widget-int…
 
+
+Here you can see that adjusting the colorlimit displays features (eg. roads, buildings) much better than when we set the colormap limits to the entire range of reflectance values. 
+
+## Recap
+
+In this lesson, you learned to use several of the AOP-focused functions in the `neonutilities` package to find available AOP data, see the spatial extents for the reflectance data product in the year of interest. You then learned how to download a single tile of the bidirectional reflectance data using `nu.by_tile_aop`, explored the contents of the h5 reflectance file, and carried out some basic pre-processing and visualization steps. Great job!
