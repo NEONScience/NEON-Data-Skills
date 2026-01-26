@@ -4,6 +4,12 @@ output: html_fragment
 dateCreated: '2024-12-31'
 ---
 
+```{r setup, include=FALSE}
+library(arrow)
+library(reticulate)
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 An extremely common task for remote sensing researchers is to connect 
 remote sensing data with data on the ground. This might be a research 
@@ -116,6 +122,7 @@ import rasterio
 from rasterio import sample
 from rasterio.enums import Resampling
 import requests
+import time
 import os
 
 ```
@@ -213,28 +220,35 @@ vegmapall = veglist["vst_mappingandtagging"]
 vegmap = vegmapall.loc[vegmapall["pointID"] != ""]
 vegmap = vegmap.reindex()
 vegmap["points"] = vegmap["namedLocation"] + "." + vegmap["pointID"]
-vegpoints = list(set(list(vegmap["points"])))
+veg_points = list(set(list(vegmap["points"])))
 
 easting = []
 northing = []
-coordinateUncertainty = []
-elevationUncertainty = []
-for i in vegpoints:
+coord_uncertainty = []
+elev_uncertainty = []
+drop_points = []
+for i in veg_points:
+    time.sleep(1)
     vres = requests.get("https://data.neonscience.org/api/v0/locations/"+i)
-    vreslist = vres.json()
-    easting.append(vreslist["data"]["locationUtmEasting"])
-    northing.append(vreslist["data"]["locationUtmNorthing"])
-    props = pd.DataFrame.from_dict(vreslist["data"]["locationProperties"])
-    cuprop = props.loc[props["locationPropertyName"]=="Value for Coordinate uncertainty"]["locationPropertyValue"]
-    coordinateUncertainty.append(cuprop[cuprop.index[0]])
-    euprop = props.loc[props["locationPropertyName"]=="Value for Elevation uncertainty"]["locationPropertyValue"]
-    elevationUncertainty.append(euprop[euprop.index[0]])
+    vres_json = vres.json()
+    if vres_json["data"] is not None:
+        easting.append(vres_json["data"]["locationUtmEasting"])
+        northing.append(vres_json["data"]["locationUtmNorthing"])
+        props = pd.DataFrame.from_dict(vres_json["data"]["locationProperties"])
+        cu = props.loc[props["locationPropertyName"] == "Value for Coordinate uncertainty"]["locationPropertyValue"]
+        coord_uncertainty.append(cu[cu.index[0]])
+        eu = props.loc[props["locationPropertyName"] == "Value for Elevation uncertainty"]["locationPropertyValue"]
+        elev_uncertainty.append(eu[eu.index[0]])
+    else:
+        drop_points.append(i)
 
-ptdct = dict(points=vegpoints, 
+veg_points_clean = [v for v in veg_points if v not in drop_points]
+
+ptdct = dict(points=veg_points_clean, 
              easting=easting, 
              northing=northing,
-             coordinateUncertainty=coordinateUncertainty,
-             elevationUncertainty=elevationUncertainty)
+             coordinateUncertainty=coord_uncertainty,
+             elevationUncertainty=elev_uncertainty)
 ptfrm = pd.DataFrame.from_dict(ptdct)
 ptfrm.set_index("points", inplace=True)
 

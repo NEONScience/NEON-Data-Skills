@@ -101,9 +101,9 @@ The simplest way to access site event data is to download all the events for a p
 ``` {r load-data, results="hide"}
 
 events <- loadByProduct(dpID="DP1.10111.001", 
-                     site="JERC",
-                     check.size=F,
-                     include.provisional=T)
+                        site="JERC",
+                        check.size=F,
+                        include.provisional=T)
 
 ```
 
@@ -147,5 +147,22 @@ Now we have a list of NEON named locations. We can see if the plot(s) we are wor
 
 But what if we're interested in a broader picture? Maybe we're working with remote sensing data, and we want to get a sense of the overall burned area.
 
+### Stay tuned! There is an R package in the works that converts these plot locations to a shapefile
+
+Keep in mind that we have limited information available about the impact of events outside of NEON sampling locations. A patchy event like a small wildfire may affect locations very unevenly.
+
+## Downloading event data by event type
+
+In many cases, you may be interested not in the full range of disturbances at a given site, but in a particular type of disturbance across sites. For example, if you are studying fires in the western US, you probably know that NEON sites have burned, but you may not know the specific fires at specific sites. Let's look for all the fires that have affected NEON sites in California. We can do this using the `byEventSIM()` function:
+
+``` {r load-data, results="hide"}
+
+fires <- byEventSIM(eventType="fire", 
+                    site=c("SJER","SOAP","BIGC","TEAK","TECR"),
+                    include.provisional=T)
+
+```
+
+The set of files returned by this function is the same as `loadByProduct()`, but the data in `sim_eventData` are filtered down to only the events where the `eventType` is `"fire"`.
 
 
