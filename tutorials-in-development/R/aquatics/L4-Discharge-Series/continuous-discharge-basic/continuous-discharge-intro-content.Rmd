@@ -32,6 +32,17 @@ You can follow either the R or Python code throughout this tutorial.
 -   For R users, we recommend using R version 4+ and RStudio.
 -   For Python users, we recommend using Python 3.9+.
 
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("C:/Users/nickerson/AppData/Local/Programs/Python/Python312/python.exe", required = TRUE)
+reticulate::py_config()
+# reticulate::py_install(c("neonutilities"))
+# py_run_string("import neonutilities; print(neonutilities.__version__)")
+# reticulate::py_discover_config()
+# reticulate::py_module_available("neonutilities")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ## Set up: Install Packages {.tabset}
 
 Packages only need to be installed once, you can skip this step after
@@ -74,14 +85,14 @@ pip install matplotlib
 
 ### R
 
-```{r R-library, results="hide", message=FALSE}
+```{r R-library, results="hide", message=FALSE, warning=FALSE}
 library(neonUtilities)
 library(tidyverse)
 ```
 
 ### Python
 
-```{python p-import, results="hide", message=FALSE}
+```{python p-import, results="hide", message=FALSE, warning=FALSE}
 import os
 import pandas as pd
 import neonutilities as nu
@@ -98,13 +109,13 @@ for instructions on obtaining a NEON PAT.
 
 ### R
 
-```{r R-envvar, results="hide", message=FALSE}
+```{r R-envvar, results="hide", message=FALSE, warning=FALSE}
 Sys.setenv(NEON_PAT="YOUR_PAT")
 ```
 
 ### Python
 
-```{python p-envvar, results="hide", message=FALSE}
+```{python p-envvar, results="hide", message=FALSE, warning=FALSE}
 os.environ.setdefault('NEON_PAT',"YOUR_PAT")
 ```
 
@@ -135,7 +146,7 @@ tutorial on the NEON website.
 
 ### R
 
-```{r R-download, results="hide", message=FALSE}
+```{r R-download, results="hide", message=FALSE, warning=FALSE}
 # Download continuous discharge data across the lifetime of a site
 csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                       site="HOPB",
@@ -146,12 +157,35 @@ csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                       package='expanded',
                                       check.size = F,
                                       token=Sys.getenv("NEON_PAT"))
-
 ```
 
 ### Python
 
-```{python p-download, results="hide", message=FALSE}
+```{python p-download-hidden, include=FALSE}
+from pathlib import Path
+import pandas as pd
+def read_files_to_dict(directory):
+    data = {}
+
+    for file in Path(directory).iterdir():
+        key = file.stem  # filename without extension
+
+        if file.suffix == ".csv":
+            data[key] = pd.read_csv(file)
+
+        elif file.suffix == ".txt":
+            with open(file, "r") as f:
+                data[key] = f.read()
+
+        else:
+            # Optional: skip or warn
+            print(f"Skipping unsupported file: {file.name}")
+
+    return data
+csd_py = read_files_to_dict("C:/Users/nickerson/Downloads/python-files/filesToStack00130/stackedFiles")
+```
+
+```{python p-download, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download continuous discharge data across the lifetime of a site
 csd_py = nu.load_by_product(dpid="DP4.00130.001",
                             site="HOPB",
@@ -180,14 +214,14 @@ package.
 
 #### R
 
-```{r R-files, results="hide", message=FALSE}
+```{r R-files, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 names(csd_r)
 ```
 
 #### Python
 
-```{python p-files, results="hide", message=FALSE}
+```{python p-files, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 csd_py.keys()
 ```
@@ -274,7 +308,7 @@ package.
 
 #### R
 
-```{r R-tables, results="hide", message=FALSE}
+```{r R-tables, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in each of the time series tables to view structure
 print("First 5 rows of csd_continuousDischarge")
 head(csd_r$csd_continuousDischarge)
@@ -285,7 +319,7 @@ head(csd_r$csd_15_min)
 
 #### Python
 
-```{python p-tables, results="hide", message=FALSE}
+```{python p-tables, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in each of the time series tables to view structure
 print("First 5 rows of csd_continuousDischarge")
 print(csd_py['csd_continuousDischarge'].head())
@@ -309,16 +343,16 @@ fields, data types, and units used in this data product.
 
 #### R
 
-```{r R-variables, results="hide", message=FALSE}
+```{r R-variables, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
 View(csd_r$variables_00130)
 ```
 
 #### Python
 
-```{python p-variables, results="hide", message=FALSE}
+```{python p-variables, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
-display(csd_py['variables_00130'])
+print(csd_py['variables_00130'])
 ```
 
 ###  {.unnumbered}
@@ -369,7 +403,7 @@ headers of the aggregated table we create to fit those of `csd_15_min`.
 
 #### R
 
-```{r R-aggregate, results="hide", message=FALSE}
+```{r R-aggregate, results="hide", message=FALSE, warning=FALSE}
 # Use the tidyverse suite to round, group, and summarize data
 # Note: new column names match those published in 'csd_15_min'
 csd_15_min_agg <- csd_r$csd_continuousDischarge%>%
@@ -407,7 +441,7 @@ csd_15_min_agg$dischargeFinalQFSciRvw[
 
 #### Python
 
-```{python p-aggregate, results="hide", message=FALSE}
+```{python p-aggregate, results="hide", message=FALSE, warning=FALSE}
 # Use pandas to round, group, and summarize data
 # Note: new column names match those published in 'csd_15_min'
 
@@ -456,7 +490,7 @@ record aggregated to a 15-minute interval.
 
 #### R
 
-```{r R-join, results="hide", message=FALSE}
+```{r R-join, results="hide", message=FALSE, warning=FALSE}
 # Merge aggregated table created earlier with csd_15_min from the download
 csd_15_min_all <- merge(csd_15_min_agg,
                         csd_r$csd_15_min,
@@ -468,7 +502,15 @@ csd_15_min_all <- csd_15_min_all[order(csd_15_min_all$endDateTime),]
 
 #### Python
 
-```{python p-join, results="hide", message=FALSE}
+```{python p-join, results="hide", message=FALSE, warning=FALSE}
+# Align datetime fields in each data frame
+csd_15_min_agg['endDateTime'] = pd.to_datetime(
+    csd_15_min_agg['endDateTime'], utc=True
+)
+csd_py['csd_15_min']['endDateTime'] = pd.to_datetime(
+    csd_py['csd_15_min']['endDateTime'], utc=True
+)
+
 # Merge aggregated table created earlier with csd_15_min from the download
 csd_15_min_all = pd.merge(csd_15_min_agg,
                           csd_py['csd_15_min'],
@@ -499,7 +541,7 @@ series to get a better visual of the associated uncertainty.
 
 ### R
 
-```{r R-plot-stage, results="hide", message=FALSE, warning=FALSE}
+```{r R-plot-stage, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use the ggplot package in tidyverse to plot continuous stage and uncertainty
 
 # Plot 1: Entire Period of Record
@@ -531,7 +573,7 @@ csd_15_min_all%>%
 
 ### Python
 
-```{python p-plot-stage, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-stage, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use matplotlib to plot continuous stage and uncertainty
 
 # Plot 1: Entire Period of Record
@@ -595,7 +637,7 @@ series to get a better visual of the associated uncertainties.
 
 ### R
 
-```{r R-plot-discharge, results="hide", message=FALSE, warning=FALSE}
+```{r R-plot-discharge, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use the ggplot package in tidyverse to plot continuous discharge and uncertainty
 
 # Plot 1: Entire Period of Record
@@ -633,7 +675,7 @@ csd_15_min_all%>%
 
 ### Python
 
-```{python p-plot-discharge, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-discharge, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use matplotlib to plot continuous discharge and uncertainty
 
 # Plot 1: Entire Period of Record
