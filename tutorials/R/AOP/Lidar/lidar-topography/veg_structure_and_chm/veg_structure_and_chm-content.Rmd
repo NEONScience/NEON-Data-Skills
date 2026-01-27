@@ -73,9 +73,10 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 ```
 
 Now load packages. This needs to be done every time you run code. 
-We'll also set a working directory for data downloads.
+We'll also set a working directory for data downloads (adapt the 
+working directory path for your system).
 
-```{r load-packages, results="hide"}
+```{r load-packages, results="hide", message=FALSE}
 
 library(terra)
 library(neonUtilities)
@@ -84,8 +85,6 @@ library(geoNEON)
 
 options(stringsAsFactors=F)
 
-# set working directory
-# adapt directory path for your system
 wd <- "~/data"
 
 ```
@@ -150,7 +149,7 @@ Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-shee
 for the `neonUtilities` package for more details and the complete index of 
 possible function inputs.
 
-```{r veglist, results="hide"}
+```{r veglist, results="hide", message=FALSE}
 
 veglist <- loadByProduct(dpID="DP1.10098.001", 
                          site="WREF", 
@@ -227,6 +226,11 @@ northing = []
 coord_uncertainty = []
 elev_uncertainty = []
 drop_points = []
+
+```
+
+```{python p-vegmap2}
+
 for i in veg_points:
     time.sleep(1)
     vres = requests.get("https://data.neonscience.org/api/v0/locations/"+i)
@@ -243,6 +247,10 @@ for i in veg_points:
         drop_points.append(i)
 
 veg_points_clean = [v for v in veg_points if v not in drop_points]
+
+```
+
+```{python p-vegmap3}
 
 ptdct = dict(points=veg_points_clean, 
              easting=easting, 
@@ -443,7 +451,7 @@ in R and the `rasterio` and `rioxarray`` packages in Python.
 
 ### R
 
-```{r get-chm, results="hide"}
+```{r get-chm, results="hide", message=FALSE}
 
 byTileAOP(dpID="DP3.30015.001", site="WREF", year=2017, 
           easting=veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
