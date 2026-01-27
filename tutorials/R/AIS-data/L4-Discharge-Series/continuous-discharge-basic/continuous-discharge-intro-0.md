@@ -21,8 +21,6 @@ urlTitle: continuous-discharge-intro
 <!--html_preserve-->
 
 
-<div id="introduction-to-the-neon-continuous-discharge-data-product" class="section level1">
-<h1>Introduction to the NEON Continuous Discharge Data Product</h1>
 <div id="ds-objectives" markdown="1">
 <div id="objectives" class="section level2">
 <h2>Objectives</h2>
@@ -402,10 +400,11 @@ methods of correction can be found in the ATBD for this data product
 is to aggregate the uncorrected 1-minute
 <code>csd_continuousDischarge</code> data to a 15-minute interval. We
 will use this opportunity to conform the column headers of the
-aggregated table we create to fit those of <code>csd_15_min</code>, and convert quality flags to either 1 (flagged) or NA.</p>
+aggregated table we create to fit those of <code>csd_15_min</code>, and
+to convert quality flags to either 1 (flagged) or NA.</p>
 <div id="r-7" class="section level4">
 <h4>R</h4>
-<pre class="r"><code># Note: new column names match those published in &#39;csd_15_min&#39;
+<pre class="r"><code># Round, group, and summarize data, and update column names to match csd_15_min
 csd_15_min_agg &lt;- csd_r$csd_continuousDischarge%&gt;%
   mutate(endDateTime=floor_date(endDate,&quot;15 min&quot;))%&gt;%
   group_by(siteID,endDateTime)%&gt;%
@@ -427,7 +426,6 @@ csd_15_min_agg &lt;- csd_r$csd_continuousDischarge%&gt;%
                    dischargeFinalQFSciRvw=sum(dischargeFinalQFSciRvw==1,
                                               na.rm = T))
 
-
 csd_15_min_agg$dischargeFinalQF[
   csd_15_min_agg$dischargeFinalQF&gt;0
 ] &lt;- 1
@@ -440,7 +438,7 @@ csd_15_min_agg$dischargeFinalQFSciRvw[
 </div>
 <div id="python-7" class="section level4">
 <h4>Python</h4>
-<pre class="python"><code># Note: new column names match those published in &#39;csd_15_min&#39;
+<pre class="python"><code># Round, group, and summarize data, and update column names to match csd_15_min
 
 csd_py[&#39;csd_continuousDischarge&#39;][&#39;endDate&#39;] = pd.to_datetime(csd_py[&#39;csd_continuousDischarge&#39;][&#39;endDate&#39;])
 csd_py[&#39;csd_continuousDischarge&#39;][&#39;endDateTime&#39;] = csd_py[&#39;csd_continuousDischarge&#39;][&#39;endDate&#39;].dt.round(&#39;15min&#39;)
@@ -484,7 +482,7 @@ representing the entire period of record aggregated to a 15-minute
 interval.</p>
 <div id="r-8" class="section level4">
 <h4>R</h4>
-<pre class="r"><code># Merge aggregated table created earlier with csd_15_min from the download, and order the timeseries data by endDateTime
+<pre class="r"><code># Merge aggregated table created earlier with csd_15_min from the download
 csd_15_min_all &lt;- merge(csd_15_min_agg,
                         csd_r$csd_15_min,
                         all = T)
@@ -703,5 +701,4 @@ plt.show()</code></pre>
 </div>
 <div id="section-11" class="section level2 unnumbered">
 <h2 class="unnumbered"></h2>
-</div>
 </div><!--/html_preserve-->
