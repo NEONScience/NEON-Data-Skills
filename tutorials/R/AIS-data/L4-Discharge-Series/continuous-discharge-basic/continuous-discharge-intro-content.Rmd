@@ -7,8 +7,6 @@ editor_options:
     wrap: 72
 ---
 
-# Introduction to the NEON Continuous Discharge Data Product
-
 ::: {#ds-objectives markdown="1"}
 ## Objectives
 
@@ -396,13 +394,13 @@ be found in the ATBD for this data product (NEON.DOC.005403)
 The first step to generating a continuous period of record for a site is
 to aggregate the uncorrected 1-minute `csd_continuousDischarge` data to
 a 15-minute interval. We will use this opportunity to conform the column
-headers of the aggregated table we create to fit those of `csd_15_min`.
+headers of the aggregated table we create to fit those of `csd_15_min`, 
+and to convert quality flags to either 1 (flagged) or NA.
 
 #### R
 
 ```{r R-aggregate, results="hide", message=FALSE, warning=FALSE}
-# Use the tidyverse suite to round, group, and summarize data
-# Note: new column names match those published in 'csd_15_min'
+# Round, group, and summarize data, and update column names to match csd_15_min
 csd_15_min_agg <- csd_r$csd_continuousDischarge%>%
   mutate(endDateTime=floor_date(endDate,"15 min"))%>%
   group_by(siteID,endDateTime)%>%
@@ -424,7 +422,6 @@ csd_15_min_agg <- csd_r$csd_continuousDischarge%>%
                    dischargeFinalQFSciRvw=sum(dischargeFinalQFSciRvw==1,
                                               na.rm = T))
 
-# Convert quality flag fields to 1 or NA
 csd_15_min_agg$dischargeFinalQF[
   csd_15_min_agg$dischargeFinalQF>0
 ] <- 1
@@ -439,14 +436,11 @@ csd_15_min_agg$dischargeFinalQFSciRvw[
 #### Python
 
 ```{python p-aggregate, results="hide", message=FALSE, warning=FALSE}
-# Use pandas to round, group, and summarize data
-# Note: new column names match those published in 'csd_15_min'
+# Round, group, and summarize data, and update column names to match csd_15_min
 
-# Convert endDate to datetime and round to 15 minutes
 csd_py['csd_continuousDischarge']['endDate'] = pd.to_datetime(csd_py['csd_continuousDischarge']['endDate'])
 csd_py['csd_continuousDischarge']['endDateTime'] = csd_py['csd_continuousDischarge']['endDate'].dt.round('15min')
 
-# Group by siteID and endDateTime, then calculate aggregations
 csd_15_min_agg = csd_py['csd_continuousDischarge'].groupby(['siteID', 'endDateTime']).agg({
     'equivalentStage': 'mean',
     'stageUnc': 'mean',
@@ -459,7 +453,6 @@ csd_15_min_agg = csd_py['csd_continuousDischarge'].groupby(['siteID', 'endDateTi
     'dischargeFinalQFSciRvw': lambda x: (x == 1).sum()
 }).reset_index()
 
-# Rename columns to match csd_15_min format
 csd_15_min_agg = csd_15_min_agg.rename(columns={
     'equivalentStage': 'stageContinuous',
     'stageUnc': 'stageTotalUncert',
@@ -470,7 +463,6 @@ csd_15_min_agg = csd_15_min_agg.rename(columns={
     'withRemnUncQLower2Std': 'dischargeLowerRemnUncert'
 })
 
-# Convert quality flag fields to 1 or NaN
 csd_15_min_agg.loc[csd_15_min_agg['dischargeFinalQF'] > 0, 'dischargeFinalQF'] = 1
 csd_15_min_agg.loc[csd_15_min_agg['dischargeFinalQFSciRvw'] > 0, 'dischargeFinalQFSciRvw'] = 1
 csd_15_min_agg.loc[csd_15_min_agg['dischargeFinalQFSciRvw'] == 0, 'dischargeFinalQFSciRvw'] = pd.NA
@@ -493,7 +485,6 @@ csd_15_min_all <- merge(csd_15_min_agg,
                         csd_r$csd_15_min,
                         all = T)
 
-# Order the timeseries data by endDateTime
 csd_15_min_all <- csd_15_min_all[order(csd_15_min_all$endDateTime),]
 ```
 
@@ -508,12 +499,10 @@ csd_py['csd_15_min']['endDateTime'] = pd.to_datetime(
     csd_py['csd_15_min']['endDateTime'], utc=True
 )
 
-# Merge aggregated table created earlier with csd_15_min from the download
 csd_15_min_all = pd.merge(csd_15_min_agg,
                           csd_py['csd_15_min'],
                           how='outer')
 
-# Order the timeseries data by endDateTime
 csd_15_min_all = csd_15_min_all.sort_values(by='endDateTime')
 ```
 
@@ -541,7 +530,6 @@ series to get a better visual of the associated uncertainty.
 ```{r R-plot-stage, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use the ggplot package in tidyverse to plot continuous stage and uncertainty
 
-# Plot 1: Entire Period of Record
 csd_15_min_all%>%
   ggplot(aes(x=endDateTime))+
   geom_ribbon(aes(ymin=stageContinuous-stageTotalUncert,
@@ -573,7 +561,6 @@ csd_15_min_all%>%
 ```{python p-plot-stage, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use matplotlib to plot continuous stage and uncertainty
 
-# Plot 1: Entire Period of Record
 fig, ax = plt.subplots(figsize=(12, 6))
 ax.fill_between(csd_15_min_all['endDateTime'], 
                 csd_15_min_all['stageContinuous'] - csd_15_min_all['stageTotalUncert'],
@@ -637,7 +624,6 @@ series to get a better visual of the associated uncertainties.
 ```{r R-plot-discharge, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use the ggplot package in tidyverse to plot continuous discharge and uncertainty
 
-# Plot 1: Entire Period of Record
 csd_15_min_all%>%
   ggplot(aes(x=endDateTime))+
   geom_ribbon(aes(ymin=dischargeLowerRemnUncert,
@@ -675,7 +661,6 @@ csd_15_min_all%>%
 ```{python p-plot-discharge, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
 # Use matplotlib to plot continuous discharge and uncertainty
 
-# Plot 1: Entire Period of Record
 fig, ax = plt.subplots(figsize=(12, 6))
 ax.fill_between(csd_15_min_all['endDateTime'], 
                 csd_15_min_all['dischargeLowerRemnUncert'],
