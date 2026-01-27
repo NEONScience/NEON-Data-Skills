@@ -7,8 +7,6 @@ editor_options:
     wrap: 72
 ---
 
-This tutorial covers...
-
 # Introduction to the NEON Continuous Discharge Data Product
 
 ::: {#ds-objectives markdown="1"}
@@ -33,8 +31,8 @@ You can follow either the R or Python code throughout this tutorial.
 -   For Python users, we recommend using Python 3.9+.
 
 ```{r setup, include=FALSE}
+library(arrow)
 library(reticulate)
-use_python("C:/Users/nickerson/AppData/Local/Programs/Python/Python312/python.exe", required = TRUE)
 reticulate::py_config()
 # reticulate::py_install(c("neonutilities"))
 # py_run_string("import neonutilities; print(neonutilities.__version__)")
@@ -101,22 +99,21 @@ import matplotlib.pyplot as plt
 
 ##  {.unnumbered}
 
-## Set NEON Data Portal Personal Access Token (PAT) {.tabset}
+## Set NEON Data Portal API Token {.tabset}
 
-It is recommended that NEON data users have a NEON Data Portal personal
-access token (PAT) set as an environment variable. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial.</a>
-for instructions on obtaining a NEON PAT.
+It is recommended that NEON data users have a NEON Data Portal API token set as an environment variable. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial.</a>
+for instructions on obtaining a NEON API token.
 
 ### R
 
 ```{r R-envvar, results="hide", message=FALSE, warning=FALSE}
-Sys.setenv(NEON_PAT="YOUR_PAT")
+Sys.setenv(NEON_PAT="YOUR_API_TOKEN_HERE")
 ```
 
 ### Python
 
 ```{python p-envvar, results="hide", message=FALSE, warning=FALSE}
-os.environ.setdefault('NEON_PAT',"YOUR_PAT")
+os.environ.setdefault('NEON_PAT',"YOUR_API_TOKEN_HERE")
 ```
 
 ##  {.unnumbered}
@@ -127,7 +124,7 @@ In this tutorial, we will focus on a single site, Lower Hop Brook (HOPB)
 in NEON Domain 01, but the workflow can be replicated for any site at
 which continuous discharge is published by changing the `site` input
 variable. Visit the <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">NEON Data Portal landing page</a> 
-for this data product. for an availability chart showing all the sites 
+for this data product for an availability chart showing all the sites 
 for which Continuous discharge is published and the period of record for
 each site.
 
@@ -138,7 +135,7 @@ NEON Data Portal stores data in site\*month download packages, so date
 range inputs are formatted as YYYY-MM.
 
 For this tutorial we will also download both RELEASED and PROVISIONAL
-data by setting the `include.provisinal` argument to 'true' in the
+data by setting the `include.provisional` argument to 'true' in the
 function. To download only RELEASED data this argument should be set to
 'false'. To learn more about the differences between released and
 provisional data, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Understanding Releases and Provisional Data</a>
@@ -161,7 +158,7 @@ csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
 
 ### Python
 
-```{python p-download-hidden, include=FALSE}
+```{python p-download-hidden, eval=FALSE, include=FALSE}
 from pathlib import Path
 import pandas as pd
 def read_files_to_dict(directory):
@@ -185,7 +182,7 @@ def read_files_to_dict(directory):
 csd_py = read_files_to_dict("C:/Users/nickerson/Downloads/python-files/filesToStack00130/stackedFiles")
 ```
 
-```{python p-download, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
 # Download continuous discharge data across the lifetime of a site
 csd_py = nu.load_by_product(dpid="DP4.00130.001",
                             site="HOPB",
@@ -361,8 +358,8 @@ print(csd_py['variables_00130'])
 
 ## Wrangle Stage & Discharge Data
 
-This data product was updated from uncorrected 1 minute values to
-corrected 15-min averages. Until these updates are fully applied
+This data product was partially updated in 2026 from uncorrected 1 minute 
+values to corrected 15-min averages. Until these updates are fully applied
 backwards in time, some data wrangling and table joining are required to
 produce a continuous time series of continuous discharge. The
 publication history of this data product is explained in detail in the
@@ -407,9 +404,9 @@ headers of the aggregated table we create to fit those of `csd_15_min`.
 # Use the tidyverse suite to round, group, and summarize data
 # Note: new column names match those published in 'csd_15_min'
 csd_15_min_agg <- csd_r$csd_continuousDischarge%>%
-  dplyr::mutate(endDateTime=lubridate::floor_date(endDate,"15 min"))%>%
-  dplyr::group_by(siteID,endDateTime)%>%
-  dplyr::summarise(stageContinuous=mean(equivalentStage,
+  mutate(endDateTime=floor_date(endDate,"15 min"))%>%
+  group_by(siteID,endDateTime)%>%
+  summarise(stageContinuous=mean(equivalentStage,
                                         na.rm=T),
                    stageTotalUncert=mean(stageUnc,
                                          na.rm=T),
@@ -546,27 +543,27 @@ series to get a better visual of the associated uncertainty.
 
 # Plot 1: Entire Period of Record
 csd_15_min_all%>%
-  ggplot2::ggplot(aes(x=endDateTime))+
-  ggplot2::geom_ribbon(aes(ymin=stageContinuous-stageTotalUncert,
+  ggplot(aes(x=endDateTime))+
+  geom_ribbon(aes(ymin=stageContinuous-stageTotalUncert,
                            ymax=stageContinuous+stageTotalUncert),
                        fill="grey70")+
-  ggplot2::geom_line(aes(y=stageContinuous))+
-  ggplot2::theme_classic()+
-  ggplot2::labs(title = "Stage Series: Entire Period of Record",
+  geom_line(aes(y=stageContinuous))+
+  theme_classic()+
+  labs(title = "Stage Series: Entire Period of Record",
                 x="Date",
                 y="Stage (m)")
 
 # Plot 2: Zoomed in to March 2024
 csd_15_min_all%>%
-  dplyr::filter(endDateTime>="2024-03-01"
+  filter(endDateTime>="2024-03-01"
                 &endDateTime<"2024-04-01")%>%
-  ggplot2::ggplot(aes(x=endDateTime))+
-  ggplot2::geom_ribbon(aes(ymin=stageContinuous-stageTotalUncert,
+  ggplot(aes(x=endDateTime))+
+  geom_ribbon(aes(ymin=stageContinuous-stageTotalUncert,
                            ymax=stageContinuous+stageTotalUncert),
                        fill="grey70")+
-  ggplot2::geom_line(aes(y=stageContinuous))+
-  ggplot2::theme_classic()+
-  ggplot2::labs(title = "Stage Series: Zoomed In to View Uncertainty - 2024-03",
+  geom_line(aes(y=stageContinuous))+
+  theme_classic()+
+  labs(title = "Stage Series: Zoomed In to View Uncertainty - 2024-03",
                 x="Date",
                 y="Stage (m)")
 ```
@@ -642,33 +639,33 @@ series to get a better visual of the associated uncertainties.
 
 # Plot 1: Entire Period of Record
 csd_15_min_all%>%
-  ggplot2::ggplot(aes(x=endDateTime))+
-  ggplot2::geom_ribbon(aes(ymin=dischargeLowerRemnUncert,
+  ggplot(aes(x=endDateTime))+
+  geom_ribbon(aes(ymin=dischargeLowerRemnUncert,
                            ymax=dischargeUpperRemnUncert),
                        fill="#D55E00")+
-  ggplot2::geom_ribbon(aes(ymin=dischargeLowerParamUncert,
+  geom_ribbon(aes(ymin=dischargeLowerParamUncert,
                            ymax=dischargeUpperParamUncert),
                        fill="#E69F00")+
-  ggplot2::geom_line(aes(y=dischargeContinuous))+
-  ggplot2::theme_classic()+
-  ggplot2::labs(title = "Discharge Series: Entire Period of Record",
+  geom_line(aes(y=dischargeContinuous))+
+  theme_classic()+
+  labs(title = "Discharge Series: Entire Period of Record",
                 x="Date",
                 y="Discharge (L/s)")
 
 # Plot 2: Zoomed in to March 2024
 csd_15_min_all%>%
-  dplyr::filter(endDateTime>="2024-03-01"
+  filter(endDateTime>="2024-03-01"
                 &endDateTime<"2024-04-01")%>%
-  ggplot2::ggplot(aes(x=endDateTime))+
-  ggplot2::geom_ribbon(aes(ymin=dischargeLowerRemnUncert,
+  ggplot(aes(x=endDateTime))+
+  geom_ribbon(aes(ymin=dischargeLowerRemnUncert,
                            ymax=dischargeUpperRemnUncert),
                        fill="#D55E00")+
-  ggplot2::geom_ribbon(aes(ymin=dischargeLowerParamUncert,
+  geom_ribbon(aes(ymin=dischargeLowerParamUncert,
                            ymax=dischargeUpperParamUncert),
                        fill="#E69F00")+
-  ggplot2::geom_line(aes(y=dischargeContinuous))+
-  ggplot2::theme_classic()+
-  ggplot2::labs(title = "Discharge Series: Zoomed In to View Uncertainty - 2024-03",
+  geom_line(aes(y=dischargeContinuous))+
+  theme_classic()+
+  labs(title = "Discharge Series: Zoomed In to View Uncertainty - 2024-03",
                 x="Date",
                 y="Discharge (L/s)")
 ```
