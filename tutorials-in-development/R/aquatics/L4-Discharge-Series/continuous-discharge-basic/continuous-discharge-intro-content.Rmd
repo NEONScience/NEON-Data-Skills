@@ -1,0 +1,724 @@
+---
+title: Content for intro to continuous discharge tutorial
+output: html_fragment
+dateCreated: '2025-08-08'
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+This tutorial covers...
+
+# Introduction to the NEON Continuous Discharge Data Product
+
+::: {#ds-objectives markdown="1"}
+## Objectives
+
+After completing this activity, you will be able to:
+
+-   Download and explore the contents of the NEON Continuous discharge
+    data product (DP4.00130.001)
+-   Understand how the publication history of this data product
+    influences the tables available for download
+-   Create a single continuous time series of discharge data for a site
+    via data aggregation and table joining
+-   Plot continuous time series of stage and discharge with associated
+    uncertainties for the lifetime of a site
+
+## Things You’ll Need To Complete This Tutorial
+
+You can follow either the R or Python code throughout this tutorial.
+
+-   For R users, we recommend using R version 4+ and RStudio.
+-   For Python users, we recommend using Python 3.9+.
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("C:/Users/nickerson/AppData/Local/Programs/Python/Python312/python.exe", required = TRUE)
+reticulate::py_config()
+# reticulate::py_install(c("neonutilities"))
+# py_run_string("import neonutilities; print(neonutilities.__version__)")
+# reticulate::py_discover_config()
+# reticulate::py_module_available("neonutilities")
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Set up: Install Packages {.tabset}
+
+Packages only need to be installed once, you can skip this step after
+the first time:
+
+### R
+
+-   **neonUtilities**: Basic functions for accessing NEON data
+-   **tidyverse**: Collection of R packages designed for data science
+
+```{r install, eval=FALSE}
+install.packages("neonUtilities")
+install.packages("tidyverse")
+```
+
+### Python
+
+-   **os**: Module allowing interaction with user's operating system
+-   **pandas**: Module for working with data frames
+-   **neonutilities**: Basic functions for accessing NEON data
+-   **matplotlib**: Functions for plotting
+
+```{python p-install, eval=FALSE}
+pip install os
+pip install pandas
+pip install neonutilities
+pip install matplotlib
+```
+
+##  {.unnumbered}
+
+### Additional Resources
+
+-   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Tutorial for using neonUtilities from both R and Python environments.</a>
+-   <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub repository for neonUtilities</a>
+-   <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users.
+:::
+
+## Set up: Load Packages {.tabset}
+
+### R
+
+```{r R-library, results="hide", message=FALSE, warning=FALSE}
+library(neonUtilities)
+library(tidyverse)
+```
+
+### Python
+
+```{python p-import, results="hide", message=FALSE, warning=FALSE}
+import os
+import pandas as pd
+import neonutilities as nu
+import matplotlib.pyplot as plt
+```
+
+##  {.unnumbered}
+
+## Set NEON Data Portal Personal Access Token (PAT) {.tabset}
+
+It is recommended that NEON data users have a NEON Data Portal personal
+access token (PAT) set as an environment variable. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial.</a>
+for instructions on obtaining a NEON PAT.
+
+### R
+
+```{r R-envvar, results="hide", message=FALSE, warning=FALSE}
+Sys.setenv(NEON_PAT="YOUR_PAT")
+```
+
+### Python
+
+```{python p-envvar, results="hide", message=FALSE, warning=FALSE}
+os.environ.setdefault('NEON_PAT',"YOUR_PAT")
+```
+
+##  {.unnumbered}
+
+## Download Data Product {.tabset}
+
+In this tutorial, we will focus on a single site, Lower Hop Brook (HOPB)
+in NEON Domain 01, but the workflow can be replicated for any site at
+which continuous discharge is published by changing the `site` input
+variable. Visit the <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">NEON Data Portal landing page</a> 
+for this data product. for an availability chart showing all the sites 
+for which Continuous discharge is published and the period of record for
+each site.
+
+For this tutorial we will download all data across the lifetime of a
+site by commenting out the start and end date in the function. If you
+wish to query a shorter period of time they can be un-commented. The
+NEON Data Portal stores data in site\*month download packages, so date
+range inputs are formatted as YYYY-MM.
+
+For this tutorial we will also download both RELEASED and PROVISIONAL
+data by setting the `include.provisinal` argument to 'true' in the
+function. To download only RELEASED data this argument should be set to
+'false'. To learn more about the differences between released and
+provisional data, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Understanding Releases and Provisional Data</a>
+tutorial on the NEON website.
+
+### R
+
+```{r R-download, results="hide", message=FALSE, warning=FALSE}
+# Download continuous discharge data across the lifetime of a site
+csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
+                                      site="HOPB",
+                                      # startdate="2020-10",
+                                      # enddate="2021-09",
+                                      release="current",# Downloads data from the most recent release
+                                      include.provisional = T,# Includes provisional data
+                                      package='expanded',
+                                      check.size = F,
+                                      token=Sys.getenv("NEON_PAT"))
+```
+
+### Python
+
+```{python p-download-hidden, include=FALSE}
+from pathlib import Path
+import pandas as pd
+def read_files_to_dict(directory):
+    data = {}
+
+    for file in Path(directory).iterdir():
+        key = file.stem  # filename without extension
+
+        if file.suffix == ".csv":
+            data[key] = pd.read_csv(file)
+
+        elif file.suffix == ".txt":
+            with open(file, "r") as f:
+                data[key] = f.read()
+
+        else:
+            # Optional: skip or warn
+            print(f"Skipping unsupported file: {file.name}")
+
+    return data
+csd_py = read_files_to_dict("C:/Users/nickerson/Downloads/python-files/filesToStack00130/stackedFiles")
+```
+
+```{python p-download, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
+# Download continuous discharge data across the lifetime of a site
+csd_py = nu.load_by_product(dpid="DP4.00130.001",
+                            site="HOPB",
+                            # start_date="2020-10",
+                            # end_date="2021-09",
+                            release="current",
+                            include_provisional=True,
+                            package="expanded",
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
+```
+
+##  {.unnumbered}
+
+## Navigate Data Download
+
+Downloads from the NEON Utilities R package and Python module contain
+multiple files, including data tables, metadata, and data product
+documentation. Let's explore each set of files in turn.
+
+### Files Associated with Downloads {.tabset}
+
+The data we've downloaded comes as an object that is a named
+list/dictionary of objects. Let's view the contents of the download
+package.
+
+#### R
+
+```{r R-files, results="hide", message=FALSE, warning=FALSE}
+# Get all file names in the download package
+names(csd_r)
+```
+
+#### Python
+
+```{python p-files, results="hide", message=FALSE, warning=FALSE}
+# Get all file names in the download package
+csd_py.keys()
+```
+
+###  {.unnumbered}
+
+In this tutorial, we downloaded the `expanded` download package. What
+are the files contained in this download package and why are they
+useful?
+
+-   **csd_data_tables**: Includes the primary data tables of the
+    continuous discharge data product. We will dive deeper into data
+    tables in the next section.
+-   **sensor_positions_00130**: Reports the geolocation of each sensor
+    included in the download.
+-   **science_review_flags_00130**: Lists each science review flag (SRF)
+    date range, flag value, and justification applied to the data
+    included in this download.
+-   **issueLog_00130**: Reports issues that may impact data quality, or
+    changes to a data product that affects all sites.
+-   **variables_00130**: This file contains all the variables found in
+    the data table(s) included in this download. This includes full
+    definitions, units, and other important information.
+-   **categoricalCodes_00130**: Some variables in the data tables are
+    published as strings and constrained to a standardized list of
+    values (LOV). This file shows all the LOV options for variables
+    published in this data product.
+-   **readme_00130**: The readme file provides important information
+    relevant to the data product and the specific instance of
+    downloading the data.
+-   **data citations**: At least one data citation file is included in
+    each data download, depending on the `release` function inputs and
+    date range queried.
+
+### Explore Data Tables {.tabset}
+
+The basic download package for DP4.00130.001 contains two data tables
+that report continuous discharge time series data modeled from in situ
+pressure transducers and stage-discharge rating curves:
+
+-   `csd_15_min`: Continuous discharge data averaged to 15-minute
+    intervals.
+-   `csd_continuousDischarge`: Instantaneous (1-minute) continuous
+    discharge data.
+
+The expanded download package for DP4.00130.001 contains multiple
+additional tables that aid in understanding data relationships, model
+coefficients, uncertainty propagation, and data corrections.
+
+-   `sdrc_gaugePressureRelationship`: Reports the relationship between
+    measured gauge heights and calculated stage values derived from
+    gauge height‐water column height linear regressions.
+-   `csd_gaugeWaterColumnHeightRegression`: Reports the linear
+    regression coefficients for each unique gauge height-water column
+    height regression model developed to estimate stage from surface
+    water pressure data.
+-   `csd_dataGapToFillMethodMapping`: Reports periods of gaps or
+    erroneous data in uncorrected continuous discharge data and the
+    method used to correct the period.
+-   `csd_constantBiasShift`: Reports periods of continuous discharge
+    data corrected via constant bias shift and the magnitude of the
+    shift.
+-   `csd_gapFillingRegression`: Reports the linear regression
+    coefficients for each unique relationship developed to correct NEON
+    continuous discharge data using the method specified in the mapping
+    table.
+
+At the Domain 08 - Tombigbee River (TOMB) site, a stage-discharge
+relationship cannot be developed due to the influence of a downstream
+lock and dam system. Therefore, the above tables are not published for
+TOMB. Rather, the following tables are published for TOMB.
+
+-   `csd_continuousDischargeUSGS`: USGS discharge and associated
+    uncertainty based on the fit of USGS data with corresponding
+    discharge measurements collected at TOMB.
+-   `csd_dischargeRegressionUSGS`: Reports the linear regression
+    coefficients for each unique relationship developed to estimate NEON
+    discharge from USGS discharge.
+
+Below, we will explore the first few rows of each high-frequency time
+series table included in the basic download package. Add to the code
+below to also view those tables included in the expanded download
+package.
+
+#### R
+
+```{r R-tables, results="hide", message=FALSE, warning=FALSE}
+# Print the first 5 records in each of the time series tables to view structure
+print("First 5 rows of csd_continuousDischarge")
+head(csd_r$csd_continuousDischarge)
+
+print("First 5 rows of csd_15_min")
+head(csd_r$csd_15_min)
+```
+
+#### Python
+
+```{python p-tables, results="hide", message=FALSE, warning=FALSE}
+# Print the first 5 records in each of the time series tables to view structure
+print("First 5 rows of csd_continuousDischarge")
+print(csd_py['csd_continuousDischarge'].head())
+
+print("First 5 rows of csd_15_min")
+print(csd_py['csd_15_min'].head())
+```
+
+###  {.unnumbered}
+
+### Explore Variables {.tabset}
+
+The `variables_00130` file provides insight into the structure of each
+data table and associated variables included in a download package. For
+the Continuous discharge data product, it is crucial to understand the
+relationships between the **csd_continuousDischarge** and **csd_15_min**
+tables to aggregate the two tables and produce a continuous timeseries.
+That is an exercise we will conduct later in this tutorial. For now,
+view the variables file and familiarize yourself with the different
+fields, data types, and units used in this data product.
+
+#### R
+
+```{r R-variables, results="hide", message=FALSE, warning=FALSE}
+# View variables file to understand data table structure
+View(csd_r$variables_00130)
+```
+
+#### Python
+
+```{python p-variables, results="hide", message=FALSE, warning=FALSE}
+# View variables file to understand data table structure
+print(csd_py['variables_00130'])
+```
+
+###  {.unnumbered}
+
+##  {.unnumbered}
+
+## Wrangle Stage & Discharge Data
+
+This data product was updated from uncorrected 1 minute values to
+corrected 15-min averages. Until these updates are fully applied
+backwards in time, some data wrangling and table joining are required to
+produce a continuous time series of continuous discharge. The
+publication history of this data product is explained in detail in the
+NEON User Guide to Continuous Discharge (NEON.DP4.00130.001), which is
+published in the "Documentation" section of the <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">NEON Data Portal landing page for Continuous discharge</a> 
+for this data product.
+
+In brief, the `csd_15_min` table was first published beginning in 2026
+(data included in RELEASE-2026), and was published for data beginning
+(for most sites) in 2021-10 (beginning of WY 2022). Prior to the first
+date published for a site in `csd_15_min`, the `csd_continuousDischarge`
+table is published. As more WYs are corrected prior to WY 2022, records
+in `csd_continuousDischarge` will be removed from publication and
+replaced with corrected records in `csd_15_min`.
+
+A good rule of thumb for managing NEON continuous discharge data:
+
+| Table | Frequency | Record Description |
+|:--:|:--:|:--:|
+| csd_continuousDischarge | 1 minute | uncorrected data unchanged since RELEASE-2025 |
+| csd_15_min | 15 minute | if `release` = RELEASE-2026, data processed within new pipeline; data corrections applied |
+| csd_15_min | 15 minute | if `release` = PROVISIONAL, data processed within new pipeline; determine status of data correction in the `dischargeCorrectionApplied` field\* |
+
+\* - PROVISIONAL data can be corrected prior to a subsequent data
+release. Do not assume all PROVISIONAL data are uncorrected. If the
+`csd_15_min:dischargeCorrectionApplied` field equals 1 or 0, the record
+has been reviewed for corrections and corrections were applied where
+appropriate. If the field is *NA*, the record has not been reviewed for
+corrections. More details on the definition and methods of correction can
+be found in the ATBD for this data product (NEON.DOC.005403)
+
+### Aggregate 1-minute Table to 15-minutes {.tabset}
+
+The first step to generating a continuous period of record for a site is
+to aggregate the uncorrected 1-minute `csd_continuousDischarge` data to
+a 15-minute interval. We will use this opportunity to conform the column
+headers of the aggregated table we create to fit those of `csd_15_min`.
+
+#### R
+
+```{r R-aggregate, results="hide", message=FALSE, warning=FALSE}
+# Use the tidyverse suite to round, group, and summarize data
+# Note: new column names match those published in 'csd_15_min'
+csd_15_min_agg <- csd_r$csd_continuousDischarge%>%
+  dplyr::mutate(endDateTime=lubridate::floor_date(endDate,"15 min"))%>%
+  dplyr::group_by(siteID,endDateTime)%>%
+  dplyr::summarise(stageContinuous=mean(equivalentStage,
+                                        na.rm=T),
+                   stageTotalUncert=mean(stageUnc,
+                                         na.rm=T),
+                   dischargeContinuous=mean(maxpostDischarge,
+                                            na.rm=T),
+                   dischargeUpperParamUncert=mean(withParaUncQUpper2Std,
+                                                  na.rm=T),
+                   dischargeLowerParamUncert=mean(withParaUncQUpper1Std,
+                                                  na.rm=T),
+                   dischargeUpperRemnUncert=mean(withRemnUncQUpper2Std,
+                                                 na.rm=T),
+                   dischargeLowerRemnUncert=mean(withRemnUncQLower2Std,
+                                                 na.rm=T),
+                   dischargeFinalQF=sum(dischargeFinalQF==1),
+                   dischargeFinalQFSciRvw=sum(dischargeFinalQFSciRvw==1,
+                                              na.rm = T))
+
+# Convert quality flag fields to 1 or NA
+csd_15_min_agg$dischargeFinalQF[
+  csd_15_min_agg$dischargeFinalQF>0
+] <- 1
+csd_15_min_agg$dischargeFinalQFSciRvw[
+  csd_15_min_agg$dischargeFinalQFSciRvw>0
+] <- 1
+csd_15_min_agg$dischargeFinalQFSciRvw[
+  csd_15_min_agg$dischargeFinalQFSciRvw==0
+] <- NA
+```
+
+#### Python
+
+```{python p-aggregate, results="hide", message=FALSE, warning=FALSE}
+# Use pandas to round, group, and summarize data
+# Note: new column names match those published in 'csd_15_min'
+
+# Convert endDate to datetime and round to 15 minutes
+csd_py['csd_continuousDischarge']['endDate'] = pd.to_datetime(csd_py['csd_continuousDischarge']['endDate'])
+csd_py['csd_continuousDischarge']['endDateTime'] = csd_py['csd_continuousDischarge']['endDate'].dt.round('15min')
+
+# Group by siteID and endDateTime, then calculate aggregations
+csd_15_min_agg = csd_py['csd_continuousDischarge'].groupby(['siteID', 'endDateTime']).agg({
+    'equivalentStage': 'mean',
+    'stageUnc': 'mean',
+    'maxpostDischarge': 'mean',
+    'withParaUncQUpper2Std': 'mean',
+    'withParaUncQUpper1Std': 'mean',
+    'withRemnUncQUpper2Std': 'mean',
+    'withRemnUncQLower2Std': 'mean',
+    'dischargeFinalQF': lambda x: (x == 1).sum(),
+    'dischargeFinalQFSciRvw': lambda x: (x == 1).sum()
+}).reset_index()
+
+# Rename columns to match csd_15_min format
+csd_15_min_agg = csd_15_min_agg.rename(columns={
+    'equivalentStage': 'stageContinuous',
+    'stageUnc': 'stageTotalUncert',
+    'maxpostDischarge': 'dischargeContinuous',
+    'withParaUncQUpper2Std': 'dischargeUpperParamUncert',
+    'withParaUncQUpper1Std': 'dischargeLowerParamUncert',
+    'withRemnUncQUpper2Std': 'dischargeUpperRemnUncert',
+    'withRemnUncQLower2Std': 'dischargeLowerRemnUncert'
+})
+
+# Convert quality flag fields to 1 or NaN
+csd_15_min_agg.loc[csd_15_min_agg['dischargeFinalQF'] > 0, 'dischargeFinalQF'] = 1
+csd_15_min_agg.loc[csd_15_min_agg['dischargeFinalQFSciRvw'] > 0, 'dischargeFinalQFSciRvw'] = 1
+csd_15_min_agg.loc[csd_15_min_agg['dischargeFinalQFSciRvw'] == 0, 'dischargeFinalQFSciRvw'] = pd.NA
+```
+
+###  {.unnumbered}
+
+### Join Tables {.tabset}
+
+Because we conformed column headers in the uncorrected aggregated data,
+it should now be relatively easy to join the data to the `csd_15_min`.
+Let's now create a single data frame representing the entire period of
+record aggregated to a 15-minute interval.
+
+#### R
+
+```{r R-join, results="hide", message=FALSE, warning=FALSE}
+# Merge aggregated table created earlier with csd_15_min from the download
+csd_15_min_all <- merge(csd_15_min_agg,
+                        csd_r$csd_15_min,
+                        all = T)
+
+# Order the timeseries data by endDateTime
+csd_15_min_all <- csd_15_min_all[order(csd_15_min_all$endDateTime),]
+```
+
+#### Python
+
+```{python p-join, results="hide", message=FALSE, warning=FALSE}
+# Align datetime fields in each data frame
+csd_15_min_agg['endDateTime'] = pd.to_datetime(
+    csd_15_min_agg['endDateTime'], utc=True
+)
+csd_py['csd_15_min']['endDateTime'] = pd.to_datetime(
+    csd_py['csd_15_min']['endDateTime'], utc=True
+)
+
+# Merge aggregated table created earlier with csd_15_min from the download
+csd_15_min_all = pd.merge(csd_15_min_agg,
+                          csd_py['csd_15_min'],
+                          how='outer')
+
+# Order the timeseries data by endDateTime
+csd_15_min_all = csd_15_min_all.sort_values(by='endDateTime')
+```
+
+##  {.unnumbered}
+
+## Plot Stage Data {.tabset}
+
+Continuous stage is modeled by developing a linear regression between
+empirical staff gauge heights (DP1.20267.001) and continuous water
+column height calculated using surface water pressure data
+(DP1.20016.001). Uncertainty is estimated for continuous stage by
+summing uncertainty associated with the calibration of the pressure
+transducer (termed: nonsystematic) and uncertainty associated with the
+fit of the linear regression (termed: systematic).
+
+More details on the modeling algorithm for continuous stage can be found
+in the ATBD for this data product (NEON.DOC.005403).
+
+Here, we will plot the continuous stage time series for the entire
+period of record, then plot a subset of data to zoom in on the time
+series to get a better visual of the associated uncertainty.
+
+### R
+
+```{r R-plot-stage, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
+# Use the ggplot package in tidyverse to plot continuous stage and uncertainty
+
+# Plot 1: Entire Period of Record
+csd_15_min_all%>%
+  ggplot2::ggplot(aes(x=endDateTime))+
+  ggplot2::geom_ribbon(aes(ymin=stageContinuous-stageTotalUncert,
+                           ymax=stageContinuous+stageTotalUncert),
+                       fill="grey70")+
+  ggplot2::geom_line(aes(y=stageContinuous))+
+  ggplot2::theme_classic()+
+  ggplot2::labs(title = "Stage Series: Entire Period of Record",
+                x="Date",
+                y="Stage (m)")
+
+# Plot 2: Zoomed in to March 2024
+csd_15_min_all%>%
+  dplyr::filter(endDateTime>="2024-03-01"
+                &endDateTime<"2024-04-01")%>%
+  ggplot2::ggplot(aes(x=endDateTime))+
+  ggplot2::geom_ribbon(aes(ymin=stageContinuous-stageTotalUncert,
+                           ymax=stageContinuous+stageTotalUncert),
+                       fill="grey70")+
+  ggplot2::geom_line(aes(y=stageContinuous))+
+  ggplot2::theme_classic()+
+  ggplot2::labs(title = "Stage Series: Zoomed In to View Uncertainty - 2024-03",
+                x="Date",
+                y="Stage (m)")
+```
+
+### Python
+
+```{python p-plot-stage, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
+# Use matplotlib to plot continuous stage and uncertainty
+
+# Plot 1: Entire Period of Record
+fig, ax = plt.subplots(figsize=(12, 6))
+ax.fill_between(csd_15_min_all['endDateTime'], 
+                csd_15_min_all['stageContinuous'] - csd_15_min_all['stageTotalUncert'],
+                csd_15_min_all['stageContinuous'] + csd_15_min_all['stageTotalUncert'],
+                color='grey', alpha=0.7, label='Uncertainty')
+ax.plot(csd_15_min_all['endDateTime'], csd_15_min_all['stageContinuous'], 
+        color='black', linewidth=1)
+ax.set_title('Stage Series: Entire Period of Record')
+ax.set_xlabel('Date')
+ax.set_ylabel('Stage (m)')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Plot 2: Zoomed in to March 2024
+filtered_data = csd_15_min_all[
+    (csd_15_min_all['endDateTime'] >= '2024-03-01') & 
+    (csd_15_min_all['endDateTime'] < '2024-04-01')
+]
+fig, ax = plt.subplots(figsize=(12, 6))
+ax.fill_between(filtered_data['endDateTime'], 
+                filtered_data['stageContinuous'] - filtered_data['stageTotalUncert'],
+                filtered_data['stageContinuous'] + filtered_data['stageTotalUncert'],
+                color='grey', alpha=0.7, label='Uncertainty')
+ax.plot(filtered_data['endDateTime'], filtered_data['stageContinuous'], 
+        color='black', linewidth=1)
+ax.set_title('Stage Series: Zoomed In to View Uncertainty - 2024-03')
+ax.set_xlabel('Date')
+ax.set_ylabel('Stage (m)')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+```
+
+##  {.unnumbered}
+
+## Plot Discharge Data {.tabset}
+
+Continuous discharge is modeled within a Bayesian modeling framework
+using an executable (BaM) first developed and published by
+<a href="https://doi.org/10.1016/j.jhydrol.2013.11.016" target="_blank">Le Coz et al. in 2014</a>
+The continuous stage series and inputs from the Stage-discharge rating
+curves data product (DP4.00133.001) are used to model continuous
+discharge. Two types of uncertainty are associated with continuous
+discharge:
+
+-   Parametric uncertainty: derived from the uncertainty of the model
+    priors
+-   Remnant uncertainty: derived from how the model fits the
+    observations
+
+More details on the modeling algorithm for continuous discharge be found
+in the ATBD for this data product (NEON.DOC.005403).
+
+Here, we will plot the continuous discharge time series for the entire
+period of record, then plot a subset of data to zoom in on the time
+series to get a better visual of the associated uncertainties.
+
+### R
+
+```{r R-plot-discharge, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
+# Use the ggplot package in tidyverse to plot continuous discharge and uncertainty
+
+# Plot 1: Entire Period of Record
+csd_15_min_all%>%
+  ggplot2::ggplot(aes(x=endDateTime))+
+  ggplot2::geom_ribbon(aes(ymin=dischargeLowerRemnUncert,
+                           ymax=dischargeUpperRemnUncert),
+                       fill="#D55E00")+
+  ggplot2::geom_ribbon(aes(ymin=dischargeLowerParamUncert,
+                           ymax=dischargeUpperParamUncert),
+                       fill="#E69F00")+
+  ggplot2::geom_line(aes(y=dischargeContinuous))+
+  ggplot2::theme_classic()+
+  ggplot2::labs(title = "Discharge Series: Entire Period of Record",
+                x="Date",
+                y="Discharge (L/s)")
+
+# Plot 2: Zoomed in to March 2024
+csd_15_min_all%>%
+  dplyr::filter(endDateTime>="2024-03-01"
+                &endDateTime<"2024-04-01")%>%
+  ggplot2::ggplot(aes(x=endDateTime))+
+  ggplot2::geom_ribbon(aes(ymin=dischargeLowerRemnUncert,
+                           ymax=dischargeUpperRemnUncert),
+                       fill="#D55E00")+
+  ggplot2::geom_ribbon(aes(ymin=dischargeLowerParamUncert,
+                           ymax=dischargeUpperParamUncert),
+                       fill="#E69F00")+
+  ggplot2::geom_line(aes(y=dischargeContinuous))+
+  ggplot2::theme_classic()+
+  ggplot2::labs(title = "Discharge Series: Zoomed In to View Uncertainty - 2024-03",
+                x="Date",
+                y="Discharge (L/s)")
+```
+
+### Python
+
+```{python p-plot-discharge, results="hide", message=FALSE, warning=FALSE, warning=FALSE}
+# Use matplotlib to plot continuous discharge and uncertainty
+
+# Plot 1: Entire Period of Record
+fig, ax = plt.subplots(figsize=(12, 6))
+ax.fill_between(csd_15_min_all['endDateTime'], 
+                csd_15_min_all['dischargeLowerRemnUncert'],
+                csd_15_min_all['dischargeUpperRemnUncert'],
+                color='#D55E00', alpha=0.7, label='Remnant Uncertainty')
+ax.fill_between(csd_15_min_all['endDateTime'], 
+                csd_15_min_all['dischargeLowerParamUncert'],
+                csd_15_min_all['dischargeUpperParamUncert'],
+                color='#E69F00', alpha=0.7, label='Parametric Uncertainty')
+ax.plot(csd_15_min_all['endDateTime'], csd_15_min_all['dischargeContinuous'], 
+        color='black', linewidth=1)
+ax.set_title('Discharge Series: Entire Period of Record')
+ax.set_xlabel('Date')
+ax.set_ylabel('Discharge (L/s)')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Plot 2: Zoomed in to March 2024
+filtered_data = csd_15_min_all[
+    (csd_15_min_all['endDateTime'] >= '2024-03-01') & 
+    (csd_15_min_all['endDateTime'] < '2024-04-01')
+]
+fig, ax = plt.subplots(figsize=(12, 6))
+ax.fill_between(filtered_data['endDateTime'], 
+                filtered_data['dischargeLowerRemnUncert'],
+                filtered_data['dischargeUpperRemnUncert'],
+                color='#D55E00', alpha=0.7, label='Remnant Uncertainty')
+ax.fill_between(filtered_data['endDateTime'], 
+                filtered_data['dischargeLowerParamUncert'],
+                filtered_data['dischargeUpperParamUncert'],
+                color='#E69F00', alpha=0.7, label='Parametric Uncertainty')
+ax.plot(filtered_data['endDateTime'], filtered_data['dischargeContinuous'], 
+        color='black', linewidth=1)
+ax.set_title('Discharge Series: Zoomed In to View Uncertainty - 2024-03')
+ax.set_xlabel('Date')
+ax.set_ylabel('Discharge (L/s)')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+```
+
+##  {.unnumbered}
