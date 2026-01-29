@@ -56,29 +56,31 @@ Events often occur at NEON sites that have an impact on the local ecosystems, bu
 
 #### Event duration and recording
 
-In order to match the publication model for NEON data products and to ensure events are published as quickly as possible, site management and event reporting data are recorded in thirty day intervals. This means events longer than one month will have multiple data records for one `eventID`. The `eventID`, which includes the site code, original start date, and event type, will remain the same for all records related to the same event. The original start date embedded in the `eventID` compared to the `startDate` field for the record indicates if there are related records for previous months. The `ongoingEvent` field indicates if a record for the next subsequent month is expected.
+In order to match the publication model for NEON data products and to ensure events are published as quickly as possible, site management and event reporting data are recorded in one-month intervals. This means events longer than one month will have multiple data records for one `eventID`. The `eventID`, which includes the site code, original start date, and event type, will remain the same for all records related to the same event. The original start date embedded in the `eventID` compared to the `startDate` field for the record indicates if there are related records for previous months. The `ongoingEvent` field indicates if a record for the next subsequent month is expected.
 
 Date uncertainty is captured in a record’s `estimatedOrActualDate` field. If the date is `estimated` additional comments are recorded in the `dateRemarks` field. The start and end date range includes any date uncertainty.
 
 ## Set up R environment
 
-First install and load the necessary packages.
+First install and load the necessary packages. Skip the install step if packages 
+are already installed, and modify the working directory file path for your 
+computer.
 
 ```{r setup, eval=FALSE}
 
-# install packages. can skip this step if 
-# the packages are already installed
 install.packages("neonUtilities")
 install.packages("devtools")
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("lubridate")
 
-# load packages
 library(neonUtilities)
 library(geoNEON)
 library(ggplot2)
+library(dplyr)
+library(lubridate)
 
-# set working directory
-# modify for your computer
 setwd("~/data")
 
 ```
@@ -149,13 +151,23 @@ But what if we're interested in a broader picture? Maybe we're working with remo
 
 ### Stay tuned! There is an R package in the works that converts these plot locations to a shapefile
 
-Keep in mind that we have limited information available about the impact of events outside of NEON sampling locations. A patchy event like a small wildfire may affect locations very unevenly.
+<div id="caveat-box" markdown="1">
+
+**Caveats about locations:** 
+
+NEON field staff do their best to record the extent of a disturbance in the list of locations. In the case of planned disturbances, such as controlled burns and release of animals for grazing, the site host may be able to provide a very clear assessment of the locations affected. But for unplanned events such as wildfires or bark beetle outbreaks, these data depend on staff being in the right place at the right time to observe the disturbance. At some NEON sites, sampling plots are very far apart, and if staff are on-site for a particular protocol and only sampling a subset of plots, they may not know the impact of disturbance on other plots.
+
+These limitations primarily affect terrestrial sites. At aquatic sites, sampling locations are clustered in a fairly small area, and staff can more easily assess the extent of a disturbance. In addition, due to the close proximity of sampling, most significant events affect the entire aquatic sampling area.
+
+Finally, we have limited information available about the impact of events outside of NEON sampling locations. A patchy event like a small wildfire may affect locations very unevenly. NEON AOP flights typically cover a 10 x 10 km box that includes the sampling locations, but also includes large areas where NEON does not sample. If you are analyzing a disturbance using remote sensing data, the locations identified in this data product may only be a small subset of the disturbed area within the AOP flight box.
+
+</div>
 
 ## Downloading event data by event type
 
 In many cases, you may be interested not in the full range of disturbances at a given site, but in a particular type of disturbance across sites. For example, if you are studying fires in the western US, you probably know that NEON sites have burned, but you may not know the specific fires at specific sites. Let's look for all the fires that have affected NEON sites in California. We can do this using the `byEventSIM()` function:
 
-``` {r load-data, results="hide"}
+``` {r load-CA-fires, results="hide"}
 
 fires <- byEventSIM(eventType="fire", 
                     site=c("SJER","SOAP","BIGC","TEAK","TECR"),
@@ -165,4 +177,16 @@ fires <- byEventSIM(eventType="fire",
 
 The set of files returned by this function is the same as `loadByProduct()`, but the data in `sim_eventData` are filtered down to only the events where the `eventType` is `"fire"`.
 
+Let's start by looking at the `siteID`, `startDate`, `endDate`, and `methodTypeChoice` fields to see which sites and years experienced fires.
+
+``` {r fire-dates}
+
+fires$sim_eventData |>
+  select(siteID, startDate, endDate, methodTypeChoice)
+
+```
+
+We know 2020 was a terrible year for wildfires in the western US, and unsurprisingly many of the records here are from 2020. But there is also one controlled burn from early 2020, as well as fires in 2021 and 2025.
+
+Let's use geoNEON to map these burned locations on top of AOP imagery
 
