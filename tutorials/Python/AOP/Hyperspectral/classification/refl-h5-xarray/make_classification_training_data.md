@@ -16,10 +16,10 @@ urlTitle: classification-training-data
 
 ---
 
-<div id="ds-objectives" markdown="1">
-
 This notebook demonstrates how to generate a training dataset consisting of tree species, family, and location from the NEON Terrestrial Observation System (TOS) Vegetation Structure data product <a href="https://data.neonscience.org/data-products/DP1.10098.001" target=_blank>DP1.10098.001</a>. We will use data from the <a href="https://www.neonscience.org/field-sites/serc" target=_blank>Smithsonian Environmental Research Center (SERC)</a> site in Maryland. In a subsequent tutorial titled <a href="https://www.neonscience.org/resources/learning-hub/tutorials/refl-classification-pyxarray" target=_blank>Tree Classification with NEON Airborne Imaging Spectrometer Data using Python xarray</a>, we will use this training dataset to train a random forest machine learning model that predicts tree families from the hyperspectral signatures obtained from the airborne remote sensing data. These two tutorials outline a relatively simple modeling example, and represent a starting point for conducting machine learning analyses using NEON data!
 
+<div id="ds-objectives" markdown="1">
+ 
 ### Set Up Python Environment
 
 To run this notebook, you will need the following Python packages, which can be installed using `!pip install` or `!conda install` from within the notebook. Note that to use the `neonutilities` package, you will need Python version 3.9 or higher.
