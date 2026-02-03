@@ -73,37 +73,46 @@ install.packages("devtools")
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 install.packages("ggplot2")
 install.packages("dplyr")
+install.packages("stringr")
+install.packages("tidyr")
 install.packages("lubridate")
+install.packages("terra")
 
 library(neonUtilities)
 library(geoNEON)
 library(ggplot2)
 library(dplyr)
+library(stringr)
+library(tidyr)
 library(lubridate)
+library(terra)
 
 setwd("~/data")
 
 ```
 
-```{r libraries, include=FALSE, results="hide"}
+```{r libraries, include=FALSE, results="hide", message=FALSE}
 
 library(neonUtilities)
 library(geoNEON)
 library(ggplot2)
 library(dplyr)
+library(stringr)
+library(tidyr)
 library(lubridate)
+library(terra)
 
 ```
 
 
 ## Downloading event data: All events at a site
 
-The simplest way to access site event data is to download all the events for a particular site. Let's check out events at Jones Ecological Research Center in Georgia (JERC). We'll use `include.provisional=T` to get events up to the present.
+The simplest way to access site event data is to download all the events for a particular site. Let's check out events at Lower Teakettle (TEAK) in California. We'll use `include.provisional=T` to get events up to the present.
 
-``` {r load-data, results="hide"}
+``` {r load-data, results="hide", message=FALSE}
 
 events <- loadByProduct(dpID="DP1.10111.001", 
-                        site="JERC",
+                        site="TEAK",
                         check.size=F,
                         include.provisional=T)
 
@@ -122,34 +131,42 @@ Let's first check out the types of events recorded.
 
 ``` {r view-types}
 
-unique(sim_eventData[,c("eventType", "methodTypeChoice")])
+sim_eventData |>
+  select(eventType, methodTypeChoice) |>
+  unique()
 
 ```
 
-JERC is a managed site, so it's not surprising that many of the events recorded represent active management by the site hosts. When we look at an event like a controlled burn, we probably want to know exactly where this happened - which NEON sampling areas were affected?
+SJER is a managed site, so the events recorded include both acts of nature and active management by the site hosts (grazing). There is one wildfire reported. When we look at an event like a fire, we probably want to know exactly where this happened - which NEON sampling areas were burned?
 
 ## Finding the spatial extent of an event
 
-How to approach the spatial distribution of an event depends on your scientific question. If you're working with data from NEON sampling plots, you might just want to know which plots are affected. You can find that information in the `locationID` field, which contains either one location or a comma-delimited list of locations for each record. Let's look at the locations associated with controlled burns in 2022.
+How to approach the spatial distribution of an event depends on your scientific question. If you're working with data from NEON sampling plots, you might just want to know which plots are affected. You can find that information in the `locationID` field, which contains either one location or a comma-delimited list of locations for each record. Let's look at the locations associated with the fire in 2025.
 
 ``` {r herb-locs}
 
 burn <- sim_eventData |>
-  filter(methodTypeChoice=="fire-controlledBurn" & 
-           year(endDate)=="2022")
+  filter(methodTypeChoice=="fire-wildfire")
 
-burn.locs <- unique(trimws(unlist(lapply(burn$locationID, 
-                                         strsplit, ",", 
-                                         fixed=T))))
+burn.locs <- burn |>
+  select(locationID) |>
+  unlist() |>
+  str_split(",") |>
+  unlist() |>
+  trimws() |>
+  unique()
+
 burn.locs
 
 ```
 
 Now we have a list of NEON named locations. We can see if the plot(s) we are working with are on the list, and proceed accordingly.
 
-But what if we're interested in a broader picture? Maybe we're working with remote sensing data, and we want to get a sense of the overall burned area.
+But what if we're interested in a broader picture, and we want to get a sense of the overall burned area?
 
 ### Stay tuned! There is an R package in the works that converts these plot locations to a shapefile
+
+Below, we'll find spatial data associated with point locations of disturbance events.
 
 <div id="caveat-box" markdown="1">
 
@@ -165,9 +182,9 @@ Finally, we have limited information available about the impact of events outsid
 
 ## Downloading event data by event type
 
-In many cases, you may be interested not in the full range of disturbances at a given site, but in a particular type of disturbance across sites. For example, if you are studying fires in the western US, you probably know that NEON sites have burned, but you may not know the specific fires at specific sites. Let's look for all the fires that have affected NEON sites in California. We can do this using the `byEventSIM()` function:
+In many cases, you may be interested in a particular type of disturbance across sites, rather than in various disturbances within a site. Above, we found a report of a fire at TEAK, which is in the mountains in California. In recent years, the western US has experienced a large number of fires, and many of the individual fires have been unusually large. Let's look for all the fires that have affected NEON sites in California. We can do this using the `byEventSIM()` function:
 
-``` {r load-CA-fires, results="hide"}
+``` {r load-CA-fires, results="hide", message=FALSE}
 
 fires <- byEventSIM(eventType="fire", 
                     site=c("SJER","SOAP","BIGC","TEAK","TECR"),
@@ -188,5 +205,145 @@ fires$sim_eventData |>
 
 We know 2020 was a terrible year for wildfires in the western US, and unsurprisingly many of the records here are from 2020. But there is also one controlled burn from early 2020, as well as fires in 2021 and 2025.
 
-Let's use geoNEON to map these burned locations on top of AOP imagery
+Let's say we want to use these locations to find NEON remote sensing data for the affected regions, and see where the burned locations appear in the images. We can use the `geoNEON` package to get the coordinates of the locations listed in the event data.
+
+``` {r CA-locations, results="hide", message=FALSE}
+
+fire.loc <- getLocTOS(fires$sim_eventData, 
+                      "sim_eventData")
+
+```
+
+The `getLocTOS()` function works slightly differently for site management data than other NEON data products. Because the locations in event data can be a list, the table of geographic information is stored as a nested data frame in the `locationID` field. To look at the geographic data for just one event, we can extract the nested table. Let's look at the location of the controlled burn in early 2020:
+
+``` {r ex-location-table}
+
+fire.loc$locationID[7]
+
+```
+
+We have coordinates and metadata for each location noted as affected by the controlled burn.
+
+Let's focus on SOAP, and get the locations for all of the areas burned at SOAP in 2020. The `unnest()` function in the `tidyr` package can pull out the nested tables and merge them with the data table. This will replicate each row in the original table for every row in the corresponding location table.
+
+``` {r SOAP-locations}
+
+fire.SOAP <- fire.loc |>
+  filter(siteID=="SOAP" & endDate<"2021-01-01") |>
+  unnest(cols="locationID", names_sep="_")
+
+```
+
+We can now use the easting and northing coordinates to download tiles of AOP data for these locations. SOAP was flown in 2019 and 2021, so we can download before-and-after data. Let's look at NDVI data and see if there is a change in vegetation greenness after the fires.
+
+``` {r download-AOP, results="hide", message=FALSE}
+
+byTileAOP("DP3.30026.001", site="SOAP", year=2019,
+          easting=fire.SOAP$locationID_easting,
+          northing=fire.SOAP$locationID_northing,
+          buffer=10, check.size=F, savepath=getwd())
+
+byTileAOP("DP3.30026.001", site="SOAP", year=2021,
+          easting=fire.SOAP$locationID_easting,
+          northing=fire.SOAP$locationID_northing,
+          buffer=10, check.size=F, savepath=getwd())
+
+```
+
+Vegetation indices are downloaded as zip files, so first we need to unzip them.
+
+``` {r unzip-AOP, results="hide"}
+
+zippaths <- list.files(getwd(), pattern=".zip", 
+                        full.names=T, recursive=T)
+
+for(i in 1:length(zippaths)) {
+  unzip(zippaths[i], exdir=dirname(zippaths[i]))
+}
+
+```
+
+
+We'll start with the pre-fire 2019 data. We've downloaded 8 tiles, so we need to read them in and merge them into a single raster.
+
+``` {r tiles-2019}
+
+tiles2019 <- list.files(getwd(), pattern="NDVI.tif", 
+                        full.names=T, recursive=T)
+tiles2019 <- grep("2019", tiles2019, value=T)
+
+ndvi2019 <- rast(tiles2019[1])
+for(i in 2:length(tiles2019)) {
+  ndvii <- rast(tiles2019[i])
+  ndvi2019 <- merge(ndvi2019, ndvii)
+}
+
+```
+
+And now plot the canopy height model data, with the burned locations marked as dots. Let's plot the wildfire first, and then add the controlled burn locations.
+
+``` {r plot-2019-wf}
+
+plot(ndvi2019)
+
+wf.SOAP <- fire.SOAP |>
+  filter(methodTypeChoice=="fire-wildfire")
+points(wf.SOAP$locationID_easting,
+       wf.SOAP$locationID_northing,
+       pch=20, col="hotpink")
+
+```
+
+``` {r plot-2019-all}
+
+plot(ndvi2019)
+
+points(wf.SOAP$locationID_easting,
+       wf.SOAP$locationID_northing,
+       pch=20, col="hotpink")
+
+cb.SOAP <- fire.SOAP |>
+  filter(methodTypeChoice=="fire-controlledBurn")
+points(cb.SOAP$locationID_easting,
+       cb.SOAP$locationID_northing,
+       pch=20, col="darkred")
+
+
+```
+
+And now let's look at the same locations in 2021.
+
+``` {r tiles-2021}
+
+tiles2021 <- list.files(getwd(), pattern="NDVI.tif", 
+                        full.names=T, recursive=T)
+tiles2021 <- grep("2021", tiles2021, value=T)
+
+ndvi2021 <- rast(tiles2021[1])
+for(i in 2:length(tiles2021)) {
+  ndvii <- rast(tiles2021[i])
+  ndvi2021 <- merge(ndvi2021, ndvii)
+}
+
+```
+
+``` {r plot-2021-all}
+
+plot(ndvi2021)
+
+points(wf.SOAP$locationID_easting,
+       wf.SOAP$locationID_northing,
+       pch=20, col="hotpink")
+
+points(cb.SOAP$locationID_easting,
+       cb.SOAP$locationID_northing,
+       pch=20, col="darkred")
+
+
+```
+
+We can see a large region where NDVI is substantially lower in 2021 than 2019, matching the region where the wildfire was reported. The difference is much smaller in the region where only the controlled burn was reported.
+
+We only downloaded the 8 tiles overlapping the sampling locations that were reported as affected by the fire; the entire AOP footprint is much larger than this. As noted above, NEON field staff report events at locations they visit, but in this case the fire was much larger than the NEON sampling region. The implications of this depend on your analytical goals. If you are studying fire at a regional level, you may focus primarily on the AOP data, whereas if you are primarily interested in plant community responses, you may want to focus on plant presence and percent cover plots, and whether or not those specific plots burned.
+
 
