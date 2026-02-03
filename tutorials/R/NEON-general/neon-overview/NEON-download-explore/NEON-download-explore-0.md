@@ -99,7 +99,7 @@ pip install rasterio</code></pre>
 <div id="additional-resources" class="section level3">
 <h3>Additional Resources</h3>
 <ul>
-<li><a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub
+<li><a href="https://github.com/NEONScience/NEON-Utilities" target="_blank">GitHub
 repository for neonUtilities R package</a></li>
 <li><a href="https://github.com/NEONScience/NEON-utilities-python" target="_blank">GitHub repository for neonutilities Python package</a></li>
 <li><a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities
