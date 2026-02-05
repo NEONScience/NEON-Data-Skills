@@ -298,7 +298,9 @@ into individual terms and look for them in the `objDesc` table:
 
 termlist = [f.split('.') for f in flux['NIWO'].keys()]
 term = [t for sublist in termlist for t in sublist]
-flux['objDesc'].loc('Object' in term).obj
+
+objDesc = flux['objDesc']
+objDesc[objDesc['Object'].isin(term)]
 
 ```
 
@@ -376,7 +378,10 @@ axis.POSIXct(1, x=flux$NIWO$timeBgn,
 
 ```{python p-plot-fluxes}
 
-plt.scatter(flux['NIWO'].timeBgn, flux['NIWO'].data.fluxCo2.nsae.flux)
+plt.scatter(flux['NIWO'].timeBgn, 
+            flux['NIWO']['data.fluxCo2.nsae.flux'],
+           marker='.')
+plt.ylim((-20,20))
 plt.show()
 
 ```
@@ -388,7 +393,12 @@ Let's trim down to just two days of data to see a few other details.
 
 ```{python p-plot-two-days}
 
-plt.scatter(flux['NIWO'].timeBgn, flux['NIWO'].data.fluxCo2.nsae.flux)
+plt.scatter(flux['NIWO'].timeBgn, 
+            flux['NIWO']['data.fluxCo2.nsae.flux'],
+           marker='.')
+plt.ylim((-20,20))
+plt.xlim((datetime.strptime('2018-07-07 00:00:00', '%Y-%m-%d %H:%M:%S'),
+          datetime.strptime('2018-07-09 00:00:00', '%Y-%m-%d %H:%M:%S')))
 plt.show()
 
 ```
