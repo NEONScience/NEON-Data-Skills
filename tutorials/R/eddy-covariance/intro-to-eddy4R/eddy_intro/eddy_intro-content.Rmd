@@ -401,6 +401,8 @@ plt.xlim((datetime.strptime('2018-07-07 00:00:00', '%Y-%m-%d %H:%M:%S'),
           datetime.strptime('2018-07-09 00:00:00', '%Y-%m-%d %H:%M:%S')))
 plt.show()
 
+# this works but the x axis labels are confusing.
+
 ```
 
 ### {-}
