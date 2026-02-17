@@ -46,7 +46,7 @@ install.packages('ggplot2')
 
 Now load packages.
 
-```{r package-load}
+```{r package-load, warning=FALSE}
 
 library(neonUtilities)
 library(ggplot2)
@@ -71,6 +71,9 @@ Now load packages.
 
 import neonutilities as nu
 import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from datetime import datetime
 import os
 
 ```
@@ -190,7 +193,7 @@ including the `filestoStack00200` folder created by the function, and
 
 ```{r stack-dp04, results="hide"}
 
-flux <- stackEddy(filepath="~/Downloads/filesToStack00200",
+flux <- stackEddy(filepath=paste0(getwd(), "/filesToStack00200"),
                  level="dp04")
 
 ```
@@ -223,7 +226,7 @@ into individual terms and look for them in the `objDesc` table:
 ```{r obj-desc-terms}
 
 term <- unlist(strsplit(names(flux$NIWO), split=".", fixed=T))
-flux$objDesc[which(flux$objDesc$Object %in% term),]
+flux$objDesc[which(flux$objDesc$X...Object %in% term),]
 
 ```
 
@@ -353,7 +356,8 @@ operating system.
 ```{r plot-fluxes}
 
 plot(flux$NIWO$data.fluxCo2.nsae.flux~flux$NIWO$timeBgn, 
-     pch=".", xlab="Date", ylab="CO2 flux")
+     pch=".", xlab="Date", ylab="CO2 flux",
+     ylim=c(-20,20))
 
 ```
 
@@ -401,8 +405,6 @@ plt.xlim((datetime.strptime('2018-07-07 00:00:00', '%Y-%m-%d %H:%M:%S'),
           datetime.strptime('2018-07-09 00:00:00', '%Y-%m-%d %H:%M:%S')))
 plt.show()
 
-# this works but the x axis labels are confusing.
-
 ```
 
 ### {-}
@@ -418,7 +420,9 @@ data product bundle. In this section, we'll download PAR data and merge
 them with the flux data; the steps taken here can be applied to any of the 
 NEON instrumented (IS) data products.
 
-### Download PAR data
+### Download PAR data {.tabset}
+
+#### R
 
 To get NEON PAR data, use the `loadByProduct()` function from the 
 `neonUtilities` package. `loadByProduct()` takes the same inputs as 
@@ -441,7 +445,7 @@ download time by disregarding the 1-minute data files (which are of course
 30 times larger). The `timeIndex` input can be left off if you want to download 
 all available averaging intervals.
 
-```{r download-par, results="hide"}
+```{r download-par, results="hide", message=FALSE}
 
 pr <- loadByProduct("DP1.00024.001", site="NIWO", 
                     timeIndex=30, package="basic", 
@@ -450,14 +454,50 @@ pr <- loadByProduct("DP1.00024.001", site="NIWO",
 
 ```
 
+#### Python
+
+To get NEON PAR data, use the `load_by_product()` function from the 
+`neonutilities` package. `load_by_product()` takes the same inputs as 
+`zips_by_product()`, but it loads the downloaded data directly into the 
+current Python environment.
+
+Let's download PAR data matching the Niwot Ridge flux data. The inputs 
+needed are:
+
+* `dpid`: DP1.00024.001
+* `site`: NIWO
+* `startdate`: 2018-06
+* `enddate`: 2018-07
+* `package`: basic
+* `timeindex`: 30
+
+The new input here is `timeindex=30`, which downloads only the 30-minute data. 
+Since the flux data are at a 30-minute resolution, we can save on 
+download time by disregarding the 1-minute data files (which are of course 
+30 times larger). The `timeindex` input can be left off if you want to download 
+all available averaging intervals.
+
+```{python p-download-par, results="hide", message=FALSE}
+
+pr = nu.load_by_product("DP1.00024.001", site="NIWO", 
+                    timeindex=30, package="basic", 
+                    startdate="2018-06", enddate="2018-07",
+                    check_size=False)
+
+```
+
+### {-}
+
 `pr` is another named list, and again, metadata and units can be found in 
 the `variables` table. The `PARPAR_30min` table contains a `verticalPosition` 
-field. This field indicates the position on the tower, with 10 being the 
-first tower level, and 20, 30, etc going up the tower.
+field. This field indicates the position on the tower, with 010 being the 
+first tower level, and 020, 030, etc going up the tower.
 
-### Join PAR to flux data
+### Join PAR to flux data {.tabset}
 
 We'll connect PAR data from the tower top to the flux data.
+
+#### R
 
 ```{r get-tower-top}
 
@@ -498,21 +538,63 @@ plot(fx.pr$data.fluxCo2.nsae.flux~fx.pr$PARMean,
 
 ```
 
+#### Python
+
+As noted above, `load_by_product()` automatically converts time stamps 
+to a recognized date-time format when it reads the data. However, the 
+field names for the time stamps differ between the flux data and the 
+other meteorological data: the start of the averaging interval is 
+`timeBgn` in the flux data and `startDateTime` in the PAR data.
+
+Let's create a new variable in the PAR data and subset to the top of the 
+tower.
+
+```{python p-get-tower-top}
+
+par30 = pr['PARPAR_30min']
+par30['timeBgn'] = par30['startDateTime']
+prtop = par30[par30['verticalPosition']=='040']
+
+```
+
+And now use the matching time stamp fields to merge the flux and PAR data.
+
+```{python p-merge}
+
+fxpr = pd.merge(flux['NIWO'], prtop, how='outer', on='timeBgn')
+
+```
+
+And now we can plot net carbon exchange as a function of light availability:
+
+```{python p-plot-par-flux}
+
+plt.scatter(fxpr.PARMean, 
+            fxpr['data.fluxCo2.nsae.flux'],
+           marker='.')
+plt.ylim((-20,20))
+plt.show()
+
+```
+
+### {-}
+
 If you're interested in data in the eddy covariance bundle besides the 
 net flux data, the rest of this tutorial will guide you through how to 
 get those data out of the bundle.
 
-## 5. Vertical profile data (Level 3)
+## 5. Vertical profile data (Level 3) {.tabset}
 
 The Level 3 (`dp03`) data are the spatially interpolated profiles of 
 the rates of change of CO<sub>2</sub>, H<sub>2</sub>O, and temperature.
 Extract the Level 3 data from the HDF5 file using `stackEddy()` with 
 the same syntax as for the Level 4 data.
 
+### R
 
 ```{r stack-dp03, results="hide", message=FALSE}
 
-prof <- stackEddy(filepath="~/Downloads/filesToStack00200/",
+prof <- stackEddy(filepath=paste0(getwd(), "/filesToStack00200"),
                  level="dp03")
 
 ```
@@ -522,33 +604,75 @@ for each site.
 
 ```{r head-dp03}
 
-head(prof$NIWO)
+head(prof$NIWO[,1:7])
 
 ```
 
+### Python
 
-## 6. Un-interpolated vertical profile data (Level 2)
+Note (Feb 17, 2026): There is a bug in the Python implementation of the Level 3 code. 
+This section may not run correctly, we will update as soon as possible.
+
+```{python p-stack-dp03, eval=FALSE, results="hide", message=FALSE}
+
+prof = nu.stack_eddy(filepath=os.getcwd() + "/filesToStack00200",
+                 level="dp03")
+
+```
+
+As with the Level 4 data, the result is a named list with data tables 
+for each site.
+
+```{python p-head-dp03, eval=FALSE}
+
+prof['NIWO'].head()
+
+```
+
+## {-}
+
+## 6. Un-interpolated vertical profile data (Level 2) {.tabset}
 
 The Level 2 data are interpolated in time but not in space. They 
 contain the rates of change at each of the measurement heights.
 
+### R
+
 Again, they can be extracted from the HDF5 files using `stackEddy()` 
 with the same syntax:
 
-
 ```{r stack-dp02, results="hide", message=FALSE}
 
-prof.l2 <- stackEddy(filepath="~/Downloads/filesToStack00200/",
+prof.l2 <- stackEddy(filepath=paste0(getwd(), "/filesToStack00200"),
                  level="dp02")
 
 ```
-
 
 ```{r head-dp02}
 
 head(prof.l2$HARV)
 
 ```
+
+### Python
+
+Again, they can be extracted from the HDF5 files using `stackeddy()` 
+with the same syntax:
+
+```{python p-stack-dp02, results="hide", message=FALSE}
+
+profl2 = nu.stack_eddy(filepath=os.getcwd() + "/filesToStack00200",
+                 level="dp02")
+
+```
+
+```{python p-head-dp02}
+
+profl2['HARV'].head()
+
+```
+
+## {-}
 
 Note that here, as in the PAR data, there is a `verticalPosition` field. 
 It has the same meaning as in the PAR data, indicating the tower level of 
@@ -559,6 +683,10 @@ the measurement.
 Level 1 (`dp01`) data are calibrated, and aggregated in time, but 
 otherwise untransformed. Use Level 1 data for raw gas 
 concentrations and atmospheric stable isotopes.
+
+### Extract Level 1 data {.tabset}
+
+#### R
 
 Using `stackEddy()` to extract Level 1 data requires additional 
 inputs. The Level 1 files are too large to simply pull out all the 
@@ -576,7 +704,8 @@ to a single NEON HDF5 file:
 
 ```{r get-vars}
 
-vars <- getVarsEddy("~/Downloads/filesToStack00200/NEON.D01.HARV.DP4.00200.001.nsae.2018-07.basic.20201020T201317Z.h5")
+vars <- getVarsEddy(paste0(getwd(),
+                           "/filesToStack00200/NEON.D01.HARV.DP4.00200.001.nsae.2018-07.basic.20260115T064348Z.h5"))
 head(vars)
 
 ```
@@ -591,7 +720,7 @@ profiles:
 
 ```{r stack-dp01, results="hide", message=FALSE}
 
-iso <- stackEddy(filepath="~/Downloads/filesToStack00200/",
+iso <- stackEddy(filepath=paste0(getwd(), "/filesToStack00200"),
                level="dp01", var=c("rtioMoleDryCo2","rtioMoleDryH2o",
                                    "dlta13CCo2","dlta18OH2o"), avg=30)
 
@@ -600,17 +729,56 @@ iso <- stackEddy(filepath="~/Downloads/filesToStack00200/",
 
 ```{r head-dp01}
 
-head(iso$HARV)
+head(iso$HARV[,1:8])
 
 ```
+
+#### Python
+
+Using `stack_eddy()` to extract Level 1 data requires additional 
+inputs. The Level 1 files are too large to simply pull out all the 
+variables by default, and they include multiple averaging intervals, 
+which can't be merged. So two additional inputs are needed:
+
+* `avg`: The averaging interval to extract
+* `var`: One or more variables to extract
+
+Inputs to `var` can be any values from the `name` field in the table 
+returned by `get_vars_eddy()`. Let's take a look at CO<sub>2</sub> and 
+H<sub>2</sub>O, <sup>13</sup>C in CO<sub>2</sub> and <sup>18</sup>O in 
+H<sub>2</sub>O, at 30-minute aggregation. Let's look at Harvard Forest 
+for these data, since deeper canopies generally have more interesting 
+profiles:
+
+
+```{python p-stack-dp01, results="hide", message=FALSE}
+
+iso = nu.stack_eddy(filepath=os.getcwd() + "/filesToStack00200",
+                 level="dp01", avg=30, 
+                    var=["rtioMoleDryCo2","rtioMoleDryH2o",
+                          "dlta13CCo2","dlta18OH2o"])
+                                   
+```
+
+
+```{python p-head-dp01}
+
+iso['HARV'].head()
+
+```
+
+### {-}
+
+### Plot vertical profiles {.tabset}
 
 Let's plot vertical profiles of CO<sub>2</sub> and <sup>13</sup>C in CO<sub>2</sub> 
 on a single day. 
 
-Here we'll use the time stamps in a different way, using `grep()` to select 
+Here we'll use the time stamps to select 
 all of the records for a single day. And discard the `verticalPosition` 
 values that are string values - those are the calibration gases.
 
+#### R
 
 ```{r get-one-day, warning=FALSE}
 
@@ -619,19 +787,8 @@ iso.d <- iso.d[-which(is.na(as.numeric(iso.d$verticalPosition))),]
 
 ```
 
-`ggplot` is well suited to these types of data, let's use it to plot 
-the profiles. If you don't have the package yet, use `install.packages()` 
-to install it first.
-
-
-```{r gg, results="hide", message=FALSE}
-
-library(ggplot2)
-
-```
-
-Now we can plot CO<sub>2</sub> relative to height on the tower, 
-with separate lines for each time interval.
+`ggplot` is well suited to these types of data. We can plot CO<sub>2</sub> 
+relative to height on the tower, with separate lines for each time interval.
 
 ```{r plot-co2-profile, message=FALSE, warning=FALSE}
 
@@ -656,6 +813,68 @@ g <- ggplot(iso.d, aes(y=verticalPosition)) +
 g
 
 ```
+
+#### Python
+
+```{python p-get-one-day, warning=FALSE}
+
+isoH = iso['HARV']
+isoH6 = isoH[(isoH['timeBgn'] >= '2018-06-25') & (isoH['timeBgn'] < '2018-06-26')]
+isod = isoH6[isoH6['horizontalPosition'] == '000']
+
+```
+
+Let's plot CO<sub>2</sub> 
+relative to height on the tower, with separate lines for each time interval.
+
+```{python p-plot-co2-profile, message=FALSE, warning=FALSE}
+
+fig, ax = plt.subplots()
+
+groups = isod["timeBgn"].unique()
+
+cmap = plt.cm.viridis 
+colors = cmap(np.linspace(0, 1, len(groups)))
+
+for color, group_name in zip(colors, groups):
+    group = isod[isod["timeBgn"] == group_name]
+    
+    ax.plot(
+        group["data.co2Stor.rtioMoleDryCo2.mean"],
+        group["verticalPosition"],
+        color=color
+    )
+
+ax.set_xlabel("CO2")
+ax.set_ylabel("Tower level")
+
+plt.show()
+
+```
+
+And the same plot for <sup>13</sup>C in CO<sub>2</sub>:
+
+```{python p-plot-iso-profile, message=FALSE, warning=FALSE}
+
+fig, ax = plt.subplots()
+
+for color, group_name in zip(colors, groups):
+    group = isod[isod["timeBgn"] == group_name]
+    
+    ax.plot(
+        group["data.isoCo2.dlta13CCo2.mean"],
+        group["verticalPosition"],
+        color=color
+    )
+
+ax.set_xlabel("13C")
+ax.set_ylabel("Tower level")
+
+plt.show()
+
+```
+
+### {-}
 
 The legends are omitted for space, see if you can use the 
 concentration and isotope ratio buildup and drawdown below the 
