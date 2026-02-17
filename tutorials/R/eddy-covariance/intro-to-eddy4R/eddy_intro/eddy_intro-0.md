@@ -161,8 +161,8 @@ beyond the scope of this tutorial.</p>
 data include both the storage and turbulent components. Since many users
 will want to focus on the net flux data, we’ll start there.</p>
 </div>
-<div id="extract-level-4-data-fluxes" class="section level2">
-<h2>3. Extract Level 4 data (Fluxes!)</h2>
+<div id="extract-level-4-data-fluxes" class="section level2 tabset">
+<h2 class="tabset">3. Extract Level 4 data (Fluxes!)</h2>
 <div id="r-2" class="section level3">
 <h3>R</h3>
 <p>To extract the Level 4 data from the HDF5 files and merge them into a
@@ -565,8 +565,8 @@ field:</p>
 </div>
 <div id="section-2" class="section level2 unnumbered">
 <h2 class="unnumbered"></h2>
-<div id="plot-fluxes" class="section level3">
-<h3>Plot fluxes</h3>
+<div id="plot-fluxes" class="section level3 tabset">
+<h3 class="tabset">Plot fluxes</h3>
 <p>Let’s plot some data! First, a brief aside about time stamps, since
 these are time series data.</p>
 </div>
@@ -1046,8 +1046,8 @@ for color, group_name in zip(colors, groups):
     group = isod[isod[&quot;timeBgn&quot;] == group_name]
     
     ax.plot(
-        group[&quot;data.co2Stor.rtioMoleDryCo2.mean&quot;],
-        group[&quot;verticalPosition&quot;],
+        group[&#39;data.co2Stor.rtioMoleDryCo2.mean&#39;],
+        group[&#39;verticalPosition&#39;],
         color=color
     )
 
@@ -1063,8 +1063,8 @@ for color, group_name in zip(colors, groups):
     group = isod[isod[&quot;timeBgn&quot;] == group_name]
     
     ax.plot(
-        group[&quot;data.isoCo2.dlta13CCo2.mean&quot;],
-        group[&quot;verticalPosition&quot;],
+        group[&#39;data.isoCo2.dlta13CCo2.mean&#39;],
+        group[&#39;verticalPosition&#39;],
         color=color
     )
 
