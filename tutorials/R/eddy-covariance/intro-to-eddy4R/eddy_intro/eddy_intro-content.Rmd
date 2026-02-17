@@ -169,7 +169,7 @@ The dp02 and dp03 data are used in storage calculations, and the dp04 data
 include both the storage and turbulent components. Since many users will 
 want to focus on the net flux data, we'll start there.
 
-## 3. Extract Level 4 data (Fluxes!)
+## 3. Extract Level 4 data (Fluxes!) {.tabset}
 
 ### R
 
@@ -325,7 +325,7 @@ flux['variables']
 ## {-}
 
 
-### Plot fluxes
+### Plot fluxes {.tabset}
 
 Let's plot some data! First, a brief aside about time stamps, since 
 these are time series data.
@@ -840,8 +840,8 @@ for color, group_name in zip(colors, groups):
     group = isod[isod["timeBgn"] == group_name]
     
     ax.plot(
-        group["data.co2Stor.rtioMoleDryCo2.mean"],
-        group["verticalPosition"],
+        group['data.co2Stor.rtioMoleDryCo2.mean'],
+        group['verticalPosition'],
         color=color
     )
 
@@ -862,8 +862,8 @@ for color, group_name in zip(colors, groups):
     group = isod[isod["timeBgn"] == group_name]
     
     ax.plot(
-        group["data.isoCo2.dlta13CCo2.mean"],
-        group["verticalPosition"],
+        group['data.isoCo2.dlta13CCo2.mean'],
+        group['verticalPosition'],
         color=color
     )
 
