@@ -1023,11 +1023,10 @@ cmap = plt.cm.viridis
 colors = cmap(np.linspace(0, 1, len(groups)))
 
 for color, group_name in zip(colors, groups):
-    group = isod[isod[&quot;timeBgn&quot;] == group_name]
-    
-    ax.plot(group[&#39;data.co2Stor.rtioMoleDryCo2.mean&#39;],
-            group[&#39;verticalPosition&#39;],
-            color=color)
+  group = isod[isod[&quot;timeBgn&quot;] == group_name]
+  ax.plot(group[&#39;data.co2Stor.rtioMoleDryCo2.mean&#39;],
+          group[&#39;verticalPosition&#39;],
+          color=color)
 
 ax.set_xlabel(&quot;CO2&quot;)
 ax.set_ylabel(&quot;Tower level&quot;)
@@ -1038,11 +1037,10 @@ plt.show()</code></pre>
 <pre class="python"><code>fig, ax = plt.subplots()
 
 for color, group_name in zip(colors, groups):
-    group = isod[isod[&quot;timeBgn&quot;] == group_name]
-    
-    ax.plot(group[&quot;data.isoCo2.dlta13CCo2.mean&quot;],
-            group[&quot;verticalPosition&quot;],
-            color=color)
+  group = isod[isod[&quot;timeBgn&quot;] == group_name]
+  ax.plot(group[&quot;data.isoCo2.dlta13CCo2.mean&quot;],
+          group[&quot;verticalPosition&quot;],
+          color=color)
 
 ax.set_xlabel(&quot;13C&quot;)
 ax.set_ylabel(&quot;Tower level&quot;)

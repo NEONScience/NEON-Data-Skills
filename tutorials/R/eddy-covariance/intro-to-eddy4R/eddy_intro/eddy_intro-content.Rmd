@@ -837,11 +837,10 @@ cmap = plt.cm.viridis
 colors = cmap(np.linspace(0, 1, len(groups)))
 
 for color, group_name in zip(colors, groups):
-    group = isod[isod["timeBgn"] == group_name]
-    
-    ax.plot(group['data.co2Stor.rtioMoleDryCo2.mean'],
-            group['verticalPosition'],
-            color=color)
+  group = isod[isod["timeBgn"] == group_name]
+  ax.plot(group['data.co2Stor.rtioMoleDryCo2.mean'],
+          group['verticalPosition'],
+          color=color)
 
 ax.set_xlabel("CO2")
 ax.set_ylabel("Tower level")
@@ -857,11 +856,10 @@ And the same plot for <sup>13</sup>C in CO<sub>2</sub>:
 fig, ax = plt.subplots()
 
 for color, group_name in zip(colors, groups):
-    group = isod[isod["timeBgn"] == group_name]
-    
-    ax.plot(group["data.isoCo2.dlta13CCo2.mean"],
-            group["verticalPosition"],
-            color=color)
+  group = isod[isod["timeBgn"] == group_name]
+  ax.plot(group["data.isoCo2.dlta13CCo2.mean"],
+          group["verticalPosition"],
+          color=color)
 
 ax.set_xlabel("13C")
 ax.set_ylabel("Tower level")
