@@ -325,12 +325,12 @@ flux['variables']
 ## {-}
 
 
-### Plot fluxes {.tabset}
+### Plot fluxes
 
 Let's plot some data! First, a brief aside about time stamps, since 
 these are time series data.
 
-### Time stamps
+### Time stamps {.tabset}
 
 NEON sensor data come with time stamps for both the start and end of 
 the averaging period. Depending on the analysis you're doing, you may 
@@ -839,11 +839,9 @@ colors = cmap(np.linspace(0, 1, len(groups)))
 for color, group_name in zip(colors, groups):
     group = isod[isod["timeBgn"] == group_name]
     
-    ax.plot(
-        group['data.co2Stor.rtioMoleDryCo2.mean'],
-        group['verticalPosition'],
-        color=color
-    )
+    ax.plot(group['data.co2Stor.rtioMoleDryCo2.mean'],
+            group['verticalPosition'],
+            color=color)
 
 ax.set_xlabel("CO2")
 ax.set_ylabel("Tower level")
@@ -861,11 +859,9 @@ fig, ax = plt.subplots()
 for color, group_name in zip(colors, groups):
     group = isod[isod["timeBgn"] == group_name]
     
-    ax.plot(
-        group['data.isoCo2.dlta13CCo2.mean'],
-        group['verticalPosition'],
-        color=color
-    )
+    ax.plot(group["data.isoCo2.dlta13CCo2.mean"],
+            group["verticalPosition"],
+            color=color)
 
 ax.set_xlabel("13C")
 ax.set_ylabel("Tower level")
