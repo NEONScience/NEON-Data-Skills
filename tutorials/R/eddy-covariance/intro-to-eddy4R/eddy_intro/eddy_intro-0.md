@@ -565,13 +565,13 @@ field:</p>
 </div>
 <div id="section-2" class="section level2 unnumbered">
 <h2 class="unnumbered"></h2>
-<div id="plot-fluxes" class="section level3 tabset">
-<h3 class="tabset">Plot fluxes</h3>
+<div id="plot-fluxes" class="section level3">
+<h3>Plot fluxes</h3>
 <p>Let’s plot some data! First, a brief aside about time stamps, since
 these are time series data.</p>
 </div>
-<div id="time-stamps" class="section level3">
-<h3>Time stamps</h3>
+<div id="time-stamps" class="section level3 tabset">
+<h3 class="tabset">Time stamps</h3>
 <p>NEON sensor data come with time stamps for both the start and end of
 the averaging period. Depending on the analysis you’re doing, you may
 want to use one or the other; for general plotting, re-formatting, and
@@ -1045,11 +1045,9 @@ colors = cmap(np.linspace(0, 1, len(groups)))
 for color, group_name in zip(colors, groups):
     group = isod[isod[&quot;timeBgn&quot;] == group_name]
     
-    ax.plot(
-        group[&#39;data.co2Stor.rtioMoleDryCo2.mean&#39;],
-        group[&#39;verticalPosition&#39;],
-        color=color
-    )
+    ax.plot(group[&#39;data.co2Stor.rtioMoleDryCo2.mean&#39;],
+            group[&#39;verticalPosition&#39;],
+            color=color)
 
 ax.set_xlabel(&quot;CO2&quot;)
 ax.set_ylabel(&quot;Tower level&quot;)
@@ -1062,11 +1060,9 @@ plt.show()</code></pre>
 for color, group_name in zip(colors, groups):
     group = isod[isod[&quot;timeBgn&quot;] == group_name]
     
-    ax.plot(
-        group[&#39;data.isoCo2.dlta13CCo2.mean&#39;],
-        group[&#39;verticalPosition&#39;],
-        color=color
-    )
+    ax.plot(group[&quot;data.isoCo2.dlta13CCo2.mean&quot;],
+            group[&quot;verticalPosition&quot;],
+            color=color)
 
 ax.set_xlabel(&quot;13C&quot;)
 ax.set_ylabel(&quot;Tower level&quot;)
