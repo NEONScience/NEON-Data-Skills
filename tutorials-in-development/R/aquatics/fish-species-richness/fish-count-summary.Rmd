@@ -45,7 +45,7 @@ Start by installing any packages that are used during the course of the tutorial
 
 In this first section we will get our R session set up so that we are prepared to work with and analyze the data.  This involves loading the necessary R packages, downloading the data, setting a working directory if manual data upload is needed, and a review of the NEON data citation policies.
 
-### Load R Packages:
+### Load R Packages
 
 Once the packages have been installed they need to be loaded to the session. This needs to be done every time you run code. 
 
@@ -59,7 +59,7 @@ library(ggplot2)
 Download the fish electrofishing, gill netting, and fyke netting counts using the `loadByProduct()` function in
 the `neonUtilities` package. Inputs needed to the function are:
 
-* `dpID`: data product ID; small mammal box trapping = DP1.20107.001
+* `dpID`: data product ID; fish electrofishing, gill netting, and fyke netting counts = DP1.20107.001
 * `site`: (vector of) 4-letter site codes; CUPE, CRAM
 * `package`: basic or expanded; we'll download basic here
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
@@ -67,44 +67,38 @@ the `neonUtilities` package. Inputs needed to the function are:
 Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
 for the `neonUtilities` package for more details if desired.
 
-```{r fshdat, results="hide"}
-fshdat <- loadByProduct(dpID="DP1.20107.001",
-                        site=c("CRAM", "CUPE"),
-                        package="basic",
-                        check.size = FALSE,
-                        startdate = "2024-01",
-                        enddate = "2024-12")
+```{r fshdat, results='hide', message=FALSE}
+fshdat <- neonUtilities::loadByProduct(
+  dpID="DP1.20107.001",
+  site=c("CRAM", "CUPE"),
+  package="basic",
+  check.size = FALSE,
+  startdate = "2024-01",
+  enddate = "2024-12")
 ```
 
-### Set Working Directory if Using Locally Saved Data
-If the data are not loaded directly into the R session with loadByProduct (e.g., if wifi is not available), this lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets. 
+### Set Working Directory if Using Locally-Saved Data
+If the data are not loaded directly into the R session with loadByProduct (e.g., if wifi is not available), this lesson assumes that you have set your working directory to the location of the zipped data downloaded from the NEON portal. 
 
 <a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
 of setting the working directory in R can be found here.</a>
 
-```{r set directory, results="hide"}
-#This section of code should only be run if the section above using loadByProduct is not used.
+```{r set directory, results="hide", message=FALSE}
+# This section of code should only be run if the section above using loadByProduct is not used.
 
-#Set working directory
+# Change the filepath below to match the location of locally saved zipped files:
+wd<-"C:/Users/ritterm1/Documents/data/"
 
-#Change the filepath below to match the location of locally saved files:
- wd<-"/Users/ritterm1/Documents/data/"
- setwd(wd)
- 
- # mam_pertrapnight<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_pertrapnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
- # 
- # mam_perplotnight<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/mam_perplotnight.csv'), varFile = paste0(wd,'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
- # 
- # rpt2_pathogentesting<-neonUtilities::readTableNEON(dataFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/rpt2_pathogentesting.csv'), varFile = paste0(wd,'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
- # 
- # mam.list<-read.csv(paste0(wd,'taxonTableMAM.csv'))
- # 
- # variables_10072<-read.csv(paste0(wd, 'NEON_count-small-mammals/stackedFiles/variables_10072.csv'))
- # 
- # variables_10064<-read.csv(paste0(wd, 'NEON_tick-pathogens-rodent/stackedFiles/variables_10064.csv'))
+# Set working directory
+setwd(wd)
+
+# Read downloaded files into R
+fshdat <- neonUtilities::stackByTable(
+  filepath = "NEON_count-fish.zip", 
+  savepath = "envt")
 ```
 
-### NEON Data Citation:
+### NEON Data Citation
 The use of NEON data should be cited according to our
 <a href="https://www.neonscience.org/data-samples/data-policies-citation" target="_blank"> Data Policies & Citation Guidelines</a>.
 
@@ -118,79 +112,44 @@ The data used in this tutorial were collected at the
 The data are downloaded into a list of separate tables. Before working with the data the tables are added to the R environment
 
 ```{r download-overview, message=FALSE, warning=FALSE}
-#View all tables in the list of downloaded small mammal data:
+# View all tables in the list of downloaded fish data:
 names(fshdat)
 
-#Extract the items from the list and add as dataframes in the R environment:
+# Extract the items from the list and add as dataframes in the R environment:
 list2env(fshdat, envir=.GlobalEnv)
 ```
 
-The `categoricalCodes` file provides controlled lists used in the data
+* The `categoricalCodes` file provides controlled lists used in the data
 
-The `issueLog` and `readme` have the same information that you will find on the data product landing page of the data portal.
+* The `issueLog` and `readme` have the same information that you will find on the data product landing page of the data portal.
 
-The `fsh_fieldData` table includes the date and time for all reach sampling efforts and will include an eventID value to indicate a unique bout of sampling in the 2026 release.
+* The `fsh_fieldData` table includes the date and time for all reach sampling efforts and will include an eventID value to indicate a unique bout of sampling in the 2026 release.
 
-The `fsh_perPass` table includes a record for each sampling pass conducted, and is linked to the field table through eventID and namedLocation.
+* The `fsh_perPass` table includes a record for each sampling pass conducted, and is linked to the field table through eventID and namedLocation.
 
-The `fsh_perFish` table includes records for each individually processed fish.
+* The `fsh_perFish` table includes records for each individually processed fish.
 
-The `fsh_bulkCount` table includes a count per species of fish captured after the specified number of individual fish are processed for the unique taxon or morphospecies.
+* The `fsh_bulkCount` table includes a count per species of fish captured after the specified number of individual fish are processed for the unique taxon or morphospecies.
 
-The `validation` file provides the rules that constrain data upon ingest into the NEON database.
+* The `validation` file provides the rules that constrain data upon ingest into the NEON database.
 
-The `variables` file describes each field in the returned data tables.
-
-<!-- ### Checking for Duplicates: -->
-<!-- NEON data undergo quality checking and verification procedures at multiple points from the time of data entry up to the point of publication.  Nonetheless, it is considered best practice to check that the data look as they are expected to prior to completing analyses.   -->
-
-<!-- It is useful to check the two data tables for duplicate entries.  The primaryKey to indicate which fields define a unique record for each NEON data table can be found in the variables file.  In the mam_perplotnight table this would be records with the same nightuid.  In the mam_pertrapnight table this would be records with the same plotID, trap coordinate, collectDate and tagID. The neonOS function uses this information to check for duplicates in the data.  It is worth noting that standard function cannot account for multiple captures of untagged individuals in a single trap (trapStatus = 4) and thus those should be filtered out before running the removeDups function on the mam_pertrapnight data. -->
-
-<!-- ```{r data download, results="hide"} -->
-<!-- #1.Check the perplotnight table by nightuid using standard removeDups function -->
-<!-- mam_plotNight_nodups <- neonOS::removeDups(data=mam_perplotnight, -->
-<!--                              variables=variables_10072, -->
-<!--                              table='mam_perplotnight') -->
-
-<!-- #2. Filter out multiple captures of untagged individuals in a single trap  -->
-<!-- #(trapStatus = 4) before running the removeDups function on the  -->
-<!-- #mam_pertrapnight data. -->
-<!-- mam_trapNight_multipleCaps <- mam_pertrapnight %>%  -->
-<!--   filter(trapStatus == "4 - more than 1 capture in one trap" &  -->
-<!--            is.na(tagID) & is.na(individualCode))  -->
-<!-- #This data subset contains no multiple captures so no further filtering is  -->
-<!-- # necessary -->
-
-<!-- #Check the pertrapnight table using standard removeDups function  -->
-<!-- mam_trapNight_nodups <- neonOS::removeDups(data=mam_pertrapnight, -->
-<!--                              variables=variables_10072, -->
-<!--                              table='mam_pertrapnight')  -->
-<!-- ``` -->
-
-<!-- ### Joining Tables: -->
-<!-- Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information.  For instance, the fsh_perPass data table contains information about the sampling effort as well as an eventID that indicates a unique bout of sampling. By contrast, the information about fish captures and samples from a bout is found in the fsh_perFish and fsh_bulkCount data tables. These three tables can be joined so that capture data can be easily summarized by pass and by bout.  Details about which tables can be joined together and what variables should be used to link between the two tables can be found in the "Table joining" section of the Quick Start Guide on each data product landing page. -->
-
-<!-- ```{r data join, results="hide"} -->
-<!-- mamjn<-neonOS::joinTableNEON(mam_plotNight_nodups,  -->
-<!--                              mam_trapNight_nodups, name1 = "mam_perplotnight",  -->
-<!--                              name2 = "mam_pertrapnight") -->
-
-<!-- #It is helpful to verify that there are the expected number of records (the  -->
-<!-- # total in the pertrapnight table) and that the key variables are not blank/NA. -->
-<!-- which(is.na(mamjn$eventID)) -->
-<!-- ``` -->
+* The `variables` file describes each field in the returned data tables.
 
 ### Quality Verification:
 For bulk count data there should only be one bulk count record for each taxonID and pass. Before summarizing total captures across tables it is helpful to ensure bulk count records are present when expected.
 
-```{r quality checks, results="hide"}
+```{r quality checks}
 bulkCount_count <- fsh_bulkCount %>% 
   select(eventID, boutEndDate,  passNumber, scientificName, taxonID, namedLocation, bulkFishCount) %>%
   group_by(eventID, boutEndDate, passNumber, namedLocation, scientificName, taxonID) %>%
   count()
-unique(bulkCount_count$n)
-#There are no taxa with >1 bulk count record per pass
 
+if(unique(bulkCount_count$n) == 1){
+  cat('There are no taxa with >1 bulk count record per pass')
+}else{
+  cat('>1 Bulk count record exists for the following records:\n')
+  print(bulkCount_count %>% filter(n != 1))
+}
 ```
 ### Subset the data:
 First the bulk count data should be subset to only the necessary columns, to help keep the final summary output concise.
@@ -201,6 +160,7 @@ bulkCount_sub <- fsh_bulkCount %>%
          passNumber, namedLocation, barrierSubReach, 
          scientificName, taxonID, bulkFishCount)
 ```
+
 ### Calculate the number of fish per pass in the individual fish data:
 Before joining individual fish data with per pass data to calculate total rates of capture, the total number of individual fish in the per fish table must be calculated for each pass. Per fish data is grouped by eventID, passNumber, namedLocation, barrierSubReach, and taxonID before tallying records for each taxon.
 
@@ -210,11 +170,13 @@ perFish_total <- fsh_perFish %>%
          namedLocation, barrierSubReach, scientificName, taxonID) %>%
   group_by(eventID, passStartTime, passEndTime, boutEndDate, passNumber, 
          namedLocation, barrierSubReach, scientificName, taxonID) %>%
-  count()
+  count(name = 'individualFishCount')
 ```
 
-### Joining Tables:
-Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. For instance, the fsh_perPass data table contains information about the sampling effort as well as an eventID that indicates a unique bout of sampling. By contrast, the information about fish captures and samples from a bout is found in the fsh_perFish and fsh_bulkCount data tables. These three tables can be joined so that capture data can be easily summarized by pass and by bout. Details about which tables can be joined together and what variables should be used to link between the two tables can be found in the "Table joining" section of the Quick Start Guide on each data product landing page.
+### Join individual and bulk count tables:
+Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. For instance, the information about individual fish captures and samples from a bout is found in the fsh_perFish data table, while information about additional fish that were not processed individually and instead counted in bulk is found in the fsh_bulkCount data table. These two tables can be joined so that capture data can be easily summarized by pass and bout.  
+
+Details about which tables can be joined together and what variables should be used to link tables can be found in the "Table joining" section of the Quick Start Guide on each data product landing page.
 
 ```{r table join, results="hide"}
 fsh_all <- perFish_total %>%
@@ -223,3 +185,13 @@ fsh_all <- perFish_total %>%
                                    'namedLocation', 'barrierSubReach', 
                                    'scientificName', 'taxonID'))
 ```
+
+### Calculate total captures:
+There are now two columns in the new `fsh_all` data frame that contain capture numbers for each unique pass - one with total number of fish in the perFish table, and one with total number of fish in the bulkCount table. These two values can be added to calculate the total number of fish captured per pass.
+
+```{r total captures, results="hide"}
+fsh_all <- fsh_all %>%  
+  mutate(
+    totalFishCount = rowSums(across(c(individualFishCount, bulkFishCount)), na.rm = TRUE))
+```
+
