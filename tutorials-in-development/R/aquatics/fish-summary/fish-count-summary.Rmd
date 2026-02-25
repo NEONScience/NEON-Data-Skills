@@ -4,9 +4,9 @@ title: "Summarizing Fish Capture Data"
 description: "This tutorial will provide an introduction to discovering, accessing and summarizing NEON fish count data using R"
 dateCreated: 2026-02-20
 authors: Madaline Ritter
-contributors: Madaline Ritter, Ryan Williams, Claire Lunch
+contributors: Madaline Ritter, Ryan Williams, Claire Lunch, Garrett Williams
 estimatedTime: 1.5 hrs
-packagesLibraries: neonUtilities, dplyr
+packagesLibraries: neonUtilities, dplyr, ggplot2
 topics: data-analysis, data-visualization
 languagesTool: R
 dataProduct: DP1.20107.001
@@ -60,7 +60,7 @@ Download the fish electrofishing, gill netting, and fyke netting counts using th
 the `neonUtilities` package. Inputs needed to the function are:
 
 * `dpID`: data product ID; fish electrofishing, gill netting, and fyke netting counts = DP1.20107.001
-* `site`: (vector of) 4-letter site codes; CUPE, CRAM
+* `site`: (vector of) 4-letter site codes; PROP, PRLA, BLUE, CUPE, CRAM
 * `package`: basic or expanded; we'll download basic here
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
 
@@ -70,7 +70,7 @@ for the `neonUtilities` package for more details if desired.
 ```{r fshdat, results='hide', message=FALSE}
 fshdat <- neonUtilities::loadByProduct(
   dpID="DP1.20107.001",
-  site=c("CRAM", "CUPE"),
+  site=c("PRPO", "PRLA", "BLUE", "CRAM", "CUPE"),
   package="basic",
   check.size = FALSE,
   startdate = "2024-01",
@@ -135,7 +135,7 @@ list2env(fshdat, envir=.GlobalEnv)
 
 * The `variables` file describes each field in the returned data tables.
 
-### Quality Verification:
+### Quality Verification
 For bulk count data there should only be one bulk count record for each taxonID and pass. Before summarizing total captures across tables it is helpful to ensure bulk count records are present when expected.
 
 ```{r quality checks}
@@ -151,7 +151,8 @@ if(unique(bulkCount_count$n) == 1){
   print(bulkCount_count %>% filter(n != 1))
 }
 ```
-### Subset the data:
+
+### Subset the data
 First the bulk count data should be subset to only the necessary columns, to help keep the final summary output concise.
 
 ```{r subset data, results="hide"}
@@ -161,7 +162,7 @@ bulkCount_sub <- fsh_bulkCount %>%
          scientificName, taxonID, bulkFishCount)
 ```
 
-### Calculate the number of fish per pass in the individual fish data:
+### Calculate the number of individual fish processed per pass
 Before joining individual fish data with per pass data to calculate total rates of capture, the total number of individual fish in the per fish table must be calculated for each pass. Per fish data is grouped by eventID, passNumber, namedLocation, barrierSubReach, and taxonID before tallying records for each taxon.
 
 ```{r tally per fish individuals, results="hide"}
@@ -173,7 +174,7 @@ perFish_total <- fsh_perFish %>%
   count(name = 'individualFishCount')
 ```
 
-### Join individual and bulk count tables:
+### Join individual and bulk count tables
 Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. For instance, the information about individual fish captures and samples from a bout is found in the fsh_perFish data table, while information about additional fish that were not processed individually and instead counted in bulk is found in the fsh_bulkCount data table. These two tables can be joined so that capture data can be easily summarized by pass and bout.  
 
 Details about which tables can be joined together and what variables should be used to link tables can be found in the "Table joining" section of the Quick Start Guide on each data product landing page.
@@ -186,7 +187,7 @@ fsh_all <- perFish_total %>%
                                    'scientificName', 'taxonID'))
 ```
 
-### Calculate total captures:
+### Calculate total captures
 There are now two columns in the new `fsh_all` data frame that contain capture numbers for each unique pass - one with total number of fish in the perFish table, and one with total number of fish in the bulkCount table. These two values can be added to calculate the total number of fish captured per pass.
 
 ```{r total captures, results="hide"}
@@ -195,3 +196,36 @@ fsh_all <- fsh_all %>%
     totalFishCount = rowSums(across(c(individualFishCount, bulkFishCount)), na.rm = TRUE))
 ```
 
+
+## 3. Visualizing Species Richness
+Here we will calculate species richness for each unique eventID, to examine the number of  species captured during each sampling bout. 
+
+### Calculate richness for each eventID
+
+```{r richness-by-site, message=FALSE}
+richness_by_event <- fsh_all %>%
+  select(eventID, scientificName) %>%
+  group_by(eventID) %>%
+  distinct(scientificName) %>%
+  summarise(numSpecies = n()) %>%
+  arrange(-numSpecies)
+```
+
+Now we can visualize the results.
+
+```{r richness-by-site-graph}
+ggplot(richness_by_event, aes(x = eventID, y = numSpecies)) +
+        geom_bar(stat = "identity") +
+        scale_x_discrete(limits = richness_by_event$eventID) +
+        theme(axis.text.x = element_text(angle = 90)) +
+        scale_y_continuous(breaks = seq(from = 0, to = 30, by = 2)) +
+        labs(
+                title = "Total Species Richness by EventID",
+                x = "Event ID",
+                y = "Number of Species"
+        )
+```
+
+Looks like <a href="https://www.neonscience.org/field-sites/field-sites-map/BLUE">Blue River</a> in Domain 11 has far and away the
+highest species richness, but to get a deeper understanding of Blue's 
+fish populations we'll need an idea of relative and absolute abundance.
