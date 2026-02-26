@@ -25,7 +25,7 @@ In this tutorial, we demonstrate how to download a single tile of the Canopy Nit
 After completing this tutorial, you will be able to:
 
 - Download the Canopy Nitrogen Data Product
-- Understand the 4 files that comprise the Canopy Nitrogen data product
+- Understand the 4 files that comprise the Canopy Nitrogen Product
 - Mask the Nitrogen data to include only valid pixels
 
 ## Install Python Packages
