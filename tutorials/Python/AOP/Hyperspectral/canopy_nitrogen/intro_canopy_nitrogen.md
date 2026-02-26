@@ -1,5 +1,5 @@
 ---
-syncID: 
+syncID: 4223457759904e42ae70cfa5c3b84ea0
 title: "Introduction to the Canopy Nitrogen Data Product"
 description: "Introduce the Canopy Nitrogen data product, explain the various data files and show how to mask non-valid pixels." 
 dateCreated: 2025-02-25 
