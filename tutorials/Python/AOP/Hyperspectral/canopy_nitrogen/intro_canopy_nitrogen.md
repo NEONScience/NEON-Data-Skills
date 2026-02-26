@@ -25,17 +25,17 @@ In this tutorial, we demonstrate how to download a single tile of the Canopy Nit
 After completing this tutorial, you will be able to:
 
 - Download the Canopy Nitrogen Data Product
-- Understand the 4 files that comprise the Canopy Nitrgoen data product
-- Mask the nitrogen data to include only valid pixels
+- Understand the 4 files that comprise the Canopy Nitrogen data product
+- Mask the Nitrogen data to include only valid pixels
 
 ## Install Python Packages
 - neonutilities
 - rasterio
-- os
+
 
 </div>
 
-Let's get started! First import the required Python packages, `neonutilities` and `rasterio`.
+Let's get started! First import the required Python packages, `neonutilities` and `rasterio`, as well as some other standard packages.
 
 
 ```python
@@ -47,7 +47,7 @@ import matplotlib.pyplot as plt
 import os
 ```
 
-First let's see what data are available. As of Feb 2025, only a subset of sites have been published, as NEON is seeking input from the user community before producing this model for all NEON terrrestrial sites.
+First let's see what data are available. As of Feb 2026, only a subset of sites have been published, as NEON is seeking input from the user community before producing this model for all NEON terrrestrial sites.
 
 
 ```python
@@ -58,7 +58,7 @@ nu.list_available_dates(dpid="DP3.30018.002",
     PROVISIONAL Available Dates: 2019-08
     
 
-So far, there is data for HARV in 2019. All of the data is currently Provisional.
+So far, there is data avaiable for HARV in 2019. All of the Canopy Nitrogen data is currently available provisionally.
 
 Let's first set the download directory (where we will download data) to be in the `Downloads` folder.
 
@@ -115,7 +115,7 @@ The download includes a `citation` file, `issueLog` file, `readme` file, and fou
 The four raster files that make up the canopy nitrogen data product are explained briefly below:
 1) `_nitrogen.tif`: mosaicked %N map covering all tiles within each site is available. 
 2) `_nitrogen_uncertainty.tif`: %N uncertainty map - uncertainty associated with the %N predictions. It is calculated by taking the standard deviation of the %N predictions from each decision tree in the random forest model for each 1 m pixel within the tile.
-3) `_nitrogen_classification.tif`: Classification result for needle vs non-needle model, which is a binary map generated using SVM classification, where needle types are coded as 0 and non-needle types as 1 for each 1 m pixel within the tile. The "non-needle" class includes all vegetation types that are not needleleaf, such as broadleaf trees, shrubs, herbaceous cover, and others. Separate random forest regression models have been developed to predict foliar nitrogen values for needle and non-needle vegetation types.
+3) `_nitrogen_classification.tif`: Classification result for needle vs non-needle model, which is a binary map generated using SVM classification, where needle types are coded as 0 and non-needle types as 1. The "non-needle" class includes all vegetation types that are not needle leaf, such as broadleaf trees, shrubs, herbaceous cover, and others. Separate random forest regression models have been developed to predict foliar nitrogen values for needle and non-needle vegetation types.
 4) `_nitrogen_valid.tif`: Valid pixel mask based on NDVI threshold of 0.2, where values less than 0.2 are set to 0 ("non-valid"). This mask is intended to enable exclusion of non-vegetated areas, such as roads, water bodies, built-up areas, bare rock, and so forth.
 
 The code chunk below shows how to read the four files into variables, which we can then plot.
