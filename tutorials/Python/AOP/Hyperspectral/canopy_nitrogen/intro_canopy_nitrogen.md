@@ -252,4 +252,4 @@ There are some pixels in the lake that were not masked out - these are pixels wh
 
 ## Recap
 
-In this lesson, you've explored the four raster files in the canopy nitrogen data product and learned how to mask using the NDVI threshold valid pixel layer, as well as some caveats to using this validity. It is important to pull in additional data sources and to perform your own analysis and QAQC when working with any NEON data. This lesson is just intended to show the first step in working with this raster data, but we hope you explore more on your own!
+In this lesson, you've explored the four raster files in the canopy nitrogen data product and learned how to mask using the NDVI threshold valid pixel layer, as well as some caveats to using this validity layer. It is important to pull in additional data sources and to perform your own checks and QA/QC when working with any NEON data. This lesson is intended to show the first step in working with the Canopy Nitrogen data, but we hope you explore more on your own!
