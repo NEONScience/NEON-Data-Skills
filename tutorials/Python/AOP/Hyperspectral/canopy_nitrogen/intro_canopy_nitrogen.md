@@ -164,7 +164,6 @@ plot_neon_raster(nitrogen, 'Canopy Nitrogen (%)');
     
 ![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/canopy_nitrogen/intro_canopy_nitrogen_files/intro_canopy_nitrogen_16_1.png)
 
-C:\Users\bhass\Documents\GitHubRepos\NEON-Data-Skills\tutorials\Python\AOP\Hyperspectral\canopy_nitrogen
 
 ```python
 plot_neon_raster(nitrogen_uncertainty, 'Canopy Nitrogen Uncertainty (%)', 'jet');
