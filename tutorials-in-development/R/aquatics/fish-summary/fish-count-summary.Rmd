@@ -59,9 +59,9 @@ library(ggplot2)
 Download the fish electrofishing, gill netting, and fyke netting counts using the `loadByProduct()` function in
 the `neonUtilities` package. Inputs needed to the function are:
 
-* `dpID`: data product ID; fish electrofishing, gill netting, and fyke netting counts = DP1.20107.001
-* `site`: (vector of) 4-letter site codes; PROP, PRLA, BLUE, CUPE, CRAM
-* `package`: basic or expanded; we'll download basic here
+* `dpID`: data product ID; fish electrofishing, gill netting, and fyke netting counts = `DP1.20107.001`
+* `site`: (vector of) 4-letter site codes; `PROP`, `PRLA`, `BLUE`, `CUPE` & `CRAM` in this tutorial 
+* `package`: basic or expanded; we'll download `basic` here
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
 
 Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
@@ -93,9 +93,9 @@ wd<-"C:/Users/ritterm1/Documents/data/"
 setwd(wd)
 
 # Read downloaded files into R
-fshdat <- neonUtilities::stackByTable(
-  filepath = "NEON_count-fish.zip", 
-  savepath = "envt")
+# fshdat <- neonUtilities::stackByTable(
+#   filepath = "NEON_count-fish.zip", 
+#   savepath = "envt")
 ```
 
 ### NEON Data Citation
@@ -114,7 +114,9 @@ The data are downloaded into a list of separate tables. Before working with the 
 ```{r download-overview, message=FALSE, warning=FALSE}
 # View all tables in the list of downloaded fish data:
 names(fshdat)
+```
 
+```{r download-extract, results="hide"}
 # Extract the items from the list and add as dataframes in the R environment:
 list2env(fshdat, envir=.GlobalEnv)
 ```
@@ -175,7 +177,7 @@ perFish_total <- fsh_perFish %>%
 ```
 
 ### Join individual and bulk count tables
-Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. For instance, the information about individual fish captures and samples from a bout is found in the fsh_perFish data table, while information about additional fish that were not processed individually and instead counted in bulk is found in the fsh_bulkCount data table. These two tables can be joined so that capture data can be easily summarized by pass and bout.  
+Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. For instance, the information about individual fish captures and samples from a bout is found in the fsh_perFish data table, while information about additional fish that were not processed individually and instead counted in bulk can be found in the fsh_bulkCount data table. These two tables can be joined so that capture data can be easily summarized by pass and bout.  
 
 Details about which tables can be joined together and what variables should be used to link tables can be found in the "Table joining" section of the Quick Start Guide on each data product landing page.
 
@@ -226,6 +228,7 @@ ggplot(richness_by_event, aes(x = eventID, y = numSpecies)) +
         )
 ```
 
-Looks like <a href="https://www.neonscience.org/field-sites/field-sites-map/BLUE">Blue River</a> in Domain 11 has far and away the
+It looks like <a href="https://www.neonscience.org/field-sites/field-sites-map/BLUE">Blue River</a> in Domain 11 has the
 highest species richness, but to get a deeper understanding of Blue's 
 fish populations we'll need an idea of relative and absolute abundance.
+
