@@ -79,7 +79,7 @@ fshdat <- neonUtilities::loadByProduct(
   site=c("BLUE", "CRAM"),
   package="basic",
   check.size = FALSE,
-  startdate = "2023-01",
+  startdate = "2024-01",
   enddate = "2024-12",
   release = 'RELEASE-2026')
 ```
