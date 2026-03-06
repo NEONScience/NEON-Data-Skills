@@ -15,13 +15,14 @@ tutorialSeries: NA
 urlTitle: fish-summary
 ---
 
-<div id="ds-objectives" markdown="1">
 
 This tutorial explores NEON fish capture data from sampling methods including electrofishing, gill netting, and fyke netting across NEON's lake and wadeable stream sites. NEON's fish data are stored across multiple interconnected tables that separately track individual fish measurements, bulk species counts, and details about sampling effort. Learning to properly join and summarize these tables is essential for calculating accurate abundance and diversity metrics.
 
 Analysis of NEON fish data requires calculation of a fundamental metric: the total number of fish captured per species during a sampling event. This total capture count serves as the basis for calculating abundance, diversity indices, community composition, and detecting changes over time. The structure of <a href="https://data.neonscience.org/data-products/DP1.20107.001" target="_blank">DP1.20107.001</a> splits capture information across multiple tables, requiring users to perform an intermediate processing step in order to calculate total fish captures.
 
 By the end of this tutorial, you will be able to download NEON fish count data, perform quality checks to ensure data integrity, join individual and bulk count tables appropriately, and summarize the results to generate the species-by-pass capture matrices that form the foundation of most fish community analyses.
+
+<div id="ds-objectives" markdown="1">
 
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
