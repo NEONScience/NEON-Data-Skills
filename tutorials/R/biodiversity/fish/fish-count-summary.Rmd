@@ -1,6 +1,6 @@
 ---
-syncID: 
-title: "Summarizing Fish Capture Data"
+syncID: 0df0b7d9a96d4af987d1b38ed65492c5
+title: "Introduction to NEON Fish Capture Data"
 description: "This tutorial will provide an introduction to discovering, accessing and summarizing NEON fish count data using R"
 dateCreated: 2026-02-20
 authors: Madaline Ritter
@@ -10,7 +10,7 @@ packagesLibraries: neonUtilities, dplyr, ggplot2, tidyr
 topics: data-analysis, data-visualization
 languagesTool: R
 dataProduct: DP1.20107.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/...
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/fish/fish-count-summary.R
 tutorialSeries: NA
 urlTitle: fish-summary
 ---
@@ -92,9 +92,10 @@ The data used in this tutorial were collected at the
 <a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network's</a> 
 <a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.  
 
-* NEON (National Ecological Observatory Network). Fish electrofishing, gill netting, and fyke netting counts (DP1.20107.001), RELEASE-2026. https://doi.org/10.48443/s1e6-df79. Dataset accessed from https://data.neonscience.org/data-products/DP1.20107.001/RELEASE-2026 on `r format(Sys.Date(), "%B %d, %Y")`.
+* NEON (National Ecological Observatory Network). Fish electrofishing, gill netting, and fyke netting counts (DP1.20107.001), RELEASE-2026. https://doi.org/10.48443/s1e6-df79
 
 ## 2. Compiling the NEON Fish Data
+
 The data are downloaded into a list of separate tables. Before working with the data, the tables are added to the R environment.
 
 ```{r download-overview, message=FALSE, warning=FALSE}
@@ -117,12 +118,18 @@ names(fshdat)
 
 * The `variables` file describes each field in the returned data tables.
 
+Move the named items in the list to independent obejcts in the R environment:
+
 ```{r download-extract, results="hide"}
-# Extract the items from the list and add as dataframes in the R environment:
 list2env(fshdat, envir=.GlobalEnv)
 ```
 
+The data about captured fish are in the `fsh_perFish` and `fsh_bulkCount` tables; 
+we need to bring together the two data tables to get the full picture of all 
+captures for each species.
+
 ### Quality Verification
+
 For bulk count data there should only be one bulk count record for each taxonID and pass. Before summarizing total captures across tables it is helpful to ensure bulk count records are present when expected.
 
 ```{r quality-checks-bulkcount, results="hide"}
@@ -140,9 +147,10 @@ cat('Number of bulk count records for each taxonID and pass:', unique(bulkCount_
 The expected number of bulk count records exist, so we are able to proceed with processing.
 
 ### Subset the data
+
 First the bulk count data should be subset to only the necessary columns, to help keep the final summary output concise.
 
-```{r subset data, results="hide"}
+```{r subset-data, results="hide"}
 bulkCount_sub <- fsh_bulkCount %>% 
   select(eventID, passStartTime, passEndTime, boutEndDate,
          passNumber, namedLocation, barrierSubReach, 
@@ -150,9 +158,10 @@ bulkCount_sub <- fsh_bulkCount %>%
 ```
 
 ### Calculate the number of individual fish processed per pass
+
 Before joining individual fish data with bulk count data to calculate total rates of capture, the total number of individual fish in the per fish table must be summarized for each pass. Per fish data is grouped by `eventID`, `passNumber`, `namedLocation`, `barrierSubReach`, and `taxonID` before tallying records for each taxon.
 
-```{r tally per fish individuals, results="hide"}
+```{r tally-per-fish-individuals, results="hide"}
 perFish_total <- fsh_perFish %>%
   select(eventID, passStartTime, passEndTime, boutEndDate, passNumber, 
          namedLocation, barrierSubReach, scientificName, taxonID) %>%
@@ -162,11 +171,13 @@ perFish_total <- fsh_perFish %>%
 ```
 
 ### Join individual and bulk count tables
-Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. For instance, the information about individual fish captures and samples from a bout is found in the `fsh_perFish` table, while information about additional fish that were not processed individually and instead counted in bulk is found in the `fsh_bulkCount` table. These two tables should be joined so that capture data can be easily summarized by pass.  
 
-Details about which tables can be joined together and what variables should be used to link tables can be found in the "Table joining" section of the Quick Start Guide on each data product landing page.
+Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. Details about which tables can be joined together and what variables should be used to link tables can be found in the "Table joining" section of the Quick Start Guide on each data product details page.
 
-```{r table join, results="hide"}
+In this case, we can't make a simple join on the original tables, because the resolution of the two tables is different. The  `fsh_perFish` table contains detailed information about individual fish captures, while the `fsh_bulkCount` table contains aggregate information about additional fish that were not processed individually and instead counted in bulk. Now that we have aggregated the `fsh_perFish` to a count per species, we can join to 
+the `fsh_bulkCount` data.
+
+```{r table-join, results="hide"}
 fsh_all <- perFish_total %>%
   full_join(., bulkCount_sub, by=c('eventID', 'passStartTime', 'passEndTime', 
                                    'boutEndDate', 'passNumber', 
@@ -175,6 +186,7 @@ fsh_all <- perFish_total %>%
 ```
 
 ### Calculate total captures
+
 There are now two columns in the new `fsh_all` data frame that contain capture numbers for each unique pass - one with total number of fish in the `fsh_perFish` table, and one with total number of fish in the `fsh_bulkCount` table. These two values can be added to calculate the total number of fish captured per pass.
 
 ```{r total-captures, results="hide"}
@@ -195,7 +207,9 @@ We can visualize abundance of each species for a particular site and event. In t
 # Subset summary data by eventID
 blue_spring24 <- fsh_all %>%
   filter(eventID == "BLUE.2024.spring")
+```
 
+```{r passes-plot, message=FALSE, fig.width=12, fig.height=7}
 # Plot total captures by pass number and species
 ggplot(blue_spring24, aes(x = scientificName, y = totalFishCount, fill = factor(passNumber))) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -226,7 +240,6 @@ fixedRandomReach <- fsh_fieldData %>%
 
 print(fixedRandomReach)
   
-# Extract information about pass and sampler type from the per pass data
 samplerType <- fsh_perPass %>% 
   filter(eventID== "CRAM.2024.fall") %>%
   select(eventID, namedLocation, passNumber, samplerType) %>% 
@@ -240,7 +253,9 @@ Now let's take a look at the capture data from Crampton Lake during the Fall of 
 # Subset summary data by eventID
 cram_fall24 <- fsh_all %>%
   filter(eventID == "CRAM.2024.fall")
+```
 
+```{r passes-cram-plot, message=FALSE, fig.width=12, , fig.height=6}
 # Plot total captures by pass number and species
 ggplot(cram_fall24, aes(x = scientificName, y = totalFishCount, fill = factor(passNumber))) +
   geom_bar(stat = "identity", position = "dodge") +
@@ -256,9 +271,11 @@ ggplot(cram_fall24, aes(x = scientificName, y = totalFishCount, fill = factor(pa
 In Fall 2024, it looks like no fish were captured using gill nets (Pass #5) at Crampton Lake.
 
 ## 3. Visualizing Species Richness
+
 Next, we can calculate species richness for each unique eventID, to examine the total number of species captured during each sampling bout.
 
 ### Calculate richness for each eventID
+
 Species richness represents the total number of fish species present within a habitat or ecological community. Species richness varies greatly across NEON sites, and can vary spatially within sites and also throughout time. We calculate richness by tallying the number of unique taxa recorded for each eventID.
 
 ```{r richness-by-site, message=FALSE}

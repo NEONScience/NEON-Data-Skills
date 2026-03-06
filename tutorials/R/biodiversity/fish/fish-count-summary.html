@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="generator" content="litedown 0.7">
+<title>Introduction to NEON Fish Capture Data</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+body, .abstract, code, .footnotes, footer, #refs, .caption { font-size: .9em; }
+li li { font-size: .95em; }
+ul:has(li > input[type="checkbox"]) { list-style: none; padding-left: 1em; }
+*, :before, :after { box-sizing: border-box; }
+a { color: steelblue; }
+pre, img { max-width: 100%; }
+pre { white-space: pre-wrap; word-break: break-word; }
+pre code { display: block; padding: 1em; overflow-x: auto; }
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre, th) > code, code[class], div > .caption { background: #f8f8f8; }
+pre > code:is(:not([class]), .language-plain, .language-none, .plain), .box, .figure, .table { background: inherit; border: 1px solid #eee; }
+pre > code {
+  &.message { border-color: #9eeaf9; }
+  &.warning { background: #fff3cd; border-color: #fff3cd; }
+  &.error { background: #f8d7da; border-color: #f8d7da; }
+}
+.fenced-chunk { border-left: 1px solid #666; }
+.code-fence {
+  opacity: .4;
+  border: 1px dashed #666;
+  border-left: 2px solid;
+  &:hover { opacity: inherit; }
+}
+.box, .figure, .table, table { margin: 1em auto; }
+div > .caption { padding: 1px 1em; }
+.figure { p:has(img, svg), pre:has(svg) { text-align: center; } }
+.flex-col { display: flex; justify-content: space-between; }
+table {
+  &:only-child:not(.table > *) { margin: auto; }
+  th, td { padding: 5px; font-variant-numeric: tabular-nums; }
+  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+  thead th { border-bottom: 1px solid #ddd; }
+  &:not(.datatable-table) {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
+}
+blockquote {
+  color: #666;
+  margin: 0;
+  padding: 1px 1em;
+  border-left: .5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC {
+  a { text-decoration: none; }
+  ul { list-style: none; padding-left: 1em; }
+  & > ul { padding: 0; }
+  ul ul { border-left: 1px solid lightsteelblue; }
+}
+.body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.main-number::after { content: "."; }
+span[class^="ref-number-"] { font-weight: bold; }
+.ref-number-fig::after, .ref-number-tab::after { content: ":"; }
+.cross-ref-chp::before { content: "Chapter "; }
+.cross-ref-sec::before { content: "Section "; }
+.cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
+.cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
+.cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
+.abstract, #refs {
+  &::before { display: block; margin: 1em auto; font-weight: bold; }
+}
+.abstract::before { content: "Abstract"; text-align: center; }
+#refs::before { content: "Bibliography"; font-size: 1.5em; }
+.ref-paren-open::before { content: "("; }
+.ref-paren-close::after { content: ")"; }
+.ref-semicolon::after { content: "; "; }
+.ref-and::after { content: " and "; }
+.ref-et-al::after { content: " et al."; font-style: italic; }
+.footnote-ref a {
+  &::before { content: "["; }
+  &::after { content: "]"; }
+}
+section.footnotes {
+  margin-top: 2em;
+  &::before { content: ""; display: block; max-width: 20em; }
+}
+.fade {
+  background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
+  opacity: 0.6;
+}
+
+@media print {
+  body { max-width: 100%; }
+  tr, img { break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  body:not(.pagesjs) pre:has(.line-numbers):not(:hover) { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Introduction to NEON Fish Capture Data</h1></div>
+</div>
+<div class="body">
+<div id="ds-objectives" markdown="1">
+<p>This tutorial explores NEON fish capture data from sampling methods including electrofishing, gill netting, and fyke netting across NEON’s lake and wadeable stream sites. NEON’s fish data are stored across multiple interconnected tables that separately track individual fish measurements, bulk species counts, and details about sampling effort. Learning to properly join and summarize these tables is essential for calculating accurate abundance and diversity metrics.</p>
+<p>Analysis of NEON fish data requires calculation of a fundamental metric: the total number of fish captured per species during a sampling event. This total capture count serves as the basis for calculating abundance, diversity indices, community composition, and detecting changes over time. The structure of <a href="https://data.neonscience.org/data-products/DP1.20107.001" target="_blank">DP1.20107.001</a> splits capture information across multiple tables, requiring users to perform an intermediate processing step in order to calculate total fish captures.</p>
+<p>By the end of this tutorial, you will be able to download NEON fish count data, perform quality checks to ensure data integrity, join individual and bulk count tables appropriately, and summarize the results to generate the species-by-pass capture matrices that form the foundation of most fish community analyses.</p>
+<h2 id="sec:learning-objectives">Learning Objectives</h2>
+<p>After completing this tutorial you will be able to:</p>
+<ul>
+<li>Download NEON fish data.</li>
+<li>Calculate total species-by-pass capture counts</li>
+<li>Visualize fish abundance and diversity</li>
+</ul>
+<h2 id="sec:things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<h3 id="sec:r-programming-language">R Programming Language</h3>
+<p>You will need a current version of R to complete this tutorial. We also recommend
+the RStudio IDE to work with R.</p>
+<h3 id="sec:r-packages-to-install">R Packages To Install</h3>
+<p>Start by installing any packages that are used during the course of the tutorial (if necessary) and setting options. Installation can be run once, then periodically to get package updates.</p>
+<ul>
+<li><strong>neonUtilities:</strong> <code>install.packages(&quot;neonUtilities&quot;)</code></li>
+<li><strong>ggplot2:</strong> <code>install.packages(&quot;ggplot2&quot;)</code></li>
+<li><strong>dplyr:</strong> <code>install.packages(&quot;dplyr&quot;)</code></li>
+<li><strong>tidyr:</strong> <code>install.packages(&quot;tidyr&quot;)</code></li>
+</ul>
+<p><a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
+</div>
+<h2 id="sec:1-setup">1. Setup</h2>
+<h3 id="sec:load-r-packages">Load R Packages</h3>
+<pre><code>library(neonUtilities)
+
+library(ggplot2)
+
+library(dplyr)
+
+library(tidyr)
+</code></pre>
+<h3 id="sec:download-neon-fish-data">Download NEON Fish Data</h3>
+<p>Download <a href="https://data.neonscience.org/data-products/DP1.20107.001" target="_blank">Fish electrofishing, gill netting, and fyke netting counts</a> data using the <code>loadByProduct()</code> function in the <code>neonUtilities</code> package. Inputs needed to the function are:</p>
+<ul>
+<li><code>dpID</code>: data product ID; Fish electrofishing, gill netting, and fyke netting counts = <code>DP1.20107.001</code></li>
+<li><code>site</code>: (vector of) 4-letter site codes; <code>BLUE</code> (stream site) &amp; <code>CRAM</code> (lake site) in this tutorial</li>
+<li><code>package</code>: basic or expanded; we’ll download <code>basic</code> here</li>
+<li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>TRUE</code> when downloading a dataset for the first time.</li>
+<li><code>startdate</code> and <code>enddate</code>: we will work with 2024 data in this tutorial</li>
+<li><code>release</code>: a particular data release, or <code>current</code> for the most recent release</li>
+</ul>
+<p>Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
+for the <code>neonUtilities</code> package for more details.</p>
+<p>For more background on NEON data structures and use of the neonUtilities package, follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> tutorial.</p>
+<pre><code>fshdat &lt;- neonUtilities::loadByProduct(
+  dpID=&quot;DP1.20107.001&quot;,
+  site=c(&quot;BLUE&quot;, &quot;CRAM&quot;),
+  package=&quot;basic&quot;,
+  check.size = FALSE,
+  startdate = &quot;2024-01&quot;,
+  enddate = &quot;2024-12&quot;,
+  release = 'RELEASE-2026')
+</code></pre>
+<h3 id="sec:neon-data-citation">NEON Data Citation</h3>
+<p>The use of NEON data should be cited according to our
+<a href="https://www.neonscience.org/data-samples/data-policies-citation" target="_blank"> Data Policies &amp; Citation Guidelines</a>.</p>
+<p>The data used in this tutorial were collected at the
+<a href="http://www.neonscience.org" target="_blank"> National Ecological Observatory Network’s</a>
+<a href="/field-sites/field-sites-map" target="_blank"> field sites</a>.</p>
+<ul>
+<li>NEON (National Ecological Observatory Network). Fish electrofishing, gill netting, and fyke netting counts (DP1.20107.001), RELEASE-2026. <a href="https://doi.org/10.48443/s1e6-df79">https://doi.org/10.48443/s1e6-df79</a></li>
+</ul>
+<h2 id="sec:2-compiling-the-neon-fish-data">2. Compiling the NEON Fish Data</h2>
+<p>The data are downloaded into a list of separate tables. Before working with the data, the tables are added to the R environment.</p>
+<pre><code># View all tables in the list of downloaded fish data:
+
+names(fshdat)
+
+##  [1] &quot;categoricalCodes_20107&quot;      &quot;citation_20107_RELEASE-2026&quot; &quot;fsh_bulkCount&quot;              
+##  [4] &quot;fsh_fieldData&quot;               &quot;fsh_perFish&quot;                 &quot;fsh_perPass&quot;                
+##  [7] &quot;issueLog_20107&quot;              &quot;readme_20107&quot;                &quot;validation_20107&quot;           
+## [10] &quot;variables_20107&quot;
+</code></pre>
+<ul>
+<li>
+<p>The <code>categoricalCodes</code> file provides controlled lists used in the data</p>
+</li>
+<li>
+<p>The <code>issueLog</code> and <code>readme</code> have the same information that you will find on the data product landing page of the data portal.</p>
+</li>
+<li>
+<p>The <code>fsh_fieldData</code> table includes the date and time for all reach sampling efforts and will include an eventID value to indicate a unique bout of sampling in the 2026 release.</p>
+</li>
+<li>
+<p>The <code>fsh_perPass</code> table includes a record for each sampling pass conducted, and is linked to the field table through eventID and namedLocation.</p>
+</li>
+<li>
+<p>The <code>fsh_perFish</code> table includes records for each individually processed fish.</p>
+</li>
+<li>
+<p>The <code>fsh_bulkCount</code> table includes a count per species of fish captured after the specified number of individual fish are processed for the unique taxon or morphospecies.</p>
+</li>
+<li>
+<p>The <code>validation</code> file provides the rules that constrain data upon ingest into the NEON database.</p>
+</li>
+<li>
+<p>The <code>variables</code> file describes each field in the returned data tables.</p>
+</li>
+</ul>
+<p>Move the named items in the list to independent obejcts in the R environment:</p>
+<pre><code>list2env(fshdat, envir=.GlobalEnv)
+</code></pre>
+<p>The data about captured fish are in the <code>fsh_perFish</code> and <code>fsh_bulkCount</code> tables;
+we need to bring together the two data tables to get the full picture of all
+captures for each species.</p>
+<h3 id="sec:quality-verification">Quality Verification</h3>
+<p>For bulk count data there should only be one bulk count record for each taxonID and pass. Before summarizing total captures across tables it is helpful to ensure bulk count records are present when expected.</p>
+<pre><code>bulkCount_count &lt;- fsh_bulkCount %&gt;% 
+  select(eventID, boutEndDate,  passNumber, scientificName, taxonID, namedLocation, bulkFishCount) %&gt;%
+  group_by(eventID, boutEndDate, passNumber, namedLocation, scientificName, taxonID) %&gt;%
+  count()
+
+
+
+unique(bulkCount_count$n)
+
+
+## Number of bulk count records for each taxonID and pass: 1
+</code></pre>
+<p>The expected number of bulk count records exist, so we are able to proceed with processing.</p>
+<h3 id="sec:subset-the-data">Subset the data</h3>
+<p>First the bulk count data should be subset to only the necessary columns, to help keep the final summary output concise.</p>
+<pre><code>bulkCount_sub &lt;- fsh_bulkCount %&gt;% 
+  select(eventID, passStartTime, passEndTime, boutEndDate,
+         passNumber, namedLocation, barrierSubReach, 
+         scientificName, taxonID, bulkFishCount)
+</code></pre>
+<h3 id="sec:calculate-the-number-of-individual-fish-processed-per-pass">Calculate the number of individual fish processed per pass</h3>
+<p>Before joining individual fish data with bulk count data to calculate total rates of capture, the total number of individual fish in the per fish table must be summarized for each pass. Per fish data is grouped by <code>eventID</code>, <code>passNumber</code>, <code>namedLocation</code>, <code>barrierSubReach</code>, and <code>taxonID</code> before tallying records for each taxon.</p>
+<pre><code>perFish_total &lt;- fsh_perFish %&gt;%
+  select(eventID, passStartTime, passEndTime, boutEndDate, passNumber, 
+         namedLocation, barrierSubReach, scientificName, taxonID) %&gt;%
+  group_by(eventID, passStartTime, passEndTime, boutEndDate, passNumber, 
+         namedLocation, barrierSubReach, scientificName, taxonID) %&gt;%
+  count(name = 'individualFishCount')
+</code></pre>
+<h3 id="sec:join-individual-and-bulk-count-tables">Join individual and bulk count tables</h3>
+<p>Many analyses of NEON data will require the joining of two or more data tables that contain different sets of information. Details about which tables can be joined together and what variables should be used to link tables can be found in the “Table joining” section of the Quick Start Guide on each data product details page.</p>
+<p>In this case, we can’t make a simple join on the original tables, because the resolution of the two tables is different. The  <code>fsh_perFish</code> table contains detailed information about individual fish captures, while the <code>fsh_bulkCount</code> table contains aggregate information about additional fish that were not processed individually and instead counted in bulk. Now that we have aggregated the <code>fsh_perFish</code> to a count per species, we can join to
+the <code>fsh_bulkCount</code> data.</p>
+<pre><code>fsh_all &lt;- perFish_total %&gt;%
+  full_join(., bulkCount_sub, by=c('eventID', 'passStartTime', 'passEndTime', 
+                                   'boutEndDate', 'passNumber', 
+                                   'namedLocation', 'barrierSubReach', 
+                                   'scientificName', 'taxonID'))
+</code></pre>
+<h3 id="sec:calculate-total-captures">Calculate total captures</h3>
+<p>There are now two columns in the new <code>fsh_all</code> data frame that contain capture numbers for each unique pass - one with total number of fish in the <code>fsh_perFish</code> table, and one with total number of fish in the <code>fsh_bulkCount</code> table. These two values can be added to calculate the total number of fish captured per pass.</p>
+<pre><code>fsh_all &lt;- fsh_all %&gt;%  
+  mutate(
+    totalFishCount = rowSums(across(c(individualFishCount, bulkFishCount)), na.rm = TRUE))
+</code></pre>
+<p>The joined <code>fsh_all</code> table now contains the total number of fish captured per species for each pass, as well as the individual and bulk tallies for each species. The newly-calculated <code>totalFishCount</code> field will be used for all further community and population estimates.</p>
+<h3 id="sec:visualize-results">Visualize results</h3>
+<h4 id="sec:wadeable-streams">Wadeable Streams</h4>
+<p>We can visualize abundance of each species for a particular site and event. In this tutorial, let’s first look at the total number of captures for each species per pass at Blue River during the Fall of 2024.</p>
+<pre><code># Subset summary data by eventID
+
+blue_spring24 &lt;- fsh_all %&gt;%
+  filter(eventID == &quot;BLUE.2024.spring&quot;)
+
+
+# Plot total captures by pass number and species
+
+ggplot(blue_spring24, aes(x = scientificName, y = totalFishCount, fill = factor(passNumber))) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
+  coord_flip() +
+  facet_wrap(. ~ namedLocation, scales = &quot;free&quot;)+
+  labs(title = &quot;Fish Captures Across Sampling Passes: Blue River Spring 2024&quot;,
+       x = &quot;Species&quot;,
+       y = &quot;Total Fish Count&quot;,
+       fill = &quot;Pass Number&quot;) +
+  theme_minimal() +
+  theme(legend.position = &quot;bottom&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/fish/rfigs/passes-plot-1.png" alt=" " /></p>
+<p>We can see that Blue River has a large diversity of species, as well as high capture rates at Fish Point 4. We can also see that the number of captures generally decreased between each consecutive pass, as is expected when depletion sampling.</p>
+<h4 id="sec:lakes">Lakes</h4>
+<p>At lake sites, a total of five passes are recorded for fixed reaches, as opposed to the three passes at wadeable stream sites.</p>
+<p>Information about fixed vs. random reaches is found in the <code>fsh_fieldData</code> table, and information about which sampling method is used for each pass is found in the <code>fsh_perPass</code> table. We can confirm that lake random reaches are only fished with a single electrofisher pass (Pass #1), one mini-fyke net pass (Pass #4), and one gill net pass (Pass #5), while lake fixed reaches are fished with all three electrofisher passes (Pass #1-3), as well as passes 4 and 5.</p>
+<pre><code># Filter field data to desired eventID and view fixed vs. random reaches
+
+fixedRandomReach &lt;- fsh_fieldData %&gt;% 
+  filter(eventID==&quot;CRAM.2024.fall&quot;) %&gt;% 
+  select(eventID, namedLocation, fixedRandomReach, samplingImpractical) %&gt;% 
+  arrange(namedLocation)
+
+
+
+print(fixedRandomReach)
+
+##          eventID              namedLocation fixedRandomReach samplingImpractical
+## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03            fixed                &lt;NA&gt;
+## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06            fixed          logistical
+## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07           random          logistical
+## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08           random          logistical
+## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09           random                &lt;NA&gt;
+## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10            fixed          logistical
+
+samplerType &lt;- fsh_perPass %&gt;% 
+  filter(eventID== &quot;CRAM.2024.fall&quot;) %&gt;%
+  select(eventID, namedLocation, passNumber, samplerType) %&gt;% 
+  arrange(namedLocation, passNumber)
+
+        
+
+print(samplerType)
+
+##          eventID              namedLocation passNumber   samplerType
+## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03          1 electrofisher
+## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03          2 electrofisher
+## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03          3 electrofisher
+## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03          4 mini-fyke net
+## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03          5      gill net
+## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09          1 electrofisher
+## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09          4 mini-fyke net
+## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09          5      gill net
+</code></pre>
+<p>Now let’s take a look at the capture data from Crampton Lake during the Fall of 2024, which contains data from one fixed reach and one random reach.</p>
+<pre><code># Subset summary data by eventID
+
+cram_fall24 &lt;- fsh_all %&gt;%
+  filter(eventID == &quot;CRAM.2024.fall&quot;)
+
+
+# Plot total captures by pass number and species
+
+ggplot(cram_fall24, aes(x = scientificName, y = totalFishCount, fill = factor(passNumber))) +
+  geom_bar(stat = &quot;identity&quot;, position = &quot;dodge&quot;) +
+  coord_flip() +
+  facet_wrap(. ~ namedLocation)+
+  labs(title = &quot;Fish Captures Across Sampling Passes: Crampton Lake Fall 2024&quot;,
+       x = &quot;Species&quot;,
+       y = &quot;Total Fish Count&quot;,
+       fill = &quot;Pass Number&quot;) +
+  theme_minimal() +
+  theme(legend.position = &quot;bottom&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/fish/rfigs/passes-cram-plot-1.png" alt=" " />
+In Fall 2024, it looks like no fish were captured using gill nets (Pass #5) at Crampton Lake.</p>
+<h2 id="sec:3-visualizing-species-richness">3. Visualizing Species Richness</h2>
+<p>Next, we can calculate species richness for each unique eventID, to examine the total number of species captured during each sampling bout.</p>
+<h3 id="sec:calculate-richness-for-each-eventid">Calculate richness for each eventID</h3>
+<p>Species richness represents the total number of fish species present within a habitat or ecological community. Species richness varies greatly across NEON sites, and can vary spatially within sites and also throughout time. We calculate richness by tallying the number of unique taxa recorded for each eventID.</p>
+<pre><code>richness_by_event &lt;- fsh_all %&gt;%
+  select(eventID, scientificName) %&gt;%
+  group_by(eventID) %&gt;%
+  distinct(scientificName) %&gt;%
+  summarise(numSpecies = n()) %&gt;%
+  arrange(-numSpecies)
+</code></pre>
+<p>Now we can visualize the results.</p>
+<pre><code>ggplot(richness_by_event, aes(x = eventID, y = numSpecies)) +
+        geom_bar(stat = &quot;identity&quot;) +
+        scale_x_discrete(limits = richness_by_event$eventID) +
+        theme(axis.text.x = element_text(angle = 90)) +
+        scale_y_continuous(breaks = seq(from = 0, to = 30, by = 2)) +
+        labs(
+          title = &quot;Total Species Richness by EventID&quot;,
+          x = &quot;Event ID&quot;,
+          y = &quot;Number of Species&quot;
+        )
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/fish/rfigs/richness-by-site-graph-1.png" alt=" " /></p>
+<!-- It looks like <a href="https://www.neonscience.org/field-sites/field-sites-map/BLUE">Blue River</a> in Domain 11 has the -->
+<!-- highest species richness, but to get a deeper understanding of Blue's  -->
+<!-- fish populations we'll need an idea of relative and absolute abundance. -->
+</div>
+</body>
+</html>
