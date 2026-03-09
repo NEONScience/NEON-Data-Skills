@@ -203,7 +203,7 @@ The joined `fsh_all` table now contains the total number of fish captured per sp
 
 #### Wadeable Streams
 
-We can visualize abundance of each species for a particular site and event. In this tutorial, let's first look at the total number of captures for each species per pass at Blue River during the Fall of 2024.
+We can visualize abundance of each species for a particular site and event. In this tutorial, let's first look at the total number of captures for each species per pass at Blue River during the Spring of 2024.
 
 
     # Subset summary data by eventID
