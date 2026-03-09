@@ -133,12 +133,12 @@ Let's take a look at what is included in each NEON data product download. We wil
     ##  [1] "categoricalCodes_10026"      "cfc_carbonNitrogen"          "cfc_chemistrySubsampling"   
     ##  [4] "cfc_chlorophyll"             "cfc_elements"                "cfc_fieldData"              
     ##  [7] "cfc_lignin"                  "cfc_LMA"                     "cfc_shapefile"              
-    ## [10] "citation_10026_PROVISIONAL"  "citation_10026_RELEASE-2025" "issueLog_10026"             
+    ## [10] "citation_10026_PROVISIONAL"  "citation_10026_RELEASE-2026" "issueLog_10026"             
     ## [13] "readme_10026"                "validation_10026"            "variables_10026"
 
     names(NEON.ltr)
 
-    ##  [1] "categoricalCodes_10033"      "citation_10033_RELEASE-2025" "issueLog_10033"             
+    ##  [1] "categoricalCodes_10033"      "citation_10033_RELEASE-2026" "issueLog_10033"             
     ##  [4] "ltr_chemistrySubsampling"    "ltr_fielddata"               "ltr_litterCarbonNitrogen"   
     ##  [7] "ltr_litterLignin"            "ltr_massdata"                "ltr_pertrap"                
     ## [10] "readme_10033"                "validation_10033"            "variables_10033"
@@ -166,24 +166,25 @@ We will summarize the available data to find of year by site combinations for wh
 
     summary.cfc
 
-    ## # A tibble: 14 × 4
+    ## # A tibble: 15 × 4
     ## # Groups:   siteID [8]
     ##    siteID  year     n meanCN
     ##    <chr>  <dbl> <int>  <dbl>
     ##  1 BART    2022    44   36.1
     ##  2 BLAN    2020    48   24.0
-    ##  3 GRSM    2016    45   25.6
-    ##  4 GRSM    2021    55   26.1
-    ##  5 HARV    2018    45   33.5
-    ##  6 HARV    2024    60   36.0
-    ##  7 MLBS    2018    45   23.2
-    ##  8 MLBS    2023    46   22.9
-    ##  9 ORNL    2017    42   29.6
-    ## 10 ORNL    2022    58   27.5
-    ## 11 SCBI    2017    44   21.3
-    ## 12 SCBI    2022    46   14.8
-    ## 13 SERC    2016    36   26.6
-    ## 14 SERC    2021    58   29.9
+    ##  3 BLAN    2025    52   24.3
+    ##  4 GRSM    2016    45   25.6
+    ##  5 GRSM    2021    55   26.1
+    ##  6 HARV    2018    45   33.5
+    ##  7 HARV    2024    60   36.0
+    ##  8 MLBS    2018    45   23.2
+    ##  9 MLBS    2023    46   22.9
+    ## 10 ORNL    2017    42   29.6
+    ## 11 ORNL    2022    58   27.5
+    ## 12 SCBI    2017    44   21.3
+    ## 13 SCBI    2022    46   14.8
+    ## 14 SERC    2016    36   26.6
+    ## 15 SERC    2021    58   29.9
 
     summary.ltr <- ltr %>% 
                   mutate(year=year(collectDate)) %>% 
@@ -192,7 +193,7 @@ We will summarize the available data to find of year by site combinations for wh
 
     summary.ltr
 
-    ## # A tibble: 12 × 4
+    ## # A tibble: 13 × 4
     ## # Groups:   siteID [8]
     ##    siteID  year     n meanCN
     ##    <chr>  <dbl> <int>  <dbl>
@@ -201,13 +202,14 @@ We will summarize the available data to find of year by site combinations for wh
     ##  3 BLAN    2020    15   39.5
     ##  4 GRSM    2021    14   71.7
     ##  5 HARV    2018    58   64.8
-    ##  6 MLBS    2018    19   42.3
-    ##  7 MLBS    2023    31   62.6
-    ##  8 ORNL    2017    25   62.9
-    ##  9 ORNL    2022    20   72.5
-    ## 10 SCBI    2017    13   59.5
-    ## 11 SCBI    2022    17   47.0
-    ## 12 SERC    2021    12   72.7
+    ##  6 HARV    2024    25   86.1
+    ##  7 MLBS    2018    19   42.3
+    ##  8 MLBS    2023    31   62.6
+    ##  9 ORNL    2017    25   62.9
+    ## 10 ORNL    2022    20   72.5
+    ## 11 SCBI    2017    13   59.5
+    ## 12 SCBI    2022    17   47.0
+    ## 13 SERC    2021    12   72.7
 
 We can see that there are more year by site combinations for which CN ratio data exist from canopy foliage than from litter samples. Since we are interested in studying both components of the ecosystem, let's subset our data to only those instances for which both sets of data are available. To do this we need to join our datasets by site and year. 
 
@@ -343,7 +345,7 @@ We will separate the hair and fecal samples into seperate data frames for ease o
     fecal <- biorepo %>%
               filter(collectionCode=="MAMC-FE")
 
-We see that there are a large number of samples that fit the site and year criteria of our study. We know that we want to focus on common species because we cannot fully deplete NEON Biorepository resources for future researchers (<a href="https://biorepo.neonscience.org/portal/misc/samplepolicy.php" target="_blank">Sample Use Policy</a>), and we want to make sure we have sufficient within species replication for our analyses (and likely have our own resource constraints!). Therefore, we can subset to species with the most available hair samples.
+We see that there are a large number of samples that fit the site and year criteria of our study. We know that we want to focus on common species because we cannot fully deplete NEON Biorepository resources for future researchers, and we want to make sure we have sufficient within species replication for our analyses (and likely have our own resource constraints!). Therefore, we can subset to species with the most available hair samples.
 
 First we will find how common different species, select the 2 most common species for each site, and add a site by species column
 
@@ -511,6 +513,6 @@ We see that we have a good representation of _P. leucopus_ across our study area
 
 We see approximately 2-fold variation in both litter and canopy foliage CN ratios across these sites, indicating that a wide range of isotopic environments can be studied.
 
-This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a href="https://biorepo.neonscience.org/portal/index.php" target="_blank">NEON Biorepository Data Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out to biorepo@asu.edu or fill out the <a href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.
+This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a href="https://biorepo.neonscience.org/portal/neon/search/index.php?utm_source=neon_main&utm_medium=directlink" target="_blank">Sample Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out via the <a href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.
 
 

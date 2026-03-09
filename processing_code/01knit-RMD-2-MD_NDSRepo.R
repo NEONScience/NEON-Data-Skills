@@ -8,6 +8,7 @@
 rm(list=ls())
 require(knitr)
 require(markdown)
+options(timeout=300)
 
 # Choose the directory under 'tutorials' to knit
 # You can choose a high-level directory and this script will search
@@ -15,16 +16,17 @@ require(markdown)
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
           "R/biodiversity/biorepository",
-          "R/NEON-general/neon-code-packages/neonUtilities",
-          "R/soils/soil-microbe-biomass",
+          "R/biodiversity/fish",
+          "R/NEON-general/neon-overview/new-features-2025",
+          "R/eddy-covariance/intro-to-eddy4R/eddy_intro",
           "R/AOP/Lidar/lidar-topography/veg_structure_and_chm",
-          "/Other/Concept-intros/test_tabs_figures")
+          "R/AIS-data/L4-Discharge-Series/continuous-discharge-basic")
 
 #################### Set up Input Variables #############################
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[2]
+subDir <- dirs[3]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"

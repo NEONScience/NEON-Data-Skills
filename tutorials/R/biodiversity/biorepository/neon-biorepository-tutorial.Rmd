@@ -265,7 +265,7 @@ fecal <- biorepo %>%
 
 ```
 
-We see that there are a large number of samples that fit the site and year criteria of our study. We know that we want to focus on common species because we cannot fully deplete NEON Biorepository resources for future researchers (<a href="https://biorepo.neonscience.org/portal/misc/samplepolicy.php" target="_blank">Sample Use Policy</a>), and we want to make sure we have sufficient within species replication for our analyses (and likely have our own resource constraints!). Therefore, we can subset to species with the most available hair samples.
+We see that there are a large number of samples that fit the site and year criteria of our study. We know that we want to focus on common species because we cannot fully deplete NEON Biorepository resources for future researchers, and we want to make sure we have sufficient within species replication for our analyses (and likely have our own resource constraints!). Therefore, we can subset to species with the most available hair samples.
 
 First we will find how common different species, select the 2 most common species for each site, and add a site by species column
 
@@ -454,6 +454,6 @@ ggplot(PleucSites, aes(x = meanCN.ltr, y = meanCN.cfc)) +
 
 We see approximately 2-fold variation in both litter and canopy foliage CN ratios across these sites, indicating that a wide range of isotopic environments can be studied.
 
-This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a href="https://biorepo.neonscience.org/portal/index.php" target="_blank">NEON Biorepository Data Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out to biorepo@asu.edu or fill out the <a href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.
+This is just one of many ways to connect NEON data with available organismal and environmental samples in order to develop new research projects. The <a href="https://biorepo.neonscience.org/portal/neon/search/index.php?utm_source=neon_main&utm_medium=directlink" target="_blank">Sample Portal</a> allows you to search the fast growing collection of samples based on a variety of criteria, such as taxonomy, collecting events, preservation type, and more. You are encouraged to reach out via the <a href="https://www.neonscience.org/about/contact-neon-biorepository" target="_blank">NEON Biorepository Contact Form</a> with any inquiries about NEON samples.
 
 

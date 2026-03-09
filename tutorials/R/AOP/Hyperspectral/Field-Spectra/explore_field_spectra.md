@@ -5,11 +5,11 @@ description: "Explore the field spectra data product, link field spectra to airb
 dateCreated: 2024-02-12
 authors: Bridget Hass
 contributors: Claire Lunch, Samantha Weintraub-Leff
-estimatedTime: 1.5 Hours
+estimatedTime: 1 Hour
 packagesLibraries: neonUtilities, geoNEON, neonOS, terra, rhdf5, ggplot2, dplyr, reshape2
-topics: hyperspectral, foliar traits, remote-sensing, reflectance
+topics: hyperspectral, foliar traits, remote-sensing, reflectance, canopy
 languagesTool: R
-dataProduct: DP1.30012.001, DP1.10026.001, DP3.30006.001
+dataProduct: DP1.30012.001, DP1.10026.001, DP3.30006.001, DP3.30006.002
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/explore-field-spectra.R
 tutorialSeries: 
 urlTitle: explore-field-spectra
@@ -81,9 +81,10 @@ Before downloading the data, we can explore the data product using the `neonUtil
 
     field_spectra_info$siteCodes$siteCode # list all available sites
 
-    ##  [1] "DSNY" "GRSM" "GUAN" "HEAL" "ORNL" "OSBS" "PUUM" "RMNP" "SERC" "STEI" "TREE" "UNDE" "WREF" "YELL"
+    ##  [1] "DSNY" "GRSM" "GUAN" "HARV" "HEAL" "NIWO" "NOGP" "ORNL" "OSBS" "PUUM" "RMNP" "SERC" "STEI" "STER" "TREE" "UNDE"
+    ## [17] "WREF" "YELL"
 
-We can see that there are data available at 14 sites, as of the end of 2023.
+We can see that there are data available at 18 sites, as of the beginning of 2026.
 
 Now that we know what sites have this field spectral data, let's take a look at one of the sites as an example - <a href="https://www.neonscience.org/field-sites/rmnp" target="_blank">Rocky Mountain National Park (RMNP)</a> in Colorado. We'll use this site to demonstrate some exploratory analysis you might start with when working with the field spectral data. To load this data directly into R, you can use the `neonUtilities::loadByProduct` function, specifying the data product ID (dpID) and site. Since this product is collected fairly infrequently, to date there is only one collection per year of this for the subset of sites shown above, so specifying the year-month in addition to the site is not necessary. This data is not too large in volume, so it should be fine to set the option `check.size=FALSE`. You will need to set package="expanded" in order to include the actual field spectral data.
 
@@ -94,44 +95,65 @@ Now that we know what sites have this field spectral data, let's take a look at 
                                   package="expanded",
                                   check.size=FALSE)
 
+    ## Finding available files
+
+    ## Downloading files totaling approximately 0.02447 MB
+
+    ## Downloading 1 files
+
+    ## Unpacking zip files using 1 cores.
+
+    ## Stacking per-sample files. These files may be very large; download data in smaller subsets if performance problems are encountered.
+
+    ## Stacking data files
+
+    ## Finished: Stacked 3 data tables and 5 metadata tables!
+
+    ## Stacking took 2.079694 secs
+
 Let's take a look at all the associated tables contained in this data product, using the `names` function:
 
 
     names(field_spectra)
 
-    ## [1] "categoricalCodes_30012" "fsp_boutMetadata"       "fsp_sampleMetadata"     "fsp_spectralData"       "issueLog_30012"        
-    ## [6] "per_sample"             "readme_30012"           "validation_30012"       "variables_30012"
-We encourage looking at all of these tables to learn more about the data product, but you can find the actual data stored in the variables: `fsp_boutMetadata` (contains metadata information about this sampling bout), `fsp_sampleMetadata` (contains relevant metadata about the individual samples), `fsp_spectralData` (contains information about the individual sample data), and `per_sample` (contains the wavelength and reflectance data). Next, we can merge the `fsp_spectralData`, `fsp_sampleMetadata` and `per_sample` into a single data frame as follows. For more info on joining OS tables, please refer to https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins.
+    ##  [1] "categoricalCodes_30012"      "citation_30012_RELEASE-2026" "fsp_boutMetadata"           
+    ##  [4] "fsp_rawSpectra"              "fsp_sampleMetadata"          "fsp_spectralData"           
+    ##  [7] "issueLog_30012"              "readme_30012"                "validation_30012"           
+    ## [10] "variables_30012"
+We encourage looking at all of these tables to learn more about the data product, but you can find the actual data stored in the variables: `fsp_boutMetadata` (contains metadata information about this sampling bout), `fsp_sampleMetadata` (contains relevant metadata about the individual samples), `fsp_spectralData` (contains information about the individual sample data), and `fsp_rawSpectra` (contains the wavelength and reflectance data). Next, we can merge the `fsp_spectralData`, `fsp_sampleMetadata` and `fsp_rawSpectra` into a single data frame as follows. For more info on joining OS tables, please refer to https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins.
 
 
     list2env(field_spectra, .GlobalEnv)
 
     spectra_data_metadata <- joinTableNEON(fsp_spectralData,fsp_sampleMetadata)
 
-    spectra_data <- merge(spectra_data_metadata,per_sample,by="spectralSampleID")
+    spectra_data <- merge(spectra_data_metadata,fsp_rawSpectra,by="spectralSampleID")
 
 You can use `View(spectra_data)` to see the contents of this dataframe, or alternatively you could just print the variable name. The code below displays all the column names of this dataframe. We'll just show the head (or first 6 rows) of this data frame here, including a few of the columns.
 
 
     colnames(spectra_data)
 
-    ##  [1] "spectralSampleID"         "spectralSampleCode.x"     "locationID"               "uid.x"                    "domainID"                
-    ##  [6] "siteID"                   "plotID"                   "plotType"                 "nlcdClass"                "geodeticDatum"           
-    ## [11] "decimalLatitude"          "decimalLongitude"         "coordinateUncertainty"    "elevation"                "elevationUncertainty"    
-    ## [16] "altLatitude"              "altLongitude"             "altCoordinateUncertainty" "collectDate.x"            "eventID"                 
-    ## [21] "cfcIndividual"            "taxonID"                  "scientificName"           "sampleID"                 "sampleCode"              
-    ## [26] "individualID"             "plantStatus"              "leafStatus"               "leafAge"                  "leafExposure"            
-    ## [31] "leafSamplePosition"       "targetType"               "targetStatus"             "measurementVenue"         "measurementDate"         
-    ## [36] "leafArrangement"          "remarks.x"                "collectedBy"              "recordedBy"               "dataQF.x"                
-    ## [41] "publicationDate.x"        "release.x"                "uid.y"                    "software"                 "collectDate.y"           
-    ## [46] "downloadFileUrl"          "downloadFileName"         "processedBy"              "reviewedBy"               "remarks.y"               
-    ## [51] "dataQF.y"                 "publicationDate.y"        "release.y"                "spectralSampleCode.y"     "wavelength"              
-    ## [56] "reflectanceCondition"     "reflectance"              "fileName"
+    ##  [1] "spectralSampleID"         "spectralSampleCode.x"     "domainID"                 "siteID"                  
+    ##  [5] "locationID"               "uid.x"                    "plotID"                   "plotType"                
+    ##  [9] "sampleType"               "nlcdClass"                "geodeticDatum"            "decimalLatitude"         
+    ## [13] "decimalLongitude"         "coordinateUncertainty"    "elevation"                "elevationUncertainty"    
+    ## [17] "altLatitude"              "altLongitude"             "altCoordinateUncertainty" "collectDate.x"           
+    ## [21] "eventID"                  "cfcIndividual"            "taxonID"                  "scientificName"          
+    ## [25] "sampleID"                 "sampleCode"               "individualID"             "plantStatus"             
+    ## [29] "leafStatus"               "leafAge"                  "leafExposure"             "leafSamplePosition"      
+    ## [33] "targetType"               "targetStatus"             "measurementVenue"         "measurementDate"         
+    ## [37] "leafArrangement"          "remarks.x"                "collectedBy"              "recordedBy"              
+    ## [41] "dataQF.x"                 "publicationDate.x"        "release.x"                "uid.y"                   
+    ## [45] "software"                 "collectDate.y"            "downloadFileUrl"          "downloadFileName"        
+    ## [49] "processedBy"              "reviewedBy"               "remarks.y"                "dataQF.y"                
+    ## [53] "publicationDate.y"        "release.y"                "spectralSampleCode.y"     "wavelength"              
+    ## [57] "reflectanceCondition"     "reflectance"
 
     head(spectra_data[c("spectralSampleID","taxonID","reflectance","wavelength","reflectanceCondition")],1)
 
     ##         spectralSampleID taxonID reflectance wavelength                        reflectanceCondition
-    ## 1 FSP_RMNP_20200706_2043   POTR5 0.103038183        350 top of foliage (sunward) on white reference
+    ## 1 FSP_RMNP_20200706_2043   POTR5   0.1030382        350 top of foliage (sunward) on white reference
 You'll need to cast the wavelength and reflectance data to "numeric" data type, using `as.numeric`in order to plot the data.
 
 
@@ -238,18 +260,18 @@ What do you notice about these spectra? It looks like there is some variation be
 
     spectra_top_black[which(spectra_top_black$taxonID == "PICOL" & spectra_top_black$wavelength == 350), c("taxonID","spectralSampleID","plantStatus","leafStatus","leafAge","leafExposure","leafSamplePosition","targetType","targetStatus","measurementVenue","remarks.y")]
 
-    ##       taxonID       spectralSampleID plantStatus leafStatus leafAge leafExposure leafSamplePosition   targetType targetStatus measurementVenue
-    ## 4303    PICOL FSP_RMNP_20200706_2120          OK    healthy  mature     part-sun             middle pure foliage        fresh       laboratory
-    ## 15058   PICOL FSP_RMNP_20200709_2050          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory
-    ## 19360   PICOL FSP_RMNP_20200713_1117          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory
-    ## 43021   PICOL FSP_RMNP_20200720_1304          OK    healthy  mature       sunlit                top pure foliage        fresh       laboratory
-    ## 49474   PICOL FSP_RMNP_20200721_1243          OK    healthy  mature       sunlit             middle pure foliage        fresh       laboratory
-    ##                                              remarks.y
-    ## 4303                           all parallel needle mat
-    ## 15058            RMNP bristlecone pine long needle mat
-    ## 19360           PICOL-2 horizontal needle mat sample 2
-    ## 43021 cfc.RMNP005.PICOL2-1.20200720 tape on both sides
-    ## 49474                     cfc.RMNP006.PICOL-1.20200721
+    ##       taxonID       spectralSampleID plantStatus leafStatus leafAge leafExposure leafSamplePosition   targetType
+    ## 4303    PICOL FSP_RMNP_20200706_2120          OK    healthy  mature     part-sun             middle pure foliage
+    ## 15058   PICOL FSP_RMNP_20200709_2050          OK    healthy  mature       sunlit                top pure foliage
+    ## 19360   PICOL FSP_RMNP_20200713_1117          OK    healthy  mature       sunlit             middle pure foliage
+    ## 43021   PICOL FSP_RMNP_20200720_1304          OK    healthy  mature       sunlit                top pure foliage
+    ## 49474   PICOL FSP_RMNP_20200721_1243          OK    healthy  mature       sunlit             middle pure foliage
+    ##       targetStatus measurementVenue                                        remarks.y
+    ## 4303         fresh       laboratory                          all parallel needle mat
+    ## 15058        fresh       laboratory            RMNP bristlecone pine long needle mat
+    ## 19360        fresh       laboratory           PICOL-2 horizontal needle mat sample 2
+    ## 43021        fresh       laboratory cfc.RMNP005.PICOL2-1.20200720 tape on both sides
+    ## 49474        fresh       laboratory                     cfc.RMNP006.PICOL-1.20200721
 
 Here, we can see that all the plants have an "OK" status, and all the leaves have a "healthy" status, but the `leafExposure` and `leafSamplePosition` vary between the samples. This may cause some variation in the spectral signature. Some variation is expected, even if all conditions are identical, as there is uncertainty associated with any measurement, due to the properties of the leaf being sample, and the measurements themselves. 
 
@@ -309,6 +331,7 @@ We can get the `availableDataUrls` of the RMNP site as follows. This step is not
 
     ## [[1]]
     ## [1] "https://data.neonscience.org/api/v0/data/DP1.10026.001/RMNP/2020-07"
+    ## [2] "https://data.neonscience.org/api/v0/data/DP1.10026.001/RMNP/2025-08"
 Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise locations of the foliar spectra samples.
 
 
@@ -317,6 +340,22 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
                                    startdate='2020-07',
                                    package="expanded",
                                    check.size=FALSE)
+
+    ## Finding available files
+
+    ## Provisional data were excluded from available files list. To download provisional data, use input parameter include.provisional=TRUE.
+
+    ## Downloading files totaling approximately 1.130634 MB
+
+    ## Downloading 1 files
+
+    ## Unpacking zip files using 1 cores.
+
+    ## Stacking data files
+
+    ## Finished: Stacked 14 data tables and 5 metadata tables!
+
+    ## Stacking took 2.312616 secs
 
     names(foliar_traits)
 
@@ -581,51 +620,48 @@ Why is there a difference between the leaf-clip spectra and the remotely-sensed 
 
 Each reflectance pixel represents a 1m x 1m area, so it contains an average spectra of all the vegetation and non-vegetation that are contained in that area. For example, a single pixel could contain the reflectance of a mix of leaves as well as branches, and any gaps in the tree canopy (eg. the ground under the tree). This averaging is called "spectral mixing" and you can perform "spectral un-mixing" to decompose an average spectra into it's component parts. These leaf clip spectra can be used as "end-members", in classification applications, for example. 
 
-Also, it is important to understand that there are uncertainties in the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform attempts to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document).
+In addition, there are uncertainties associated with both the ASD measurements as well as the airborne spectra. There may be some geographic uncertainty associated with both the airborne data (which has 0.5 m horizontal resolution), as well as with the field sample geolocations. There is also some uncertainty in the spectral data itself. For example, there is uncertainty resulting from the atmospheric correction applied when generating the reflectance data from the at-sensor-radiance. Weather conditions during the flight are important to consider as well. The Airborne Observation Platform attempts to collect the coincident overflights in clear weather, but this may not always be the case. For more on hyperspectral uncertainties and variation, please refer to the <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a> (Algorithm Theoretical Basis Document) or the Python lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/hyperspectral-variation-py" target="_blank">Hyperspectral Variation Uncertainty Analysis in Python</a> .
 
 ### Incorporating Tree Crown Polygon Shapefiles
 
-Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown shapefiles are not available for all of the canopy foliar data, but if they are available, it is recommended to use them. The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area. 
+Starting in 2020 (including RMNP 2020), the foliar traits data products include shape files of the polygons of the tree crowns where the samples are taken from. The crown shapefiles are not available for older (pre-2020) canopy foliar data, but if they are available, it is recommended to use them. The last part of the lesson demonstrates how to download the tree crown shape files, and plots the spectra of the airborne reflectance data of all the pixels inside the tree crown area. 
 
 First, we can use the `neonUtilities::loadByProduct` and `zipsByURI` functions to download all the tree crown polygon shapefile data, as follows. This is also the recommended way to determine which crown polygon data are available, across all the sites.
 
 
     crown_polys <- loadByProduct(dpID='DP1.10026.001', 
 
-                              tabl='cfc_shapefile', 
+                                 site='RMNP',
 
-                              include.provisional=T,
+                                 tabl='cfc_shapefile', 
 
-                              check.size=F)
+                                 include.provisional=T,
+
+                                 check.size=F)
 
     zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
 
 Next we can read in the polygon data as a terra `SpatVector` object as follows. Display the coordinate reference system (CRS) information. You can un-comment the last line to display more detailed information about the CRS.
 
 
-    shp_file <- paste0('~/data/','RMNP/RMNP-2020-polygons-v2/RMNP-2020-polygons.shp')
+    shp_file <- paste0('~/data/','crown_polygons/RMNP-2020-polygons-v3/RMNP-2020-polygons.shp')
 
     rmnp_crown_poly <- terra::vect(shp_file)
 
     crs(rmnp_crown_poly, describe=TRUE) # display dataframe describing the CRS
 
-    ##                       name authority code                              area                         extent
-    ## 1 WGS 84 / Pseudo-Mercator      EPSG 3857 World between 85.06°S and 85.06°N -180.00, 180.00, 85.06, -85.06
+    ##                    name authority  code area         extent
+    ## 1 WGS 84 / UTM zone 13N      EPSG 32613 <NA> NA, NA, NA, NA
 
     # cat(crs(rmnp_crown_poly), "\n")
-You can see that this data has EPSG code 3857, which does not match the AOP raster data, which is in UTM 13N (EPSG 32613) for this site. We can re-project the vector data so that both datasets align. Note that NEON is planning to update the CRS of the polygon data to match the AOP raster data, but this is not currently available (as of Spring 2024).
-
-
-    rmnp_crown_poly_UTM13N <- project(rmnp_crown_poly, "EPSG:32613")
-
-Let's plot the crown polygon data (orange line) along with the RGB reflectance image and tree location (red point).
+The crown polygon is in the same projection as the AOP reflectance data, so we can continue. Next let's plot the crown polygon data (orange line) along with the RGB reflectance image and tree location (red point).
 
 
     plotRGB(rgb_rast,stretch='lin',xlim=x_sub,ylim=y_sub,axes=TRUE) # plot reflectance RGB raster data
 
     plot(tree_loc, col="red", add = T) # plot the location of the tree (red point)
 
-    picol_crown_poly <- rmnp_crown_poly_UTM13N[rmnp_crown_poly_UTM13N$crownPolyg == "RMNP.04015.2020"]
+    picol_crown_poly <- rmnp_crown_poly[rmnp_crown_poly$crownPolyg == "RMNP.04015.2020"]
 
     plot(picol_crown_poly, border = "orange", lwd = 2, add=T) # plot the tree crown polygon
 
@@ -685,7 +721,7 @@ Great, we've plotted the reflectance curves of all the pixels captured within th
 <p class="caption"> </p>
 </div>
 
-Again we can see there is some discrepancy between the airborne and field spectra, and there is a decent amount of variation between the spectra of the pixels contained within the tree crown polygon. The leaf-clip spectra is one "end-member" that contributes to the 1-m pixel combined reflectance. The exploratory analysis demonstrated in this tutorial is an example of some steps you might take to get a feel for the data. We recommend you explore some other samples at this site, or field spectra data at another site, building off this R code to answer some questions you come up with as you start digging into the data.
+Again we can see there is some difference between the airborne and field spectra, and there is a decent amount of variation between the spectra of the pixels contained within the tree crown polygon. The leaf-clip spectra is one "end-member" that contributes to the 1-m pixel combined reflectance. The exploratory analysis demonstrated in this tutorial is an example of some steps you might take to get a feel for the data. We recommend you explore some other samples at this site, or field spectra data at another site, building off this R code to answer some questions you come up with as you start digging into the data.
 
 
 <div id="next-steps" markdown="1">

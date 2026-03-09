@@ -4,6 +4,12 @@ output: html_fragment
 dateCreated: '2024-12-31'
 ---
 
+```{r setup, include=FALSE}
+library(arrow)
+library(reticulate)
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 An extremely common task for remote sensing researchers is to connect 
 remote sensing data with data on the ground. This might be a research 
@@ -67,9 +73,10 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 ```
 
 Now load packages. This needs to be done every time you run code. 
-We'll also set a working directory for data downloads.
+We'll also set a working directory for data downloads (adapt the 
+working directory path for your system).
 
-```{r load-packages, results="hide"}
+```{r load-packages, results="hide", message=FALSE}
 
 library(terra)
 library(neonUtilities)
@@ -78,8 +85,6 @@ library(geoNEON)
 
 options(stringsAsFactors=F)
 
-# set working directory
-# adapt directory path for your system
 wd <- "~/data"
 
 ```
@@ -116,6 +121,7 @@ import rasterio
 from rasterio import sample
 from rasterio.enums import Resampling
 import requests
+import time
 import os
 
 ```
@@ -143,7 +149,7 @@ Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-shee
 for the `neonUtilities` package for more details and the complete index of 
 possible function inputs.
 
-```{r veglist, results="hide"}
+```{r veglist, results="hide", message=FALSE}
 
 veglist <- loadByProduct(dpID="DP1.10098.001", 
                          site="WREF", 
@@ -213,28 +219,44 @@ vegmapall = veglist["vst_mappingandtagging"]
 vegmap = vegmapall.loc[vegmapall["pointID"] != ""]
 vegmap = vegmap.reindex()
 vegmap["points"] = vegmap["namedLocation"] + "." + vegmap["pointID"]
-vegpoints = list(set(list(vegmap["points"])))
+veg_points = list(set(list(vegmap["points"])))
 
 easting = []
 northing = []
-coordinateUncertainty = []
-elevationUncertainty = []
-for i in vegpoints:
-    vres = requests.get("https://data.neonscience.org/api/v0/locations/"+i)
-    vreslist = vres.json()
-    easting.append(vreslist["data"]["locationUtmEasting"])
-    northing.append(vreslist["data"]["locationUtmNorthing"])
-    props = pd.DataFrame.from_dict(vreslist["data"]["locationProperties"])
-    cuprop = props.loc[props["locationPropertyName"]=="Value for Coordinate uncertainty"]["locationPropertyValue"]
-    coordinateUncertainty.append(cuprop[cuprop.index[0]])
-    euprop = props.loc[props["locationPropertyName"]=="Value for Elevation uncertainty"]["locationPropertyValue"]
-    elevationUncertainty.append(euprop[euprop.index[0]])
+coord_uncertainty = []
+elev_uncertainty = []
+drop_points = []
 
-ptdct = dict(points=vegpoints, 
+```
+
+```{python p-vegmap2}
+
+for i in veg_points:
+    time.sleep(1)
+    vres = requests.get("https://data.neonscience.org/api/v0/locations/"+i)
+    vres_json = vres.json()
+    if vres_json["data"] is not None:
+        easting.append(vres_json["data"]["locationUtmEasting"])
+        northing.append(vres_json["data"]["locationUtmNorthing"])
+        props = pd.DataFrame.from_dict(vres_json["data"]["locationProperties"])
+        cu = props.loc[props["locationPropertyName"] == "Value for Coordinate uncertainty"]["locationPropertyValue"]
+        coord_uncertainty.append(cu[cu.index[0]])
+        eu = props.loc[props["locationPropertyName"] == "Value for Elevation uncertainty"]["locationPropertyValue"]
+        elev_uncertainty.append(eu[eu.index[0]])
+    else:
+        drop_points.append(i)
+
+veg_points_clean = [v for v in veg_points if v not in drop_points]
+
+```
+
+```{python p-vegmap3}
+
+ptdct = dict(points=veg_points_clean, 
              easting=easting, 
              northing=northing,
-             coordinateUncertainty=coordinateUncertainty,
-             elevationUncertainty=elevationUncertainty)
+             coordinateUncertainty=coord_uncertainty,
+             elevationUncertainty=elev_uncertainty)
 ptfrm = pd.DataFrame.from_dict(ptdct)
 ptfrm.set_index("points", inplace=True)
 
@@ -429,7 +451,7 @@ in R and the `rasterio` and `rioxarray`` packages in Python.
 
 ### R
 
-```{r get-chm, results="hide"}
+```{r get-chm, results="hide", message=FALSE}
 
 byTileAOP(dpID="DP3.30015.001", site="WREF", year=2017, 
           easting=veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
