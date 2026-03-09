@@ -185,9 +185,15 @@ for the <code>neonUtilities</code> package for more details.</p>
 
 names(fshdat)
 
-##  [1] &quot;categoricalCodes_20107&quot;      &quot;citation_20107_RELEASE-2026&quot; &quot;fsh_bulkCount&quot;              
-##  [4] &quot;fsh_fieldData&quot;               &quot;fsh_perFish&quot;                 &quot;fsh_perPass&quot;                
-##  [7] &quot;issueLog_20107&quot;              &quot;readme_20107&quot;                &quot;validation_20107&quot;           
+##  [1] &quot;categoricalCodes_20107&quot;     
+##  [2] &quot;citation_20107_RELEASE-2026&quot;
+##  [3] &quot;fsh_bulkCount&quot;              
+##  [4] &quot;fsh_fieldData&quot;              
+##  [5] &quot;fsh_perFish&quot;                
+##  [6] &quot;fsh_perPass&quot;                
+##  [7] &quot;issueLog_20107&quot;             
+##  [8] &quot;readme_20107&quot;               
+##  [9] &quot;validation_20107&quot;           
 ## [10] &quot;variables_20107&quot;
 </code></pre>
 <ul>
@@ -272,7 +278,7 @@ the <code>fsh_bulkCount</code> data.</p>
 <p>The joined <code>fsh_all</code> table now contains the total number of fish captured per species for each pass, as well as the individual and bulk tallies for each species. The newly-calculated <code>totalFishCount</code> field will be used for all further community and population estimates.</p>
 <h3 id="sec:visualize-results">Visualize results</h3>
 <h4 id="sec:wadeable-streams">Wadeable Streams</h4>
-<p>We can visualize abundance of each species for a particular site and event. In this tutorial, let’s first look at the total number of captures for each species per pass at Blue River during the Fall of 2024.</p>
+<p>We can visualize abundance of each species for a particular site and event. In this tutorial, let’s first look at the total number of captures for each species per pass at Blue River during the Spring of 2024.</p>
 <pre><code># Subset summary data by eventID
 
 blue_spring24 &lt;- fsh_all %&gt;%
@@ -308,13 +314,20 @@ fixedRandomReach &lt;- fsh_fieldData %&gt;%
 
 print(fixedRandomReach)
 
-##          eventID              namedLocation fixedRandomReach samplingImpractical
-## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03            fixed                &lt;NA&gt;
-## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06            fixed          logistical
-## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07           random          logistical
-## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08           random          logistical
-## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09           random                &lt;NA&gt;
-## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10            fixed          logistical
+##          eventID              namedLocation
+## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
+## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06
+## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07
+## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08
+## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09
+## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10
+##   fixedRandomReach samplingImpractical
+## 1            fixed                &lt;NA&gt;
+## 2            fixed          logistical
+## 3           random          logistical
+## 4           random          logistical
+## 5           random                &lt;NA&gt;
+## 6            fixed          logistical
 
 samplerType &lt;- fsh_perPass %&gt;% 
   filter(eventID== &quot;CRAM.2024.fall&quot;) %&gt;%
@@ -325,15 +338,24 @@ samplerType &lt;- fsh_perPass %&gt;%
 
 print(samplerType)
 
-##          eventID              namedLocation passNumber   samplerType
-## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03          1 electrofisher
-## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03          2 electrofisher
-## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03          3 electrofisher
-## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03          4 mini-fyke net
-## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03          5      gill net
-## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09          1 electrofisher
-## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09          4 mini-fyke net
-## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09          5      gill net
+##          eventID              namedLocation
+## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
+## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03
+## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03
+## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03
+## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03
+## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09
+## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09
+## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09
+##   passNumber   samplerType
+## 1          1 electrofisher
+## 2          2 electrofisher
+## 3          3 electrofisher
+## 4          4 mini-fyke net
+## 5          5      gill net
+## 6          1 electrofisher
+## 7          4 mini-fyke net
+## 8          5      gill net
 </code></pre>
 <p>Now let’s take a look at the capture data from Crampton Lake during the Fall of 2024, which contains data from one fixed reach and one random reach.</p>
 <pre><code># Subset summary data by eventID

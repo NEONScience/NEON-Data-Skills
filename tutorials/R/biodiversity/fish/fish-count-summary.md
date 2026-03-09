@@ -105,9 +105,15 @@ The data are downloaded into a list of separate tables. Before working with the 
 
     names(fshdat)
 
-    ##  [1] "categoricalCodes_20107"      "citation_20107_RELEASE-2026" "fsh_bulkCount"              
-    ##  [4] "fsh_fieldData"               "fsh_perFish"                 "fsh_perPass"                
-    ##  [7] "issueLog_20107"              "readme_20107"                "validation_20107"           
+    ##  [1] "categoricalCodes_20107"     
+    ##  [2] "citation_20107_RELEASE-2026"
+    ##  [3] "fsh_bulkCount"              
+    ##  [4] "fsh_fieldData"              
+    ##  [5] "fsh_perFish"                
+    ##  [6] "fsh_perPass"                
+    ##  [7] "issueLog_20107"             
+    ##  [8] "readme_20107"               
+    ##  [9] "validation_20107"           
     ## [10] "variables_20107"
 * The `categoricalCodes` file provides controlled lists used in the data
 
@@ -203,7 +209,7 @@ The joined `fsh_all` table now contains the total number of fish captured per sp
 
 #### Wadeable Streams
 
-We can visualize abundance of each species for a particular site and event. In this tutorial, let's first look at the total number of captures for each species per pass at Blue River during the Fall of 2024.
+We can visualize abundance of each species for a particular site and event. In this tutorial, let's first look at the total number of captures for each species per pass at Blue River during the Spring of 2024.
 
 
     # Subset summary data by eventID
@@ -247,13 +253,20 @@ Information about fixed vs. random reaches is found in the `fsh_fieldData` table
 
     print(fixedRandomReach)
 
-    ##          eventID              namedLocation fixedRandomReach samplingImpractical
-    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03            fixed                <NA>
-    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06            fixed          logistical
-    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07           random          logistical
-    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08           random          logistical
-    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09           random                <NA>
-    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10            fixed          logistical
+    ##          eventID              namedLocation
+    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
+    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06
+    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07
+    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08
+    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09
+    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10
+    ##   fixedRandomReach samplingImpractical
+    ## 1            fixed                <NA>
+    ## 2            fixed          logistical
+    ## 3           random          logistical
+    ## 4           random          logistical
+    ## 5           random                <NA>
+    ## 6            fixed          logistical
 
     samplerType <- fsh_perPass %>% 
       filter(eventID== "CRAM.2024.fall") %>%
@@ -264,15 +277,24 @@ Information about fixed vs. random reaches is found in the `fsh_fieldData` table
 
     print(samplerType)
 
-    ##          eventID              namedLocation passNumber   samplerType
-    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03          1 electrofisher
-    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03          2 electrofisher
-    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03          3 electrofisher
-    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03          4 mini-fyke net
-    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03          5      gill net
-    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09          1 electrofisher
-    ## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09          4 mini-fyke net
-    ## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09          5      gill net
+    ##          eventID              namedLocation
+    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
+    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03
+    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03
+    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03
+    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03
+    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09
+    ## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09
+    ## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09
+    ##   passNumber   samplerType
+    ## 1          1 electrofisher
+    ## 2          2 electrofisher
+    ## 3          3 electrofisher
+    ## 4          4 mini-fyke net
+    ## 5          5      gill net
+    ## 6          1 electrofisher
+    ## 7          4 mini-fyke net
+    ## 8          5      gill net
 Now let's take a look at the capture data from Crampton Lake during the Fall of 2024, which contains data from one fixed reach and one random reach.
 
 
