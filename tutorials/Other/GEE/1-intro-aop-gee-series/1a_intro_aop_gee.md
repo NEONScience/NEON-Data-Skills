@@ -76,7 +76,7 @@ In the code editor, NEON datasets can be accessed through the `projects/neon-pro
 | <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_RGB_001" target="_blank">RGB/001</a> | Red Green Blue (Camera Imagery) | <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">DP3.30010.001</a> |
 | <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_DEM_001" target="_blank">DEM/001</a> | Digital Elevation Model (DSM/DTM) | <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a> |
 | <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CHM_001" target="_blank">CHM/001</a> | Ecosystem Structure (Canopy Height Model; CHM) | <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a> |
-| <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CNC_002" target="_blank">CHM/002</a> | Canopy Nitrogen Content (CNC) | <a href="https://data.neonscience.org/data-products/DP3.30018.002" target="_blank">DP3.30018.002</a> |
+| <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CNC_002" target="_blank">CNC/002</a> | Canopy Nitrogen Content (CNC) | <a href="https://data.neonscience.org/data-products/DP3.30018.002" target="_blank">DP3.30018.002</a> |
 
 ## Get Started with Google Earth Engine
 
@@ -90,7 +90,7 @@ Once you have set up your Google Earth Engine account you can navigate to the <a
 
 ## Read AOP Data Collections into GEE
 
-AOP data can currently be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the five available AOP datasets, or `ImageCollections`.
+AOP data can currently be accessed through GEE through the `projects/neon-prod-earthengine/assets/` folder. In the remainder of this lesson, we will look at the six available AOP datasets, or `ImageCollections`.
 
 An <a href="https://developers.google.com/earth-engine/guides/ic_creating" target="_blank">ImageCollection</a> is simply a group of images. To find publicly available datasets (primarily satellite data), you can explore the Earth Engine <a href="https://developers.google.com/earth-engine/datasets" target="_blank">Data Catalog</a>. The following steps will walk you through how to read in AOP Image Collections in the Code Editor.
 
@@ -207,7 +207,7 @@ var clbj2021_refl001_props = refl001_CLBJ_2021.toDictionary();
 print('CLBJ 2021 Directional Reflectance Properties:',clbj2021_refl001_props);
 ```
 
-Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (438 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band (Bands 001 - 426). You may wish to refer to this wavelength information to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image. For a full description of what each of the Image Properties mean, you can look at the `IMAGE PROPERTIES` tab as explained in the previous section, or find it in the <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_001#image-properties" target="_blank">Earth Engine Data Catalog</a>. 
+Look in the Console for the properties, you can expand by clicking on the arrow to the left of the `Object (439 properties)`. Here you can see some metadata about this image. Scroll down and you'll get to a number of properties starting with `WL_FWHM_B###`. These are the WaveLength (WL) and Full Width Half Max (FWHM) values, in nanometers, corresponding to each band (Bands 001 - 426). You may wish to refer to this wavelength information to determine which bands you wish to display, eg. if you want to show a false color image instead of a true color (RGB) image. For a full description of what each of the Image Properties mean, you can look at the `IMAGE PROPERTIES` tab as explained in the previous section, or find it in the <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_HSI_REFL_001#image-properties" target="_blank">Earth Engine Data Catalog</a>. 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_properties.png">
@@ -242,7 +242,7 @@ See NEON's <a href="https://www.neonscience.org/data-samples/data-management/dat
 
 ## Plot a True Color Image of Reflectance Data
 
-Finally, let's plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've read into the variable `refl001_CBLJ_2021`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`. There are a couple ways you can center the Map to the location you want. One is to use `Map.centerObject` and you can provide the image you want to center; otherwise you can specify the latitude and longitude, shown commented-out in the code chunk below.
+Finally, let's plot a true color image (red-green-blue or RGB composite) of the reflectance data that we've read into the variable `refl001_CBLJ_2021`. To do this, first we pull out the RGB bands, set visualization parameters, center the map over the site, and then add the map using `Map.addLayer`. There are a couple ways you can center the Map to the location you want. One is to use `Map.centerObject` and you can provide the image you want to center; otherwise you can specify the latitude and longitude and use `Map.setCenter()`, shown in the commented-out lines at the bottom of the code chunk below.
 
 ```javascript
 // Add a Reflectance True Color Image Layer to the Map 
@@ -257,9 +257,13 @@ Map.addLayer(refl001_CLBJ_2021_RGB, refl_rgb_vis, 'CLBJ 2021 Directional Reflect
 
 // use centerObject to center on the reflectance data, 13 is the zoom level
 Map.centerObject(refl001_CLBJ_2021, 13)
+
+// alternatively you could specify the lat / lon of the site, set zoom to 13
+// you can find the field site lat/lon here https://www.neonscience.org/field-sites/clbj
+// Map.setCenter(-97.57, 33.40, 13);
 ```
 
-When you run the code you should now see the true color image on the map! You can zoom in and out and explore some of the other interactive options on your own.
+When you run the code you should now see the true color image on the map! You can zoom in and out and explore some of the other interactive options on your own. Toggle the `Layers` window in the upper right corner to view the layer and to change the histogram stretch and opacity of the image, if desired.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_rgb.png">
@@ -269,7 +273,7 @@ When you run the code you should now see the true color image on the map! You ca
 
 ## Compare Directional and Bidirectional Reflectance
 
-Lastly, let's also look at a bidirectional data product at the same site, so you can explore some of the differences between the directional and bidirectional reflectance. We will also display the release, citation, and DOI (Digital Object Identifier) information for this data. 
+Lastly, let's also look at a bidirectional data product at the same site, so you can explore some of the differences between the directional and bidirectional reflectance. We will also display the properties for this data.
 
 ```javascript
 // Bidirectional Reflectance (HSI_REFL/002)
@@ -311,7 +315,7 @@ var refl002_CLBJ_2022_RGB = refl002_CLBJ_2022.select(['B053', 'B035', 'B019']);
 Map.addLayer(refl002_CLBJ_2022_RGB, refl_rgb_vis, 'CLBJ 2022 Bidirectional Reflectance RGB');
 ```
 
-You can toggle between the two layers by selecting the "Layers" tab in the upper right corner of the Map window. Check and uncheck the two layers (2021 and 2022) to see the differences. You can also use the slider to the right of the layer name to make one layer partially transparent. What observations can you make about these two datasets?
+You can toggle between the two layers by selecting the `Layers` tab in the upper right corner of the Map window. Check and uncheck the two layers (2021 and 2022) to see the differences. You can also use the slider to the right of the layer name to make one layer partially transparent. What observations can you make about these two datasets?
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_refl002_comparison.png">
