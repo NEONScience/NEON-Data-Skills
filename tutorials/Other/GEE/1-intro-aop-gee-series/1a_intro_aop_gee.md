@@ -238,7 +238,7 @@ print('CLBJ 2021 Directional Refl Citation:', clbj2021_refl001_citation)
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_release_citation_info.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/" alt="CLBJ 2021 Directional Reflectance Release, DOI, and Citation Properties" style="max-width: 100%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_release_citation_info.png" alt="CLBJ 2021 Directional Reflectance Release, DOI, and Citation Properties" style="max-width: 100%; height: auto;">
 	</a>
 </figure>
 
