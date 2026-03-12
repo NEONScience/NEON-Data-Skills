@@ -236,6 +236,12 @@ var clbj2021_refl001_citation = clbj2021_refl001_props.select(['CITATION']);
 print('CLBJ 2021 Directional Refl Citation:', clbj2021_refl001_citation)
 ```
 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_release_citation_info.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/" alt="CLBJ 2021 Directional Reflectance Release, DOI, and Citation Properties" style="max-width: 100%; height: auto;">
+	</a>
+</figure>
+
 In this example, as of March 2026, the 2021 CLBJ directional reflectance data is part of `RELEASE-2026`. 
 
 See NEON's <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Data Product Revisions and Releases</a> page as well as the <a href="https://www.neonscience.org/data/guidelines-policies/citing" target="_blank">Acknowledging and Citing NEON</a> page for more information on releases and citing NEON data. There is a short period each year in January where AOP data on the NEON Data Portal may be in flux in preparation for an upcoming data release (which typically becomes available at the end of January each year). GEE datasets are planned to be kept up to date with the current NEON Data Release, however there may be a lag period between the annual release and data updates on GEE. Data on GEE should be updated to match the current release by the end of February each year. For current information around the release status and data quality issue notices, you can follow <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank">NEON Data Notifications</a>.
