@@ -180,7 +180,7 @@ In the **Console** tab to the right of the code, you will see a list of all avai
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images_with_code.PNG">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images_with_code.PNG" alt="Available AOP Images" style="max-width: 75%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/available_aop_gee_images_with_code.PNG" alt="Available AOP Images" style="max-width: 100%; height: auto;">
 	</a>
 </figure>
 
@@ -211,7 +211,7 @@ Look in the Console for the properties, you can expand by clicking on the arrow 
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_properties.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_properties.png" alt="CLBJ Directional Reflectance Image Properties" style="max-width: 50%; height: auto;">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee2023/1a_intro_aop_gee/clbj_refl001_properties.png" alt="CLBJ Directional Reflectance Image Properties" style="max-width: 100%; height: auto;">
 	</a>
 
 ## Determine Release Tag, DOI, and Citation Information
