@@ -46,9 +46,9 @@ And you will be able to:
 
 ## Requirements
  * A Google or gmail (@gmail.com) account.
- * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. Click on "Register a Noncommercial or Commercial Cloud Project", and on the next promp select "Unpaid Usage" and select the Project Type to create a free non-commercial account. For more information, refer to <a href="https://earthengine.google.com/noncommercial/" target="_blank">Noncommercial Earth Engine</a>.
+ * An Earth Engine account. You can sign up for an Earth Engine account here: https://earthengine.google.com/new_signup/. If you are using GEE for non-profit and research purposes, you will be eligible to use the platform for free under the "noncommercial" tier. Click on "**Get Started**" under the "**See if you are eligible for noncommercial use**" tab, and select the options that apply to you to create your free account. For more information, refer to <a href="https://earthengine.google.com/noncommercial/" target="_blank">Noncommercial Earth Engine</a>.
  * A Google Cloud Project. See <a href="https://developers.google.com/earth-engine/cloud/earthengine_cloud_project_setup/" target="_blank"> Set up your Earth Engine enabled Cloud Project</a>.
- * A basic understanding of the GEE Code Editor and the GEE JavaScript API.
+ * Some familiarity with coding and scientific computing. Familiarity with JavaScript is helpful, but not required.
 
 ## Additional Resources
 If this is your first time using GEE, we recommend starting on the Google Developers website, and working through some of the introductory tutorials. The links below are good places to start.
