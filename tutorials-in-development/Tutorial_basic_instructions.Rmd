@@ -1,0 +1,62 @@
+---
+title: "Instructions for writing NEON Data Skills tutorials"
+author: Claire Lunch
+date: 18 March 2026
+urlcolor: blue
+output: pdf_document
+---
+
+## Instructions for writing NEON Data Skills tutorials
+
+NEON Data Skills tutorials are automatically synced from the [NEON Data Skills](https://github.com/NEONScience/NEON-Data-Skills) GitHub repository 
+to the [Learning Hub](https://www.neonscience.org/resources/learning-hub/tutorials) on the NEON website. 
+Adding a new tutorial to the repo also adds it to the website.
+
+### Workflow Overview
+
+The process of creating a tutorial looks like this:
+
+1. Write your code and commentary in an R markdown (.Rmd) file.
+2. Add the yaml header to enable website syncing.
+3. Knit to a markdown (.md) file.
+4. Submit a pull request (PR) to the NEON-Data-Skills repo to add the files to the tutorials folder.
+
+Discuss your plan with Data Skills staff in advance. We can help you with steps 2 and 3, 
+in which case you only need to submit a PR with your Rmd file. But we need to 
+know in advance that this is your plan!
+
+### Writing the tutorial (technical aspects)
+
+The sync process works on markdown files (.md), so technically you could develop 
+your tutorial using any process that can produce a .md file. In practice, we 
+highly recommend starting by writing an R markdown (.Rmd) document.
+
+* You need to make sure the code in your tutorial runs successfully. Knitting an Rmd file will check this.
+* R markdown includes many options for adjusting the visibility and appearance of both code and outputs, using [chunk options](https://yihui.org/knitr/options/). 
+
+Because of the chunk options, Rmd is often preferable even if your code is in Python. 
+It will give you much more flexibility than a Jupyter notebook, in terms of things 
+like hiding progress bars, silently setting a customized working directory while showing the 
+user code to set their own working directory, etc.
+
+If you are interested in writing a tutorial with code in both R and Python so users can 
+follow along in their language of choice, see instructions [here](https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/tabbed_tutorial_instructions.md) and 
+an example of what this looks like on the website [here](https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data). 
+We don't recommend trying this for your first tutorial, start with a single language.
+
+### Writing the tutorial (syntax)
+
+Use the tutorial [style guide](https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials-in-development/0_templates_style_guide/NDS-style-guide.md). This is important for 
+things like headers (don't use level 1 headers), links (don't use standard 
+markdown links, follow the instructions in the style guide so links open in a 
+new tab), etc.
+
+### Writing the tutorial (pedagogical aspects)
+
+Check out existing tutorials on the website to get a sense of how they're 
+structured. In general:
+
+* Start with a paragraph or two explaining what the tutorial is about
+* Use level 2 headers to create the index that appears in the lefthand sidebar
+* Strike a balance between 
+
