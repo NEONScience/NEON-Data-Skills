@@ -25,7 +25,7 @@ Discuss your plan with Data Skills staff in advance. We can help you with steps 
 in which case you only need to submit a PR with your Rmd file. But we need to 
 know in advance that this is your plan!
 
-### Writing the tutorial (technical aspects)
+### Writing the tutorial (technical)
 
 The sync process works on markdown files (.md), so technically you could develop 
 your tutorial using any process that can produce a .md file. In practice, we 
@@ -51,12 +51,25 @@ things like headers (don't use level 1 headers), links (don't use standard
 markdown links, follow the instructions in the style guide so links open in a 
 new tab), etc.
 
-### Writing the tutorial (pedagogical aspects)
+Level 2 headers create the index that appears in the lefthand sidebar, so 
+choose these thoughtfully.
+
+### Writing the tutorial (pedagogical)
 
 Check out existing tutorials on the website to get a sense of how they're 
 structured. In general:
 
 * Start with a paragraph or two explaining what the tutorial is about
-* Use level 2 headers to create the index that appears in the lefthand sidebar
-* Strike a balance between 
+* Avoid using a lot of code comments. The joy of markdown is you can talk about 
+what you're doing in the text, and just do it in the code. If you find yourself 
+writing a lot of code comments, it's a sign you need more text.
+* Break up code. Avoid long, dense code chunks - they're hard to follow. In most 
+NEON tutorials, we don't explain every line of code, but your code chunks should 
+be short enough that the text can explain what's happening in each one in a 
+sentence or two.
+* If you need to break the above rule, say so. For example, if your tutorial 
+includes writing a function, but you're not concerned about users understanding 
+the function in detail, say in the text that they can copy it and not worry 
+about it too much. But you should generally avoid doing this - do it no more 
+than once in one tutorial.
 
