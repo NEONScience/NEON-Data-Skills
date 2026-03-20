@@ -15,6 +15,7 @@ options(timeout=300)
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
 dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
+          "R/NEON-general/neon-code-packages/tokens-simple",
           "R/biodiversity/biorepository",
           "R/biodiversity/fish",
           "R/NEON-general/neon-overview/new-features-2025",
@@ -26,7 +27,7 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[3]
+subDir <- dirs[2]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"
