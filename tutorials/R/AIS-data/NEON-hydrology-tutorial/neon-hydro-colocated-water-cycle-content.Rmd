@@ -4,7 +4,8 @@ output: html_fragment
 dateCreated: '2026-03-24'
 ---
 
-::: {#ds-objectives markdown="1"}
+<div id="ds-objectives" markdown="1">
+
 ## Learning Objectives
 
 After completing this activity, you will be able to:
@@ -24,56 +25,7 @@ You can follow either the R or Python code throughout this tutorial.
 -   For R users, we recommend using R version 4+ and RStudio.
 -   For Python users, we recommend using Python 3.9+.
 
-```{r setup, include=FALSE}
-library(arrow)
-library(reticulate)
-if(dir.exists("C:/Users/nickerson/")){
-  # Windows-specific Python configuration for reticulate
-  if (Sys.info()["sysname"] == "Windows") {
-    # Method 1: Try explicit Python path
-    python_exe <- "C:/Users/nickerson/AppData/Local/Programs/Python/Python312/python.exe"
-    if (file.exists(python_exe)) {
-      # Configure environment to help with DLL loading
-      python_dir <- dirname(python_exe)
-      # Set environment variables that can help with DLL issues
-      Sys.setenv(
-        PYTHONHOME = python_dir,
-        PYTHONPATH = file.path(python_dir, "Lib"),
-        PATH = paste(python_dir, file.path(python_dir, "Scripts"), Sys.getenv("PATH"), sep = ";")
-      )
-      # Use the Python executable  
-      reticulate::use_python(python_exe, required = TRUE)
-      message("✓ Configured Python: ", python_exe)
-    } else {
-      # Method 2: Try py launcher
-      py_launcher <- Sys.which("py")
-      if (py_launcher != "") {
-        reticulate::use_python(py_launcher)
-        message("✓ Using py launcher: ", py_launcher)
-      } else {
-        warning("Python not found. Install Python 3.9+ and ensure it's in PATH")
-      }
-    }
-  } else {
-    message("Non-Windows system - using automatic Python detection")
-  }
-  # Show final configuration
-  message("\n=== Python Configuration ===")
-  tryCatch({
-    config <- py_config()
-    message("Python: ", config$python)
-    message("Version: ", config$version)
-  }, error = function(e) {
-    message("Configuration check failed: ", e$message)
-  })
-}
-reticulate::py_config()
-# reticulate::py_install(c("neonutilities"))
-# py_run_string("import neonutilities; print(neonutilities.__version__)")
-# reticulate::py_discover_config()
-# reticulate::py_module_available("neonutilities")
-knitr::opts_chunk$set(echo = TRUE, error = TRUE)
-```
+</div>
 
 ## Set up: Install Packages {.tabset}
 
