@@ -65,6 +65,7 @@ install.packages("plotly")
 -   **matplotlib**: Functions for plotting
 -   **geopy**: Compute distances between latitude/longitude coordinates
 -   **plotly**: Functions for producing interactive plots
+-   **statsmodels**: Functions for the estimation of statistical models
 
 ```{python p-install, eval=FALSE}
 pip install os
@@ -73,6 +74,7 @@ pip install neonutilities
 pip install matplotlib
 pip install geopy
 pip install plotly
+pip install statsmodels
 ```
 
 ##  {.unnumbered}
@@ -99,6 +101,8 @@ pip install plotly
 ```{r R-library, results="hide", message=FALSE, warning=FALSE}
 library(neonUtilities)
 library(tidyverse)
+library(geosphere)
+library(plotly)
 ```
 
 ### Python
@@ -111,6 +115,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from geopy.distance import geodesic
 import plotly.graph_objects as go
+import statsmodels.api as sm
 ```
 
 ##  {.unnumbered}
@@ -574,10 +579,10 @@ nu.zips_by_product(dpid="DP4.00200.001",
                    token=os.environ.get("NEON_PAT"))
 # Stack the data download, parse to data frames and read into environment 
 # defaults to stacking only L4 products
-sae_py = nu.stack_eddy(filepath = "filesToStack00200")
+# sae_py = nu.stack_eddy(filepath = "filesToStack00200")
 
 # The data is stored by site name - print the header of the 'ORNL' table
-print(sae_py["ORNL"].head())
+# print(sae_py["ORNL"].head())
 ```
 
 ###  {.unnumbered}
@@ -725,10 +730,10 @@ egw_coords <- egw_r$sensor_positions_20100%>%
   dplyr::distinct(locationReferenceLatitude,locationReferenceLongitude,
                   .keep_all = T)
 csd_coords <- csd_r$sensor_positions_00130
-dist <- geosphere::distHaversine(egw_coords[,c('locationReferenceLatitude',
-                                               'locationReferenceLongitude')],
-                                 csd_coords[,c('locationReferenceLatitude',
-                                               'locationReferenceLongitude')])
+dist <- geosphere::distHaversine(egw_coords[,c('locationReferenceLongitude',
+                                               'locationReferenceLatitude')],
+                                 csd_coords[,c('locationReferenceLongitude',
+                                               'locationReferenceLatitude')])
 
 # Which well is closest to the discahrge location (horizontal position - HOR)?
 close_loc <- egw_coords$HOR.VER[which.min(dist)]
@@ -874,29 +879,42 @@ htmlwidgets::saveWidget(plotly::as_widget(ts),
 #### Python
 
 ```{python p-plot-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
-# Format each y-axis
+# Create figure
+wc_df_ts = wc_df.dropna(subset=['precipBulk'])
 fig = go.Figure()
+
+# Format axes and layout
 fig.update_layout(
+    margin=dict(l=90, r=110, t=40, b=60),
+    
+    xaxis=dict(
+        domain=[0, 0.9],
+        tickmode='auto',
+        nticks=14,
+        automargin=True,
+        title="Date",
+        tickfont=dict(size=16)
+    ),
+
     yaxis=dict(
         title="Discharge (L s-1)",
         tickfont=dict(size=16),
-        titlefont=dict(size=18),
         showgrid=False,
         zeroline=False
     ),
+
     yaxis2=dict(
         title="Groundwater Elevation (m)",
         tickfont=dict(size=16, color='#CC79A7'),
-        titlefont=dict(size=18, color='#CC79A7'),
         showgrid=False,
         zeroline=False,
         overlaying='y',
         side='right'
     ),
+
     yaxis3=dict(
         title="Precipitation (mm)",
         tickfont=dict(size=16, color='#0072B2'),
-        titlefont=dict(size=18, color='#0072B2'),
         showgrid=False,
         zeroline=False,
         overlaying='y',
@@ -904,50 +922,65 @@ fig.update_layout(
         anchor='free',
         position=0.98
     ),
-    xaxis=dict(
-        domain=[0, 0.9],
-        tickmode='auto',
-        nticks=14,
-        automargin=True,
-        title="Date",
-        tickfont=dict(size=16),
-        titlefont=dict(size=18)
-    ),
+
     legend=dict(
         orientation="h",
         y=-0.15,
         font=dict(size=14)
     ),
+
     updatemenus=[
         dict(
             type='buttons',
             showactive=False,
-            buttons=list([
-                dict(label='Scale Discharge\n- Linear -',
-                     method='relayout',
-                     args=[{'yaxis': dict(type='linear',
-                                           title="Discharge (L s-1)",
-                                           tickfont=dict(size=16),
-                                           titlefont=dict(size=18),
-                                           showgrid=False,
-                                           zeroline=False)}]),
-                dict(label='Scale Discharge\n- Log -',
-                     method='relayout',
-                     args=[{'yaxis': dict(type='log',
-                                           title="Discharge (L s-1) - log",
-                                           tickfont=dict(size=16),
-                                           titlefont=dict(size=18),
-                                           showgrid=False,
-                                           zeroline=False)}])
-            ])
+            buttons=[
+                dict(
+                    label='Scale Discharge\n- Linear -',
+                    method='relayout',
+                    args=[{
+                        'yaxis.type': 'linear',
+                        'yaxis.title': "Discharge (L s-1)"
+                    }]
+                ),
+                dict(
+                    label='Scale Discharge\n- Log -',
+                    method='relayout',
+                    args=[{
+                        'yaxis.type': 'log',
+                        'yaxis.title': "Discharge (L s-1) - log"
+                    }]
+                )
+            ]
         )
     ]
 )
 
-# Plot traces
-fig.add_trace(go.Scatter(x=wc_df['endDateTime'], y=wc_df['dischargeContinuous'],mode='lines', name='Discharge', line=dict(color='black')))
-fig.add_trace(go.Scatter(x=wc_df['endDateTime'], y=wc_df['groundwaterElevMean'], mode='lines', name='GW Elevation', line=dict(color='#CC79A7'), yaxis='y2'))
-fig.add_trace(go.Scatter(x=wc_df['endDateTime'], y=wc_df['precipBulk'], mode='lines', name='Precipitation', line=dict(color='#0072B2'), yaxis='y3'))
+# Add traces
+fig.add_trace(go.Scatter(
+    x=wc_df_ts['endDateTime'],
+    y=wc_df_ts['dischargeContinuous'],
+    mode='lines',
+    name='Discharge',
+    line=dict(color='black')
+))
+
+fig.add_trace(go.Scatter(
+    x=wc_df_ts['endDateTime'],
+    y=wc_df_ts['groundwaterElevMean'],
+    mode='lines',
+    name='GW Elevation',
+    line=dict(color='#CC79A7'),
+    yaxis='y2'
+))
+
+fig.add_trace(go.Scatter(
+    x=wc_df_ts['endDateTime'],
+    y=wc_df_ts['precipBulk'],
+    mode='lines',
+    name='Precipitation',
+    line=dict(color='#0072B2'),
+    yaxis='y3'
+))
 
 fig.write_html("NEON.D07.P.H.Q.WY2024.html")
 ```
@@ -988,13 +1021,18 @@ cumsum
 wc_df_subset = wc_df[~wc_df['precipBulk'].isna()].copy()
 wc_df_subset['cumulativeP'] = wc_df_subset['precipBulk'].cumsum()
 wc_df_subset['cumulativeQ'] = wc_df_subset['dischargeContinuous'].cumsum()
+x = wc_df_subset['endDateTime']
+x_numeric = x.astype(np.int64)  # nanoseconds since epoch
+lowess = sm.nonparametric.lowess
+smoothP = lowess(wc_df_subset['cumulativeP'], x_numeric, frac=0.3)
+smoothQ = lowess(wc_df_subset['cumulativeQ'] / 150, x_numeric, frac=0.3)
 fig, ax1 = plt.subplots(figsize=(10, 6))
-ax1.plot(wc_df_subset['endDateTime'], wc_df_subset['cumulativeP'], color='#0072B2', label='Cumulative Precipitation (mm)')
+ax1.plot(x, smoothP[:,1], color='#0072B2', label='Cumulative Precipitation (mm) – LOESS')
 ax1.set_xlabel('Date', fontsize=12)
 ax1.set_ylabel('Cumulative Precipitation (mm)', color='#0072B2', fontsize=12)
 ax1.tick_params(axis='y', labelcolor='#0072B2')
 ax2 = ax1.twinx()
-ax2.plot(wc_df_subset['endDateTime'], wc_df_subset['cumulativeQ']/150, color='black', label='Cumulative Discharge (L s-1)')
+ax2.plot(x, smoothQ[:,1], color='black', label='Cumulative Discharge (L s-1) – LOESS')
 ax2.set_ylabel('Cumulative Discharge (L s-1)', color='black', fontsize=12)
 ax2.tick_params(axis='y', labelcolor='black')
 fig.tight_layout()
@@ -1024,16 +1062,22 @@ corr
 ```{python p-plot-wc-3, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
 # Plot scatterplots of one variable to another to assess correlation
 # Create a continuous color scale by date to add the time-of-year dimension
+dates = pd.to_datetime(wc_df['endDateTime'])
+date_nums = mdates.date2num(dates)
 fig, ax = plt.subplots(figsize=(10, 6))
-scatter = ax.scatter(wc_df['groundwaterElevMean'], 
-                     wc_df['dischargeContinuous'], 
-                     c=pd.to_datetime(wc_df['endDateTime']),
-                     cmap='cool',
-                     alpha=0.6)
+scatter = ax.scatter(
+    wc_df['groundwaterElevMean'],
+    wc_df['dischargeContinuous'],
+    c=date_nums,
+    cmap='cool',
+    alpha=0.6
+)
 ax.set_xlabel('Groundwater Elevation (m)', fontsize=12)
 ax.set_ylabel('Discharge (L s-1)', fontsize=12)
 cbar = plt.colorbar(scatter, ax=ax)
 cbar.set_label('Date', fontsize=12)
+tick_locs = cbar.get_ticks()
+cbar.ax.set_yticklabels([mdates.num2date(t).strftime('%Y-%m-%d') for t in tick_locs])
 plt.tight_layout()
 plt.show()
 ```
