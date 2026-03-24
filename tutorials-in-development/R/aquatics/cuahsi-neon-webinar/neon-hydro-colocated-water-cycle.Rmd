@@ -158,7 +158,7 @@ tutorial, which is defined by the following criteria:
 -   Aquatic site has published discharge data and has groundwater wells
     installed.
 -   Terrestrial site has published precipitation data.
-    - *Note*: Precipitation data is available from two different data products
+    - *Note*: Precipitation data are available from two different data products
     depending on the collection method at a site. Check the following data
     products to ensure you are downloading the correct data product for a site:
         - <a href="https://data.neonscience.org/data-products/DP1.00044.001" target="_blank">Precipitation - weighing gauge (DP1.00044.001)</a>
@@ -192,7 +192,7 @@ about the differences between released and provisional data, see the
 
 For this exercise, we will download and explore one data product from the
 instrumented subsystem: <a href="https://data.neonscience.org/data-products/DP1.00045.001" target="_blank">Precipitation - tipping bucket (DP1.00045.001)</a>.
-This data product published from NEON's terrestrial sites; thus, we will use
+This data product is published from NEON's terrestrial sites; thus, we will use the 
 NEON site code 'ORNL'.
 
 ### R
@@ -260,7 +260,7 @@ files contained in this download package and why are they useful?
     in the download.
 -   `science_review_flags_00045`: Lists each science review flag (SRF) date 
     range, flag value, and justification applied to the data included in this 
-    download.
+    download.                                                                   #NH comment: justification applied to the data or the flag?
 -   `issueLog_00045`: Reports issues that may impact data quality, or changes
     to a data product that affects one or more sites.
 -   `variables_00045`: This file contains all the variables found in the data
@@ -277,8 +277,8 @@ The expanded download package for DP1.00045.001 contains two data tables
 that report precipitation time series data, each reporting data at a different
 temporal resolution:
 
--   `TIPPRE_1min`: Tipping bucket precipitation reported at a 1-min resloution
--   `TIPPRE_30min`: Tipping bucket precipitation average to a 30-min resolution
+-   `TIPPRE_1min`: Tipping bucket precipitation reported at a 1-min resolution
+-   `TIPPRE_30min`: Tipping bucket precipitation averaged to a 30-min resolution
 
 Below, we will explore the first few rows of `TIPPRE_30min`. Add to the code
 below to also view other tables included in the expanded download package.
@@ -329,10 +329,10 @@ print(ptp_py['variables_00045'])
 ## Download & Explore: Observational Data Products {.tabset}
 
 Let us now explore a hydrologic data product from the observational subsystem.
-For this exercise, we move to a differnet part of the water cycle to the surface
-water. We will download and explore hydrologic data derived from surface water 
+For this exercise, we move to the surface component of the hydrologic cycle. 
+We will download and explore hydrologic data derived from surface water 
 grab samples: <a href="https://data.neonscience.org/data-products/DP1.20206.001" target="_blank">Stable isotopes in surface water (DP1.20206.001)</a>.
-This data product is published from NEON's aquatic sites; thus, we will use NEON
+This data product is published from NEON's aquatic sites; thus, we will use the NEON
 site code 'WALK'.
 
 ### R
@@ -387,7 +387,7 @@ asi_py.keys()
 ###  {.unnumbered}
 
 When we view the content of the observational data product download, we notice
-similarities and differences to the instrumented data product. For example, both
+similarities and differences relative to the instrumented data product. For example, both
 data products include `citation`, `variables`, `issuelog`, and `readme`
 files. What do we notice that is different?
 
@@ -408,12 +408,12 @@ files. What do we notice that is different?
 
 For this sample-based observational data product, there are many more tables
 published than the previous instrumented data product we explored. That is 
-because data is collected and published at each point along the lifetime of a
+because data are collected and published at each point along the lifetime of a
 sample, from collection to analysis. Let's break down the table structure for this
-stable isotopes data product
+stable isotopes data product.
 
--   `asi_fieldSuperParent`: Field data associated withe the 'superparent' water
-    sample, which is a 4-L grab samples that, once subsamples, results in
+-   `asi_fieldSuperParent`: Field data associated with the 'superparent' water
+    sample, which is a 4-L grab samples that, once subsampled, results in
     multiple observational data products, including this stable isotopes
     data product.
 -   `asi_fieldData`: Field data associated with the stable isotopes subsample. 
@@ -475,13 +475,13 @@ NEON data products are processed at progressive levels. The precipitation and
 stable isotopes data products are Level 1 data products, which is the lowest
 level of data processing required for a NEON data product. Higher level
 hydrologic data products exist that include additional processing in the form of
-spatial and/or temporal interpolate, or the incorporation of algorithms or 
+spatial and/or temporal interpolate, or the incorporation of algorithms or   #NH comment: interpolation?
 scientific theory to derive higher-order quantities. 
 
 <a href="https://www.neonscience.org/data-samples/data-management/data-processing" target="_blank">More information on NEON data processing levels</a>.
 
 For this exercise, we will introduce three high-level hydrologic data products
-and how to download them.
+and show how to download them.
 
 ### Stream morphology maps {.tabset}
 
@@ -535,7 +535,7 @@ print(max(geo_py['geo_surveySummary']['dataFilePath'][
 
 ### Net Surface-Atmosphere Exchange (Eddy Covariance) {.tabset}
 
-the net surface-atmosphere exchange data products are available for all 
+The net surface-atmosphere exchange data products are available for all 
 terrestrial sites and are bundled together in a single Level 4 data product:
 <a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">Bundled data products - eddy covariance (DP4.00200.001)</a>.
 The data packages do not contain comma separated tabular data. Rather, the data
@@ -561,7 +561,7 @@ neonUtilities::zipsByProduct(dpID="DP4.00200.001",
 # defaults to stacking only L4 products
 sae_r <- neonUtilities::stackEddy(filepath = "filesToStack00200")
 
-# The data is stored by site name - print the header of the 'ORNL' table
+# The data are stored by site name - print the header of the 'ORNL' table
 head(sae_r$ORNL)
 ```
 
@@ -581,7 +581,7 @@ geo_py = nu.load_by_product(dpid="DP4.00200.001",
 # defaults to stacking only L4 products
 sae_r = nu.stack_eddy(filepath = "filesToStack00200")
 
-# The data is stored by site name - print the header of the 'ORNL' table
+# The data are stored by site name - print the header of the 'ORNL' table
 print(sae_r["ORNL"].head())
 ```
 
@@ -593,7 +593,7 @@ The <a href="https://data.neonscience.org/data-products/DP3.30019.001" target="_
 is a Level 3 (spatially-interpolated) data product published from the Airborne
 Observation Platform (AOP) subsystem. 
 
-Remote sensing data products are very large, but NEON has developed many tools 
+Remote sensing data products are large, but NEON has developed many tools 
 to aid users in downloading and interpreting AOP data. We will not download AOP 
 data in this exercise. Rather, follow the links below for guides on downloading 
 AOP data in R, Python, and Google Earth Engine (GEE).
@@ -1006,7 +1006,7 @@ plt.show()
 
 ###  {.unnumbered}
 
-### Further Exploration: Correlation of Grounwater Elevation & Discharge {.tabset}
+### Further Exploration: Correlation of Groundwater Elevation & Discharge {.tabset}
 
 #### R
 
