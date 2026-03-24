@@ -102,3 +102,4 @@ ENV/
 # Rope project settings
 .ropeproject
 
+/tutorials-in-development/R/aquatics/cuahsi-neon-webinar/neon_env
