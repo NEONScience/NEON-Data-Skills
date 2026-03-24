@@ -197,8 +197,6 @@ library(tidyverse)
 
 library(geosphere)
 
-## Error in library(geosphere): there is no package called 'geosphere'
-
 library(plotly)
 </code></pre>
 <h3 id="python_2">Python</h3>
@@ -467,6 +465,7 @@ asi_py = nu.load_by_product(dpid=&quot;DP1.20206.001&quot;,
                             check_size=False,
                             token=os.environ.get(&quot;NEON_PAT&quot;))
 </code></pre>
+
 <p>Let’s do the sample exploration of the download as we did for the instrumented
 data product and see what is similar and different.</p>
 <h3 id="files-associated-with-downloads_2" class="tabset">Files Associated with Downloads</h3>
@@ -479,6 +478,7 @@ names(asi_r)
 <pre><code># Get all file names in the download package
 asi_py.keys()
 </code></pre>
+
 <p>When we view the content of the observational data product download, we notice
 similarities and differences relative to the instrumented data product. For example, both
 data products include <code>citation</code>, <code>variables</code>, <code>issuelog</code>, and <code>readme</code>
@@ -538,6 +538,7 @@ print(&quot;First 5 rows of asi_externalLabH2OIsotopes&quot;)
 
 print(asi_py['asi_externalLabH2OIsotopes'].head())
 </code></pre>
+
 <h3 id="explore-variables_2" class="tabset">Explore Variables</h3>
 <h4 id="r_11">R</h4>
 <pre><code># View variables file to understand data table structure
@@ -548,6 +549,7 @@ View(asi_r$variables_20206)
 <pre><code># View variables file to understand data table structure
 print(asi_py['variables_20206'])
 </code></pre>
+
 <h2 id="download-amp-explore-higher-level-hydrologic-data-products">Download &amp; Explore: Higher-Level Hydrologic Data Products</h2>
 <p>NEON data products are processed at progressive levels. The precipitation and
 stable isotopes data products are Level 1 data products, which is the lowest
@@ -801,13 +803,13 @@ dist &lt;- geosphere::distHaversine(egw_coords[,c('locationReferenceLongitude',
                                  csd_coords[,c('locationReferenceLongitude',
                                                'locationReferenceLatitude')])
 
-## Error in loadNamespace(x): there is no package called 'geosphere'
+
 
 # Which well is closest to the discahrge location (horizontal position - HOR)?
 
 close_loc &lt;- egw_coords$HOR.VER[which.min(dist)]
 
-## Error in which.min(dist): cannot coerce type 'closure' to vector of type 'double'
+
 
 # Let's use only the data from the closest well (subset by HOR)
 
@@ -815,7 +817,7 @@ egw_df &lt;- egw_r$EOG_30_min[
   egw_r$EOG_30_min$horizontalPosition== substr(close_loc,0,3),# First 3 digits = HOR
 ]
 
-## Error in eval(expr, envir, enclos): object 'close_loc' not found
+
 
 # Merge 3 data streams into a single data frame
 
@@ -827,8 +829,6 @@ ptp_df &lt;- ptp_r$TIPPRE_30min%&gt;%
 egw_df &lt;- egw_df%&gt;%
   dplyr::select(endDateTime,groundwaterElevMean,gWatElevFinalQF)
 
-## Error in eval(expr, envir, enclos): object 'egw_df' not found
-
 csd_df &lt;- csd_r$csd_15_min%&gt;%
   dplyr::select(endDateTime,dischargeContinuous,dischargeFinalQF)
 
@@ -836,15 +836,9 @@ csd_df &lt;- csd_r$csd_15_min%&gt;%
 
 wc_df &lt;- dplyr::full_join(ptp_df,egw_df)
 
-## Error in eval(expr, envir, enclos): object 'egw_df' not found
-
 wc_df &lt;- dplyr::full_join(wc_df,csd_df)
 
-## Error in eval(expr, envir, enclos): object 'wc_df' not found
-
 wc_df &lt;- wc_df[order(wc_df$endDateTime),]
-
-## Error in eval(expr, envir, enclos): object 'wc_df' not found
 </code></pre>
 <h4 id="python_15">Python</h4>
 <pre><code># In this download, there are 3 well locations that publish elevation
@@ -859,7 +853,7 @@ csd_coords = csd_py['sensor_positions_00130']
 dist = egw_coords.apply(lambda row: geodesic((row['locationReferenceLatitude'], row['locationReferenceLongitude']), 
                                               (csd_coords.iloc[0]['locationReferenceLatitude'], csd_coords.iloc[0]['locationReferenceLongitude'])).meters, axis=1)
 
-# Which well is closest to the discahrge location (horizontal position - HOR)?
+# Which well is closest to the discharge location (horizontal position - HOR)?
 close_loc = egw_coords.loc[dist.idxmin(), 'HOR.VER']
 
 # Let's use only the data from the closest well (subset by HOR)
@@ -952,7 +946,7 @@ ts &lt;- plotly::plot_ly(data=wc_df)%&gt;%
                                          showgrid=F,
                                          zeroline=F))))))))
 
-## Error in eval(expr, envir, enclos): object 'wc_df' not found
+
 
 # Plot traces
 
@@ -968,12 +962,10 @@ ts &lt;- ts%&gt;%
                     name=&quot;Precipitation&quot;,type='scatter',mode='line',
                     line = list(color = '#0072B2'))
 
-## Error in p$x: object of type 'closure' is not subsettable
+
 
 htmlwidgets::saveWidget(plotly::as_widget(ts),
                         &quot;NEON.D07.P.H.Q.WY2024.html&quot;)
-
-## Error in x$layout: object of type 'closure' is not subsettable
 </code></pre>
 <h4 id="python_16">Python</h4>
 <pre><code># Create figure
@@ -1089,15 +1081,9 @@ fig.write_html(&quot;NEON.D07.P.H.Q.WY2024.html&quot;)
 wc_df_subset &lt;- wc_df%&gt;%
   filter(!is.na(precipBulk))
 
-## Error in eval(expr, envir, enclos): object 'wc_df' not found
-
 wc_df_subset$cumulativeP &lt;- cumsum(wc_df_subset$precipBulk)
 
-## Error in eval(expr, envir, enclos): object 'wc_df_subset' not found
-
 wc_df_subset$cumulativeQ &lt;- cumsum(wc_df_subset$dischargeContinuous)
-
-## Error in eval(expr, envir, enclos): object 'wc_df_subset' not found
 
 cumsum &lt;- wc_df_subset%&gt;%
   ggplot(aes(x = endDateTime)) +
@@ -1114,10 +1100,9 @@ cumsum &lt;- wc_df_subset%&gt;%
     axis.title.y.right = element_text(color = &quot;black&quot;, size = 14)
   )
 
-## Error in eval(expr, envir, enclos): object 'wc_df_subset' not found
-
 cumsum
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/NEON-hydrology-tutorial/rfigs/R-plot-wc-2-1.png" alt=" " /></p>
 <h4 id="python_17">Python</h4>
 <pre><code># Plot cumulative precipitation &amp; discharge together using ggplot with 2 y-axes
 wc_df_subset = wc_df[~wc_df['precipBulk'].isna()].copy()
@@ -1171,12 +1156,9 @@ corr &lt;- wc_df %&gt;%
   labs(x = &quot;Groundwater Elevation (m)&quot;, y = &quot;Discharge (L s-1)&quot;, color = &quot;Date&quot;) +
   theme_minimal()
 
-## Error in eval(expr, envir, enclos): object 'wc_df' not found
-
 corr
-
-## Error in eval(expr, envir, enclos): object 'corr' not found
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/NEON-hydrology-tutorial/rfigs/R-plot-wc-3-1.png" alt=" " /></p>
 <h4 id="python_18">Python</h4>
 <pre><code># Plot scatterplots of one variable to another to assess correlation
 # Create a continuous color scale by date to add the time-of-year dimension
