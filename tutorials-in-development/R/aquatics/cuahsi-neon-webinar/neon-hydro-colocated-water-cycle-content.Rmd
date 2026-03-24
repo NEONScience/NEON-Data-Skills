@@ -30,12 +30,47 @@ You can follow either the R or Python code throughout this tutorial.
 ```{r setup, include=FALSE}
 library(arrow)
 library(reticulate)
-reticulate::py_config()
-# reticulate::py_install(c("neonutilities"))
-# py_run_string("import neonutilities; print(neonutilities.__version__)")
-# reticulate::py_discover_config()
-# reticulate::py_module_available("neonutilities")
-knitr::opts_chunk$set(echo = TRUE)
+
+# Windows-specific Python configuration for reticulate
+if (Sys.info()["sysname"] == "Windows") {
+  # Method 1: Try explicit Python path
+  python_exe <- "C:/Users/nickerson/AppData/Local/Programs/Python/Python312/python.exe"
+  if (file.exists(python_exe)) {
+    # Configure environment to help with DLL loading
+    python_dir <- dirname(python_exe)
+    # Set environment variables that can help with DLL issues
+    Sys.setenv(
+      PYTHONHOME = python_dir,
+      PYTHONPATH = file.path(python_dir, "Lib"),
+      PATH = paste(python_dir, file.path(python_dir, "Scripts"), Sys.getenv("PATH"), sep = ";")
+    )
+    # Use the Python executable  
+    reticulate::use_python(python_exe, required = TRUE)
+    message("✓ Configured Python: ", python_exe)
+  } else {
+    # Method 2: Try py launcher
+    py_launcher <- Sys.which("py")
+    if (py_launcher != "") {
+      reticulate::use_python(py_launcher)
+      message("✓ Using py launcher: ", py_launcher)
+    } else {
+      warning("Python not found. Install Python 3.9+ and ensure it's in PATH")
+    }
+  }
+} else {
+  message("Non-Windows system - using automatic Python detection")
+}
+# Show final configuration
+message("\n=== Python Configuration ===")
+tryCatch({
+  config <- py_config()
+  message("Python: ", config$python)
+  message("Version: ", config$version)
+}, error = function(e) {
+  message("Configuration check failed: ", e$message)
+})
+
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
 ```
 
 ## Set up: Install Packages {.tabset}
@@ -116,6 +151,7 @@ import matplotlib.dates as mdates
 from geopy.distance import geodesic
 import plotly.graph_objects as go
 import statsmodels.api as sm
+import numpy as np
 ```
 
 ##  {.unnumbered}
@@ -659,7 +695,7 @@ csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
 
 ```{python p-download-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
-ptp_py <- nu.load_by_product(dpid="DP1.00045.001",
+ptp_py = nu.load_by_product(dpid="DP1.00045.001",
                              site="ORNL", # Terrestrial data product
                              startdate="2023-10",
                              enddate="2024-09",
@@ -669,7 +705,7 @@ ptp_py <- nu.load_by_product(dpid="DP1.00045.001",
                              token=os.environ.get("NEON_PAT"))
 
 # Download groundwater elevation data for a single water year
-egw_py <- nu.load_by_product(dpid="DP1.20100.001",
+egw_py = nu.load_by_product(dpid="DP1.20100.001",
                              site="WALK", # Aquatic data product
                              startdate="2023-10",
                              enddate="2024-09",
@@ -679,7 +715,7 @@ egw_py <- nu.load_by_product(dpid="DP1.20100.001",
                              token=os.environ.get("NEON_PAT"))
 
 # Download discharge data for a single water year
-csd_py <- nu.load_by_product(dpid="DP4.00130.001",
+csd_py = nu.load_by_product(dpid="DP4.00130.001",
                              site="WALK", # Aquatic data product
                              startdate="2023-10",
                              enddate="2024-09",
