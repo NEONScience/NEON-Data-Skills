@@ -365,8 +365,6 @@ print(ptp_py['variables_00045'])
 
 ###  {.unnumbered}
 
-##  {.unnumbered}
-
 ## Download & Explore: Observational Data Products {.tabset}
 
 Let us now explore a hydrologic data product from the observational subsystem.
@@ -508,8 +506,6 @@ print(asi_py['variables_20206'])
 
 ###  {.unnumbered}
 
-##  {.unnumbered}
-
 ## Download & Explore: Higher-Level Hydrologic Data Products
 
 NEON data products are processed at progressive levels. The precipitation and 
@@ -643,8 +639,6 @@ AOP data in R, Python, and Google Earth Engine (GEE).
     -   Directly links to 'Download remote sensing data: byFileAOP() and byTileAOP()' section.
 -   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-gee-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine (GEE) Tutorial Series</a>.
 -   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-data-management-releases" target="_blank">Understanding AOP Data Releases and Best Practices for AOP Data Management</a>.
-
-##
 
 ## Merge & Visualize: The Water Cycle at Co-Located Sites
 
