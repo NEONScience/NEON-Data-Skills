@@ -2,9 +2,6 @@
 title: Content for NEON hydrology discharge tutorial
 output: html_fragment
 dateCreated: '2026-03-24'
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
 ::: {#ds-objectives markdown="1"}
@@ -117,8 +114,6 @@ pip install plotly
 pip install statsmodels
 ```
 
-##  {.unnumbered}
-
 ## Additional Resources
 
 -   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Tutorial
@@ -159,8 +154,6 @@ import statsmodels.api as sm
 import numpy as np
 ```
 
-##  {.unnumbered}
-
 ## Set NEON Data Portal API Token {.tabset}
 
 It is recommended that NEON data users have a NEON Data Portal API token
@@ -179,8 +172,6 @@ Sys.setenv(NEON_PAT="YOUR_API_TOKEN_HERE")
 ```{python p-envvar, results="hide", message=FALSE, warning=FALSE}
 os.environ.setdefault('NEON_PAT',"YOUR_API_TOKEN_HERE")
 ```
-
-##  {.unnumbered}
 
 ## Download & Explore: Introduction
 
@@ -264,7 +255,6 @@ ptp_py = nu.load_by_product(dpid="DP1.00045.001",
                             token=os.environ.get("NEON_PAT"))
 ```
 
-##  {.unnumbered}
 
 Downloads from the NEON Utilities packages contain multiple files, including 
 data tables, metadata, and data product documentation. Let's explore each set of
@@ -289,7 +279,6 @@ names(ptp_r)
 ptp_py.keys()
 ```
 
-###  {.unnumbered}
 
 In this tutorial, we downloaded the `expanded` download package. What are the 
 files contained in this download package and why are they useful?
@@ -340,8 +329,6 @@ print("First 5 rows of TIPPRE_30min")
 print(ptp_py['TIPPRE_30min'].head())
 ```
 
-###  {.unnumbered}
-
 ### Explore Variables {.tabset}
 
 The `variables_00045` file provides insight into the structure of each data 
@@ -362,10 +349,6 @@ View(ptp_r$variables_00045)
 # View variables file to understand data table structure
 print(ptp_py['variables_00045'])
 ```
-
-###  {.unnumbered}
-
-##  {.unnumbered}
 
 ## Download & Explore: Observational Data Products {.tabset}
 
@@ -404,7 +387,6 @@ asi_py = nu.load_by_product(dpid="DP1.20206.001",
                             token=os.environ.get("NEON_PAT"))
 ```
 
-##  {.unnumbered}
 
 Let's do the sample exploration of the download as we did for the instrumented
 data product and see what is similar and different.
@@ -424,8 +406,6 @@ names(asi_r)
 # Get all file names in the download package
 asi_py.keys()
 ```
-
-###  {.unnumbered}
 
 When we view the content of the observational data product download, we notice
 similarities and differences relative to the instrumented data product. For example, both
@@ -488,8 +468,6 @@ print("First 5 rows of asi_externalLabH2OIsotopes")
 print(asi_py['asi_externalLabH2OIsotopes'].head())
 ```
 
-###  {.unnumbered}
-
 ### Explore Variables {.tabset}
 
 #### R
@@ -505,10 +483,6 @@ View(asi_r$variables_20206)
 # View variables file to understand data table structure
 print(asi_py['variables_20206'])
 ```
-
-###  {.unnumbered}
-
-##  {.unnumbered}
 
 ## Download & Explore: Higher-Level Hydrologic Data Products
 
@@ -572,8 +546,6 @@ print(max(geo_py['geo_surveySummary']['dataFilePath'][
 # Copy and paste the URL to your browser to retrieve the data package
 ```
 
-###  {.unnumbered}
-
 ### Net Surface-Atmosphere Exchange (Eddy Covariance) {.tabset}
 
 The net surface-atmosphere exchange data products are available for all 
@@ -625,8 +597,6 @@ nu.zips_by_product(dpid="DP4.00200.001",
 # The data is stored by site name - print the header of the 'ORNL' table
 # print(sae_py["ORNL"].head())
 ```
-
-###  {.unnumbered}
 
 ### Canopy Water Indices - Mosaic
 
@@ -730,8 +700,6 @@ csd_py = nu.load_by_product(dpid="DP4.00130.001",
                              token=os.environ.get("NEON_PAT"))
 ```
 
-###  {.unnumbered}
-
 ### Identify Relational Data & Merge {.tabset}
 
 Due to the standardized spatial and temporal designs of NEON data products, 
@@ -810,7 +778,7 @@ csd_coords = csd_py['sensor_positions_00130']
 dist = egw_coords.apply(lambda row: geodesic((row['locationReferenceLatitude'], row['locationReferenceLongitude']), 
                                               (csd_coords.iloc[0]['locationReferenceLatitude'], csd_coords.iloc[0]['locationReferenceLongitude'])).meters, axis=1)
 
-# Which well is closest to the discahrge location (horizontal position - HOR)?
+# Which well is closest to the discharge location (horizontal position - HOR)?
 close_loc = egw_coords.loc[dist.idxmin(), 'HOR.VER']
 
 # Let's use only the data from the closest well (subset by HOR)
@@ -826,8 +794,6 @@ wc_df = pd.merge(ptp_df, egw_df, on='endDateTime', how='outer')
 wc_df = pd.merge(wc_df, csd_df, on='endDateTime', how='outer')
 wc_df = wc_df.sort_values('endDateTime')
 ```
-
-###  {.unnumbered}
 
 ### Plot & Download Merged Interactive Timeseries {.tabset}
 
@@ -1026,8 +992,6 @@ fig.add_trace(go.Scatter(
 fig.write_html("NEON.D07.P.H.Q.WY2024.html")
 ```
 
-###  {.unnumbered}
-
 ### Further Exploration: Cumulative Precipitation & Discharge {.tabset}
 
 #### R
@@ -1080,8 +1044,6 @@ fig.tight_layout()
 plt.show()
 ```
 
-###  {.unnumbered}
-
 ### Further Exploration: Correlation of Groundwater Elevation & Discharge {.tabset}
 
 #### R
@@ -1123,6 +1085,5 @@ plt.tight_layout()
 plt.show()
 ```
 
-###  {.unnumbered}
 
 :::

@@ -6,7 +6,7 @@ dateCreated: 2026-03-19
 authors: Zachary L. Nickerson
 contributors: Nicolas M. Harrison
 estimatedTime: 1.25 hours
-packagesLibraries: neonUtilities, tidyverse, geosphere, plotly # Update
+packagesLibraries: neonUtilities, tidyverse, geosphere, plotly
 topics: data-download, data-manipulation, data-visualization
 subtopics: hydrology, water cycle, precipitation, groundwater, discharge
 languagesTool: R, API, Python
@@ -174,7 +174,6 @@ the first time:</p>
 <p>pip install statsmodels</p>
 </li>
 </ul>
-<h2 id="unnumbered_1">{.unnumbered}</h2>
 <h2 id="additional-resources">Additional Resources</h2>
 <ul>
 <li><a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Tutorial
@@ -220,7 +219,6 @@ import statsmodels.api as sm
 
 import numpy as np
 </code></pre>
-<h2 id="unnumbered_2">{.unnumbered}</h2>
 <h2 id="set-neon-data-portal-api-token" class="tabset">Set NEON Data Portal API Token</h2>
 <p>It is recommended that NEON data users have a NEON Data Portal API token
 set as an environment variable. See
@@ -232,7 +230,6 @@ tutorial.</a> for instructions on obtaining a NEON API token.</p>
 <h3 id="python_3">Python</h3>
 <pre><code>os.environ.setdefault('NEON_PAT',&quot;YOUR_API_TOKEN_HERE&quot;)
 </code></pre>
-<h2 id="unnumbered_3">{.unnumbered}</h2>
 <h2 id="download-amp-explore-introduction">Download &amp; Explore: Introduction</h2>
 <p>In this tutorial, we will focus on one pair of co-located NEON sites
 from Domain 07 - Appalachians &amp; Cumberland Plateau:</p>
@@ -367,7 +364,6 @@ ptp_py = nu.load_by_product(dpid=&quot;DP1.00045.001&quot;,
                             check_size=False,
                             token=os.environ.get(&quot;NEON_PAT&quot;))
 </code></pre>
-<h2 id="unnumbered_4">{.unnumbered}</h2>
 <p>Downloads from the NEON Utilities packages contain multiple files, including
 data tables, metadata, and data product documentation. Let’s explore each set of
 files in turn.</p>
@@ -383,7 +379,6 @@ names(ptp_r)
 <pre><code># Get all file names in the download package
 ptp_py.keys()
 </code></pre>
-<h3 id="unnumbered_5">{.unnumbered}</h3>
 <p>In this tutorial, we downloaded the <code>expanded</code> download package. What are the
 files contained in this download package and why are they useful?</p>
 <ul>
@@ -428,7 +423,6 @@ print(&quot;First 5 rows of TIPPRE_30min&quot;)
 
 print(ptp_py['TIPPRE_30min'].head())
 </code></pre>
-<h3 id="unnumbered_6">{.unnumbered}</h3>
 <h3 id="explore-variables_1" class="tabset">Explore Variables</h3>
 <p>The <code>variables_00045</code> file provides insight into the structure of each data
 table and associated variables included in a download package. view the
@@ -443,8 +437,6 @@ View(ptp_r$variables_00045)
 <pre><code># View variables file to understand data table structure
 print(ptp_py['variables_00045'])
 </code></pre>
-<h3 id="unnumbered_7">{.unnumbered}</h3>
-<h2 id="unnumbered_8">{.unnumbered}</h2>
 <h2 id="download-amp-explore-observational-data-products" class="tabset">Download &amp; Explore: Observational Data Products</h2>
 <p>Let us now explore a hydrologic data product from the observational subsystem.
 For this exercise, we move to the surface component of the hydrologic cycle.
@@ -475,7 +467,6 @@ asi_py = nu.load_by_product(dpid=&quot;DP1.20206.001&quot;,
                             check_size=False,
                             token=os.environ.get(&quot;NEON_PAT&quot;))
 </code></pre>
-<h2 id="unnumbered_9">{.unnumbered}</h2>
 <p>Let’s do the sample exploration of the download as we did for the instrumented
 data product and see what is similar and different.</p>
 <h3 id="files-associated-with-downloads_2" class="tabset">Files Associated with Downloads</h3>
@@ -488,7 +479,6 @@ names(asi_r)
 <pre><code># Get all file names in the download package
 asi_py.keys()
 </code></pre>
-<h3 id="unnumbered_10">{.unnumbered}</h3>
 <p>When we view the content of the observational data product download, we notice
 similarities and differences relative to the instrumented data product. For example, both
 data products include <code>citation</code>, <code>variables</code>, <code>issuelog</code>, and <code>readme</code>
@@ -548,7 +538,6 @@ print(&quot;First 5 rows of asi_externalLabH2OIsotopes&quot;)
 
 print(asi_py['asi_externalLabH2OIsotopes'].head())
 </code></pre>
-<h3 id="unnumbered_11">{.unnumbered}</h3>
 <h3 id="explore-variables_2" class="tabset">Explore Variables</h3>
 <h4 id="r_11">R</h4>
 <pre><code># View variables file to understand data table structure
@@ -559,8 +548,6 @@ View(asi_r$variables_20206)
 <pre><code># View variables file to understand data table structure
 print(asi_py['variables_20206'])
 </code></pre>
-<h3 id="unnumbered_12">{.unnumbered}</h3>
-<h2 id="unnumbered_13">{.unnumbered}</h2>
 <h2 id="download-amp-explore-higher-level-hydrologic-data-products">Download &amp; Explore: Higher-Level Hydrologic Data Products</h2>
 <p>NEON data products are processed at progressive levels. The precipitation and
 stable isotopes data products are Level 1 data products, which is the lowest
@@ -619,7 +606,6 @@ print(max(geo_py['geo_surveySummary']['dataFilePath'][
 
 # Copy and paste the URL to your browser to retrieve the data package
 </code></pre>
-<h3 id="unnumbered_14">{.unnumbered}</h3>
 <h3 id="net-surface-atmosphere-exchange-eddy-covariance" class="tabset">Net Surface-Atmosphere Exchange (Eddy Covariance)</h3>
 <p>The net surface-atmosphere exchange data products are available for all
 terrestrial sites and are bundled together in a single Level 4 data product:
@@ -671,7 +657,6 @@ nu.zips_by_product(dpid=&quot;DP4.00200.001&quot;,
 # The data is stored by site name - print the header of the 'ORNL' table
 # print(sae_py[&quot;ORNL&quot;].head())
 </code></pre>
-<h3 id="unnumbered_15">{.unnumbered}</h3>
 <h3 id="canopy-water-indices-mosaic">Canopy Water Indices - Mosaic</h3>
 <p>The <a href="https://data.neonscience.org/data-products/DP3.30019.001" target="_blank">Canopy water indices - mosaic (DP3.30019.001)</a>
 is a Level 3 (spatially-interpolated) data product published from the Airborne
@@ -771,7 +756,6 @@ csd_py = nu.load_by_product(dpid=&quot;DP4.00130.001&quot;,
                              check_size=False,
                              token=os.environ.get(&quot;NEON_PAT&quot;))
 </code></pre>
-<h3 id="unnumbered_16">{.unnumbered}</h3>
 <h3 id="identify-relational-data-amp-merge" class="tabset">Identify Relational Data &amp; Merge</h3>
 <p>Due to the standardized spatial and temporal designs of NEON data products,
 these three instrumented data products can be related and merged in a relatively
@@ -895,7 +879,6 @@ wc_df = pd.merge(wc_df, csd_df, on='endDateTime', how='outer')
 
 wc_df = wc_df.sort_values('endDateTime')
 </code></pre>
-<h3 id="unnumbered_17">{.unnumbered}</h3>
 <h3 id="plot-amp-download-merged-interactive-timeseries" class="tabset">Plot &amp; Download Merged Interactive Timeseries</h3>
 <p>Now, let’s plot the three data streams in a single plotting field. We will use
 the <code>plotly</code> package to give us the ability to interact with the plot. Check
@@ -1099,7 +1082,6 @@ fig.add_trace(go.Scatter(
 
 fig.write_html(&quot;NEON.D07.P.H.Q.WY2024.html&quot;)
 </code></pre>
-<h3 id="unnumbered_18">{.unnumbered}</h3>
 <h3 id="further-exploration-cumulative-precipitation-amp-discharge" class="tabset">Further Exploration: Cumulative Precipitation &amp; Discharge</h3>
 <h4 id="r_17">R</h4>
 <pre><code># Plot cumulative precipitation &amp; discharge together using ggplot with 2 y-axes
@@ -1176,7 +1158,6 @@ fig.tight_layout()
 
 plt.show()
 </code></pre>
-<h3 id="unnumbered_19">{.unnumbered}</h3>
 <h3 id="further-exploration-correlation-of-groundwater-elevation-amp-discharge" class="tabset">Further Exploration: Correlation of Groundwater Elevation &amp; Discharge</h3>
 <h4 id="r_18">R</h4>
 <pre><code># Plot scatterplots of one variable to another to assess correlation
@@ -1229,7 +1210,6 @@ plt.tight_layout()
 
 plt.show()
 </code></pre>
-<h3 id="unnumbered_20">{.unnumbered}</h3>
 </div>
 </div>
 </body>
