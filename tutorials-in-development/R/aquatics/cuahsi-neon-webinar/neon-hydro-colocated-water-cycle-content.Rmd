@@ -209,9 +209,9 @@ ptp_r <- neonUtilities::loadByProduct(dpID="DP1.00045.001",
 ```{python p-download-is, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 ptp_py = nu.load_by_product(dpid="DP1.00045.001",
-                            site="WALK",
-                            start_date="2023-10",
-                            end_date="2024-09",
+                            site="ORNL",
+                            startdate="2023-10",
+                            enddate="2024-09",
                             release="RELEASE-2026",
                             package="expanded",
                             check_size=False,
@@ -350,8 +350,8 @@ asi_r <- neonUtilities::loadByProduct(dpID="DP1.20206.001",
 # Download precipitation data for a single water year
 asi_py = nu.load_by_product(dpid="DP1.20206.001",
                             site="WALK",
-                            start_date="2023-10",
-                            end_date="2024-09",
+                            startdate="2023-10",
+                            enddate="2024-09",
                             release="RELEASE-2026",
                             package="expanded",
                             check_size=False,
@@ -470,7 +470,7 @@ NEON data products are processed at progressive levels. The precipitation and
 stable isotopes data products are Level 1 data products, which is the lowest
 level of data processing required for a NEON data product. Higher level
 hydrologic data products exist that include additional processing in the form of
-spatial and/or temporal interpolate, or the incorporation of algorithms or   #NH comment: interpolation?
+spatial and/or temporal interpolation, or the incorporation of algorithms or 
 scientific theory to derive higher-order quantities. 
 
 <a href="https://www.neonscience.org/data-samples/data-management/data-processing" target="_blank">More information on NEON data processing levels</a>.
@@ -510,7 +510,7 @@ print(max(geo_r$geo_surveySummary$dataFilePath[
 
 ```{python p-download-geo, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
 # Download stream morpholog data for the lifetime of a site
-geo_py = nu.load_by_product(dpid="DP4.00313.001",
+geo_py = nu.load_by_product(dpid="DP4.00131.001",
                             site="WALK",
                             release="RELEASE-2026",
                             package="basic",
@@ -564,20 +564,20 @@ head(sae_r$ORNL)
 
 ```{python p-download-sae, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
-geo_py = nu.load_by_product(dpid="DP4.00200.001",
-                            site="ORNL",
-                            start_date="2023-10",
-                            end_date="2024-09",
-                            release="RELEASE-2026",
-                            package="basic",
-                            check_size=False,
-                            token=os.environ.get("NEON_PAT"))
+nu.zips_by_product(dpid="DP4.00200.001",
+                   site="ORNL",
+                   startdate="2023-10",
+                   enddate="2024-09",
+                   release="RELEASE-2026",
+                   package="basic",
+                   check_size=False,
+                   token=os.environ.get("NEON_PAT"))
 # Stack the data download, parse to data frames and read into environment 
 # defaults to stacking only L4 products
-sae_r = nu.stack_eddy(filepath = "filesToStack00200")
+sae_py = nu.stack_eddy(filepath = "filesToStack00200")
 
-# The data are stored by site name - print the header of the 'ORNL' table
-print(sae_r["ORNL"].head())
+# The data is stored by site name - print the header of the 'ORNL' table
+print(sae_py["ORNL"].head())
 ```
 
 ###  {.unnumbered}
@@ -654,34 +654,34 @@ csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
 
 ```{python p-download-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
-ptp_r <- nu.load_by_product(dpid="DP1.00045.001",
-                            site="ORNL", # Terrestrial data product
-                            start_date="2023-10",
-                            end_date="2024-09",
-                            release="RELEASE-2026",
-                            package='basic',
-                            check_size=False,
-                            token=os.environ.get("NEON_PAT"))
+ptp_py <- nu.load_by_product(dpid="DP1.00045.001",
+                             site="ORNL", # Terrestrial data product
+                             startdate="2023-10",
+                             enddate="2024-09",
+                             release="RELEASE-2026",
+                             package='basic',
+                             check_size=False,
+                             token=os.environ.get("NEON_PAT"))
 
 # Download groundwater elevation data for a single water year
-egw_r <- nu.load_by_product(dpid="DP1.20100.001",
-                            site="WALK", # Aquatic data product
-                            start_date="2023-10",
-                            end_date="2024-09",
-                            release="RELEASE-2026",
-                            package='basic',
-                            check_size=False,
-                            token=os.environ.get("NEON_PAT"))
+egw_py <- nu.load_by_product(dpid="DP1.20100.001",
+                             site="WALK", # Aquatic data product
+                             startdate="2023-10",
+                             enddate="2024-09",
+                             release="RELEASE-2026",
+                             package='basic',
+                             check_size=False,
+                             token=os.environ.get("NEON_PAT"))
 
 # Download discharge data for a single water year
-csd_r <- nu.load_by_product(dpid="DP4.00130.001",
-                            site="WALK", # Aquatic data product
-                            start_date="2023-10",
-                            end_date="2024-09",
-                            release="RELEASE-2026",
-                            package='basic',
-                            check_size=False,
-                            token=os.environ.get("NEON_PAT"))
+csd_py <- nu.load_by_product(dpid="DP4.00130.001",
+                             site="WALK", # Aquatic data product
+                             startdate="2023-10",
+                             enddate="2024-09",
+                             release="RELEASE-2026",
+                             package='basic',
+                             check_size=False,
+                             token=os.environ.get("NEON_PAT"))
 ```
 
 ###  {.unnumbered}
