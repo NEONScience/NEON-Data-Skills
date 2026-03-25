@@ -108,7 +108,7 @@ library(plotly)
 
 ### Python
 
-```{python p-import, results="hide", message=FALSE, warning=FALSE}
+```{python p-import, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 import os
 import pandas as pd
 import neonutilities as nu
@@ -137,7 +137,7 @@ Sys.setenv(NEON_PAT="YOUR_API_TOKEN_HERE")
 
 ### Python
 
-```{python p-envvar, results="hide", message=FALSE, warning=FALSE}
+```{python p-envvar, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 os.environ.setdefault('NEON_PAT',"YOUR_API_TOKEN_HERE")
 ```
 
@@ -190,7 +190,7 @@ this tutorial, we will download data published in RELEASE-2026. To learn more
 about the differences between released and provisional data, see the 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Understanding Releases and Provisional Data</a> tutorial on the NEON website.
 
-## Download & Explore: Instrumented Data Products {.tabset}
+## Download & Explore: Instrumented (IS) Data Products {.tabset}
 
 For this exercise, we will download and explore one data product from the
 instrumented subsystem: <a href="https://data.neonscience.org/data-products/DP1.00045.001" target="_blank">Precipitation - tipping bucket (DP1.00045.001)</a>.
@@ -213,7 +213,7 @@ ptp_r <- neonUtilities::loadByProduct(dpID="DP1.00045.001",
 
 ### Python
 
-```{python p-download-is, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 ptp_py = nu.load_by_product(dpid="DP1.00045.001",
                             site="ORNL",
@@ -231,26 +231,26 @@ Downloads from the NEON Utilities packages contain multiple files, including
 data tables, metadata, and data product documentation. Let's explore each set of
 files in turn.
 
-### Files Associated with Downloads {.tabset}
+## Files Associated with IS Downloads {.tabset}
 
 The data we've downloaded comes as an object that is a named list/dictionary of 
 objects. Let's view the contents of the download package.
 
-#### R
+### R
 
 ```{r R-files-is, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 names(ptp_r)
 ```
 
-#### Python
+### Python
 
-```{python p-files-is, results="hide", message=FALSE, warning=FALSE}
+```{python p-files-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 ptp_py.keys()
 ```
 
-### {-}
+## {-}
 
 In this tutorial, we downloaded the `expanded` download package. What are the 
 files contained in this download package and why are they useful?
@@ -273,7 +273,7 @@ files contained in this download package and why are they useful?
 -   `citation_00045_RELEASE-2026`: Formatted citation and DOI for the data
     included in this download.
 
-### Explore Data Tables {.tabset}
+## Explore IS Data Tables {.tabset}
 
 The expanded download package for DP1.00045.001 contains two data tables
 that report precipitation time series data, each reporting data at a different
@@ -285,7 +285,7 @@ temporal resolution:
 Below, we will explore the first few rows of `TIPPRE_30min`. Add to the code
 below to also view other tables included in the expanded download package.
 
-#### R
+### R
 
 ```{r R-tables-is, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in the time series data
@@ -293,40 +293,40 @@ print("First 5 rows of TIPPRE_30min")
 head(ptp_r$TIPPRE_30min)
 ```
 
-#### Python
+### Python
 
-```{python p-tables-is, results="hide", message=FALSE, warning=FALSE}
+```{python p-tables-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in the time series data
 print("First 5 rows of TIPPRE_30min")
 print(ptp_py['TIPPRE_30min'].head())
 ```
 
-### {-}
+## {-}
 
-### Explore Variables {.tabset}
+## Explore IS Variables {.tabset}
 
 The `variables_00045` file provides insight into the structure of each data 
 table and associated variables included in a download package. view the 
 variables file and familiarize yourself with the different fields, data types, 
 and units used in this data product.
 
-#### R
+### R
 
 ```{r R-variables-is, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
 View(ptp_r$variables_00045)
 ```
 
-#### Python
+### Python
 
-```{python p-variables-is, results="hide", message=FALSE, warning=FALSE}
+```{python p-variables-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
 print(ptp_py['variables_00045'])
 ```
 
-### {-}
+## {-}
 
-## Download & Explore: Observational Data Products {.tabset}
+## Download & Explore: Observational (OS) Data Products {.tabset}
 
 Let us now explore a hydrologic data product from the observational subsystem.
 For this exercise, we move to the surface component of the hydrologic cycle. 
@@ -351,7 +351,7 @@ asi_r <- neonUtilities::loadByProduct(dpID="DP1.20206.001",
 
 ### Python
 
-```{python p-download-os, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 asi_py = nu.load_by_product(dpid="DP1.20206.001",
                             site="WALK",
@@ -368,23 +368,23 @@ asi_py = nu.load_by_product(dpid="DP1.20206.001",
 Let's do the sample exploration of the download as we did for the instrumented
 data product and see what is similar and different.
 
-### Files Associated with Downloads {.tabset}
+## Files Associated with OS Downloads {.tabset}
 
-#### R
+### R
 
 ```{r R-files-os, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 names(asi_r)
 ```
 
-#### Python
+### Python
 
-```{python p-files-os, results="hide", message=FALSE, warning=FALSE}
+```{python p-files-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 asi_py.keys()
 ```
 
-### {-}
+## {-}
 
 When we view the content of the observational data product download, we notice
 similarities and differences relative to the instrumented data product. For example, both
@@ -404,7 +404,7 @@ files. What do we notice that is different?
 -   There are many more data tables published in this observational data product.
     Let's explore that in the next section.
 
-### Explore Data Tables {.tabset}
+## Explore Data OS Tables {.tabset}
 
 For this sample-based observational data product, there are many more tables
 published than the previous instrumented data product we explored. That is 
@@ -431,7 +431,7 @@ For this exercise, let's just explore the first few rows of
 `asi_externalLabH2OIsotopes`. Add to the code below to also view other tables 
 included in the expanded download package.
 
-#### R
+### R
 
 ```{r R-tables-os, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in H2O stable isotope lab data
@@ -439,33 +439,33 @@ print("First 5 rows of asi_externalLabH2OIsotopes")
 head(asi_r$asi_externalLabH2OIsotopes)
 ```
 
-#### Python
+### Python
 
-```{python p-tables-os, results="hide", message=FALSE, warning=FALSE}
+```{python p-tables-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in H2O stable isotope lab data
 print("First 5 rows of asi_externalLabH2OIsotopes")
 print(asi_py['asi_externalLabH2OIsotopes'].head())
 ```
 
-### {-}
+## {-}
 
-### Explore Variables {.tabset}
+## Explore OS Variables {.tabset}
 
-#### R
+### R
 
 ```{r R-variables-os, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
 View(asi_r$variables_20206)
 ```
 
-#### Python
+### Python
 
-```{python p-variables-os, results="hide", message=FALSE, warning=FALSE}
+```{python p-variables-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
 print(asi_py['variables_20206'])
 ```
 
-### {-}
+## {-}
 
 ## Download & Explore: Higher-Level Hydrologic Data Products
 
@@ -481,7 +481,7 @@ scientific theory to derive higher-order quantities.
 For this exercise, we will introduce three high-level hydrologic data products
 and show how to download them.
 
-### Stream morphology maps {.tabset}
+## Higher-Level Hydrologic Data Products: Stream morphology maps {.tabset}
 
 The <a href="https://data.neonscience.org/data-products/DP4.00131.001" target="_blank">Stream morphology maps (DP4.00131.001)</a> 
 data product is a Level 4 aquatic data product published at all NEON stream 
@@ -489,7 +489,7 @@ sites. The data product includes many data tables with post-processed survey
 data and links to geospatial data and site maps stored in the cloud. Let's 
 download the data product and fetch the geospatial data from the cloud.
 
-#### R
+### R
 
 ```{r R-download-geo, results="hide", message=FALSE, warning=FALSE}
 # Download stream morpholog data for the lifetime of a site
@@ -509,9 +509,9 @@ print(max(geo_r$geo_surveySummary$dataFilePath[
 # Copy and paste the URL to your browser to retrieve the data package
 ```
 
-#### Python
+### Python
 
-```{python p-download-geo, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-geo, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download stream morpholog data for the lifetime of a site
 geo_py = nu.load_by_product(dpid="DP4.00131.001",
                             site="WALK",
@@ -529,9 +529,9 @@ print(max(geo_py['geo_surveySummary']['dataFilePath'][
 # Copy and paste the URL to your browser to retrieve the data package
 ```
 
-### {-}
+## {-}
 
-### Net Surface-Atmosphere Exchange (Eddy Covariance) {.tabset}
+## Higher-Level Hydrologic Data Products: Net Surface-Atmosphere Exchange (Eddy Covariance) {.tabset}
 
 The net surface-atmosphere exchange data products are available for all 
 terrestrial sites and are bundled together in a single Level 4 data product:
@@ -543,7 +543,7 @@ To download and view bundled eddy covariance data, you cannot use the standard
 R-loadByProduct() or Python-load_by_product() function. You must use a 
 combination of other functions available in the NEON Utilities package.
 
-#### R
+### R
 
 ```{r R-download-sae, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
@@ -563,9 +563,9 @@ sae_r <- neonUtilities::stackEddy(filepath = "filesToStack00200")
 head(sae_r$ORNL)
 ```
 
-#### Python
+### Python
 
-```{python p-download-sae, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-sae, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 nu.zips_by_product(dpid="DP4.00200.001",
                    site="ORNL",
@@ -577,15 +577,15 @@ nu.zips_by_product(dpid="DP4.00200.001",
                    token=os.environ.get("NEON_PAT"))
 # Stack the data download, parse to data frames and read into environment 
 # defaults to stacking only L4 products
-# sae_py = nu.stack_eddy(filepath = "filesToStack00200")
+sae_py = nu.stack_eddy(filepath = "filesToStack00200")
 
 # The data is stored by site name - print the header of the 'ORNL' table
-# print(sae_py["ORNL"].head())
+print(sae_py["ORNL"].head())
 ```
 
-### {-}
+## {-}
 
-### Canopy Water Indices - Mosaic
+## Higher-Level Hydrologic Data Products: Canopy Water Indices - Mosaic
 
 The <a href="https://data.neonscience.org/data-products/DP3.30019.001" target="_blank">Canopy water indices - mosaic (DP3.30019.001)</a>
 is a Level 3 (spatially-interpolated) data product published from the Airborne
@@ -613,11 +613,11 @@ from a different section of the water cycle at NEON co-located sites:
 We will download each data product, identify how each product can be related,
 then merge the three data streams into a single data frame.
 
-### Download Data Products {.tabset}
+## Download Data Products {.tabset}
 
 This time, we will download the basic download packages.
 
-#### R
+### R
 
 ```{r R-download-wc, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
@@ -651,43 +651,43 @@ csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                       token=Sys.getenv("NEON_PAT"))
 ```
 
-#### Python
+### Python
 
-```{python p-download-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-wc, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 ptp_py = nu.load_by_product(dpid="DP1.00045.001",
-                             site="ORNL", # Terrestrial data product
-                             startdate="2023-10",
-                             enddate="2024-09",
-                             release="RELEASE-2026",
-                             package='basic',
-                             check_size=False,
-                             token=os.environ.get("NEON_PAT"))
+                            site="ORNL", # Terrestrial data product
+                            startdate="2023-10",
+                            enddate="2024-09",
+                            release="RELEASE-2026",
+                            package='basic',
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
 
 # Download groundwater elevation data for a single water year
 egw_py = nu.load_by_product(dpid="DP1.20100.001",
-                             site="WALK", # Aquatic data product
-                             startdate="2023-10",
-                             enddate="2024-09",
-                             release="RELEASE-2026",
-                             package='basic',
-                             check_size=False,
-                             token=os.environ.get("NEON_PAT"))
+                            site="WALK", # Aquatic data product
+                            startdate="2023-10",
+                            enddate="2024-09",
+                            release="RELEASE-2026",
+                            package='basic',
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
 
 # Download discharge data for a single water year
 csd_py = nu.load_by_product(dpid="DP4.00130.001",
-                             site="WALK", # Aquatic data product
-                             startdate="2023-10",
-                             enddate="2024-09",
-                             release="RELEASE-2026",
-                             package='basic',
-                             check_size=False,
-                             token=os.environ.get("NEON_PAT"))
+                            site="WALK", # Aquatic data product
+                            startdate="2023-10",
+                            enddate="2024-09",
+                            release="RELEASE-2026",
+                            package='basic',
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
 ```
 
-### {-}
+## {-}
 
-### Identify Relational Data & Merge {.tabset}
+## Identify Relational Data & Merge {.tabset}
 
 Due to the standardized spatial and temporal designs of NEON data products, 
 these three instrumented data products can be related and merged in a relatively
@@ -716,7 +716,7 @@ easy fashion.
     comparing sensor location coordinates in the `sensor_positions` file
     included in each data download.
 
-#### R
+### R
 
 ```{r R-merge-wc, results="hide", message=FALSE, warning=FALSE}
 # In this download, there are 3 well locations that publish elevation
@@ -753,9 +753,9 @@ wc_df <- dplyr::full_join(wc_df,csd_df)
 wc_df <- wc_df[order(wc_df$endDateTime),]
 ```
 
-#### Python
+### Python
 
-```{python p-merge-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-merge-wc, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # In this download, there are 3 well locations that publish elevation
 # There is only 1 location for discharge
 # Use `geopy` to identify which well location is closest to discharge
@@ -782,15 +782,15 @@ wc_df = pd.merge(wc_df, csd_df, on='endDateTime', how='outer')
 wc_df = wc_df.sort_values('endDateTime')
 ```
 
-### {-}
+## {-}
 
-### Plot & Download Merged Interactive Timeseries {.tabset}
+## Plot & Download Merged Interactive Timeseries {.tabset}
 
 Now, let's plot the three data streams in a single plotting field. We will use 
 the `plotly` package to give us the ability to interact with the plot. Check 
 your current working directory for the HTML file containing the plot.
 
-#### R
+### R
 
 ```{r R-plot-wc, results="hide", message=FALSE, warning=FALSE}
 # Format each y-axis
@@ -872,9 +872,9 @@ htmlwidgets::saveWidget(plotly::as_widget(ts),
                         "NEON.D07.P.H.Q.WY2024.html")
 ```
 
-#### Python
+### Python
 
-```{python p-plot-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-wc, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Create figure
 wc_df_ts = wc_df.dropna(subset=['precipBulk'])
 fig = go.Figure()
@@ -981,11 +981,11 @@ fig.add_trace(go.Scatter(
 fig.write_html("NEON.D07.P.H.Q.WY2024.html")
 ```
 
-### {-}
+## {-}
 
-### Further Exploration: Cumulative Precipitation & Discharge {.tabset}
+## Further Exploration: Cumulative Precipitation & Discharge {.tabset}
 
-#### R
+### R
 
 ```{r R-plot-wc-2, results="hide", message=FALSE, warning=FALSE}
 # Plot cumulative precipitation & discharge together using ggplot with 2 y-axes
@@ -1010,9 +1010,9 @@ cumsum <- wc_df_subset%>%
 cumsum
 ```
 
-#### Python
+### Python
 
-```{python p-plot-wc-2, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-wc-2, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Plot cumulative precipitation & discharge together using ggplot with 2 y-axes
 wc_df_subset = wc_df[~wc_df['precipBulk'].isna()].copy()
 wc_df_subset['cumulativeP'] = wc_df_subset['precipBulk'].cumsum()
@@ -1035,11 +1035,11 @@ fig.tight_layout()
 plt.show()
 ```
 
-### {-}
+## {-}
 
-### Further Exploration: Correlation of Groundwater Elevation & Discharge {.tabset}
+## Further Exploration: Correlation of Groundwater Elevation & Discharge {.tabset}
 
-#### R
+### R
 
 ```{r R-plot-wc-3, results="hide", message=FALSE, warning=FALSE}
 # Plot scatterplots of one variable to another to assess correlation
@@ -1053,9 +1053,9 @@ corr <- wc_df %>%
 corr
 ```
 
-#### Python
+### Python
 
-```{python p-plot-wc-3, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-wc-3, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Plot scatterplots of one variable to another to assess correlation
 # Create a continuous color scale by date to add the time-of-year dimension
 dates = pd.to_datetime(wc_df['endDateTime'])
@@ -1078,4 +1078,4 @@ plt.tight_layout()
 plt.show()
 ```
 
-### {-}
+## {-}
