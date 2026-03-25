@@ -99,6 +99,9 @@ pip install plotly
 pip install statsmodels</code></pre>
 </div>
 </div>
+<div id="section-1" class="section level2 unnumbered">
+<h2 class="unnumbered"></h2>
+</div>
 <div id="additional-resources" class="section level2">
 <h2>Additional Resources</h2>
 <ul>
