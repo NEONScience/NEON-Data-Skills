@@ -69,6 +69,8 @@ pip install plotly
 pip install statsmodels
 ```
 
+## {-}
+
 ## Additional Resources
 
 -   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Tutorial
@@ -109,6 +111,8 @@ import statsmodels.api as sm
 import numpy as np
 ```
 
+## {-}
+
 ## Set NEON Data Portal API Token {.tabset}
 
 It is recommended that NEON data users have a NEON Data Portal API token
@@ -127,6 +131,8 @@ Sys.setenv(NEON_PAT="YOUR_API_TOKEN_HERE")
 ```{python p-envvar, results="hide", message=FALSE, warning=FALSE}
 os.environ.setdefault('NEON_PAT',"YOUR_API_TOKEN_HERE")
 ```
+
+## {-}
 
 ## Download & Explore: Introduction
 
