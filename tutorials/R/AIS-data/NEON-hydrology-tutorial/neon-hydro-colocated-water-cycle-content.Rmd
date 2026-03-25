@@ -30,6 +30,15 @@ You can follow either the R or Python code throughout this tutorial.
 
 </div>
 
+
+```{r setup, include=FALSE}
+library(arrow)
+library(reticulate)
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
 ## Set up: Install Packages {.tabset}
 
 Packages only need to be installed once, you can skip this step after
