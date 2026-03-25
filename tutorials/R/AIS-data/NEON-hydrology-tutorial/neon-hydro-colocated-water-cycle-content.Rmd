@@ -7,48 +7,6 @@ dateCreated: '2026-03-24'
 ```{r setup, include=FALSE}
 library(arrow)
 library(reticulate)
-
-if(dir.exists("C:/Users/nickerson/")){
-  # Windows-specific Python configuration for reticulate
-  if (Sys.info()["sysname"] == "Windows") {
-    # Method 1: Try explicit Python path
-    python_exe <- "C:/Users/nickerson/AppData/Local/Programs/Python/Python312/python.exe"
-    if (file.exists(python_exe)) {
-      # Configure environment to help with DLL loading
-      python_dir <- dirname(python_exe)
-      # Set environment variables that can help with DLL issues
-      Sys.setenv(
-        PYTHONHOME = python_dir,
-        PYTHONPATH = file.path(python_dir, "Lib"),
-        PATH = paste(python_dir, file.path(python_dir, "Scripts"), Sys.getenv("PATH"), sep = ";")
-      )
-      # Use the Python executable  
-      reticulate::use_python(python_exe, required = TRUE)
-      message("✓ Configured Python: ", python_exe)
-    } else {
-      # Method 2: Try py launcher
-      py_launcher <- Sys.which("py")
-      if (py_launcher != "") {
-        reticulate::use_python(py_launcher)
-        message("✓ Using py launcher: ", py_launcher)
-      } else {
-        warning("Python not found. Install Python 3.9+ and ensure it's in PATH")
-      }
-    }
-  } else {
-    message("Non-Windows system - using automatic Python detection")
-  }
-  # Show final configuration
-  message("\n=== Python Configuration ===")
-  tryCatch({
-    config <- py_config()
-    message("Python: ", config$python)
-    message("Version: ", config$version)
-  }, error = function(e) {
-    message("Configuration check failed: ", e$message)
-  })
-}
-
 reticulate::py_config()
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -150,7 +108,7 @@ library(plotly)
 
 ### Python
 
-```{python p-import, results="hide", message=FALSE, warning=FALSE}
+```{python p-import, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 import os
 import pandas as pd
 import neonutilities as nu
@@ -179,7 +137,7 @@ Sys.setenv(NEON_PAT="YOUR_API_TOKEN_HERE")
 
 ### Python
 
-```{python p-envvar, results="hide", message=FALSE, warning=FALSE}
+```{python p-envvar, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 os.environ.setdefault('NEON_PAT',"YOUR_API_TOKEN_HERE")
 ```
 
@@ -255,7 +213,7 @@ ptp_r <- neonUtilities::loadByProduct(dpID="DP1.00045.001",
 
 ### Python
 
-```{python p-download-is, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 ptp_py = nu.load_by_product(dpid="DP1.00045.001",
                             site="ORNL",
@@ -287,7 +245,7 @@ names(ptp_r)
 
 ### Python
 
-```{python p-files-is, results="hide", message=FALSE, warning=FALSE}
+```{python p-files-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 ptp_py.keys()
 ```
@@ -337,7 +295,7 @@ head(ptp_r$TIPPRE_30min)
 
 ### Python
 
-```{python p-tables-is, results="hide", message=FALSE, warning=FALSE}
+```{python p-tables-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in the time series data
 print("First 5 rows of TIPPRE_30min")
 print(ptp_py['TIPPRE_30min'].head())
@@ -361,7 +319,7 @@ View(ptp_r$variables_00045)
 
 ### Python
 
-```{python p-variables-is, results="hide", message=FALSE, warning=FALSE}
+```{python p-variables-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
 print(ptp_py['variables_00045'])
 ```
@@ -393,7 +351,7 @@ asi_r <- neonUtilities::loadByProduct(dpID="DP1.20206.001",
 
 ### Python
 
-```{python p-download-os, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 asi_py = nu.load_by_product(dpid="DP1.20206.001",
                             site="WALK",
@@ -421,7 +379,7 @@ names(asi_r)
 
 ### Python
 
-```{python p-files-os, results="hide", message=FALSE, warning=FALSE}
+```{python p-files-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Get all file names in the download package
 asi_py.keys()
 ```
@@ -483,7 +441,7 @@ head(asi_r$asi_externalLabH2OIsotopes)
 
 ### Python
 
-```{python p-tables-os, results="hide", message=FALSE, warning=FALSE}
+```{python p-tables-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Print the first 5 records in H2O stable isotope lab data
 print("First 5 rows of asi_externalLabH2OIsotopes")
 print(asi_py['asi_externalLabH2OIsotopes'].head())
@@ -502,7 +460,7 @@ View(asi_r$variables_20206)
 
 ### Python
 
-```{python p-variables-os, results="hide", message=FALSE, warning=FALSE}
+```{python p-variables-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # View variables file to understand data table structure
 print(asi_py['variables_20206'])
 ```
@@ -553,7 +511,7 @@ print(max(geo_r$geo_surveySummary$dataFilePath[
 
 ### Python
 
-```{python p-download-geo, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-geo, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download stream morpholog data for the lifetime of a site
 geo_py = nu.load_by_product(dpid="DP4.00131.001",
                             site="WALK",
@@ -607,7 +565,7 @@ head(sae_r$ORNL)
 
 ### Python
 
-```{python p-download-sae, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-sae, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 nu.zips_by_product(dpid="DP4.00200.001",
                    site="ORNL",
@@ -619,10 +577,10 @@ nu.zips_by_product(dpid="DP4.00200.001",
                    token=os.environ.get("NEON_PAT"))
 # Stack the data download, parse to data frames and read into environment 
 # defaults to stacking only L4 products
-# sae_py = nu.stack_eddy(filepath = "filesToStack00200")
+sae_py = nu.stack_eddy(filepath = "filesToStack00200")
 
 # The data is stored by site name - print the header of the 'ORNL' table
-# print(sae_py["ORNL"].head())
+print(sae_py["ORNL"].head())
 ```
 
 ## {-}
@@ -695,36 +653,36 @@ csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
 
 ### Python
 
-```{python p-download-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-download-wc, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Download precipitation data for a single water year
 ptp_py = nu.load_by_product(dpid="DP1.00045.001",
-                             site="ORNL", # Terrestrial data product
-                             startdate="2023-10",
-                             enddate="2024-09",
-                             release="RELEASE-2026",
-                             package='basic',
-                             check_size=False,
-                             token=os.environ.get("NEON_PAT"))
+                            site="ORNL", # Terrestrial data product
+                            startdate="2023-10",
+                            enddate="2024-09",
+                            release="RELEASE-2026",
+                            package='basic',
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
 
 # Download groundwater elevation data for a single water year
 egw_py = nu.load_by_product(dpid="DP1.20100.001",
-                             site="WALK", # Aquatic data product
-                             startdate="2023-10",
-                             enddate="2024-09",
-                             release="RELEASE-2026",
-                             package='basic',
-                             check_size=False,
-                             token=os.environ.get("NEON_PAT"))
+                            site="WALK", # Aquatic data product
+                            startdate="2023-10",
+                            enddate="2024-09",
+                            release="RELEASE-2026",
+                            package='basic',
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
 
 # Download discharge data for a single water year
 csd_py = nu.load_by_product(dpid="DP4.00130.001",
-                             site="WALK", # Aquatic data product
-                             startdate="2023-10",
-                             enddate="2024-09",
-                             release="RELEASE-2026",
-                             package='basic',
-                             check_size=False,
-                             token=os.environ.get("NEON_PAT"))
+                            site="WALK", # Aquatic data product
+                            startdate="2023-10",
+                            enddate="2024-09",
+                            release="RELEASE-2026",
+                            package='basic',
+                            check_size=False,
+                            token=os.environ.get("NEON_PAT"))
 ```
 
 ## {-}
@@ -797,7 +755,7 @@ wc_df <- wc_df[order(wc_df$endDateTime),]
 
 ### Python
 
-```{python p-merge-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-merge-wc, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # In this download, there are 3 well locations that publish elevation
 # There is only 1 location for discharge
 # Use `geopy` to identify which well location is closest to discharge
@@ -916,7 +874,7 @@ htmlwidgets::saveWidget(plotly::as_widget(ts),
 
 ### Python
 
-```{python p-plot-wc, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-wc, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Create figure
 wc_df_ts = wc_df.dropna(subset=['precipBulk'])
 fig = go.Figure()
@@ -1054,7 +1012,7 @@ cumsum
 
 ### Python
 
-```{python p-plot-wc-2, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-wc-2, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Plot cumulative precipitation & discharge together using ggplot with 2 y-axes
 wc_df_subset = wc_df[~wc_df['precipBulk'].isna()].copy()
 wc_df_subset['cumulativeP'] = wc_df_subset['precipBulk'].cumsum()
@@ -1097,7 +1055,7 @@ corr
 
 ### Python
 
-```{python p-plot-wc-3, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python p-plot-wc-3, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
 # Plot scatterplots of one variable to another to assess correlation
 # Create a continuous color scale by date to add the time-of-year dimension
 dates = pd.to_datetime(wc_df['endDateTime'])
