@@ -589,8 +589,8 @@ print(max(geo_r$geo_surveySummary$dataFilePath[
 ]))
 
 # Copy and paste the URL to your browser to retrieve the data package
-
 </code></pre>
+
 </div>
 <div id="python-11" class="section level3">
 <h3>Python</h3>
@@ -609,7 +609,6 @@ print(max(geo_py[&#39;geo_surveySummary&#39;][&#39;dataFilePath&#39;][
 ]))
 
 # Copy and paste the URL to your browser to retrieve the data package
-
 </code></pre>
 </div>
 </div>
