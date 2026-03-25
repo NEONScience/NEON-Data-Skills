@@ -4,6 +4,9 @@ output: html_fragment
 dateCreated: '2026-03-24'
 ---
 
+This tutorial explores hydrologic data products published by NEON across observational, instrumented, and remote sensing subsystems. It focuses on downloading and exploring various NEON hydrologic data products. It also dives deeper into NEON hydrology data, using co-located terrestrial-aquatic sites to examine the water cycle at multiple levels. The code for this tutorial is available in both Python and R environments.
+ 
+
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives
@@ -207,6 +210,7 @@ ptp_py = nu.load_by_product(dpid="DP1.00045.001",
                             token=os.environ.get("NEON_PAT"))
 ```
 
+## {-}
 
 Downloads from the NEON Utilities packages contain multiple files, including 
 data tables, metadata, and data product documentation. Let's explore each set of
@@ -231,6 +235,7 @@ names(ptp_r)
 ptp_py.keys()
 ```
 
+### {-}
 
 In this tutorial, we downloaded the `expanded` download package. What are the 
 files contained in this download package and why are they useful?
@@ -281,6 +286,8 @@ print("First 5 rows of TIPPRE_30min")
 print(ptp_py['TIPPRE_30min'].head())
 ```
 
+### {-}
+
 ### Explore Variables {.tabset}
 
 The `variables_00045` file provides insight into the structure of each data 
@@ -301,6 +308,8 @@ View(ptp_r$variables_00045)
 # View variables file to understand data table structure
 print(ptp_py['variables_00045'])
 ```
+
+### {-}
 
 ## Download & Explore: Observational Data Products {.tabset}
 
@@ -339,6 +348,7 @@ asi_py = nu.load_by_product(dpid="DP1.20206.001",
                             token=os.environ.get("NEON_PAT"))
 ```
 
+## {-}
 
 Let's do the sample exploration of the download as we did for the instrumented
 data product and see what is similar and different.
@@ -358,6 +368,8 @@ names(asi_r)
 # Get all file names in the download package
 asi_py.keys()
 ```
+
+### {-}
 
 When we view the content of the observational data product download, we notice
 similarities and differences relative to the instrumented data product. For example, both
@@ -420,6 +432,8 @@ print("First 5 rows of asi_externalLabH2OIsotopes")
 print(asi_py['asi_externalLabH2OIsotopes'].head())
 ```
 
+### {-}
+
 ### Explore Variables {.tabset}
 
 #### R
@@ -435,6 +449,8 @@ View(asi_r$variables_20206)
 # View variables file to understand data table structure
 print(asi_py['variables_20206'])
 ```
+
+### {-}
 
 ## Download & Explore: Higher-Level Hydrologic Data Products
 
@@ -498,6 +514,8 @@ print(max(geo_py['geo_surveySummary']['dataFilePath'][
 # Copy and paste the URL to your browser to retrieve the data package
 ```
 
+### {-}
+
 ### Net Surface-Atmosphere Exchange (Eddy Covariance) {.tabset}
 
 The net surface-atmosphere exchange data products are available for all 
@@ -550,6 +568,8 @@ nu.zips_by_product(dpid="DP4.00200.001",
 # print(sae_py["ORNL"].head())
 ```
 
+### {-}
+
 ### Canopy Water Indices - Mosaic
 
 The <a href="https://data.neonscience.org/data-products/DP3.30019.001" target="_blank">Canopy water indices - mosaic (DP3.30019.001)</a>
@@ -565,8 +585,6 @@ AOP data in R, Python, and Google Earth Engine (GEE).
     -   Directly links to 'Download remote sensing data: byFileAOP() and byTileAOP()' section.
 -   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-gee-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine (GEE) Tutorial Series</a>.
 -   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-data-management-releases" target="_blank">Understanding AOP Data Releases and Best Practices for AOP Data Management</a>.
-
-##
 
 ## Merge & Visualize: The Water Cycle at Co-Located Sites
 
@@ -651,6 +669,8 @@ csd_py = nu.load_by_product(dpid="DP4.00130.001",
                              check_size=False,
                              token=os.environ.get("NEON_PAT"))
 ```
+
+### {-}
 
 ### Identify Relational Data & Merge {.tabset}
 
@@ -746,6 +766,8 @@ wc_df = pd.merge(ptp_df, egw_df, on='endDateTime', how='outer')
 wc_df = pd.merge(wc_df, csd_df, on='endDateTime', how='outer')
 wc_df = wc_df.sort_values('endDateTime')
 ```
+
+### {-}
 
 ### Plot & Download Merged Interactive Timeseries {.tabset}
 
@@ -944,6 +966,8 @@ fig.add_trace(go.Scatter(
 fig.write_html("NEON.D07.P.H.Q.WY2024.html")
 ```
 
+### {-}
+
 ### Further Exploration: Cumulative Precipitation & Discharge {.tabset}
 
 #### R
@@ -996,6 +1020,8 @@ fig.tight_layout()
 plt.show()
 ```
 
+### {-}
+
 ### Further Exploration: Correlation of Groundwater Elevation & Discharge {.tabset}
 
 #### R
@@ -1037,5 +1063,4 @@ plt.tight_layout()
 plt.show()
 ```
 
-
-:::
+### {-}
