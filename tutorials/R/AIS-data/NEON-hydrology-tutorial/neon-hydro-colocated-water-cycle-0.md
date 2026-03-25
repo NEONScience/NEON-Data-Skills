@@ -138,6 +138,9 @@ import statsmodels.api as sm
 import numpy as np</code></pre>
 </div>
 </div>
+<div id="section-1" class="section level2 unnumbered">
+<h2 class="unnumbered"></h2>
+</div>
 <div id="set-neon-data-portal-api-token" class="section level2 tabset">
 <h2 class="tabset">Set NEON Data Portal API Token</h2>
 <p>It is recommended that NEON data users have a NEON Data Portal API
