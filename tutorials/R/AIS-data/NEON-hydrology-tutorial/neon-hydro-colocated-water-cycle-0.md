@@ -806,7 +806,7 @@ dist &lt;- geosphere::distHaversine(egw_coords[,c(&#39;locationReferenceLongitud
                                  csd_coords[,c(&#39;locationReferenceLongitude&#39;,
                                                &#39;locationReferenceLatitude&#39;)])
 
-# Which well is closest to the discahrge location (horizontal position - HOR)?
+# Which well is closest to the discharge location (horizontal position - HOR)?
 close_loc &lt;- egw_coords$HOR.VER[which.min(dist)]
 
 # Let&#39;s use only the data from the closest well (subset by HOR)
