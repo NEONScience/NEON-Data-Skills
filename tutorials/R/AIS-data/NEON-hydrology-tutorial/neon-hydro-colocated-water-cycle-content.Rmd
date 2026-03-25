@@ -4,8 +4,15 @@ output: html_fragment
 dateCreated: '2026-03-24'
 ---
 
+```{r setup, include=FALSE}
+library(arrow)
+library(reticulate)
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
 This tutorial explores hydrologic data products published by NEON across observational, instrumented, and remote sensing subsystems. It focuses on downloading and exploring various NEON hydrologic data products. It also dives deeper into NEON hydrology data, using co-located terrestrial-aquatic sites to examine the water cycle at multiple levels. The code for this tutorial is available in both Python and R environments.
- 
 
 <div id="ds-objectives" markdown="1">
 
@@ -30,13 +37,6 @@ You can follow either the R or Python code throughout this tutorial.
 
 </div>
 
-
-```{r setup, include=FALSE}
-library(arrow)
-library(reticulate)
-reticulate::py_config()
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 
 ## Set up: Install Packages {.tabset}
