@@ -12,7 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-This tutorial explores hydrologic data products published by NEON across observational, instrumented, and remote sensing subsystems. It focuses on downloading and exploring various NEON hydrologic data products. It also dives deeper into NEON hydrology data, using co-located terrestrial-aquatic sites to examine the water cycle at multiple levels. The code for this tutorial is available in both Python and R environments.
+This tutorial explores hydrologic data products published by NEON across
+observational, instrumented, and remote sensing subsystems. It focuses on
+downloading and exploring various NEON hydrologic data products. It also dives
+deeper into NEON hydrology data, using co-located terrestrial-aquatic sites to
+examine the water cycle at multiple levels. The code for this tutorial is
+available in both Python and R environments.
 
 <div id="ds-objectives" markdown="1">
 
@@ -261,8 +266,8 @@ files contained in this download package and why are they useful?
 -   `sensor_positions_00045`: Reports the geolocation of each sensor included
     in the download.
 -   `science_review_flags_00045`: Lists each science review flag (SRF) date 
-    range, flag value, and justification applied to the data included in this 
-    download.                                                                   #NH comment: justification applied to the data or the flag?
+    range, flag value, and justification applied to the flag included in this 
+    download.
 -   `issueLog_00045`: Reports issues that may impact data quality, or changes
     to a data product that affects one or more sites.
 -   `variables_00045`: This file contains all the variables found in the data
@@ -730,7 +735,7 @@ dist <- geosphere::distHaversine(egw_coords[,c('locationReferenceLongitude',
 close_loc <- egw_coords$HOR.VER[which.min(dist)]
 # Let's use only the data from the closest well (subset by HOR)
 egw_df <- egw_r$EOG_30_min[
-  egw_r$EOG_30_min$horizontalPosition== substr(close_loc,0,3),# First 3 digits = HOR
+  egw_r$EOG_30_min$horizontalPosition== substr(close_loc,0,3),# 1st 3 digits=HOR
 ]
 # Merge 3 data streams into a single data frame
 # Keep the relevant data needed to plot timeseries and examine relationships
@@ -998,12 +1003,14 @@ lowess = sm.nonparametric.lowess
 smoothP = lowess(wc_df_subset['cumulativeP'], x_numeric, frac=0.3)
 smoothQ = lowess(wc_df_subset['cumulativeQ'] / 150, x_numeric, frac=0.3)
 fig, ax1 = plt.subplots(figsize=(10, 6))
-ax1.plot(x, smoothP[:,1], color='#0072B2', label='Cumulative Precipitation (mm) – LOESS')
+ax1.plot(x, smoothP[:,1], color='#0072B2', 
+         label='Cumulative Precipitation (mm) – LOESS')
 ax1.set_xlabel('Date', fontsize=12)
 ax1.set_ylabel('Cumulative Precipitation (mm)', color='#0072B2', fontsize=12)
 ax1.tick_params(axis='y', labelcolor='#0072B2')
 ax2 = ax1.twinx()
-ax2.plot(x, smoothQ[:,1], color='black', label='Cumulative Discharge (L s-1) – LOESS')
+ax2.plot(x, smoothQ[:,1], color='black',
+         label='Cumulative Discharge (L s-1) – LOESS')
 ax2.set_ylabel('Cumulative Discharge (L s-1)', color='black', fontsize=12)
 ax2.tick_params(axis='y', labelcolor='black')
 fig.tight_layout()
@@ -1024,7 +1031,8 @@ corr <- wc_df %>%
   ggplot(aes(x = groundwaterElevMean, y = dischargeContinuous, color = as.integer(endDateTime))) +
   geom_point(aes(color = as.Date(endDateTime))) +
   scale_color_date(low="blue",high="darkorange") +
-  labs(x = "Groundwater Elevation (m)", y = "Discharge (L s-1)", color = "Date") +
+  labs(x = "Groundwater Elevation (m)", y = "Discharge (L s-1)",
+       color = "Date") +
   theme_minimal()
 corr
 
