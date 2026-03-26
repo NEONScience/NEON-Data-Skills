@@ -12,7 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-This tutorial explores hydrologic data products published by NEON across observational, instrumented, and remote sensing subsystems. It focuses on downloading and exploring various NEON hydrologic data products. It also dives deeper into NEON hydrology data, using co-located terrestrial-aquatic sites to examine the water cycle at multiple levels. The code for this tutorial is available in both Python and R environments.
+This tutorial explores hydrologic data products published by NEON across
+observational, instrumented, and remote sensing subsystems. It focuses on
+downloading and exploring various NEON hydrologic data products. It also dives
+deeper into NEON hydrology data, using co-located terrestrial-aquatic sites to
+examine the water cycle at multiple levels. The code for this tutorial is
+available in both Python and R environments.
 
 <div id="ds-objectives" markdown="1">
 
@@ -261,8 +266,8 @@ files contained in this download package and why are they useful?
 -   `sensor_positions_00045`: Reports the geolocation of each sensor included
     in the download.
 -   `science_review_flags_00045`: Lists each science review flag (SRF) date 
-    range, flag value, and justification applied to the data included in this 
-    download.                                                                   #NH comment: justification applied to the data or the flag?
+    range, flag value, and justification applied to the flag included in this 
+    download.
 -   `issueLog_00045`: Reports issues that may impact data quality, or changes
     to a data product that affects one or more sites.
 -   `variables_00045`: This file contains all the variables found in the data
@@ -492,41 +497,39 @@ download the data product and fetch the geospatial data from the cloud.
 ### R
 
 ```{r R-download-geo, results="hide", message=FALSE, warning=FALSE}
-# Download stream morpholog data for the lifetime of a site
+# Download stream morphology data for the lifetime of a site
+# URL to download geospatial data from the cloud is stored in geo_surveySummary
 geo_r <- neonUtilities::loadByProduct(dpID="DP4.00131.001",
                                       site="WALK",
                                       release="RELEASE-2026",
                                       package='basic',
                                       check.size = F,
                                       token=Sys.getenv("NEON_PAT"))
-
-# URL to download geospatial data from the cloud is stored in geo_surveySummary
 # Get the URL for the most recent geomorphology survey
+# Copy and paste the URL to your browser to retrieve the data package
 print(max(geo_r$geo_surveySummary$dataFilePath[
   geo_r$geo_surveySummary$surveyBoutTypeID=="geomorphology"
 ]))
 
-# Copy and paste the URL to your browser to retrieve the data package
 ```
 
 ### Python
 
 ```{python p-download-geo, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
-# Download stream morpholog data for the lifetime of a site
+# Download stream morphology data for the lifetime of a site
+# URL to download geospatial data from the cloud is stored in geo_surveySummary
 geo_py = nu.load_by_product(dpid="DP4.00131.001",
                             site="WALK",
                             release="RELEASE-2026",
                             package="basic",
                             check_size=False,
                             token=os.environ.get("NEON_PAT"))
-
-# URL to download geospatial data from the cloud is stored in geo_surveySummary
 # Get the URL for the most recent geomorphology survey
+# Copy and paste the URL to your browser to retrieve the data package
 print(max(geo_py['geo_surveySummary']['dataFilePath'][
     geo_py['geo_surveySummary']['surveyBoutTypeID']=="geomorphology"
 ]))
 
-# Copy and paste the URL to your browser to retrieve the data package
 ```
 
 ## {-}
@@ -558,9 +561,9 @@ neonUtilities::zipsByProduct(dpID="DP4.00200.001",
 # Stack the data download, parse to data frames and read into environment 
 # defaults to stacking only L4 products
 sae_r <- neonUtilities::stackEddy(filepath = "filesToStack00200")
-
 # The data are stored by site name - print the header of the 'ORNL' table
 head(sae_r$ORNL)
+
 ```
 
 ### Python
@@ -578,9 +581,9 @@ nu.zips_by_product(dpid="DP4.00200.001",
 # Stack the data download, parse to data frames and read into environment 
 # defaults to stacking only L4 products
 sae_py = nu.stack_eddy(filepath = "filesToStack00200")
-
 # The data is stored by site name - print the header of the 'ORNL' table
 print(sae_py["ORNL"].head())
+
 ```
 
 ## {-}
@@ -629,7 +632,6 @@ ptp_r <- neonUtilities::loadByProduct(dpID="DP1.00045.001",
                                       package='basic',
                                       check.size = F,
                                       token=Sys.getenv("NEON_PAT"))
-
 # Download groundwater elevation data for a single water year
 egw_r <- neonUtilities::loadByProduct(dpID="DP1.20100.001",
                                       site="WALK", # Aquatic data product
@@ -639,7 +641,6 @@ egw_r <- neonUtilities::loadByProduct(dpID="DP1.20100.001",
                                       package='basic',
                                       check.size = F,
                                       token=Sys.getenv("NEON_PAT"))
-
 # Download discharge data for a single water year
 csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                       site="WALK", # Aquatic data product
@@ -649,6 +650,7 @@ csd_r <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                       package='basic',
                                       check.size = F,
                                       token=Sys.getenv("NEON_PAT"))
+
 ```
 
 ### Python
@@ -663,7 +665,6 @@ ptp_py = nu.load_by_product(dpid="DP1.00045.001",
                             package='basic',
                             check_size=False,
                             token=os.environ.get("NEON_PAT"))
-
 # Download groundwater elevation data for a single water year
 egw_py = nu.load_by_product(dpid="DP1.20100.001",
                             site="WALK", # Aquatic data product
@@ -673,7 +674,6 @@ egw_py = nu.load_by_product(dpid="DP1.20100.001",
                             package='basic',
                             check_size=False,
                             token=os.environ.get("NEON_PAT"))
-
 # Download discharge data for a single water year
 csd_py = nu.load_by_product(dpid="DP4.00130.001",
                             site="WALK", # Aquatic data product
@@ -683,6 +683,7 @@ csd_py = nu.load_by_product(dpid="DP4.00130.001",
                             package='basic',
                             check_size=False,
                             token=os.environ.get("NEON_PAT"))
+
 ```
 
 ## {-}
@@ -730,15 +731,12 @@ dist <- geosphere::distHaversine(egw_coords[,c('locationReferenceLongitude',
                                                'locationReferenceLatitude')],
                                  csd_coords[,c('locationReferenceLongitude',
                                                'locationReferenceLatitude')])
-
 # Which well is closest to the discharge location (horizontal position - HOR)?
 close_loc <- egw_coords$HOR.VER[which.min(dist)]
-
 # Let's use only the data from the closest well (subset by HOR)
 egw_df <- egw_r$EOG_30_min[
-  egw_r$EOG_30_min$horizontalPosition== substr(close_loc,0,3),# First 3 digits = HOR
+  egw_r$EOG_30_min$horizontalPosition== substr(close_loc,0,3),# 1st 3 digits=HOR
 ]
-
 # Merge 3 data streams into a single data frame
 # Keep the relevant data needed to plot timeseries and examine relationships
 ptp_df <- ptp_r$TIPPRE_30min%>%
@@ -747,7 +745,6 @@ egw_df <- egw_df%>%
   dplyr::select(endDateTime,groundwaterElevMean,gWatElevFinalQF)
 csd_df <- csd_r$csd_15_min%>%
   dplyr::select(endDateTime,dischargeContinuous,dischargeFinalQF)
-
 wc_df <- dplyr::full_join(ptp_df,egw_df)
 wc_df <- dplyr::full_join(wc_df,csd_df)
 wc_df <- wc_df[order(wc_df$endDateTime),]
@@ -762,21 +759,16 @@ wc_df <- wc_df[order(wc_df$endDateTime),]
 from geopy.distance import geodesic
 egw_coords = egw_py['sensor_positions_20100'].drop_duplicates(subset=['locationReferenceLatitude', 'locationReferenceLongitude'])
 csd_coords = csd_py['sensor_positions_00130']
-dist = egw_coords.apply(lambda row: geodesic((row['locationReferenceLatitude'], row['locationReferenceLongitude']), 
-                                              (csd_coords.iloc[0]['locationReferenceLatitude'], csd_coords.iloc[0]['locationReferenceLongitude'])).meters, axis=1)
-
+dist = egw_coords.apply(lambda row: geodesic((row['locationReferenceLatitude'], row['locationReferenceLongitude']),                                   (csd_coords.iloc[0]['locationReferenceLatitude'], csd_coords.iloc[0]['locationReferenceLongitude'])).meters, axis=1)
 # Which well is closest to the discharge location (horizontal position - HOR)?
 close_loc = egw_coords.loc[dist.idxmin(), 'HOR.VER']
-
 # Let's use only the data from the closest well (subset by HOR)
 egw_df = egw_py['EOG_30_min'][egw_py['EOG_30_min']['horizontalPosition'] == close_loc[:3]]  # First 3 digits = HOR
-
 # Merge 3 data streams into a single data frame
 # Keep the relevant data needed to plot timeseries and examine relationships
 ptp_df = ptp_py['TIPPRE_30min'][['endDateTime', 'precipBulk', 'finalQF']]
 egw_df = egw_df[['endDateTime', 'groundwaterElevMean', 'gWatElevFinalQF']]
 csd_df = csd_py['csd_15_min'][['endDateTime', 'dischargeContinuous', 'dischargeFinalQF']]
-
 wc_df = pd.merge(ptp_df, egw_df, on='endDateTime', how='outer')
 wc_df = pd.merge(wc_df, csd_df, on='endDateTime', how='outer')
 wc_df = wc_df.sort_values('endDateTime')
@@ -819,7 +811,6 @@ y3 <- list(side='right',
            zeroline=F,
            anchor="free",
            position=0.98)
-
 # Build plot layout
 ts <- plotly::plot_ly(data=wc_df)%>%
   plotly::layout(
@@ -854,7 +845,6 @@ ts <- plotly::plot_ly(data=wc_df)%>%
                                          titlefont=list(size=18),
                                          showgrid=F,
                                          zeroline=F))))))))
-
 # Plot traces
 ts <- ts%>%
   # H and Q Series
@@ -867,7 +857,6 @@ ts <- ts%>%
   plotly::add_trace(x=~endDateTime,y=~precipBulk, yaxis="y3",
                     name="Precipitation",type='scatter',mode='line',
                     line = list(color = '#0072B2'))
-
 htmlwidgets::saveWidget(plotly::as_widget(ts),
                         "NEON.D07.P.H.Q.WY2024.html")
 ```
@@ -878,11 +867,9 @@ htmlwidgets::saveWidget(plotly::as_widget(ts),
 # Create figure
 wc_df_ts = wc_df.dropna(subset=['precipBulk'])
 fig = go.Figure()
-
 # Format axes and layout
 fig.update_layout(
     margin=dict(l=90, r=110, t=40, b=60),
-    
     xaxis=dict(
         domain=[0, 0.9],
         tickmode='auto',
@@ -891,14 +878,12 @@ fig.update_layout(
         title="Date",
         tickfont=dict(size=16)
     ),
-
     yaxis=dict(
         title="Discharge (L s-1)",
         tickfont=dict(size=16),
         showgrid=False,
         zeroline=False
     ),
-
     yaxis2=dict(
         title="Groundwater Elevation (m)",
         tickfont=dict(size=16, color='#CC79A7'),
@@ -907,7 +892,6 @@ fig.update_layout(
         overlaying='y',
         side='right'
     ),
-
     yaxis3=dict(
         title="Precipitation (mm)",
         tickfont=dict(size=16, color='#0072B2'),
@@ -918,13 +902,11 @@ fig.update_layout(
         anchor='free',
         position=0.98
     ),
-
     legend=dict(
         orientation="h",
         y=-0.15,
         font=dict(size=14)
     ),
-
     updatemenus=[
         dict(
             type='buttons',
@@ -950,7 +932,6 @@ fig.update_layout(
         )
     ]
 )
-
 # Add traces
 fig.add_trace(go.Scatter(
     x=wc_df_ts['endDateTime'],
@@ -959,7 +940,6 @@ fig.add_trace(go.Scatter(
     name='Discharge',
     line=dict(color='black')
 ))
-
 fig.add_trace(go.Scatter(
     x=wc_df_ts['endDateTime'],
     y=wc_df_ts['groundwaterElevMean'],
@@ -968,7 +948,6 @@ fig.add_trace(go.Scatter(
     line=dict(color='#CC79A7'),
     yaxis='y2'
 ))
-
 fig.add_trace(go.Scatter(
     x=wc_df_ts['endDateTime'],
     y=wc_df_ts['precipBulk'],
@@ -977,8 +956,8 @@ fig.add_trace(go.Scatter(
     line=dict(color='#0072B2'),
     yaxis='y3'
 ))
-
 fig.write_html("NEON.D07.P.H.Q.WY2024.html")
+
 ```
 
 ## {-}
@@ -1008,6 +987,7 @@ cumsum <- wc_df_subset%>%
     axis.title.y.right = element_text(color = "black", size = 14)
   )
 cumsum
+
 ```
 
 ### Python
@@ -1023,16 +1003,19 @@ lowess = sm.nonparametric.lowess
 smoothP = lowess(wc_df_subset['cumulativeP'], x_numeric, frac=0.3)
 smoothQ = lowess(wc_df_subset['cumulativeQ'] / 150, x_numeric, frac=0.3)
 fig, ax1 = plt.subplots(figsize=(10, 6))
-ax1.plot(x, smoothP[:,1], color='#0072B2', label='Cumulative Precipitation (mm) – LOESS')
+ax1.plot(x, smoothP[:,1], color='#0072B2', 
+         label='Cumulative Precipitation (mm) – LOESS')
 ax1.set_xlabel('Date', fontsize=12)
 ax1.set_ylabel('Cumulative Precipitation (mm)', color='#0072B2', fontsize=12)
 ax1.tick_params(axis='y', labelcolor='#0072B2')
 ax2 = ax1.twinx()
-ax2.plot(x, smoothQ[:,1], color='black', label='Cumulative Discharge (L s-1) – LOESS')
+ax2.plot(x, smoothQ[:,1], color='black',
+         label='Cumulative Discharge (L s-1) – LOESS')
 ax2.set_ylabel('Cumulative Discharge (L s-1)', color='black', fontsize=12)
 ax2.tick_params(axis='y', labelcolor='black')
 fig.tight_layout()
 plt.show()
+
 ```
 
 ## {-}
@@ -1048,9 +1031,11 @@ corr <- wc_df %>%
   ggplot(aes(x = groundwaterElevMean, y = dischargeContinuous, color = as.integer(endDateTime))) +
   geom_point(aes(color = as.Date(endDateTime))) +
   scale_color_date(low="blue",high="darkorange") +
-  labs(x = "Groundwater Elevation (m)", y = "Discharge (L s-1)", color = "Date") +
+  labs(x = "Groundwater Elevation (m)", y = "Discharge (L s-1)",
+       color = "Date") +
   theme_minimal()
 corr
+
 ```
 
 ### Python
@@ -1076,6 +1061,7 @@ tick_locs = cbar.get_ticks()
 cbar.ax.set_yticklabels([mdates.num2date(t).strftime('%Y-%m-%d') for t in tick_locs])
 plt.tight_layout()
 plt.show()
+
 ```
 
 ## {-}
