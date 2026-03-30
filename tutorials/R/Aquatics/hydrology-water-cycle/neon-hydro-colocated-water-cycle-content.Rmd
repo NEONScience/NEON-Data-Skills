@@ -6,8 +6,8 @@ dateCreated: '2026-03-24'
 
 ```{r setup, include=FALSE}
 library(arrow)
-library(reticulate)
-reticulate::py_config()
+# library(reticulate)
+# reticulate::py_config()
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -343,7 +343,7 @@ site code 'WALK'.
 ### R
 
 ```{r R-download-os, results="hide", message=FALSE, warning=FALSE}
-# Download precipitation data for a single water year
+# Download stable isotopes data for a single water year
 asi_r <- neonUtilities::loadByProduct(dpID="DP1.20206.001",
                                       site="WALK",
                                       startdate="2023-10",
@@ -357,7 +357,7 @@ asi_r <- neonUtilities::loadByProduct(dpID="DP1.20206.001",
 ### Python
 
 ```{python p-download-os, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
-# Download precipitation data for a single water year
+# Download stable isotopes data for a single water year
 asi_py = nu.load_by_product(dpid="DP1.20206.001",
                             site="WALK",
                             startdate="2023-10",
@@ -549,7 +549,7 @@ combination of other functions available in the NEON Utilities package.
 ### R
 
 ```{r R-download-sae, results="hide", message=FALSE, warning=FALSE}
-# Download precipitation data for a single water year
+# Download eddy covariance data for a single water year
 neonUtilities::zipsByProduct(dpID="DP4.00200.001",
                              site="ORNL",
                              startdate="2023-10",
@@ -569,7 +569,7 @@ head(sae_r$ORNL)
 ### Python
 
 ```{python p-download-sae, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
-# Download precipitation data for a single water year
+# Download eddy covariance data for a single water year
 nu.zips_by_product(dpid="DP4.00200.001",
                    site="ORNL",
                    startdate="2023-10",
