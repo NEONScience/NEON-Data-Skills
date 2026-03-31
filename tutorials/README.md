@@ -6,18 +6,17 @@ The tutorials are organized by programming language at this level. Most tutorial
 
 ### High-Level Folder Diagram
 
-```text
+```plaintext
 tutorials/                                         # Main folder for published NEON tutorials
-|
-|-- Other/                                         # Miscellaneous tutorials and setup resources
-|   |-- Concept-intros/
-|   |-- GEE/                                       # Google Earth Engine (JavaScript API)
-|   |-- GEE_Python/                                # Google Earth Engine (Python API)
-|   |-- HDF5View/
-|   |-- Plasio/
-|   |-- Software-Installation/                     # Instructions for installing software required for specific events or tutorials
-|   |-- Version-Control/                           # Git/GitHub Version Control Lessons
-|-- Python/                                        # Python-language tutorials
-|-- R/                                             # R-language tutorials
--- Tabbed/                                         # Bilingual tutorials with both R and Python tabs
+├── GEE/                                           # Google Earth Engine tutorials
+│   ├── JavaScript/
+│   └── Python/
+├── Other/                                         # Miscellaneous tutorials and setup resources
+│   ├── Concept-intros/
+│   ├── HDFView/
+│   ├── Software-Installation/                     # Instructions for installing software
+│   └── version-control/                           # Git/GitHub version control lessons
+├── Python/                                        # Python-language tutorials
+├── R/                                             # R-language tutorials
+└── Tabbed/                                        # Bilingual tutorials with both R and Python tabs
 ```
