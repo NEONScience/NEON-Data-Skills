@@ -689,7 +689,7 @@ inv_abundance_summ%&gt;%
                 y = &quot;Abundance Per Square Meter&quot;,
                 x = &quot;Bout&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-plot-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/aos-plot-1.png" alt=" " /></p>
 <pre><code>### PLOT RICHNESS ###
 
 
@@ -864,7 +864,7 @@ inv_diversity_summ%&gt;%
   labs(title=&quot;Mean number of macroinvertebrate taxa per bout&quot;,
        y= &quot;Taxon Richness&quot;, x = &quot;Bout&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-plot-2.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/aos-plot-2.png" alt=" " /></p>
 <h3 id="ais-continuous-discharge-timseries">AIS Continuous discharge timseries</h3>
 <p>Now, let’s visualize the cleaned and gap-filled continuous discharge timeseries
 for the two NEON D04 sites.</p>
@@ -876,7 +876,7 @@ for the two NEON D04 sites.</p>
   labs(title=&quot;Continuous Discharge for Water Years 2022-2024&quot;,
        y= &quot;Discharge (L/s)&quot;, x = &quot;Date&quot;)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/csd-plot-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/csd-plot-1.png" alt=" " /></p>
 <h2 id="visualize-aos-and-ais-data-together">Visualize AOS and AIS Data Together</h2>
 <p>Next, we will use the R package <code>plotly</code> to make fun interactive plots allowing
 us to view AOS and AIS data in the same plotting field. There is a
@@ -994,7 +994,7 @@ for(s in 1:length(siteToPlot)){
 AOS_AIS_plot_CUPE
 </code></pre>
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-1.png" alt=" " width="100%" height="600px" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/aos-ais-plot-1.png" alt=" " width="100%" height="600px" />
 <p class="caption"> </p>
 </div>
 <pre><code># show plot at GUIL
@@ -1002,7 +1002,7 @@ AOS_AIS_plot_CUPE
 AOS_AIS_plot_GUIL
 </code></pre>
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-ais-plot-2.png" alt=" " width="100%" height="600px" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/aos-ais-plot-2.png" alt=" " width="100%" height="600px" />
 <p class="caption"> </p>
 </div>
 <div class="figure" style="text-align: center">
@@ -1264,7 +1264,7 @@ geo_pebbleCount_freqCumm%&gt;%
        x = &quot;Particle Size (mm)&quot;, y = &quot;Cumulative Frequency (%)&quot;) +
   ggplot2::facet_wrap(~siteID)
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-geo-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/wrangle-plot-geo-1.png" alt=" " /></p>
 <p>To effectively view the particle size distribution data with the other two data
 products, we will embed them as <code>ggplot</code> subplots in the larger <code>plotly</code> plot.</p>
 <pre><code># generate small, simple subplots of each pebble count survey
@@ -1337,7 +1337,7 @@ AOS_AIS_plot_CUPE_Fiona%&gt;%
     ))
 </code></pre>
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-1.png" alt=" " width="100%" height="800px" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/highlight-fiona-psd-1.png" alt=" " width="100%" height="800px" />
 <p class="caption"> </p>
 </div>
 <pre><code># re-generate the GUIL plot with particle size distribution subplots added
@@ -1366,7 +1366,7 @@ AOS_AIS_plot_GUIL_Fiona%&gt;%
     ))
 </code></pre>
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/highlight-fiona-psd-2.png" alt=" " width="100%" height="800px" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/highlight-fiona-psd-2.png" alt=" " width="100%" height="800px" />
 <p class="caption"> </p>
 </div>
 <p><strong>Discussion</strong>: With the three data products viewed together in relation to the
@@ -1503,7 +1503,7 @@ DOC_plot &lt;- DOC%&gt;%
 
 DOC_plot
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-swc-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/wrangle-plot-swc-1.png" alt=" " /></p>
 <p>Next, download AIS data, subset to the appropriate <code>horizontalPosition</code>, wrangle
 the data for analysis, and plot the data.</p>
 <pre><code># download data of interest - AIS - Water quality
@@ -1576,7 +1576,7 @@ fDOM_plot &lt;- fDOM_15min%&gt;%
 
 fDOM_plot
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-waq-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/wrangle-plot-waq-1.png" alt=" " /></p>
 <p>Both data products are published in Coordinated Universal Time (UTC), as are all
 AOS and AIS data, which makes joining across tables easy. Let’s join the AOS and
 AIS data into a single data frame from which we will model the two variables.</p>
@@ -1638,7 +1638,7 @@ fDOM_DOC_plot &lt;- fDOM_DOC_join%&gt;%
 
 fDOM_DOC_plot
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/linear-regression-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/linear-regression-1.png" alt=" " /></p>
 <p>Given relatively high AIS data completeness and a correlative relationship
 between AOS-DOC and AIS-fDOM, Let’s model DOC vs. fDOM from 2021-10-01 to
 2024-09-30. We will add modelled continuous DOC as a column in the joined table.</p>
@@ -1695,7 +1695,7 @@ plotly::plot_ly(data=fDOM_DOC_join)%&gt;%
                              x=0.5,y=-0.2))
 </code></pre>
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/plot-model-doc-1.png" alt=" " width="100%" height="600px" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/plot-model-doc-1.png" alt=" " width="100%" height="600px" />
 <p class="caption"> </p>
 </div>
 <p><strong>Discussion</strong>: This study shows the possibility of integrating AIS and AOS data

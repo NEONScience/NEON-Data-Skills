@@ -11,7 +11,7 @@ topics: data-manipulation, data-visualization, data-analysis
 subtopics: organisms, hydrology, chemistry, morphology, aquatic
 languagesTool: R
 dataProduct: DP1.20120.001, DP4.00130.001, DP4.00131.001, DP1.20093.001, DP1.20288.001
-code1: https://github.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/aquatic-data-product-integration.R
+code1: https://github.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/aquatic-data-product-integration.R
 tutorialSeries: 
 urlTitle: aquatic-data-product-integration
 ---
@@ -683,7 +683,7 @@ instead by `samplerType`, simply do a find+replace of
                     y = "Abundance Per Square Meter",
                     x = "Bout")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/aos-plot-1.png)
 
     ### PLOT RICHNESS ###
 
@@ -859,7 +859,7 @@ instead by `samplerType`, simply do a find+replace of
       labs(title="Mean number of macroinvertebrate taxa per bout",
            y= "Taxon Richness", x = "Bout")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/aos-plot-2.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/aos-plot-2.png)
 
 ### AIS Continuous discharge timseries
 
@@ -875,7 +875,7 @@ for the two NEON D04 sites.
       labs(title="Continuous Discharge for Water Years 2022-2024",
            y= "Discharge (L/s)", x = "Date")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/csd-plot-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/csd-plot-1.png)
 
 ## Visualize AOS and AIS Data Together
 
@@ -1289,7 +1289,7 @@ particle size distributions for NEON D04 aquatic sites across water years 2022,
            x = "Particle Size (mm)", y = "Cumulative Frequency (%)") +
       ggplot2::facet_wrap(~siteID)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-geo-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/wrangle-plot-geo-1.png)
 
 To effectively view the particle size distribution data with the other two data
 products, we will embed them as `ggplot` subplots in the larger `plotly` plot.
@@ -1532,7 +1532,7 @@ surface water and groundwater grab samples."
 
     DOC_plot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-swc-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/wrangle-plot-swc-1.png)
 
 Next, download AIS data, subset to the appropriate `horizontalPosition`, wrangle
 the data for analysis, and plot the data.
@@ -1610,7 +1610,7 @@ specific conductance, pH, chlorophyll, and turbidity."
 
     fDOM_plot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/wrangle-plot-waq-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/wrangle-plot-waq-1.png)
 
 Both data products are published in Coordinated Universal Time (UTC), as are all
 AOS and AIS data, which makes joining across tables easy. Let's join the AOS and
@@ -1677,7 +1677,7 @@ Create a linear regression to analyze the correlation of the two variables
 
     fDOM_DOC_plot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-AOS-integration-tutorial/rfigs/linear-regression-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-AOS-integration/rfigs/linear-regression-1.png)
 
 Given relatively high AIS data completeness and a correlative relationship 
 between AOS-DOC and AIS-fDOM, Let's model DOC vs. fDOM from 2021-10-01 to 
