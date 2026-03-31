@@ -398,7 +398,7 @@ published from NEON’s aquatic sites; thus, we will use the NEON site
 code ‘WALK’.</p>
 <div id="r-7" class="section level3">
 <h3>R</h3>
-<pre class="r"><code># Download precipitation data for a single water year
+<pre class="r"><code># Download stable isotopes data for a single water year
 asi_r &lt;- neonUtilities::loadByProduct(dpID=&quot;DP1.20206.001&quot;,
                                       site=&quot;WALK&quot;,
                                       startdate=&quot;2023-10&quot;,
@@ -410,7 +410,7 @@ asi_r &lt;- neonUtilities::loadByProduct(dpID=&quot;DP1.20206.001&quot;,
 </div>
 <div id="python-7" class="section level3">
 <h3>Python</h3>
-<pre class="python"><code># Download precipitation data for a single water year
+<pre class="python"><code># Download stable isotopes data for a single water year
 asi_py = nu.load_by_product(dpid=&quot;DP1.20206.001&quot;,
                             site=&quot;WALK&quot;,
                             startdate=&quot;2023-10&quot;,
@@ -601,7 +601,7 @@ must use a combination of other functions available in the NEON
 Utilities package.</p>
 <div id="r-12" class="section level3">
 <h3>R</h3>
-<pre class="r"><code># Download precipitation data for a single water year
+<pre class="r"><code># Download eddy covariance data for a single water year
 neonUtilities::zipsByProduct(dpID=&quot;DP4.00200.001&quot;,
                              site=&quot;ORNL&quot;,
                              startdate=&quot;2023-10&quot;,
@@ -618,7 +618,7 @@ head(sae_r$ORNL)</code></pre>
 </div>
 <div id="python-12" class="section level3">
 <h3>Python</h3>
-<pre class="python"><code># Download precipitation data for a single water year
+<pre class="python"><code># Download eddy covariance data for a single water year
 nu.zips_by_product(dpid=&quot;DP4.00200.001&quot;,
                    site=&quot;ORNL&quot;,
                    startdate=&quot;2023-10&quot;,
