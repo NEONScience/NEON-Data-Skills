@@ -10,7 +10,7 @@ estimatedTime: 2 hours
 packagesLibraries: neonUtilities, ggplot2, zoo
 topics: data-management, rep-sci
 languageTool: R, API
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/clean-NEON-AIS-data.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/clean-NEON-AIS-data.R
 tutorialSeries:
 urlTitle: clean-neon-ais-data
 ---
@@ -124,7 +124,7 @@ uncertainty bands.
 
     doPlotRaw
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-raw-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-raw-1.png)
 
 ### Reviewing Issue Log
 
@@ -269,7 +269,7 @@ We'll use red for the raw data and blue for the clean data.
 
     doPlotQF
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-qf-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-qf-1.png)
 
 ### Drift Correction using Cleaning and Calibration Records
 
@@ -427,7 +427,7 @@ Let's re-plot the data and see what these adjustments have done.
 
     doPlotDrift
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-drift-corrected-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-drift-corrected-1.png)
 
 ### Basic Gap Filling
 
@@ -462,7 +462,7 @@ Let's re-plot the data and see what the gap filled data look like.
 
     doPlotFilled
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-gap-filled-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-gap-filled-1.png)
 
 Longer gaps require more sophisticated gap filling methods. At NEON sites, some
 parameters are measured by multiple sensors at nearby locations.  Depending on 
@@ -521,7 +521,7 @@ We can now plot the data, including uncertainty bands.
 
     nswPlotRaw
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-nsw-raw-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-nsw-raw-1.png)
 
 ### Review Issue Log and Remove Quality Flagged data.
 
@@ -589,7 +589,7 @@ We can then re-plot the cleaned data
 
     nswPlotQF
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-nsw-qf-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-nsw-qf-1.png)
 
 It looks like the shifts in the data also were not quality flagged. These shifts 
 were likely not included in the Issue Log or quality flagged because they are 
@@ -685,7 +685,7 @@ We can then re-plot the shifted data.
 
     nswPlotShift
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-nsw-shift-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-nsw-shift-1.png)
 
 We can see that the shifted data now align more closely with the preceding and 
 succeeding time periods. Note that the shift is still within the uncertainty

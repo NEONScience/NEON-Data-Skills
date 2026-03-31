@@ -182,7 +182,7 @@ uncertainty bands.</p>
 
 doPlotRaw
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-raw-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-raw-1.png" alt=" " /></p>
 <h3 id="reviewing-issue-log">Reviewing Issue Log</h3>
 <p>Each NEON data product comes with an Issue Log documenting major problems and
 any changes that have been made to the data product. We’ll first filter the
@@ -309,7 +309,7 @@ We’ll use red for the raw data and blue for the clean data.</p>
 
 doPlotQF
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-qf-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-qf-1.png" alt=" " /></p>
 <h3 id="drift-correction-using-cleaning-and-calibration-records">Drift Correction using Cleaning and Calibration Records</h3>
 <p>The drift and calibration correction methods outlined here are based off the
 Guidelines and Procedures for Continuous Water-Quality Monitoring used by the
@@ -455,7 +455,7 @@ drift &lt;- 106.1-95.5
 
 doPlotDrift
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-drift-corrected-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-drift-corrected-1.png" alt=" " /></p>
 <h3 id="basic-gap-filling">Basic Gap Filling</h3>
 <p>Level 1 NEON Instrument Systems data is not gap filled. Data gaps may result
 either from periods when data was not collected, or when erroneous data was
@@ -482,7 +482,7 @@ can do this using the na.approx function in the zoo package.</p>
 
 doPlotFilled
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-do-gap-filled-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-do-gap-filled-1.png" alt=" " /></p>
 <p>Longer gaps require more sophisticated gap filling methods. At NEON sites, some
 parameters are measured by multiple sensors at nearby locations.  Depending on
 the degree of spatial heterogeneity, data from one location could be used to
@@ -528,7 +528,7 @@ We can now plot the data, including uncertainty bands.</p>
 
 nswPlotRaw
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-nsw-raw-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-nsw-raw-1.png" alt=" " /></p>
 <h3 id="review-issue-log-and-remove-quality-flagged-data">Review Issue Log and Remove Quality Flagged data.</h3>
 <p>It looks like there is are some small shifts in the data on 2024-01-11 and
 2024-02-05. Let’s review the issue log to see if it has any more information
@@ -585,7 +585,7 @@ NSW_15_minute$cleanSurfWaterNitrate[NSW_15_minute$finalQF == 1] &lt;- NA
 
 nswPlotQF
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-nsw-qf-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-nsw-qf-1.png" alt=" " /></p>
 <p>It looks like the shifts in the data also were not quality flagged. These shifts
 were likely not included in the Issue Log or quality flagged because they are
 still within the uncertainty of the sensor.</p>
@@ -669,7 +669,7 @@ gain &lt;- 1
 
 nswPlotShift
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/clean-NEON-AIS-data/rfigs/plot-nsw-shift-1.png" alt=" " /></p>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/clean-AIS-data/rfigs/plot-nsw-shift-1.png" alt=" " /></p>
 <p>We can see that the shifted data now align more closely with the preceding and
 succeeding time periods. Note that the shift is still within the uncertainty
 range.</p>

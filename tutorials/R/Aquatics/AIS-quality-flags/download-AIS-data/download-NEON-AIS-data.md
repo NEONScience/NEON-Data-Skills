@@ -9,7 +9,7 @@ estimatedTime: 1.5 hours
 packagesLibraries: neonUtilities, ggplot2
 topics: data-management, rep-sci
 languageTool: R, API
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/download-NEON-AIS-data.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/download-AIS-data/download-NEON-AIS-data.R
 tutorialSeries:
 urlTitle: explore-neon-ais-data
 ---
@@ -379,7 +379,7 @@ The data columns we would like to plot are `dissolvedOxygen` and
 
     doPlot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-waq-do-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/download-AIS-data/rfigs/plot-waq-do-1.png)
 
 ## Examine Quality Flagged Data
 
@@ -536,7 +536,7 @@ color.
 
     doPlot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-waq-do-flags-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/download-AIS-data/rfigs/plot-waq-do-flags-1.png)
 
 ## Apply what we've learned Part 1 - Temperature of Surface Water
 
@@ -600,7 +600,7 @@ Can you plot the data?
 
     csdPlot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-tsw-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/download-AIS-data/rfigs/plot-tsw-1.png)
 
 ## Apply what we've learned Part 2 - Continuous discharge
 
@@ -644,7 +644,7 @@ Can you plot the discharge data?
 
     csdPlot
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AIS-data/AIS-QF-tutorial/download-NEON-AIS-data/rfigs/plot-q-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Aquatics/AIS-quality-flags/download-AIS-data/rfigs/plot-q-1.png)
 
 Note: The developers of the Bayesian discharge model used by NEON recommend the 
 maxpostDischarge, which is the mode of the posterior distribution (means and
