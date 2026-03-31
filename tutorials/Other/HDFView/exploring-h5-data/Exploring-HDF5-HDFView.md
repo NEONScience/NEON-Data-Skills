@@ -8,7 +8,7 @@ contributors: Alison Dernbach
 estimatedTime: 0.5 Hours
 packagesLibraries:
 topics: HDF5
-languagesTool: HDF5View
+languagesTool: HDFView
 dataProduct:
 code1:
 tutorialSeries: [intro-hdf5-r-series]
@@ -26,15 +26,14 @@ in HDF5!
 
 After completing this activity, you will be able to:
 
-* Explain how data can be structured and stored in HDF5.
+* Explain how data can be structured and stored in HDF5 format.
 * Navigate to metadata in an HDF5 file, making it "self describing".
 * Explore HDF5 files using the free HDFView application. 
 
 
 ## Tools You Will Need
 
-Install the free HDFView application. This application allows you to explore 
-the contents of an HDF5 file easily. 
+Install the free HDFView application. This application allows you to explore the contents of an HDF5 file easily. 
 <a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">Click here to go to the download page. </a>
 
 ## Data to Download
@@ -62,7 +61,7 @@ These hyperspectral remote sensing data provide information on the
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
 <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin Exerimental Range field site.</a>
 The data were collected over the San Joaquin field site located in California 
-(Domain 17) and processed at NEON headquarters. The entire dataset can be accessed by request from the 
+(Domain 17) and processed at NEON headquarters. The entire dataset can be accessed from the 
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
 <a href="https://ndownloader.figshare.com/files/7024271" class="link--button link--arrow">
@@ -118,8 +117,8 @@ you can view metadata for the file. This will be located in the bottom window of
 the application.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/OpenFIU.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/HDF5-general/OpenFIU.png" alt="HDFView screenshot showing folders for Domain 3 and Domain 10 under the HDF5 file name"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/HDF5-general/OpenFIU.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/HDF5-general/OpenFIU.png" alt="HDFView screenshot showing folders for Domain 3 and Domain 10 under the HDF5 file name"></a>
     <figcaption>If you click on the file name within the viewer, you can view 
     any stored metadata for that file, at the bottom of the viewer. You may have 
     to click on the metadata tab at the bottom of the viewer.</figcaption>
@@ -158,8 +157,8 @@ by a temperature sensor mounted on a National Ecological Observatory Network (NE
 </div>
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/NEONtower.png" alt="Illustration of a NEON tower with arms containing sensors extending horizontally off of the tower structure"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/NEON-general/NEONtower.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/NEON-general/NEONtower.png" alt="Illustration of a NEON tower with arms containing sensors extending horizontally off of the tower structure"></a>
     <figcaption>A NEON flux tower contains booms or arms that house sensors at varying heights along the tower.</figcaption>
 </figure>
 
@@ -183,33 +182,25 @@ explore this HDF5 dataset within the HDFViewer.
 ### Part 2: Exploring Hyperspectral Imagery stored in HDF5
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/aop_siteillustration.jpg"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-aop/aop_siteillustration.jpg" alt="Illutration of a NEON site with field scientists on the ground and an airborne observation plane flying above"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/aop_siteillustration.jpg"><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/neon-aop/aop_siteillustration.jpg" alt="Illustration of a NEON site with field scientists on the ground and an airborne observation plane flying above"></a>
     <figcaption>NEON airborne observation platform.</figcaption>
 </figure>
 
 Next, we will explore a hyperspectral dataset, collected by the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
-and saved in HDF5 format. Hyperspectral 
-data are naturally hierarchical, as each pixel in the dataset contains reflectance 
-values for hundreds of bands collected by the sensor. The NEON sensor 
-(imaging spectrometer) collected data within 428 bands.
+and saved in HDF5 format. In the hyperpsectral data cubes, each pixel in the dataset contains reflectance 
+values for hundreds of bands (426) collected by the sensor.
 
 A few notes about hyperspectral imagery:
 
-* An imaging spectrometer, which collects hyperspectral imagery, records light 
-energy reflected off objects on the earth's surface.
-* The data are inherently spatial. Each "pixel" in the image is located spatially 
-and represents an area of ground on the earth.
-* Similar to an Red, Green, Blue (RGB) camera, an imaging spectrometer records 
-reflected light energy. Each pixel will contain several hundred bands worth of 
-reflectance data.
+* An imaging spectrometer, which collects hyperspectral imagery, records light energy reflected off objects on the earth's surface.
+* The data are inherently spatial. Each pixel in the image is located spatially and represents an area of ground on the earth.
+* Similar to an RGB (Red, Green, Blue) camera, an imaging spectrometer records reflected light energy. Each pixel contain several hundred bands of reflectance data.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/LandsatVsHyper-01.png">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/LandsatVsHyper-01.png" alt="A hyperspectral resolution graph and a landsat TM resolution graph each showing different reflectance values across wavelengths for five differnt plants"></a>
-    <figcaption>A hyperspectral instrument records reflected light energy across 
-    very narrow bands. The NEON Imaging Spectrometer collects 428 bands of 
-    information for each pixel on the ground.</figcaption>
+    <figcaption>A hyperspectral instrument records reflected light energy across very narrow bands. The NEON Imaging Spectrometer collects 426 bands of information for each pixel on the ground.</figcaption>
 </figure>
 
 Read more about hyperspectral remote sensing data:
@@ -225,8 +216,8 @@ Open the file. Notice that it is structured differently. This file is composed
 of 3 datasets: 
 
 * Reflectance, 
-* fwhm, and 
-* wavelength. 
+* FWHM (Full Width Half Max), and 
+* Wavelength. 
 
 It also contains some text information called "map info". Finally it contains a 
 group called spatial info.
@@ -263,5 +254,3 @@ viewer to see the data properly.
 
 Explore the spectral dataset in the HDFViewer taking note of the metadata and 
 data stored within the file.
-
-
