@@ -355,19 +355,20 @@ those validation rules are reported in this table
 associated data table(s). This includes full definitions, units, and other 
 important information. 
 
+View the variables in your R environment:
 
-    # view the entire dataframe in your R environment
 
     view(variables_20120)
 
-### Explore: Dataframes
+### Explore Dataframes
 
 There will always be one or more dataframes that include the primary data of the
 data product you downloaded. Multiple dataframes are available when there are 
 related datatables for a single data product.
 
 
-    # view the entire dataframe in your R environment
+View the entire dataframe in your R environment
+
 
     view(inv_fieldData)
 
