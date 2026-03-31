@@ -1,5 +1,4 @@
-## Tutorials Sub-Folder
-===============================
+## Tutorials Folder
 
 This folder hosts the content for the tutorials that are published on the NEON website.
 
@@ -16,9 +15,9 @@ tutorials/                                         # Main folder for published N
 |   |-- GEE_Python/
 |   |-- HDF5View/
 |   |-- Plasio/
-|   |-- Software-Installation/
-|   |-- Version-Control/
+|   |-- Software-Installation/                     # Instructions for installing software required for specific events or tutorials
+|   |-- Version-Control/                           # Git/GitHub Version Control Lessons
 |-- Python/                                        # Python-language tutorials
 |-- R/                                             # R-language tutorials
--- Tabbed/                                        # Bilingual tutorials with both R and Python tabs
+-- Tabbed/                                         # Bilingual tutorials with both R and Python tabs
 ```
