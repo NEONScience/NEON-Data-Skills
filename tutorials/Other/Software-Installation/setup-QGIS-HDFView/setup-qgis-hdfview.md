@@ -3,11 +3,11 @@ syncID: b6c45c8828d5433db516b77608c6163b
 title: "Install QGIS & HDF5View"
 description:
 dateCreated: 2014-05-06
-authors:
-contributors:
+authors: Megan
+contributors: Bridget Hass
 estimatedTime: 1 hour
 packagesLibraries:
-topics: data-management 
+topics: data-management
 languagesTool: QGIS, HDFView
 dataProduct:
 code1:
@@ -24,7 +24,7 @@ To install HDFView:
 
 1. Click here: <a href="https://www.hdfgroup.org/download-hdfview/" target="_blank">wwww.hdfgroup.org/download-hdfview</a> to go to the download page.
 
-2. Create an account or log in (shown in the upper right corner) to your account.
+2. Create an account if you don't already have one (shown in the upper right corner), and log in to your account.
 
 3. Once you are logged in, from the section titled **Pre-Built Binary Distributions**, select the HDFView download option that matches your operating system (Darwin for Mac, Windows, or Linux) and
 computer setup (32 bit vs 64 bit) that you have. The download will start automatically.
