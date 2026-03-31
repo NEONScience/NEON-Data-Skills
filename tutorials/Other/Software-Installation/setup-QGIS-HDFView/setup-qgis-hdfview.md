@@ -1,9 +1,9 @@
 ---
 syncID: b6c45c8828d5433db516b77608c6163b
-title: "Install QGIS & HDF5View"
-description:
+title: "Install QGIS & HDFView"
+description: Installation instructions for QGIS and HDFView, for 2018 Remote Sensing Data Institute
 dateCreated: 2014-05-06
-authors: Megan
+authors: Megan Jones
 contributors: Bridget Hass
 estimatedTime: 1 hour
 packagesLibraries:
