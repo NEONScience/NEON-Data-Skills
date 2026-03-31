@@ -11,8 +11,8 @@ tutorials/                                         # Main folder for published N
 |
 |-- Other/                                         # Miscellaneous tutorials and setup resources
 |   |-- Concept-intros/
-|   |-- GEE/
-|   |-- GEE_Python/
+|   |-- GEE/                                       # Google Earth Engine (JavaScript API)
+|   |-- GEE_Python/                                # Google Earth Engine (Python API)
 |   |-- HDF5View/
 |   |-- Plasio/
 |   |-- Software-Installation/                     # Instructions for installing software required for specific events or tutorials
