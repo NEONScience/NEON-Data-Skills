@@ -10,7 +10,7 @@ packagesLibraries: earthengine-api, geemap, geopandas, pygbif, shapely, seaborn
 topics: biorepository, beetles, remote-sensing
 languagesTool: Python, Google Earth Engine
 dataProducts: DP3.30006.001, DP3.30006.002
-code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/04_aop_gbif_gee_py/Intro_AOP_GBIF_GEE_Python.ipynb
+code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/GEE/Python/04_aop_gbif_gee_py/Intro_AOP_GBIF_GEE_Python.ipynb
 tutorialSeries: 
 urlTitle: aop-gbif-gee-py
 ---
@@ -493,7 +493,7 @@ plt.show()
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_23_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/GEE/Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_23_2.png)
     
 
 
@@ -719,7 +719,7 @@ plt.tight_layout()
 plt.show()
 ```
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/GEE_Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_30_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/GEE/Python/04_aop_gbif/intro_aop_gbif_gee_files/intro_aop_gbif_gee_30_1.png)
     
 
 

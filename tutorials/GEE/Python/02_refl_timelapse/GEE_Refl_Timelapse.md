@@ -10,7 +10,7 @@ packagesLibraries: earthengine-api, geemap
 topics:
 languagesTool: Python, Google Earth Engine
 dataProduct: DP3.30006.001, DP3.30006.002
-code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/02_refl_timelapse/GEE_Refl_Timelapse.ipynb
+code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/GEE/Python/02_refl_timelapse/GEE_Refl_Timelapse.ipynb
 tutorialSeries: 
 urlTitle: aop-refl-py-geemap
 ---

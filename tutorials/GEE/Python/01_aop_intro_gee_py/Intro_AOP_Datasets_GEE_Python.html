@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>GEE_Refl_Timelapse</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Intro_AOP_Datasets_GEE_Python</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7476,33 +7476,34 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bd511a0c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5f178168">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<p>syncID: 048ec0a5e30842acb2fbf1144454830e
-title: "Intro to AOP Hyperspectral Data in Google Earth Engine (GEE) using Python geemap"
-description: ""
-dateCreated: 2023-06-20
+<p>syncID: 
+title: "Intro to AOP Datasets in Google Earth Engine (GEE) using Python"
+description: "Explore AOP reflectance, camera, and lidar datasets in GEE"
+dateCreated: 2023-07-25
 authors: Bridget Hass
 contributors: John Musinsky
 estimatedTime: 30 minutes
 packagesLibraries: earthengine-api, geemap
 topics:
 languagesTool: Python, Google Earth Engine
-dataProduct: DP3.30006.001, DP3.30006.002
-code1: <a href="https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/02_sdr_timelapse/GEE_SDR_Functions_Timelapse.ipynb">https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/Other/GEE_Python/02_sdr_timelapse/GEE_SDR_Functions_Timelapse.ipynb</a>
+dataProducts: DP3.30006.001, DP3.30006.002, DP3.30010.001, DP3.30015.001, DP3.30024.001
+code1: 	
+<a href="https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/GEE/Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb">https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/GEE/Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb</a>
 tutorialSeries: 
-urlTitle: aop-refl-py-geemap</p>
+urlTitle: aop-gee-py-intro</p>
 <hr/>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=919ba0ee">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1db9fb0b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7511,37 +7512,98 @@ urlTitle: aop-refl-py-geemap</p>
 <div id="ds-objectives" markdown="1">
 <h3 id="Objectives">Objectives<a class="anchor-link" href="#Objectives">¶</a></h3><p>After completing this tutorial, you will be able to use Python to:</p>
 <ul>
-<li>Determine the available AOP reflectance (DP3.30006.001, DP3.30006.002) datasets in Google Earth Engine</li>
-<li>Use functions to read in reflectance data sets and mask out bad weather data (&gt;10% cloud cover)</li>
+<li>Determine the available AOP datasets in Google Earth Engine</li>
+<li>Read in and visualize AOP Reflectance, RGB Camera, and Lidar raster datasets</li>
+<li>Become familiar with the AOP Image Properties</li>
+<li>Filter data based off image properties to pull in dataset(s) of interest</li>
 <li>Explore the interactive mapping features in geemap</li>
-<li>Create a time-lapse animation of a site</li>
 </ul>
-<h3 id="Requirements">Requirements<a class="anchor-link" href="#Requirements">¶</a></h3><p>To follow along with this code, you will need to</p>
+<h3 id="Requirements">Requirements<a class="anchor-link" href="#Requirements">¶</a></h3><p>To follow along with this code, you will need to:</p>
 <ol>
 <li>Sign up for a non-commercial Google Earth Engine account here <a href="https://code.earthengine.google.com/register">https://code.earthengine.google.com/register</a>.</li>
-<li>Install <strong>Python 3.x</strong></li>
-<li>Install required Python packages (matplotlib, cartopy and the dependent packages are only required for the last optional part of the tutorial, to create a time-lapse gif)<ul>
-<li>earthengine-api</li>
-<li>geemap</li>
-<li>matplotlib</li>
-<li>cartopy (dependencies: geos, shapely, pyproj)</li>
-</ul>
-</li>
+<li>Install <strong>Python 3.9+</strong></li>
+<li>Install required Python packages</li>
 </ol>
+<ul>
+<li><code>pip install earthengine-api --upgrade</code></li>
+<li><code>pip install geemap</code></li>
+</ul>
+<p>You may need to run the following to upgrade the <code>google-api-python-client</code>:</p>
+<ul>
+<li><code>pip install --upgrade google-api-python-client</code></li>
+</ul>
 <p>Notes:</p>
 <ul>
-<li>This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version. This lesson was written in <strong>Jupyter Notebook</strong> so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice. If not using <strong>Jupyter</strong>, we recommend using <strong>Spyder</strong>, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.</li>
-<li>If cartopy is not installing using <code>conda install</code> or <code>pip install</code>, you may need to find the wheel file specific to your Python version, eg. <code>pip install Cartopy-0.20.2-cp39-cp39-win_amd64.whl</code>.</li>
+<li>This tutorial was developed using Python 3.9, so if you are installing Python for the first time, we recommend that version or higher. This lesson was written in <strong>Jupyter Notebook</strong> so you can run each cell chunk individually, but you can also use a different IDE (Interactive Development Environment) of your choice.</li>
+<li>If not using <strong>Jupyter</strong>, we recommend using <strong>Spyder</strong>, which has similar functionality. You can install both Python, Jupyter Notebooks, and Spyder by downloading <a href="https://www.anaconda.com/products/distribution" target="_blank">Anaconda</a>.</li>
 </ul>
 <h3 id="Additional-Resources">Additional Resources<a class="anchor-link" href="#Additional-Resources">¶</a></h3><ul>
-<li><a href="https://book.geemap.org/" target="_blank">geemap book</a></li>
-<li><a href="https://www.youtube.com/@giswqs" target="_blank">geemap YouTube channel</a></li>
+<li><a href="https://developers.google.com/earth-engine/tutorials/community/intro-to-python-api" target="_blank">Google Developers Intro to Python API</a></li>
+<li><a href="https://book.geemap.org/" target="_blank"><code>geemap</code> Text Book</a></li>
+<li><a href="https://www.youtube.com/@giswqs" target="_blank"><code>geemap</code> YouTube Channel</a></li>
 </ul>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dadd2c67">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c2cc1770">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="AOP-data-in-Google-Earth-Engine">AOP data in Google Earth Engine<a class="anchor-link" href="#AOP-data-in-Google-Earth-Engine">¶</a></h2><p><a href="https://earthengine.google.com/">Google Earth Engine</a> is a platform for carrying out continental and planetary scale geospatial analyses. It has a multi-pedabyte catalog of satellite imagery and geospatial datasets, and is a powerful environment for comparing and scaling up NEON airborne datasets.</p>
+<p>The NEON data products that have been made available on GEE can be currently be accessed through the <code>projects/neon-prod-earthengine</code> folder with an appended suffix of the dataset Acronym and Revision Number, shown in the table below.</p>
+<table>
+<thead>
+<tr>
+<th>Acronym</th>
+<th>Revision</th>
+<th>Data Product</th>
+<th>Data Product ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HSI_REFL</td>
+<td>001</td>
+<td>Surface Directional Reflectance</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30006.001" target="_blank">DP3.30006.001</a></td>
+</tr>
+<tr>
+<td>HSI_REFL</td>
+<td>002</td>
+<td>Surface Bidirectional Reflectance</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">DP3.30006.002</a></td>
+</tr>
+<tr>
+<td>RGB</td>
+<td>001</td>
+<td>Red Green Blue (Camera Imagery)</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">DP3.30010.001</a></td>
+</tr>
+<tr>
+<td>DEM</td>
+<td>001</td>
+<td>Digital Surface and Terrain Models (DSM/DTM)</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a></td>
+</tr>
+<tr>
+<td>CHM</td>
+<td>001</td>
+<td>Ecosystem Structure (Canopy Height Model; CHM)</td>
+<td><a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a></td>
+</tr>
+</tbody>
+</table>
+<p>To access the NEON AOP data you can read in the Image Collection <code>ee.ImageCollection</code> followed by the path, eg. the Surface Directional Reflectance can be found under the path <code>projects/neon-prod-earthengine/assets/HSI_REFL/001</code>. You can then filter down to a particular site and year of interest using the properties.</p>
+<p>First, import the relevant Earth Engine Python packages, <code>earthengine-api</code> <a href="https://developers.google.com/earth-engine/guides/python_install">(ee)</a> and <a href="https://geemap.org/">geemap</a>. This lesson was written using geemap version 0.22.1. If you have an older version installed, used the command below to update.</p>
+<h2 id="GEE-Python-Package-Installation-and-Authentication">GEE Python Package Installation and Authentication<a class="anchor-link" href="#GEE-Python-Package-Installation-and-Authentication">¶</a></h2>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ee5cc9ff">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7549,32 +7611,56 @@ urlTitle: aop-refl-py-geemap</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">ee</span>
-<span class="kn">import</span> <span class="nn">geemap</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">ee</span><span class="o">,</span> <span class="nn">geemap</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5d682bc2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=402aab2b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>In order to use Earth Engine from within this Jupyter Notebook, we need to first <code>Authenticate</code> (which requires generating a token) and <code>Initialize</code>, as below. For more detailed instructions on the Authentication process, please refer to the: 
+<p>In order to use Earth Engine from within this Jupyter Notebook, we need to first Authenticate (which requires generating a token) and then Initialize, as below. For more detailed instructions on the Authentication process, please refer to the: 
 <a href="https://book.geemap.org/chapters/01_introduction.html#earth-engine-authentication" target="_blank">geemap text book Earth Engine authentication section</a>.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=373e4793">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e09ea3cb">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">geemap</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[2]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>'0.22.1'</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=fad574d4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ee</span><span class="o">.</span><span class="n">Authenticate</span><span class="p">()</span>
@@ -7592,7 +7678,7 @@ urlTitle: aop-refl-py-geemap</p>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
 <p>To authorize access needed by Earth Engine, open the following
         URL in a web browser and follow the instructions:</p>
-<p><a href="https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&amp;request_id=YgLVqY6EZQQa8TIEdgZAOGcqXLKcgtZCQDBtcdQoEk0&amp;tc=T1-TmSDdiyMEPg5hon9_3xWAhGIjhwWwOnB92sEPiqQ&amp;cc=A-kiHJOTX3FzO3VnhMz9YJOXAn1NHFCed2I3vsStaYw">https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&amp;request_id=YgLVqY6EZQQa8TIEdgZAOGcqXLKcgtZCQDBtcdQoEk0&amp;tc=T1-TmSDdiyMEPg5hon9_3xWAhGIjhwWwOnB92sEPiqQ&amp;cc=A-kiHJOTX3FzO3VnhMz9YJOXAn1NHFCed2I3vsStaYw</a></p>
+<p><a href="https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&amp;request_id=d14Y5cPpjRI2xthDcGnDihZhifXKCYeSXN96Rfh6vZs&amp;tc=vLZudoll6bTTGiTL2pRlB31GehartDDjHuVTwnH446M&amp;cc=QBieU0J-NeNTC_uvd0gpCsAObmuETaWjFpO-t6g7naw">https://code.earthengine.google.com/client-auth?scopes=https%3A//www.googleapis.com/auth/earthengine%20https%3A//www.googleapis.com/auth/devstorage.full_control&amp;request_id=d14Y5cPpjRI2xthDcGnDihZhifXKCYeSXN96Rfh6vZs&amp;tc=vLZudoll6bTTGiTL2pRlB31GehartDDjHuVTwnH446M&amp;cc=QBieU0J-NeNTC_uvd0gpCsAObmuETaWjFpO-t6g7naw</a></p>
 <p>The authorization workflow will generate a code, which you should paste in the box below.</p>
 </div>
 </div>
@@ -7609,12 +7695,12 @@ Successfully saved authorization token.
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d6439550">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6797e07a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">()</span>
@@ -7624,81 +7710,18 @@ Successfully saved authorization token.
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ddf64811">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=83638ab9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>First let's take a look at the available reflectance datasets - these come in 2 varieties: directional, and bidirectional. The bidirectional reflectance data have Bidirectional Reflectance Distribution Function (BRDF) and topographic corrections applied. The next few chunks of code show how you can do some initial data exploration, and determine what sites and how many years of data per site are available.</p>
+<p>Now that you've Authenticated and Initialized your Earth Engine account, you can start using the Python API to interact with GEE using the <code>ee</code> and <code>geemap</code> packageS.</p>
+<p>First let's read in the Surface Directional Reflectance Image Collection (<code>HSI_REFL/001</code>) and see what data are available in GEE.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=5bf50989-bb5d-4e49-b315-bd27538ac9c7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read in the NEON AOP Surface Directional Reflectance (HSI_REFL/001) Collection:</span>
-<span class="n">refl001</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">'projects/neon-prod-earthengine/assets/HSI_REFL/001'</span><span class="p">)</span>
-
-<span class="c1"># Read in the NEON AOP Surface Bidirectional Reflectance (HSI_REFL/002) Collection:</span>
-<span class="n">refl002</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">'projects/neon-prod-earthengine/assets/HSI_REFL/002'</span><span class="p">)</span>
-
-<span class="c1"># Determine available images in the NEON directional reflectance image collection:</span>
-<span class="n">refl001_list</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'system:index'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'Available NEON Directional Reflectance Images:'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">refl001_list</span><span class="p">)</span><span class="si">}</span><span class="s1"> images available from the directional reflectance image collection'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'first 10 images:'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">refl001_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
-
-<span class="c1"># Determine available images in the NEON bidirectional reflectance image collection:</span>
-<span class="n">refl002_list</span> <span class="o">=</span> <span class="n">refl002</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'system:index'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Available NEON Bidirectional Reflectance Images:'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">refl002_list</span><span class="p">)</span><span class="si">}</span><span class="s1"> images available from the bidirectional reflectance image collection'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'first 10 images:'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">refl002_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Available NEON Directional Reflectance Images:
-61 images available from the directional reflectance image collection
-first 10 images:
-['2013_CPER_1', '2014_HARV_2', '2014_JERC_1', '2015_MLBS_1', '2015_TALL_1', '2016_CLBJ_1', '2016_GRSM_2', '2016_HARV_3', '2016_JERC_2', '2016_SERC_1']
-
-Available NEON Bidirectional Reflectance Images:
-68 images available from the bidirectional reflectance image collection
-first 10 images:
-['2022_ABBY_5', '2022_ARIK_4', '2022_BART_6', '2022_BLAN_5', '2022_CHEQ_7', '2022_CLBJ_6', '2022_CUPE_2', '2022_GUAN_2', '2022_GUIL_2', '2022_HOPB_4']
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ad19a44a-7f65-42c2-8436-0a4d40b0212d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>There are over 60 images in the directional and bidirectional reflectance image collections as of January 2025. Bidirectional data are currently only available for data collected between 2022-2024. More data for earlier years of data will be added in 2025, or you can request data for older directional reflectance data to be added if there is a site you would like to work with sooner. For this exercise, we will start by showing an example of the directional reflectance data since there currently is a longer archive of data available for that data product, but you would handle the bidirectional reflectance data the same way.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1a25409e-e658-44f6-a72e-ba913453ba62">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9ad8e956">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7706,22 +7729,18 @@ first 10 images:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Get the flight year and site information</span>
-<span class="n">refl001_years</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'FLIGHT_YEAR'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
-<span class="n">refl001_sites</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
-<span class="n">unique_refl001_sites</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">refl001_sites</span><span class="p">))</span>
-<span class="n">unique_refl001_sites</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'NEON sites included in the directional reflectance collection: </span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">unique_refl001_sites</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'NEON years included in the directional reflectance collection: </span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">refl001_years</span><span class="p">)))</span>
-<span class="c1"># print('NEON flight years included in the directional reflectance collection: \n', list(set(flightYears)))</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read in the NEON AOP Surface Directional Reflectance (SDR) Collection:</span>
+<span class="n">refl001</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">'projects/neon-prod-earthengine/assets/HSI_REFL/001'</span><span class="p">)</span>
 
-<span class="c1"># Get the flight year and site information</span>
-<span class="n">refl002_years</span> <span class="o">=</span> <span class="n">refl002</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'FLIGHT_YEAR'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
-<span class="n">refl002_sites</span> <span class="o">=</span> <span class="n">refl002</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
-<span class="n">unique_refl002_sites</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">refl002_sites</span><span class="p">))</span>
-<span class="n">unique_refl002_sites</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">NEON sites included in the bidirectional reflectance collection: </span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="n">unique_refl002_sites</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'NEON years included in the bidirectional reflectance collection: </span><span class="se">\n</span><span class="s1">'</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">refl002_years</span><span class="p">)))</span>
+<span class="c1"># Count and list all available sites in the NEON directional reflectance image collection:</span>
+<span class="c1"># Get the number of SDR images</span>
+<span class="n">refl001_count</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">refl001_count</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">refl001_count</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Found </span><span class="si">{</span><span class="n">refl001_count</span><span class="si">}</span><span class="s1"> NEON Directional Reflectance Images in GEE'</span><span class="p">)</span>
+
+<span class="n">refl001_year_sites</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'system:index'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Last 10 reflectance datasets available:'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">refl001_year_sites</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
 </pre></div>
 </div>
 </div>
@@ -7734,32 +7753,27 @@ first 10 images:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>NEON sites included in the directional reflectance collection: 
- ['ABBY', 'BONA', 'CLBJ', 'CPER', 'GRSM', 'GUAN', 'HARV', 'HEAL', 'JERC', 'JORN', 'MCRA', 'MLBS', 'NIWO', 'OAES', 'OSBS', 'RMNP', 'SERC', 'SJER', 'SOAP', 'SRER', 'TALL', 'YELL']
-NEON years included in the directional reflectance collection: 
- [2016, 2017, 2018, 2019, 2020, 2021, 2013, 2014, 2015]
+<pre>Found 48 NEON Directional Reflectance Images in GEE
 
-NEON sites included in the bidirectional reflectance collection: 
- ['ABBY', 'ARIK', 'BART', 'BLAN', 'BONA', 'CHEQ', 'CLBJ', 'CUPE', 'DEJU', 'DELA', 'DSNY', 'GUAN', 'GUIL', 'HEAL', 'HOPB', 'JERC', 'JORN', 'KONZ', 'LENO', 'LIRO', 'MCDI', 'MCRA', 'MLBS', 'MOAB', 'NIWO', 'NOGP', 'OAES', 'ONAQ', 'OSBS', 'PRIN', 'REDB', 'RMNP', 'SCBI', 'SERC', 'SJER', 'SOAP', 'SRER', 'STEI', 'STER', 'TALL', 'TEAK', 'TOOL', 'UKFS', 'UNDE', 'WLOU', 'WOOD', 'WREF', 'YELL']
-NEON years included in the bidirectional reflectance collection: 
- [2024, 2022, 2023]
+Last 10 reflectance datasets available:
+['2021_GRSM_5', '2021_HEAL_4', '2021_JERC_6', '2021_JORN_4', '2021_MCRA_2', '2021_OAES_5', '2021_OSBS_6', '2021_SJER_5', '2021_SOAP_5', '2021_SRER_4']
 </pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8e7c1720-d9ea-480f-a504-ed21b34357d1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a3c058e6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We can also make a function to display information about the sites including the # of years available and list of available years. This can be useful for determining which site you want to explore, especially if you are looking to do a time-series analysis.</p>
+<p>We can also look for data for a specified site - for example look at all the years of AOP SDR data available for a given site.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=830fc21e-79a2-4a39-9bb6-8d325ad5a05d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1d35789b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7767,195 +7781,15 @@ NEON years included in the bidirectional reflectance collection:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">summarize_site_info</span><span class="p">(</span><span class="n">site_list</span><span class="p">):</span>
-    <span class="c1"># Initialize a dictionary of the summary info about the image collection</span>
-    <span class="n">image_site_summary</span> <span class="o">=</span> <span class="p">{}</span>
-    
-    <span class="c1"># Pull out the year and site code information for each image, called ysv (year_site_visit) in the list of sites</span>
-    <span class="k">for</span> <span class="n">ysv</span> <span class="ow">in</span> <span class="n">site_list</span><span class="p">:</span>
-        <span class="c1"># Split the entry to extract year and code</span>
-        <span class="n">year</span><span class="p">,</span> <span class="n">site_code</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">ysv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)</span>
-        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
-        
-        <span class="c1"># Initialize the site_code in the dictionary if not already present</span>
-        <span class="k">if</span> <span class="n">site_code</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">image_site_summary</span><span class="p">:</span>
-            <span class="n">image_site_summary</span><span class="p">[</span><span class="n">site_code</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'cumulative_years'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'years_list'</span><span class="p">:</span> <span class="p">[]}</span>
-        
-        <span class="c1"># Update the cumulative sum and list of years</span>
-        <span class="k">if</span> <span class="n">year</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">image_site_summary</span><span class="p">[</span><span class="n">site_code</span><span class="p">][</span><span class="s1">'years_list'</span><span class="p">]:</span>
-            <span class="n">image_site_summary</span><span class="p">[</span><span class="n">site_code</span><span class="p">][</span><span class="s1">'years_list'</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
-            <span class="n">image_site_summary</span><span class="p">[</span><span class="n">site_code</span><span class="p">][</span><span class="s1">'cumulative_years'</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    
-    <span class="c1"># Sort the results by cumulative years in descending order</span>
-    <span class="n">sorted_image_site_summary</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image_site_summary</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">'cumulative_years'</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    
-    <span class="c1"># Print the sorted summary information</span>
-    <span class="k">for</span> <span class="n">site_code</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">sorted_image_site_summary</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">site_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">'cumulative_years'</span><span class="p">]</span><span class="si">}</span><span class="s2"> years - </span><span class="si">{</span><span class="n">info</span><span class="p">[</span><span class="s1">'years_list'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ce3b6bad-2eb5-4a14-a7d9-554a680455e0">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Apply this function to the <code>refl001_list</code> and <code>refl002_list</code> as shown below.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=17ae328c-b978-4940-a646-0293742d6bbd">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">summarize_site_info</span><span class="p">(</span><span class="n">refl001_list</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>JERC: 6 years - [2014, 2016, 2017, 2018, 2019, 2021]
-TALL: 6 years - [2015, 2016, 2017, 2018, 2019, 2021]
-HARV: 5 years - [2014, 2016, 2017, 2018, 2019]
-CPER: 4 years - [2013, 2017, 2020, 2021]
-CLBJ: 4 years - [2016, 2017, 2019, 2021]
-SERC: 4 years - [2016, 2017, 2019, 2021]
-OAES: 4 years - [2017, 2018, 2019, 2021]
-SRER: 4 years - [2017, 2018, 2019, 2021]
-MLBS: 3 years - [2015, 2017, 2018]
-GRSM: 3 years - [2016, 2017, 2021]
-MCRA: 2 years - [2018, 2021]
-HEAL: 2 years - [2019, 2021]
-JORN: 2 years - [2019, 2021]
-NIWO: 2 years - [2019, 2020]
-SOAP: 2 years - [2019, 2021]
-GUAN: 1 years - [2018]
-RMNP: 1 years - [2020]
-YELL: 1 years - [2020]
-ABBY: 1 years - [2021]
-BONA: 1 years - [2021]
-OSBS: 1 years - [2021]
-SJER: 1 years - [2021]
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=65d820c1-f780-4e9f-8366-f8ea66a72a9e">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">summarize_site_info</span><span class="p">(</span><span class="n">refl002_list</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>ABBY: 2 years - [2022, 2023]
-ARIK: 2 years - [2022, 2023]
-CLBJ: 2 years - [2022, 2023]
-HOPB: 2 years - [2022, 2024]
-KONZ: 2 years - [2022, 2023]
-MCDI: 2 years - [2022, 2024]
-MCRA: 2 years - [2022, 2023]
-MLBS: 2 years - [2022, 2023]
-OAES: 2 years - [2022, 2023]
-PRIN: 2 years - [2022, 2023]
-REDB: 2 years - [2022, 2023]
-SRER: 2 years - [2022, 2024]
-UKFS: 2 years - [2022, 2023]
-WREF: 2 years - [2022, 2023]
-YELL: 2 years - [2022, 2023]
-JERC: 2 years - [2023, 2024]
-SJER: 2 years - [2023, 2024]
-SOAP: 2 years - [2023, 2024]
-WLOU: 2 years - [2023, 2024]
-BART: 1 years - [2022]
-BLAN: 1 years - [2022]
-CHEQ: 1 years - [2022]
-CUPE: 1 years - [2022]
-GUAN: 1 years - [2022]
-GUIL: 1 years - [2022]
-JORN: 1 years - [2022]
-LIRO: 1 years - [2022]
-SERC: 1 years - [2022]
-STEI: 1 years - [2022]
-STER: 1 years - [2022]
-TOOL: 1 years - [2022]
-UNDE: 1 years - [2022]
-BONA: 1 years - [2023]
-DEJU: 1 years - [2023]
-DELA: 1 years - [2023]
-DSNY: 1 years - [2023]
-HEAL: 1 years - [2023]
-LENO: 1 years - [2023]
-MOAB: 1 years - [2023]
-NIWO: 1 years - [2023]
-NOGP: 1 years - [2023]
-ONAQ: 1 years - [2023]
-OSBS: 1 years - [2023]
-RMNP: 1 years - [2023]
-SCBI: 1 years - [2023]
-TALL: 1 years - [2023]
-TEAK: 1 years - [2023]
-WOOD: 1 years - [2023]
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8d9edcd3-f31a-466f-9b59-2252d6fcde55">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>This provides some useful summary information about the sites and years of data that are available on GEE for the two reflectance datasets. We can see that there are only 1-2 years of data available for the bidirectional reflectance datasets. This is because AOP only started applying the BRDF and topographic corrections starting in 2024, for data collected between 2022-2024. For more information about the status of the BRDF corrections, you can follow the <a href="https://www.neonscience.org/data-samples/data-notifications" target="_blank">NEON Data Notifications</a>, and you can also sign up to receive email notifications about NEON data products of interest via the NEON Data Portal.</p>
-<p>Now that we've determined what we have to work with, we can choose a site. In this example we will look at the <a href="https://www.neonscience.org/field-sites/grsm" target="_blank">Great Smokey Mountain (GRSM)</a> site. You can see all the AOP directional reflectance data that are available in GEE and the years of data available at GRSM (similar to what we showed above) using the code chunk below.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=de05cee3-e0c0-4f25-a529-06f0c6694c4e">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Define the site code</span>
-<span class="n">site</span> <span class="o">=</span> <span class="s1">'GRSM'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># See the years of data available for the specified site:</span>
+<span class="n">site</span> <span class="o">=</span> <span class="s1">'CPER'</span>
 
-<span class="c1"># Display the years of data available for the specified site:</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Years of data available in GEE for site'</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="s1">':'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">([</span><span class="n">year_site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">year_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">refl001_years</span><span class="p">,</span><span class="n">refl001_sites</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">year_site</span><span class="p">])</span>
+<span class="c1"># Get the flight year and site information</span>
+<span class="n">flight_years</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'FLIGHT_YEAR'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+<span class="n">sites</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Years of Directional Reflectance data available in GEE for '</span><span class="p">,</span><span class="n">site</span><span class="o">+</span><span class="s1">':'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">year_site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">year_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">flight_years</span><span class="p">,</span><span class="n">sites</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">year_site</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -7969,34 +7803,41 @@ WOOD: 1 years - [2023]
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
-Years of data available in GEE for site GRSM :
-[2016, 2017, 2021]
+Years of Directional Reflectance data available in GEE for  CPER:
+[2013, 2017, 2020, 2020, 2021]
 </pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9925f060">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=832ae722">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>If you'd like to read in every year, you can use <code>ee.List.sequence(start_year, end_year)</code>, but since AOP data is not collected  every year at every site, and all of the data has not yet been added to GEE, we recommend you first check the data availability and then use <code>ee.List</code> to specify only data that are available (or the dates of interest). For this example, we'll create an earth engine list (<code>ee.List</code>) of the GRSM data from 2016, 2017, and 2021:</p>
+<p>Let's take a look at another dataset, the high-resolution RGB camera imagery:</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ae18df9e">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8c05a860">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">years</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">List</span><span class="p">([</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">2017</span><span class="p">,</span> <span class="mi">2021</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read in the NEON AOP Camera (RGB) Collection:</span>
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">'projects/neon-prod-earthengine/assets/RGB/001'</span><span class="p">)</span>
+
+<span class="c1"># List all available sites in the NEON SDR image collection:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Available NEON Camera Images:'</span><span class="p">)</span>
+<span class="c1"># Get the number of RGB images</span>
+<span class="n">rgb_count</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Count: '</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">rgb_count</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span><span class="o">+</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rgb</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'system:index'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
@@ -8009,24 +7850,222 @@ Years of data available in GEE for site GRSM :
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[2016, 2017, 2021]
+<pre>Available NEON Camera Images:
+Count:  44
+
+['2016_HARV_3', '2017_CLBJ_2', '2017_GRSM_3', '2017_SERC_3', '2018_CLBJ_3', '2018_OAES_3', '2018_SRER_2', '2018_TEAK_3', '2019_BART_5', '2019_CLBJ_4', '2019_HARV_6', '2019_HEAL_3', '2019_JORN_3', '2019_OAES_4', '2019_SOAP_4', '2020_CPER_7', '2020_NIWO_4', '2020_RMNP_3', '2020_UKFS_5', '2020_UNDE_4', '2020_YELL_3', '2021_ABBY_4', '2021_BLAN_4', '2021_BONA_4', '2021_CLBJ_5', '2021_DEJU_4', '2021_DELA_6', '2021_HEAL_4', '2021_JERC_6', '2021_JORN_4', '2021_LENO_6', '2021_MLBS_4', '2021_OAES_5', '2021_OSBS_6', '2021_SERC_5', '2021_SJER_5', '2021_SOAP_5', '2021_SRER_4', '2021_TALL_6', '2021_WREF_4', '2022_OAES_6', '2022_UNDE_5', '2023_CLBJ_7', '2023_OAES_7']
 </pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5213dfef">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b016f6a3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Next we can write a function that will read in the AOP SDR image collection, filter on a specified site, and then read in the <code>Weather_Quality_Indicator</code> band and mask the data to include only the clear weather (&lt;10% cloud cover) data.</p>
+<p>Similarly, you can read in the DEM and CHM collections as follows:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Read in the NEON AOP DEM Collection (this includes the DTM and DSM as 2 bands)</span>
+<span class="n">dem</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">'projects/neon-prod-earthengine/assets/DEM/001'</span><span class="p">)</span>
+
+<span class="c1"># Read in the NEON AOP CHM Collection</span>
+<span class="n">chm</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">ImageCollection</span><span class="p">(</span><span class="s1">'projects/neon-prod-earthengine/assets/CHM/001'</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=d9a25d4f">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=77bf4969">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Explore-Image-Properties">Explore Image Properties<a class="anchor-link" href="#Explore-Image-Properties">¶</a></h2><p>Now that we've read in a couple of image collections, let's take a look at some of the image properties using <code>geemap.image_props</code>:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=dd465eaa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">props</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">image_props</span><span class="p">(</span><span class="n">refl001</span><span class="o">.</span><span class="n">first</span><span class="p">())</span>
+
+<span class="c1"># Display the property names for the first 15 properties:</span>
+<span class="n">props</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[:</span><span class="mi">16</span><span class="p">]</span>
+
+<span class="c1"># Optionally display all properties by uncommenting the line below</span>
+<span class="c1"># props</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[8]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>['AOP_VISIT_NUMBER',
+ 'DESCRIPTION',
+ 'FLIGHT_YEAR',
+ 'IMAGE_DATE',
+ 'NEON_DATA_PROD_ID',
+ 'NEON_DATA_PROD_URL',
+ 'NEON_DOMAIN',
+ 'NEON_SITE',
+ 'NOMINAL_SCALE',
+ 'PROVISIONAL_RELEASED',
+ 'RELEASE_YEAR',
+ 'SCALE_FACTOR',
+ 'SENSOR_NAME',
+ 'SENSOR_NUMBER',
+ 'WL_FWHM_B001',
+ 'WL_FWHM_B002']</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d3384ca1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>You can also look at all the Image properties by typing <code>props</code>. This generates a long output, so we will just show a portion of the output from that:</p>
+<pre><code>AOP_VISIT_NUMBER: 1
+DESCRIPTION :Orthorectified surface directional reflectance (0-1 unitless, scaled by 10000) ...
+FLIGHT_YEAR: 2013
+IMAGE_DATE: 2013-06-25
+NEON_DATA_PROD_ID: DP3.30006.001
+NEON_DATA_PROD_URL: https://data.neonscience.org/data-products/DP3.30006.001
+NEON_DOMAIN: D10
+NEON_SITE: CPER
+NOMINAL_SCALE: 1
+PROVISIONAL_RELEASED: RELEASED
+RELEASE_YEAR :2024R
+SCALING_FACTO 1:10000
+SENSOR_NAM E:AVIRIS-NG
+SENSOR_NUMBE R:NIS1
+WL_FWHM_B00 1:382.3465,5.8456
+
+system:asset_size:68059.439009 MB
+system:band_names: List (442 elements)
+system:id:projects/neon-prod-earthengine/assets/HSI_REFL/001/2013_CPER_1
+system:index:2013_CPER_1DR
+system:time_end:2013-06-25 10:42:05
+system:time_start:2013-06-25 08:30:45
+system:version:1689911980211725
+</code></pre>
+<p>The image properties contain some additional relevant information about the dataset, and are variables you can filter on to select a subset of the data. A lot of these properties are self-explanatory, but some of them may be less apparent. A short description of a few properties is outlined below. Note that when the datasets become part of the Google Public Datasets, you will be able to see descriptions of the properties in GEE</p>
+<ul>
+<li><p><code>PROVISIONAL_RELEASED</code>: Whether the data are available provisionally, or are Released. See <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases">https://www.neonscience.org/data-samples/data-management/data-revisions-releases</a> for more information on the NEON release process.</p>
+</li>
+<li><p><code>RELEASE_YEAR</code>: The year of the release tag, if the data have been Released. .</p>
+</li>
+<li><p><code>SENSOR_NAME</code>: The name of the hyperspectral sensor. All NEON sensors are JPL AVIRIS-NG sensors.</p>
+</li>
+<li><p><code>SENSOR_NUMBER</code>: The payload number, NIS1 = NEON Imaging Spectrometer, Payload 1. NEON Operates 3 separate payloads, each with a unique hyperspectral sensor (as well as unique LiDAR and Camera sensors).</p>
+</li>
+<li><p><code>WL_FWHM_B###</code>: Center Wavelength (WL) and Full Width Half Max (FWHM) of the band, both in nm</p>
+</li>
+</ul>
+<p>In addition there are some <code>system</code> properties, including information about the size of the asset, the band names (most of these are just band numbers but the QA bands have more descriptive names), as well as the start and end time of the collection.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3a5432e7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Filter-an-Image-Collection">Filter an Image Collection<a class="anchor-link" href="#Filter-an-Image-Collection">¶</a></h2><p>One of the most useful aspects of having AOP data ingested in Earth Engine is the ability to filter by properties, such as the site name, dates, sensors, etc. In this next section, we will show how to filter datasets to extract only data of interest. We'll use the NEON's <a href="https://www.neonscience.org/field-sites/harv" target="_blank">Harvard Forest (HARV)</a>, in Massachusettes.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f8f19d2b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># See the years of data available for a specified site:</span>
+<span class="n">site</span> <span class="o">=</span> <span class="s1">'HARV'</span>
+
+<span class="c1"># Get the flight year and site information</span>
+<span class="n">rgb_flight_years</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'FLIGHT_YEAR'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+<span class="n">rgb_sites</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Years of RGB data available in GEE for'</span><span class="p">,</span><span class="n">site</span><span class="o">+</span><span class="s1">':'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">year_site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">year_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rgb_flight_years</span><span class="p">,</span> <span class="n">rgb_sites</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">year_site</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+Years of RGB data available in GEE for HARV:
+[2016, 2019]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3ce982c5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Get the flight year and site information</span>
+<span class="n">refl001_flight_years</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'FLIGHT_YEAR'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+<span class="n">refl001_sites</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">aggregate_array</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">)</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Years of Directional Reflectance data available in GEE for'</span><span class="p">,</span><span class="n">site</span><span class="o">+</span><span class="s1">':'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">year_site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">year_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">refl001_flight_years</span><span class="p">,</span> <span class="n">refl001_sites</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">year_site</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+Years of Directional Reflectance data available in GEE for HARV:
+[2014, 2016, 2017, 2018, 2019]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=82edb492">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8034,46 +8073,30 @@ Years of data available in GEE for site GRSM :
 <div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sdr_clear_weather</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Specify the start and end dates</span>
+<span class="n">year</span> <span class="o">=</span> <span class="mi">2019</span>
+<span class="n">start_date2019</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">fromYMD</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+<span class="n">end_date2019</span> <span class="o">=</span> <span class="n">start_date2019</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">)</span>
 
-    <span class="c1"># Specify the start and end dates</span>
-    <span class="n">start_date</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">fromYMD</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
-    <span class="n">end_date</span> <span class="o">=</span> <span class="n">start_date</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">)</span>
-    
-    <span class="c1"># Filter the SDR image collection on the site and dates</span>
-    <span class="n">aop_sdr</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">filterDate</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span> \
-                    <span class="o">.</span><span class="n">filterMetadata</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">,</span> <span class="s1">'equals'</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span><span class="o">.</span><span class="n">mosaic</span><span class="p">()</span>
-    
-    <span class="c1"># Read in only the data bands, all of which start with "B", eg. "B001"</span>
-    <span class="n">sdr_data</span> <span class="o">=</span> <span class="n">aop_sdr</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'B.*'</span><span class="p">)</span>
-    
-    <span class="c1"># Extract Weather Quality Indicator layer</span>
-    <span class="n">weather_quality_band</span> <span class="o">=</span> <span class="n">aop_sdr</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'Weather_Quality_Indicator'</span><span class="p">]);</span>
-
-    <span class="c1"># Select only the clear weather data (&lt;10% cloud cover)</span>
-    <span class="n">clear_weather</span> <span class="o">=</span> <span class="n">weather_quality_band</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1"># 1 = 0-10% cloud cover</span>
-    
-    <span class="c1"># Mask out all cloudy pixels from the SDR data cube</span>
-    <span class="n">sdr_clear_weather</span> <span class="o">=</span> <span class="n">sdr_data</span><span class="o">.</span><span class="n">updateMask</span><span class="p">(</span><span class="n">clear_weather</span><span class="p">);</span>
-
-    <span class="k">return</span> <span class="n">sdr_clear_weather</span>
+<span class="c1"># Filter the RGB image collection on the site and dates</span>
+<span class="n">harv_rgb2019</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">filterDate</span><span class="p">(</span><span class="n">start_date2019</span><span class="p">,</span> <span class="n">end_date2019</span><span class="p">)</span><span class="o">.</span><span class="n">filterMetadata</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">,</span> <span class="s1">'equals'</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span><span class="o">.</span><span class="n">mosaic</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=03be4603">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1362a7d5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We can now map this function over the list of years, and then add these images to the Map layer in a loop.</p>
+<h2 id="Add-Data-Layers-to-the-Map">Add Data Layers to the Map<a class="anchor-link" href="#Add-Data-Layers-to-the-Map">¶</a></h2><p>In order to visualize and interact with the dataset, we can use <code>geemap.Map()</code> as follows, to display Harvard Forest camera and directional reflectance imagery from 2019.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7f2e3d22">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=6e5d85fc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8083,21 +8106,19 @@ Years of data available in GEE for site GRSM :
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
 
-<span class="c1"># Map the function over the years of data, defined before as an ee.List</span>
-<span class="n">images</span> <span class="o">=</span> <span class="n">years</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sdr_clear_weather</span><span class="p">)</span>
+<span class="c1"># Specify center location of HARV</span>
+<span class="c1"># NEON field site information can be found on the NEON website here &gt; https://www.neonscience.org/field-sites/harv</span>
+<span class="n">geo</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">([</span><span class="o">-</span><span class="mf">72.17</span><span class="p">,</span> <span class="mf">42.5</span><span class="p">])</span>
 
-<span class="c1"># Set the visualization parameters so contrast is maximized, and display RGB bands (true-color image)</span>
-<span class="n">visParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'min'</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s1">'max'</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="s1">'gamma'</span><span class="p">:</span><span class="mf">0.9</span><span class="p">,</span><span class="s1">'bands'</span><span class="p">:[</span><span class="s1">'B053'</span><span class="p">,</span><span class="s1">'B035'</span><span class="p">,</span><span class="s1">'B019'</span><span class="p">]};</span>
+<span class="c1"># Set the visualization parameters so contrast is maximized</span>
+<span class="n">rgb_vis_params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'min'</span><span class="p">:</span> <span class="mi">45</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s1">'gamma'</span><span class="p">:</span> <span class="mf">.6</span><span class="p">}</span>
 
-<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())):</span>
-    <span class="n">image</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
-    <span class="n">layer_name</span> <span class="o">=</span> <span class="n">site</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="n">index</span><span class="p">])</span> <span class="o">+</span> <span class="s2">" Directional Reflectance"</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'Adding '</span> <span class="o">+</span> <span class="n">layer_name</span><span class="p">)</span>
-    <span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">visParams</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
+<span class="c1"># Add the RGB data as a layer to the Map</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">harv_rgb2019</span><span class="p">,</span> <span class="n">rgb_vis_params</span><span class="p">,</span> <span class="s1">'HARV 2019 RGB Camera'</span><span class="p">);</span>
 
-<span class="c1"># Center the map on the site</span>
-<span class="n">grsmCenter</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Geometry</span><span class="o">.</span><span class="n">Point</span><span class="p">([</span><span class="o">-</span><span class="mf">83.5</span><span class="p">,</span> <span class="mf">35.65</span><span class="p">]);</span>
-<span class="n">Map</span><span class="o">.</span><span class="n">centerObject</span><span class="p">(</span><span class="n">grsmCenter</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
+<span class="c1"># Center the map on the site center and set zoom level</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">centerObject</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
+
 <span class="n">Map</span>
 </pre></div>
 </div>
@@ -8108,35 +8129,27 @@ Years of data available in GEE for site GRSM :
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Adding GRSM 2016 Directional Reflectance
-Adding GRSM 2017 Directional Reflectance
-Adding GRSM 2021 Directional Reflectance
-</pre>
-</div>
-</div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>Map(center=[35.65, -83.5], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…</pre>
+<pre>Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0ad27cbf">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=988eb857">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>The function below extracts the weather quality band for each year of data in the image collection.</p>
+<h2 id="Surface-Directional-Reflectance-(SDR)">Surface Directional Reflectance (SDR)<a class="anchor-link" href="#Surface-Directional-Reflectance-(SDR)">¶</a></h2><p>Next let's take a look at one of the SDR datasets. We will pull in only the data bands, for this example.</p>
+<h3 id="Reflectance-Data-Bands">Reflectance Data Bands<a class="anchor-link" href="#Reflectance-Data-Bands">¶</a></h3>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3d8b2c84">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=25ccd2bc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8144,62 +8157,23 @@ Adding GRSM 2021 Directional Reflectance
 <div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">yearly_weather_band</span><span class="p">(</span><span class="n">year</span><span class="p">):</span>
-
-    <span class="n">start_date</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">fromYMD</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
-    <span class="n">end_date</span> <span class="o">=</span> <span class="n">start_date</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">)</span>
-    
-<span class="c1">#     print('filtering image collection by date and site')</span>
-    <span class="n">aop_refl001</span> <span class="o">=</span> <span class="n">refl001</span> \
-        <span class="o">.</span><span class="n">filterDate</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span> \
-        <span class="o">.</span><span class="n">filterMetadata</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">,</span> <span class="s1">'equals'</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span><span class="o">.</span><span class="n">mosaic</span><span class="p">()</span>
-    
-    <span class="c1"># Extract Weather Quality Indicator band</span>
-    <span class="n">weather_quality_band</span> <span class="o">=</span> <span class="n">aop_refl001</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'Weather_Quality_Indicator'</span><span class="p">]);</span>
-
-    <span class="k">return</span> <span class="n">weather_quality_band</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=82292e77">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Similarly, we will map this function over the list of years, and then add these weather quality images to the Map layer in a loop. For this we can define a color palette that will match AOP's weather stop-light color convention, where green means good weather (&lt;10% cloud cover), yellow is OK (10-50% cloud cover), and red is bad (&gt;50% cloud cover).</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=4f2bed70">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
 
-<span class="n">weather_bands</span> <span class="o">=</span> <span class="n">years</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">yearly_weather_band</span><span class="p">)</span>
+<span class="c1"># Read in the first image of the SDR Image Collection</span>
+<span class="n">harv_refl2019</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">filterDate</span><span class="p">(</span><span class="n">start_date2019</span><span class="p">,</span> <span class="n">end_date2019</span><span class="p">)</span><span class="o">.</span><span class="n">filterMetadata</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">,</span> <span class="s1">'equals'</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span><span class="o">.</span><span class="n">mosaic</span><span class="p">()</span>
 
-<span class="c1"># Define a palette for the weather - to match NEON AOP's weather color conventions (green-yellow-red)</span>
-<span class="n">gyrPalette</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'green'</span><span class="p">,</span> <span class="s1">'yellow'</span><span class="p">,</span> <span class="s1">'red'</span><span class="p">];</span> <span class="c1"># green: &lt;10% cloud cover, yellow: 10-50% cloud cover, red: &gt; 50% cloud cover</span>
+<span class="c1"># Read in only the data bands, all of which start with "B", eg. "B001"</span>
+<span class="n">harv_refl2019_data</span> <span class="o">=</span> <span class="n">harv_refl2019</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'B.*'</span><span class="p">)</span>
 
-<span class="c1"># parameters to display the weather bands (cloud conditions) with the green-yellow-red palette</span>
-<span class="n">weather_visParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'min'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'palette'</span><span class="p">:</span> <span class="n">gyrPalette</span><span class="p">,</span> <span class="s1">'opacity'</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">};</span>
+<span class="c1"># Set the visualization parameters so contrast is maximized, and display RGB bands (true-color image)</span>
+<span class="n">refl001_viz</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'min'</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span> <span class="s1">'gamma'</span><span class="p">:</span><span class="mf">0.9</span><span class="p">,</span> <span class="s1">'bands'</span><span class="p">:[</span><span class="s1">'B053'</span><span class="p">,</span><span class="s1">'B035'</span><span class="p">,</span><span class="s1">'B019'</span><span class="p">]};</span>
 
-<span class="c1"># loop through the layers and add them to the Map</span>
-<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="n">getInfo</span><span class="p">())):</span>
-    <span class="n">weather_band</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="n">weather_bands</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
-    <span class="n">layer_name</span> <span class="o">=</span> <span class="n">site</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">years</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()[</span><span class="n">index</span><span class="p">])</span> <span class="o">+</span> <span class="s2">" Cloud Cover Layer"</span> 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">'Adding '</span> <span class="o">+</span> <span class="n">layer_name</span><span class="p">)</span>
-    <span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">weather_band</span><span class="p">,</span> <span class="n">weather_visParams</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># can change 1 to 0 if you don't want the layers to be selected "on" by default</span>
+<span class="c1"># Add the reflectance data as a Layer to the Map</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">harv_refl2019_data</span><span class="p">,</span> <span class="n">refl001_viz</span><span class="p">,</span> <span class="s1">'Harvard Forest 2019 Directional Reflectance'</span><span class="p">);</span>
 
-<span class="n">Map</span><span class="o">.</span><span class="n">centerObject</span><span class="p">(</span><span class="n">grsmCenter</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
+<span class="c1"># Center the map on the site center and set zoom level</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">centerObject</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
+
 <span class="n">Map</span>
 </pre></div>
 </div>
@@ -8210,48 +8184,44 @@ Adding GRSM 2021 Directional Reflectance
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Adding GRSM 2016 Cloud Cover Layer
-Adding GRSM 2017 Cloud Cover Layer
-Adding GRSM 2021 Cloud Cover Layer
-</pre>
-</div>
-</div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>Map(center=[35.65, -83.5], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…</pre>
+<pre>Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2aa21e4e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b962b9bc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Now let's add the full image collection (all years) for a different site as a Map Layer. For this example, we'll use the site <a href="https://www.neonscience.org/field-sites/clbj" target="_blank">Lyndon B. Johnson National Grassland (CLBJ)</a>, as there are 5 years of reflectance data ingested in GEE for that site. This is a nice example for displaying the time-lapse feature in the interactive map.</p>
+<h3 id="Reflectance-QA-Bands">Reflectance QA Bands<a class="anchor-link" href="#Reflectance-QA-Bands">¶</a></h3><p>Before we used a regular expression to pull out only the bands starting with "B". We can also take a look at the remaining bands using a similar expression, but this time excluding bands starting with "B". These comprise all of the QA-related bands that provide additional information and context about the data bands. This next chunk of code prints out the IDs of all the QA bands.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7a3aeab9">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=cbee020d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Define the site code</span>
-<span class="n">site</span> <span class="o">=</span> <span class="s1">'CLBJ'</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Read in only the QA bands, none of which start with "B"</span>
+<span class="n">reflQA_bands</span> <span class="o">=</span> <span class="n">harv_refl2019</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'[^B].*'</span><span class="p">)</span>
 
-<span class="c1"># Display the years of data available for the specified site:</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Reflectance data available in GEE for site'</span><span class="p">,</span><span class="n">site</span><span class="p">,</span><span class="s1">':'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">([</span><span class="n">year_site</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">year_site</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">refl001_years</span><span class="p">,</span><span class="n">refl001_sites</span><span class="p">)</span> <span class="k">if</span> <span class="n">site</span> <span class="ow">in</span> <span class="n">year_site</span><span class="p">])</span>
+<span class="c1"># Create a dictionary of the band information</span>
+<span class="n">reflQA_band_info</span> <span class="o">=</span> <span class="n">reflQA_bands</span><span class="o">.</span><span class="n">getInfo</span><span class="p">()</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">reflQA_band_info</span><span class="p">)</span>
+
+<span class="c1"># Loop through the band info dictionary to print out the ID of each band</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'QA bands:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">reflQA_band_info</span><span class="p">[</span><span class="s1">'bands'</span><span class="p">])):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">reflQA_band_info</span><span class="p">[</span><span class="s1">'bands'</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">'id'</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -8264,15 +8234,108 @@ Adding GRSM 2021 Cloud Cover Layer
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>
-Reflectance data available in GEE for site CLBJ :
-[2016, 2017, 2019, 2021]
+<pre>QA bands:
+
+Aerosol_Optical_Depth
+Aspect
+Cast_Shadow
+Dark_Dense_Vegetation_Classification
+Haze_Cloud_Water_Map
+Illumination_Factor
+Path_Length
+Sky_View_Factor
+Slope
+Smooth_Surface_Elevation
+Visibility_Index_Map
+Water_Vapor_Column
+to-sensor_Azimuth_Angle
+to-sensor_Zenith_Angle
+Weather_Quality_Indicator
+Acquisition_Date
 </pre>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=9954fba3">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5b3e62ad">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Most of these QA bands are related to the Atmospheric Correction (ATCOR), one of the spectrometer processing steps which converts Radiance to Reflectance. For more details on this process, NEON provides an Algorithm Theoretical Basis Document (ATBD), which is available on the NEON data portal and linked here: <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD </a>.</p>
+<p>The <code>Weather_Quality_Indicator</code> is particularly useful for assessing data quality. The weather quality indicator includes information about the cloud conditions during the flight, as reported by the flight operators, where 1 corresponds to &lt;10% cloud cover, 2 corresponds to 10-50% cloud cover, and 3 corresponds to &gt;50% cloud cover. We recommend using only clear-sky data (1) for a typical analysis, as it results in the highest quality reflectance data.</p>
+<p>You mayalso  be interested in the <code>Acquisition_Date</code> if, for example, you are linking field data collected on a specific date, or are interested in finding satellite data collected close in time to the AOP imagery.</p>
+<p>The next chunks of code show how to add the Weather QA bands to the Map Layer.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4c180960">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Weather-Quality-Indicator-Band">Weather Quality Indicator Band<a class="anchor-link" href="#Weather-Quality-Indicator-Band">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=995b61dd">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [15]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
+
+<span class="n">harv_refl_weather_qa2019</span> <span class="o">=</span> <span class="n">harv_refl2019</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'Weather_Quality_Indicator'</span><span class="p">]);</span>
+
+<span class="c1"># Define a palette for the weather - to match NEON AOP's weather color conventions (green-yellow-red)</span>
+<span class="n">gyr_palette</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'green'</span><span class="p">,</span><span class="s1">'yellow'</span><span class="p">,</span><span class="s1">'red'</span><span class="p">]</span>
+
+<span class="c1"># Visualization parameters to display the weather bands (cloud conditions) with the green-yellow-red palette</span>
+<span class="n">weather_viz</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'min'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'palette'</span><span class="p">:</span> <span class="n">gyr_palette</span><span class="p">,</span> <span class="s1">'opacity'</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">};</span>
+
+<span class="c1"># Add the RGB data as a layer to the Map</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">harv_refl_weather_qa2019</span><span class="p">,</span> <span class="n">weather_viz</span><span class="p">,</span> <span class="s1">'HARV 2019 Weather QA'</span><span class="p">);</span>
+
+<span class="c1"># Center the map on the site center and set zoom level</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">centerObject</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
+
+<span class="n">Map</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[15]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=16d3543d-4b06-42a7-99f7-60105961e259">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>In 2019, the AOP was able to collect all but the easternmost flightline in green, or clear-sky weather conditions. Let's take a look at the data from 2018 for comparison:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a1cb4d60-7421-4ebc-bcf6-6869fd4cfd64">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8280,33 +8343,30 @@ Reflectance data available in GEE for site CLBJ :
 <div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Specify the start and end dates</span>
+<span class="n">year</span> <span class="o">=</span> <span class="mi">2018</span>
+<span class="n">start_date2018</span> <span class="o">=</span> <span class="n">ee</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">fromYMD</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> 
+<span class="n">end_date2018</span> <span class="o">=</span> <span class="n">start_date2018</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"year"</span><span class="p">)</span>
 
-<span class="c1"># Filter the refl001 and refl002 image collections at the selected site from all available years</span>
-<span class="n">site_refl001</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">filterMetadata</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">,</span> <span class="s1">'equals'</span><span class="p">,</span> <span class="n">site</span><span class="p">);</span>
-<span class="n">site_refl002</span> <span class="o">=</span> <span class="n">refl002</span><span class="o">.</span><span class="n">filterMetadata</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">,</span> <span class="s1">'equals'</span><span class="p">,</span> <span class="n">site</span><span class="p">);</span>
+<span class="c1"># Filter the reflectance image collection on the site and dates</span>
+<span class="n">harv_refl2018</span> <span class="o">=</span> <span class="n">refl001</span><span class="o">.</span><span class="n">filterDate</span><span class="p">(</span><span class="n">start_date2018</span><span class="p">,</span> <span class="n">end_date2018</span><span class="p">)</span><span class="o">.</span><span class="n">filterMetadata</span><span class="p">(</span><span class="s1">'NEON_SITE'</span><span class="p">,</span> <span class="s1">'equals'</span><span class="p">,</span> <span class="n">site</span><span class="p">)</span><span class="o">.</span><span class="n">mosaic</span><span class="p">()</span>
 
-<span class="c1"># Read in only the data bands, all of which start with "B", eg. "B001"</span>
-<span class="n">site_refl001_data</span> <span class="o">=</span> <span class="n">site_refl001</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'B.*'</span><span class="p">)</span>
-<span class="n">site_refl002_data</span> <span class="o">=</span> <span class="n">site_refl002</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">'B.*'</span><span class="p">)</span>
+<span class="n">Map</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">Map</span><span class="p">()</span>
 
-<span class="c1"># Read in the weather quality indicator band</span>
-<span class="n">site_refl001_weatherQA</span> <span class="o">=</span> <span class="n">site_refl001</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'Weather_Quality_Indicator'</span><span class="p">]);</span>
-<span class="n">site_refl002_weatherQA</span> <span class="o">=</span> <span class="n">site_refl002</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'Weather_Quality_Indicator'</span><span class="p">]);</span>
+<span class="n">harv_refl_weather_qa2018</span> <span class="o">=</span> <span class="n">harv_refl2018</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="s1">'Weather_Quality_Indicator'</span><span class="p">]);</span>
 
-<span class="c1"># Set the visualization parameters so contrast is maximized, and display RGB bands (true-color image)</span>
-<span class="n">visParams</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'min'</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s1">'max'</span><span class="p">:</span><span class="mi">1200</span><span class="p">,</span><span class="s1">'gamma'</span><span class="p">:</span><span class="mf">0.9</span><span class="p">,</span><span class="s1">'bands'</span><span class="p">:[</span><span class="s1">'B053'</span><span class="p">,</span><span class="s1">'B035'</span><span class="p">,</span><span class="s1">'B019'</span><span class="p">]};</span>
+<span class="c1"># Define a palette for the weather - to match NEON AOP's weather color conventions (green-yellow-red)</span>
+<span class="n">gyr_palette</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'green'</span><span class="p">,</span><span class="s1">'yellow'</span><span class="p">,</span><span class="s1">'red'</span><span class="p">]</span>
 
-<span class="c1"># Add the site image collection as a layer to the Map</span>
-<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">site_refl001_data</span><span class="p">,</span> <span class="n">visParams</span><span class="p">,</span> <span class="n">site</span> <span class="o">+</span> <span class="s1">' Refl 001'</span><span class="p">);</span>
-<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">site_refl002_data</span><span class="p">,</span> <span class="n">visParams</span><span class="p">,</span> <span class="n">site</span> <span class="o">+</span> <span class="s1">' Refl 002'</span><span class="p">);</span>
+<span class="c1"># Visualization parameters to display the weather bands (cloud conditions) with the green-yellow-red palette</span>
+<span class="n">weather_viz</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'min'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'max'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'palette'</span><span class="p">:</span> <span class="n">gyr_palette</span><span class="p">,</span> <span class="s1">'opacity'</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">};</span>
 
-<span class="c1"># Add the weather quality indicator (WQI) layer as well, for context</span>
-<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">site_refl001_weatherQA</span><span class="p">,</span> <span class="n">weather_visParams</span><span class="p">,</span> <span class="n">site</span> <span class="o">+</span> <span class="s1">' Refl 001 WQI'</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">site_refl002_weatherQA</span><span class="p">,</span> <span class="n">weather_visParams</span><span class="p">,</span> <span class="n">site</span> <span class="o">+</span> <span class="s1">' Refl 002 WQI'</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Add the weather QA layer to the map</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">addLayer</span><span class="p">(</span><span class="n">harv_refl_weather_qa2018</span><span class="p">,</span> <span class="n">weather_viz</span><span class="p">,</span> <span class="s1">'HARV 2019 Weather QA'</span><span class="p">);</span>
 
-<span class="c1"># Center the map on the site reflectance imaage</span>
-<span class="n">Map</span><span class="o">.</span><span class="n">centerObject</span><span class="p">(</span><span class="n">site_refl001</span><span class="p">,</span> <span class="mi">12</span><span class="p">);</span>
+<span class="c1"># Center the map on the site center and set zoom level</span>
+<span class="n">Map</span><span class="o">.</span><span class="n">centerObject</span><span class="p">(</span><span class="n">geo</span><span class="p">,</span> <span class="mi">11</span><span class="p">);</span>
+
 <span class="n">Map</span>
 </pre></div>
 </div>
@@ -8320,142 +8380,21 @@ Reflectance data available in GEE for site CLBJ :
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
 <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>Map(center=[33.36477599782718, -97.60670493430632], controls=(WidgetControl(options=['position', 'transparent_…</pre>
+<pre>Map(center=[42.5, -72.17], controls=(WidgetControl(options=['position', 'transparent_bg'], widget=HBox(childre…</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e219810d">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0c402f0a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>You should now see the Map panel populated with the CLBJ Image Collection and the Weather Quality Band. On your own, explore some of the options by click on the icon in the upper right corner of the map. Some options of interest may be the Create timelapse (globe icon), Inspector (I icon), and GEE toolbox for cloud computing. You can open and close the Layers window and interactively explore the different layers.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=25bc945a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Create--a-Time-Lapse-GIF">Create  a Time-Lapse GIF<a class="anchor-link" href="#Create--a-Time-Lapse-GIF">¶</a></h3><p>Lastly, optionally, we can create a time-lapse gif of the site over all the collections. This part follows along code from the GeoPython 2021 workshop: <a href="https://geemap.org/workshops/GeoPython_2021/#create-timelapse-animations">https://geemap.org/workshops/GeoPython_2021/#create-timelapse-animations</a>.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=4ae9d3ad">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">geemap</span> <span class="kn">import</span> <span class="n">cartoee</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6566254d">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Define width and height (in degrees)</span>
-<span class="n">w</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">h</span> <span class="o">=</span> <span class="mf">0.1</span>
-
-<span class="n">region</span> <span class="o">=</span> <span class="p">[</span><span class="n">lon</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span> <span class="n">lat</span> <span class="o">-</span> <span class="n">h</span><span class="p">,</span> <span class="n">lon</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">lat</span> <span class="o">+</span> <span class="n">h</span><span class="p">]</span>
-
-<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-
-<span class="c1"># Use cartoee to get a map</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">geemap</span><span class="o">.</span><span class="n">cartoee</span><span class="o">.</span><span class="n">get_map</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">vis_params</span><span class="o">=</span><span class="n">visParams</span><span class="p">)</span>
-
-<span class="c1"># Add gridlines to the map at a specified interval</span>
-<span class="n">geemap</span><span class="o">.</span><span class="n">cartoee</span><span class="o">.</span><span class="n">add_gridlines</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">],</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">":"</span><span class="p">)</span>
-
-<span class="c1"># Add scale bar</span>
-<span class="n">scale_bar_dict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"length"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="s2">"xy"</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
-    <span class="s2">"linewidth"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s2">"fontsize"</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="s2">"color"</span><span class="p">:</span> <span class="s2">"white"</span><span class="p">,</span>
-    <span class="s2">"unit"</span><span class="p">:</span> <span class="s2">"km"</span><span class="p">,</span>
-    <span class="s2">"ha"</span><span class="p">:</span> <span class="s2">"center"</span><span class="p">,</span>
-    <span class="s2">"va"</span><span class="p">:</span> <span class="s2">"bottom"</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="n">cartoee</span><span class="o">.</span><span class="n">add_scale_bar_lite</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">scale_bar_dict</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'CLBJ'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b68ee19a">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>We can then apply these settings and create the timelaps using <code>cartoee.get_image_collection_gif</code> as follows. This will create a "timelapse" subfolder in the Downloads directory.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=241be475">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">cartoee</span><span class="o">.</span><span class="n">get_image_collection_gif</span><span class="p">(</span>
-    <span class="n">ee_ic</span><span class="o">=</span><span class="n">siteSDR</span><span class="p">,</span>
-    <span class="n">out_dir</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">"~/Downloads/timelapse"</span><span class="p">),</span>
-    <span class="n">out_gif</span><span class="o">=</span><span class="s2">"clbj_gee_timelapse.gif"</span><span class="p">,</span>
-    <span class="n">vis_params</span><span class="o">=</span><span class="n">visParams</span><span class="p">,</span>
-    <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
-    <span class="n">fps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">mp4</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">grid_interval</span><span class="o">=</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
-    <span class="n">plot_title</span><span class="o">=</span><span class="s2">"CLBJ AOP SDR Time Lapse"</span><span class="p">,</span>
-    <span class="n">date_format</span><span class="o">=</span><span class="s1">'YYYY-MM-dd'</span><span class="p">,</span>
-    <span class="n">fig_size</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
-    <span class="n">dpi_plot</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">file_format</span><span class="o">=</span><span class="s2">"png"</span><span class="p">,</span>
-    <span class="n">scale_bar_dict</span><span class="o">=</span><span class="n">scale_bar_dict</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5e7be9e5">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<figure>
-<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif">
-<img alt="CLBJ Timelapse" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-gee-python/intro_gee_py_functions/clbj_gee_timelapse.gif" width="500"/><figcaption>Time Lapse of CLBJ Surface Directional Reflectance True-Color Images</figcaption></a></figure>
-<h3 id="Recap">Recap<a class="anchor-link" href="#Recap">¶</a></h3><p>In this lesson we covered how to read in AOP Surface Directional Reflectance (SDR) datasets into GEE using Python with the packages <code>ee</code> and <code>geemap</code>. You learned how to write functions that mask out any data collected in &gt;10% cloud cover conditions. You also got a chance to explore the interactive mapping tools that are made available as part of geemap. We encourage you to start writing functions and Python code on your own to expand upon these examples!</p>
+<p>We can see that in 2019, the weather conditions were sub-optimal for collecting. When working with the AOP data, this is important information to keep in mind - as the reflectance data (and other optical data, such as the camera data) collected in cloudy sky conditions are not directly comparable to data collected in clear skies.</p>
+<h2 id="Recap">Recap<a class="anchor-link" href="#Recap">¶</a></h2><p>In this lesson, you learned how to access the five NEON datasets that are available in GEE: Bidirectional Reflectance (<code>HSI_REFL/002</code>), Surface Directional Reflectance (<code>HSI_REFL/001</code>), Camera (<code>RGB/001</code>), and LiDAR-derived Digital Elevation (Terrain and Surface) Models (<code>DEM/001</code>) and Ecosystem Structure / Canopy Height Model (<code>CHM/001</code>). You generated code to determine which AOP datasets are available in GEE for a given Image Collection. You explored the directional reflectance image properties and learned how to filter on metadata to pull out a subset of Images or a single Image from an Image Collection. You learned how to use the <code>geemap</code> package to add data layers to the interactive map panel. And lastly, you learned how to select and visualize the <code>Weather_Quality_Indicator</code> band, which is a useful first step in assessing the data quality of the AOP reflectance and camera imagery.</p>
+<p>This is a great starting point for your own research!</p>
 </div>
 </div>
 </div>
