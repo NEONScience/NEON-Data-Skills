@@ -15,7 +15,7 @@ tutorialSeries:
 urlTitle: intro-canopy-nitrogen
 ---
 
-Canopy Nitrogen (Normalized Difference Nitrogen Index (NDNI)) was one of NEON's original data products, however the first algorithm used (a simple index) was deemed to provide data of insufficient quality for the sensor, scale and site conditions associated with NEON AOP collections. This product was suspended in 2020; see the <a href="https://www.neonscience.org/impact/observatory-blog/upcoming-changes-aop-data-product-catalog" target=_blank>November 17, 2020 Data Notification</a> for more details. Over the past years, AOP has been working on implementing an improved algorithm that produces higher quality and more meaningful results. In February 2026, NEON published a new Canopy Nitrogen (%N) data product (<a href="https://data.neonscience.org/data-products/DP3.30018.002" target=_blank>DP3.30018.002</a>) for a subset of sites, using models derived from NEON's hyperspectral and foliar chemistry data. We are seeking feedback from the community to review this data product before the model is applied to all of NEON's terrestrial sites. For more details on the data product, refer to the <a href="https://www.neonscience.org/impact/observatory-blog/upcoming-changes-aop-data-product-catalog" target=_blank>Canopy Nitrogen Quick Start Guide</a>.
+Canopy Nitrogen (Normalized Difference Nitrogen Index (NDNI)) was one of NEON's original data products, however the first algorithm used (a simple index) was deemed to provide data of insufficient quality for the sensor, scale and site conditions associated with NEON AOP collections. This product was suspended in 2020; see the <a href="https://www.neonscience.org/impact/observatory-blog/upcoming-changes-aop-data-product-catalog" target=_blank>November 17, 2020 Data Notification</a> for more details. Over the past years, AOP has been working on implementing an improved algorithm that produces higher quality and more meaningful results. In February 2026, NEON published a new Canopy Nitrogen (%N) data product (<a href="https://data.neonscience.org/data-products/DP3.30018.002" target=_blank>DP3.30018.002</a>) for a subset of sites, using models derived from NEON's hyperspectral and foliar chemistry data. We are seeking feedback from the community to review this data product before the model is applied to all of NEON's terrestrial sites. For more details on the data product, refer to the <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP3.30018.002?inline=TRUE" target=_blank>Canopy Nitrogen Quick Start Guide</a>.
 
 In this tutorial, we demonstrate how to download a single tile of the Canopy Nitrogen Data Product over Harvard Forest, and explain the four raster tiles that are associated with this data product. We then show how to use the valid pixel mask to mask out invalid data. 
 
@@ -58,7 +58,7 @@ nu.list_available_dates(dpid="DP3.30018.002",
     PROVISIONAL Available Dates: 2019-08
     
 
-So far, there is data avaiable for HARV in 2019. All of the Canopy Nitrogen data is currently available provisionally.
+So far, there is data available for HARV in 2019. All of the Canopy Nitrogen data is currently available provisionally.
 
 Let's first set the download directory (where we will download data) to be in the `Downloads` folder.
 
