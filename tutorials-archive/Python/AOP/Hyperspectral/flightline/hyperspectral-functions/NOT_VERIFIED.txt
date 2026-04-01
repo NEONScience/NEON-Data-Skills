@@ -1,4 +1,0 @@
-This file was automatically copied over to this new location, and may still need to be updated
-for it to work on the new neonscience.org website.
-
-Admin - remove this file once the tutorial has been checked and validated that it works.
