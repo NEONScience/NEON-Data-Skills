@@ -24,6 +24,6 @@ library(htmltools)
 
 ```{r html, echo=FALSE, warning=FALSE, message=FALSE}
 
-htmltools::includeHTML("https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/refs/heads/main/tutorials/R/Aquatics/L4-Discharge-Series/continuous-discharge-basic/continuous-discharge-intro-content.html")
+htmltools::includeHTML("https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/refs/heads/main/tutorials/Tabbed/Aquatics/L4-Discharge-Series/continuous-discharge-basic/continuous-discharge-intro-content.html")
 
 ```
