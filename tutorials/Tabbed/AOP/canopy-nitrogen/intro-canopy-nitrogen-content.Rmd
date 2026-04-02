@@ -11,17 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-Canopy Nitrogen (Normalized Difference Nitrogen Index (NDNI)) was one of AOP's original data products, however the first algorithm used (a simple index) was deemed to provide data of insufficient quality for the sensor, scale and site conditions associated with NEON AOP collections. See the <a href="https://www.neonscience.org/impact/observatory-blog/upcoming-changes-aop-data-product-catalog" target=_blank>November 17, 2020 Data Notification</a> for more details. Over the past years, AOP has been working on implementing an improved algorithm that produces higher quality results. In February 2026, NEON published a new Canopy Nitrogen (%N) data product (<a href="https://data.neonscience.org/data-products/DP3.30018.002" target=_blank>DP3.30018.002</a>) for a subset of sites, using models derived from NEON's hyperspectral and foliar chemistry data. We are seeking feedback from the community to review this data product before the model is applied to all of NEON's terrestrial sites. For more details on the data product, refer to the Quick Start Guide on the Data Portal page.
+Canopy Nitrogen (Normalized Difference Nitrogen Index (NDNI)) was one of AOP's original data products, however the first algorithm used (a simple index) was deemed to provide data of insufficient quality for the sensor, scale and site conditions associated with NEON AOP collections. See the <a href="https://www.neonscience.org/impact/observatory-blog/upcoming-changes-aop-data-product-catalog" target=_blank>November 17, 2020 Data Notification</a> for more details. Over the past years, AOP has been working on implementing an improved algorithm that produces higher quality results. In February 2026, NEON published a new Canopy Nitrogen (%N) data product (<a href="https://data.neonscience.org/data-products/DP3.30018.002" target=_blank>DP3.30018.002</a>) for a subset of sites, using models derived from NEON's hyperspectral and foliar chemistry data. We are seeking feedback from the community to review this data product before the model is applied to all of NEON's terrestrial sites. For more details on this data product, refer to the <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP3.30018.002?inline=TRUE" target=_blank>Canopy Nitrogen Quick Start Guide</a>, also found on the Canopy Nitrogen Data Product landing page.
 
-In this tutorial, we demonstrate how to download a single tile of the Canopy Nitrogen Data Product over Harvard Forest, and explain the four raster tiles that are associated with this data product. We then show how to use the valid pixel mask to mask out invalid data. 
+In this tutorial, we demonstrate how to download nitrogen data for a single 1 km 1 km area of the Canopy Nitrogen Data Product over Harvard Forest, and explain the four raster tiles that are associated with this data product. We then show how to use the valid pixel mask to mask out invalid data. 
 
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
-- Download the Canopy Nitrogen Data Product in R and/or Python
+- Download the Canopy Nitrogen rasters
 - Understand the 4 files that comprise the Canopy Nitrogen data product
+- Understand what the needle v. non-needle classification and valid pixel masks mean and how to use them
 - Mask the Nitrogen data to include only valid pixels
 
 </div>
@@ -59,14 +60,14 @@ pip install rasterio
 
 ## Additional Resources
 
--   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Tutorial for using neonUtilities from both R and Python environments.</a>
+-   <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Tutorial for using neonUtilities (R & Python)</a>
 -   <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub
     repository for R neonUtilities</a>
 -   <a href="https://github.com/NEONScience/NEON-utilities-python" target="_blank">GitHub
     repository for Python neonutilities</a>
--   <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users.
--   <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP3.30018.002?inline=TRUE" target="_blank">Canopy Nitrogen Quick Start Guide</a>. Details about the Canopy Nitrogen data product.
--   <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CNC_002" target="_blank">Canopy Nitrogen Image Collection on Google Earth Engine</a>.
+-   <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>: R neonUtilities reference guide
+-   <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP3.30018.002?inline=TRUE" target="_blank">Canopy Nitrogen Quick Start Guide</a>
+-   <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CNC_002" target="_blank">Canopy Nitrogen Image Collection on Google Earth Engine</a>
 
 
 ## Set up: Load Packages {.tabset}
@@ -124,7 +125,7 @@ First let's see what data are available. As of February 2026, only a subset of s
 
 ### Python
 
-```{python py-find-available-data, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+```{python py-find-available-data, eval=TRUE, message=FALSE, warning=FALSE}
 nu.list_available_dates(dpid="DP3.30018.002",
                         site="HARV")
 ```
@@ -194,7 +195,7 @@ We can display the data that has been downloaded as follows:
 
 #### R
 
-```{r R-display-downloaded-data, results="hide", message=FALSE, warning=FALSE}
+```{r R-display-downloaded-data, message=FALSE, warning=FALSE}
 nitrogen_dir <- file.path(download_dir, "DP3.30018.002")
 nitrogen_files <- list.files(nitrogen_dir, recursive = TRUE, full.names = TRUE) # list all downloaded files
 relative_paths <- gsub(download_dir, "..", nitrogen_files, fixed = TRUE) # get the relative paths
@@ -203,7 +204,7 @@ cat(relative_paths, sep = "\n") # display the results
 
 #### Python
 
-```{python py-display-downloaded-data, results="hide", message=FALSE, warning=FALSE}
+```{python py-display-downloaded-data, message=FALSE, warning=FALSE}
 nitrogen_dir = os.path.join(download_dir,'DP3.30018.002')
 for root, dirs, files in os.walk(nitrogen_dir):
     for file in files:
@@ -314,19 +315,21 @@ def plot_neon_raster(file_path, title, cmap, labels=None):
 
 ### {-}
 
-### Plot the four nitrogen rasters
+### Plot the four Canopy Nitrogen rasters
 
 #### Canopy Nitrogen {.tabset}
 
+First let's plot the Canopy Nitrogen (%) raster.
+
 ##### R
 
-```{r R-plot-nitrogen, results="hide", message=FALSE, warning=FALSE}
+```{r R-plot-nitrogen, message=FALSE, warning=FALSE}
 plot_neon_raster(nitrogen, "Canopy Nitrogen (%)")
 ```
 
 ##### Python
 
-```{python py-plot-nitrogen, results="hide", message=FALSE, warning=FALSE}
+```{python py-plot-nitrogen, message=FALSE, warning=FALSE}
 plot_neon_raster(nitrogen, 'Canopy Nitrogen (%)', cmap='viridis');
 ```
 
@@ -339,19 +342,21 @@ Nitrogen values range from ~1-3.5 percent at the highest. We can also see that t
 ##### R
 
 
-```{r R-plot-nitrogen-uncertainty, results="hide", message=FALSE, warning=FALSE}
+```{r R-plot-nitrogen-uncertainty, message=FALSE, warning=FALSE}
 plot_neon_raster(nitrogen_uncertainty, "Nitrogen Uncertainty (%)", colormap = "Spectral", rev=TRUE)
 ```
 
 ##### Python
 
-```{python py-plot-nitrogen-uncertainty, results="hide", message=FALSE, warning=FALSE}
-plot_neon_raster(nitrogen_uncertainty, 'Nitrogen Uncertainty (%)', cmap='jet');
+```{python py-plot-nitrogen-uncertainty, message=FALSE, warning=FALSE}
+plot_neon_raster(nitrogen_uncertainty, 'Canopy Nitrogen Uncertainty (%)', cmap='Spectral_r');
 ```
 
 #### {-}
 
-There is a noticeable vertical line through the middle of the image. This is because the model was created using the surface directional reflectance, and there are some artifacts that show up on the edges of flight lines. In the future, the model will be trained on the bidirectional reflectance (BRDF and topographic corrected) so these artifacts should not appear, or be as prominent.
+We can see that there are higher uncertainty levels in the reservoir, but over the land the uncertainty is typically < 1%. The Nitrogen values themselves are only around 1-3%, so this is still a fairly high level of uncertainty, relative to the Nitrogen values.
+
+You may also notice a faint vertical line through the middle of the image. This is because the model was created using the surface directional reflectance, and there are some artifacts related to the BRDF effect that are more prominent on the edges of flight lines. In the future, the model will be trained on the bidirectional reflectance (BRDF and topographic corrected) so these artifacts should not appear, or be as prominent.
 
 Next we'll look at the needle / non-needle classification map:
 
@@ -360,61 +365,61 @@ Next we'll look at the needle / non-needle classification map:
 
 ##### R
 
-```{r R-plot-needle-class, results="hide", message=FALSE, warning=FALSE}
+```{r R-plot-needle-class, message=FALSE, warning=FALSE}
 # create a binary blue/yellow color map to display the 2 classes (0 = non-needle, blue & 1 = needle, yellow)
 needle_rast <- terra::rast(needle_classification) # Create the raster object
 levels(needle_rast) <- data.frame(id = c(0, 1), label = c("Non-Needle", "Needle")) # add labels
 
-colors <- c('#004488', '#DDAA33') # set colors
+needle_cmap <- c('#004488', '#DDAA33') # set colors
 
-plot_neon_raster(needle_rast, "Needle Non-needle Classification Map", colormap = colors)
+plot_neon_raster(needle_rast, "Needle Non-needle Classification Map", colormap = needle_cmap)
 ```
 
 ##### Python
 
-```{python py-plot-needle-class, results="hide", message=FALSE, warning=FALSE}
+```{python py-plot-needle-class, message=FALSE, warning=FALSE}
 # create a binary blue/yellow color map to display the 2 classes (0 = non-needle, blue & 1 = needle, yellow)
-cb_palette = mcolors.ListedColormap(['#004488', '#DDAA33'])
+needle_cmap = mcolors.ListedColormap(['#004488', '#DDAA33'])
 
 plot_neon_raster(needle_classification, 
                  'Needle / Non-Needle Classification', 
-                 cb_palette, 
+                 needle_cmap, 
                  labels=['Non-Needle', 'Needle'])
 ```
 
 #### {-}
 
-It looks like the forest is a mix of needle and non-needle, which makes sense - there are a lot of deciduous trees in the Northeast, and there are also fields and other vegetation types. There are also classifications in the lake, which don't really make sense. That brings us to the last raster, the validity classification. You can plot that as follows:
+It looks like the forest is a mix of needle and non-needle, which makes sense - there are a lot of deciduous trees in the Northeast, and there are also fields and other vegetation types. There are also classification values in the lake, which don't really make sense. That brings us to the last raster, the validity classification. You can plot that as follows:
 
 #### Valid Pixel Mask {.tabset}
 
 ##### R
 
-```{r R-plot-validity-class, results="hide", message=FALSE, warning=FALSE}
+```{r R-plot-validity-class, message=FALSE, warning=FALSE}
 # create a binary magenta/green color map to display the 2 classes (0 = invalid, magenta & 1 = valid, green)
 validity_rast <- terra::rast(validity_classification) # Create the raster object
 levels(validity_rast) <- data.frame(id = c(0, 1), label = c("Invalid", "Valid")) # add labels
 
-colors <- c('#AA4499', '#117733') # set colors
+validity_cmap <- c('#AA4499', '#117733') # set colors
 
-plot_neon_raster(validity_rast, "Validity Classification (NDVI > 0.2 = valid)", colormap = colors)
+plot_neon_raster(validity_rast, "Validity Classification (NDVI > 0.2 = valid)", colormap = validity_cmap)
 ```
 
 ##### Python
 
-```{python py-plot-validity-class, results="hide", message=FALSE, warning=FALSE}
+```{python py-plot-validity-class, message=FALSE, warning=FALSE}
 # create a binary magenta/green color map to display the 2 classes (0 = invalid, magenta & 1 = valid, green)
-cb_palette = mcolors.ListedColormap(['#AA4499', '#117733'])
+validity_cmap = mcolors.ListedColormap(['#AA4499', '#117733'])
 
 plot_neon_raster(validity_classification, 
                  'Validity Classification (NDVI > 0.2 = valid)', 
-                 cb_palette, 
+                 validity_cmap, 
                  labels=['Invalid', 'Valid'])
 ```
 
 #### {-}
 
-We can see that the water body (Quabbin Reservoir) is not valid (values are 0). This makes sense - canopy nitrogen does not make sense over water bodies! You may wish to create your own mask, as this just relies on a simple NDVI threshold (anything with NDVI < 0.2 is set to "invalid"). To make a more sophisticated validity mask, you can use a different threshold from the NEON NDVI data product (Vegetation Indices - DP3.30026.001), incorporate other indices, or even use the surface reflectance data directly. We can also see that the areas of higher uncertainty are areas that should not be used anyway.
+We can see that the water body (Quabbin Reservoir) contains largely non-valid pixels (values are 0). This makes sense - canopy nitrogen does not make sense over water bodies! You may wish to create your own mask, as this just relies on a simple NDVI threshold (anything with NDVI < 0.2 is set to "invalid"). There are some other small areas within the land that are also classified as non-valid. To make a more sophisticated validity mask, you can use a different threshold from the NEON NDVI data product (Vegetation Indices - DP3.30026.001), incorporate other indices, or even use the surface reflectance data directly. We can also see that the areas of higher uncertainty are areas that should not be used anyway.
 
 
 ## Mask Nitrogen Data by Valid Pixel Mask {.tabset}
@@ -423,7 +428,7 @@ Finally, we can use this valid pixel mask to mask out data in the original Canop
 
 ### R
 
-```{r R-apply-valid-mask, results="hide", message=FALSE, warning=FALSE}
+```{r R-apply-valid-mask, message=FALSE, warning=FALSE}
 nitrogen_rast <- rast(nitrogen)
 valid_rast <- rast(validity_classification)
 
@@ -441,7 +446,7 @@ plot(nitrogen_masked,
 
 ### Python
 
-```{python py-apply-valid-mask, results="hide", message=FALSE, warning=FALSE}
+```{python py-apply-valid-mask, message=FALSE, warning=FALSE}
 # Read in nitrogen and valid pixel rasters
 with rasterio.open(nitrogen) as src_nitrogen:
     nitrogen_data = src_nitrogen.read(1).astype(float)
@@ -458,7 +463,7 @@ left, bottom, right, top = rasterio.transform.array_bounds(
 
 plt.figure(figsize=(8, 6)) # plot the masked raster
 plt.imshow(nitrogen_masked, cmap='viridis', extent=[left, right, bottom, top])
-plt.colorbar(label='N (%)')
+plt.colorbar(label='N (%)');
 plt.title('Masked Canopy Nitrogen (%)')
 plt.xlabel('UTM Easting (m)')
 plt.ylabel('UTM Northing (m)')
@@ -473,5 +478,3 @@ There are some pixels in the lake that were not masked out - these are pixels wh
 ## Recap
 
 In this lesson, you've explored the four raster files that make up the canopy nitrogen data product, and you learned how to apply the valid pixel mask, as well as some caveats to using this validity layer. It is important to pull in additional data sources and to perform your own checks and QA/QC when working with this Nitrogen data product, as with any NEON data. This lesson is intended to show the first step in working with the Canopy Nitrogen data. We hope you explore this data product more on your own!
-
-
