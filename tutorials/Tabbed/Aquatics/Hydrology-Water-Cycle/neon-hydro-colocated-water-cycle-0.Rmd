@@ -26,6 +26,6 @@ library(htmltools)
 
 ```{r html, echo=FALSE, warning=FALSE, message=FALSE}
 
-htmltools::includeHTML("C:/NEON-Data-Skills/tutorials/R/Aquatics/hydrology-water-cycle/neon-hydro-colocated-water-cycle-content.html")
+htmltools::includeHTML("C:/NEON-Data-Skills/tutorials/Tabbed/Aquatics/Hydrology-Water-Cycle/neon-hydro-colocated-water-cycle-content.html")
 
 ```
