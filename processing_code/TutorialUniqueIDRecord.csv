@@ -161,7 +161,7 @@ f952e377463a4e2cb8dc109213e01a40,Using the neonstore Package to Download and Sto
 b968a912e3ea4557b2a7185cd2340069,Random Forest Species Classification using AOP and TOS data in GEE,aop-gee-random-forest-classification,,
 ea5ebcf71c344bf1b2a7be0067005afd,Introduction to AOP Hyperspectral Data in GEE,intro-aop-gee-sdr-tutorial,2024-08-21,
 ec9a4339bda342688bf912a7ec347999,Merging AOP L3 Tiles into Full-Site Rasters - R,merge-aop-raster-data,,
-9474dd874e484dc4a45e6a55a1375de7,Introduction to the AOP Canopy Nitrogen Data Product,intro-canopy-nitrogen,,
+9474dd874e484dc4a45e6a55a1375de7,Introduction to AOP Canopy Nitrogen Rasters,intro-aop-nitrogen,,
 db25e957987343acbbcd49cabbf1d8ec,Introduction to AOP Data in Google Earth Engine (GEE),intro-aop-gee-tutorial,2024-08-21,intro-aop-gee-image-collections
 9ff7193165d74f0291ccb28dd821c9ff,Relating Reflectance Indices to Flux Data,flux-footprint-NDVI,,
 cd3d3b09400a4a389a198445c5dbfa48,Function for Visualizing AOP Image Collections in GEE,intro-aop-gee-functions,2024-08-21,intro-gee-functions
