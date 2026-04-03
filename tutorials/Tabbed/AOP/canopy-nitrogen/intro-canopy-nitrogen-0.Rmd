@@ -1,20 +1,19 @@
 ---
-title: "Intro to the AOP Canopy Nitrogen Data Product"
+title: Introduction to AOP Canopy Nitrogen Rasters
 syncID: 9474dd874e484dc4a45e6a55a1375de7
-description: Introduction to the Canopy Nitrogen product, including visualizing the
-  4 bands and masking.
+description: Introduction to the Canopy Nitrogen product, including visualizing the 4 bands and masking.
 dateCreated: "2026-04-01"
 authors: Bridget Hass
 contributors: Shashi Konduri
 estimatedTime: 30 minutes
 packagesLibraries: neonUtilities, terra, rasterio
-topics: "canopy-nitrogen, foliar-traits, raster, model, hyperspectral"
-subtopics: null
+topics: canopy-nitrogen, foliar-traits, raster, model, hyperspectral
+subtopics:
 languagesTool: R, API, Python
 dataProduct: DP3.30018.002
-code1: null
-tutorialSeries: null
-urlTitle: "intro-canopy-nitrogen"
+code1:
+tutorialSeries:
+urlTitle: intro-canopy-nitrogen
 ---
 
 
