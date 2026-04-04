@@ -1,6 +1,6 @@
 ---
 title: Introduction to AOP Canopy Nitrogen Rasters
-syncID: 9474dd874e484dc4a45e6a55a1375de7
+syncID: 96ccdc1edaa44a5aafeb692e822b3fd5
 description: Introduction to the Canopy Nitrogen product, including visualizing the 4 bands and masking.
 dateCreated: "2026-04-01"
 authors: Bridget Hass
@@ -13,7 +13,7 @@ languagesTool: R, API, Python
 dataProduct: DP3.30018.002
 code1:
 tutorialSeries:
-urlTitle: intro-canopy-nitrogen
+urlTitle: intro-nitrogen
 ---
 
 
