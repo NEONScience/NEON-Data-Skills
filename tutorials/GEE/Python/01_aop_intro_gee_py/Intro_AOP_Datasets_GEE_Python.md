@@ -9,8 +9,8 @@ estimatedTime: 30 minutes
 packagesLibraries: earthengine-api, geemap
 topics:
 languagesTool: Python, Google Earth Engine
-dataProducts: DP3.30006.001, DP3.30006.002, DP3.30010.001, DP3.30015.001, DP3.30024.001
-code1: https://github.com/NEONScience/NEON-Data-Skills/edit/main/tutorials/GEE/Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
+dataProducts: DP3.30006.001, DP3.30006.002, DP3.30010.001, DP3.30015.001, DP3.30024.001, DP3.30018.002
+code1: https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/GEE/Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
 tutorialSeries: 
 urlTitle: aop-gee-py-intro
 ---
@@ -21,7 +21,7 @@ urlTitle: aop-gee-py-intro
 After completing this tutorial, you will be able to use Python to:
 
 * Determine the available AOP datasets in Google Earth Engine
-* Read in and visualize AOP Reflectance, RGB Camera, and Lidar raster datasets
+* Read in and visualize AOP Reflectance, Canopy Nitrogen, RGB Camera, and Lidar raster datasets
 * Become familiar with the AOP Image Properties
 * Filter data based off image properties to pull in dataset(s) of interest
 * Explore the interactive mapping features in `geemap`
@@ -62,6 +62,7 @@ The NEON data products that have been made available on GEE can be currently be 
 | RGB | 001 | Red Green Blue (Camera Imagery) | <a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">DP3.30010.001</a> |
 | DEM | 001 | Digital Surface and Terrain Models (DSM/DTM) | <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">DP3.30024.001</a> |
 | CHM | 001 | Ecosystem Structure (Canopy Height Model; CHM) | <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">DP3.30015.001</a> |
+| CNC | 002 | Canopy Nitrogen Content (CNC) | <a href="https://data.neonscience.org/data-products/DP3.30018.002" target="_blank">DP3.30018.002</a> |
 
 To access the NEON AOP data you can read in the Image Collection `ee.ImageCollection` followed by the path, eg. the Surface Directional Reflectance can be found under the path `projects/neon-prod-earthengine/assets/HSI_REFL/001`. You can then filter down to a particular site and year of interest using the properties. 
 
