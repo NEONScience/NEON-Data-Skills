@@ -26,5 +26,5 @@ library(htmltools)
 
 ```{r html, echo=FALSE, warning=FALSE, message=FALSE}
 
-htmltools::includeHTML("C:/NEON-Data-Skills/tutorials/Tabbed/AOP/canopy-nitrogen/intro-canopy-nitrogen-content.html")
+htmltools::includeHTML("C:/NEON-Data-Skills/tutorials/Tabbed/AOP/Hyperspectral/canopy-nitrogen/intro-canopy-nitrogen-content.html")
 ```
