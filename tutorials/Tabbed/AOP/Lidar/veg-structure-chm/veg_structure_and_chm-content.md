@@ -376,7 +376,7 @@ to get the scale right.
             circles=veg2017$stemDiameter[which(veg2017$plotID=="WREF_075")]/100/2, 
             inches=F, xlab="Easting", ylab="Northing")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-1-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/plot-1-1.png)
 
 And now overlay the estimated uncertainty in the location of each stem, 
 in blue:
@@ -392,7 +392,7 @@ in blue:
             circles=veg2017$adjCoordinateUncertainty[which(veg2017$plotID=="WREF_075")], 
             inches=F, add=T, fg="lightblue")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-2-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/plot-2-1.png)
 
 #### Python
 
@@ -413,7 +413,7 @@ in blue:
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-plot-1-1.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-plot-1-1.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
@@ -435,7 +435,7 @@ in blue:
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-plot-2-3.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-plot-2-3.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
@@ -480,7 +480,7 @@ Let's view the tile.
 
     plot(chm, col=topo.colors(5))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/plot-chm-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/plot-chm-1.png)
 
 ### Python
 
@@ -507,7 +507,7 @@ Let's view the tile.
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-plot-chm-1.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-plot-chm-1.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
@@ -574,7 +574,7 @@ from the tile at the given coordinates.
 
     lines(c(0,50), c(0,50), col="grey")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/no-buffer-chm-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/no-buffer-chm-1.png)
 
 How strong is the correlation between the ground and lidar 
 measurements?
@@ -607,7 +607,7 @@ the values from the tile at the given coordinates.
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-no-buffer-chm-1.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-no-buffer-chm-1.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
@@ -648,7 +648,7 @@ the uncertainty of the location of each tree.
 
     lines(c(0,50), c(0,50), col="grey")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/buffer-chm-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/buffer-chm-3.png)
 
 
     cor(valCHMbuff$NEON_D16_WREF_DP3_580000_5075000_CHM, 
@@ -697,7 +697,7 @@ And plot the results:
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-plot-buffer-chm-1.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-plot-buffer-chm-1.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
@@ -767,7 +767,7 @@ image we get as a result.
 
     plot(CHM10, col=topo.colors(5))
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/CHM-10-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/CHM-10-1.png)
 
 Use the `extract()` function again to get the values from each pixel. 
 Our grids are numbered by the corners, so add 5 to each tree 
@@ -787,7 +787,7 @@ coordinate to make sure it's in the correct pixel.
 
     lines(c(0,50), c(0,50), col="grey")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/adj-tree-coord-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/adj-tree-coord-1.png)
 
 
     cor(binCHM$NEON_D16_WREF_DP3_580000_5075000_CHM, 
@@ -840,7 +840,7 @@ Let's take a look at the lower-resolution image we get as a result.
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-vegbin-plot-1.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-vegbin-plot-1.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
@@ -937,7 +937,7 @@ Now extract the raster values, as above.
 
     lines(c(0,50), c(0,50), col="grey")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/filter-chm-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/filter-chm-1.png)
 
 
     cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
@@ -993,7 +993,7 @@ Now extract the raster values, as above.
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-filter-chm-1.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-filter-chm-1.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
@@ -1040,7 +1040,7 @@ trees that aren't alive:
 
     lines(c(0,50), c(0,50), col="grey")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/live-trees-3.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/live-trees-3.png)
 
 
     cor(filterCHM$NEON_D16_WREF_DP3_580000_5075000_CHM,
@@ -1065,7 +1065,7 @@ trees that aren't alive:
     plt.show()
 
 <div class="figure">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-topography/veg_structure_and_chm/rfigs/p-live-trees-1.png" alt=" " width="672" />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Tabbed/AOP/Lidar/veg-structure-chm/rfigs/p-live-trees-1.png" alt=" " width="672" />
 <p class="caption"> </p>
 </div>
 
