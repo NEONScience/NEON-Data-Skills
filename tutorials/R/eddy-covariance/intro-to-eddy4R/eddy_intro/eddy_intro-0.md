@@ -3,10 +3,10 @@ syncID: 3857005e98a544a88a5e58625e32b514
 title: "Introduction to working with NEON eddy flux data"
 description: Download and navigate NEON eddy flux data, including basic transformations and merges
 dateCreated:  '2019-07-09'
-authors: [Claire K. Lunch]
+authors: Claire K. Lunch
 contributors: 
 estimatedTime: 1 hour
-packagesLibraries: [rhdf5, neonUtilities, ggplot2]
+packagesLibraries: rhdf5, neonUtilities, ggplot2
 topics: HDF5, eddy-covariance, eddy-flux
 languageTool: R, Python
 dataProducts: DP4.00200.001
