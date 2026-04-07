@@ -1,8 +1,8 @@
 ---
-title: Introduction to AOP Canopy Nitrogen Rasters
 syncID: 96ccdc1edaa44a5aafeb692e822b3fd5
-description: Introduction to the Canopy Nitrogen product, including visualizing the 4 bands and masking.
-dateCreated: "2026-04-01"
+title: Introduction to AOP Canopy Nitrogen Rasters
+description: Introduction to the Canopy Nitrogen product, including visualizing the four rasters and masking in R and Python.
+dateCreated: 2026-04-01
 authors: Bridget Hass
 contributors: Shashi Konduri
 estimatedTime: 30 minutes
