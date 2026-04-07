@@ -10,8 +10,7 @@ packagesLibraries: earthengine-api (ee), geemap
 topics:
 languagesTool: Google Earth Engine, Python
 dataProducts: DP3.30006.001, DP3.30006.002, DP3.30010.001, DP3.30015.001, DP3.30024.001, DP3.30018.002
-code1: 	
-https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/GEE/Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
+code1: https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/GEE/Python/01_aop_intro_gee_py/Intro_AOP_Datasets_GEE_Python.ipynb
 tutorialSeries: 
 urlTitle: aop-gee-py-intro
 ---
