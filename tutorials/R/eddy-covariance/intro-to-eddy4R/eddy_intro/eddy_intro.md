@@ -1,5 +1,5 @@
 ---
-syncID: 3857005e98a544a88a5e58625e32b514
+syncID: 
 title: "Introduction to working with NEON eddy flux data"
 description: Download and navigate NEON eddy flux data, including basic transformations and merges
 dateCreated:  '2019-07-09'
