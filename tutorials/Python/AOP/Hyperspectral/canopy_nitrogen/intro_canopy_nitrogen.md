@@ -1,6 +1,6 @@
 ---
 syncID: 4223457759904e42ae70cfa5c3b84ea0
-title: "Introduction to the Canopy Nitrogen Data Product"
+title: "Introduction to the Canopy Nitrogen Data Product - Python"
 description: "Introduce the Canopy Nitrogen data product, explain the various data files and show how to mask non-valid pixels." 
 dateCreated: 2026-02-25 
 authors: Bridget Hass
@@ -12,7 +12,7 @@ languagesTool: Python
 dataProduct: DP3.30018.002
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/canopy-nitrogen/intro_canopy_nitrogen.ipynb
 tutorialSeries: 
-urlTitle: intro-canopy-nitrogen
+urlTitle: intro-canopy-nitrogen-py
 ---
 
 Canopy Nitrogen (Normalized Difference Nitrogen Index (NDNI)) was one of NEON's original data products, however the first algorithm used (a simple index) was deemed to provide data of insufficient quality for the sensor, scale and site conditions associated with NEON AOP collections. This product was suspended in 2020; see the <a href="https://www.neonscience.org/impact/observatory-blog/upcoming-changes-aop-data-product-catalog" target=_blank>November 17, 2020 Data Notification</a> for more details. Over the past years, AOP has been working on implementing an improved algorithm that produces higher quality and more meaningful results. In February 2026, NEON published a new Canopy Nitrogen (%N) data product (<a href="https://data.neonscience.org/data-products/DP3.30018.002" target=_blank>DP3.30018.002</a>) for a subset of sites, using models derived from NEON's hyperspectral and foliar chemistry data. We are seeking feedback from the community to review this data product before the model is applied to all of NEON's terrestrial sites. For more details on the data product, refer to the <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP3.30018.002?inline=TRUE" target=_blank>Canopy Nitrogen Quick Start Guide</a>.
