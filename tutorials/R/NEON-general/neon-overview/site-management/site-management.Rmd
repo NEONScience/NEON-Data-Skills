@@ -17,7 +17,7 @@ urlTitle: site-management-tutorial
 ---
 
 
-This tutorial will guide you through accessing, navigating, and working with the NEON data product Site management and event reporting (DP1.10111.001), including how to use code tools in the `neonUtilities` and `geoNEON` R packages designed specifically for this data product.
+This tutorial will guide you through accessing, navigating, and working with the NEON data product Site management and event reporting (DP1.10111.001), including how to use code tools in the `neonUtilities`,`geoNEON`, and `neonSiteMgmtEventData` R packages designed specifically for this data product.
 
 If you are new to using NEON data, we recommend first following the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial to get familiar with NEON data formats and the `neonUtilities` package.
 
@@ -30,6 +30,8 @@ After completing this activity, you will be able to:
  * Download site event data by site or by event type
  * Access data related to the spatial extent of an event
  * Understand the metadata associated with site events
+ * Summarize the event data by combinations of site, year, and event type
+ * Create and export polygons to represent the spatial extent of unique event types
 
 ## Things You’ll Need To Complete This Tutorial
 
@@ -42,6 +44,7 @@ versions but it hasn't been tested.
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **devtools:** `install.packages("devtools")`
 * **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
+* **neonSiteMgmtEventData:** `devtools::install_github("NEONScience/neonSiteMgmtEventData")`
 
 ## Additional Resources
 
@@ -71,21 +74,33 @@ computer.
 install.packages("neonUtilities")
 install.packages("devtools")
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+devtools::install_github("NEONScience/neonSiteMgmtEventData")
 install.packages("ggplot2")
 install.packages("dplyr")
 install.packages("stringr")
 install.packages("tidyr")
 install.packages("lubridate")
 install.packages("terra")
+install.packages("sf")
+install.packages("leaflet")
+install.packages("magrittr")
+install.packages("tidyselect")
+install.packages("tibble")
 
 library(neonUtilities)
 library(geoNEON)
+library(neonSiteMgmtEventData)
 library(ggplot2)
 library(dplyr)
 library(stringr)
 library(tidyr)
 library(lubridate)
 library(terra)
+library(sf)
+library(leaflet)
+library(magrittr)
+library(tidyselect)
+library(tibble)
 
 setwd("~/data")
 
@@ -101,6 +116,11 @@ library(stringr)
 library(tidyr)
 library(lubridate)
 library(terra)
+library(sf)
+library(leaflet)
+library(magrittr)
+library(tidyselect)
+library(tibble)
 
 ```
 
@@ -118,9 +138,13 @@ events <- loadByProduct(dpID="DP1.10111.001",
 
 ```
 
-The download includes the usual metadata files associated with NEON data, and a single data table: `sim_eventData`. Let's take a look at it.
+The download includes the usual metadata files associated with NEON data, and two data tables: `sim_eventData` and `sim_locationVisitsAndAttributes`. 
 
-``` {r view-data}
+The `sim_locationVisitsAndAttributes` table provides a summary of annual visit totals, environmental context, and mitigation actions by location to support estimates of NEON sampling impact and location vulnerability. For TEAK, and all other terrestrial sites, each `namedLocation` has a record per year to the total unique visits per sampling plot. Additional fields describe environmental context, document location-specific mitigation measures (such as boardwalks or geoblocks used to minimize trampling), and report the number of sampling events that were cancelled because the location was deemed too vulnerable. Currently, TEAK has no additional mitigation structures, and one sampling bout at TEAK_013 was cancelled in 2025 due to vulnerability. Aquatic sites are summarized the total number of visits per site and do not provide the more specific environmental context fields. 
+
+Let's take a closer look at `sim_eventData` which documents the external disturbance events.
+
+``` {r view-data,sim_eventData }
 
 list2env(events, .GlobalEnv)
 head(sim_eventData)
@@ -130,14 +154,24 @@ head(sim_eventData)
 Let's first check out the types of events recorded.
 
 ``` {r view-types}
-
 sim_eventData |>
   select(eventType, methodTypeChoice) |>
   unique()
 
 ```
+TEAK is a managed site, so the events recorded include both acts of nature and active management by the site hosts (grazing). 
 
-SJER is a managed site, so the events recorded include both acts of nature and active management by the site hosts (grazing). There is one wildfire reported. When we look at an event like a fire, we probably want to know exactly where this happened - which NEON sampling areas were burned?
+The `sim_locationVisitsAndAttributes` package provides a `summarizeSIM` function that provides 3 summary tables by site, site and eventType, and site, eventType, and year. 
+
+``` {r view-types, neonSiteMgmtEventData::summarizeSIM}
+neonSiteMgmtEventData::summarizeSIM(df= sim_eventData)
+```
+
+The $summary table sums the number of records in the df and summarizes how many individual records, unique events (since a event thta is longer than one month with have mutiple records), and unique event types. 
+
+Next, $eventTypeTable counts the number of unique eventIDs by eventType and site. The last table, adds in a year grouping as well.  At TEAK, there are over 100 records but most correspond to a long term grazing event. 
+
+There is one wildfire reported. When we look at an event like a fire, we probably want to know exactly where this happened - which NEON sampling areas were burned?
 
 ## Finding the spatial extent of an event
 
@@ -164,9 +198,7 @@ Now we have a list of NEON named locations. We can see if the plot(s) we are wor
 
 But what if we're interested in a broader picture, and we want to get a sense of the overall burned area?
 
-### Stay tuned! There is an R package in the works that converts these plot locations to a shapefile
-
-Below, we'll find spatial data associated with point locations of disturbance events.
+Below, we'll find spatial data associated with point locations of disturbance events and create a polygon to export as an sf object, shapefile, or kml for Google Earth.
 
 <div id="caveat-box" markdown="1">
 
@@ -310,6 +342,8 @@ points(cb.SOAP$locationID_easting,
 
 
 ```
+
+We can utlize the `sim_locationVisitsAndAttributes` package's `createSIMPolygon` function to create a polygon 
 
 And now let's look at the same locations in 2021.
 
