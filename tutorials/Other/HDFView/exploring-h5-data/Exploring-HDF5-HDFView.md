@@ -9,7 +9,7 @@ estimatedTime: 0.5 Hours
 packagesLibraries:
 topics: HDF5
 languagesTool: HDFView
-dataProduct:
+dataProduct: DP3.30006.001, DP3.30006.002
 code1:
 tutorialSeries: [intro-hdf5-r-series]
 urlTitle: explore-data-hdfview
@@ -54,8 +54,8 @@ Download Dataset </a>
 
 
 
-<h3><a href="https://ndownloader.figshare.com/files/7024271">
-Download NEON Teaching Data Subset: Imaging Spectrometer Data - HDF5 </a></h3>
+<h3><a href="https://storage.googleapis.com/neon-aop-provisional-products/2024/FullSite/D17/2024_SJER_7/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5">
+Download NEON Imaging Spectrometer Data at SJER - NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5</a></h3>
 
 These hyperspectral remote sensing data provide information on the
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
@@ -64,7 +64,7 @@ The data were collected over the San Joaquin field site located in California
 (Domain 17) and processed at NEON headquarters. The entire dataset can be accessed from the 
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
-<a href="https://ndownloader.figshare.com/files/7024271" class="link--button link--arrow">
+<a href="https://storage.googleapis.com/neon-aop-provisional-products/2024/FullSite/D17/2024_SJER_7/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5" class="link--button link--arrow">
 Download Dataset</a>
 
 
@@ -77,9 +77,6 @@ Download Dataset</a>
 
 Select the HDFView download option that matches the operating system 
 (Mac OS X, Windows, or Linux) and computer setup (32 bit vs 64 bit) that you have. 
-
-This tutorial was written with graphics from the VS 2012 version, but it is 
-applicable to other versions as well. 
 
 
 ## Hierarchical Data Format 5 - HDF5
@@ -188,8 +185,7 @@ explore this HDF5 dataset within the HDFViewer.
 
 Next, we will explore a hyperspectral dataset, collected by the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
-and saved in HDF5 format. In the hyperpsectral data cubes, each pixel in the dataset contains reflectance 
-values for hundreds of bands (426) collected by the sensor.
+and saved in HDF5 format. In the hyperpsectral data cubes, each pixel in the dataset contains reflectance values for hundreds of bands (426) collected by the sensor.
 
 A few notes about hyperspectral imagery:
 
@@ -198,26 +194,34 @@ A few notes about hyperspectral imagery:
 * Similar to an RGB (Red, Green, Blue) camera, an imaging spectrometer records reflected light energy. Each pixel contain several hundred bands of reflectance data.
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/LandsatVsHyper-01.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/hyperspectral-general/LandsatVsHyper-01.png" alt="A hyperspectral resolution graph and a landsat TM resolution graph each showing different reflectance values across wavelengths for five differnt plants"></a>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/LandsatVsHyper-01.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/hyperspectral-general/LandsatVsHyper-01.png" alt="A hyperspectral resolution graph and a landsat TM resolution graph each showing different reflectance values across wavelengths for five differnt plants"></a>
     <figcaption>A hyperspectral instrument records reflected light energy across very narrow bands. The NEON Imaging Spectrometer collects 426 bands of information for each pixel on the ground.</figcaption>
 </figure>
 
 Read more about hyperspectral remote sensing data:
 
 * <a href="https://www.neonscience.org/hyper-spec-intro" target="_blank"> *About Hyperspectral Remote Sensing Data* tutorial </a> on this site. 
-* <a href="http://spacejournal.ohio.edu/pdf/shippert.pdf" target="_blank">White paper by Dr Peg Shippert</a>
 
 
 Let's open some hyperspectral imagery stored in HDF5 format to see what the file 
 structure can like for a different type of data.
 
-Open the file. Notice that it is structured differently. This file is composed 
-of 3 datasets: 
+"C:\NEON-Data-Skills\graphics\HDF5-general\hdfview_SJER_Refl002.png"
 
-* Reflectance, 
-* FWHM (Full Width Half Max), and 
-* Wavelength. 
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/HDF5-general/hdfview_SJER_Refl002.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/HDF5-general/hdfview_SJER_Refl002.png" alt="SJER bidirectional reflectance tile (DP3.30006.002 opened in HDFView)"></a>
+    <figcaption>HDFView for a bidirectional reflectance hdf5 file for SJER</figcaption>
+</figure>
+
+Open the file. Notice that it is structured differently. This file is composed 
+of a Reflectance dataset (called `Reflectance_Data`) along with additional Metadata containing the following sub-folders:
+
+* `Ancillary_Imagery`: Datasets including ATCOR inputs and other Quality indicators such as the `Weather_Quality_Indicator`, containing information about the cloud conditions during the flight (for each pixel).
+* `Coordinate_System`: geographic information for the dataset.
+* `Logs`: Log files for each flight line containing ATCOR processing information and inputs, BRDF correction parameters, and the solar azimuth and zenith angles.
+* `Spectral_Data`: Full Width Half Max (FWHM) and Wavelength for each of the 426 spectral bands. 
 
 It also contains some text information called "map info". Finally it contains a 
 group called spatial info.
