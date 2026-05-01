@@ -140,7 +140,7 @@ events <- loadByProduct(dpID="DP1.10111.001",
 
 The download includes the usual metadata files associated with NEON data, and two data tables: `sim_eventData` and `sim_locationVisitsAndAttributes`. 
 
-The `sim_locationVisitsAndAttributes` table provides a summary of annual visit totals, environmental context, and mitigation actions by location to support estimates of NEON sampling impact and location vulnerability. For TEAK, and all other terrestrial sites, each `namedLocation` has a record per year to the total unique visits per sampling plot. Additional fields describe environmental context, document location-specific mitigation measures (such as boardwalks or geoblocks used to minimize trampling), and report the number of sampling events that were cancelled because the location was deemed too vulnerable. Currently, TEAK has no additional mitigation structures, and one sampling bout at TEAK_013 was cancelled in 2025 due to vulnerability. Aquatic sites are summarized the total number of visits per site and do not provide the more specific environmental context fields. 
+The `sim_locationVisitsAndAttributes` table provides a summary of annual visit totals, environmental context, and mitigation actions by location to support estimates of NEON sampling impact and location vulnerability. For TEAK, and all other terrestrial sites, each `namedLocation` has a record per year for the total unique visits per sampling location. Additional fields describe environmental context (slope, soilOrder, land cover type), document location-specific mitigation measures (such as boardwalks or geoblocks used to minimize trampling), and report the number of sampling events that were cancelled because the location was deemed too vulnerable. Currently, TEAK has no additional mitigation structures, and one sampling bout at TEAK_013 was cancelled in 2025 due to vulnerability. Aquatic sites are summarized the total number of visits per site and do not provide the more specific environmental context fields. 
 
 Let's take a closer look at `sim_eventData` which documents the external disturbance events.
 
@@ -167,7 +167,7 @@ The `sim_locationVisitsAndAttributes` package provides a `summarizeSIM` function
 neonSiteMgmtEventData::summarizeSIM(df= sim_eventData)
 ```
 
-The $summary table sums the number of records in the df and summarizes how many individual records, unique events (since a event thta is longer than one month with have mutiple records), and unique event types. 
+The $summary table sums the number of records in the input dataframe and summarizes how many individual records, unique events (since a event that is longer than one month with have multiple records), and unique event types. 
 
 Next, $eventTypeTable counts the number of unique eventIDs by eventType and site. The last table, adds in a year grouping as well.  At TEAK, there are over 100 records but most correspond to a long term grazing event. 
 
@@ -232,7 +232,13 @@ Let's start by looking at the `siteID`, `startDate`, `endDate`, and `methodTypeC
 
 fires$sim_eventData |>
   select(siteID, startDate, endDate, methodTypeChoice)
+```
 
+We can also look at summary table by year using `neonSiteMgmtEventData::summarizeSIM`
+``` {r fire-dates, summarizeSIM}
+fireSummary <- neonSiteMgmtEventData::summarizeSIM(df= fires$sim_eventData)
+
+fireSummary$yearlyEventTypeTable
 ```
 
 We know 2020 was a terrible year for wildfires in the western US, and unsurprisingly many of the records here are from 2020. But there is also one controlled burn from early 2020, as well as fires in 2021 and 2025.
@@ -357,7 +363,6 @@ wf.SOAP.polygon <- neonSiteMgmtEventData::createSIMPolygon(df= wf.SOAP.df)
 #coordinate reference system (crs) EPSG values can be searched for on https://spatialreference.org/ref/epsg/
 wf.SOAP.polygon.utm <- st_transform(wf.SOAP.polygon$sfObjects[[1]], crs = 32611)
 
-
 #control burn polygons
 cb.SOAP.df <- fire.loc |>
   filter(siteID=="SOAP" & endDate<"2021-01-01" & eventType == "fire" & methodTypeChoice=="fire-controlledBurn")
@@ -394,7 +399,9 @@ plot(sf::st_geometry(cb.SOAP.polygon.utm),
 
 We can see the wildfire polygon (light pink) include the entire site boundary since the site code "SOAP" was one of listed locationIDs.  
 
-The controlled burn polygon (dark red) is the smallest convex polygon around the listed locationID points. 
+The controlled burn polygon (dark red) was created as the smallest convex polygon around the listed locationID points. 
+
+The polygons provide our best estimate for the actual extent of the event across the site.   
 
 And now let's look at the same locations in 2021.
 
@@ -440,9 +447,9 @@ We can see a large region where NDVI is substantially lower in 2021 than 2019, m
 
 We only downloaded the 8 tiles overlapping the sampling locations that were reported as affected by the fire; the entire AOP footprint is much larger than this. As noted above, NEON field staff report events at locations they visit, but in this case the fire was much larger than the NEON sampling region. The implications of this depend on your analytical goals. If you are studying fire at a regional level, you may focus primarily on the AOP data, whereas if you are primarily interested in plant community responses, you may want to focus on plant presence and percent cover plots, and whether or not those specific plots burned.
 
-If helpful for further analysis, we export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFunction`.
+If helpful for further analysis, we can export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFunction`.
 
-``` {r export polygons}
+``` {r export polygons, warnings= F}
 #export the wildfire polygons as kmls
 neonSiteMgmtEventData::writeExportFile(sfList = wf.SOAP.polygon$sfObjects, outDir = getwd(),
                                        outType = "kml")
@@ -453,6 +460,6 @@ neonSiteMgmtEventData::writeExportFile(sfList = cb.SOAP.polygon$sfObjects, outDi
 
 ```
 
-For more information and examples how how the `createSIMPolygon` works please see the vignette assoicated withe the package. 
+For more information and examples how how the `createSIMPolygon` works please see the vignette associated with the package. 
 devtools::install_github('NEONScience/neonSiteMgmtEventData', force = T,build_vignettes = TRUE)
 browseVignettes("neonSiteMgmtEventData")
