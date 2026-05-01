@@ -202,7 +202,7 @@ Documentation for each NEON data product is contained on the respective data pro
 
 Now that you've read the readMe, and referencing the document above, take a look at the structure of the data in HDFView.
 
-Notice that there are multiple groups (folders) under the `SJER` root folder starting with `dp`. Expand these folders by double clicking on the folder icons. These represent the different data product levels, from 01 to 04, and
+Notice that there are multiple groups (folders) under the `SJER` root folder starting with `dp`. Expand these folders by double clicking on the folder icons. These represent the different data product levels, from 01 to 04, as well as level 0 prime.
 
 * `dp01`: Level 1
 * `dp02`: Level 2
@@ -210,9 +210,7 @@ Notice that there are multiple groups (folders) under the `SJER` root folder sta
 * `dp04`: Level 4
 * `dp0p`: Level 0 prime
 
-Under each of the levels there is a data folder with subfolders labeled by the data product identification codes as well as quality information (`qfqm`) and uncertainty (`ucrt`). 
-
-Notice that there is also metadata associated with each group.
+Under each of the levels there is a data folder with subfolders labeled by the data product identification codes as well as quality information (`qfqm`) and uncertainty (`ucrt`). Notice that there is also metadata associated with each group.
 
 Within the `dp04/data` group there are five more groups: `fluxCo2`, `fluxH2o`, `fluxMome`, `fluxTemp`, and `foot`. What data are contained within these groups? 
 
