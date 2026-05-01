@@ -223,7 +223,7 @@ Within the `dp04/data` group there are five more groups: `fluxCo2`, `fluxH2o`, `
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/NEON-general/NEONtower.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/NEON-general/NEONtower.png" alt="Illustration of a NEON tower with arms containing sensors extending horizontally off of the tower structure"></a>
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/NEON-general/NEONtower.png" alt="Illustration of a NEON tower with arms containing sensors extending horizontally off of the tower structure" style="width: 70%;"></a>
     <figcaption>A NEON flux tower contains booms or arms that house sensors at varying heights along the tower.</figcaption>
 </figure>
 
