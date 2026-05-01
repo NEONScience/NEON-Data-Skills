@@ -212,15 +212,13 @@ Notice that there are multiple groups (folders) under the `SJER` root folder sta
 
 Under each of the levels there is a data folder with subfolders labeled by the data product identification codes as well as quality information (`qfqm`) and uncertainty (`ucrt`). 
 
-
-Notice that there is metadata associated with each group.
+Notice that there is also metadata associated with each group.
 
 Within the `dp04/data` group there are five more groups: `fluxCo2`, `fluxH2o`, `fluxMome`, `fluxTemp`, and `foot`. What data are contained within these groups? 
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i>**Note:** The data used in this activity were collected 
-by a temperature sensor mounted on a National Ecological Observatory Network (NEON) flux tower. 
-<a href="https://www.neonscience.org/data-collection/meteorology" target="_blank"> Read more about NEON towers here. </a>
+<i class="fa fa-star"></i> **Note:** The data used in this activity were collected by sensors mounted on a National Ecological Observatory Network (NEON) flux tower. 
+<a href="https://www.neonscience.org/data-collection/meteorology" target="_blank">Read more about NEON towers here.</a>
 </div>
 
 <figure>
