@@ -34,38 +34,32 @@ After completing this activity, you will be able to:
 ## Tools You Will Need
 
 Install the free HDFView application. This application allows you to explore the contents of an HDF5 file easily. 
-<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">Click here to go to the download page. </a>
+<a href="https://www.hdfgroup.org/downloads/hdfview/" target="_blank">Click here to go to the download page.</a>
 
 ## Data to Download
-NOTE: The first file downloaded has an .HDF5 file extension, the second file 
-downloaded below has an .h5 extension. Both extensions represent the HDF5 data 
-type.
-
-<h3><a href="https://ndownloader.figshare.com/files/7024985" > NEON Teaching Data Subset: Sample Tower Temperature - HDF5 </a></h3>
-
-These temperature data were collected by the
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/field-sites-map" target="_blank">flux towers at field sites across the US</a>.
-The entire dataset can be accessed by request from the 
-<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
-
-<a href="https://ndownloader.figshare.com/files/7024985" class="link--button link--arrow">
-Download Dataset </a>
-
 
 <h3><a href="https://storage.googleapis.com/neon-aop-provisional-products/2024/FullSite/D17/2024_SJER_7/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5">
-Download NEON Imaging Spectrometer Data at SJER - NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5</a></h3>
+Download NEON Imaging Spectrometer Data at SJER (2024) - NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5</a></h3>
 
 These hyperspectral remote sensing data provide information on the
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
 <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin Exerimental Range field site.</a>
 The data were collected over the San Joaquin field site located in California 
 (Domain 17) and processed at NEON headquarters. The entire dataset can be accessed from the 
-<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+<a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic</a> page on the NEON data portal.
 
-<a href="https://storage.googleapis.com/neon-aop-provisional-products/2024/FullSite/D17/2024_SJER_7/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5" class="link--button link--arrow">
-Download Dataset</a>
+<a href="https://storage.googleapis.com/neon-aop-provisional-products/2024/FullSite/D17/2024_SJER_7/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_254000_4108000_bidirectional_reflectance.h5" class="link--button link--arrow">Download Reflectance Dataset</a>
 
+<h3><a href="https://storage.googleapis.com/neon-sae-files/ods/dataproducts/DP4/2024-04-01/SJER/NEON.D17.SJER.DP4.00200.001.nsae.2024-04.basic.20260115T154231Z.h5">Download NEON Eddy Covariance Data at SJER (2024-04-01)</a></h3>
+
+The SAE data were collected by the
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
+<a href="https://www.neonscience.org/field-sites/field-sites-map" target="_blank">flux towers at field sites across the US</a>.
+The entire dataset can be accessed from the 
+<a href="https://data.neonscience.org/data-products/DP4.00200.001" target="_blank">Bundled data products - eddy covariance</a> page on the NEON data portal.
+
+<a href="https://storage.googleapis.com/neon-sae-files/ods/dataproducts/DP4/2024-04-01/SJER/NEON.D17.SJER.DP4.00200.001.nsae.2024-04.basic.20260115T154231Z.h5" class="link--button link--arrow">
+Download Eddy Covariance Dataset</a>
 
 
 
@@ -104,7 +98,7 @@ types of data, in different ways.
     <figcaption>NEON airborne observation platform.</figcaption>
 </figure>
 
-Next, we will explore a hyperspectral dataset, collected by the 
+First, we will explore a hyperspectral dataset, collected by the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform (AOP)</a> 
 and saved in HDF5 format. In the hyperpsectral data cubes, each pixel in the dataset contains reflectance values for hundreds of bands (426) collected by the sensor.
 
@@ -134,7 +128,7 @@ structure can like for a different type of data.
     <figcaption>HDFView for a bidirectional reflectance hdf5 file for SJER</figcaption>
 </figure>
 
-#### Open a HDF5/H5 file in HDFView
+#### Open the Reflectance H5 file in HDFView
 
 To begin, open the HDFView application.
 
@@ -179,48 +173,54 @@ viewer to see the data properly.
 
 Explore the spectral dataset in the HDFViewer taking note of the metadata and data stored within the file.
 
-### Part 2: Exploring Surface Atmosphere Exchange Data in HDFView
+### Part 2: Exploring Surface Atmosphere Exchange (SAE) Data in HDFView
 
-As in the first part, we will start by opening the file in the viewer to get a better idea of the data is structured.
+Next, we will look at the SAE bundled eddy covariance h5 data. As in the first part, we will start by opening the h5 file (download from the link at the top of this tutorial) in the viewer to get a better idea of how this data is structured.
 
-#### Open a HDF5/H5 file in HDFView
+#### Open the Bundled Eddy Covariance H5 file in HDFView
 
-Open the HDFView application. Within the application, select File --> Open and navigate to the folder 
+Open the HDFView application. Within the application, select **File --> Open** and navigate to the folder 
 where you saved the SAE hdf5 file on your computer. Open this file in HDFView.
 
 If you **click on the name** of the HDF5 file in the left hand window of HDFView, 
 you can view metadata for the file. This will be located in the bottom window of 
 the application.
 
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/HDF5-general/hdfview_SJER_SAE.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/HDF5-general/hdfview_SJER_SAE.png" alt="SJER Eddy Covariance HDF5 File"></a>
+    <figcaption>HDFView Reflectance Dataset Selection</figcaption>
+</figure>
+
 #### Explore File Structure in HDFView
 
-Next, explore the structure of this file. Notice that there are two Groups 
-(represented as folder icons in the viewer) called "Domain_03" and "Domain_10". 
-Within each domain group, there are site groups (NEON sites that are located within 
-those domains). Expand these folders by double clicking on the folder icons. 
-Double clicking expands the groups content just as you might expand a folder 
-in Windows explorer.
+Next, explore the structure of this bundled eddy covariane file. 
+
+Notice at the bottom there is a `readMe` attribute. If you double click on this, you'll see the text "Net Surface Atmosphere Exchange (NSAE) HDF5 File Structure Description. The NSAE file you downloaded from NEON data portal is in the HDF5 format. This document describes the HDF5 file structure. This file will provide the HDF5 hierarchical layout of the file and a description of each HDF5 group level. The full descriptions of objects can be found in the objDesc data table provided within the HDF5 file. The 'Exploring NEON Eddy-Covariance Data Products in HDF5 file format' document provides a greater level of detail ..."
+
+Documentation for each NEON data product is contained on the respective data product page. It is strongly recommended to peruse the relevant documentation, starting with the Quick Start Guides. The document referenced above in the readMe is linked here: <a href="https://data.neonscience.org/api/v0/documents/NEON_how_to_view_hdf5_vA?inline=true" target="_blank">Exploring NEON Eddy-Covariance Data Products in HDF5 file format</a> .
+
+Now that you've read the readMe, and referencing the document above, take a look at the structure of the data in HDFView.
+
+Notice that there are multiple groups (folders) under the `SJER` root folder starting with `dp`. Expand these folders by double clicking on the folder icons. These represent the different data product levels, from 01 to 04, and
+
+* `dp01`: Level 1
+* `dp02`: Level 2
+* `dp03`: Level 3
+* `dp04`: Level 4
+* `dp0p`: Level 0 prime
+
+Under each of the levels there is a data folder with subfolders labeled by the data product identification codes as well as quality information (`qfqm`) and uncertainty (`ucrt`). 
+
 
 Notice that there is metadata associated with each group.
 
-Double click on the `OSBS` group located within the Domain_03 group. Notice in 
-the metadata window that `OSBS` contains data collected from the 
-<a href="https://www.neonscience.org/field-sites/field-sites-map/OSBS" target="_blank">NEON Ordway-Swisher Biological Station field site</a>.
-
-Within the `OSBS` group there are two more groups - Min_1 and Min_30. What data 
-are contained within these groups? 
-
-Expand the "min_1" group within the OSBS site in Domain_03. Notice that there 
-are five more nested groups named "Boom_1, 2, etc". A boom refers to an arm on a 
-tower, which sits at a particular height and to which are attached sensors for 
-collecting data on such variables as temperature, wind speed, precipitation, 
-etc. In this case, we are working with data collected using temperature sensors, 
-mounted on the tower booms.
+Within the `dp04/data` group there are five more groups: `fluxCo2`, `fluxH2o`, `fluxMome`, `fluxTemp`, and `foot`. What data are contained within these groups? 
 
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i>**Note:** The data used in this activity were collected 
 by a temperature sensor mounted on a National Ecological Observatory Network (NEON) flux tower. 
-<a href="https://www.neonscience.org/data-collection/flux-tower-measurements" target="_blank"> Read more about NEON towers here. </a>
+<a href="https://www.neonscience.org/data-collection/meteorology" target="_blank"> Read more about NEON towers here. </a>
 </div>
 
 <figure>
@@ -229,18 +229,4 @@ by a temperature sensor mounted on a National Ecological Observatory Network (NE
     <figcaption>A NEON flux tower contains booms or arms that house sensors at varying heights along the tower.</figcaption>
 </figure>
 
-Speaking of temperature - what type of sensor is collected the data within the 
-boom_1 folder at the Ordway Swisher site? *HINT: check the metadata for that dataset.*
-
-
-Expand the "Boom_1" folder by double clicking it. Finally, we have arrived at 
-a dataset! Have a look at the metadata associated with the temperature dataset 
-within the boom_1 group. Notice that there is metadata describing each attribute 
-in the temperature dataset. 
-Double click on the group name to open up the table in a tabular format. Notice 
-that these data are temporal.
-
-So this is one example of how an HDF5 file could be structured. This particular 
-file contains data from multiple sites, collected from different sensors (mounted 
-on different booms on the tower) and collected over time. Take some time to 
-explore this HDF5 dataset within the HDFViewer. 
+So this is another example of how a NEON HDF5 file is structured. Take some time to explore this HDF5 dataset within the HDFViewer, using the reference document as needed.
