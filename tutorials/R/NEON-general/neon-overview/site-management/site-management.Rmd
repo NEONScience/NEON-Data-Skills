@@ -343,7 +343,58 @@ points(cb.SOAP$locationID_easting,
 
 ```
 
-We can utlize the `sim_locationVisitsAndAttributes` package's `createSIMPolygon` function to create a polygon 
+We can utilize the `sim_locationVisitsAndAttributes` package's `createSIMPolygon` function to create a polygon around the point locations for each event. The input is a data frame of one to many SIM events that has been downloaded from the NEON portal and run through `geoNEON::getLocTOS`.
+
+``` {r plot-2019-add polygons}
+
+#wildlife polygons
+wf.SOAP.df <- fire.loc |>
+  filter(siteID=="SOAP" & endDate<"2021-01-01" & eventType == "fire" & methodTypeChoice=="fire-wildfire") 
+
+wf.SOAP.polygon <- neonSiteMgmtEventData::createSIMPolygon(df= wf.SOAP.df)
+
+#transform the polygon from WGS84 (standard output) to utm zone 11N to match AOP tiles.  
+#coordinate reference system (crs) EPSG values can be searched for on https://spatialreference.org/ref/epsg/
+wf.SOAP.polygon.utm <- st_transform(wf.SOAP.polygon$sfObjects[[1]], crs = 32611)
+
+
+#control burn polygons
+cb.SOAP.df <- fire.loc |>
+  filter(siteID=="SOAP" & endDate<"2021-01-01" & eventType == "fire" & methodTypeChoice=="fire-controlledBurn")
+
+cb.SOAP.polygon <- neonSiteMgmtEventData::createSIMPolygon(df= cb.SOAP.df)
+
+#transform the polygon from WGS84 (standard output) to utm zone 11N to match AOP tiles.  
+#coordinate reference system (crs) EPSG values can be searched for on https://spatialreference.org/ref/epsg/
+cb.SOAP.polygon.utm <- st_transform(cb.SOAP.polygon$sfObjects[[1]], crs = 32611)
+
+#plots
+plot(ndvi2019)
+
+points(wf.SOAP$locationID_easting,
+       wf.SOAP$locationID_northing,
+       pch=20, col="hotpink")
+
+cb.SOAP <- fire.SOAP |>
+  filter(methodTypeChoice=="fire-controlledBurn")
+points(cb.SOAP$locationID_easting,
+       cb.SOAP$locationID_northing,
+       pch=20, col="darkred")
+
+plot(sf::st_geometry(wf.SOAP.polygon.utm),
+       border = "hotpink",
+       lwd = 2.5,
+       add = TRUE)
+
+plot(sf::st_geometry(cb.SOAP.polygon.utm),
+       border = "darkred",
+       lwd = 2.5,
+       add = TRUE)
+```
+
+We can see the wildfire polygon (light pink) include the entire site boundary since the site code "SOAP" was one of listed locationIDs.  
+
+The controlled burn polygon (dark red) is the smallest convex polygon around the listed locationID points. 
 
 And now let's look at the same locations in 2021.
 
@@ -373,6 +424,15 @@ points(cb.SOAP$locationID_easting,
        cb.SOAP$locationID_northing,
        pch=20, col="darkred")
 
+plot(sf::st_geometry(wf.SOAP.polygon.utm),
+       border = "hotpink",
+       lwd = 2.5,
+       add = TRUE)
+
+plot(sf::st_geometry(cb.SOAP.polygon.utm),
+       border = "darkred",
+       lwd = 2.5,
+       add = TRUE)
 
 ```
 
@@ -380,4 +440,19 @@ We can see a large region where NDVI is substantially lower in 2021 than 2019, m
 
 We only downloaded the 8 tiles overlapping the sampling locations that were reported as affected by the fire; the entire AOP footprint is much larger than this. As noted above, NEON field staff report events at locations they visit, but in this case the fire was much larger than the NEON sampling region. The implications of this depend on your analytical goals. If you are studying fire at a regional level, you may focus primarily on the AOP data, whereas if you are primarily interested in plant community responses, you may want to focus on plant presence and percent cover plots, and whether or not those specific plots burned.
 
+If helpful for further analysis, we export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFunction`.
 
+``` {r export polygons}
+#export the wildfire polygons as kmls
+neonSiteMgmtEventData::writeExportFile(sfList = wf.SOAP.polygon$sfObjects, outDir = getwd(),
+                                       outType = "kml")
+
+#export the controlled burns polygons as shapefiles
+neonSiteMgmtEventData::writeExportFile(sfList = cb.SOAP.polygon$sfObjects, outDir = getwd(),
+                                       outType = "shapefile")
+
+```
+
+For more information and examples how how the `createSIMPolygon` works please see the vignette assoicated withe the package. 
+devtools::install_github('NEONScience/neonSiteMgmtEventData', force = T,build_vignettes = TRUE)
+browseVignettes("neonSiteMgmtEventData")
