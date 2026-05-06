@@ -1,0 +1,30 @@
+---
+syncID: 96ccdc1edaa44a5aafeb692e822b3fd5
+title: Introduction to AOP Canopy Nitrogen Rasters
+description: Introduction to the Canopy Nitrogen product, including visualizing the four rasters and masking in R and Python.
+dateCreated: 2026-04-01
+authors: Bridget Hass
+contributors: Shashi Konduri
+estimatedTime: 30 minutes
+packagesLibraries: neonUtilities, terra, rasterio
+topics: canopy-nitrogen, foliar-traits, raster, model, hyperspectral
+subtopics:
+languagesTool: R, API, Python
+dataProduct: DP3.30018.002
+code1:
+tutorialSeries:
+urlTitle: intro-nitrogen
+---
+
+
+```{r setup, echo=FALSE}
+
+library(htmltools)
+
+```
+
+
+```{r html, echo=FALSE, warning=FALSE, message=FALSE}
+
+htmltools::includeHTML("C:/NEON-Data-Skills/tutorials/Tabbed/AOP/Hyperspectral/canopy-nitrogen/intro-canopy-nitrogen-content.html")
+```

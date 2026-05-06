@@ -1,0 +1,665 @@
+---
+title: Content for neonUtilities tutorial
+output: html_fragment
+dateCreated: '2024-09-22'
+---
+
+This tutorial provides an overview of functions in the `neonUtilities` 
+package in R and the `neonutilities` package in Python. These packages 
+provide a toolbox of basic functionality for working with NEON data.
+
+This tutorial is primarily an index of 
+functions and their inputs; for more in-depth guidance in using these 
+functions to work with NEON data, see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial. If you are already familiar with the `neonUtilities` package, 
+and need a quick reference guide to function inputs and notation, see the 
+<a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>.
+
+## Function index {.tabset}
+
+The `neonUtilities`/`neonutilities` package contains several functions 
+(use the R and Python tabs to see the syntax in each language):
+
+### R
+
+* `stackByTable()`: Takes zip files downloaded from the 
+<a href="http://data.neonscience.org" target="_blank">Data Portal</a> or 
+downloaded by `zipsByProduct()`, unzips them, and joins 
+the monthly files by data table to create a single file per table.
+* `zipsByProduct()`: A wrapper for the 
+<a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a>; 
+downloads data based on data product and site criteria. Stores 
+downloaded data in a format that can then be joined by 
+`stackByTable()`.
+* `loadByProduct()`: Combines the functionality of `zipsByProduct()`,  
+`stackByTable()`, and `readTableNEON()`: Downloads the specified data, 
+stacks the files, and loads the files to the R environment.
+* `byFileAOP()`: A wrapper for the NEON API; downloads remote 
+sensing data based on data product, site, and year criteria. 
+Preserves the file structure of the original data.
+* `byTileAOP()`: Downloads remote sensing data for the specified 
+data product, subset to tiles that intersect a list of 
+coordinates.
+* `readTableNEON()`: Reads NEON data tables into R, using the 
+variables file to assign R classes to each column.
+* `getCitation()`: Get a BibTeX citation for a particular data 
+product and release.
+
+### Python
+
+* `stack_by_table()`: Takes zip files downloaded from the 
+<a href="http://data.neonscience.org" target="_blank">Data Portal</a> or 
+downloaded by `zips_by_product()`, unzips them, and joins 
+the monthly files by data table to create a single file per table.
+* `zips_by_product()`: A wrapper for the 
+<a href="http://data.neonscience.org/data-api" target="_blank">NEON API</a>; 
+downloads data based on data product and site criteria. Stores 
+downloaded data in a format that can then be joined by 
+`stack_by_table()`.
+* `load_by_product()`: Combines the functionality of `zips_by_product()`,  
+`stack_by_table()`, and `read_table_neon()`: Downloads the specified data, 
+stacks the files, and loads the files to the R environment.
+* `by_file_aop()`: A wrapper for the NEON API; downloads remote 
+sensing data based on data product, site, and year criteria. 
+Preserves the file structure of the original data.
+* `by_tile_aop()`: Downloads remote sensing data for the specified 
+data product, subset to tiles that intersect a list of 
+coordinates.
+* `read_table_neon()`: Reads NEON data tables into R, using the 
+variables file to assign R classes to each column.
+* `get_citation()`: Get a BibTeX citation for a particular data 
+product and release.
+
+## {-}
+
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> If you are only interested in joining data 
+files downloaded from the NEON Data Portal, you will only need to use 
+`stackByTable()`. Follow the instructions in the first section of the 
+<a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial.
+</div>
+
+
+## Install and load packages {.tabset}
+
+First, install and load the package. The installation step only 
+needs to be run once, and then periodically to update when new 
+package versions are released. The load step needs to be run 
+every time you run your code.
+
+### R
+
+```{r loadStuff, eval=6}
+
+# install neonUtilities - can skip if already installed
+install.packages("neonUtilities")
+
+# load neonUtilities
+library(neonUtilities)
+
+```
+
+### Python
+
+```{python p-install, eval=FALSE}
+
+# install neonutilities - can skip if already installed
+# do this in the command line
+pip install neonutilities
+
+```
+
+```{python p-loadpack}
+
+# load neonutilities in working environment
+import neonutilities as nu
+
+```
+
+## {-}
+
+## Download files and load to working environment {.tabset}
+
+The most popular function in `neonUtilities` is `loadByProduct()` 
+(or `load_by_product()` in `neonutilities`). 
+This function downloads data from the NEON API, merges the site-by-month 
+files, and loads the resulting data tables into the programming 
+environment, classifying each variable's data type appropriately. It 
+combines the actions of the `zipsByProduct()`, `stackByTable()`, and 
+`readTableNEON()` functions, described below.
+
+This is a popular choice because it ensures you're always working with the 
+latest data, and it ends with ready-to-use tables. However, if you 
+use it in a workflow you run repeatedly, keep in mind it will re-download 
+the data every time.
+
+`loadByProduct()` works on most observational (OS) and sensor (IS) data, 
+but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
+data, and some of the data tables in the microbial data products. For 
+functions that download AOP data, see the `byFileAOP()` and `byTileAOP()` 
+sections in this tutorial. For functions that work with SAE data, see 
+the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>. SAE functions are not yet available in Python.
+
+The inputs to `loadByProduct()` control which data to download and how 
+to manage the processing:
+
+### R
+
+* `dpID`: The data product ID, e.g. DP1.00002.001
+* `site`: Defaults to "all", meaning all sites with available data; 
+can be a vector of 4-letter NEON site codes, e.g. 
+`c("HARV","CPER","ABBY")`.
+* `startdate` and `enddate`: Defaults to NA, meaning all dates 
+with available data; or a date in the form YYYY-MM, e.g. 
+2017-06. Since NEON data are provided in month packages, finer 
+scale querying is not available. Both start and end date are 
+inclusive.
+* `package`: Either basic or expanded data package. Expanded data 
+packages generally include additional information about data 
+quality, such as chemical standards and quality flags. Not every 
+data product has an expanded package; if the expanded package is 
+requested but there isn't one, the basic package will be 
+downloaded.
+* `timeIndex`: Defaults to "all", to download all data; or the 
+number of minutes in the averaging interval. See example below; 
+only applicable to IS data.
+* `release`: Specify a particular data Release, e.g. 
+`"RELEASE-2024"`. Defaults to the most recent Release. For more 
+details and guidance, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">
+Release and Provisional</a> 
+tutorial.
+* `include.provisional`: T or F: Should provisional data be 
+downloaded? If `release` is not specified, set to T to include 
+provisional data in the download. Defaults to F.
+* `savepath`: the file path you want to download to; defaults to the 
+working directory.
+* `check.size`: T or F: should the function pause before downloading 
+data and warn you about the size of your download? Defaults to T; if 
+you are using this function within a script or batch process you 
+will want to set it to F.
+* `token`: Optional API token for faster downloads. See the 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">
+API token</a> tutorial.
+* `nCores`: Number of cores to use for parallel processing. Defaults 
+to 1, i.e. no parallelization.
+
+### Python
+
+* `dpid`: the data product ID, e.g. DP1.00002.001
+* `site`: defaults to "all", meaning all sites with available data; 
+can be a list of 4-letter NEON site codes, e.g. 
+`["HARV","CPER","ABBY"]`.
+* `startdate` and `enddate`: defaults to NA, meaning all dates 
+with available data; or a date in the form YYYY-MM, e.g. 
+2017-06. Since NEON data are provided in month packages, finer 
+scale querying is not available. Both start and end date are 
+inclusive.
+* `package`: either basic or expanded data package. Expanded data 
+packages generally include additional information about data 
+quality, such as chemical standards and quality flags. Not every 
+data product has an expanded package; if the expanded package is 
+requested but there isn't one, the basic package will be 
+downloaded.
+* `timeindex`: defaults to "all", to download all data; or the 
+number of minutes in the averaging interval. See example below; 
+only applicable to IS data.
+* `release`: Specify a particular data Release, e.g. 
+`"RELEASE-2024"`. Defaults to the most recent Release. For more 
+details and guidance, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">
+Release and Provisional</a> 
+tutorial.
+* `include_provisional`: True or False: Should provisional data be 
+downloaded? If `release` is not specified, set to T to include 
+provisional data in the download. Defaults to F.
+* `savepath`: the file path you want to download to; defaults to the 
+working directory.
+* `check_size`: True or False: should the function pause before 
+downloading data and warn you about the size of your download? 
+Defaults to True; if you are using this function within a script or 
+batch process you will want to set it to False.
+* `token`: Optional API token for faster downloads. See the 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">
+API token</a> tutorial.
+* `cloud_mode`: Can be set to True if you are working in a cloud 
+environment; provides more efficient data transfer from NEON cloud 
+storage to other cloud environments.
+* `progress`: Set to False to omit the progress bar during download 
+and stacking.
+
+## {-}
+
+The `dpID` (`dpid`) is the data product identifier of the data you want 
+to download. The DPID can be found on the 
+<a href="http://data.neonscience.org/data-products/explore" target="_blank">
+Explore Data Products page</a>.
+It will be in the form DP#.#####.###
+
+### Demo data download and read {.tabset}
+
+Let's get triple-aspirated air temperature data (DP1.00003.001) 
+from Moab and Onaqui (MOAB and ONAQ), from May--August 2018, and 
+name the data object `triptemp`:
+
+#### R
+
+```{r loadBy, eval=F}
+
+triptemp <- loadByProduct(dpID="DP1.00003.001", 
+                          site=c("MOAB","ONAQ"),
+                          startdate="2018-05", 
+                          enddate="2018-08")
+
+```
+```{r loadBy-hidden, results="hide", include=FALSE}
+
+triptemp <- loadByProduct(dpID="DP1.00003.001", 
+                          site=c("MOAB","ONAQ"),
+                          startdate="2018-05", 
+                          enddate="2018-08",
+                          check.size=F)
+
+```
+
+#### Python
+
+```{python p-loadBy, eval=F}
+
+triptemp = nu.load_by_product(dpid="DP1.00003.001", 
+                              site=["MOAB","ONAQ"],
+                              startdate="2018-05", 
+                              enddate="2018-08")
+
+```
+```{python p-loadBy-hidden, results="hide", include=FALSE}
+
+triptemp = nu.load_by_product(dpid="DP1.00003.001", 
+                              site=["MOAB","ONAQ"],
+                              startdate="2018-05", 
+                              enddate="2018-08",
+                              check_size=False)
+
+```
+
+### {-}
+
+### View downloaded data {.tabset}
+
+The object returned by `loadByProduct()` is a named list of data 
+tables, or a dictionary of data tables in Python. To work with each 
+of them, select them from the list.
+
+#### R
+
+```{r loadBy-list}
+
+names(triptemp)
+temp30 <- triptemp$TAAT_30min
+
+```
+
+If you prefer to extract each table from the list and work 
+with it as an independent object, you can use the 
+`list2env()` function:
+
+``` {r env, eval=F}
+
+list2env(trip.temp, .GlobalEnv)
+
+```
+
+#### Python
+
+```{python p-loadBy-list}
+
+triptemp.keys()
+temp30 = triptemp["TAAT_30min"]
+
+```
+
+If you prefer to extract each table from the list and work 
+with it as an independent object, you can use  
+`globals().update()`:
+
+``` {python p-env, eval=F}
+
+globals().update(triptemp)
+
+```
+
+### {-}
+
+For more details about the contents of the data tables and metadata tables, 
+check out the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
+tutorial.
+
+## Join data files: stackByTable()
+
+The function `stackByTable()` joins the month-by-site files from a data 
+download. The output will yield data grouped into new files by table name. 
+For example, the single aspirated air temperature data product contains 1 
+minute and 30 minute interval data. The output from this function is one 
+.csv with 1 minute data and one .csv with 30 minute data. 
+
+Depending on your file size this function may run for a while. For 
+example, in testing for this tutorial, 124 MB of temperature data took 
+about 4 minutes to stack. A progress bar will display while the 
+stacking is in progress. 
+
+### Download the Data
+
+To stack data from the Portal, first download the data of interest from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>. 
+To stack data downloaded from the API, see the `zipsByProduct()` section 
+below.
+
+Your data will download from the Portal in a single zipped file. 
+
+The stacking function will only work on zipped Comma Separated Value (.csv) 
+files and not the NEON data stored in other formats (HDF5, etc). 
+
+### Run `stackByTable()` {.tabset}
+
+The example data below are single-aspirated air temperature. 
+
+To run the `stackByTable()` function, input the file path to the 
+downloaded and zipped file. 
+
+#### R
+
+```{r run-function, eval = FALSE}
+
+# Modify the file path to the file location on your computer
+stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
+
+```
+
+#### Python
+
+```{python p-run-function, eval = FALSE}
+
+# Modify the file path to the file location on your computer
+nu.stack_by_table(filepath="/neon/data/NEON_temp-air-single.zip")
+
+```
+
+### {-}
+
+In the same directory as the zipped file, you should now have an unzipped 
+directory of the same name. When you open this you will see a new directory 
+called **stackedFiles**. This directory contains one or more .csv files 
+(depends on the data product you are working with) with all the data from 
+the months & sites you downloaded. There will also be a single copy of the 
+associated variables, validation, and sensor_positions files, if applicable 
+(validation files are only available for observational data products, and 
+sensor position files are only available for instrument data products).
+
+These .csv files are now ready for use with the program of your choice.
+
+To read the data tables, we recommend using `readTableNEON()`, 
+which will assign each column to the appropriate data type, based on the 
+metadata in the variables file. This ensures time stamps and missing 
+data are interpreted correctly.
+
+## Load data to environment {.tabset}
+
+### R
+
+```{r readtable, eval=F}
+
+SAAT30 <- readTableNEON(
+  dataFile='~/stackedFiles/SAAT_30min.csv',
+  varFile='~/stackedFiles/variables_00002.csv'
+)
+
+```
+
+### Python
+
+```{python p-readtable, eval=F}
+
+SAAT30 = read_table_neon(
+  dataFile='/stackedFiles/SAAT_30min.csv',
+  varFile='/stackedFiles/variables_00002.csv'
+)
+
+```
+
+## {-}
+
+### Other function inputs {.tabset}
+
+Other input options in `stackByTable()` are:
+
+* `savepath` : allows you to specify the file path 
+where you want the stacked files to go, overriding the default. 
+Set to `"envt"` to load the files to the working environment.
+* `saveUnzippedFiles` : allows you to keep the unzipped, unstacked 
+files from an intermediate stage of the process; by default they 
+are discarded.
+
+Example usage:
+
+#### R
+
+```{r run-options, eval = FALSE}
+
+stackByTable(filepath="~neon/data/NEON_temp-air-single.zip", 
+             savepath="~data/allTemperature", saveUnzippedFiles=T)
+
+tempsing <- stackByTable(filepath="~neon/data/NEON_temp-air-single.zip", 
+                         savepath="envt", saveUnzippedFiles=F)
+
+```
+
+#### Python
+
+```{python p-run-options, eval = FALSE}
+
+nu.stack_by_table(filepath="/neon/data/NEON_temp-air-single.zip", 
+                  savepath="/data/allTemperature", 
+                  saveUnzippedFiles=True)
+
+tempsing <- nu.stack_by_table(filepath="/neon/data/NEON_temp-air-single.zip", 
+                              savepath="envt", 
+                              saveUnzippedFiles=False)
+
+```
+
+### {-}
+
+## Download files to be stacked: zipsByProduct() {.tabset}
+
+The function `zipsByProduct()` is a wrapper for the NEON API, it 
+downloads zip files for the data product specified and stores them in 
+a format that can then be passed on to `stackByTable()`.
+
+Input options for `zipsByProduct()` are the same as those for 
+`loadByProduct()` described above.
+
+Here, we'll download single-aspirated air temperature (DP1.00002.001) 
+data from Wind River Experimental Forest (WREF) for April and May of 
+2019.
+
+### R
+
+```{r run-zipsByProduct, eval = FALSE}
+
+zipsByProduct(dpID="DP1.00002.001", site="WREF", 
+              startdate="2019-04", enddate="2019-05",
+              package="basic", check.size=T)
+
+```
+
+Downloaded files can now be passed to `stackByTable()` to be 
+stacked.
+
+```{r zips-to-stack, eval = FALSE}
+
+stackByTable(filepath=paste(getwd(), 
+                            "/filesToStack00002", 
+                            sep=""))
+
+```
+
+### Python
+
+```{python p-run-zipsByProduct, eval = FALSE}
+
+nu.zips_by_product(dpid="DP1.00002.001", site="WREF", 
+                   startdate="2019-04", enddate="2019-05",
+                   package="basic", check_size=True)
+
+```
+
+Downloaded files can now be passed to `stackByTable()` to be 
+stacked.
+
+```{python p-zips-to-stack, eval = FALSE}
+
+nu.stack_by_table(filepath=os.getcwd()+
+                  "/filesToStack00002")
+
+```
+
+## {-}
+
+For many sensor data products, download sizes can get 
+very large, and `stackByTable()` takes a long time. The 
+1-minute or 2-minute files are much larger than the 
+longer averaging intervals, so if you don't need high-
+frequency data, the `timeIndex` input option lets you choose 
+which averaging interval to download.
+
+This option is only applicable to sensor (IS) data, 
+since OS data are not averaged.
+
+### Download by averaging interval {.tabset}
+
+Download only the 30-minute data for single-aspirated 
+air temperature at WREF:
+
+#### R
+
+```{r run-zipsByProduct-avg, eval = FALSE}
+
+zipsByProduct(dpID="DP1.00002.001", site="WREF", 
+              startdate="2019-04", enddate="2019-05",
+              package="basic", timeIndex=30, 
+              check.size=T)
+
+```
+
+#### Python
+
+```{python p-run-zipsByProduct-avg, eval = FALSE}
+
+nu.zips_by_product(dpid="DP1.00002.001", site="WREF", 
+                   startdate="2019-04", 
+                   enddate="2019-05", package="basic", 
+                   timeindex=30, check_size=True)
+
+```
+
+### {-}
+
+The 30-minute files can be stacked and loaded as usual.
+
+## Download remote sensing files {.tabset}
+
+Remote sensing data files can be very large, and NEON remote sensing 
+(AOP) data are stored in a directory structure that makes them easier 
+to navigate. `byFileAOP()` downloads AOP files from the API while 
+preserving their directory structure. This provides a convenient way 
+to access AOP data programmatically.
+
+Be aware that downloads from `byFileAOP()` can take a VERY long time, 
+depending on the data you request and your connection speed. You 
+may need to run the function and then leave your machine on and 
+downloading for an extended period of time.
+
+Here the example download is the Ecosystem Structure data product at 
+Hop Brook (HOPB) in 2017; we use this as the example because it's a 
+relatively small year-site-product combination.
+
+### R
+
+```{r aop-files, eval = FALSE}
+
+byFileAOP("DP3.30015.001", site="HOPB", 
+          year=2017, check.size=T)
+
+```
+
+### Python
+
+```{python p-aop-files, eval = FALSE}
+
+nu.by_file_aop(dpid="DP3.30015.001", 
+               site="HOPB", year=2017, 
+               check_size=True)
+
+```
+
+## {-}
+
+The files should now be downloaded to a new folder in your 
+working directory.
+
+## Download remote sensing files for specific coordinates {.tabset}
+
+Often when using remote sensing data, we only want data covering a
+certain area - usually the area where we have coordinated ground 
+sampling. `byTileAOP()` queries for data tiles containing a 
+specified list of coordinates. It only works for the tiled, AKA 
+mosaicked, versions of the remote sensing data, i.e. the ones with 
+data product IDs beginning with "DP3".
+
+Here, we'll download tiles of vegetation indices data (DP3.30026.001) 
+corresponding to select observational sampling plots. For more information 
+about accessing NEON spatial data, see the 
+<a href="https://www.neonscience.org/neon-api-usage" target="_blank">
+API tutorial</a> and the in-development <a href="https://github.com/NEONScience/NEON-geolocation/tree/master/geoNEON" 
+target="_blank">
+geoNEON package</a>.
+
+For now, assume we've used the API to look up the plot centroids of 
+plots SOAP_009 and SOAP_011 at the Soaproot Saddle site. You can 
+also look these up in the Spatial Data folder of the 
+<a href="https://data.neonscience.org/documents" target="_blank">
+document library</a>. 
+The coordinates of the two plots in UTMs are 298755,4101405 and 
+299296,4101461. These are 40x40m plots, so in looking for tiles 
+that contain the plots, we want to include a 20m buffer. The 
+"buffer" is actually a square, it's a delta applied equally to 
+both the easting and northing coordinates.
+
+### R
+
+```{r byTile, eval=F}
+
+byTileAOP(dpID="DP3.30026.001", site="SOAP", 
+          year=2018, easting=c(298755,299296),
+          northing=c(4101405,4101461),
+          buffer=20)
+
+```
+
+### Python
+
+```{python p-byTile, eval=F}
+
+nu.by_tile_aop(dpid="DP3.30026.001", 
+               site="SOAP", year=2018, 
+               easting=[298755,299296],
+               northing=[4101405,4101461],
+               buffer=20)
+
+```
+
+## {-}
+
+The 2 tiles covering the SOAP_009 and SOAP_011 plots have  
+been downloaded.
+
+
