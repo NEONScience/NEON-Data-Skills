@@ -86,6 +86,7 @@ library(leaflet)
 library(leaflet.minicharts)
 library(lubridate)
 library(ggplot2)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -111,12 +112,14 @@ Note that we have chosen to include <a href="https://www.neonscience.org/resourc
                     include.provisional=TRUE,
                     site=c('BLAN','BART','GRSM','HARV',
                            'MLBS','ORNL','SCBI','SERC'),
-                    check.size=FALSE)
+                    check.size=FALSE,
+                    token=token)
  
  NEON.ltr <- loadByProduct(dpID="DP1.10033.001",
                     site=c('BLAN','BART','GRSM','HARV',
                            'MLBS','ORNL','SCBI','SERC'),
-                    check.size=FALSE)
+                    check.size=FALSE,
+                    token=token)
 ```
 
 Let's take a look at what is included in each NEON data product download. We will extract and focus on the table that has collated all of the records for individual traps.

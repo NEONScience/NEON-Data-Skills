@@ -79,6 +79,7 @@ library(ggplot2)
 library(neonUtilities)
 library(neonOS)
 library(geoNEON)
+token <- Sys.getenv("NEON_TOKEN")
 
 options(stringsAsFactors=F)
 
@@ -113,7 +114,8 @@ the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/downlo
 # load veg structure data
 vst <- loadByProduct(dpID="DP1.10098.001", 
                      site="WREF",
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 ```
 
@@ -371,7 +373,8 @@ for ease of running the code.
 # load soil temperature data of interest 
 soilT <- loadByProduct(dpID="DP1.00041.001", site="TREE",
                     startdate="2018-07", enddate="2018-07",
-                    timeIndex=30, check.size=F)
+                    timeIndex=30, check.size=F,
+                    token=token)
 
 ```
 

@@ -71,6 +71,7 @@ library(rhdf5)
 library(plyr)
 library(ggplot2)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 wd <- "~/data/" #This will depend on your local environment
 setwd(wd)
@@ -83,7 +84,8 @@ byTileAOP(dpID = 'DP3.30006.001',
           year = '2021',
           easting = 257500,
           northing = 4112500,
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 
 This file will be downloaded into a nested subdirectory under the `~/data` folder (your working directory), inside a folder named `DP3.30006.001` (the Data Product ID). The file should show up in this location: `~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5`.

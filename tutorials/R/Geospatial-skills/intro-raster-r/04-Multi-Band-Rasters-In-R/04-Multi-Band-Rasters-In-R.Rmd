@@ -112,6 +112,7 @@ library(neonUtilities)
 
 # package for specifying color palettes
 library(RColorBrewer)
+token <- Sys.getenv("NEON_TOKEN")
 
 # set working directory to ensure R can find the file we wish to import
 wd <- "~/data/" # this will depend on your local environment environment
@@ -133,7 +134,8 @@ byTileAOP(dpID='DP3.30010.001', # rgb camera data
           easting=732000,
           northing=4713500,
           check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-          savepath = wd)
+          savepath = wd,
+          token=token)
 
 ```
 

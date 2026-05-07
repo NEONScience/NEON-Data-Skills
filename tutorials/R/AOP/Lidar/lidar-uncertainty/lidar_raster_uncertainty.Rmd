@@ -90,6 +90,7 @@ Model (DSM), Digital Terrain Model (DTM), and Canopy Height Model (CHM).
 # Load needed packages
 library(terra)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 Set the working directory so you know where to download data.
@@ -113,7 +114,8 @@ byTileAOP(dpID='DP3.30015.001',
           easting=607000,
           northing=3696000,
           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 
 The fileS from the two 2016 collections (2016_PRIN_1 and 2016_PRIN_2) will be downloaded into a nested 
@@ -129,7 +131,8 @@ byTileAOP(dpID='DP3.30024.001',
           easting=607000,
           northing=3696000,
           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 
 These files should be located in the folder:

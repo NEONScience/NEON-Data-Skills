@@ -85,12 +85,14 @@ setwd(wd)
 Download the reflectance tile, if you haven't already, using `neonUtilities::byTileAOP`:
 
 ``` {r download-h5, eval=FALSE}
+token <- Sys.getenv("NEON_TOKEN")
 byTileAOP(dpID = 'DP3.30006.001',
           site = 'SJER',
           year = '2021',
           easting = 257500,
           northing = 4112500,
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 
 And then we can read in the hyperspectral hdf5 data. We will also collect a few other important pieces of information (band wavelengths and scaling factor) while we're at it.

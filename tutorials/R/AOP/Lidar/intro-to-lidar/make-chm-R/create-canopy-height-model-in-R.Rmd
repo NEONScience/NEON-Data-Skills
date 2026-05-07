@@ -101,6 +101,7 @@ Surface Model (DSM) and the Digital Terrain Model (DTM).
 # Load needed packages
 library(terra)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 Set the working directory so you know where to download data.
@@ -122,7 +123,8 @@ byTileAOP(dpID='DP3.30024.001',
           easting=257500,
           northing=4112500,
           check.size=TRUE, # set to FALSE if you don't want to enter y/n
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 
 This file will be downloaded into a nested subdirectory under the `~/data` folder, inside a folder named `DP3.30024.001` (the Data Product ID). The files should show up in these locations:  `~/data/DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DSMGtif/NEON_D17_SJER_DP3_257000_4112000_DSM.tif` and `~/data/DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DTMGtif/NEON_D17_SJER_DP3_257000_4112000_DTM.tif`.

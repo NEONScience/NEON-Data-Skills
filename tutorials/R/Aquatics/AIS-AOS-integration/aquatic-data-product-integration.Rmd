@@ -125,6 +125,7 @@ library(tidyverse)
 library(plotly)
 library(vegan)
 library(base64enc)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -252,7 +253,7 @@ inv <- neonUtilities::loadByProduct(dpID="DP1.20120.001",
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
-                                    token = Sys.getenv("NEON_TOKEN"),
+                                    token=token,
                                     check.size = F)
 
 ```
@@ -355,7 +356,7 @@ csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
-                                    token = Sys.getenv("NEON_TOKEN"),
+                                    token=token,
                                     check.size = F)
 
 ```
@@ -997,7 +998,7 @@ geo <- neonUtilities::loadByProduct(dpID="DP4.00131.001",
                                     package="expanded",
                                     release= "current",
                                     include.provisional = T,
-                                    token = Sys.getenv("NEON_TOKEN"),
+                                    token=token,
                                     check.size = F)
 
 # unlist the variables and add to the global environment
@@ -1260,7 +1261,7 @@ swc <- neonUtilities::loadByProduct(dpID="DP1.20093.001",
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
-                                    token = Sys.getenv("NEON_TOKEN"),
+                                    token=token,
                                     check.size = F)
 
 # unlist the variables and add to the global environment
@@ -1323,7 +1324,7 @@ waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001",
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
-                                    token = Sys.getenv("NEON_TOKEN"),
+                                    token=token,
                                     check.size = F)
 
 # unlist the variables and add to the global environment

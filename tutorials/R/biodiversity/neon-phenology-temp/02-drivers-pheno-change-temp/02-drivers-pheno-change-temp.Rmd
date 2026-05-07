@@ -131,6 +131,7 @@ library(neonUtilities)  # for accessing NEON data
 library(ggplot2)  # for plotting
 library(dplyr)  # for data munging
 library(tidyr)  # for data munging
+token <- Sys.getenv("NEON_TOKEN")
 
 # set working directory
 # this step is optional, only needed if you plan to save the 
@@ -168,7 +169,8 @@ downloading a new dataset.
 saat <- loadByProduct(dpID="DP1.00002.001", site="SCBI", 
                       startdate="2018-01", enddate="2018-12", 
                       package="basic", timeIndex="30",
-                      check.size = F)
+                      check.size = F,
+                      token=token)
 
 ```
 

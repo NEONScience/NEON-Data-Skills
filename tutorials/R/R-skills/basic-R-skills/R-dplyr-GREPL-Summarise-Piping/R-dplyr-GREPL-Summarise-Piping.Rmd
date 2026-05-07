@@ -159,6 +159,7 @@ disease epidemic.
 # load packages
 library(dplyr)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 # load the NEON small mammal capture data
 # NOTE: the check.size = TRUE argument means the function 
@@ -166,7 +167,8 @@ library(neonUtilities)
 # the quantity of data requested
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                  startdate = "2014-01", enddate = "2014-12", 
-                 check.size = TRUE) # Console requires your response!
+                 check.size = TRUE,
+                 token=token) # Console requires your response!
 
 # if you'd like, check out the data
 str(loadData)
@@ -179,7 +181,8 @@ library(neonUtilities)
 # load the NEON small mammal capture data
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                  startdate = "2014-01", enddate = "2014-12", 
-                 check.size = F) # set to F in hidden code chunk
+                 check.size = F,
+                 token=token) # set to F in hidden code chunk
                                  # to allow knitting to process correctly
 
 ```

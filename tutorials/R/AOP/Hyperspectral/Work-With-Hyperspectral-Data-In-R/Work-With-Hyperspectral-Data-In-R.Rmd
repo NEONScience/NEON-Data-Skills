@@ -99,6 +99,7 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 library(terra)
 library(rhdf5)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 Set the working directory to ensure R can find the file we are importing, and we know where the file is being saved. You can move the file that is downloaded afterward, but be sure to re-set the path to the file.
 
@@ -117,7 +118,8 @@ byTileAOP(dpID='DP3.30006.001',
           easting=257500,
           northing=4112500,
           check.size=TRUE, # set to FALSE if you don't want to enter y/n
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 
 This file will be downloaded into a nested subdirectory under the `~/data` folder, inside a folder named `DP3.30006.001` (the Data Product ID). The file should show up in this location:  `~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5`.

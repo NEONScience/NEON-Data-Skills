@@ -84,6 +84,7 @@ pip install matplotlib
 ```{r R-library, results="hide", message=FALSE, warning=FALSE}
 library(neonUtilities)
 library(tidyverse)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ### Python
@@ -93,6 +94,7 @@ import os
 import pandas as pd
 import neonutilities as nu
 import matplotlib.pyplot as plt
+import dotenv
 ```
 
 ##  {.unnumbered}
@@ -181,6 +183,8 @@ csd_py = read_files_to_dict("C:/Users/nickerson/Downloads/python-files/filesToSt
 ```
 
 ```{python p-download, eval=TRUE, results="hide", message=FALSE, warning=FALSE}
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 # Download continuous discharge data across the lifetime of a site
 csd_py = nu.load_by_product(dpid="DP4.00130.001",
                             site="HOPB",

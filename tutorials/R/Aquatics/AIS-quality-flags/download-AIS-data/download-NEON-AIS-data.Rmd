@@ -77,6 +77,7 @@ options(stringsAsFactors=F)
 # Load required packages
 library(neonUtilities)
 library(ggplot2)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 The inputs to `loadByProduct()` control which data to download and how 
@@ -169,7 +170,8 @@ check the file size, but for larger downloads this is advisable.
 waq <- loadByProduct(dpID="DP1.20288.001", site="PRIN", 
                      startdate="2020-02", enddate="2020-02", 
                      package="expanded", release="current", 
-                     check.size = F)
+                     check.size = F,
+                     token=token)
 
 ```
 
@@ -445,7 +447,8 @@ that we just looked at for water quality?
 csd <- loadByProduct(dpID="DP1.20053.001", site="PRIN", 
                      startdate="2020-02", enddate="2020-02", 
                      package="expanded", release="current", 
-                     check.size = F)
+                     check.size = F,
+                     token=token)
 list2env(csd,.GlobalEnv)
 
 ```
@@ -505,7 +508,8 @@ month that we just looked at for water quality?
 csd <- loadByProduct(dpID="DP4.00130.001", site="PRIN", 
                      startdate="2020-02", enddate="2020-02", 
                      package="expanded", release="current", 
-                     check.size = F)
+                     check.size = F,
+                     token=token)
 list2env(csd,.GlobalEnv)
 
 ```

@@ -39,7 +39,7 @@ After completing this activity, you will be able to:
 ## Things You’ll Need To Complete This Tutorial
 You can follow either the R or Python code throughout this tutorial.
 * For R users, we recommend using R version 4+ and RStudio.
-* For Python users, we recommend using Python 3.9+.
+* For Python users, we recommend using Python 3.10+.
 
 ```{r setup, include=FALSE}
 library(reticulate)
@@ -52,7 +52,7 @@ Packages only need to be installed once, you can skip this step after the first 
 
 ### R
 
-* **neonUtilities**: Basic functions for accessing NEON data
+* **neonUtilities**: Basic functions for accessing NEON data.
 * **neonOS**: Functions for common data wrangling needs for NEON observational data.
 * **terra**: Spatial data package; needed for working with remote sensing data.
 
@@ -66,13 +66,15 @@ install.packages("terra")
 
 ### Python
 
-* **neonutilities**: Basic functions for accessing NEON data
+* **neonutilities**: Basic functions for accessing NEON data.
 * **rasterio**: Spatial data package; needed for working with remote sensing data.
+* **dotenv**: For managing environment variables.
 
 ```{python p-install, eval=FALSE}
 
 pip install neonutilities
 pip install rasterio
+pip install dotenv
 
 ```
 
@@ -105,6 +107,7 @@ library(terra)
 
 import neonutilities as nu
 import os
+import dotenv
 import rasterio
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -118,7 +121,11 @@ import matplotlib.pyplot as plt
 
 Go to the 
 <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a> 
-and download some data! To follow the tutorial exactly, download 
+and download some data! You will need to create a free account to download data, 
+but you do not need an account to explore the data products and documentation 
+on the portal.
+
+To follow the tutorial exactly, download 
 Photosynthetically active radiation (PAR) (DP1.00024.001) data from 
 September-November 2019 at Wind River Experimental Forest (WREF). The 
 downloaded file should be a zip file named NEON_par.zip.
@@ -297,24 +304,41 @@ We can see there is a lot of light attenuation through the canopy.
 
 At the start of this tutorial, we downloaded data from the NEON data portal. 
 NEON also provides an API, and the `neonUtilities` packages provide methods 
-for downloading programmatically.
+for downloading data programmatically.
 
 The steps we carried out above - downloading from the portal, stacking the 
 downloaded files, and reading in to R or Python - can all be carried out in 
 one step by the neonUtilities function `loadByProduct()`.
 
-To get the same PAR data we worked with above, we would run this line of code 
-using `loadByProduct()`:
+Just as the data portal requires a free account to download data, accessing data 
+via the API requires an API token, which you can get through your data portal 
+account. See the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">Set up a NEON API token</a> 
+tutorial for instructions on getting a token and setting it up in your code environment.
+
+Now let's use `loadByProduct()` to get the same PAR data we worked with above.
 
 ### R
 
+Retrieve your API token and assign it to an object called `token`, which you 
+will use throughout this tutorial when downloading data. If you stored your 
+token in a different way (i.e., not as an environment variable), modify the 
+code below to match how you stored it.
+
+```{r get-token, results="hide"}
+
+token <- Sys.getenv("NEON_TOKEN")
+
+```
+
+Download data:
 ```{r run-loadByProduct-par-hidden, results="hide", include=FALSE}
 
 parlist <- loadByProduct(dpID="DP1.00024.001", 
                          site="WREF", 
                          startdate="2019-09",
                          enddate="2019-11",
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
 ```
 ```{r run-loadByProduct-par, eval=FALSE}
@@ -322,19 +346,34 @@ parlist <- loadByProduct(dpID="DP1.00024.001",
 parlist <- loadByProduct(dpID="DP1.00024.001", 
                          site="WREF", 
                          startdate="2019-09",
-                         enddate="2019-11")
+                         enddate="2019-11",
+                         token=token)
 
 ```
 
 ### Python
 
+Retrieve your API token and assign it to an object called `token`, which you 
+will use throughout this tutorial when downloading data. If you stored your 
+token in a different way (i.e., not as an environment variable), modify the 
+code below to match how you stored it.
+
+```{python p-get-token, results="hide"}
+
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
+
+```
+
+Download data:
 ```{python p-run-loadByProduct-par-hidden, results="hide", include=FALSE}
 
 parlist = nu.load_by_product(dpid="DP1.00024.001", 
                 site="WREF", 
                 startdate="2019-09",
                 enddate="2019-11",
-                check_size=False)
+                check_size=False,
+                token=token)
 
 ```
 ```{python p-run-loadByProduct-par, eval=FALSE}
@@ -342,7 +381,8 @@ parlist = nu.load_by_product(dpid="DP1.00024.001",
 parlist = nu.load_by_product(dpid="DP1.00024.001", 
                 site="WREF", 
                 startdate="2019-09",
-                enddate="2019-11")
+                enddate="2019-11",
+                token=token)
 
 ```
 
@@ -428,8 +468,7 @@ subject to change.
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set it to F.
-* `token`: Optional NEON API token for faster downloads. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial</a> 
-for instructions on using a token.
+* `token`: NEON API token.
 * `progress`: Set to F to turn off progress bars.
 * `cloud.mode`: Can be set to T if you are working in a cloud 
 environment; enables more efficient data transfer from NEON's 
@@ -455,7 +494,8 @@ apchem <- loadByProduct(dpID="DP1.20063.001",
                   site=c("PRLA","SUGG","TOOK"), 
                   package="expanded",
                   release="RELEASE-2024",
-                  check.size=F)
+                  check.size=F,
+                  token=token)
 
 ```
 
@@ -467,7 +507,8 @@ apchem = nu.load_by_product(dpid="DP1.20063.001",
                   site=["PRLA", "SUGG", "TOOK"], 
                   package="expanded",
                   release="RELEASE-2024",
-                  check_size=False)
+                  check_size=False,
+                  token=token)
 
 ```
 
@@ -748,7 +789,7 @@ corresponding tiles you want to download
 whose corresponding tiles you want to download
 * `buffer`: `byTileAOP()` only. Size in meters of buffer to include 
 around coordinates when deciding which tiles to download
-* `token`: Optional NEON API token for faster downloads.
+* `token`: NEON API token.
 * `chunk_size`: Only in Python. Set the chunk size of chunked 
 downloads, can improve efficiency in some cases. Defaults to 1 MB.
 
@@ -762,6 +803,7 @@ Model) (DP3.30015.001) from WREF in 2017.
 byTileAOP(dpID="DP3.30015.001", site="WREF", 
           year=2017,easting=580000, 
           northing=5075000, 
+          token=token,
           savepath="~/Downloads")
 
 ```
@@ -773,6 +815,7 @@ byTileAOP(dpID="DP3.30015.001", site="WREF",
 nu.by_tile_aop(dpid="DP3.30015.001", site="WREF", 
                year=2017,easting=580000, 
                northing=5075000, 
+               token=token,
                savepath=os.path.expanduser(
                  "~/Downloads"))
 

@@ -109,6 +109,7 @@ library(neonUtilities)
 library(tidyverse)
 library(geosphere)
 library(plotly)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ### Python
@@ -123,6 +124,7 @@ from geopy.distance import geodesic
 import plotly.graph_objects as go
 import statsmodels.api as sm
 import numpy as np
+import dotenv
 ```
 
 ## {-}
@@ -219,6 +221,8 @@ ptp_r <- neonUtilities::loadByProduct(dpID="DP1.00045.001",
 ### Python
 
 ```{python p-download-is, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 # Download precipitation data for a single water year
 ptp_py = nu.load_by_product(dpid="DP1.00045.001",
                             site="ORNL",

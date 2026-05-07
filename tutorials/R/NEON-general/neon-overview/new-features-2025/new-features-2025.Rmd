@@ -46,6 +46,7 @@ library(ggplot2)
 library(lubridate)
 library(dplyr)
 library(visNetwork)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 

@@ -78,6 +78,7 @@ install.packages("neonUtilities")
 # load packages
 library(neonUtilities)
 library(ggplot2)
+token <- Sys.getenv("NEON_TOKEN")
 
 # set working directory
 # modify for your computer
@@ -272,7 +273,8 @@ qpr23 <- loadByProduct(dpID="DP1.00066.001",
                      startdate="2021-01",
                      enddate="2021-12",
                      release="RELEASE-2023",
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 ```
 
@@ -286,7 +288,8 @@ qpr24 <- loadByProduct(dpID="DP1.00066.001",
                      startdate="2021-01",
                      enddate="2021-12",
                      release="RELEASE-2024",
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 ```
 

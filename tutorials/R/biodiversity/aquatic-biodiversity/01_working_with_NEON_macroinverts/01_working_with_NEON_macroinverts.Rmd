@@ -60,6 +60,7 @@ There are also two optional sections in this code chunk: clearing your environme
 library(tidyverse)
 library(neonUtilities)
 library(vegan)
+token <- Sys.getenv("NEON_TOKEN")
 
 
 # source .r file with my NEON_TOKEN

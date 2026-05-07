@@ -60,6 +60,8 @@ For faster downloads, consider using an <a href="https://www.neonscience.org/res
 
 
 ```{r download, results="hide", message=FALSE}
+token <- Sys.getenv("NEON_TOKEN")
+
 
 #Target dates
 startDate <- "2022-04"
@@ -75,7 +77,8 @@ zipsByProduct(dpID="DP4.00200.001", package="basic",
               site=site, 
               startdate=startDate, enddate=endDate,
               savepath=dirFile, 
-              check.size=FALSE)
+              check.size=FALSE,
+              token=token)
 
 ```
 

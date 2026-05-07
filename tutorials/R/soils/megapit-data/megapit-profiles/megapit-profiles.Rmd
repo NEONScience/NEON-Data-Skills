@@ -78,6 +78,7 @@ library(cluster)
 library(sharpshootR)
 library(dplyr)
 library(Ternary)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -90,7 +91,8 @@ site or date range.
 
 ```{r download-data, results='hide'}
 
-MP <- loadByProduct(dpID = "DP1.00096.001", check.size = F)
+MP <- loadByProduct(dpID = "DP1.00096.001", check.size = F,
+  token=token)
 
 # Unlist to environment - see download/explore tutorial for description
 list2env(MP, .GlobalEnv)

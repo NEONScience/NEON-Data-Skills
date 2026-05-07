@@ -54,6 +54,7 @@ Now load packages. This needs to be done every time you run code.
 ```{r load-packages, results="hide"}
 
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -85,7 +86,8 @@ st <- loadByProduct(dpID="DP1.00041.001",
                     site="SRER", 
                     package="basic", 
                     timeIndex="30",
-                    check.size=F)
+                    check.size=F,
+                    token=token)
 
 swc <- loadByProduct(dpID="DP1.00094.001", 
                      startdate="2021-01", 
@@ -93,7 +95,8 @@ swc <- loadByProduct(dpID="DP1.00094.001",
                      site="SRER", 
                      package="basic", 
                      timeIndex="30", 
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 co2 <- loadByProduct(dpID="DP1.00095.001", 
                      startdate="2021-01", 
@@ -101,7 +104,8 @@ co2 <- loadByProduct(dpID="DP1.00095.001",
                      site="SRER", 
                      package="basic", 
                      timeIndex="30", 
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 ```
 

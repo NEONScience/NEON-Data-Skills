@@ -57,6 +57,7 @@ library(neonUtilities)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ### Download NEON Fish Data
@@ -82,7 +83,8 @@ fshdat <- neonUtilities::loadByProduct(
   check.size = FALSE,
   startdate = "2024-01",
   enddate = "2024-12",
-  release = 'RELEASE-2026')
+  release = 'RELEASE-2026',
+  token=token)
 ```
 
 ### NEON Data Citation

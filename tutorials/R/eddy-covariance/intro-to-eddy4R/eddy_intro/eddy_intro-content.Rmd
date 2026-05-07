@@ -50,6 +50,7 @@ Now load packages.
 
 library(neonUtilities)
 library(ggplot2)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -110,7 +111,8 @@ zipsByProduct(dpID="DP4.00200.001", package="basic",
               site=c("NIWO", "HARV"), 
               startdate="2018-06", enddate="2018-07",
               savepath=getwd(), 
-              check.size=F)
+              check.size=F,
+              token=token)
 
 ```
 
@@ -450,7 +452,8 @@ all available averaging intervals.
 pr <- loadByProduct("DP1.00024.001", site="NIWO", 
                     timeIndex=30, package="basic", 
                     startdate="2018-06", enddate="2018-07",
-                    check.size=F)
+                    check.size=F,
+                    token=token)
 
 ```
 

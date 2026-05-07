@@ -62,6 +62,7 @@ library(dplyr)
 library(reshape2)
 library(rhdf5)
 library(terra)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 Before downloading the data, we can explore the data product using the `neonUtilities::getProductInfo`. Let's take a look at the field spectra data product as follows. You can take a look at various components of the `field_spectra_info` variable as well by un-commenting the lines starting with `View`.
@@ -82,7 +83,8 @@ Now that we know what sites have this field spectral data, let's take a look at 
 field_spectra <- loadByProduct(dpID='DP1.30012.001',
                               site='RMNP',
                               package="expanded",
-                              check.size=FALSE)
+                              check.size=FALSE,
+                              token=token)
 ```
 
 Let's take a look at all the associated tables contained in this data product, using the `names` function:
@@ -229,7 +231,8 @@ foliar_traits <- loadByProduct(dpID='DP1.10026.001',
                                site='RMNP',
                                startdate='2020-07',
                                package="expanded",
-                               check.size=FALSE)
+                               check.size=FALSE,
+                               token=token)
 names(foliar_traits)
 ```
 
@@ -283,7 +286,8 @@ byTileAOP(dpID='DP3.30006.001',
           year=2020,
           easting=fsp_rmnp_picol_20200720_1304$adjEasting,
           northing=fsp_rmnp_picol_20200720_1304$adjNorthing,
-          savepath=wd)
+          savepath=wd,
+          token=token)
 ```
 
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30006.001 (the Data Product ID of the aerial reflectance data). The file should show up in this location: ~/data/DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMNP_3/L3/Spectrometer/Reflectance/NEON_D10_RMNP_DP3_455000_4446000_reflectance.h5. Let's define an `h5_file` variable that points to the full path to this file.
@@ -439,7 +443,8 @@ crown_polys <- loadByProduct(dpID='DP1.10026.001',
                              site='RMNP',
                              tabl='cfc_shapefile', 
                              include.provisional=T,
-                             check.size=F)
+                             check.size=F,
+                             token=token)
 zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
 ```
 

@@ -56,6 +56,7 @@ library(dplyr)
 library(neonUtilities)
 library(neonOS)
 library(ggplot2)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ### Download NEON Small Mammal Data
@@ -76,7 +77,8 @@ mamdat <- loadByProduct(dpID="DP1.10072.001",
                          package="basic", 
                          check.size = FALSE,
                         startdate = "2021-01",
-                        enddate = "2022-12")
+                        enddate = "2022-12",
+                         token=token)
 ```
 
 ### Set Working Directory if Using Locally Saved Data
@@ -338,7 +340,8 @@ rptdat <- loadByProduct(dpID="DP1.10064.002",
                          package="basic", 
                          check.size = FALSE,
                         startdate = "2021-01",
-                        enddate = "2022-12")
+                        enddate = "2022-12",
+                         token=token)
 
 list2env(rptdat, envir=.GlobalEnv)
 

@@ -103,13 +103,15 @@ setwd(wd)
 We can use the neonUtilities function byTileAOP to download a single elevation tiles (DSM and DTM). You can run help(byTileAOP) to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (732000, 4713500), which will download the tile with the lower left corner (732000,4713000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~8 MB, so make sure you have enough space on your local drive. You can set `check.size=TRUE` if you want to check the file size before downloading.
 
 ``` {r download-dsm-data, eval=FALSE}
+token <- Sys.getenv("NEON_TOKEN")
 byTileAOP(dpID='DP3.30024.001', # lidar elevation
           site='HARV',
           year='2022',
           easting=732000,
           northing=4713500,
           check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30024.001 (the Data Product ID). The file should show up in this location: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.
 
@@ -374,7 +376,8 @@ byTileAOP(dpID='DP3.30010.001',
           easting=737500,
           northing=4701500,
           check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-          savepath = wd)
+          savepath = wd,
+          token=token)
 ```
 
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30010.001 (the Camera Data Product ID). The file should show up in this location: ~/data/DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif.

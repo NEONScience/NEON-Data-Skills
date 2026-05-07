@@ -131,6 +131,7 @@ With the information from the Data Portal, we can download this data product usi
 
 ```{r access soil data, eval=FALSE}
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 soilTrialSites = c("BONA","DEJU","HEAL","TOOL","BARR")
 
@@ -140,7 +141,8 @@ soilChem <- loadByProduct(
   enddate = "2019-12",
   check.size = FALSE,
   site = soilTrialSites,
-  package='expanded')
+  package='expanded',
+  token=token)
 
 
 ```
@@ -339,7 +341,8 @@ metaGdata <- loadByProduct(dpID = 'DP1.10107.001',
                           startdate = "2018-01",
                           enddate = "2019-12",
                           check.size = FALSE,
-                          package = 'expanded') 
+                          package = 'expanded',
+                          token=token) 
 
 
 ```

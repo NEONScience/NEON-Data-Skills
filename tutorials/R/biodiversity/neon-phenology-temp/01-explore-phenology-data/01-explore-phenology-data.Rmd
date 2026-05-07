@@ -187,6 +187,7 @@ First, we need to set up our R environment.
 library(neonUtilities)
 library(dplyr)
 library(ggplot2)
+token <- Sys.getenv("NEON_TOKEN")
 
 
 options(stringsAsFactors=F) #keep strings as character type not factors
@@ -225,7 +226,7 @@ commented out code in the second half of this code chunk.
 
 phe <- loadByProduct(dpID = "DP1.10055.001", site=c("BLAN","SCBI","SERC"), 
 										 startdate = "2017-01", enddate="2019-12", 
-										 token = Sys.getenv("NEON_TOKEN"),
+										 token=token,
 										 check.size = F) 
 # if you aren't sure you can handle the data file size use check.size = T. 
 

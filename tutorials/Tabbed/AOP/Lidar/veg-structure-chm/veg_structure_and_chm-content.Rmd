@@ -82,6 +82,7 @@ library(terra)
 library(neonUtilities)
 library(neonOS)
 library(geoNEON)
+token <- Sys.getenv("NEON_TOKEN")
 
 options(stringsAsFactors=F)
 
@@ -123,6 +124,7 @@ from rasterio.enums import Resampling
 import requests
 import time
 import os
+import dotenv
 
 ```
 
@@ -155,7 +157,8 @@ veglist <- loadByProduct(dpID="DP1.10098.001",
                          site="WREF", 
                          package="basic", 
                          release="RELEASE-2024",
-                         check.size = FALSE)
+                         check.size = FALSE,
+                         token=token)
 
 ```
 
@@ -176,12 +179,15 @@ possible function inputs. The cheat sheet is focused on the R package, but
 nearly all the inputs are the same.
 
 ```{python p-veglist, results="hide"}
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 
 veglist = nu.load_by_product(dpid="DP1.10098.001", 
                          site="WREF", 
                          package="basic", 
                          release="RELEASE-2024",
-                         check_size = False)
+                         check_size = False,
+                         token=token)
 
 ```
 
@@ -456,7 +462,8 @@ in R and the `rasterio` and `rioxarray`` packages in Python.
 byTileAOP(dpID="DP3.30015.001", site="WREF", year=2017, 
           easting=veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
           northing=veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")],
-          check.size=FALSE, savepath=wd)
+          check.size=FALSE, savepath=wd,
+          token=token)
 
 chm <- rast(paste0(wd, "/DP3.30015.001/neon-aop-products/2017/FullSite/D16/2017_WREF_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D16_WREF_DP3_580000_5075000_CHM.tif"))
 
@@ -477,7 +484,8 @@ plot(chm, col=topo.colors(5))
 nu.by_tile_aop(dpid="DP3.30015.001", site="WREF", year="2017", 
           easting=list(veg75.adjEasting), 
           northing=list(veg75.adjNorthing),
-          check_size=False, savepath=os.getcwd())
+          check_size=False, savepath=os.getcwd(),
+          token=token)
           
 ```
 

@@ -78,6 +78,7 @@ install.packages("terra")
 library(neonUtilities)
 library(neonOS)
 library(terra)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -231,7 +232,7 @@ subject to change.
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set it to F.
-* `token`: Optional NEON API token for faster downloads. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial</a> 
+* `token`: NEON API token. See <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this tutorial</a> 
 for instructions on using a token.
 * `progress`: Set to F to turn off progress bars.
 * `cloud.mode`: Can be set to T if you are working in a cloud 
@@ -250,7 +251,8 @@ parlist <- loadByProduct(dpID="DP1.00024.001",
                          site="WREF", 
                          startdate="2019-09",
                          enddate="2019-11",
-                         check.size = F)
+                         check.size = F,
+                         token=token)
 
 ```
 
@@ -322,7 +324,8 @@ apchem <- loadByProduct(dpID="DP1.20063.001",
                   site=c("PRLA","SUGG","TOOK"), 
                   package="expanded",
                   release="RELEASE-2024",
-                  check.size=F)
+                  check.size=F,
+                  token=token)
 
 ```
 
@@ -511,7 +514,7 @@ corresponding tiles you want to download
 whose corresponding tiles you want to download
 * `buffer`: `byTileAOP()` only. Size in meters of buffer to include 
 around coordinates when deciding which tiles to download
-* `token`: Optional NEON API token for faster downloads.
+* `token`: NEON API token.
 * `chunk_size`: Only in Python. Set the chunk size of chunked 
 downloads, can improve efficiency in some cases. Defaults to 1 MB.
 
@@ -524,7 +527,8 @@ byTileAOP(dpID="DP3.30015.001",
           site="WREF", 
           year=2017,
           easting=580000, 
-          northing=5075000) #, 
+          northing=5075000,
+          token=token) #, 
           #savepath=rootPath)
 
 ```

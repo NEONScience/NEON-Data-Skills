@@ -48,6 +48,7 @@ Now load the package. This needs to be done every time you run code.
 ```{r load-packages, results="hide"}
 
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -71,12 +72,14 @@ for the `neonUtilities` package for more details if desired.
 microb <- loadByProduct(dpID = "DP1.10104.001", 
                         site = "GUAN", 
                         release = "RELEASE-2024", 
-                        check.size = F)
+                        check.size = F,
+                        token=token)
 
 soil <- loadByProduct(dpID = "DP1.10086.001", 
                       site = "GUAN", 
                       release = "RELEASE-2024", 
-                      check.size = F)
+                      check.size = F,
+                      token=token)
 
 ```
 

@@ -68,6 +68,7 @@ library(neonUtilities)
 library(ggplot2)
 library(zoo)
 library(kableExtra)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ## Part 1. Water Quality
@@ -88,7 +89,8 @@ waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001", site="WALK",
                      startdate="2024-04", enddate="2024-05",
                      package="expanded", release="current",
                      include.provisional=T,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 list2env(waq,.GlobalEnv)
 ```
 
@@ -360,7 +362,8 @@ nsw <- neonUtilities::loadByProduct(dpID="DP1.20033.001", site="WALK",
                      startdate="2024-01", enddate="2024-02",
                      package="expanded", release="current",
                      include.provisional=T,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 list2env(nsw,.GlobalEnv)
 ```
 

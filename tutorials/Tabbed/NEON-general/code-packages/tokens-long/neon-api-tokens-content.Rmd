@@ -59,6 +59,7 @@ Load the package.
 ```{r loadStuff, results="hide"}
 
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -80,6 +81,7 @@ Load the package.
 
 import neonutilities as nu
 import os
+import dotenv
 
 ```
 
@@ -349,7 +351,7 @@ Once your token is assigned to an environment variable, use the function
 
 foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
                         package="expanded", check.size=F,
-                        token=Sys.getenv("NEON_TOKEN"))
+                        token=token)
 
 ```
 

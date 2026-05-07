@@ -86,6 +86,7 @@ library(stringr)
 library(tidyr)
 library(lubridate)
 library(terra)
+token <- Sys.getenv("NEON_TOKEN")
 
 setwd("~/data")
 
