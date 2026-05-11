@@ -1,7 +1,7 @@
 ---
 syncID: 06b3c4df2b1d407fba6af95f813d1ff1
 title: "Linking NEON aquatic observational and instrument data to answer critical questions in aquatic ecology at the continental scale"	
-description: "Exercises highlighting NEON's Aquatic Instrumented Subsystem (AIS) and Aquatic Observational Subsystem (AOS) data products and integrating data products from the two subsystems to examine case studies from NEON Atlantic Neotropical Domain (Domain 04, Puerto Rico)."	
+description: "Exercises highlighting NEON's Aquatic Instrumented Subsystem (AIS) and Aquatic Observational Subsystem (AOS) data products and integrating data products from the two subsystems to examine case studies in freshwater ecology."	
 dateCreated: 2025-05-16
 authors: Zachary L. Nickerson
 contributors: Stephanie M. Parker, Robert T. Hensley, Nicolas M. Harrison
@@ -78,10 +78,6 @@ Spatial data and maps: https://neon.maps.arcgis.com/home/index.html
 
 NEON data portal: https://data.neonscience.org/
 
-NEONScience GitHub repo: https://github.com/NEONScience <br />
-SFS 2025 NEON Workshop GitHub repo:
-<https://github.com/NEONScience/WORKSHOP-SFS-2025>
-
 ## Download Files and Load Directly to R: loadByProduct()
 
 The most popular function in `neonUtilities` is `loadByProduct()`. 
@@ -111,8 +107,12 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 # install.packages("plotly")
 # install.packages("vegan")
 # install.packages("base64enc")
+# install.packages("htmlwidgets")
+# install.packages("htmltools")
 
 ```
+
+### Load Packages Into Workspace
 
 ```{r load-packages}
 # Set global option to NOT convert all character variables to factors
@@ -125,8 +125,12 @@ library(tidyverse)
 library(plotly)
 library(vegan)
 library(base64enc)
+library(htmlwidgets)
+library(htmltools)
 
 ```
+
+### Inputs: loabByProduct()
 
 The inputs to `loadByProduct()` control which data to download and how 
 to manage the processing. The following are frequently used inputs: 
@@ -147,7 +151,7 @@ NEON data product has an expanded package; if the expanded package
 is requested but there isn't one, the basic package will be 
 downloaded.
 * `release`: The data release to be downloaded; either 'current' 
-or the name of a release, e.g. 'RELEASE-2021'. 'current' returns 
+or the name of a release, e.g. 'RELEASE-2026'. 'current' returns 
 provisional data in addition to the most recent release. To 
 download only provisional data, use release='PROVISIONAL'. 
 Defaults to 'current'. See 
@@ -180,9 +184,11 @@ products collected in NEON's aquatics program:
 * DP1.20120.001: Macroinvertebrate collection
 * DP4.00130.001: Continuous discharge
 
+### NEON Aquatic Sites
+
 Now it's time to consider the NEON field site of interest. If not specified, 
 the default will download a data product from all sites. The following are 
-4-letter site codes for NEON's 34 aquatics sites as of 2025:
+4-letter site codes for NEON's 34 aquatics sites:
 
 * ARIK = Arikaree River CO        
 * BARC = Barco Lake FL          
@@ -217,21 +223,41 @@ the default will download a data product from all sites. The following are
 * TOMB = Lower Tombigbee River AL  
 * TOOK = Toolik Lake AK         
 * WALK = Walker Branch TN         
-* WLOU = West St Louis Creek CO       
+* WLOU = West St Louis Creek CO
 
-In this exercise, we will pull data from NEON Atlantic Neotropical Domain (D04).
-The aquatic sites in D04 are Rio Cupeyes (CUPE) and Rio Yahuecas (GUIL). Just 
-substitute the 4-letter site code for any other site at the end of the url. 
+With the exception of the case studies, each section of the tutorial can be run
+on any number of sites. Choose which sites you would like to explore by creating
+a vector of 4-letter NEON site codes.
 
-* [Learn more about the Rio Cupeyes site (D04-CUPE)](https://www.neonscience.org/field-sites/cupe)
-* [Learn more about the Rio Yahuecas site (D04-GUIL)](https://www.neonscience.org/field-sites/guil)
+```{r choose sites, results='hide'}
+# Create vector of site names to use in loadByProduct()
+siteList <- c("ARIK","KING","SYCA")
 
-Now let us download our data. We will focus our exercise on data collected from
-2021-10-01 through 2024-09-30 (water years 2022, 2023, 2024). If you are not 
-using a NEON token to download your data, neonUtilities will ignore the `token`
-input. We set `check.size = F` so that the script runs well but remember you
-always want to check your download size first. For this exercise, we will focus
-on the following data products:
+```
+
+### Downloading Data By Water Year
+
+We will focus our exercise on data collected by water year. A water year is
+defined as October 1 through September 30. For example, water year 2022 spans
+2021-10-01 - 2022-09-30. Set the start and end water year you would like to 
+explore, and the code will format the dates for querying data using
+`neonUtilities`.
+
+```{r choose sites, results='hide'}
+# Set the start and end water years to explore
+startWY <- 2022
+endWY <- 2025
+
+# DO NOT EDIT - format dates for neonUtilities
+startWY_query <- paste0(startWY-1,"-10")
+endWY_query <- paste0(endWY,"-09")
+
+```
+
+Now let us download our data. If you are not using a NEON token to download your 
+data, neonUtilities will ignore the `token` input. We set `check.size = F` so 
+that the script runs well but remember you always want to check your download 
+size first. For this exercise, we will focus on the following data products:
 
 **AIS Data Products:**
 
@@ -246,9 +272,9 @@ on the following data products:
 ```{r download-data-inv, results='hide'}
 # download data of interest - AOS - Macroinvertebrate collection
 inv <- neonUtilities::loadByProduct(dpID="DP1.20120.001",
-                                    site=c("CUPE","GUIL"), 
-                                    startdate="2021-10",
-                                    enddate="2024-09",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
@@ -268,22 +294,23 @@ names(inv)
 
 ```
 
-We can see that there are 10 objects in the downloaded macroinvertebrate 
+We can see that there are at least 9 objects in the downloaded macroinvertebrate 
 collection data.
 
-* Three dataframes of data:
+* 3 dataframes of data:
   * `inv_fieldData`
   * `inv_persample`
   * `inv_taxonomyProcessed`
-* Five metadata files:
+* 5 metadata files:
   * `categoricalCodes_20120`
   * `issueLog_20120`
   * `readme_20120`
   * `validation_20120`
   * `variables_20120`
-* Two data citations:
-  * `citation_20120_PROVISIONAL`
-  * `citation_20120_RELEASE-2025`
+* At least 1 data citation file:
+  * Example files:
+    * `citation_20120_PROVISIONAL`
+    * `citation_20120_RELEASE-2025`
 
 If you'd like you can use the `$` operator to assign an object from an item in 
 the list. If you prefer to extract each table from the list and work with it as 
@@ -304,11 +331,10 @@ with proper citations custom to to the download that align with NEON's
 [data citation guidelines](https://www.neonscience.org/data-samples/guidelines-policies/citing)
 
 ```{r view-citation}
-# view formatted citations for DP1.20120.001 download
-cat(citation_20120_PROVISIONAL)
-
-cat(`citation_20120_RELEASE-2025`)
-
+# View formatted citations for DP1.20120.001 download
+# Locate any citation files and print them in the console
+citationFiles <- names(inv)[grepl("citation",names(inv))]
+for(c in citationFiles){cat(get(c))}
 ```
 
 ### Explore: Metadata
@@ -349,9 +375,9 @@ view(inv_fieldData)
 ```{r download-data-csd, results='hide'}
 # download data of interest - AIS - Continuous discharge
 csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
-                                    site=c("CUPE","GUIL"), 
-                                    startdate="2021-10",
-                                    enddate="2024-09",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
@@ -369,9 +395,9 @@ names(csd)
 
 This AIS data product contains 1 data table available in the basic package:
 
-* `csd_continuousDischarge`
-  * Continuous discharge (streamflow) data at a 1 minute interval. Being a Level
-  4 data product, this data has been cleaned and gap-filled.
+* `csd_15_min`
+  * Continuous discharge (streamflow) data at a 15 minute interval
+  * Being a Level 4 data product, this data has been cleaned and gap-filled
 
 Additionally, there are a couple of metadata file types included in AIS data 
 product downloads that are not included in AOS data product downloads:
@@ -408,40 +434,54 @@ Let's check for duplicates in macroinvertebrate collection data
 
 ```{r id-dups}
 # what are the primary keys in inv_fieldData?
-message("Primary keys in inv_fieldData are: ",
-        paste(variables_20120$fieldName[
-          variables_20120$table=="inv_fieldData"
-          &variables_20120$primaryKey=="Y"
-        ],
-        collapse = ", ")
-        )
+cat("Primary keys in inv_fieldData are:",
+    paste(variables_20120$fieldName[
+      variables_20120$table=="inv_fieldData"
+      &variables_20120$primaryKey=="Y"
+    ],
+    collapse = ", ")
+    )
 # identify duplicates in inv_fieldData
 inv_fieldData_dups <- neonOS::removeDups(inv_fieldData,
                                          variables_20120)
+cat("There are",
+    sum(inv_fieldData_dups$duplicateRecordQF%in%c(1,2)),
+    "duplicate records in 'inv_fieldData'")
 
 # what are the primary keys in inv_persample?
-message("Primary keys in inv_persample are: ",
-        paste(variables_20120$fieldName[
-          variables_20120$table=="inv_persample"
-          &variables_20120$primaryKey=="Y"
-        ],
-        collapse = ", ")
-        )
+cat("Primary keys in inv_persample are: ",
+    paste(variables_20120$fieldName[
+      variables_20120$table=="inv_persample"
+      &variables_20120$primaryKey=="Y"
+    ],
+    collapse = ", ")
+    )
 # identify duplicates in inv_persample
 inv_persample_dups <- neonOS::removeDups(inv_persample,
                                          variables_20120)
+cat("There are",
+    sum(inv_persample_dups$duplicateRecordQF%in%c(1,2)),
+    "duplicate records in 'inv_persample'")
 
 # what are the primary keys in inv_taxonomyProcessed?
-message("Primary keys in inv_taxonomyProcessed are: ",
-        paste(variables_20120$fieldName[
-          variables_20120$table=="inv_taxonomyProcessed"
-          &variables_20120$primaryKey=="Y"
-        ],
-        collapse = ", ")
-        )
+cat("Primary keys in inv_taxonomyProcessed are: ",
+    paste(variables_20120$fieldName[
+      variables_20120$table=="inv_taxonomyProcessed"
+      &variables_20120$primaryKey=="Y"
+    ],
+    collapse = ", ")
+    )
 # identify duplicates in inv_taxonomyProcessed
+variables_20120_dupCheck <- variables_20120%>%
+  filter(!(table=="inv_taxonomyProcessed"
+           &fieldName%in%c("vialID","vialCode","slideID","slideCode",
+                           "referenceCollection","referenceCount",
+                           "referenceID","referenceCode")))
 inv_taxonomyProcessed_dups <- neonOS::removeDups(inv_taxonomyProcessed,
-                                         variables_20120)
+                                                 variables_20120_dupCheck)
+cat("There are",
+    sum(inv_fieldData_dups$duplicateRecordQF%in%c(1,2)),
+    "duplicate records in 'inv_taxonomyProcessed'")
 
 ```
 
@@ -472,66 +512,6 @@ Now, with field and taxonomy data joined. Individual taxon identifications are
 easily linked to field data such as collection latitude/longitude, habitat type,
 sampler type, and substratum class.
 
-## Wrangling AIS Data
-
-### Data from Different Sensor Locations (HOR)
-
-NEON often collects the same type of data from sensors in different locations. 
-These data are delivered together but you will frequently want to plot the data 
-separately or only include data from one sensor in your analysis. NEON uses the 
-`horizontalPosition` variable in the data tables to describe which sensor 
-data is collected from. The `horizontalPosition` is always a three digit number 
-for AIS data.
-
-The Continuous discharge data product is derived from a single 
-`horizontalPosition`, which corresponds to the sensor co-located with the staff 
-gauge at the site. This is also the location at which all empirical discharge
-measurements are taken.
-
-Let's see from which `horizontalPosition` the Continuous discharge data is
-published.
-
-```{r csd-hor}
-# use dplyr from the tidyverse collection to get all unique horizontal positions
-csd_hor <- csd_continuousDischarge%>%
-  dplyr::distinct(siteID,stationHorizontalID)
-print(csd_hor)
-
-# GUIL has two horizontal positions because the location of the staff gauge
-# changed sometime during this time period. At what date did that occur?
-max(csd_continuousDischarge$endDate[
-  csd_continuousDischarge$siteID=="GUIL"
-  &csd_continuousDischarge$stationHorizontalID=="110"
-])
-
-```
-
-At CUPE, the continuous discharge data are published from the 110 position, which
-is defined as 'water level sensors mounted to a staff gauge at stream sites'.
-
-At GUIL, until 2022-12-12, the continuous discharge data were published from the
-110 position. On 2022-12-12, the position changed to 132, which is defined as 
-'stand-alone water level sensors at downstream (S2) locations at stream sites.'
-
-### Average continuous discharge to 15-min interval
-
-To make the continuous discharge data easier to work with for this exercise, 
-let's use different packages from the `tidyverse` collection to create a 15-min 
-averaged table.
-
-```{r 15-min-summ}
-# 15-min average of continuous discharge data
-CSD_15min <- csd_continuousDischarge%>%
-  dplyr::mutate(roundDate=lubridate::round_date(endDate,"15 min"))%>%
-  dplyr::group_by(siteID,roundDate)%>%
-  dplyr::summarise(dischargeMean=mean(continuousDischarge,na.rm=T),
-                   dischargeCountQF=sum(dischargeFinalQFSciRvw,na.rm = T))
-
-```
-
-Notice that we included a summation of the science review quality flag 
-(QFSciRvw; binary: 1 = flag, 0 = no flag) fields in the new table.
-
 ## Plot Data
 
 Now that we have wrangled the data a bit to make it easier to work with, let's 
@@ -558,11 +538,8 @@ see the following NEON tutorial:
 [Explore and work with NEON biodiversity data from aquatic ecosystems](https://www.neonscience.org/resources/learning-hub/tutorials/aquatic-diversity-macroinvertebrates)
 
 Sampler types (e.g., surber, hand corer, kicknet) are strongly associated with 
-habitat (i.e., riffle, run, pool) and substrata. At some NEON sites, like D04 
-CUPE, the same sampler is used in two habitat types (surber in riffle and run) 
-because all habitats at the site have the same cobble substrata. Data users 
-should look at the data to determine how they want to discriminate between 
-sampler or habitat type.
+habitat (i.e., riffle, run, pool) and substrata. Data users should look at the
+data to determine how they want to discriminate between sampler or habitat type.
 
 For this exercise, we split abundance and richness by `habitatType`. To split 
 instead by `samplerType`, simply do a find+replace of 
@@ -572,7 +549,7 @@ instead by `samplerType`, simply do a find+replace of
 ### SHOW BREAKDOWN OF SAMPLER TYPE BY HABITAT TYPE AT EACH SITE ###
 
 sampler_habitat_summ <- inv_fieldTaxJoined%>%
-  dplyr::distinct(siteID,samplerType,habitatType)
+  dplyr::distinct(siteID,habitatType)
 sampler_habitat_summ  
 
 ### PLOT ABUNDANCE ###
@@ -598,7 +575,10 @@ inv_abundance_summ <- inv_fieldTaxJoined%>%
   dplyr::group_by(siteID,collectDate,eventID,habitatType,boutNumber)%>%
   
   # summarize to get mean (+/- se) abundance by bout and sampler type
-  dplyr::summarise_each(funs(mean,sd,se=sd(.)/sqrt(n())))%>%
+  dplyr::summarise(across(abun_M2_sum, 
+                          list(mean = mean, sd = sd, 
+                               se = ~sd(.x, na.rm = TRUE)/sqrt(n())),
+                          .names = "{.col}_{.fn}"))%>%
   
   # get categorical variable to sort bouts chronologically
   dplyr::mutate(year=substr(eventID, 6,9),
@@ -750,11 +730,20 @@ Now, let's visualize the cleaned and gap-filled continuous discharge timeseries
 for the two NEON D04 sites.
 
 ```{r csd-plot}
-CSD_15min%>%
-  ggplot2::ggplot(aes(x=roundDate,y=dischargeMean))+
+# Plot with discharge in linear scale
+csd_15_min%>%
+  ggplot2::ggplot(aes(x=startDateTime,y=dischargeContinuous))+
   ggplot2::geom_line()+
-  ggplot2::facet_wrap(~siteID,ncol = 1)+
-  # ggplot2::scale_y_log10()+ # Include to show discharge axis in log scale
+  ggplot2::facet_wrap(~siteID,ncol = 1,scales = "free_y")+
+  labs(title="Continuous Discharge for Water Years 2022-2024",
+       y= "Discharge (L/s)", x = "Date")
+
+# Plot with discharge in log scale
+csd_15_min%>%
+  ggplot2::ggplot(aes(x=startDateTime,y=dischargeContinuous))+
+  ggplot2::geom_line()+
+  ggplot2::facet_wrap(~siteID,ncol = 1,scales = "free_y")+
+  ggplot2::scale_y_log10()+
   labs(title="Continuous Discharge for Water Years 2022-2024",
        y= "Discharge (L/s)", x = "Date")
 
@@ -774,41 +763,38 @@ The `plotly` package allows us to interact with the plots in the following ways:
 * Turn on/off traces in the plot by clicking the legend entries 
 * Scroll long each individual y-axis
 
-### INV Abundance and Richness + Discharge Over Time
+### Abun and Richness + Discharge Over Time
 
 Click on traces to display or hide them. (Note: INV traces defaulted to hidden)
 
 ```{r aos-ais-plot, out.width='100%', out.height='600px', fig.height=4, fig.width=8}
-# choose the site(s) you want to plot
-siteToPlot <- c("CUPE","GUIL")
-
-for(s in 1:length(siteToPlot)){
+for(s in 1:length(siteList)){
   # begin the plot code
-  AOS_AIS_plot <- CSD_15min%>%
-    dplyr::filter(siteID==siteToPlot[s])%>%
+  AOS_AIS_plot <- csd_15_min%>%
+    dplyr::filter(siteID==siteList[s])%>%
     plotly::plot_ly()%>%
     # add trace for continuous discharge
-    plotly::add_trace(x=~roundDate,y=~dischargeMean,
+    plotly::add_trace(x=~startDateTime,y=~dischargeContinuous,
                       type="scatter",mode="line",
                       line=list(color = 'darkgray'),
                       name="Discharge")%>%
-    # add trace for INV abundance
+    # add trace for Abun
     plotly::add_trace(data=inv_abundance_summ%>%
-                        dplyr::filter(siteID==siteToPlot[s]),
+                        dplyr::filter(siteID==siteList[s]),
                       x=~collectDate,y=~abun_M2_sum_mean,
-                      split=~paste0("INV Abundance: ",habitatType),
+                      linetype=~paste0("Abun: ",habitatType),
                       yaxis="y2",type="scatter",mode="line",
                       error_y=~list(array=abun_M2_sum_se,
                                     color='darkorange'),
                       marker=list(color="darkorange"),
                       line=list(color="darkorange"),
                       visible="legendonly")%>%
-    # add trace for INV richness
+    # add trace for Rich
     plotly::add_trace(data=inv_diversity_summ%>%
-                        dplyr::filter(siteID==siteToPlot[s]
+                        dplyr::filter(siteID==siteList[s]
                                       &indexName=="richness"),
                       x=~collectDate,y=~mean,
-                      split=~paste0("INV Richness: ",habitatType),
+                      linetype=~paste0("Rich: ",habitatType),
                       yaxis="y3",type="scatter",mode="line",
                       error_y=~list(array=se,
                                     color='darkgreen'),
@@ -817,7 +803,7 @@ for(s in 1:length(siteToPlot)){
                       visible="legendonly")%>%
     # define the layout of the plot
     plotly::layout(
-      title = paste0(siteToPlot[s],
+      title = paste0(siteList[s],
                      " Discharge w/ Macroinvertebrate Abundance & Richness"),
       # format x-axis
       xaxis=list(title="dateTime",
@@ -834,7 +820,7 @@ for(s in 1:length(siteToPlot)){
       yaxis2=list(
         side='right',
         overlaying="y",
-        title='INV Abundance',
+        title='Abun',
         showgrid=FALSE,
         automargin=TRUE,
         zeroline=FALSE,
@@ -845,7 +831,7 @@ for(s in 1:length(siteToPlot)){
         side='right',
         overlaying="y",
         anchor="free",
-        title='INV Richness',
+        title='Rich',
         showgrid=FALSE,
         zeroline=FALSE,
         automargin=TRUE,
@@ -869,40 +855,23 @@ for(s in 1:length(siteToPlot)){
               method='relayout',
               args=list(list(yaxis=list(type='log'))))))))
   
-  assign(paste0("AOS_AIS_plot_",siteToPlot[s]),AOS_AIS_plot)
+  # Assign a site-specific plot for using in case studies
+  assign(paste0("AOS_AIS_plot_",siteList[s]),AOS_AIS_plot)
+  
+  # Save HTML plot to local documents folder
+  htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot),paste0("~/",siteList[s],"_INV_CSD.html"))
 }
 
-# show plot at CUPE
-AOS_AIS_plot_CUPE
-
-# show plot at GUIL
-AOS_AIS_plot_GUIL
-
-
 ```
-
-```{r save-plotly-to-graphics, include=FALSE}
-
-htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_CUPE),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/cupe-discharge-macroinv-abundance-richness.html")
-
-htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL),"~/GitHubRepos/NEON-Data-Skills/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html")
-
-```
-
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/guil-discharge-macroinv-abundance-richness.html" alt=" "  />
-<p class="GUIL Discharge Macroinvertebrate Abundance Interactive Plot"> </p>
-</div>
 
 What kind of observations can be made when examining AIS discharge and AOS
-macroinvertebrate data on the same plotting field at NEON's two neotropical 
-aquatic sites?
+macroinvertebrate data on the same plotting field?
 
 The standardized spatiotemporal design of NEON's aquatic data products allows
 one to easily run the same analysis for any NEON site. Given that all of NEON's 
 24 stream sites publish both AIS continuous discharge and AOS macroinvertebrate
-collection data products, users can substitute any two NEON stream site IDs into
-this exercise to assess the relationship between stream discharge and
+collection data products, users can substitute any 4-letter NEON stream site
+codes into this exercise to assess the relationship between stream discharge and
 macroinvertebrate abundance and richness.
 
 Visit the [Explore NEON Field Sites](https://www.neonscience.org/field-sites/explore-field-sites)
@@ -910,23 +879,43 @@ webpage to learn more about the different NEON aquatic sites. To run this
 exercise on a different combination of two sites, use find+replace to change the
 site IDs throughout the code.
 
-## Further Exploration
+## Case Studies - Introduction
 
 Now, we can take what we have learned about NEON AOS and AIS data and look at
 other case studies using different NEON data products.
 
-### Case Study 1: Examine relationships between discharge, sediment particle size distribution, and macroinvertebrate abundance/diversity at 2 sites impacted by hurricanes.
+## Case Study 1: Hurricane-impacted streams: Examine relationships between discharge, sediment particle size distribution, and macroinvertebrate abundance/diversity
+
+**Before exploring this case study:** Run the introductory AOS and AIS data 
+exploration code with the following variables set:
+
+* `siteList <- c("CUPE","GUIL")`
+* `startWY <- 2022`
+* `endWY <- 2024`
+
+```{r case study 1 inputs, include=FALSE}
+siteList <- c("CUPE","GUIL")
+startWY <- 2022
+endWY <- 2024
+startWY_query <- paste0(startWY-1,"-10")
+endWY_query <- paste0(endWY,"-09")
+```
 
 In September 2022, Hurricane Fiona struck land in Puerto Rico as a Category 1 
 hurricane. Two NEON D04 aquatic sites were impacted. Here, we scale three data 
 products across time to get an integrated look at how Hurricane Fiona (red line)
 affected the hydrology, morphology, and biology of two streams.
 
+In this exercise, we will pull data from NEON Atlantic Neotropical Domain (D04).
+The aquatic sites in D04 are Rio Cupeyes (CUPE) and Rio Yahuecas (GUIL).
+
+* [Learn more about the Rio Cupeyes site (D04-CUPE)](https://www.neonscience.org/field-sites/cupe)
+* [Learn more about the Rio Yahuecas site (D04-GUIL)](https://www.neonscience.org/field-sites/guil)
+
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
 <p class="Hurricane Fiona Impact Map"> </p>
 </div>
-
 
 Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with 
 approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. 
@@ -991,9 +980,9 @@ from the Stream morphology maps data product into R.
 # download data of interest - AOS - Stream morphology maps
 # the expanded download package is needed to read in the geo_pebbleCount table
 geo <- neonUtilities::loadByProduct(dpID="DP4.00131.001",
-                                    site=c("CUPE","GUIL"), 
-                                    startdate="2021-10",
-                                    enddate="2024-09",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
                                     package="expanded",
                                     release= "current",
                                     include.provisional = T,
@@ -1017,13 +1006,13 @@ Check for duplicates in geo_pebbleCount using `neonOS::removeDups()`.
 
 ```{r id-dups-geo}
 # what are the primary keys in geo_pebbleCount?
-message("Primary keys in geo_pebbleCount are: ",
-        paste(variables_00131$fieldName[
-          variables_00131$table=="geo_pebbleCount"
-          &variables_00131$primaryKey=="Y"
-        ],
-        collapse = ", ")
-        )
+cat("Primary keys in geo_pebbleCount are:",
+    paste(variables_00131$fieldName[
+      variables_00131$table=="geo_pebbleCount"
+      &variables_00131$primaryKey=="Y"
+    ],
+    collapse = ", ")
+    )
 # identify duplicates in geo_pebbleCount
 geo_pebbleCount_dups <- neonOS::removeDups(geo_pebbleCount,
                                            variables_00131)
@@ -1134,43 +1123,43 @@ products, we will embed them as `ggplot` subplots in the larger `plotly` plot.
 ```{r highlight-fiona-psd, out.width='100%', out.height='800px'}
 # generate small, simple subplots of each pebble count survey
 # loop through each site and year to make plot and save to the working directory
-# for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
-#   currSite <- unique(geo_pebbleCount_freqCumm$siteID)[s]
-#   for(y in 1:length(unique(geo_pebbleCount_freqCumm$year))){
-#     currYear <- unique(geo_pebbleCount_freqCumm$year)[y]
-#     currPlot <- geo_pebbleCount_freqCumm%>%
-#       dplyr::filter(siteID==currSite
-#                     &year==currYear)%>%
-#       ggplot2::ggplot(aes(x = pebbleSize_num, y = CumulativeFreq)) +
-#       ggplot2::geom_smooth(method = "loess", se = T, linewidth = 0.75) +
-#       ggplot2::labs(x = NULL, y = NULL)+
-#       ggplot2::scale_y_continuous(limits=c(0,105))+
-#       ggplot2::scale_x_continuous(limits=c(0,260))+
-#       ggplot2::theme_classic()+
-#       ggplot2::theme(text=element_text(size=18))
-#     ggplot2::ggsave(plot=currPlot,
-#                     filename=paste0("images/psd_",currSite,currYear,".png"),
-#                     width = 4, height = 7, units = "cm")
-#   }
-# }
+for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
+  currSite <- unique(geo_pebbleCount_freqCumm$siteID)[s]
+  for(y in 1:length(unique(geo_pebbleCount_freqCumm$year))){
+    currYear <- unique(geo_pebbleCount_freqCumm$year)[y]
+    currPlot <- geo_pebbleCount_freqCumm%>%
+      dplyr::filter(siteID==currSite
+                    &year==currYear)%>%
+      ggplot2::ggplot(aes(x = pebbleSize_num, y = CumulativeFreq)) +
+      ggplot2::geom_smooth(method = "loess", se = T, linewidth = 0.75) +
+      ggplot2::labs(x = NULL, y = NULL)+
+      ggplot2::scale_y_continuous(limits=c(0,105))+
+      ggplot2::scale_x_continuous(limits=c(0,260))+
+      ggplot2::theme_bw()+
+      ggplot2::theme(text=element_text(size=18))
+    ggplot2::ggsave(plot=currPlot,
+                    filename=paste0("~/images/psd_",currSite,currYear,".png"),
+                    width = 4, height = 7, units = "cm")
+  }
+}
 
 # re-generate the CUPE plot with particle size distribution subplots added
 AOS_AIS_plot_CUPE_Fiona%>%
   layout(images=list(
     # show the CUPE 2022 pebble count survey, conducted 2022-04
-    list(source=base64enc::dataURI(file="images/psd_CUPE2022.png"),
+    list(source=base64enc::dataURI(file="~/images/psd_CUPE2022.png"),
          x = 0.05, y = 0.7, 
          sizex = 0.25, sizey = 0.25,
          xref = "paper", yref = "paper", 
          xanchor = "left", yanchor = "bottom"),
     # show the CUPE 2023 pebble count survey, conducted 2022-05
-    list(source=base64enc::dataURI(file="images/psd_CUPE2023.png"),
+    list(source=base64enc::dataURI(file="~/images/psd_CUPE2023.png"),
          x = 0.4, y = 0.7, 
          sizex = 0.25, sizey = 0.25,
          xref = "paper", yref = "paper", 
          xanchor = "left", yanchor = "bottom"),
     # show the CUPE 2024 pebble count survey, conducted 2022-05
-    list(source=base64enc::dataURI(file="images/psd_CUPE2024.png"),
+    list(source=base64enc::dataURI(file="~/images/psd_CUPE2024.png"),
          x = 0.7, y = 0.7, 
          sizex = 0.25, sizey = 0.25,
          xref = "paper", yref = "paper", 
@@ -1182,19 +1171,19 @@ AOS_AIS_plot_CUPE_Fiona%>%
 AOS_AIS_plot_GUIL_Fiona%>%
   layout(images=list(
     # show the GUIL 2022 pebble count survey, conducted 2022-04
-      list(source=base64enc::dataURI(file="images/psd_GUIL2022.png"),
+      list(source=base64enc::dataURI(file="~/images/psd_GUIL2022.png"),
          x = 0.05, y = 0.7, 
          sizex = 0.25, sizey = 0.25,
          xref = "paper", yref = "paper", 
          xanchor = "left", yanchor = "bottom"),
     # show the GUIL 2023 pebble count survey, conducted 2023-03
-    list(source=base64enc::dataURI(file="images/psd_GUIL2023.png"),
+    list(source=base64enc::dataURI(file="~/images/psd_GUIL2023.png"),
          x = 0.35, y = 0.7, 
          sizex = 0.25, sizey = 0.25,
          xref = "paper", yref = "paper", 
          xanchor = "left", yanchor = "bottom"),
     # show the GUIL 2024 pebble count survey, conducted 2024-07
-    list(source=base64enc::dataURI(file="images/psd_GUIL2024.png"),
+    list(source=base64enc::dataURI(file="~/images/psd_GUIL2024.png"),
          x = 0.75, y = 0.7, 
          sizex = 0.25, sizey = 0.25,
          xref = "paper", yref = "paper", 
@@ -1230,13 +1219,352 @@ Hurricane Fiona on NEON D04 sites, with a potential relationship being revealed
 between the stability of the streambed substrate and the loss of 
 macroinvertebrate diversity immediately following a major precipitation event.
 
-### Case Study 2: Can relationships between sensor measurements and discrete water chemistry data be used to expand the temporal extent of ecologically-relevant analytes?
+## Case Study 2: Macroinvertebrates in drying streams: visualize the interplay between abundance, richness, and flow within and across water years
+
+**Before exploring this case study:** Run the introductory AOS and AIS data 
+exploration code with the following variables set:
+
+* `siteList <- c("KING","ARIK","SYCA)`
+* `startWY <- 2022`
+* `endWY <- 2025`
+
+```{r case study 1 inputs, include=FALSE}
+siteList <- c("KING","ARIK","SYCA")
+startWY <- 2022
+endWY <- 2025
+startWY_query <- paste0(startWY-1,"-10")
+endWY_query <- paste0(endWY,"-09")
+```
+
+Here, we highlight three NEON non-perennial stream sites that undergo 
+partial-to-complete drying on an annual basis, bringing stream discharge to zero 
+(0) at some point in each water year.
+
+**Kings Creek, Prairie Peninsula Domain, Kansas (KING, D06, KS):**
+
+[Learn more about the Kings Creek site (D06-KING)](https://www.neonscience.org/field-sites/king)
+
+<div class="figure" style="text-align: center" width="50%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/KINGdry.png" alt=" "  />
+<p class="D06-KING"> </p>
+</div>
+
+**Arikaree River, Central Plains Domain, Colorado (ARIK, D10, CO):**
+
+[Learn more about the Arikaree River site (D10-ARIK)](https://www.neonscience.org/field-sites/arik)
+
+<div class="figure" style="text-align: center" width="50%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/ARIKdry.png" alt=" "  />
+<p class="D10-ARIK"> </p>
+</div>
+
+**Sycamore Creek, Desert Southwest Domain, Arizona (SYCA, D14, AZ):**
+
+[Learn more about the Sycamore Creek site (D14-SYCA)](https://www.neonscience.org/field-sites/syca)
+
+<div class="figure" style="text-align: center" width="50%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/SYCAdry.png" alt=" "  />
+<p class="D14-SYCA"> </p>
+</div>
+
+In these non-perennial streams, understanding when flow arrives, how quickly it
+accumulates, and how benthic macroinvertebrate communities respond is critical
+for predicting the ecological consequences of changing precipitation patterns
+and drought frequency.
+
+We will use advanced plotting techniques in R to plot benthic macroinvertebrate
+abundance and richness over a cumulative discharge curve per water year. We will
+then stack water years vertically for a site. We will use a combination of the 
+`plotly`, `htmltools`, and `htmlwidgets` packages in R to create interactive and
+linked stacked plots. Using a cumulative discharge curve will allow you to 
+easily identify the onset, magnitude, duration, and cessation of flow, and 
+assess the effect those hydrologic parameters have one macroinvertebrate 
+communities within and across water years at a site.
+
+```{r }
+# Assign each record a water year in csd_15_min
+csd_15_min <- csd_15_min%>%
+  dplyr::mutate(waterYear=ifelse(lubridate::month(startDateTime)>=10,
+                                lubridate::year(startDateTime)+1,
+                                lubridate::year(startDateTime)),
+                waterYearStart=as.Date(paste0(waterYear-1,"-10-01")),
+                dayOfWaterYear=as.integer(as.Date(startDateTime)-waterYearStart)+1,
+                plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1))
+
+# Group by site ID and water year and summarize a cumulative sum of discharge to make a cumulative flow curve
+csd_15_min_summ <- csd_15_min%>%
+  dplyr::arrange(siteID, waterYear, startDateTime)%>%
+  dplyr::group_by(siteID,waterYear)%>%
+  dplyr::mutate(cumulativeFlow=cumsum(dischargeContinuous),
+                cumulativeFlowPct=100*cumulativeFlow/max(cumulativeFlow, na.rm = TRUE))%>%
+  dplyr::ungroup()
+
+# Assign water year and day-of-water-year to abundance summary
+inv_abundance_case2 <- inv_abundance_summ%>%
+  dplyr::ungroup()%>%
+  dplyr::mutate(waterYear=ifelse(lubridate::month(collectDate)>=10,
+                                 lubridate::year(collectDate)+1,
+                                 lubridate::year(collectDate)),
+                waterYearStart=as.Date(paste0(waterYear-1,"-10-01")),
+                dayOfWaterYear=as.integer(as.Date(collectDate)-waterYearStart)+1,
+                plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
+                abun_M2_sum_se=dplyr::coalesce(abun_M2_sum_se,0))%>%
+  dplyr::arrange(siteID,waterYear,habitatType,dayOfWaterYear)
+
+# Assign water year and day-of-water-year to richness summary
+inv_richness_case2 <- inv_diversity_summ%>%
+  dplyr::filter(indexName=="richness")%>%
+  dplyr::ungroup()%>%
+  dplyr::mutate(waterYear=ifelse(lubridate::month(collectDate)>=10,
+                                 lubridate::year(collectDate)+1,
+                                 lubridate::year(collectDate)),
+                waterYearStart=as.Date(paste0(waterYear-1,"-10-01")),
+                dayOfWaterYear=as.integer(as.Date(collectDate)-waterYearStart)+1,
+                plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
+                se=dplyr::coalesce(se,0))%>%
+  dplyr::arrange(siteID,waterYear,habitatType,dayOfWaterYear)
+
+# Build one stacked multi-axis plot per site with cumulative flow, abundance, and richness
+for(s in 1:length(siteList)){
+  waterYears <- sort(unique(csd_15_min_summ$waterYear[csd_15_min_summ$siteID==siteList[s]]))
+
+  # Compute fixed axis ranges for this site so all WY panels are directly comparable
+  site_flow <- csd_15_min_summ%>%
+    dplyr::filter(siteID==siteList[s])
+  site_abun <- inv_abundance_case2%>%
+    dplyr::filter(siteID==siteList[s])
+  site_rich <- inv_richness_case2%>%
+    dplyr::filter(siteID==siteList[s])
+
+  abun_labels <- sort(unique(paste0("Abun: ", site_abun$habitatType)))
+  rich_labels <- sort(unique(paste0("Rich: ", site_rich$habitatType)))
+
+  x_range <- range(site_flow$plotDateWY, na.rm = TRUE)
+  y1_range <- c(0, max(site_flow$cumulativeFlow, na.rm = TRUE))
+
+  abun_upper <- c(site_abun$abun_M2_sum_mean + site_abun$abun_M2_sum_se,
+                  site_abun$abun_M2_sum_mean)
+  if(all(is.na(abun_upper))){
+    y2_range <- c(0, 1)
+  }else{
+    y2_range <- c(0, max(abun_upper, na.rm = TRUE))
+  }
+
+  rich_upper <- c(site_rich$mean + site_rich$se,
+                  site_rich$mean)
+  if(all(is.na(rich_upper))){
+    y3_range <- c(0, 1)
+  }else{
+    y3_range <- c(0, max(rich_upper, na.rm = TRUE))
+  }
+
+  wyPlots <- list()
+  for(wy in 1:length(waterYears)){
+    cumsumPlot <- plotly::plot_ly(data=csd_15_min_summ%>%
+                                    dplyr::filter(siteID==siteList[s]
+                                                  &waterYear==waterYears[wy]))%>%
+      plotly::add_trace(x=~plotDateWY,
+                        y=~cumulativeFlow,
+                        type="scatter",
+                        mode="lines",
+                        line=list(color="darkgray"),
+                        name="Cumulative Flow",
+                        showlegend=F)%>%
+      plotly::add_trace(data=inv_abundance_case2%>%
+                          dplyr::filter(siteID==siteList[s]
+                                        &waterYear==waterYears[wy]),
+                        x=~plotDateWY,
+                        y=~abun_M2_sum_mean,
+                        split=~paste0("Abun: ", habitatType),
+                        linetype=~paste0("Abun: ",habitatType),
+                        yaxis="y2",
+                        type="scatter",
+                        mode="lines+markers",
+                        error_y=~list(array=abun_M2_sum_se,
+                                      color='darkorange',
+                                      visible=TRUE),
+                        marker=list(color="darkorange"),
+                        line=list(color="darkorange",width=2),
+                        showlegend=F)%>%
+      plotly::add_trace(data=inv_richness_case2%>%
+                          dplyr::filter(siteID==siteList[s]
+                                        &waterYear==waterYears[wy]),
+                        x=~plotDateWY,
+                        y=~mean,
+                        split=~paste0("Rich: ", habitatType),
+                        linetype=~paste0("Rich: ",habitatType),
+                        yaxis="y3",
+                        type="scatter",
+                        mode="lines+markers",
+                        error_y=~list(array=se,
+                                      color='darkgreen',
+                                      visible=TRUE),
+                        marker=list(color="darkgreen"),
+                        line=list(color="darkgreen",width=2),
+                        showlegend=F)%>%
+      plotly::layout(
+        title = paste0(siteList[s], " | WY ", waterYears[wy]),
+        xaxis=list(title="Month-Day",
+                   automargin=TRUE,
+                   domain=c(0,0.9),
+             range=x_range,
+             type="date",
+             tick0="1999-10-01",
+             dtick="M1",
+             tickformat="%m-%d"),
+        yaxis=list(
+          side='left',
+          title='Cumulative Flow (L/s)',
+          showgrid=FALSE,
+          zeroline=FALSE,
+          automargin=TRUE,
+          range=y1_range),
+        yaxis2=list(
+          side='right',
+          overlaying="y",
+          title='Abun',
+          showgrid=FALSE,
+          automargin=TRUE,
+          zeroline=FALSE,
+          range=y2_range,
+          tickfont=list(color = 'darkorange'),
+          titlefont=list(color = 'darkorange')),
+        yaxis3=list(
+          side='right',
+          overlaying="y",
+          anchor="free",
+          title='Rich',
+          showgrid=FALSE,
+          zeroline=FALSE,
+          automargin=TRUE,
+          range=y3_range,
+          tickfont=list(color = 'darkgreen'),
+          titlefont=list(color = 'darkgreen'),
+          position=0.99)
+      )
+
+    wyPlots[[wy]] <- cumsumPlot
+  }
+
+  legend_items <- c(
+    list(htmltools::tags$button(
+      type = "button",
+      class = "case2-legend-item active",
+      `data-trace-name` = "Cumulative Flow",
+      htmltools::HTML("<span style='display:inline-block;width:18px;border-top:3px solid darkgray;margin-right:6px;vertical-align:middle;'></span>Cumulative Flow")
+    )),
+    lapply(abun_labels, function(lbl) {
+      htmltools::tags$button(
+        type = "button",
+        class = "case2-legend-item active",
+        `data-trace-name` = lbl,
+        htmltools::HTML(paste0("<span style='display:inline-block;width:18px;border-top:3px solid darkorange;margin-right:6px;vertical-align:middle;'></span>", lbl))
+      )
+    }),
+    lapply(rich_labels, function(lbl) {
+      htmltools::tags$button(
+        type = "button",
+        class = "case2-legend-item active",
+        `data-trace-name` = lbl,
+        htmltools::HTML(paste0("<span style='display:inline-block;width:18px;border-top:3px solid darkgreen;margin-right:6px;vertical-align:middle;'></span>", lbl))
+      )
+    })
+  )
+
+  legendSyncJs <- sprintf(
+    paste(
+      "(function(){",
+      "  var container = document.getElementById('case2_%s');",
+      "  if (!container || container.dataset.legendBound === '1') return;",
+      "  container.dataset.legendBound = '1';",
+      "  container.addEventListener('click', function(ev){",
+      "    var btn = ev.target.closest('.case2-legend-item');",
+      "    if (!btn) return;",
+      "    var traceName = btn.getAttribute('data-trace-name');",
+      "    var hideTrace = !btn.classList.contains('inactive');",
+      "    var newVis = hideTrace ? false : true;",
+      "    var plots = container.querySelectorAll('.js-plotly-plot');",
+      "    plots.forEach(function(gd){",
+      "      var idx = [];",
+      "      for (var i = 0; i < gd.data.length; i++) {",
+      "        if (gd.data[i].name === traceName) idx.push(i);",
+      "      }",
+      "      if (idx.length) Plotly.restyle(gd, {visible: newVis}, idx);",
+      "    });",
+      "    btn.classList.toggle('inactive');",
+      "  });",
+      "})();",
+      sep = "\n"
+    ),
+    siteList[s]
+  )
+
+  curr_plot <- htmltools::tagList(
+    htmltools::tags$h3(
+      paste0("Cumulative Flow, Abundance, and Richness for ",
+             siteList[s], " (Stacked by Water Year)")
+    ),
+    htmltools::div(
+      id = paste0("case2_", siteList[s]),
+      htmltools::tags$div(
+        style = paste(
+          "display:flex;flex-wrap:wrap;gap:8px;align-items:center;",
+          "padding:8px 10px;margin:0 0 8px 0;background:#ffffff;",
+          "border:1px solid #d9d9d9;border-radius:4px;"
+        ),
+        legend_items
+      ),
+      htmltools::tags$style(htmltools::HTML(
+        ".case2-legend-item {background:#fff;border:1px solid #cfcfcf;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:12px;}\n.case2-legend-item.inactive {opacity:0.45;}"
+      )),
+      wyPlots
+    ),
+    htmltools::tags$script(htmltools::HTML(legendSyncJs))
+  )
+
+  # Save HTML plot to local documents folder
+  output_file <- file.path(path.expand("~"), paste0(siteList[s], "_cumSumWY.html"))
+  htmltools::save_html(
+    htmltools::browsable(curr_plot),
+    file = output_file,
+    libdir = paste0(siteList[s], "_cumSumWY_files")
+  )
+  
+}
+
+
+```
+
+## Case Study 3: 
+
+## Case Study 4: Can relationships between sensor measurements and discrete water chemistry data be used to expand the temporal extent of ecologically-relevant analytes?
+
+**Before exploring this case study:** This case study can be run independently 
+of the introductory AOS and AIS data exploration code. This case study is coded
+to be run for 1 site. By default, we will focus on water years 2022-2024 at the 
+West St. Louis Creek (WLOU) site, which is a high elevation stream in the
+Southern Rockies & Colorado Plateau Domain (D13). Set the following inputs prior
+to downloading data:
+
+* `siteList <- c("WLOU")`
+* `startWY <- 2022`
+* `endWY <- 2024`
+
+[Learn more about the Como Creek site (D13-WLOU)](https://www.neonscience.org/field-sites/wlou)
+
+```{r case study 1 inputs, include=FALSE}
+siteList <- c("WLOU")
+startWY <- 2022
+endWY <- 2024
+startWY_query <- paste0(startWY-1,"-10")
+endWY_query <- paste0(endWY,"-09")
+```
 
 We are going to switch gears to a different kind of integration between AOS and
 AIS data. We evaluate the relationship between high-frequency fluorescent 
 dissolved organic matter (fDOM) AIS data and dissolved organic carbon (DOC) data
 analyzed from AOS water chemistry grab samples to model a continuous DOC 
-timeseries at D04 CUPE.
+timeseries.
 
 The data products downloaded here are:
 
@@ -1248,15 +1576,14 @@ The data products downloaded here are:
 
 * Chemical properties of surface water ([DP1.20093.001](https://data.neonscience.org/data-products/DP1.20093.001))
 
-First, download AOS data, run the duplicate check, and plot the data. We will
-stick with the 2021-10-01 to 2024-09-30 time range.
+First, download AOS data, run the duplicate check, and plot the data.
 
 ```{r download-swc, results='hide'}
 # download data of interest - AOS - Chemical properties of surface water
 swc <- neonUtilities::loadByProduct(dpID="DP1.20093.001",
-                                    site=c("CUPE"), 
-                                    startdate="2021-10",
-                                    enddate="2024-09",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
@@ -1275,14 +1602,13 @@ surface water and groundwater grab samples."
 ```{r wrangle-plot-swc}
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
-
-message("Primary keys in swc_externalLabDataByAnalyte are: ",
-        paste(variables_20093$fieldName[
-          variables_20093$table=="swc_externalLabDataByAnalyte"
-          &variables_20093$primaryKey=="Y"
-        ],
-        collapse = ", ")
-        )
+cat("Primary keys in swc_externalLabDataByAnalyte are: ",
+    paste(variables_20093$fieldName[
+      variables_20093$table=="swc_externalLabDataByAnalyte"
+      &variables_20093$primaryKey=="Y"
+    ],
+    collapse = ", ")
+    )
 
 # identify duplicates in swc_externalLabDataByAnalyte
 swc_externalLabDataByAnalyte_dups <- neonOS::removeDups(
@@ -1317,9 +1643,9 @@ the data for analysis, and plot the data.
 ```{r download-waq, results='hide'}
 # download data of interest - AIS - Water quality
 waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001",
-                                    site=c("CUPE"), 
-                                    startdate="2021-10",
-                                    enddate="2024-09",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
                                     package="basic",
                                     release= "current",
                                     include.provisional = T,
@@ -1465,9 +1791,9 @@ plotly::plot_ly(data=fDOM_DOC_join)%>%
 ```
 
 **Discussion**: This study shows the possibility of integrating AIS and AOS data
-to expand the temporal scale of estimated DOC in stream sites. At CUPE, 
-estimated DOC matches well with grab sample DOC across mid-range values, with 
-uncertainty increasing at the low and high ends of the timeseries. The 
+to expand the temporal scale of estimated DOC in stream sites. At WLOU, 
+estimated DOC matches well with grab sample DOC across mid- to high-range 
+values, with uncertainty increasing at the low end of the timeseries. The 
 relationship will continue to be expanded upon, following NEON’s flow-weighted 
 sampling design.
 
@@ -1476,7 +1802,7 @@ and other analyses to be scaled across the observatory, revealing similarities
 and differences in the relationship across sites, and allowing for more detailed
 investigation of carbon dynamics in freshwater systems across the United States.
 
-This analysis can be conducted for any of the 24 stream sites across the NEON
-observatory simply by changing the `site` input variable in `loadByProduct()`.
 Try out this analysis at your favorite site! What environmental factors could
 contribute to the quality of this relationship at different NEON stream sites?
+
+<!-- END -->
