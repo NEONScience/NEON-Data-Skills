@@ -261,11 +261,11 @@ size first. For this exercise, we will focus on the following data products:
 
 **AIS Data Products:**
 
-* Continuous discharge ([DP4.00130.001](https://data.neonscience.org/data-products/DP4.00130.001))
+* Continuous discharge <a href="https://data.neonscience.org/data-products/DP4.00130.001" target="_blank">(DP4.00130.001)</a>
 
 **AOS Data Products:**
 
-* Macroinvertebrate collection ([DP1.20120.001](https://data.neonscience.org/data-products/DP1.20120.001))
+* Macroinvertebrate collection <a href="https://data.neonscience.org/data-products/DP1.20120.001" target="_blank">(DP1.20120.001)</a>
 
 ## Download AOS Data Products
 
@@ -328,7 +328,7 @@ Citing sources correctly helps the NEON user community maintain transparency,
 openness, and trust, while also providing a benefit of being able to track the 
 impact of NEON on scientific research. Thus, each download of NEON data comes
 with proper citations custom to to the download that align with NEON's 
-[data citation guidelines](https://www.neonscience.org/data-samples/guidelines-policies/citing)
+<a href="https://www.neonscience.org/data-samples/guidelines-policies/citing" target="_blank">data citation guidelines</a>
 
 ```{r view-citation}
 # View formatted citations for DP1.20120.001 download
@@ -496,8 +496,8 @@ including description of the data contents, data quality information, common
 calculations or transformations, and, where relevant, algorithm description 
 and/or table joining instructions.
 
-The QSG for Macroinvertebrate collection can be found on the data product
-landing page: https://data.neonscience.org/data-products/DP1.20120.001
+The QSG for Macroinvertebrate collection can be found on the
+<a href="https://data.neonscience.org/data-products/DP1.20120.001" target="_blank">data product landing page</a>
 
 The `neonOS::joinTableNEON()` function uses the table joining information in the
 QSG to quickly join two related NEON data tables from the same data product
@@ -535,7 +535,7 @@ focus on richness in the plots, users are encouraged to alter the variables
 to view other indices. For a more detailed dive into NEON biodiversity analyses,
 see the following NEON tutorial:
 
-[Explore and work with NEON biodiversity data from aquatic ecosystems](https://www.neonscience.org/resources/learning-hub/tutorials/aquatic-diversity-macroinvertebrates)
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/aquatic-diversity-macroinvertebrates" target="_blank">Explore and work with NEON biodiversity data from aquatic ecosystems</a>
 
 Sampler types (e.g., surber, hand corer, kicknet) are strongly associated with 
 habitat (i.e., riffle, run, pool) and substrata. Data users should look at the
@@ -864,7 +864,7 @@ for(s in 1:length(siteList)){
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD.png" alt=" "  />
 <p class="Discharge Timeseries and Macroinvertebrate Data At D04-CUPE">CAPTION</p>
 </div>
 
@@ -878,7 +878,7 @@ collection data products, users can substitute any 4-letter NEON stream site
 codes into this exercise to assess the relationship between stream discharge and
 macroinvertebrate abundance and richness.
 
-Visit the [Explore NEON Field Sites](https://www.neonscience.org/field-sites/explore-field-sites)
+Visit the <a href="https://www.neonscience.org/field-sites/explore-field-sites" target="_blank">Explore NEON Field Sites</a>
 webpage to learn more about the different NEON aquatic sites. To run this 
 exercise on a different combination of two sites, use find+replace to change the
 site IDs throughout the code.
@@ -903,7 +903,7 @@ to downloading data:
 * `startWY <- 2022`
 * `endWY <- 2024`
 
-[Learn more about the Como Creek site (D13-WLOU)](https://www.neonscience.org/field-sites/wlou)
+<a href="https://www.neonscience.org/field-sites/wlou" target="_blank">Learn more about the West St. Louis Creek site (D13-WLOU)</a>
 
 ```{r case study 1 inputs, include=FALSE}
 siteList <- c("WLOU")
@@ -923,11 +923,11 @@ The data products downloaded here are:
 
 **AIS Data Products:**
 
-* Water quality ([DP1.20288.001](https://data.neonscience.org/data-products/DP1.20288.001))
+* Water quality <a href="https://data.neonscience.org/data-products/DP1.20288.001" target="_blank">(DP1.20288.001)</a>
 
 **AOS Data Products:**
 
-* Chemical properties of surface water ([DP1.20093.001](https://data.neonscience.org/data-products/DP1.20093.001))
+* Chemical properties of surface water <a href="https://data.neonscience.org/data-products/DP1.20093.001" target="_blank">(DP1.20093.001)</a>
 
 First, download AOS data, run the duplicate check, and plot the data.
 
@@ -1147,7 +1147,7 @@ htmlwidgets::saveWidget(plotly::as_widget(fDOM_DOC_plot),paste0("~/",siteList,"_
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/WLOU_fDOM_DOC_model.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/WLOU_fDOM_DOC_model.png" alt=" "  />
 <p class="DOC Modeled from fDOM">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder. </p>
 </div>
 
@@ -1191,11 +1191,11 @@ affected the hydrology, morphology, and biology of two streams.
 In this exercise, we will pull data from NEON Atlantic Neotropical Domain (D04).
 The aquatic sites in D04 are Rio Cupeyes (CUPE) and Rio Yahuecas (GUIL).
 
-* [Learn more about the Rio Cupeyes site (D04-CUPE)](https://www.neonscience.org/field-sites/cupe)
-* [Learn more about the Rio Yahuecas site (D04-GUIL)](https://www.neonscience.org/field-sites/guil)
+* <a href="https://www.neonscience.org/field-sites/cupe" target="_blank">Learn more about the Rio Cupeyes site (D04-CUPE)</a>
+* <a href="https://www.neonscience.org/field-sites/guil" target="_blank">Learn more about the Rio Yahuecas site (D04-GUIL)</a>
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
 <p class="Hurricane Fiona Impact Map">Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf</p>
 </div>
 
@@ -1206,7 +1206,7 @@ and biology between the two sites.
 
 We will also bring in a third NEON aquatic data product:
 
-* Stream morphology maps ([DP4.00131.001](https://data.neonscience.org/data-products/DP4.00131.001))
+* <a href="https://data.neonscience.org/data-products/DP4.00131.001" target="_blank">(DP4.00131.001)</a>
 
 From the Stream morphology maps data product, we will examine the effect of 
 Hurricane Fiona on streambed particle size distribution, expanding our 
@@ -1476,7 +1476,7 @@ htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL_Fiona),"~/_INV_CSD_G
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD_GEO.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD_GEO.png" alt=" "  />
 <p class="Effects of Hurricane Fiona on D04-CUPE">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
 </div>
 
@@ -1698,29 +1698,29 @@ partial-to-complete drying on an annual basis, bringing stream discharge to zero
 
 **Kings Creek, Prairie Peninsula Domain, Kansas (KING, D06, KS):**
 
-[Learn more about the Kings Creek site (D06-KING)](https://www.neonscience.org/field-sites/king)
+<a href="https://www.neonscience.org/field-sites/king" target="_blank">Learn more about the Kings Creek site (D06-KING)</a>
 
 <div class="figure" style="text-align: center" width="50%">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/KINGdry.png" alt=" "  />
-<p class="D06-KING"> </p>
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/KINGdry.png" alt=" "  />
+<p class="D06-KING">PhenoCam images comparing peak flow (left) and dry conditions (right) for KING in water year 2024.</p>
 </div>
 
 **Arikaree River, Central Plains Domain, Colorado (ARIK, D10, CO):**
 
-[Learn more about the Arikaree River site (D10-ARIK)](https://www.neonscience.org/field-sites/arik)
+<a href="https://www.neonscience.org/field-sites/arik" target="_blank">Learn more about the Arikaree River site (D10-ARIK)</a>
 
 <div class="figure" style="text-align: center" width="50%">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/ARIKdry.png" alt=" "  />
-<p class="D10-ARIK"> </p>
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/ARIKdry.png" alt=" "  />
+<p class="D10-ARIK">PhenoCam images comparing peak flow (left) and dry conditions (right) for ARIK in water year 2024.</p>
 </div>
 
 **Sycamore Creek, Desert Southwest Domain, Arizona (SYCA, D14, AZ):**
 
-[Learn more about the Sycamore Creek site (D14-SYCA)](https://www.neonscience.org/field-sites/syca)
+<a href="https://www.neonscience.org/field-sites/syca" target="_blank">Learn more about the Sycamore Creek site (D14-SYCA)</a>
 
 <div class="figure" style="text-align: center" width="50%">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/SYCAdry.png" alt=" "  />
-<p class="D14-SYCA"> </p>
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/SYCAdry.png" alt=" "  />
+<p class="D14-SYCA">PhenoCam images comparing peak flow (left) and dry conditions (right) for SYCA in water year 2024.</p>
 </div>
 
 In these non-perennial streams, understanding when flow arrives, how quickly it
@@ -2011,19 +2011,19 @@ for(s in 1:length(siteList)){
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/SYCA_stackedCumSum.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/SYCA_stackedCumSum.png" alt=" "  />
 <p class="Effects of Drying on Macroinvertebrates at D14-SYCA">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
 </div>
 
-**Discussion:** This visualization tool allows us to examine the interplay
+**Discussion:** These visualization tools allow us to examine the interplay
 between discharge and macroinvertebrates across space and time. For example, on
 the scale of an individual sampling event (bout), you can observe the types of 
 habitats sampled, the macroinvertebrate abundance and diversity in each habitat 
 type, and the magnitude and slope of the cumulative flow at that point in the 
 year. 
 
-Expanding our temporal scope, we want make observations across a single 
-water year of macroinvertebrate bouts and discharge, such as:
+Expanding our temporal scope, we want make observations across a single water 
+year of macroinvertebrate bouts and discharge, such as:
 
 * KING:
   * WY 2022 - Shows high abundance and diversity in the spring bout before flow
@@ -2075,7 +2075,7 @@ and time (multiple water years).
   consistently higher than run richness, and peaks in richness during the
   'summer' bouts, with 'spring' and 'fall' richness being lower.
 * All streams across space:
-  * Across sites, there looks to be a similar trend in adunbance where, before
+  * Across sites, there looks to be a similar trend in abundance where, before
   flowing water returns to the stream, abundance is high. Once water returns, 
   abundance crashes, then recovers to varying degrees as flow persists.
   * At ARIK and KING, we are more likely to see spring or fall bouts conducted 
