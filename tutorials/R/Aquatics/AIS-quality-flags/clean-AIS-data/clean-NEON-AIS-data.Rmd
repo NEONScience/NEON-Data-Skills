@@ -52,7 +52,7 @@ These packages are on CRAN and can be installed by
 ## Download and Visually Inspect the Data
 
 Before we get started, we need to install (if not already done) and load 
-the required R packages. 
+the required R packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r set-up-env, eval=F}
 # Install the required package if you have not yet.

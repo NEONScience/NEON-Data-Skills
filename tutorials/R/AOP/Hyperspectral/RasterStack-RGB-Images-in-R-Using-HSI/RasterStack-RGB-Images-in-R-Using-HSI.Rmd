@@ -91,7 +91,9 @@ We often want to generate a 3 band image from multi or hyperspectral data. The m
 In the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">previous lesson</a>, we exported a single band of the NEON Reflectance data from a HDF5 file. In this activity, we will create a full color image using 3 (red, green and blue - RGB) bands. We will follow many of the steps we followed in the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a> tutorial. 
 These steps included loading required packages, downloading the data (optionally, you don't need to do this if you downloaded the data from the previous lesson), and reading in our file and viewing the hdf5 file structure.
 
-First, let's load the required R packages, `terra` and `rhdf5`.
+First, let's load the required R packages, `terra` and `rhdf5`, and read in our token. 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 
 ```{r load-libraries, results="hide"}
 library(terra)

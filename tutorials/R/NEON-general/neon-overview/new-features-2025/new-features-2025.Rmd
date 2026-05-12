@@ -26,7 +26,7 @@ If you are new to using NEON data, we recommend first following the <a href="htt
 
 ## Set up R environment
 
-First install and load the necessary packages.
+First install and load the necessary packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r setup, eval=FALSE}
 
@@ -59,6 +59,8 @@ library(lubridate)
 library(dplyr)
 library(visNetwork)
 
+token <- Sys.getenv("NEON_TOKEN")
+
 ```
 
 
@@ -82,7 +84,8 @@ soil <- loadByProduct(dpID="DP1.10086.001",
                      enddate="2024-12",
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 list2env(soil, .GlobalEnv)
 
@@ -193,7 +196,8 @@ micro <- loadByProduct(dpID="DP1.10081.002",
                      package="expanded",
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 list2env(micro, .GlobalEnv)
 
@@ -282,7 +286,8 @@ soil = nu.load_by_product(dpid="DP1.10086.001",
                      enddate="2024-12",
                      include_provisional=True,
                      progress=False,
-                     check_size=False)
+                     check_size=False,
+                     token=token)
 
 ```
 

@@ -50,8 +50,10 @@ You will need the most current version of R and, preferably, `RStudio` loaded on
 
 </div>
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
-First, load the required libraries.
+First, load the required libraries and read your token to an object named `token`. 
+If you store your token differently, modify the code as needed to read in your token.
 
 ```{r import-libraries, results="hide"}
 library(neonUtilities)

@@ -148,6 +148,8 @@ do so, we will use the `loadByProduct()` function from the `neonUtilities`
 package to download data straight from the NEON servers. To learn more about 
 this function, please see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore NEON data tutorial here.</a>
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 Let's look at the NEON small mammal capture data from Harvard Forest (within 
 Domain 01) for all of 2014. This site is located in the heart of the Lyme 
 disease epidemic.
@@ -156,7 +158,7 @@ disease epidemic.
 
 ```{r load-dplyr-library-import-data, eval=FALSE, comment=NA}
 
-# load packages
+# load packages and token
 library(dplyr)
 library(neonUtilities)
 token <- Sys.getenv("NEON_TOKEN")
@@ -177,6 +179,7 @@ str(loadData)
 
 library(dplyr)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 # load the NEON small mammal capture data
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 

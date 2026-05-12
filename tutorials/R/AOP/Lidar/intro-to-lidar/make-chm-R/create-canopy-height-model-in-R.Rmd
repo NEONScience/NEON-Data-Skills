@@ -44,7 +44,7 @@ on your computer to complete this tutorial.
 
 ## Download Data
 
-Lidar elevation raster data are downloaded using the R `neonUtilities::byTileAOP` function in the script.
+Lidar elevation raster data are downloaded using the R `neonUtilities::byTileAOP()` function in the script. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 These remote sensing data files provide information on the vegetation at the 
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 

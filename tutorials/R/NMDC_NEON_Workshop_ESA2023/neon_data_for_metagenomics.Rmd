@@ -126,7 +126,11 @@ The metagenomics data available on the NEON website includes only the raw sequen
 
 We will start by accessing some soil chemical and physical measurements using the neonUtilities package. Though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in "Soil physical and chemical properties" in the Search bar. Scroll down and click on "Soil physical and chemical properties, periodic" (DP1.10086.001). 
 
-With the information from the Data Portal, we can download this data product using the **neonUtilities** package. We will start with a subset of terrestrial sites. Go ahead and set up the following command in a text file in RStudio or text editor. 
+With the information from the Data Portal, we can download this data product using the **neonUtilities** package. We will start with a subset of terrestrial sites. 
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+Go ahead and set up the following command in a text file in RStudio or text editor. 
 
 
 ```{r access soil data, eval=FALSE}

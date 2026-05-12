@@ -58,7 +58,7 @@ the RStudio IDE to work with R.
 ## Setup R Environment
 
 We'll need several R packages in this tutorial. Install the packages, if not 
-already installed, and load the libraries for each. 
+already installed, and load the libraries for each. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r install, eval=FALSE}
 

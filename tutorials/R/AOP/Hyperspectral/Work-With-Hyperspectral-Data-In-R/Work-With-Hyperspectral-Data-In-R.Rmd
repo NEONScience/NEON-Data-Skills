@@ -45,7 +45,7 @@ To complete this tutorial you will need the most current version of R and, prefe
 
 ### Data to Download
 
-Data will be downloaded in the tutorial using the `neonUtilities::byTileAOP` function.
+Data will be downloaded in the tutorial using the `neonUtilities::byTileAOP()` function. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/field-sites-map/SJER" target="_blank" > San Joaquin Experimental Range field site</a> in March of 2021.
 The data were collected over the San Joaquin field site located in California (Domain 17).The entire dataset can be also be downloaded from the <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.

@@ -98,7 +98,7 @@ loaded on your computer to complete this tutorial.
 
 ## Set Up R Environment and Download Data
 
-First install and load the necessary packages.
+First install and load the necessary packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r setup, eval=FALSE}
 
@@ -112,6 +112,7 @@ install.packages("ggplot2")
 library(neonUtilities)
 library(neonOS)
 library(ggplot2)
+
 token <- Sys.getenv("NEON_TOKEN")
 
 ```
@@ -138,7 +139,8 @@ apchem <- loadByProduct(dpID="DP1.20063.001",
                         site=c("PRLA","SUGG","TOOK"), 
                         package="expanded",
                         release="RELEASE-2022",
-                        check.size=F)
+                        check.size=F,
+                        token=token)
 
 ```
 

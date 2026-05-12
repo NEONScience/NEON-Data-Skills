@@ -49,11 +49,11 @@ on your computer to complete this tutorial.
 
 ## Download Data
 
-Lidar raster data are downloaded using the R `neonUtilities::byTileAOP` function in the script.
+Lidar raster data are downloaded using the R `neonUtilities::byTileAOP()` function in the script. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 These remote sensing data files provide information on the vegetation at NEON's
 <a href="https://www.neonscience.org/field-sites/PRIN" target="_blank"> Pringle Creek (PRIN)</a> site in Texas.
-The complete datasets can be downloaded using `neonUtilities::byFileAOP`, or accessed from the 
+The complete datasets can be downloaded using `neonUtilities::byFileAOP()`, or accessed from the 
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
 

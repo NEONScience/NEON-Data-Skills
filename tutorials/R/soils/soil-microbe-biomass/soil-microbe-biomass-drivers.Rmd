@@ -33,9 +33,9 @@ You will need the most current version of R loaded on your computer to complete 
 
 ## 1. Setup
 
-Start by installing (if necessary) and loading the `neonUtilities` package.
+Start by installing (if necessary) and loading the `neonUtilities` package. Installation can be run once, then periodically to get package updates.
 
-Installation can be run once, then periodically to get package updates.
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r install_packages, eval=FALSE}
 
@@ -43,7 +43,7 @@ install.packages("neonUtilities")
 
 ```
 
-Now load the package. This needs to be done every time you run code. 
+Now load the package and read in your token. This needs to be done every time you run code. 
 
 ```{r load-packages, results="hide"}
 

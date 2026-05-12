@@ -47,9 +47,11 @@ Start by installing any packages that are used during the course of the tutorial
 
 In this first section we will get our R session set up so that we are prepared to work with and analyze the data.  This involves loading the necessary R packages, downloading the data, setting a working directory if manual data upload is needed, and a review of the NEON data citation policies.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Load R Packages:
 
-Once the packages have been installed they need to be loaded to the session. This needs to be done every time you run code. 
+Once the packages have been installed they need to be loaded to the session, and your token read in. This needs to be done every time you run code. 
 
 ```{r load-packages, , message=FALSE, warning=FALSE, results="hide"}
 library(dplyr)

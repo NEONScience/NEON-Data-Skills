@@ -44,7 +44,7 @@ You will need the most current version of R and, preferably, `RStudio` installed
 
 #### Data to Download
 
-Data required for this tutorial will be downloaded using `neonUtilities` in the lesson.
+Data required for this tutorial will be downloaded using `neonUtilities` in the lesson. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 The LiDAR and imagery data used in this lesson were collected over the 
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
@@ -112,6 +112,8 @@ library(neonUtilities)
 
 # package for specifying color palettes
 library(RColorBrewer)
+
+# API token
 token <- Sys.getenv("NEON_TOKEN")
 
 # set working directory to ensure R can find the file we wish to import

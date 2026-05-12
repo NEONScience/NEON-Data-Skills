@@ -67,7 +67,8 @@ been tested.
 
 ## Set Up R Environment
 
-First install and load the necessary packages.
+First install and load the necessary packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 
 ```{r setup, eval=FALSE}
 
@@ -78,6 +79,8 @@ install.packages("neonUtilities")
 # load packages
 library(neonUtilities)
 library(ggplot2)
+
+# load token
 token <- Sys.getenv("NEON_TOKEN")
 
 # set working directory
@@ -89,6 +92,8 @@ setwd("~/data")
 ```{r libraries, include=FALSE}
 library(neonUtilities)
 library(ggplot2)
+
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ## Find data of interest
@@ -207,7 +212,8 @@ qpr <- loadByProduct(dpID="DP1.00066.001",
                      site=c("HEAL", "GUAN"),
                      startdate="2023-01",
                      enddate="2023-12",
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 ```
 
@@ -245,7 +251,8 @@ qpr <- loadByProduct(dpID="DP1.00066.001",
                      startdate="2023-01",
                      enddate="2023-12",
                      include.provisional=T,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 ```
 
@@ -407,7 +414,8 @@ work on your analysis, rather than downloading again.
 tick <- loadByProduct(dpID="DP1.10093.001", 
                      site=c("GUAN"),
                      release="RELEASE-2024",
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 saveRDS(tick, paste0(getwd(), "/NEON_tick_data.rds"))
 
@@ -445,7 +453,8 @@ zipsByProduct(dpID="DP4.00200.001",
               enddate="2023-06",
               release="RELEASE-2024",
               savepath=getwd(),
-              check.size=F)
+              check.size=F,
+              token=token)
 
 flux <- stackEddy(paste0(getwd(), "/filesToStack00200"),
                   level="dp04")

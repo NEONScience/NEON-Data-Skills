@@ -62,7 +62,7 @@ data every time.
 
 Before we get the NEON data, we need to install (if not already done) and load 
 the `neonUtilities` R package, as well as other packages we will use in the 
-analysis. 
+analysis. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r set-up-env, eval=F}
 # Install neonUtilities package if you have not yet.
@@ -71,10 +71,8 @@ install.packages("ggplot2")
 ```
 
 ```{r load-packages}
-# Set global option to NOT convert all character variables to factors
-options(stringsAsFactors=F)
 
-# Load required packages
+# Load required packages and token
 library(neonUtilities)
 library(ggplot2)
 token <- Sys.getenv("NEON_TOKEN")

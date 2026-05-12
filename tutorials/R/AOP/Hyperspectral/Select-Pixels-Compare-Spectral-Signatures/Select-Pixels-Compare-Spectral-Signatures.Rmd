@@ -50,6 +50,7 @@ preferably, RStudio loaded on your computer.
 
 These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 **Set Working Directory:** This lesson assumes that you have set your working directory to the location of the downloaded data. 
 
@@ -80,12 +81,14 @@ library(grDevices)
 # set working directory, you can change this if desired
 wd <- "~/data/" 
 setwd(wd)
+
+token <- Sys.getenv("NEON_TOKEN")
+
 ```
 
 Download the reflectance tile, if you haven't already, using `neonUtilities::byTileAOP`:
 
 ``` {r download-h5, eval=FALSE}
-token <- Sys.getenv("NEON_TOKEN")
 byTileAOP(dpID = 'DP3.30006.001',
           site = 'SJER',
           year = '2021',
