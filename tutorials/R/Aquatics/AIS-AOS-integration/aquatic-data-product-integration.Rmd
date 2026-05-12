@@ -231,7 +231,7 @@ a vector of 4-letter NEON site codes.
 
 ```{r choose sites, results='hide'}
 # Create vector of site names to use in loadByProduct()
-siteList <- c("ARIK","KING","SYCA")
+siteList <- c("CUPE","GUIL")
 
 ```
 
@@ -243,10 +243,10 @@ defined as October 1 through September 30. For example, water year 2022 spans
 explore, and the code will format the dates for querying data using
 `neonUtilities`.
 
-```{r choose sites, results='hide'}
+```{r choose years, results='hide'}
 # Set the start and end water years to explore
 startWY <- 2022
-endWY <- 2025
+endWY <- 2024
 
 # DO NOT EDIT - format dates for neonUtilities
 startWY_query <- paste0(startWY-1,"-10")
@@ -449,7 +449,7 @@ cat("There are",
     "duplicate records in 'inv_fieldData'")
 
 # what are the primary keys in inv_persample?
-cat("Primary keys in inv_persample are: ",
+cat("Primary keys in inv_persample are:",
     paste(variables_20120$fieldName[
       variables_20120$table=="inv_persample"
       &variables_20120$primaryKey=="Y"
@@ -464,7 +464,7 @@ cat("There are",
     "duplicate records in 'inv_persample'")
 
 # what are the primary keys in inv_taxonomyProcessed?
-cat("Primary keys in inv_taxonomyProcessed are: ",
+cat("Primary keys in inv_taxonomyProcessed are:",
     paste(variables_20120$fieldName[
       variables_20120$table=="inv_taxonomyProcessed"
       &variables_20120$primaryKey=="Y"
@@ -761,11 +761,10 @@ The `plotly` package allows us to interact with the plots in the following ways:
 * Zoom and pan along the x- and y-axes
 * Switch discharge timeseries between linear and log scale
 * Turn on/off traces in the plot by clicking the legend entries 
+  \* _(Note: INV traces defaulted to hidden in this plot)_
 * Scroll long each individual y-axis
 
-### Abun and Richness + Discharge Over Time
-
-Click on traces to display or hide them. (Note: INV traces defaulted to hidden)
+### Abundance and Richness + Discharge Over Time
 
 ```{r aos-ais-plot, out.width='100%', out.height='600px', fig.height=4, fig.width=8}
 for(s in 1:length(siteList)){
@@ -820,7 +819,7 @@ for(s in 1:length(siteList)){
       yaxis2=list(
         side='right',
         overlaying="y",
-        title='Abun',
+        title='Abundance Per Square Meter',
         showgrid=FALSE,
         automargin=TRUE,
         zeroline=FALSE,
@@ -831,7 +830,7 @@ for(s in 1:length(siteList)){
         side='right',
         overlaying="y",
         anchor="free",
-        title='Rich',
+        title='Taxon Richness',
         showgrid=FALSE,
         zeroline=FALSE,
         automargin=TRUE,
@@ -864,6 +863,11 @@ for(s in 1:length(siteList)){
 
 ```
 
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD.png" alt=" "  />
+<p class="Discharge Timeseries and Macroinvertebrate Data At D04-CUPE">CAPTION</p>
+</div>
+
 What kind of observations can be made when examining AIS discharge and AOS
 macroinvertebrate data on the same plotting field?
 
@@ -882,9 +886,287 @@ site IDs throughout the code.
 ## Case Studies - Introduction
 
 Now, we can take what we have learned about NEON AOS and AIS data and look at
-other case studies using different NEON data products.
+other case studies using different NEON data products. These case studies take
+you on a deeper dive into NEON data products, and data wrangingling and
+visualization in R.
 
-## Case Study 1: Hurricane-impacted streams: Examine relationships between discharge, sediment particle size distribution, and macroinvertebrate abundance/diversity
+## Case Study 1: Can relationships between sensor measurements and discrete water chemistry data be used to expand the temporal extent of ecologically-relevant analytes?
+
+**Before exploring this case study:** This case study can be run independently 
+of the introductory AOS and AIS data exploration code. This case study is coded
+to be run for 1 site. By default, we will focus on water years 2022-2024 at the 
+West St. Louis Creek (WLOU) site, which is a high elevation stream in the
+Southern Rockies & Colorado Plateau Domain (D13). Set the following inputs prior
+to downloading data:
+
+* `siteList <- c("WLOU")`
+* `startWY <- 2022`
+* `endWY <- 2024`
+
+[Learn more about the Como Creek site (D13-WLOU)](https://www.neonscience.org/field-sites/wlou)
+
+```{r case study 1 inputs, include=FALSE}
+siteList <- c("WLOU")
+startWY <- 2022
+endWY <- 2024
+startWY_query <- paste0(startWY-1,"-10")
+endWY_query <- paste0(endWY,"-09")
+```
+
+We are going to switch gears to a different kind of integration between AOS and
+AIS data. We evaluate the relationship between high-frequency fluorescent 
+dissolved organic matter (fDOM) AIS data and dissolved organic carbon (DOC) data
+analyzed from AOS water chemistry grab samples to model a continuous DOC 
+timeseries.
+
+The data products downloaded here are:
+
+**AIS Data Products:**
+
+* Water quality ([DP1.20288.001](https://data.neonscience.org/data-products/DP1.20288.001))
+
+**AOS Data Products:**
+
+* Chemical properties of surface water ([DP1.20093.001](https://data.neonscience.org/data-products/DP1.20093.001))
+
+First, download AOS data, run the duplicate check, and plot the data.
+
+```{r download-swc, results='hide'}
+# download data of interest - AOS - Chemical properties of surface water
+swc <- neonUtilities::loadByProduct(dpID="DP1.20093.001",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
+
+# unlist the variables and add to the global environment
+list2env(swc,envir = .GlobalEnv)
+
+```
+
+The data table we are interested in here is `swc_externalLabDataByAnalyte`: 
+"Long-format results of chemical analysis of up to 28 unique analytes from 
+surface water and groundwater grab samples."
+
+```{r wrangle-plot-swc}
+# check if there are duplicate DOC records
+# what are the primary keys in swc_externalLabDataByAnalyte?
+cat("Primary keys in swc_externalLabDataByAnalyte are:",
+    paste(variables_20093$fieldName[
+      variables_20093$table=="swc_externalLabDataByAnalyte"
+      &variables_20093$primaryKey=="Y"
+    ],
+    collapse = ", ")
+    )
+
+# identify duplicates in swc_externalLabDataByAnalyte
+swc_externalLabDataByAnalyte_dups <- neonOS::removeDups(
+  swc_externalLabDataByAnalyte,
+  variables_20093)
+
+# no duplicates, great!
+
+# lab data is published `long-format` with 28 analytes analyzed
+# show all the analytes published in the lab data
+print(unique(swc_externalLabDataByAnalyte$analyte))
+
+# for this exercise, subset lab data to only dissolved organic carbon (DOC)
+DOC <- swc_externalLabDataByAnalyte%>%
+  dplyr::filter(analyte=="DOC")
+
+# plot a timeseries of DOC
+DOC_plot <- DOC%>%
+  ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
+  ggplot2::geom_point()+
+  ggplot2::labs(title = "Dissolved organic carbon (DOC) over time",
+                y = "DOC (mg/L)",
+                x = "Date")
+
+DOC_plot
+
+```
+
+Next, download AIS data, subset to the appropriate `horizontalPosition`, wrangle
+the data for analysis, and plot the data.
+
+```{r download-waq, results='hide'}
+# download data of interest - AIS - Water quality
+waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
+
+# unlist the variables and add to the global environment
+list2env(waq,envir = .GlobalEnv)
+
+```
+
+The data table we are interested in here is `waq_instantaneous`: "Wide-format table 
+published many water quality metrics in wide-format, including fDOM, dissolved oxygen, 
+specific conductance, pH, chlorophyll, and turbidity."
+
+```{r wrangle-plot-waq}
+# `waq_instantaneous` table published many water quality metrics in wide-format
+# other than fDOM, many other metrics are published in `waq_instantaneous`
+# including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity
+
+# according to the NEON AIS spatial design, fDOM is only measured at the 
+# downstream sensor set (S2, HOR = 102); subset to HOR 102
+WAQ_102 <- waq_instantaneous%>%
+  dplyr::filter(horizontalPosition==102)
+
+# `waq_instantaneous` is published at a 1 minute temporal resolution
+# for ease of plotting, let's create a 15-minute average table
+fDOM_15min <- WAQ_102%>%
+  
+  # remove NULL records
+  dplyr::filter(!is.na(rawCalibratedfDOM))%>%
+  
+  # remove records with a final QF
+  dplyr::filter(fDOMFinalQF==0)%>%
+  
+  # create 15-minute average of fDOM
+  mutate(roundDate=lubridate::round_date(endDateTime,"15 min"))%>%
+  group_by(siteID,roundDate)%>%
+  summarize(mean_fDOM=mean(rawCalibratedfDOM))
+
+# plot a timeseries of fDOM
+fDOM_plot <- fDOM_15min%>%
+  ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
+  ggplot2::geom_line()+
+  ggplot2::labs(title = "fluorescent dissolved organic matter (fDOM) over time",
+                y = "fDOM (QSU)",
+                x = "Date")
+
+fDOM_plot
+
+```
+
+Both data products are published in Coordinated Universal Time (UTC), as are all
+AOS and AIS data, which makes joining across tables easy. Let's join the AOS and
+AIS data into a single data frame from which we will model the two variables.
+
+```{r join-aos-ais}
+# round DOC `collectDate` to the nearest 15 minute timestamp
+DOC$roundDate <- lubridate::round_date(DOC$collectDate,"15 min")
+
+# perform a left-join, which will join an AIS DOC record to every AIS fDOM 
+# record based on matching timestamps
+fDOM_DOC_join <- dplyr::left_join(fDOM_15min,DOC,by="roundDate")
+```
+
+Create a linear regression to analyze the correlation of the two variables
+
+```{r linear-regression}
+# use `lm` function to create a linear regression: DOC~fDOM
+model <- lm(analyteConcentration~mean_fDOM,data=fDOM_DOC_join)
+
+# view a summary of the regression model
+print(summary(model))
+
+# show a plot of the relationship with a linear trendline added
+fDOM_DOC_plot <- fDOM_DOC_join%>%
+  ggplot2::ggplot(aes(x=mean_fDOM,y=analyteConcentration))+
+  ggplot2::geom_point()+
+  ggplot2::geom_smooth(method="lm",se=T)+
+  ggplot2::scale_x_continuous(limits=c(0,60))+
+  ggplot2::labs(title = "AOS-DOC vs. AIS-fDOM",
+                y = "DOC (mg/L)",
+                x = "fDOM (QSU)")
+
+fDOM_DOC_plot
+
+```
+
+Given relatively high AIS data completeness and a correlative relationship 
+between AOS-DOC and AIS-fDOM, Let's model DOC vs. fDOM from 2021-10-01 to 
+2024-09-30. We will add modelled continuous DOC as a column in the joined table.
+
+```{r model-doc}
+# predict continuous doc based on the linear regression model coefficients
+fDOM_DOC_join$fit <- predict(model,
+                             newdata = fDOM_DOC_join,
+                             interval = "confidence")[, "fit"]
+
+# add two more columns with predicted 95% CI uncertainty around the modeled DOC
+conf_int <- predict(model, newdata = fDOM_DOC_join, interval = "confidence")
+fDOM_DOC_join$lwr <- conf_int[, "lwr"]
+fDOM_DOC_join$upr <- conf_int[, "upr"]
+
+```
+
+With the modeled data added to our joined data table, let's plot the resulting
+modeled DOC w/ uncertainty on the same plotting field as the DOC measured from 
+water chemistry grab samples. We will make this plot using `plotly` so we can
+zoom in to see how well the AOS-DOC and modeled continuous DOC match up.
+
+```{r plot-model-doc}
+# create plot
+fDOM_DOC_plot <- plotly::plot_ly(data=fDOM_DOC_join)%>%
+  
+  # plot uncertainty as a ribbon
+  plotly::add_trace(x=~roundDate,y=~upr,name="95% CI",
+                    type='scatter',mode='line',
+                    line=list(color='lightgray'),legendgroup="95CI",
+                    showlegend=F)%>%
+  plotly::add_trace(x=~roundDate,y=~lwr,name="95% CI",
+                    type='scatter',mode='none',fill = 'tonexty',
+                    fillcolor = 'lightgray',legendgroup="95CI")%>%
+  
+  # plot modeled DOC timeseries
+  plotly::add_trace(x=~roundDate,y=~fit,name="Modeled DOC",
+                    type='scatter',mode='line',
+                    line=list(color='blue'))%>%
+  
+  # plot grab sample DOC
+  plotly::add_trace(x=~roundDate,y=~analyteConcentration,name="Grab Sample DOC",
+                    type='scatter',mode='markers',
+                    marker=list(color='darkorange'))%>%
+  
+  # format title, axes, and legend
+  plotly::layout(title="Dissolved Organic Carbon: Modelled & Grab Sample",
+                 xaxis=list(title="Date"),
+                 yaxis=list(title="DOC (mg/L)"),
+                 legend=list(xanchor = 'center',
+                             yanchor = 'top',
+                             orientation = 'h',
+                             x=0.5,y=-0.2))
+
+# Save HTML plot to local documents folder
+htmlwidgets::saveWidget(plotly::as_widget(fDOM_DOC_plot),paste0("~/",siteList,"_fDOM_DOC_model.html"))
+
+```
+
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/WLOU_fDOM_DOC_model.png" alt=" "  />
+<p class="DOC Modeled from fDOM">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder. </p>
+</div>
+
+**Discussion**: This study shows the possibility of integrating AIS and AOS data
+to expand the temporal scale of estimated DOC in stream sites. At WLOU, 
+estimated DOC matches well with grab sample DOC across mid- to high-range 
+values, with uncertainty increasing at the low end of the timeseries. The 
+relationship will continue to be expanded upon, following NEON’s flow-weighted 
+sampling design.
+
+The standardized nature of NEON data products and site designs allow for this 
+and other analyses to be scaled across the observatory, revealing similarities 
+and differences in the relationship across sites, and allowing for more detailed
+investigation of carbon dynamics in freshwater systems across the United States.
+
+Try out this analysis at your favorite site! What environmental factors could
+contribute to the quality of this relationship at different NEON stream sites?
+
+## Case Study 2: Hurricane-impacted streams: Examine relationships between discharge, sediment particle size distribution, and macroinvertebrate abundance/diversity
 
 **Before exploring this case study:** Run the introductory AOS and AIS data 
 exploration code with the following variables set:
@@ -893,7 +1175,7 @@ exploration code with the following variables set:
 * `startWY <- 2022`
 * `endWY <- 2024`
 
-```{r case study 1 inputs, include=FALSE}
+```{r case study 2 inputs, include=FALSE}
 siteList <- c("CUPE","GUIL")
 startWY <- 2022
 endWY <- 2024
@@ -914,12 +1196,8 @@ The aquatic sites in D04 are Rio Cupeyes (CUPE) and Rio Yahuecas (GUIL).
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
-<p class="Hurricane Fiona Impact Map"> </p>
+<p class="Hurricane Fiona Impact Map">Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf</p>
 </div>
-
-Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with 
-approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. 
-Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf
 
 For this case study, we will look again at the relationship between stream
 discharge and macroinvertebrate abundance and richness with the hurricane event
@@ -939,7 +1217,7 @@ According to NOAA, Hurricane Fiona traveled through Puerto Rico between 18-21
 September, 2022. Let's highlight that event in our combined AOS and AIS plots by
 adding a red vertical dashed line on 2022-09-19.
 
-```{r highlight-fiona, out.width='100%', out.height='600px', fig.height=4, fig.width=6}
+```{r case study 2 fiona}
 # identify the date of Fiona
 fionaDate <- "2022-09-19"
 
@@ -949,13 +1227,13 @@ AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE%>%
   plotly::add_segments(x=as.POSIXct(fionaDate,tz="UTC"),
                        xend=as.POSIXct(fionaDate,tz="UTC"),
                        y=0,
-                       yend=max(CSD_15min$dischargeMean[
-                         CSD_15min$siteID=="CUPE"],
+                       yend=max(csd_15_min$dischargeContinuous[
+                         csd_15_min$siteID=="CUPE"],
                          na.rm = T),
                        name="Fiona",
                        line=list(color='red',dash='dash'))
-
-AOS_AIS_plot_CUPE_Fiona
+# Save HTML plot to local documents folder
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_CUPE_Fiona),"~/CUPE_INV_CSD_Fiona.html")
 
 # highlight Fiona at GUIL
 AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
@@ -963,13 +1241,13 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
   plotly::add_segments(x=as.POSIXct(fionaDate,tz="UTC"),
                        xend=as.POSIXct(fionaDate,tz="UTC"),
                        y=0,
-                       yend=max(CSD_15min$dischargeMean[
-                         CSD_15min$siteID=="CUPE"],
+                       yend=max(csd_15_min$dischargeContinuous[
+                         csd_15_min$siteID=="GUIL"],
                          na.rm = T),
                        name="Fiona",
                        line=list(color='red',dash='dash'))
-
-AOS_AIS_plot_GUIL_Fiona
+# Save HTML plot to local documents folder
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL_Fiona),"~/GUIL_INV_CSD_Fiona.html")
 
 ```
 
@@ -1144,7 +1422,7 @@ for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
 }
 
 # re-generate the CUPE plot with particle size distribution subplots added
-AOS_AIS_plot_CUPE_Fiona%>%
+AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE_Fiona%>%
   layout(images=list(
     # show the CUPE 2022 pebble count survey, conducted 2022-04
     list(source=base64enc::dataURI(file="~/images/psd_CUPE2022.png"),
@@ -1166,9 +1444,11 @@ AOS_AIS_plot_CUPE_Fiona%>%
          xanchor = "left", yanchor = "bottom")
     
     ))
+# Save HTML plot to local documents folder
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_CUPE_Fiona),"~/CUPE_INV_CSD_GEO_Fiona.html")
 
 # re-generate the GUIL plot with particle size distribution subplots added
-AOS_AIS_plot_GUIL_Fiona%>%
+AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL_Fiona%>%
   layout(images=list(
     # show the GUIL 2022 pebble count survey, conducted 2022-04
       list(source=base64enc::dataURI(file="~/images/psd_GUIL2022.png"),
@@ -1190,8 +1470,15 @@ AOS_AIS_plot_GUIL_Fiona%>%
          xanchor = "left", yanchor = "bottom")
     
     ))
+# Save HTML plot to local documents folder
+htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL_Fiona),"~/_INV_CSD_GEO_Fiona.html")
 
 ```
+
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD_GEO.png" alt=" "  />
+<p class="Effects of Hurricane Fiona on D04-CUPE">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
+</div>
 
 **Discussion**: With the three data products viewed together in relation to the
 Hurricane Fiona event, there are several observations that can be made:
@@ -1219,7 +1506,7 @@ Hurricane Fiona on NEON D04 sites, with a potential relationship being revealed
 between the stability of the streambed substrate and the loss of 
 macroinvertebrate diversity immediately following a major precipitation event.
 
-## Case Study 2: Macroinvertebrates in drying streams: visualize the interplay between abundance, richness, and flow within and across water years
+## Case Study 3: Macroinvertebrates in drying streams: visualize the interplay between abundance, richness, and flow within and across water years
 
 **Before exploring this case study:** Run the introductory AOS and AIS data 
 exploration code with the following variables set:
@@ -1228,12 +1515,181 @@ exploration code with the following variables set:
 * `startWY <- 2022`
 * `endWY <- 2025`
 
-```{r case study 1 inputs, include=FALSE}
+```{r case study 3 inputs, include=FALSE}
 siteList <- c("KING","ARIK","SYCA")
 startWY <- 2022
 endWY <- 2025
 startWY_query <- paste0(startWY-1,"-10")
 endWY_query <- paste0(endWY,"-09")
+# download data of interest - AOS - Macroinvertebrate collection
+inv <- neonUtilities::loadByProduct(dpID="DP1.20120.001",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
+list2env(inv,envir = .GlobalEnv)
+# join inv_fieldData and inv_taxonomyProcessed
+inv_fieldTaxJoined <- neonOS::joinTableNEON(inv_fieldData,inv_taxonomyProcessed)
+### SHOW BREAKDOWN OF SAMPLER TYPE BY HABITAT TYPE AT EACH SITE ###
+
+sampler_habitat_summ <- inv_fieldTaxJoined%>%
+  dplyr::distinct(siteID,habitatType)
+sampler_habitat_summ  
+
+### PLOT ABUNDANCE ###
+
+# using the `tidyverse` collection, we can clean the data in one piped function
+inv_abundance_summ <- inv_fieldTaxJoined%>%
+  # remove events when no samples were collected (samplingImpractical)
+  # remove samples not associated with a bout
+  dplyr::filter(is.na(samplingImpractical)
+                &!grepl("GRAB|BRYOZOAN",sampleID))%>%
+  
+  # calculate abundance (individuals per m2^)
+  dplyr::mutate(abun_M2=estimatedTotalCount/benthicArea)%>%
+  
+  # clean `collectDate` column header
+  dplyr::rename(collectDate=collectDate.x)%>%
+  
+  # first, group including `sampleID` and calculate total abundance per sample
+  dplyr::group_by(siteID,collectDate,eventID,sampleID,habitatType,boutNumber)%>%
+  dplyr::summarize(abun_M2_sum = sum(abun_M2, na.rm = TRUE))%>%
+  
+  # second, group excluding `sampleID` to summarize by each bout (`eventID`)
+  dplyr::group_by(siteID,collectDate,eventID,habitatType,boutNumber)%>%
+  
+  # summarize to get mean (+/- se) abundance by bout and sampler type
+  dplyr::summarise(across(abun_M2_sum, 
+                          list(mean = mean, sd = sd, 
+                               se = ~sd(.x, na.rm = TRUE)/sqrt(n())),
+                          .names = "{.col}_{.fn}"))%>%
+  
+  # get categorical variable to sort bouts chronologically
+  dplyr::mutate(year=substr(eventID, 6,9),
+                yearBout=paste(year,"Bout",boutNumber, sep = "."))
+
+inv_richness_clean <- inv_fieldTaxJoined%>%
+  # remove events when no samples were collected (samplingImpractical)
+  # remove samples not associated with a bout
+  dplyr::filter(is.na(samplingImpractical)
+                &!grepl("GRAB|BRYOZOAN",sampleID))%>%
+  # clean `collectDate` column header
+  dplyr::rename(collectDate=collectDate.x)
+
+# extract sample metadata
+inv_sample_info <- inv_richness_clean%>%
+  dplyr::select(sampleID, domainID, siteID, namedLocation, 
+                collectDate, eventID, boutNumber, 
+                habitatType, samplerType, benthicArea)%>%
+  dplyr::distinct()
+
+# filter out rare taxa: only observed 1 (singleton) or 2 (doubleton) times
+inv_rare_taxa <- inv_richness_clean%>%
+  dplyr::distinct(sampleID, acceptedTaxonID, scientificName)%>%
+  dplyr::group_by(scientificName)%>%
+  dplyr::summarize(occurrences = n())%>%
+  dplyr::filter(occurrences > 2)
+
+# filter richness table based on taxon list excluding singletons and doubletons
+inv_richness_clean <- inv_richness_clean %>%
+  dplyr::filter(scientificName%in%inv_rare_taxa$scientificName) 
+
+# create a matrix of taxa by sampleID
+inv_richness_clean_wide <- inv_richness_clean %>%
+  # subset to unique combinations of `sampleID` and `scientificName`
+  dplyr::distinct(sampleID,scientificName,.keep_all = T)%>%
+  
+  # remove any records with no abundance data
+  dplyr::mutate(abun_M2=estimatedTotalCount/benthicArea)%>%
+  filter(!is.na(abun_M2))%>%
+  
+  # pivot to wide format, sum multiple counts per sampleID
+  tidyr::pivot_wider(id_cols = sampleID, 
+                     names_from = scientificName,
+                     values_from = abun_M2,
+                     values_fill = list(abun_M2 = 0),
+                     values_fn = list(abun_M2 = sum)) %>%
+  tibble::column_to_rownames(var = "sampleID") %>%
+  
+  #round to integer so that vegan functions will run
+  round()
+
+# code check - check col and row sums
+# mins should all be > 0 for further analysis in vegan
+if(colSums(inv_richness_clean_wide) %>% min()==0){
+  stop("Column sum is 0: do not proceed with richness analysis!")
+}
+if(rowSums(inv_richness_clean_wide) %>% min()==0){
+  stop("Row sum is 0: do not proceed with richness analysis!")
+}
+
+# use the `vegan` package to calculate diversity indices
+
+# calculate richness
+inv_richness <- as.data.frame(
+  vegan::specnumber(inv_richness_clean_wide)
+  )
+names(inv_richness) <- "richness"
+
+inv_richness_stats <- vegan::estimateR(inv_richness_clean_wide)
+
+# calculate evenness
+inv_evenness <- as.data.frame(
+  vegan::diversity(inv_richness_clean_wide)/
+    log(vegan::specnumber(inv_richness_clean_wide))
+  )
+names(inv_evenness) <- "evenness"
+
+# calculate shannon index
+inv_shannon <- as.data.frame(
+  vegan::diversity(inv_richness_clean_wide, index = "shannon")
+  )
+names(inv_shannon) <- "shannon"
+
+# calculate simpson index
+inv_simpson <- as.data.frame(
+  vegan::diversity(inv_richness_clean_wide, index = "simpson")
+  )
+names(inv_simpson) <- "simpson"
+
+# create a single data frame
+inv_diversity_indices <- cbind(inv_richness, inv_evenness, inv_shannon, inv_simpson)
+
+# bring in the metadata table created earlier
+inv_diversity_indices <- dplyr::left_join(
+  tibble::rownames_to_column(inv_diversity_indices),
+  inv_sample_info,
+  by = c("rowname" = "sampleID")) %>%
+  dplyr::rename(sampleID = rowname)
+
+# create summary table for plotting
+inv_diversity_summ <- inv_diversity_indices%>%
+  tidyr::pivot_longer(c(richness,evenness,shannon,simpson),
+                      names_to = "indexName",
+                      values_to = "indexValue")%>%
+  group_by(siteID,collectDate,eventID,habitatType,boutNumber,indexName)%>%
+  dplyr::summarize(mean = mean(indexValue),
+                   n=n(),
+                   sd = sd(indexValue),
+                   se=sd/sqrt(n))%>%
+  dplyr::mutate(year=substr(eventID, 6,9),
+                yearBout=paste(year,"Bout",boutNumber, sep = "."))
+
+# download data of interest - AIS - Continuous discharge
+csd <- neonUtilities::loadByProduct(dpID="DP4.00130.001",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
+list2env(csd, .GlobalEnv)
 ```
 
 Here, we highlight three NEON non-perennial stream sites that undergo 
@@ -1278,11 +1734,14 @@ then stack water years vertically for a site. We will use a combination of the
 `plotly`, `htmltools`, and `htmlwidgets` packages in R to create interactive and
 linked stacked plots. Using a cumulative discharge curve will allow you to 
 easily identify the onset, magnitude, duration, and cessation of flow, and 
-assess the effect those hydrologic parameters have one macroinvertebrate 
+assess the effect those hydrologic parameters have on macroinvertebrate 
 communities within and across water years at a site.
 
-```{r }
-# Assign each record a water year in csd_15_min
+First, let's wrangle the discharge and macroinvertebrate data to 1) assign every
+record a water year, and 2) calculate cumulative flow across each water year.
+
+```{r case study 3 wrangle}
+# Assign each discharge record a water year
 csd_15_min <- csd_15_min%>%
   dplyr::mutate(waterYear=ifelse(lubridate::month(startDateTime)>=10,
                                 lubridate::year(startDateTime)+1,
@@ -1299,7 +1758,7 @@ csd_15_min_summ <- csd_15_min%>%
                 cumulativeFlowPct=100*cumulativeFlow/max(cumulativeFlow, na.rm = TRUE))%>%
   dplyr::ungroup()
 
-# Assign water year and day-of-water-year to abundance summary
+# Assign water year and day-of-water-year to invert abundance summary
 inv_abundance_case2 <- inv_abundance_summ%>%
   dplyr::ungroup()%>%
   dplyr::mutate(waterYear=ifelse(lubridate::month(collectDate)>=10,
@@ -1311,7 +1770,7 @@ inv_abundance_case2 <- inv_abundance_summ%>%
                 abun_M2_sum_se=dplyr::coalesce(abun_M2_sum_se,0))%>%
   dplyr::arrange(siteID,waterYear,habitatType,dayOfWaterYear)
 
-# Assign water year and day-of-water-year to richness summary
+# Assign water year and day-of-water-year to invert richness summary
 inv_richness_case2 <- inv_diversity_summ%>%
   dplyr::filter(indexName=="richness")%>%
   dplyr::ungroup()%>%
@@ -1323,25 +1782,35 @@ inv_richness_case2 <- inv_diversity_summ%>%
                 plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
                 se=dplyr::coalesce(se,0))%>%
   dplyr::arrange(siteID,waterYear,habitatType,dayOfWaterYear)
+```
 
-# Build one stacked multi-axis plot per site with cumulative flow, abundance, and richness
+Now, we will create our visuals. For each site, we will create a plot that shows
+the following:
+
+1. Cumulative flow curve for each water year
+2. Benthic Macroinvertebrate abundance (y-axis 2) and richness (y-axis 3) by 
+   habitat type
+3. Each water year plot stacked in a single column 
+4. Axes ranges and limits set identically in all stacked plots
+5. Traces linked in a single legend at top of stacked plots
+
+```{r case study 3 plot}
+# Build one stacked plot per site with cumulative flow, abundance, and richness
 for(s in 1:length(siteList)){
-  waterYears <- sort(unique(csd_15_min_summ$waterYear[csd_15_min_summ$siteID==siteList[s]]))
+  waterYears <- sort(
+    unique(csd_15_min_summ$waterYear[csd_15_min_summ$siteID==siteList[s]]))
 
-  # Compute fixed axis ranges for this site so all WY panels are directly comparable
+  # Set fixed axis ranges for this site so all WY panels are directly comparable
   site_flow <- csd_15_min_summ%>%
     dplyr::filter(siteID==siteList[s])
   site_abun <- inv_abundance_case2%>%
     dplyr::filter(siteID==siteList[s])
   site_rich <- inv_richness_case2%>%
     dplyr::filter(siteID==siteList[s])
-
   abun_labels <- sort(unique(paste0("Abun: ", site_abun$habitatType)))
   rich_labels <- sort(unique(paste0("Rich: ", site_rich$habitatType)))
-
   x_range <- range(site_flow$plotDateWY, na.rm = TRUE)
   y1_range <- c(0, max(site_flow$cumulativeFlow, na.rm = TRUE))
-
   abun_upper <- c(site_abun$abun_M2_sum_mean + site_abun$abun_M2_sum_se,
                   site_abun$abun_M2_sum_mean)
   if(all(is.na(abun_upper))){
@@ -1349,7 +1818,6 @@ for(s in 1:length(siteList)){
   }else{
     y2_range <- c(0, max(abun_upper, na.rm = TRUE))
   }
-
   rich_upper <- c(site_rich$mean + site_rich$se,
                   site_rich$mean)
   if(all(is.na(rich_upper))){
@@ -1357,12 +1825,15 @@ for(s in 1:length(siteList)){
   }else{
     y3_range <- c(0, max(rich_upper, na.rm = TRUE))
   }
-
+  
+  # Create each subplot and store in list
   wyPlots <- list()
   for(wy in 1:length(waterYears)){
+    # Subset down to current site and water year
     cumsumPlot <- plotly::plot_ly(data=csd_15_min_summ%>%
                                     dplyr::filter(siteID==siteList[s]
                                                   &waterYear==waterYears[wy]))%>%
+      # Cumulative flow curve
       plotly::add_trace(x=~plotDateWY,
                         y=~cumulativeFlow,
                         type="scatter",
@@ -1370,6 +1841,7 @@ for(s in 1:length(siteList)){
                         line=list(color="darkgray"),
                         name="Cumulative Flow",
                         showlegend=F)%>%
+      # Benthic macroinvertebrate abundance by habitat type
       plotly::add_trace(data=inv_abundance_case2%>%
                           dplyr::filter(siteID==siteList[s]
                                         &waterYear==waterYears[wy]),
@@ -1386,6 +1858,7 @@ for(s in 1:length(siteList)){
                         marker=list(color="darkorange"),
                         line=list(color="darkorange",width=2),
                         showlegend=F)%>%
+      # Benthic macroinvertebrate richness by habitat type
       plotly::add_trace(data=inv_richness_case2%>%
                           dplyr::filter(siteID==siteList[s]
                                         &waterYear==waterYears[wy]),
@@ -1402,6 +1875,7 @@ for(s in 1:length(siteList)){
                         marker=list(color="darkgreen"),
                         line=list(color="darkgreen",width=2),
                         showlegend=F)%>%
+      # Plot layout
       plotly::layout(
         title = paste0(siteList[s], " | WY ", waterYears[wy]),
         xaxis=list(title="Month-Day",
@@ -1422,7 +1896,7 @@ for(s in 1:length(siteList)){
         yaxis2=list(
           side='right',
           overlaying="y",
-          title='Abun',
+          title='Abundance Per Square Meter',
           showgrid=FALSE,
           automargin=TRUE,
           zeroline=FALSE,
@@ -1433,7 +1907,7 @@ for(s in 1:length(siteList)){
           side='right',
           overlaying="y",
           anchor="free",
-          title='Rich',
+          title='Taxon Richness',
           showgrid=FALSE,
           zeroline=FALSE,
           automargin=TRUE,
@@ -1445,7 +1919,9 @@ for(s in 1:length(siteList)){
 
     wyPlots[[wy]] <- cumsumPlot
   }
-
+  
+  # Create customized legend that will link to traces on all plots
+  # Uses a combination of HTML tools and custom JavaScript
   legend_items <- c(
     list(htmltools::tags$button(
       type = "button",
@@ -1470,7 +1946,6 @@ for(s in 1:length(siteList)){
       )
     })
   )
-
   legendSyncJs <- sprintf(
     paste(
       "(function(){",
@@ -1498,7 +1973,8 @@ for(s in 1:length(siteList)){
     ),
     siteList[s]
   )
-
+  
+  # Build final stacked plots
   curr_plot <- htmltools::tagList(
     htmltools::tags$h3(
       paste0("Cumulative Flow, Abundance, and Richness for ",
@@ -1529,280 +2005,85 @@ for(s in 1:length(siteList)){
     file = output_file,
     libdir = paste0(siteList[s], "_cumSumWY_files")
   )
-  
 }
 
 
 ```
 
-## Case Study 3: 
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/SYCA_stackedCumSum.png" alt=" "  />
+<p class="Effects of Drying on Macroinvertebrates at D14-SYCA">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
+</div>
 
-## Case Study 4: Can relationships between sensor measurements and discrete water chemistry data be used to expand the temporal extent of ecologically-relevant analytes?
+**Discussion:** This visualization tool allows us to examine the interplay
+between discharge and macroinvertebrates across space and time. For example, on
+the scale of an individual sampling event (bout), you can observe the types of 
+habitats sampled, the macroinvertebrate abundance and diversity in each habitat 
+type, and the magnitude and slope of the cumulative flow at that point in the 
+year. 
 
-**Before exploring this case study:** This case study can be run independently 
-of the introductory AOS and AIS data exploration code. This case study is coded
-to be run for 1 site. By default, we will focus on water years 2022-2024 at the 
-West St. Louis Creek (WLOU) site, which is a high elevation stream in the
-Southern Rockies & Colorado Plateau Domain (D13). Set the following inputs prior
-to downloading data:
+Expanding our temporal scope, we want make observations across a single 
+water year of macroinvertebrate bouts and discharge, such as:
 
-* `siteList <- c("WLOU")`
-* `startWY <- 2022`
-* `endWY <- 2024`
+* KING:
+  * WY 2022 - Shows high abundance and diversity in the spring bout before flow
+  returns to the stream. The data is all from pool habitats, in which we see a 
+  steep decline in abundance and richness when water returns in the summertime.
+  * WY 2025 - virtually all of the year's flow came from a single event. This
+  allowed for summer invert sampling to take place in both pool and riffle
+  habitats. By the time of the fall bout, sampling was, once again, constrained
+  to only pools.
+* SYCA
+  * 2022 - Shows a massive spike in run abundance as the stream looks to be
+  slowing in flow accumulation for the water year.
+  * 2025 - Complete dryness for an entire water year. All invert sampling was 
+  impractical.
 
-[Learn more about the Como Creek site (D13-WLOU)](https://www.neonscience.org/field-sites/wlou)
+The highlight of these visual tools is to show how NEON's standardized 
+observational and instrumented monitoring allows you to gain unique insight into
+trends and relationships across large spatial and temporal scales. Let's see 
+what we can observe about the trends and relationships between flow and benthic
+macroinvertebrates in NEON's non-perennial streams across space (multiple sites)
+and time (multiple water years).
 
-```{r case study 1 inputs, include=FALSE}
-siteList <- c("WLOU")
-startWY <- 2022
-endWY <- 2024
-startWY_query <- paste0(startWY-1,"-10")
-endWY_query <- paste0(endWY,"-09")
-```
-
-We are going to switch gears to a different kind of integration between AOS and
-AIS data. We evaluate the relationship between high-frequency fluorescent 
-dissolved organic matter (fDOM) AIS data and dissolved organic carbon (DOC) data
-analyzed from AOS water chemistry grab samples to model a continuous DOC 
-timeseries.
-
-The data products downloaded here are:
-
-**AIS Data Products:**
-
-* Water quality ([DP1.20288.001](https://data.neonscience.org/data-products/DP1.20288.001))
-
-**AOS Data Products:**
-
-* Chemical properties of surface water ([DP1.20093.001](https://data.neonscience.org/data-products/DP1.20093.001))
-
-First, download AOS data, run the duplicate check, and plot the data.
-
-```{r download-swc, results='hide'}
-# download data of interest - AOS - Chemical properties of surface water
-swc <- neonUtilities::loadByProduct(dpID="DP1.20093.001",
-                                    site=siteList, 
-                                    startdate=startWY_query,
-                                    enddate=endWY_query,
-                                    package="basic",
-                                    release= "current",
-                                    include.provisional = T,
-                                    token = Sys.getenv("NEON_TOKEN"),
-                                    check.size = F)
-
-# unlist the variables and add to the global environment
-list2env(swc,envir = .GlobalEnv)
-
-```
-
-The data table we are interested in here is `swc_externalLabDataByAnalyte`: 
-"Long-format results of chemical analysis of up to 28 unique analytes from 
-surface water and groundwater grab samples."
-
-```{r wrangle-plot-swc}
-# check if there are duplicate DOC records
-# what are the primary keys in swc_externalLabDataByAnalyte?
-cat("Primary keys in swc_externalLabDataByAnalyte are: ",
-    paste(variables_20093$fieldName[
-      variables_20093$table=="swc_externalLabDataByAnalyte"
-      &variables_20093$primaryKey=="Y"
-    ],
-    collapse = ", ")
-    )
-
-# identify duplicates in swc_externalLabDataByAnalyte
-swc_externalLabDataByAnalyte_dups <- neonOS::removeDups(
-  swc_externalLabDataByAnalyte,
-  variables_20093)
-
-# no duplicates, great!
-
-# lab data is published `long-format` with 28 analytes analyzed
-# show all the analytes published in the lab data
-print(unique(swc_externalLabDataByAnalyte$analyte))
-
-# for this exercise, subset lab data to only dissolved organic carbon (DOC)
-DOC <- swc_externalLabDataByAnalyte%>%
-  dplyr::filter(analyte=="DOC")
-
-# plot a timeseries of DOC
-DOC_plot <- DOC%>%
-  ggplot2::ggplot(aes(x=collectDate,y=analyteConcentration))+
-  ggplot2::geom_point()+
-  ggplot2::labs(title = "Dissolved organic carbon (DOC) over time",
-                y = "DOC (mg/L)",
-                x = "Date")
-
-DOC_plot
-
-```
-
-Next, download AIS data, subset to the appropriate `horizontalPosition`, wrangle
-the data for analysis, and plot the data.
-
-```{r download-waq, results='hide'}
-# download data of interest - AIS - Water quality
-waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001",
-                                    site=siteList, 
-                                    startdate=startWY_query,
-                                    enddate=endWY_query,
-                                    package="basic",
-                                    release= "current",
-                                    include.provisional = T,
-                                    token = Sys.getenv("NEON_TOKEN"),
-                                    check.size = F)
-
-# unlist the variables and add to the global environment
-list2env(waq,envir = .GlobalEnv)
-
-```
-
-The data table we are interested in here is `waq_instantaneous`: "Wide-format table 
-published many water quality metrics in wide-format, including fDOM, dissolved oxygen, 
-specific conductance, pH, chlorophyll, and turbidity."
-
-```{r wrangle-plot-waq}
-# `waq_instantaneous` table published many water quality metrics in wide-format
-# other than fDOM, many other metrics are published in `waq_instantaneous`
-# including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity
-
-# according to the NEON AIS spatial design, fDOM is only measured at the 
-# downstream sensor set (S2, HOR = 102); subset to HOR 102
-WAQ_102 <- waq_instantaneous%>%
-  dplyr::filter(horizontalPosition==102)
-
-# `waq_instantaneous` is published at a 1 minute temporal resolution
-# for ease of plotting, let's create a 15-minute average table
-fDOM_15min <- WAQ_102%>%
-  
-  # remove NULL records
-  dplyr::filter(!is.na(rawCalibratedfDOM))%>%
-  
-  # remove records with a final QF
-  dplyr::filter(fDOMFinalQF==0)%>%
-  
-  # create 15-minute average of fDOM
-  mutate(roundDate=lubridate::round_date(endDateTime,"15 min"))%>%
-  group_by(siteID,roundDate)%>%
-  summarize(mean_fDOM=mean(rawCalibratedfDOM))
-
-# plot a timeseries of fDOM
-fDOM_plot <- fDOM_15min%>%
-  ggplot2::ggplot(aes(x=roundDate,y=mean_fDOM))+
-  ggplot2::geom_line()+
-  ggplot2::labs(title = "fluorescent dissolved organic matter (fDOM) over time",
-                y = "fDOM (QSU)",
-                x = "Date")
-
-fDOM_plot
-
-```
-
-Both data products are published in Coordinated Universal Time (UTC), as are all
-AOS and AIS data, which makes joining across tables easy. Let's join the AOS and
-AIS data into a single data frame from which we will model the two variables.
-
-```{r join-aos-ais}
-# round DOC `collectDate` to the nearest 15 minute timestamp
-DOC$roundDate <- lubridate::round_date(DOC$collectDate,"15 min")
-
-# perform a left-join, which will join an AIS DOC record to every AIS fDOM 
-# record based on matching timestamps
-fDOM_DOC_join <- dplyr::left_join(fDOM_15min,DOC,by="roundDate")
-```
-
-Create a linear regression to analyze the correlation of the two variables
-
-```{r linear-regression}
-# use `lm` function to create a linear regression: DOC~fDOM
-model <- lm(analyteConcentration~mean_fDOM,data=fDOM_DOC_join)
-
-# view a summary of the regression model
-print(summary(model))
-
-# show a plot of the relationship with a linear trendline added
-fDOM_DOC_plot <- fDOM_DOC_join%>%
-  ggplot2::ggplot(aes(x=mean_fDOM,y=analyteConcentration))+
-  ggplot2::geom_point()+
-  ggplot2::geom_smooth(method="lm",se=T)+
-  ggplot2::scale_x_continuous(limits=c(0,60))+
-  ggplot2::labs(title = "AOS-DOC vs. AIS-fDOM",
-                y = "DOC (mg/L)",
-                x = "fDOM (QSU)")
-
-fDOM_DOC_plot
-
-```
-
-Given relatively high AIS data completeness and a correlative relationship 
-between AOS-DOC and AIS-fDOM, Let's model DOC vs. fDOM from 2021-10-01 to 
-2024-09-30. We will add modelled continuous DOC as a column in the joined table.
-
-```{r model-doc}
-# predict continuous doc based on the linear regression model coefficients
-fDOM_DOC_join$fit <- predict(model,
-                             newdata = fDOM_DOC_join,
-                             interval = "confidence")[, "fit"]
-
-# add two more columns with predicted 95% CI uncertainty around the modeled DOC
-conf_int <- predict(model, newdata = fDOM_DOC_join, interval = "confidence")
-fDOM_DOC_join$lwr <- conf_int[, "lwr"]
-fDOM_DOC_join$upr <- conf_int[, "upr"]
-
-```
-
-With the modeled data added to our joined data table, let's plot the resulting
-modeled DOC w/ uncertainty on the same plotting field as the DOC measured from 
-water chemistry grab samples. We will make this plot using `plotly` so we can
-zoom in to see how well the AOS-DOC and modeled continuous DOC match up.
-
-```{r plot-model-doc, out.width='100%', out.height='600px'}
-# create plot
-plotly::plot_ly(data=fDOM_DOC_join)%>%
-  
-  # plot uncertainty as a ribbon
-  plotly::add_trace(x=~roundDate,y=~upr,name="95% CI",
-                    type='scatter',mode='line',
-                    line=list(color='lightgray'),legendgroup="95CI",
-                    showlegend=F)%>%
-  plotly::add_trace(x=~roundDate,y=~lwr,name="95% CI",
-                    type='scatter',mode='none',fill = 'tonexty',
-                    fillcolor = 'lightgray',legendgroup="95CI")%>%
-  
-  # plot modeled DOC timeseries
-  plotly::add_trace(x=~roundDate,y=~fit,name="Modeled DOC",
-                    type='scatter',mode='line',
-                    line=list(color='blue'))%>%
-  
-  # plot grab sample DOC
-  plotly::add_trace(x=~roundDate,y=~analyteConcentration,name="Grab Sample DOC",
-                    type='scatter',mode='markers',
-                    marker=list(color='darkorange'))%>%
-  
-  # format title, axes, and legend
-  plotly::layout(title="Dissolved Organic Carbon: Modelled & Grab Sample",
-                 xaxis=list(title="Date"),
-                 yaxis=list(title="DOC (mg/L)"),
-                 legend=list(xanchor = 'center',
-                             yanchor = 'top',
-                             orientation = 'h',
-                             x=0.5,y=-0.2))
-
-```
-
-**Discussion**: This study shows the possibility of integrating AIS and AOS data
-to expand the temporal scale of estimated DOC in stream sites. At WLOU, 
-estimated DOC matches well with grab sample DOC across mid- to high-range 
-values, with uncertainty increasing at the low end of the timeseries. The 
-relationship will continue to be expanded upon, following NEON’s flow-weighted 
-sampling design.
-
-The standardized nature of NEON data products and site designs allow for this 
-and other analyses to be scaled across the observatory, revealing similarities 
-and differences in the relationship across sites, and allowing for more detailed
-investigation of carbon dynamics in freshwater systems across the United States.
-
-Try out this analysis at your favorite site! What environmental factors could
-contribute to the quality of this relationship at different NEON stream sites?
+* KING across time:
+  * Across the four water years observed, we see that KING alternated between 
+  water years with relatively high cumulative flow (2022, 2024) and water years
+  with relatively low cumulative flow (2023, 2025). 
+  * Spring sampling was impractical in 2023, 2024, and 2025 from lack of 
+  habitats due to drying.
+  * When water is returning and flowing through the stream, there is similar
+  abundance in both pools and riffles, but riffle richness is consistently
+  higher relative to pool richness across water years.
+* ARIK across time:
+  * Overall water availability is much lower in 2022 than the subsequent years.
+  * Across all the summer bouts, pool habitats are the most common habitat
+  sampled. Trends in the relationship between macroinvertebrate matrices and
+  cumulative flow are visible, with pool abundance being negatively correlated 
+  with the magnitude of cumulative flow in a water year, and pool richness being
+  positively correlated.
+  * During the spring bout each water year, there are the same trends in 
+  richness and abundance: pool abundance is higher than run abundance; pool
+  richness is lower than run richness; abundance values by habitat type are much
+  closer than richness values by habitat type.
+* SYCA across time:
+  * Run abundance is consistently either comparable or less than riffle 
+  abundance, with the glaring exception of the 'summer' bout of 2022. There is 
+  much less water availability in 2022 relative to 2023 and 2024, which could 
+  explain the differences.
+  * Trends in richness are present across all water years, with riffle richness
+  consistently higher than run richness, and peaks in richness during the
+  'summer' bouts, with 'spring' and 'fall' richness being lower.
+* All streams across space:
+  * Across sites, there looks to be a similar trend in adunbance where, before
+  flowing water returns to the stream, abundance is high. Once water returns, 
+  abundance crashes, then recovers to varying degrees as flow persists.
+  * At ARIK and KING, we are more likely to see spring or fall bouts conducted 
+  during periods of partial dryness, where pool habitats are common. At SYCA, 
+  flow returns and ceases more quickly, making it less likely that sampling will
+  take place during periods of partial dryness. This leads to interesting
+  differences when looking at the sites, as ARIK and KING reveal more about the
+  transition from dry-flow, whereas SYCA reveals more about the transition from
+  flow-dry.
 
 <!-- END -->
