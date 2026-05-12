@@ -865,7 +865,7 @@ for(s in 1:length(siteList)){
 
 <div class="figure" style="text-align: center">
 <img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD.png" alt=" "  />
-<p class="Discharge Timeseries and Macroinvertebrate Data At D04-CUPE">CAPTION</p>
+<p class="Discharge Timeseries and Macroinvertebrate Data At D04-CUPE">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
 </div>
 
 What kind of observations can be made when examining AIS discharge and AOS
