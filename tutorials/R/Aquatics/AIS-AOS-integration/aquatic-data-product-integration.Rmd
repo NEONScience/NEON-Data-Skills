@@ -864,7 +864,7 @@ for(s in 1:length(siteList)){
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD.png" alt=" "  />
 <p class="Discharge Timeseries and Macroinvertebrate Data At D04-CUPE">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
 </div>
 
@@ -1147,7 +1147,7 @@ htmlwidgets::saveWidget(plotly::as_widget(fDOM_DOC_plot),paste0("~/",siteList,"_
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/WLOU_fDOM_DOC_model.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/WLOU_fDOM_DOC_model.png" alt=" "  />
 <p class="DOC Modeled from fDOM">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder. </p>
 </div>
 
@@ -1195,7 +1195,7 @@ The aquatic sites in D04 are Rio Cupeyes (CUPE) and Rio Yahuecas (GUIL).
 * <a href="https://www.neonscience.org/field-sites/guil" target="_blank">Learn more about the Rio Yahuecas site (D04-GUIL)</a>
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/fionaNEON.png" alt=" "  />
 <p class="Hurricane Fiona Impact Map">Total rainfall accumulation in Puerto Rico from Hurricane Fiona, overlaid with approximate locations of the two NEON D04 aquatic sites: CUPE, GUIL. Image source: https://www.nhc.noaa.gov/data/tcr/AL072022_Fiona.pdf</p>
 </div>
 
@@ -1476,7 +1476,7 @@ htmlwidgets::saveWidget(plotly::as_widget(AOS_AIS_plot_GUIL_Fiona),"~/_INV_CSD_G
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD_GEO.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/CUPE_INV_CSD_GEO.png" alt=" "  />
 <p class="Effects of Hurricane Fiona on D04-CUPE">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
 </div>
 
@@ -1701,7 +1701,7 @@ partial-to-complete drying on an annual basis, bringing stream discharge to zero
 <a href="https://www.neonscience.org/field-sites/king" target="_blank">Learn more about the Kings Creek site (D06-KING)</a>
 
 <div class="figure" style="text-align: center" width="50%">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/KINGdry.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/KINGdry.png" alt=" "  />
 <p class="D06-KING">PhenoCam images comparing peak flow (left) and dry conditions (right) for KING in water year 2024.</p>
 </div>
 
@@ -1710,7 +1710,7 @@ partial-to-complete drying on an annual basis, bringing stream discharge to zero
 <a href="https://www.neonscience.org/field-sites/arik" target="_blank">Learn more about the Arikaree River site (D10-ARIK)</a>
 
 <div class="figure" style="text-align: center" width="50%">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/ARIKdry.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/ARIKdry.png" alt=" "  />
 <p class="D10-ARIK">PhenoCam images comparing peak flow (left) and dry conditions (right) for ARIK in water year 2024.</p>
 </div>
 
@@ -1719,7 +1719,7 @@ partial-to-complete drying on an annual basis, bringing stream discharge to zero
 <a href="https://www.neonscience.org/field-sites/syca" target="_blank">Learn more about the Sycamore Creek site (D14-SYCA)</a>
 
 <div class="figure" style="text-align: center" width="50%">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/SYCAdry.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/SYCAdry.png" alt=" "  />
 <p class="D14-SYCA">PhenoCam images comparing peak flow (left) and dry conditions (right) for SYCA in water year 2024.</p>
 </div>
 
@@ -2011,7 +2011,7 @@ for(s in 1:length(siteList)){
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/stackedCumSum.png" alt=" "  />
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/ais-aos/stackedCumSum.png" alt=" "  />
 <p class="Effects of Drying on Macroinvertebrates">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
 </div>
 
