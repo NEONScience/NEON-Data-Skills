@@ -2011,8 +2011,8 @@ for(s in 1:length(siteList)){
 ```
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/SYCA_stackedCumSum.png" alt=" "  />
-<p class="Effects of Drying on Macroinvertebrates at D14-SYCA">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
+<img src="https://raw.githubusercontent.com/znickerson8/NEON-Data-Skills/main/graphics/ais-aos/stackedCumSum.png" alt=" "  />
+<p class="Effects of Drying on Macroinvertebrates">Snapshot of the interactive HTML plot generated in the code above using the `plotly` package. When running the code, the plot should be saved to your 'Documents' folder.</p>
 </div>
 
 **Discussion:** These visualization tools allow us to examine the interplay
