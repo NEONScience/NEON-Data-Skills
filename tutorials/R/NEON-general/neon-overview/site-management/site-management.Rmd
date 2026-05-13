@@ -321,7 +321,7 @@ for(i in 2:length(tiles2019)) {
 
 And now plot the canopy height model data, with the burned locations marked as dots. Let's plot the wildfire first, and then add the controlled burn locations.
 
-``` {r plot-2019-wf}
+``` {r plot-2019-wf, fig.width=8, fig.height=4}
 
 plot(ndvi2019)
 
@@ -333,7 +333,7 @@ points(wf.SOAP$locationID_easting,
 
 ```
 
-``` {r plot-2019-all}
+``` {r plot-2019-all, fig.width=8, fig.height=4}
 
 plot(ndvi2019)
 
@@ -352,7 +352,7 @@ points(cb.SOAP$locationID_easting,
 
 We can utilize the `neonSiteMgmtEventData` package's `createSIMPolygon()` function to create a polygon around the point locations for each event. The input to `createSIMPolygon()` is the output of `geoNEON::getLocTOS()`.
 
-``` {r plot-2019-add polygons}
+``` {r plot-2019-add-polygons, fig.width=8, fig.height=4}
 
 # wildfire polygons
 wf.SOAP.df <- fire.loc |>
@@ -430,7 +430,7 @@ for(i in 2:length(tiles2021)) {
 
 ```
 
-``` {r plot-2021-all}
+``` {r plot-2021-all, fig.width=8, fig.height=4}
 
 plot(ndvi2021)
 

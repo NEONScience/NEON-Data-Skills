@@ -633,7 +633,7 @@ We can utilize the `neonSiteMgmtEventData` package's `createSIMPolygon()` functi
            lwd = 2.5,
            add = TRUE)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/site-management/rfigs/plot-2019-add polygons-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/site-management/rfigs/plot-2019-add-polygons-1.png)
 
 We can see the wildfire polygon (light pink) include the entire site boundary since the site code "SOAP" was one of listed locationIDs.  
 
