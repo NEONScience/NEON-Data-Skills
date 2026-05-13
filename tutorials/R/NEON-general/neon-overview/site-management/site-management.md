@@ -163,9 +163,9 @@ Let's take a closer look at `sim_eventData` which documents the external disturb
     ##                                    uid domainID siteID namedLocation locationID  startDate    endDate ongoingEvent
     ## 1 2a34be0f-2cb1-4938-8aed-105b6e8b2370      D17   TEAK          TEAK       TEAK 2017-05-01 2017-05-31            Y
     ## 2 49424b80-bdf1-41ed-9b18-5f34085d5d55      D17   TEAK          TEAK       TEAK 2017-05-31 2017-06-30            Y
-    ## 3 b28e62bd-76a1-4654-9e1a-8dfd04b611e7      D17   TEAK          TEAK       TEAK 2017-06-30 2017-07-30            Y
-    ## 4 07ae2dab-6622-47a2-9410-0bb4a7a6cff6      D17   TEAK          TEAK       TEAK 2017-07-30 2017-08-29            Y
-    ## 5 cba1abc5-e6b0-4cd4-b394-ce14f662d295      D17   TEAK          TEAK       TEAK 2017-08-29 2017-09-28            Y
+    ## 3 cba1abc5-e6b0-4cd4-b394-ce14f662d295      D17   TEAK          TEAK       TEAK 2017-08-29 2017-09-28            Y
+    ## 4 b28e62bd-76a1-4654-9e1a-8dfd04b611e7      D17   TEAK          TEAK       TEAK 2017-06-30 2017-07-30            Y
+    ## 5 07ae2dab-6622-47a2-9410-0bb4a7a6cff6      D17   TEAK          TEAK       TEAK 2017-07-30 2017-08-29            Y
     ## 6 07b58f3e-791a-4b13-82f6-36833d41620f      D17   TEAK          TEAK       TEAK 2017-09-28 2017-10-28            Y
     ##   estimatedOrActualDate dateRemarks               eventID samplingProtocolVersion eventType methodTypeChoice name
     ## 1                actual        <NA> TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing <NA>
@@ -191,9 +191,9 @@ Let's take a closer look at `sim_eventData` which documents the external disturb
     ##   recordedBy dataQF  publicationDate      release
     ## 1       <NA>   <NA> 20251204T234423Z RELEASE-2026
     ## 2       <NA>   <NA> 20251205T000821Z RELEASE-2026
-    ## 3       <NA>   <NA> 20251205T014918Z RELEASE-2026
-    ## 4       <NA>   <NA> 20251205T005407Z RELEASE-2026
-    ## 5       <NA>   <NA> 20251205T013836Z RELEASE-2026
+    ## 3       <NA>   <NA> 20251205T013836Z RELEASE-2026
+    ## 4       <NA>   <NA> 20251205T014918Z RELEASE-2026
+    ## 5       <NA>   <NA> 20251205T005407Z RELEASE-2026
     ## 6       <NA>   <NA> 20251205T015325Z RELEASE-2026
 
 Let's first check out the types of events recorded.
@@ -689,11 +689,11 @@ And now let's look at the same locations in 2021.
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/site-management/rfigs/plot-2021-all-1.png)
 
-We can see a large region where NDVI is substantially lower in 2021 than 2019, matching the region where the wildfire was reported. Note that there is some ambiguity in the region where the controlled burn was reported - it's inside the overall wildfire polygon, but those specific points weren't reported as burned by the wildfire. They are included because the site as a whole was reported.
+We can see a large region where NDVI is substantially lower in 2021 than 2019, matching the region where the wildfire was reported. Note there is some ambiguity in the region where the controlled burn was reported - it's inside the overall wildfire polygon, but those specific points weren't reported as burned by the wildfire. They are included because the site as a whole was reported.
 
 In addition, we only downloaded the 8 NDVI tiles overlapping the sampling locations that were reported as affected by the fire; the entire AOP footprint is much larger than this. As noted above, NEON field staff report events at locations they visit, but in this case the fire was much larger than the NEON sampling region. The implications of this depend on your analytical goals. If you are studying fire at a regional level, you may focus primarily on the AOP data, whereas if you are primarily interested in plant community responses, you may want to focus on plant presence and percent cover plots, and the status of those specific plots.
 
-If helpful for further analysis, we can export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFunction()`.
+If helpful for further analysis, we can export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFile()`.
 
 
     # export the wildfire polygons as kmls

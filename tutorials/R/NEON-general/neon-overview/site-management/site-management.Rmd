@@ -454,11 +454,11 @@ plot(sf::st_geometry(cb.SOAP.polygon.utm),
 
 ```
 
-We can see a large region where NDVI is substantially lower in 2021 than 2019, matching the region where the wildfire was reported. Note that there is some ambiguity in the region where the controlled burn was reported - it's inside the overall wildfire polygon, but those specific points weren't reported as burned by the wildfire. They are included because the site as a whole was reported.
+We can see a large region where NDVI is substantially lower in 2021 than 2019, matching the region where the wildfire was reported. Note there is some ambiguity in the region where the controlled burn was reported - it's inside the overall wildfire polygon, but those specific points weren't reported as burned by the wildfire. They are included because the site as a whole was reported.
 
 In addition, we only downloaded the 8 NDVI tiles overlapping the sampling locations that were reported as affected by the fire; the entire AOP footprint is much larger than this. As noted above, NEON field staff report events at locations they visit, but in this case the fire was much larger than the NEON sampling region. The implications of this depend on your analytical goals. If you are studying fire at a regional level, you may focus primarily on the AOP data, whereas if you are primarily interested in plant community responses, you may want to focus on plant presence and percent cover plots, and the status of those specific plots.
 
-If helpful for further analysis, we can export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFunction()`.
+If helpful for further analysis, we can export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFile()`.
 
 ``` {r export polygons, warnings= F}
 # export the wildfire polygons as kmls
