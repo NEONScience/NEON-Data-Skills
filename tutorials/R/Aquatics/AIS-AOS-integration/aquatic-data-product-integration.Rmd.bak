@@ -1,4 +1,4 @@
----
+﻿---
 syncID: 06b3c4df2b1d407fba6af95f813d1ff1
 title: "Linking NEON aquatic observational and instrument data to answer critical questions in aquatic ecology at the continental scale"	
 description: "Exercises highlighting NEON's Aquatic Instrumented Subsystem (AIS) and Aquatic Observational Subsystem (AOS) data products and integrating data products from the two subsystems to examine case studies in freshwater ecology."	
@@ -95,7 +95,7 @@ analysis.
 
 ```{r setup, include=FALSE}
 require(knitr)
-opts_chunk$set(message=FALSE, warning=FALSE)
+opts_chunk$set(message = FALSE, warning = FALSE)
 
 ```
 
@@ -127,7 +127,7 @@ library(htmltools)
 
 ```
 
-### Inputs: loadByProduct()
+### Inputs: loabByProduct()
 
 The inputs to `loadByProduct()` control which data to download and how 
 to manage the processing. The following are frequently used inputs: 
@@ -187,40 +187,40 @@ Now it's time to consider the NEON field site of interest. If not specified,
 the default will download a data product from all sites. The following are 
 4-letter site codes for NEON's 34 aquatics sites:
 
-* ARIK=Arikaree River CO        
-* BARC=Barco Lake FL          
-* BIGC=Upper Big Creek CA       
-* BLDE=Black Deer Creek WY      
-* BLUE=Blue River OK            
-* BLWA=Black Warrior River AL    
-* CARI=Caribou Creek AK         
-* COMO=Como Creek CO          
-* CRAM=Crampton Lake WI         
-* CUPE=Rio Cupeyes PR           
-* FLNT=Flint River GA           
-* GUIL=Rio Yahuecas PR      
-* HOPB=Lower Hop Brook MA       
-* KING=Kings Creek KS         
-* LECO=LeConte Creek TN         
-* LEWI=Lewis Run VA             
-* LIRO=Little Rock Lake WI      
-* MART=Martha Creek WA
-* MAYF=Mayfield Creek AL        
-* MCDI=McDiffett Creek KS    
-* MCRA=McRae Creek OR           
-* OKSR=Oksrukuyik Creek AK      
-* POSE=Posey Creek VA           
-* PRIN=Pringle Creek TX       
-* PRLA=Prairie Lake ND          
-* PRPO=Prairie Pothole ND     
-* REDB=Red Butte Creek UT       
-* SUGG=Suggs Lake FL            
-* SYCA=Sycamore Creek AZ        
-* TECR=Teakettle Creek CA        
-* TOMB=Lower Tombigbee River AL  
-* TOOK=Toolik Lake AK         
-* WALK=Walker Branch TN         
-* WLOU=West St Louis Creek CO
+* ARIK = Arikaree River CO        
+* BARC = Barco Lake FL          
+* BIGC = Upper Big Creek CA       
+* BLDE = Black Deer Creek WY      
+* BLUE = Blue River OK            
+* BLWA = Black Warrior River AL    
+* CARI = Caribou Creek AK         
+* COMO = Como Creek CO          
+* CRAM = Crampton Lake WI         
+* CUPE = Rio Cupeyes PR           
+* FLNT = Flint River GA           
+* GUIL = Rio Yahuecas PR      
+* HOPB = Lower Hop Brook MA       
+* KING = Kings Creek KS         
+* LECO = LeConte Creek TN         
+* LEWI = Lewis Run VA             
+* LIRO = Little Rock Lake WI      
+* MART = Martha Creek WA
+* MAYF = Mayfield Creek AL        
+* MCDI = McDiffett Creek KS    
+* MCRA = McRae Creek OR           
+* OKSR = Oksrukuyik Creek AK      
+* POSE = Posey Creek VA           
+* PRIN = Pringle Creek TX       
+* PRLA = Prairie Lake ND          
+* PRPO = Prairie Pothole ND     
+* REDB = Red Butte Creek UT       
+* SUGG = Suggs Lake FL            
+* SYCA = Sycamore Creek AZ        
+* TECR = Teakettle Creek CA        
+* TOMB = Lower Tombigbee River AL  
+* TOOK = Toolik Lake AK         
+* WALK = Walker Branch TN         
+* WLOU = West St Louis Creek CO
 
 With the exception of the case studies, each section of the tutorial can be run
 on any number of sites. Choose which sites you would like to explore by creating
@@ -252,7 +252,7 @@ endWY_query <- paste0(endWY, "-09")
 ```
 
 Now let us download our data. If you are not using a NEON token to download your 
-data, neonUtilities will ignore the `token` input. We set `check.size=F` so 
+data, neonUtilities will ignore the `token` input. We set `check.size = F` so 
 that the script runs well but remember you always want to check your download 
 size first. For this exercise, we will focus on the following data products:
 
@@ -268,15 +268,15 @@ size first. For this exercise, we will focus on the following data products:
 
 ```{r download-data-inv, results='hide'}
 # download data of interest - AOS - Macroinvertebrate collection
-inv <- loadByProduct(dpID="DP1.20120.001",
-                     site=siteList,
-                     startdate=startWY_query,
-                     enddate=endWY_query,
-                     package="expanded",
-                     release="current",
-                     include.provisional=T,
-                     token=Sys.getenv("NEON_TOKEN"),
-                     check.size=F)
+inv <- loadByProduct(dpID = "DP1.20120.001",
+                     site = siteList, 
+                     startdate = startWY_query,
+                     enddate = endWY_query,
+                     package = "basic",
+                     release = "current",
+                     include.provisional = T,
+                     token = Sys.getenv("NEON_TOKEN"),
+                     check.size = F)
 
 ```
 
@@ -294,11 +294,10 @@ names(inv)
 We can see that there are at least 9 objects in the downloaded macroinvertebrate 
 collection data.
 
-* 4 dataframes of data:
+* 3 dataframes of data:
   * `inv_fieldData`
   * `inv_persample`
   * `inv_taxonomyProcessed`
-  * `inv_taxonomyRaw`
 * 5 metadata files:
   * `categoricalCodes_20120`
   * `issueLog_20120`
@@ -308,7 +307,7 @@ collection data.
 * At least 1 data citation file:
   * Example files:
     * `citation_20120_PROVISIONAL`
-    * `citation_20120_RELEASE-2026`
+    * `citation_20120_RELEASE-2025`
 
 If you'd like you can use the `$` operator to assign an object from an item in 
 the list. If you prefer to extract each table from the list and work with it as 
@@ -316,7 +315,7 @@ independent objects, which we will do, you can use the `list2env()` function.
 
 ```{r unlist-inv}
 # unlist the variables and add to the global environment
-list2env(inv, envir=.GlobalEnv)
+list2env(inv, envir = .GlobalEnv)
 
 ```
 
@@ -373,14 +372,14 @@ view(inv_fieldData)
 ```{r download-data-csd, results='hide'}
 # download data of interest - AIS - Continuous discharge
 csd <- loadByProduct(dpID="DP4.00130.001",
-                     site=siteList, 
-                     startdate=startWY_query,
-                     enddate=endWY_query,
-                     package="basic",
-                     release= "current",
-                     include.provisional=T,
-                     token=Sys.getenv("NEON_TOKEN"),
-                     check.size=F)
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
 
 ```
 Let's see what files are included with an AIS data product download
@@ -437,11 +436,11 @@ cat("Primary keys in inv_fieldData are:",
       variables_20120$table=="inv_fieldData"
       &variables_20120$primaryKey=="Y"
     ],
-    collapse=", ")
+    collapse = ", ")
     )
 # identify duplicates in inv_fieldData
 inv_fieldData_dups <- removeDups(inv_fieldData,
-                                 variables_20120)
+                                         variables_20120)
 cat("There are",
     sum(inv_fieldData_dups$duplicateRecordQF%in%c(1, 2)),
     "duplicate records in 'inv_fieldData'")
@@ -452,11 +451,11 @@ cat("Primary keys in inv_persample are:",
       variables_20120$table=="inv_persample"
       &variables_20120$primaryKey=="Y"
     ],
-    collapse=", ")
+    collapse = ", ")
     )
 # identify duplicates in inv_persample
 inv_persample_dups <- removeDups(inv_persample,
-                                 variables_20120)
+                                         variables_20120)
 cat("There are",
     sum(inv_persample_dups$duplicateRecordQF%in%c(1, 2)),
     "duplicate records in 'inv_persample'")
@@ -467,11 +466,16 @@ cat("Primary keys in inv_taxonomyProcessed are:",
       variables_20120$table=="inv_taxonomyProcessed"
       &variables_20120$primaryKey=="Y"
     ],
-    collapse=", ")
+    collapse = ", ")
     )
 # identify duplicates in inv_taxonomyProcessed
+variables_20120_dupCheck <- variables_20120%>%
+  filter(!(table=="inv_taxonomyProcessed"
+           &fieldName%in%c("vialID", "vialCode", "slideID", "slideCode",
+                           "referenceCollection", "referenceCount",
+                           "referenceID", "referenceCode")))
 inv_taxonomyProcessed_dups <- removeDups(inv_taxonomyProcessed,
-                                         variables_20120)
+                                                 variables_20120_dupCheck)
 cat("There are",
     sum(inv_fieldData_dups$duplicateRecordQF%in%c(1, 2)),
     "duplicate records in 'inv_taxonomyProcessed'")
@@ -538,21 +542,21 @@ For this exercise, we split abundance and richness by `habitatType`. To split
 instead by `samplerType`, simply do a find+replace of 
 'habitatType' -> 'samplerType' throughout the code.
 
-```{r sampler-habitat type}
-# Show breakdown of sampler type by habitat type at each site
+```{r aos-plot}
+### SHOW BREAKDOWN OF SAMPLER TYPE BY HABITAT TYPE AT EACH SITE ###
+
 sampler_habitat_summ <- inv_fieldTaxJoined%>%
-  distinct(siteID, samplerType, habitatType)
+  distinct(siteID, habitatType)
 sampler_habitat_summ  
-```
 
-Let's wrangle invertebrate data and calculate abundance per square meter.
+### PLOT ABUNDANCE ###
 
-```{r inv abundance wrangle}
 # using the `tidyverse` collection, we can clean the data in one piped function
 inv_abundance_summ <- inv_fieldTaxJoined%>%
   # remove events when no samples were collected (samplingImpractical)
   # remove samples not associated with a bout
-  filter(is.na(samplingImpractical)&!grepl("GRAB|BRYOZOAN", sampleID))%>%
+  filter(is.na(samplingImpractical)
+                &!grepl("GRAB|BRYOZOAN", sampleID))%>%
   
   # calculate abundance (individuals per m2^)
   mutate(abun_M2=estimatedTotalCount/benthicArea)%>%
@@ -562,66 +566,58 @@ inv_abundance_summ <- inv_fieldTaxJoined%>%
   
   # first, group including `sampleID` and calculate total abundance per sample
   group_by(siteID, collectDate, eventID, sampleID, habitatType, boutNumber)%>%
-  summarize(abun_M2_sum=sum(abun_M2, na.rm=TRUE))%>%
+  summarize(abun_M2_sum = sum(abun_M2, na.rm = TRUE))%>%
   
   # second, group excluding `sampleID` to summarize by each bout (`eventID`)
   group_by(siteID, collectDate, eventID, habitatType, boutNumber)%>%
   
   # summarize to get mean (+/- se) abundance by bout and sampler type
-  summarise(across(abun_M2_sum,
-                   list(mean=mean, sd=sd,
-                        se=~sd(.x, na.rm=TRUE)/sqrt(n())),
-                   .names="{.col}_{.fn}"))%>%
+  summarise(across(abun_M2_sum, 
+                          list(mean = mean, sd = sd, 
+                               se = ~sd(.x, na.rm = TRUE)/sqrt(n())),
+                          .names = "{.col}_{.fn}"))%>%
   
   # get categorical variable to sort bouts chronologically
   mutate(year=substr(eventID, 6, 9),
-         yearBout=paste(year, "Bout", boutNumber, sep="."))
+                yearBout=paste(year, "Bout", boutNumber, sep = "."))
 
-```
-
-Plot abundance per square meter split by site, bout, and habitat type.
-
-```{r inv abundance plot}
 # produce stacked plot to show trends within and across sites
 inv_abundance_summ%>%
-  ggplot(aes(fill=habitatType, color=habitatType,
-             y=abun_M2_sum_mean, x=yearBout))+
+  ggplot(aes(fill=habitatType, color=habitatType, y=abun_M2_sum_mean, x=yearBout))+
   geom_point(position=position_dodge(0.5), size=2)+
   geom_errorbar(aes(ymin=abun_M2_sum_mean-abun_M2_sum_se, 
-                    ymax=abun_M2_sum_mean+abun_M2_sum_se), 
-                width=0.4, alpha=3.0, linewidth=1,
-                position=position_dodge(0.5))+
-  facet_wrap(~siteID, ncol=1, scales="free_y")+
-  theme(axis.text.x=element_text(size=10, angle=30, hjust=1, vjust=1))+
-  labs(title="Mean macroinvertebrates per square meter",
-       y="Abundance Per Square Meter",
-       x="Bout")
+                             ymax=abun_M2_sum_mean+abun_M2_sum_se), 
+                         width=0.4, alpha=3.0, linewidth=1,
+                         position = position_dodge(0.5))+
+  facet_wrap(~siteID, ncol = 1, scales="free_y")+
+  theme(axis.text.x = element_text(size = 10, angle = 30, 
+                                            hjust = 1, vjust = 1))+
+  labs(title = "Mean macroinvertebrates per square meter",
+                y = "Abundance Per Square Meter",
+                x = "Bout")
 
-```
+### PLOT RICHNESS ###
 
-Now, let's wrangle the data in a different way to prepare for diversity analysis
-using the `vegan` package.
-
-```{r inv richness wrangle}
 inv_richness_clean <- inv_fieldTaxJoined%>%
   # remove events when no samples were collected (samplingImpractical)
   # remove samples not associated with a bout
-  filter(is.na(samplingImpractical)&!grepl("GRAB|BRYOZOAN", sampleID))%>%
+  filter(is.na(samplingImpractical)
+                &!grepl("GRAB|BRYOZOAN", sampleID))%>%
   # clean `collectDate` column header
   rename(collectDate=collectDate.x)
 
 # extract sample metadata
 inv_sample_info <- inv_richness_clean%>%
   select(sampleID, domainID, siteID, namedLocation, 
-         collectDate, eventID, boutNumber, 
-         habitatType, samplerType, benthicArea)%>%
+                collectDate, eventID, boutNumber, 
+                habitatType, samplerType, benthicArea)%>%
   distinct()
 
 # filter out rare taxa: only observed 1 (singleton) or 2 (doubleton) times
 inv_rare_taxa <- inv_richness_clean%>%
   distinct(sampleID, acceptedTaxonID, scientificName)%>%
   group_by(scientificName)%>%
-  summarize(occurrences=n())%>%
+  summarize(occurrences = n())%>%
   filter(occurrences > 2)
 
 # filter richness table based on taxon list excluding singletons and doubletons
@@ -631,19 +627,19 @@ inv_richness_clean <- inv_richness_clean %>%
 # create a matrix of taxa by sampleID
 inv_richness_clean_wide <- inv_richness_clean %>%
   # subset to unique combinations of `sampleID` and `scientificName`
-  distinct(sampleID, scientificName, .keep_all=T)%>%
+  distinct(sampleID, scientificName, .keep_all = T)%>%
   
   # remove any records with no abundance data
   mutate(abun_M2=estimatedTotalCount/benthicArea)%>%
   filter(!is.na(abun_M2))%>%
   
   # pivot to wide format, sum multiple counts per sampleID
-  pivot_wider(id_cols=sampleID, 
-              names_from=scientificName,
-              values_from=abun_M2,
-              values_fill=list(abun_M2=0),
-              values_fn=list(abun_M2=sum)) %>%
-  column_to_rownames(var="sampleID") %>%
+  pivot_wider(id_cols = sampleID, 
+                     names_from = scientificName,
+                     values_from = abun_M2,
+                     values_fill = list(abun_M2 = 0),
+                     values_fn = list(abun_M2 = sum)) %>%
+  column_to_rownames(var = "sampleID") %>%
   
   #round to integer so that vegan functions will run
   round()
@@ -657,11 +653,8 @@ if(rowSums(inv_richness_clean_wide) %>% min()==0){
   stop("Row sum is 0: do not proceed with richness analysis!")
 }
 
-```
+# use the `vegan` package to calculate diversity indices
 
-Use the `vegan` package to calculate diversity indices.
-
-```{r inv richness calculate}
 # calculate richness
 inv_richness <- as.data.frame(
   specnumber(inv_richness_clean_wide)
@@ -672,63 +665,59 @@ inv_richness_stats <- estimateR(inv_richness_clean_wide)
 
 # calculate evenness
 inv_evenness <- as.data.frame(
-  diversity(inv_richness_clean_wide)/log(specnumber(inv_richness_clean_wide))
+  diversity(inv_richness_clean_wide)/
+    log(specnumber(inv_richness_clean_wide))
   )
 names(inv_evenness) <- "evenness"
 
 # calculate shannon index
 inv_shannon <- as.data.frame(
-  diversity(inv_richness_clean_wide, index="shannon")
+  diversity(inv_richness_clean_wide, index = "shannon")
   )
 names(inv_shannon) <- "shannon"
 
 # calculate simpson index
 inv_simpson <- as.data.frame(
-  diversity(inv_richness_clean_wide, index="simpson")
+  diversity(inv_richness_clean_wide, index = "simpson")
   )
 names(inv_simpson) <- "simpson"
 
 # create a single data frame
-inv_diversity_indices <- cbind(inv_richness, 
-                               inv_evenness, 
-                               inv_shannon, 
-                               inv_simpson)
+inv_diversity_indices <- cbind(inv_richness, inv_evenness, inv_shannon, inv_simpson)
 
 # bring in the metadata table created earlier
-inv_diversity_indices <- left_join(rownames_to_column(inv_diversity_indices),
-                                   inv_sample_info,
-                                   by=c("rowname"="sampleID")) %>%
-  rename(sampleID=rowname)
+inv_diversity_indices <- left_join(
+  rownames_to_column(inv_diversity_indices),
+  inv_sample_info,
+  by = c("rowname" = "sampleID")) %>%
+  rename(sampleID = rowname)
 
 # create summary table for plotting
 inv_diversity_summ <- inv_diversity_indices%>%
   pivot_longer(c(richness, evenness, shannon, simpson),
-               names_to="indexName",values_to="indexValue")%>%
+                      names_to = "indexName",
+                      values_to = "indexValue")%>%
   group_by(siteID, collectDate, eventID, habitatType, boutNumber, indexName)%>%
-  summarize(mean=mean(indexValue),
-            n=n(),
-            sd=sd(indexValue),
-            se=sd/sqrt(n))%>%
+  summarize(mean = mean(indexValue),
+                   n=n(),
+                   sd = sd(indexValue),
+                   se=sd/sqrt(n))%>%
   mutate(year=substr(eventID, 6, 9),
-         yearBout=paste(year, "Bout", boutNumber, sep="."))
-```
+                yearBout=paste(year, "Bout", boutNumber, sep = "."))
 
-Plot taxon richness split by site, bout, and habitat type.
-
-```{r inv richness plot}
 # produce plot to show trends within and across sites
 inv_diversity_summ%>%
   filter(indexName=="richness")%>%
   ggplot(aes(fill=habitatType, color=habitatType, y=mean, x=yearBout))+
   geom_point(position=position_dodge(0.5), size=2)+
-  geom_errorbar(aes(ymin=mean-se, ymax=mean+se),
-                width=0.4, alpha=3.0, linewidth=1,
-                position=position_dodge(0.5))+
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), 
+                         width=0.4, alpha=3.0, linewidth=1,
+                         position = position_dodge(0.5))+
   facet_wrap(~siteID, ncol=1)+
-  theme(axis.text.x=element_text(size=10, angle=30, 
-                                 hjust=1, vjust=1))+
+  theme(axis.text.x = element_text(size = 10, angle = 30, 
+                                            hjust = 1, vjust = 1))+
   labs(title="Mean number of macroinvertebrate taxa per bout",
-       y= "Taxon Richness", x="Bout")
+       y= "Taxon Richness", x = "Bout")
 
 ```
 
@@ -742,18 +731,18 @@ for the two NEON D04 sites.
 csd_15_min%>%
   ggplot(aes(x=startDateTime, y=dischargeContinuous))+
   geom_line()+
-  facet_wrap(~siteID, ncol=1, scales="free_y")+
+  facet_wrap(~siteID, ncol = 1, scales = "free_y")+
   labs(title="Continuous Discharge for Water Years 2022-2024",
-       y= "Discharge (L/s)", x="Date")
+       y= "Discharge (L/s)", x = "Date")
 
 # Plot with discharge in log scale
 csd_15_min%>%
   ggplot(aes(x=startDateTime, y=dischargeContinuous))+
   geom_line()+
-  facet_wrap(~siteID, ncol=1, scales="free_y")+
+  facet_wrap(~siteID, ncol = 1, scales = "free_y")+
   scale_y_log10()+
   labs(title="Continuous Discharge for Water Years 2022-2024",
-       y= "Discharge (L/s)", x="Date")
+       y= "Discharge (L/s)", x = "Date")
 
 ```
 
@@ -782,36 +771,36 @@ for(s in 1:length(siteList)){
     plot_ly()%>%
     # add trace for continuous discharge
     add_trace(x=~startDateTime, y=~dischargeContinuous,
-              type="scatter", mode="line",
-              line=list(color='darkgray'),
-              name="Discharge")%>%
+                      type="scatter", mode="line",
+                      line=list(color = 'darkgray'),
+                      name="Discharge")%>%
     # add trace for Abun
     add_trace(data=inv_abundance_summ%>%
-                filter(siteID==siteList[s]),
-              x=~collectDate, y=~abun_M2_sum_mean,
-              linetype=~paste0("Abun: ", habitatType),
-              yaxis="y2", type="scatter", mode="line",
-              error_y=~list(array=abun_M2_sum_se,
-                            color='darkorange'),
-              marker=list(color="darkorange"),
-              line=list(color="darkorange"),
-              visible="legendonly")%>%
+                        filter(siteID==siteList[s]),
+                      x=~collectDate, y=~abun_M2_sum_mean,
+                      linetype=~paste0("Abun: ", habitatType),
+                      yaxis="y2", type="scatter", mode="line",
+                      error_y=~list(array=abun_M2_sum_se,
+                                    color='darkorange'),
+                      marker=list(color="darkorange"),
+                      line=list(color="darkorange"),
+                      visible="legendonly")%>%
     # add trace for Rich
     add_trace(data=inv_diversity_summ%>%
-                filter(siteID==siteList[s]
-                              &indexName=="richness"),
-              x=~collectDate, y=~mean,
-              linetype=~paste0("Rich: ", habitatType),
-              yaxis="y3", type="scatter", mode="line",
-              error_y=~list(array=se,
-                            color='darkgreen'),
-              marker=list(color="darkgreen"),
-              line=list(color="darkgreen"),
-              visible="legendonly")%>%
+                        filter(siteID==siteList[s]
+                                      &indexName=="richness"),
+                      x=~collectDate, y=~mean,
+                      linetype=~paste0("Rich: ", habitatType),
+                      yaxis="y3", type="scatter", mode="line",
+                      error_y=~list(array=se,
+                                    color='darkgreen'),
+                      marker=list(color="darkgreen"),
+                      line=list(color="darkgreen"),
+                      visible="legendonly")%>%
     # define the layout of the plot
     layout(
-      title=paste0(siteList[s],
-                  " Discharge w/ Macroinvertebrate Abundance & Richness"),
+      title = paste0(siteList[s],
+                     " Discharge w/ Macroinvertebrate Abundance & Richness"),
       # format x-axis
       xaxis=list(title="dateTime",
                  automargin=TRUE,
@@ -831,8 +820,8 @@ for(s in 1:length(siteList)){
         showgrid=FALSE,
         automargin=TRUE,
         zeroline=FALSE,
-        tickfont=list(color='darkorange'),
-        titlefont=list(color='darkorange')),
+        tickfont=list(color = 'darkorange'),
+        titlefont=list(color = 'darkorange')),
       # format third y-axis
       yaxis3=list(
         side='right',
@@ -842,13 +831,13 @@ for(s in 1:length(siteList)){
         showgrid=FALSE,
         zeroline=FALSE,
         automargin=TRUE,
-        tickfont=list(color='darkgreen'),
-        titlefont=list(color='darkgreen'),
+        tickfont=list(color = 'darkgreen'),
+        titlefont=list(color = 'darkgreen'),
         position=0.99),
       # format legend
-      legend=list(xanchor='center',
-                  yanchor='top',
-                  orientation='h',
+      legend=list(xanchor = 'center',
+                  yanchor = 'top',
+                  orientation = 'h',
                   x=0.5, y=-0.2),
       # add button to switch discharge between linear and log
       updatemenus=list(
@@ -942,17 +931,17 @@ First, download AOS data, run the duplicate check, and plot the data.
 ```{r download-swc, results='hide'}
 # download data of interest - AOS - Chemical properties of surface water
 swc <- loadByProduct(dpID="DP1.20093.001",
-                     site=siteList, 
-                     startdate=startWY_query,
-                     enddate=endWY_query,
-                     package="basic",
-                     release= "current",
-                     include.provisional=T,
-                     token=Sys.getenv("NEON_TOKEN"),
-                     check.size=F)
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
 
 # unlist the variables and add to the global environment
-list2env(swc, envir=.GlobalEnv)
+list2env(swc, envir = .GlobalEnv)
 
 ```
 
@@ -968,12 +957,13 @@ cat("Primary keys in swc_externalLabDataByAnalyte are:",
       variables_20093$table=="swc_externalLabDataByAnalyte"
       &variables_20093$primaryKey=="Y"
     ],
-    collapse=", ")
+    collapse = ", ")
     )
 
 # identify duplicates in swc_externalLabDataByAnalyte
-swc_externalLabDataByAnalyte_dups <- removeDups(swc_externalLabDataByAnalyte,
-                                                variables_20093)
+swc_externalLabDataByAnalyte_dups <- removeDups(
+  swc_externalLabDataByAnalyte,
+  variables_20093)
 
 # no duplicates, great!
 
@@ -989,9 +979,9 @@ DOC <- swc_externalLabDataByAnalyte%>%
 DOC_plot <- DOC%>%
   ggplot(aes(x=collectDate, y=analyteConcentration))+
   geom_point()+
-  labs(title="Dissolved organic carbon (DOC) over time",
-       y="DOC (mg/L)",
-       x="Date")
+  labs(title = "Dissolved organic carbon (DOC) over time",
+                y = "DOC (mg/L)",
+                x = "Date")
 
 DOC_plot
 
@@ -1003,17 +993,17 @@ the data for analysis, and plot the data.
 ```{r download-waq, results='hide'}
 # download data of interest - AIS - Water quality
 waq <- loadByProduct(dpID="DP1.20288.001",
-                     site=siteList, 
-                     startdate=startWY_query,
-                     enddate=endWY_query,
-                     package="basic",
-                     release= "current",
-                     include.provisional=T,
-                     token=Sys.getenv("NEON_TOKEN"),
-                     check.size=F)
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
 
 # unlist the variables and add to the global environment
-list2env(waq, envir=.GlobalEnv)
+list2env(waq, envir = .GlobalEnv)
 
 ```
 
@@ -1027,7 +1017,7 @@ specific conductance, pH, chlorophyll, and turbidity."
 # including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity
 
 # according to the NEON AIS spatial design, fDOM is only measured at the 
-# downstream sensor set (S2, HOR=102); subset to HOR 102
+# downstream sensor set (S2, HOR = 102); subset to HOR 102
 WAQ_102 <- waq_instantaneous%>%
   filter(horizontalPosition==102)
 
@@ -1050,9 +1040,9 @@ fDOM_15min <- WAQ_102%>%
 fDOM_plot <- fDOM_15min%>%
   ggplot(aes(x=roundDate, y=mean_fDOM))+
   geom_line()+
-  labs(title="fluorescent dissolved organic matter (fDOM) over time",
-       y="fDOM (QSU)",
-       x="Date")
+  labs(title = "fluorescent dissolved organic matter (fDOM) over time",
+                y = "fDOM (QSU)",
+                x = "Date")
 
 fDOM_plot
 
@@ -1086,9 +1076,9 @@ fDOM_DOC_plot <- fDOM_DOC_join%>%
   geom_point()+
   geom_smooth(method="lm", se=T)+
   scale_x_continuous(limits=c(0, 60))+
-  labs(title="AOS-DOC vs. AIS-fDOM",
-       y="DOC (mg/L)",
-       x="fDOM (QSU)")
+  labs(title = "AOS-DOC vs. AIS-fDOM",
+                y = "DOC (mg/L)",
+                x = "fDOM (QSU)")
 
 fDOM_DOC_plot
 
@@ -1101,11 +1091,11 @@ between AOS-DOC and AIS-fDOM, Let's model DOC vs. fDOM from 2021-10-01 to
 ```{r model-doc}
 # predict continuous doc based on the linear regression model coefficients
 fDOM_DOC_join$fit <- predict(model,
-                             newdata=fDOM_DOC_join,
-                             interval="confidence")[, "fit"]
+                             newdata = fDOM_DOC_join,
+                             interval = "confidence")[, "fit"]
 
 # add two more columns with predicted 95% CI uncertainty around the modeled DOC
-conf_int <- predict(model, newdata=fDOM_DOC_join, interval="confidence")
+conf_int <- predict(model, newdata = fDOM_DOC_join, interval = "confidence")
 fDOM_DOC_join$lwr <- conf_int[, "lwr"]
 fDOM_DOC_join$upr <- conf_int[, "upr"]
 
@@ -1122,31 +1112,31 @@ fDOM_DOC_plot <- plot_ly(data=fDOM_DOC_join)%>%
   
   # plot uncertainty as a ribbon
   add_trace(x=~roundDate, y=~upr, name="95% CI",
-            type='scatter', mode='line',
-            line=list(color='lightgray'), legendgroup="95CI",
-            showlegend=F)%>%
+                    type='scatter', mode='line',
+                    line=list(color='lightgray'), legendgroup="95CI",
+                    showlegend=F)%>%
   add_trace(x=~roundDate, y=~lwr, name="95% CI",
-            type='scatter', mode='none', fill='tonexty',
-            fillcolor='lightgray', legendgroup="95CI")%>%
+                    type='scatter', mode='none', fill = 'tonexty',
+                    fillcolor = 'lightgray', legendgroup="95CI")%>%
   
   # plot modeled DOC timeseries
   add_trace(x=~roundDate, y=~fit, name="Modeled DOC",
-            type='scatter', mode='line',
-            line=list(color='blue'))%>%
+                    type='scatter', mode='line',
+                    line=list(color='blue'))%>%
   
   # plot grab sample DOC
   add_trace(x=~roundDate, y=~analyteConcentration, name="Grab Sample DOC",
-            type='scatter', mode='markers',
-            marker=list(color='darkorange'))%>%
+                    type='scatter', mode='markers',
+                    marker=list(color='darkorange'))%>%
   
   # format title, axes, and legend
   layout(title="Dissolved Organic Carbon: Modelled & Grab Sample",
-         xaxis=list(title="Date"),
-         yaxis=list(title="DOC (mg/L)"),
-         legend=list(xanchor='center',
-                     yanchor='top',
-                     orientation='h',
-                     x=0.5, y=-0.2))
+                 xaxis=list(title="Date"),
+                 yaxis=list(title="DOC (mg/L)"),
+                 legend=list(xanchor = 'center',
+                             yanchor = 'top',
+                             orientation = 'h',
+                             x=0.5, y=-0.2))
 
 # Save HTML plot to local documents folder
 saveWidget(as_widget(fDOM_DOC_plot), paste0("~/", siteList, "_fDOM_DOC_model.html"))
@@ -1232,13 +1222,13 @@ fionaDate <- "2022-09-19"
 AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE%>%
   # add dashed vertical line to plot created in previous exercise
   add_segments(x=as.POSIXct(fionaDate, tz="UTC"),
-               xend=as.POSIXct(fionaDate, tz="UTC"),
-               y=0,
-               yend=max(csd_15_min$dischargeContinuous[
-                 csd_15_min$siteID=="CUPE"],
-                 na.rm=T),
-               name="Fiona",
-               line=list(color='red', dash='dash'))
+                       xend=as.POSIXct(fionaDate, tz="UTC"),
+                       y=0,
+                       yend=max(csd_15_min$dischargeContinuous[
+                         csd_15_min$siteID=="CUPE"],
+                         na.rm = T),
+                       name="Fiona",
+                       line=list(color='red', dash='dash'))
 # Save HTML plot to local documents folder
 saveWidget(as_widget(AOS_AIS_plot_CUPE_Fiona), "~/CUPE_INV_CSD_Fiona.html")
 
@@ -1246,13 +1236,13 @@ saveWidget(as_widget(AOS_AIS_plot_CUPE_Fiona), "~/CUPE_INV_CSD_Fiona.html")
 AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
   # add dashed vertical line to plot created in previous exercise
   add_segments(x=as.POSIXct(fionaDate, tz="UTC"),
-               xend=as.POSIXct(fionaDate, tz="UTC"),
-               y=0,
-               yend=max(csd_15_min$dischargeContinuous[
-                 csd_15_min$siteID=="GUIL"],
-                 na.rm=T),
-               name="Fiona",
-               line=list(color='red', dash='dash'))
+                       xend=as.POSIXct(fionaDate, tz="UTC"),
+                       y=0,
+                       yend=max(csd_15_min$dischargeContinuous[
+                         csd_15_min$siteID=="GUIL"],
+                         na.rm = T),
+                       name="Fiona",
+                       line=list(color='red', dash='dash'))
 # Save HTML plot to local documents folder
 saveWidget(as_widget(AOS_AIS_plot_GUIL_Fiona), "~/GUIL_INV_CSD_Fiona.html")
 
@@ -1265,17 +1255,17 @@ from the Stream morphology maps data product into R.
 # download data of interest - AOS - Stream morphology maps
 # the expanded download package is needed to read in the geo_pebbleCount table
 geo <- loadByProduct(dpID="DP4.00131.001",
-                     site=siteList, 
-                     startdate=startWY_query,
-                     enddate=endWY_query,
-                     package="expanded",
-                     release= "current",
-                     include.provisional=T,
-                     token=Sys.getenv("NEON_TOKEN"),
-                     check.size=F)
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="expanded",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
 
 # unlist the variables and add to the global environment
-list2env(geo, envir=.GlobalEnv)
+list2env(geo, envir = .GlobalEnv)
 
 ```
 
@@ -1296,10 +1286,11 @@ cat("Primary keys in geo_pebbleCount are:",
       variables_00131$table=="geo_pebbleCount"
       &variables_00131$primaryKey=="Y"
     ],
-    collapse=", ")
+    collapse = ", ")
     )
 # identify duplicates in geo_pebbleCount
-geo_pebbleCount_dups <- removeDups(geo_pebbleCount,variables_00131)
+geo_pebbleCount_dups <- removeDups(geo_pebbleCount,
+                                           variables_00131)
 ```
 
 There are no duplicates! Let's proceed.
@@ -1393,10 +1384,10 @@ geo_pebbleCount_freqCumm <- geo_pebbleCount_freqCumm%>%
 
 # create cumulative frequency curve plot using `geom_smooth`
 geo_pebbleCount_freqCumm%>%
-  ggplot(aes(x=pebbleSize_num, y=CumulativeFreq, color=year)) +
-  geom_smooth(method="loess", se=T, linewidth=0.75) +
+  ggplot(aes(x = pebbleSize_num, y = CumulativeFreq, color = year)) +
+  geom_smooth(method = "loess", se = T, linewidth = 0.75) +
   labs(title="Cumulative Particle Size Distribution by Year",
-       x="Particle Size (mm)", y="Cumulative Frequency (%)") +
+       x = "Particle Size (mm)", y = "Cumulative Frequency (%)") +
   facet_wrap(~siteID)
 
 ```
@@ -1414,16 +1405,16 @@ for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
     currPlot <- geo_pebbleCount_freqCumm%>%
       filter(siteID==currSite
                     &year==currYear)%>%
-      ggplot(aes(x=pebbleSize_num, y=CumulativeFreq)) +
-      geom_smooth(method="loess", se=T, linewidth=0.75) +
-      labs(x=NULL, y=NULL)+
+      ggplot(aes(x = pebbleSize_num, y = CumulativeFreq)) +
+      geom_smooth(method = "loess", se = T, linewidth = 0.75) +
+      labs(x = NULL, y = NULL)+
       scale_y_continuous(limits=c(0, 105))+
       scale_x_continuous(limits=c(0, 260))+
       theme_bw()+
       theme(text=element_text(size=18))
     ggsave(plot=currPlot,
                     filename=paste0("~/images/psd_", currSite, currYear, ".png"),
-                    width=4, height=7, units="cm")
+                    width = 4, height = 7, units = "cm")
   }
 }
 
@@ -1432,22 +1423,22 @@ AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE_Fiona%>%
   layout(images=list(
     # show the CUPE 2022 pebble count survey, conducted 2022-04
     list(source=dataURI(file="~/images/psd_CUPE2022.png"),
-         x=0.05, y=0.7, 
-         sizex=0.25, sizey=0.25,
-         xref="paper", yref="paper", 
-         xanchor="left", yanchor="bottom"),
+         x = 0.05, y = 0.7, 
+         sizex = 0.25, sizey = 0.25,
+         xref = "paper", yref = "paper", 
+         xanchor = "left", yanchor = "bottom"),
     # show the CUPE 2023 pebble count survey, conducted 2022-05
     list(source=dataURI(file="~/images/psd_CUPE2023.png"),
-         x=0.4, y=0.7, 
-         sizex=0.25, sizey=0.25,
-         xref="paper", yref="paper", 
-         xanchor="left", yanchor="bottom"),
+         x = 0.4, y = 0.7, 
+         sizex = 0.25, sizey = 0.25,
+         xref = "paper", yref = "paper", 
+         xanchor = "left", yanchor = "bottom"),
     # show the CUPE 2024 pebble count survey, conducted 2022-05
     list(source=dataURI(file="~/images/psd_CUPE2024.png"),
-         x=0.7, y=0.7, 
-         sizex=0.25, sizey=0.25,
-         xref="paper", yref="paper", 
-         xanchor="left", yanchor="bottom")
+         x = 0.7, y = 0.7, 
+         sizex = 0.25, sizey = 0.25,
+         xref = "paper", yref = "paper", 
+         xanchor = "left", yanchor = "bottom")
     
     ))
 # Save HTML plot to local documents folder
@@ -1458,22 +1449,22 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL_Fiona%>%
   layout(images=list(
     # show the GUIL 2022 pebble count survey, conducted 2022-04
       list(source=dataURI(file="~/images/psd_GUIL2022.png"),
-         x=0.05, y=0.7, 
-         sizex=0.25, sizey=0.25,
-         xref="paper", yref="paper", 
-         xanchor="left", yanchor="bottom"),
+         x = 0.05, y = 0.7, 
+         sizex = 0.25, sizey = 0.25,
+         xref = "paper", yref = "paper", 
+         xanchor = "left", yanchor = "bottom"),
     # show the GUIL 2023 pebble count survey, conducted 2023-03
     list(source=dataURI(file="~/images/psd_GUIL2023.png"),
-         x=0.35, y=0.7, 
-         sizex=0.25, sizey=0.25,
-         xref="paper", yref="paper", 
-         xanchor="left", yanchor="bottom"),
+         x = 0.35, y = 0.7, 
+         sizex = 0.25, sizey = 0.25,
+         xref = "paper", yref = "paper", 
+         xanchor = "left", yanchor = "bottom"),
     # show the GUIL 2024 pebble count survey, conducted 2024-07
     list(source=dataURI(file="~/images/psd_GUIL2024.png"),
-         x=0.75, y=0.7, 
-         sizex=0.25, sizey=0.25,
-         xref="paper", yref="paper", 
-         xanchor="left", yanchor="bottom")
+         x = 0.75, y = 0.7, 
+         sizex = 0.25, sizey = 0.25,
+         xref = "paper", yref = "paper", 
+         xanchor = "left", yanchor = "bottom")
     
     ))
 # Save HTML plot to local documents folder
@@ -1522,115 +1513,180 @@ exploration code with the following variables set:
 * `endWY <- 2025`
 
 ```{r case study 3 inputs, include=FALSE}
-# Run code in the background that repeats intro to AOS and AIS for case study
 siteList <- c("KING", "ARIK", "SYCA")
 startWY <- 2022
 endWY <- 2025
 startWY_query <- paste0(startWY-1, "-10")
 endWY_query <- paste0(endWY, "-09")
+# download data of interest - AOS - Macroinvertebrate collection
 inv <- loadByProduct(dpID="DP1.20120.001",
-                     site=siteList, 
-                     startdate=startWY_query,
-                     enddate=endWY_query,
-                     package="basic",
-                     release= "current",
-                     include.provisional=T,
-                     token=Sys.getenv("NEON_TOKEN"),
-                     check.size=F)
-list2env(inv, envir=.GlobalEnv)
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
+list2env(inv, envir = .GlobalEnv)
+# join inv_fieldData and inv_taxonomyProcessed
 inv_fieldTaxJoined <- joinTableNEON(inv_fieldData, inv_taxonomyProcessed)
+### SHOW BREAKDOWN OF SAMPLER TYPE BY HABITAT TYPE AT EACH SITE ###
+
 sampler_habitat_summ <- inv_fieldTaxJoined%>%
   distinct(siteID, habitatType)
 sampler_habitat_summ  
+
+### PLOT ABUNDANCE ###
+
+# using the `tidyverse` collection, we can clean the data in one piped function
 inv_abundance_summ <- inv_fieldTaxJoined%>%
-  filter(is.na(samplingImpractical)&!grepl("GRAB|BRYOZOAN", sampleID))%>%
+  # remove events when no samples were collected (samplingImpractical)
+  # remove samples not associated with a bout
+  filter(is.na(samplingImpractical)
+                &!grepl("GRAB|BRYOZOAN", sampleID))%>%
+  
+  # calculate abundance (individuals per m2^)
   mutate(abun_M2=estimatedTotalCount/benthicArea)%>%
+  
+  # clean `collectDate` column header
   rename(collectDate=collectDate.x)%>%
+  
+  # first, group including `sampleID` and calculate total abundance per sample
   group_by(siteID, collectDate, eventID, sampleID, habitatType, boutNumber)%>%
-  summarize(abun_M2_sum=sum(abun_M2, na.rm=TRUE))%>%
+  summarize(abun_M2_sum = sum(abun_M2, na.rm = TRUE))%>%
+  
+  # second, group excluding `sampleID` to summarize by each bout (`eventID`)
   group_by(siteID, collectDate, eventID, habitatType, boutNumber)%>%
+  
+  # summarize to get mean (+/- se) abundance by bout and sampler type
   summarise(across(abun_M2_sum, 
-                   list(mean=mean, sd=sd, 
-                        se=~sd(.x, na.rm=TRUE)/sqrt(n())),
-                   .names="{.col}_{.fn}"))%>%
+                          list(mean = mean, sd = sd, 
+                               se = ~sd(.x, na.rm = TRUE)/sqrt(n())),
+                          .names = "{.col}_{.fn}"))%>%
+  
+  # get categorical variable to sort bouts chronologically
   mutate(year=substr(eventID, 6, 9),
-                yearBout=paste(year, "Bout", boutNumber, sep="."))
+                yearBout=paste(year, "Bout", boutNumber, sep = "."))
+
 inv_richness_clean <- inv_fieldTaxJoined%>%
-  filter(is.na(samplingImpractical)&!grepl("GRAB|BRYOZOAN", sampleID))%>%
+  # remove events when no samples were collected (samplingImpractical)
+  # remove samples not associated with a bout
+  filter(is.na(samplingImpractical)
+                &!grepl("GRAB|BRYOZOAN", sampleID))%>%
+  # clean `collectDate` column header
   rename(collectDate=collectDate.x)
+
+# extract sample metadata
 inv_sample_info <- inv_richness_clean%>%
   select(sampleID, domainID, siteID, namedLocation, 
-         collectDate, eventID, boutNumber, 
-         habitatType, samplerType, benthicArea)%>%
+                collectDate, eventID, boutNumber, 
+                habitatType, samplerType, benthicArea)%>%
   distinct()
+
+# filter out rare taxa: only observed 1 (singleton) or 2 (doubleton) times
 inv_rare_taxa <- inv_richness_clean%>%
   distinct(sampleID, acceptedTaxonID, scientificName)%>%
   group_by(scientificName)%>%
-  summarize(occurrences=n())%>%
+  summarize(occurrences = n())%>%
   filter(occurrences > 2)
+
+# filter richness table based on taxon list excluding singletons and doubletons
 inv_richness_clean <- inv_richness_clean %>%
   filter(scientificName%in%inv_rare_taxa$scientificName) 
+
+# create a matrix of taxa by sampleID
 inv_richness_clean_wide <- inv_richness_clean %>%
-  distinct(sampleID, scientificName, .keep_all=T)%>%
+  # subset to unique combinations of `sampleID` and `scientificName`
+  distinct(sampleID, scientificName, .keep_all = T)%>%
+  
+  # remove any records with no abundance data
   mutate(abun_M2=estimatedTotalCount/benthicArea)%>%
   filter(!is.na(abun_M2))%>%
-  pivot_wider(id_cols=sampleID, 
-              names_from=scientificName,
-              values_from=abun_M2,
-              values_fill=list(abun_M2=0),
-              values_fn=list(abun_M2=sum)) %>%
-  column_to_rownames(var="sampleID") %>%
+  
+  # pivot to wide format, sum multiple counts per sampleID
+  pivot_wider(id_cols = sampleID, 
+                     names_from = scientificName,
+                     values_from = abun_M2,
+                     values_fill = list(abun_M2 = 0),
+                     values_fn = list(abun_M2 = sum)) %>%
+  column_to_rownames(var = "sampleID") %>%
+  
+  #round to integer so that vegan functions will run
   round()
+
+# code check - check col and row sums
+# mins should all be > 0 for further analysis in vegan
 if(colSums(inv_richness_clean_wide) %>% min()==0){
   stop("Column sum is 0: do not proceed with richness analysis!")
 }
 if(rowSums(inv_richness_clean_wide) %>% min()==0){
   stop("Row sum is 0: do not proceed with richness analysis!")
 }
-inv_richness <- as.data.frame(specnumber(
-  inv_richness_clean_wide)
+
+# use the `vegan` package to calculate diversity indices
+
+# calculate richness
+inv_richness <- as.data.frame(
+  specnumber(inv_richness_clean_wide)
   )
 names(inv_richness) <- "richness"
+
 inv_richness_stats <- estimateR(inv_richness_clean_wide)
+
+# calculate evenness
 inv_evenness <- as.data.frame(
-  diversity(inv_richness_clean_wide)/log(specnumber(inv_richness_clean_wide))
+  diversity(inv_richness_clean_wide)/
+    log(specnumber(inv_richness_clean_wide))
   )
 names(inv_evenness) <- "evenness"
+
+# calculate shannon index
 inv_shannon <- as.data.frame(
-  diversity(inv_richness_clean_wide, index="shannon")
+  diversity(inv_richness_clean_wide, index = "shannon")
   )
 names(inv_shannon) <- "shannon"
+
+# calculate simpson index
 inv_simpson <- as.data.frame(
-  diversity(inv_richness_clean_wide, index="simpson")
+  diversity(inv_richness_clean_wide, index = "simpson")
   )
 names(inv_simpson) <- "simpson"
+
+# create a single data frame
 inv_diversity_indices <- cbind(inv_richness, inv_evenness, inv_shannon, inv_simpson)
-inv_diversity_indices <- left_join(rownames_to_column(inv_diversity_indices),
-                                   inv_sample_info,
-                                   by=c("rowname"="sampleID")) %>%
-  rename(sampleID=rowname)
+
+# bring in the metadata table created earlier
+inv_diversity_indices <- left_join(
+  rownames_to_column(inv_diversity_indices),
+  inv_sample_info,
+  by = c("rowname" = "sampleID")) %>%
+  rename(sampleID = rowname)
+
+# create summary table for plotting
 inv_diversity_summ <- inv_diversity_indices%>%
   pivot_longer(c(richness, evenness, shannon, simpson),
-                      names_to="indexName",
-                      values_to="indexValue")%>%
+                      names_to = "indexName",
+                      values_to = "indexValue")%>%
   group_by(siteID, collectDate, eventID, habitatType, boutNumber, indexName)%>%
-  summarize(mean=mean(indexValue),
+  summarize(mean = mean(indexValue),
                    n=n(),
-                   sd=sd(indexValue),
+                   sd = sd(indexValue),
                    se=sd/sqrt(n))%>%
   mutate(year=substr(eventID, 6, 9),
-                yearBout=paste(year, "Bout", boutNumber, sep="."))
-csd <- loadByProduct(dpID="DP4.00130.001",
-                     site=siteList, 
-                     startdate=startWY_query,
-                     enddate=endWY_query,
-                     package="basic",
-                     release= "current",
-                     include.provisional=T,
-                     token=Sys.getenv("NEON_TOKEN"),
-                     check.size=F)
-list2env(csd, .GlobalEnv)
+                yearBout=paste(year, "Bout", boutNumber, sep = "."))
 
+# download data of interest - AIS - Continuous discharge
+csd <- loadByProduct(dpID="DP4.00130.001",
+                                    site=siteList, 
+                                    startdate=startWY_query,
+                                    enddate=endWY_query,
+                                    package="basic",
+                                    release= "current",
+                                    include.provisional = T,
+                                    token = Sys.getenv("NEON_TOKEN"),
+                                    check.size = F)
+list2env(csd, .GlobalEnv)
 ```
 
 Here, we highlight three NEON non-perennial stream sites that undergo 
@@ -1685,30 +1741,30 @@ record a water year, and 2) calculate cumulative flow across each water year.
 # Assign each discharge record a water year
 csd_15_min <- csd_15_min%>%
   mutate(waterYear=ifelse(month(startDateTime)>=10,
-                          year(startDateTime)+1,
-                          year(startDateTime)),
-         waterYearStart=as.Date(paste0(waterYear-1, "-10-01")),
-         dayOfWaterYear=as.integer(as.Date(startDateTime)-waterYearStart)+1,
-         plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1))
+                                year(startDateTime)+1,
+                                year(startDateTime)),
+                waterYearStart=as.Date(paste0(waterYear-1, "-10-01")),
+                dayOfWaterYear=as.integer(as.Date(startDateTime)-waterYearStart)+1,
+                plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1))
 
 # Group by site ID and water year and summarize a cumulative sum of discharge to make a cumulative flow curve
 csd_15_min_summ <- csd_15_min%>%
   arrange(siteID, waterYear, startDateTime)%>%
   group_by(siteID, waterYear)%>%
   mutate(cumulativeFlow=cumsum(dischargeContinuous),
-         cumulativeFlowPct=100*cumulativeFlow/max(cumulativeFlow, na.rm=TRUE))%>%
+                cumulativeFlowPct=100*cumulativeFlow/max(cumulativeFlow, na.rm = TRUE))%>%
   ungroup()
 
 # Assign water year and day-of-water-year to invert abundance summary
 inv_abundance_case2 <- inv_abundance_summ%>%
   ungroup()%>%
   mutate(waterYear=ifelse(month(collectDate)>=10,
-                          year(collectDate)+1,
-                          year(collectDate)),
-         waterYearStart=as.Date(paste0(waterYear-1, "-10-01")),
-         dayOfWaterYear=as.integer(as.Date(collectDate)-waterYearStart)+1,
-         plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
-         abun_M2_sum_se=coalesce(abun_M2_sum_se, 0))%>%
+                                 year(collectDate)+1,
+                                 year(collectDate)),
+                waterYearStart=as.Date(paste0(waterYear-1, "-10-01")),
+                dayOfWaterYear=as.integer(as.Date(collectDate)-waterYearStart)+1,
+                plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
+                abun_M2_sum_se=coalesce(abun_M2_sum_se, 0))%>%
   arrange(siteID, waterYear, habitatType, dayOfWaterYear)
 
 # Assign water year and day-of-water-year to invert richness summary
@@ -1716,12 +1772,12 @@ inv_richness_case2 <- inv_diversity_summ%>%
   filter(indexName=="richness")%>%
   ungroup()%>%
   mutate(waterYear=ifelse(month(collectDate)>=10,
-                          year(collectDate)+1,
-                          year(collectDate)),
-         waterYearStart=as.Date(paste0(waterYear-1, "-10-01")),
-         dayOfWaterYear=as.integer(as.Date(collectDate)-waterYearStart)+1,
-         plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
-         se=coalesce(se, 0))%>%
+                                 year(collectDate)+1,
+                                 year(collectDate)),
+                waterYearStart=as.Date(paste0(waterYear-1, "-10-01")),
+                dayOfWaterYear=as.integer(as.Date(collectDate)-waterYearStart)+1,
+                plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
+                se=coalesce(se, 0))%>%
   arrange(siteID, waterYear, habitatType, dayOfWaterYear)
 ```
 
@@ -1750,21 +1806,21 @@ for(s in 1:length(siteList)){
     filter(siteID==siteList[s])
   abun_labels <- sort(unique(paste0("Abun: ", site_abun$habitatType)))
   rich_labels <- sort(unique(paste0("Rich: ", site_rich$habitatType)))
-  x_range <- range(site_flow$plotDateWY, na.rm=TRUE)
-  y1_range <- c(0, max(site_flow$cumulativeFlow, na.rm=TRUE))
+  x_range <- range(site_flow$plotDateWY, na.rm = TRUE)
+  y1_range <- c(0, max(site_flow$cumulativeFlow, na.rm = TRUE))
   abun_upper <- c(site_abun$abun_M2_sum_mean + site_abun$abun_M2_sum_se,
                   site_abun$abun_M2_sum_mean)
   if(all(is.na(abun_upper))){
     y2_range <- c(0, 1)
   }else{
-    y2_range <- c(0, max(abun_upper, na.rm=TRUE))
+    y2_range <- c(0, max(abun_upper, na.rm = TRUE))
   }
   rich_upper <- c(site_rich$mean + site_rich$se,
                   site_rich$mean)
   if(all(is.na(rich_upper))){
     y3_range <- c(0, 1)
   }else{
-    y3_range <- c(0, max(rich_upper, na.rm=TRUE))
+    y3_range <- c(0, max(rich_upper, na.rm = TRUE))
   }
   
   # Create each subplot and store in list
@@ -1772,53 +1828,53 @@ for(s in 1:length(siteList)){
   for(wy in 1:length(waterYears)){
     # Subset down to current site and water year
     cumsumPlot <- plot_ly(data=csd_15_min_summ%>%
-                            filter(siteID==siteList[s]
-                                   &waterYear==waterYears[wy]))%>%
+                                    filter(siteID==siteList[s]
+                                                  &waterYear==waterYears[wy]))%>%
       # Cumulative flow curve
       add_trace(x=~plotDateWY,
-                y=~cumulativeFlow,
-                type="scatter",
-                mode="lines",
-                line=list(color="darkgray"),
-                name="Cumulative Flow",
-                showlegend=F)%>%
+                        y=~cumulativeFlow,
+                        type="scatter",
+                        mode="lines",
+                        line=list(color="darkgray"),
+                        name="Cumulative Flow",
+                        showlegend=F)%>%
       # Benthic macroinvertebrate abundance by habitat type
       add_trace(data=inv_abundance_case2%>%
-                  filter(siteID==siteList[s]
-                                &waterYear==waterYears[wy]),
-                x=~plotDateWY,
-                y=~abun_M2_sum_mean,
-                split=~paste0("Abun: ", habitatType),
-                linetype=~paste0("Abun: ", habitatType),
-                yaxis="y2",
-                type="scatter",
-                mode="lines+markers",
-                error_y=~list(array=abun_M2_sum_se,
-                              color='darkorange',
-                              visible=TRUE),
-                marker=list(color="darkorange"),
-                line=list(color="darkorange", width=2),
-                showlegend=F)%>%
+                          filter(siteID==siteList[s]
+                                        &waterYear==waterYears[wy]),
+                        x=~plotDateWY,
+                        y=~abun_M2_sum_mean,
+                        split=~paste0("Abun: ", habitatType),
+                        linetype=~paste0("Abun: ", habitatType),
+                        yaxis="y2",
+                        type="scatter",
+                        mode="lines+markers",
+                        error_y=~list(array=abun_M2_sum_se,
+                                      color='darkorange',
+                                      visible=TRUE),
+                        marker=list(color="darkorange"),
+                        line=list(color="darkorange", width=2),
+                        showlegend=F)%>%
       # Benthic macroinvertebrate richness by habitat type
       add_trace(data=inv_richness_case2%>%
-                  filter(siteID==siteList[s]
-                                &waterYear==waterYears[wy]),
-                x=~plotDateWY,
-                y=~mean,
-                split=~paste0("Rich: ", habitatType),
-                linetype=~paste0("Rich: ", habitatType),
-                yaxis="y3",
-                type="scatter",
-                mode="lines+markers",
-                error_y=~list(array=se,
-                              color='darkgreen',
-                              visible=TRUE),
-                marker=list(color="darkgreen"),
-                line=list(color="darkgreen", width=2),
-                showlegend=F)%>%
+                          filter(siteID==siteList[s]
+                                        &waterYear==waterYears[wy]),
+                        x=~plotDateWY,
+                        y=~mean,
+                        split=~paste0("Rich: ", habitatType),
+                        linetype=~paste0("Rich: ", habitatType),
+                        yaxis="y3",
+                        type="scatter",
+                        mode="lines+markers",
+                        error_y=~list(array=se,
+                                      color='darkgreen',
+                                      visible=TRUE),
+                        marker=list(color="darkgreen"),
+                        line=list(color="darkgreen", width=2),
+                        showlegend=F)%>%
       # Plot layout
       layout(
-        title=paste0(siteList[s], " | WY ", waterYears[wy]),
+        title = paste0(siteList[s], " | WY ", waterYears[wy]),
         xaxis=list(title="Month-Day",
                    automargin=TRUE,
                    domain=c(0, 0.9),
@@ -1842,8 +1898,8 @@ for(s in 1:length(siteList)){
           automargin=TRUE,
           zeroline=FALSE,
           range=y2_range,
-          tickfont=list(color='darkorange'),
-          titlefont=list(color='darkorange')),
+          tickfont=list(color = 'darkorange'),
+          titlefont=list(color = 'darkorange')),
         yaxis3=list(
           side='right',
           overlaying="y",
@@ -1853,8 +1909,8 @@ for(s in 1:length(siteList)){
           zeroline=FALSE,
           automargin=TRUE,
           range=y3_range,
-          tickfont=list(color='darkgreen'),
-          titlefont=list(color='darkgreen'),
+          tickfont=list(color = 'darkgreen'),
+          titlefont=list(color = 'darkgreen'),
           position=0.99)
       )
 
@@ -1865,24 +1921,24 @@ for(s in 1:length(siteList)){
   # Uses a combination of HTML tools and custom JavaScript
   legend_items <- c(
     list(tags$button(
-      type="button",
-      class="case2-legend-item active",
-      `data-trace-name`="Cumulative Flow",
+      type = "button",
+      class = "case2-legend-item active",
+      `data-trace-name` = "Cumulative Flow",
       HTML("<span style='display:inline-block;width:18px;border-top:3px solid darkgray;margin-right:6px;vertical-align:middle;'></span>Cumulative Flow")
     )),
     lapply(abun_labels, function(lbl) {
       tags$button(
-        type="button",
-        class="case2-legend-item active",
-        `data-trace-name`=lbl,
+        type = "button",
+        class = "case2-legend-item active",
+        `data-trace-name` = lbl,
         HTML(paste0("<span style='display:inline-block;width:18px;border-top:3px solid darkorange;margin-right:6px;vertical-align:middle;'></span>", lbl))
       )
     }),
     lapply(rich_labels, function(lbl) {
       tags$button(
-        type="button",
-        class="case2-legend-item active",
-        `data-trace-name`=lbl,
+        type = "button",
+        class = "case2-legend-item active",
+        `data-trace-name` = lbl,
         HTML(paste0("<span style='display:inline-block;width:18px;border-top:3px solid darkgreen;margin-right:6px;vertical-align:middle;'></span>", lbl))
       )
     })
@@ -1890,19 +1946,19 @@ for(s in 1:length(siteList)){
   legendSyncJs <- sprintf(
     paste(
       "(function(){",
-      "  var container=document.getElementById('case2_%s');",
+      "  var container = document.getElementById('case2_%s');",
       "  if (!container || container.dataset.legendBound === '1') return;",
-      "  container.dataset.legendBound='1';",
+      "  container.dataset.legendBound = '1';",
       "  container.addEventListener('click', function(ev){",
-      "    var btn=ev.target.closest('.case2-legend-item');",
+      "    var btn = ev.target.closest('.case2-legend-item');",
       "    if (!btn) return;",
-      "    var traceName=btn.getAttribute('data-trace-name');",
-      "    var hideTrace=!btn.classList.contains('inactive');",
-      "    var newVis=hideTrace ? false : true;",
-      "    var plots=container.querySelectorAll('.js-plotly-plot');",
+      "    var traceName = btn.getAttribute('data-trace-name');",
+      "    var hideTrace = !btn.classList.contains('inactive');",
+      "    var newVis = hideTrace ? false : true;",
+      "    var plots = container.querySelectorAll('.js-plotly-plot');",
       "    plots.forEach(function(gd){",
-      "      var idx=[];",
-      "      for (var i=0; i < gd.data.length; i++) {",
+      "      var idx = [];",
+      "      for (var i = 0; i < gd.data.length; i++) {",
       "        if (gd.data[i].name === traceName) idx.push(i);",
       "      }",
       "      if (idx.length) Plotly.restyle(gd, {visible: newVis}, idx);",
@@ -1910,7 +1966,7 @@ for(s in 1:length(siteList)){
       "    btn.classList.toggle('inactive');",
       "  });",
       "})();",
-      sep="\n"
+      sep = "\n"
     ),
     siteList[s]
   )
@@ -1922,9 +1978,9 @@ for(s in 1:length(siteList)){
              siteList[s], " (Stacked by Water Year)")
     ),
     div(
-      id=paste0("case2_", siteList[s]),
+      id = paste0("case2_", siteList[s]),
       tags$div(
-        style=paste(
+        style = paste(
           "display:flex;flex-wrap:wrap;gap:8px;align-items:center;",
           "padding:8px 10px;margin:0 0 8px 0;background:#ffffff;",
           "border:1px solid #d9d9d9;border-radius:4px;"
@@ -1943,10 +1999,11 @@ for(s in 1:length(siteList)){
   output_file <- file.path(path.expand("~"), paste0(siteList[s], "_cumSumWY.html"))
   save_html(
     browsable(curr_plot),
-    file=output_file,
-    libdir=paste0(siteList[s], "_cumSumWY_files")
+    file = output_file,
+    libdir = paste0(siteList[s], "_cumSumWY_files")
   )
 }
+
 
 ```
 
