@@ -300,8 +300,9 @@ To work with each of them, select them from the list using the `$` operator.
 
     names(inv)
 
- [1] "categoricalCodes_20120"      "citation_20120_RELEASE-2026" "inv_fieldData"               "inv_persample"               "inv_taxonomyProcessed"       "inv_taxonomyRaw"             "issueLog_20120"             
- [8] "readme_20120"                "validation_20120"            "variables_20120"            
+    ##  [1] "categoricalCodes_20120"      "citation_20120_RELEASE-2026" "inv_fieldData"               "inv_persample"              
+    ##  [5] "inv_taxonomyProcessed"       "inv_taxonomyRaw"             "issueLog_20120"              "readme_20120"               
+    ##  [9] "validation_20120"            "variables_20120"
 
 We can see that there are at least 9 objects in the downloaded macroinvertebrate 
 collection data.
@@ -350,16 +351,16 @@ with proper citations custom to to the download that align with NEON's
 
     for(c in citationFiles){cat(get(c))}
 
-@misc{https://doi.org/10.48443/hp56-s582,
-  doi = {10.48443/HP56-S582},
-  url = {https://data.neonscience.org/data-products/DP1.20120.001/RELEASE-2026},
-  author = {{National Ecological Observatory Network (NEON)}},
-  keywords = {diversity, taxonomy, community composition, species composition, population, aquatic, benthic, macroinvertebrates, invertebrates, abundance, streams, lakes, rivers, wadeable streams, material samples, archived samples, biodiversity},
-  language = {en},
-  title = {Macroinvertebrate collection (DP1.20120.001)},
-  publisher = {National Ecological Observatory Network (NEON)},
-  year = {2026}
-}
+    ## @misc{https://doi.org/10.48443/hp56-s582,
+    ##   doi = {10.48443/HP56-S582},
+    ##   url = {https://data.neonscience.org/data-products/DP1.20120.001/RELEASE-2026},
+    ##   author = {{National Ecological Observatory Network (NEON)}},
+    ##   keywords = {diversity, taxonomy, community composition, species composition, population, aquatic, benthic, macroinvertebrates, invertebrates, abundance, streams, lakes, rivers, wadeable streams, material samples, archived samples, biodiversity},
+    ##   language = {en},
+    ##   title = {Macroinvertebrate collection (DP1.20120.001)},
+    ##   publisher = {National Ecological Observatory Network (NEON)},
+    ##   year = {2026}
+    ## }
 
 ### Explore: Metadata
 
@@ -375,6 +376,9 @@ those validation rules are reported in this table
 * **variables_xxxxx**: This file contains all the variables found in the 
 associated data table(s). This includes full definitions, units, and other 
 important information. 
+
+Let's view the full variables file data frame to explore details on tables and
+fields in this data product.
 
 
     # view the entire dataframe in your R environment
@@ -413,8 +417,8 @@ Let's see what files are included with an AIS data product download
 
     names(csd)
 
-[1] "categoricalCodes_00130"      "citation_00130_RELEASE-2026" "csd_15_min"                  "issueLog_00130"              "readme_00130"                "science_review_flags_00130"  "sensor_positions_00130"     
-[8] "variables_00130"            
+    ## [1] "categoricalCodes_00130"      "citation_00130_RELEASE-2026" "csd_15_min"                  "issueLog_00130"             
+    ## [5] "readme_00130"                "science_review_flags_00130"  "sensor_positions_00130"      "variables_00130"
 
 This AIS data product contains 1 data table available in the basic package:
 
@@ -593,12 +597,12 @@ instead by `samplerType`, simply do a find+replace of
 
     sampler_habitat_summ  
 
-  siteID samplerType habitatType
-1   CUPE      surber      riffle
-2   CUPE      surber         run
-3   GUIL        hess        pool
-4   GUIL      surber      riffle
-5   GUIL        hess         run
+    ##   siteID samplerType habitatType
+    ## 1   CUPE      surber      riffle
+    ## 2   CUPE      surber         run
+    ## 3   GUIL        hess        pool
+    ## 4   GUIL      surber      riffle
+    ## 5   GUIL        hess         run
 
 Let's wrangle invertebrate data and calculate abundance per square meter.
 
@@ -1048,6 +1052,12 @@ Primary keys in swc_externalLabDataByAnalyte are: sampleID, sampleCode, analyte
     swc_externalLabDataByAnalyte_dups <- removeDups(swc_externalLabDataByAnalyte,
                                                     variables_20093)
 
+    cat("There are",
+        sum(swc_externalLabDataByAnalyte_dups$duplicateRecordQF%in%c(1, 2)),
+        "duplicate records in 'swc_externalLabDataByAnalyte'")
+
+There are 0 duplicate records in 'swc_externalLabDataByAnalyte'
+
 Great, there are no duplicates! 
 
 Next, let's look at all the analytes returned for a single water sample. There
@@ -1060,10 +1070,12 @@ data.
 
     print(unique(swc_externalLabDataByAnalyte$analyte))
 
- [1] "Ca"                     "Fe"                     "Cl"                     "K"                      "TPC"                    "TN"                     "Na"                     "F"                     
- [9] "TPN"                    "SO4"                    "NO3+NO2 - N"            "DIC"                    "Mn"                     "TDS"                    "Ortho - P"              "DOC"                   
-[17] "NH4 - N"                "TDN"                    "TSS"                    "TP"                     "UV Absorbance (254 nm)" "Si"                     "TOC"                    "TDP"                   
-[25] "NO2 - N"                "Br"                     "UV Absorbance (280 nm)" "Mg"                    
+    ##  [1] "Ca"                     "Fe"                     "Cl"                     "K"                      "TPC"                   
+    ##  [6] "TN"                     "Na"                     "F"                      "TPN"                    "SO4"                   
+    ## [11] "NO3+NO2 - N"            "DIC"                    "Mn"                     "TDS"                    "Ortho - P"             
+    ## [16] "DOC"                    "NH4 - N"                "TDN"                    "TSS"                    "TP"                    
+    ## [21] "UV Absorbance (254 nm)" "Si"                     "TOC"                    "TDP"                    "NO2 - N"               
+    ## [26] "Br"                     "UV Absorbance (280 nm)" "Mg"
 
 For this exercise, we will subset lab data to only dissolved organic carbon
 (DOC). Let's see what a DOC timeseries looks like.
@@ -1440,6 +1452,12 @@ Primary keys in geo_pebbleCount are: eventID, measurementLocation, pebbleCountNu
     # identify duplicates in geo_pebbleCount
 
     geo_pebbleCount_dups <- removeDups(geo_pebbleCount,variables_00131)
+
+    cat("There are",
+        sum(geo_pebbleCount_dups$duplicateRecordQF%in%c(1, 2)),
+        "duplicate records in 'geo_pebbleCount'")
+
+There are 0 duplicate records in 'geo_pebbleCount'
 
 There are no duplicates! Let's proceed.
 

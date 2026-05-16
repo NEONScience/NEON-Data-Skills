@@ -1,10 +1,10 @@
-## ----setup, include=FALSE----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----setup, include=FALSE---------------------------------------------------------------------------------------------------------------------
 require(knitr)
 opts_chunk$set(message=FALSE, warning=FALSE)
 
 
 
-## ----set-up-env, eval=F------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----set-up-env, eval=F-----------------------------------------------------------------------------------------------------------------------
 # # # install neonUtilities package if you have not yet.
 # # install.packages("neonUtilities")
 # # install.packages("neonOS")
@@ -17,7 +17,7 @@ opts_chunk$set(message=FALSE, warning=FALSE)
 # 
 
 
-## ----load-packages, results='hide'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----load-packages, results='hide'------------------------------------------------------------------------------------------------------------
 # load required packages
 library(neonUtilities)
 library(neonOS)
@@ -30,13 +30,13 @@ library(htmltools)
 
 
 
-## ----choose-sites, eval=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----choose-sites, eval=TRUE------------------------------------------------------------------------------------------------------------------
 # create vector of site names to use in loadByProduct()
 siteList <- c("CUPE", "GUIL")
 
 
 
-## ----choose-years, eval=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----choose-years, eval=TRUE------------------------------------------------------------------------------------------------------------------
 # set the start and end water years to explore
 startWY <- 2022
 endWY <- 2024
@@ -47,7 +47,7 @@ endWY_query <- paste0(endWY, "-09")
 
 
 
-## ----download-data-inv, results='hide'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-data-inv, results='hide'--------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Macroinvertebrate collection
 inv <- loadByProduct(dpID="DP1.20120.001",
                      site=siteList,
@@ -61,38 +61,38 @@ inv <- loadByProduct(dpID="DP1.20120.001",
 
 
 
-## ----names-inv, results='asis'-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----names-inv, echo=TRUE---------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(inv)
 
 
 
-## ----unlist-inv, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----unlist-inv, echo=TRUE--------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(inv, envir=.GlobalEnv)
 
 
 
-## ----view-citation, results='asis'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-citation, echo=TRUE-----------------------------------------------------------------------------------------------------------------
 # view formatted citations for DP1.20120.001 download
 # locate any citation files and print them in the console
 citationFiles <- names(inv)[grepl("citation", names(inv))]
 for(c in citationFiles){cat(get(c))}
 
 
-## ----view-vars, eval=FALSE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-vars, eval=FALSE--------------------------------------------------------------------------------------------------------------------
 # # view the entire dataframe in your R environment
 # view(variables_20120)
 # 
 
 
-## ----view-df, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----view-df, eval=FALSE----------------------------------------------------------------------------------------------------------------------
 # # view the entire dataframe in your R environment
 # view(inv_fieldData)
 # 
 
 
-## ----download-data-csd, results='hide'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-data-csd, results='hide'--------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Continuous discharge
 csd <- loadByProduct(dpID="DP4.00130.001",
                      site=siteList, 
@@ -106,19 +106,19 @@ csd <- loadByProduct(dpID="DP4.00130.001",
 
 
 
-## ----names-csd, results='asis'-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----names-csd, echo=TRUE---------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(csd)
 
 
 
-## ----unlist-csd, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----unlist-csd, echo=TRUE--------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(csd, .GlobalEnv)
 
 
 
-## ----id-dups, results='asis'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----id-dups, results='asis'------------------------------------------------------------------------------------------------------------------
 # what are the primary keys in inv_fieldData?
 cat("Primary keys in inv_fieldData are:",
     paste(variables_20120$fieldName[
@@ -166,13 +166,13 @@ cat("There are",
 
 
 
-## ----table-join, eval=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----table-join, eval=TRUE--------------------------------------------------------------------------------------------------------------------
 # join inv_fieldData and inv_taxonomyProcessed
 inv_fieldTaxJoined <- joinTableNEON(inv_fieldData, inv_taxonomyProcessed)
 
 
 
-## ----sampler-habitat-type, results='asis'------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----sampler-habitat-type, echo=TRUE----------------------------------------------------------------------------------------------------------
 # show breakdown of sampler type by habitat type at each site
 sampler_habitat_summ <- inv_fieldTaxJoined%>%
   distinct(siteID, samplerType, habitatType)
@@ -180,7 +180,7 @@ sampler_habitat_summ
 
 
 
-## ----inv-abundance-wrangle, echo=TRUE----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----inv-abundance-wrangle, echo=TRUE---------------------------------------------------------------------------------------------------------
 # using the `tidyverse` collection, we can clean the data in one piped function
 inv_abundance_summ <- inv_fieldTaxJoined%>%
   # remove events when no samples were collected (samplingImpractical)
@@ -212,7 +212,7 @@ inv_abundance_summ <- inv_fieldTaxJoined%>%
 
 
 
-## ----inv-abundance-plot, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----inv-abundance-plot, echo=TRUE------------------------------------------------------------------------------------------------------------
 # produce stacked plot to show trends within and across sites
 inv_abundance_summ%>%
   ggplot(aes(fill=habitatType, color=habitatType,
@@ -230,7 +230,7 @@ inv_abundance_summ%>%
 
 
 
-## ----inv-richness-wrangle, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----inv-richness-wrangle, echo=TRUE----------------------------------------------------------------------------------------------------------
 inv_richness_clean <- inv_fieldTaxJoined%>%
   # remove events when no samples were collected (samplingImpractical)
   # remove samples not associated with a bout
@@ -282,7 +282,7 @@ if(rowSums(inv_richness_clean_wide) %>% min()==0){
 
 
 
-## ----inv-richness-calculate, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----inv-richness-calculate, echo=TRUE--------------------------------------------------------------------------------------------------------
 # calculate richness
 inv_richness <- as.data.frame(
   specnumber(inv_richness_clean_wide)
@@ -328,7 +328,7 @@ inv_diversity_summ <- inv_diversity_indices%>%
 
 
 
-## ----inv-richness-plot, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----inv-richness-plot, echo=TRUE-------------------------------------------------------------------------------------------------------------
 # produce plot to show trends within and across sites
 inv_diversity_summ%>%
   filter(indexName=="richness")%>%
@@ -345,7 +345,7 @@ inv_diversity_summ%>%
 
 
 
-## ----csd-plot-1, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----csd-plot-1, echo=TRUE--------------------------------------------------------------------------------------------------------------------
 # plot with discharge in linear scale
 csd_15_min%>%
   ggplot(aes(x=startDateTime, y=dischargeContinuous))+
@@ -355,7 +355,7 @@ csd_15_min%>%
        y= "Discharge (L/s)", x="Date")
 
 
-## ----csd-plot-2, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----csd-plot-2, echo=TRUE--------------------------------------------------------------------------------------------------------------------
 # plot with discharge in log scale
 csd_15_min%>%
   ggplot(aes(x=startDateTime, y=dischargeContinuous))+
@@ -367,7 +367,7 @@ csd_15_min%>%
 
 
 
-## ----aos-ais-plot, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----aos-ais-plot, echo=TRUE------------------------------------------------------------------------------------------------------------------
 for(s in 1:length(siteList)){
   # begin the plot code
   AOS_AIS_plot <- csd_15_min%>%
@@ -464,7 +464,7 @@ for(s in 1:length(siteList)){
 
 
 
-## ----case-study-1-inputs, include=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----case-study-1-inputs, include=FALSE-------------------------------------------------------------------------------------------------------
 siteList <- c("WLOU")
 startWY <- 2022
 endWY <- 2024
@@ -472,7 +472,7 @@ startWY_query <- paste0(startWY-1, "-10")
 endWY_query <- paste0(endWY, "-09")
 
 
-## ----download-swc, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-swc, results='hide'-------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Chemical properties of surface water
 swc <- loadByProduct(dpID="DP1.20093.001",
                      site=siteList, 
@@ -488,7 +488,7 @@ list2env(swc, envir=.GlobalEnv)
 
 
 
-## ----dups-swc, results='asis'------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----dups-swc, results='asis'-----------------------------------------------------------------------------------------------------------------
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
 cat("Primary keys in swc_externalLabDataByAnalyte are:",
@@ -501,15 +501,18 @@ cat("Primary keys in swc_externalLabDataByAnalyte are:",
 # identify duplicates in swc_externalLabDataByAnalyte
 swc_externalLabDataByAnalyte_dups <- removeDups(swc_externalLabDataByAnalyte,
                                                 variables_20093)
+cat("There are",
+    sum(swc_externalLabDataByAnalyte_dups$duplicateRecordQF%in%c(1, 2)),
+    "duplicate records in 'swc_externalLabDataByAnalyte'")
 
 
-## ----analytes-swc, results='asis'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----analytes-swc, echo=TRUE------------------------------------------------------------------------------------------------------------------
 # show all the analytes published in the lab data
 print(unique(swc_externalLabDataByAnalyte$analyte))
 
 
 
-## ----plot-DOC-swc, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-DOC-swc, echo=TRUE------------------------------------------------------------------------------------------------------------------
 # subset lab data to only dissolved organic carbon (DOC)
 DOC <- swc_externalLabDataByAnalyte%>%
   filter(analyte=="DOC")
@@ -524,7 +527,7 @@ DOC_plot
 
 
 
-## ----download-waq, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-waq, results='hide'-------------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Water quality
 waq <- loadByProduct(dpID="DP1.20288.001",
                      site=siteList, 
@@ -540,13 +543,13 @@ list2env(waq, envir=.GlobalEnv)
 
 
 
-## ----HOR-waq, echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----HOR-waq, echo=TRUE-----------------------------------------------------------------------------------------------------------------------
 # subset to HOR 102 for WLOU
 WAQ_S2 <- waq_instantaneous%>%
   filter(horizontalPosition==102)
 
 
-## ----QF-average-waq, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----QF-average-waq, echo=TRUE----------------------------------------------------------------------------------------------------------------
 # subset out QFs and average to 15 minute resolution
 fDOM_15min <- WAQ_S2%>%
   filter(!is.na(rawCalibratedfDOM))%>%
@@ -556,7 +559,7 @@ fDOM_15min <- WAQ_S2%>%
   summarize(mean_fDOM=mean(rawCalibratedfDOM))
 
 
-## ----plot-fDOM-waq, echo=TRUE, fig.height=4, fig.width=8---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-fDOM-waq, echo=TRUE, fig.height=4, fig.width=8--------------------------------------------------------------------------------------
 # plot a timeseries of fDOM
 fDOM_plot <- fDOM_15min%>%
   ggplot(aes(x=roundDate, y=mean_fDOM))+
@@ -568,7 +571,7 @@ fDOM_plot
 
 
 
-## ----join-aos-ais, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----join-aos-ais, echo=TRUE------------------------------------------------------------------------------------------------------------------
 # round DOC `collectDate` to the nearest 15 minute timestamp
 DOC$roundDate <- round_date(DOC$collectDate, "15 min")
 # perform a left-join, which will join an AIS DOC record to every AIS fDOM 
@@ -576,14 +579,14 @@ DOC$roundDate <- round_date(DOC$collectDate, "15 min")
 fDOM_DOC_join <- left_join(fDOM_15min, DOC, by="roundDate")
 
 
-## ----linear-regression, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----linear-regression, echo=TRUE-------------------------------------------------------------------------------------------------------------
 # use `lm` function to create a linear regression: DOC~fDOM
 model <- lm(analyteConcentration~mean_fDOM, data=fDOM_DOC_join)
 # view a summary of the regression model
 print(summary(model))
 
 
-## ----regression-plot---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----regression-plot--------------------------------------------------------------------------------------------------------------------------
 # show a plot of the relationship with a linear trendline added
 fDOM_DOC_plot <- fDOM_DOC_join%>%
   ggplot(aes(x=mean_fDOM, y=analyteConcentration))+
@@ -597,7 +600,7 @@ fDOM_DOC_plot
 
 
 
-## ----model-doc, echo=TRUE----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----model-doc, echo=TRUE---------------------------------------------------------------------------------------------------------------------
 # predict continuous doc based on the linear regression model coefficients
 fDOM_DOC_join$fit <- predict(model,
                              newdata=fDOM_DOC_join,
@@ -609,7 +612,7 @@ fDOM_DOC_join$upr <- conf_int[, "upr"]
 
 
 
-## ----plot-model-doc, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-model-doc, echo=TRUE----------------------------------------------------------------------------------------------------------------
 # create plot
 fDOM_DOC_plot <- plot_ly(data=fDOM_DOC_join)%>%
   
@@ -646,7 +649,7 @@ saveWidget(as_widget(fDOM_DOC_plot), paste0("~/", siteList, "_fDOM_DOC_model.htm
 
 
 
-## ----case-study-2-inputs, include=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----case-study-2-inputs, include=FALSE-------------------------------------------------------------------------------------------------------
 siteList <- c("CUPE", "GUIL")
 startWY <- 2022
 endWY <- 2024
@@ -654,7 +657,7 @@ startWY_query <- paste0(startWY-1, "-10")
 endWY_query <- paste0(endWY, "-09")
 
 
-## ----case-study-2-fiona, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----case-study-2-fiona, echo=TRUE------------------------------------------------------------------------------------------------------------
 # identify the date of Fiona
 fionaDate <- "2022-09-19"
 # highlight Fiona at CUPE
@@ -686,7 +689,7 @@ saveWidget(as_widget(AOS_AIS_plot_GUIL_Fiona), "~/GUIL_INV_CSD_Fiona.html")
 
 
 
-## ----download-data-geo, results='hide'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----download-data-geo, results='hide'--------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Stream morphology maps
 # the expanded download package is needed to read in the geo_pebbleCount table
 geo <- loadByProduct(dpID="DP4.00131.001",
@@ -703,7 +706,7 @@ list2env(geo, envir=.GlobalEnv)
 
 
 
-## ----id-dups-geo, results='asis'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----id-dups-geo, results='asis'--------------------------------------------------------------------------------------------------------------
 # what are the primary keys in geo_pebbleCount?
 cat("Primary keys in geo_pebbleCount are:",
     paste(variables_00131$fieldName[
@@ -714,9 +717,12 @@ cat("Primary keys in geo_pebbleCount are:",
     )
 # identify duplicates in geo_pebbleCount
 geo_pebbleCount_dups <- removeDups(geo_pebbleCount,variables_00131)
+cat("There are",
+    sum(geo_pebbleCount_dups$duplicateRecordQF%in%c(1, 2)),
+    "duplicate records in 'geo_pebbleCount'")
 
 
-## ----convert-numeric-geo, echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----convert-numeric-geo, echo=TRUE-----------------------------------------------------------------------------------------------------------
 # convert pebbleSize to numeric 
 geo_pebbleCount$pebbleSize_num <- NA
 geo_pebbleCount$pebbleSize_num[
@@ -775,7 +781,7 @@ geo_pebbleCount$pebbleSize_num[
   ] <- 256
 
 
-## ----wrangle-geo, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----wrangle-geo, echo=TRUE-------------------------------------------------------------------------------------------------------------------
 # group by 'siteID' and 'surveyEndDate'` and calculate frequency
 geo_pebbleCount_freq <- geo_pebbleCount%>%
   group_by(siteID, surveyEndDate, eventID, pebbleSize_num)%>%
@@ -797,7 +803,7 @@ geo_pebbleCount_freqCumm <- geo_pebbleCount_freqCumm%>%
 
 
 
-## ----plot-geo----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----plot-geo---------------------------------------------------------------------------------------------------------------------------------
 # create cumulative frequency curve plot using `geom_smooth`
 geo_pebbleCount_freqCumm%>%
   ggplot(aes(x=pebbleSize_num, y=CumulativeFreq, color=year)) +
@@ -808,7 +814,7 @@ geo_pebbleCount_freqCumm%>%
 
 
 
-## ----highlight-fiona-psd, echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----highlight-fiona-psd, echo=TRUE-----------------------------------------------------------------------------------------------------------
 # generate small, simple subplots of each pebble count survey
 # loop through each site and year to make plot and save to the working directory
 for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
@@ -889,7 +895,7 @@ saveWidget(as_widget(AOS_AIS_plot_GUIL_Fiona), "~/_INV_CSD_GEO_Fiona.html")
 
 
 
-## ----case-study-3-inputs, include=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----case-study-3-inputs, include=FALSE-------------------------------------------------------------------------------------------------------
 # run code in the background that repeats intro to AOS and AIS for case study
 siteList <- c("KING", "ARIK", "SYCA")
 startWY <- 2022
@@ -1001,7 +1007,7 @@ list2env(csd, .GlobalEnv)
 
 
 
-## ----case-study-3-wrangle, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----case-study-3-wrangle, echo=TRUE----------------------------------------------------------------------------------------------------------
 # assign each discharge record a water year
 csd_15_min <- csd_15_min%>%
   mutate(waterYear=ifelse(month(startDateTime)>=10,
@@ -1043,7 +1049,7 @@ inv_richness_case2 <- inv_diversity_summ%>%
 
 
 
-## ----case-study-3-plot, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+## ----case-study-3-plot, echo=TRUE-------------------------------------------------------------------------------------------------------------
 # build one stacked plot per site with cumulative flow, abundance, and richness
 for(s in 1:length(siteList)){
   waterYears <- sort(

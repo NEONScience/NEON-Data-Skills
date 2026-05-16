@@ -357,9 +357,11 @@ To work with each of them, select them from the list using the <code>$</code> op
 <pre><code># view all components of the list
 
 names(inv)
+
+##  [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_RELEASE-2026&quot; &quot;inv_fieldData&quot;               &quot;inv_persample&quot;              
+##  [5] &quot;inv_taxonomyProcessed&quot;       &quot;inv_taxonomyRaw&quot;             &quot;issueLog_20120&quot;              &quot;readme_20120&quot;               
+##  [9] &quot;validation_20120&quot;            &quot;variables_20120&quot;
 </code></pre>
-<p>[1] “categoricalCodes_20120”      “citation_20120_RELEASE-2026” “inv_fieldData”               “inv_persample”               “inv_taxonomyProcessed”       “inv_taxonomyRaw”             “issueLog_20120”<br />
-[8] “readme_20120”                “validation_20120”            “variables_20120”</p>
 <p>We can see that there are at least 9 objects in the downloaded macroinvertebrate
 collection data.</p>
 <ul>
@@ -413,44 +415,39 @@ with proper citations custom to to the download that align with NEON’s
 citationFiles &lt;- names(inv)[grepl(&quot;citation&quot;, names(inv))]
 
 for(c in citationFiles){cat(get(c))}
+
+## @misc{https://doi.org/10.48443/hp56-s582,
+##   doi = {10.48443/HP56-S582},
+##   url = {https://data.neonscience.org/data-products/DP1.20120.001/RELEASE-2026},
+##   author = {{National Ecological Observatory Network (NEON)}},
+##   keywords = {diversity, taxonomy, community composition, species composition, population, aquatic, benthic, macroinvertebrates, invertebrates, abundance, streams, lakes, rivers, wadeable streams, material samples, archived samples, biodiversity},
+##   language = {en},
+##   title = {Macroinvertebrate collection (DP1.20120.001)},
+##   publisher = {National Ecological Observatory Network (NEON)},
+##   year = {2026}
+## }
 </code></pre>
-<p>@misc{<a href="https://doi.org/10.48443/hp56-s582">https://doi.org/10.48443/hp56-s582</a>,
-doi = {10.48443/HP56-S582},
-url = {<a href="https://data.neonscience.org/data-products/DP1.20120.001/RELEASE-2026%7D">https://data.neonscience.org/data-products/DP1.20120.001/RELEASE-2026}</a>,
-author = {{National Ecological Observatory Network (NEON)}},
-keywords = {diversity, taxonomy, community composition, species composition, population, aquatic, benthic, macroinvertebrates, invertebrates, abundance, streams, lakes, rivers, wadeable streams, material samples, archived samples, biodiversity},
-language = {en},
-title = {Macroinvertebrate collection (DP1.20120.001)},
-publisher = {National Ecological Observatory Network (NEON)},
-year = {2026}
-}</p>
 <h3 id="sec:explore-metadata">Explore: Metadata</h3>
 <ul>
-<li>
-<p><strong>categoricalCodes_xxxxx</strong>: Some variables in the data tables are published as
+<li><strong>categoricalCodes_xxxxx</strong>: Some variables in the data tables are published as
 strings and constrained to a standardized list of values (LOV). This file shows
-all the LOV options for variables published in this data product.</p>
-</li>
-<li>
-<p><strong>issueLog_xxxxx</strong>: Issues that may impact data quality, or changes to a data
-product that affects all sites, are reported in this file.</p>
-</li>
-<li>
-<p><strong>readme_xxxxx</strong>: The readme file provides important information relevant to
-the data product and the specific instance of downloading the data.</p>
-</li>
-<li>
-<p><strong>validation_xxxxx</strong>: If any fields require validation prior to publication,
-those validation rules are reported in this table</p>
-</li>
-<li>
-<p><strong>variables_xxxxx</strong>: This file contains all the variables found in the
+all the LOV options for variables published in this data product.</li>
+<li><strong>issueLog_xxxxx</strong>: Issues that may impact data quality, or changes to a data
+product that affects all sites, are reported in this file.</li>
+<li><strong>readme_xxxxx</strong>: The readme file provides important information relevant to
+the data product and the specific instance of downloading the data.</li>
+<li><strong>validation_xxxxx</strong>: If any fields require validation prior to publication,
+those validation rules are reported in this table</li>
+<li><strong>variables_xxxxx</strong>: This file contains all the variables found in the
 associated data table(s). This includes full definitions, units, and other
-important information.</p>
-<h1 id="chp:view-the-entire-dataframe-in-your-r-environment">view the entire dataframe in your R environment</h1>
-<p>view(variables_20120)</p>
-</li>
+important information.</li>
 </ul>
+<p>Let’s view the full variables file data frame to explore details on tables and
+fields in this data product.</p>
+<pre><code># view the entire dataframe in your R environment
+
+view(variables_20120)
+</code></pre>
 <h3 id="sec:explore-dataframes">Explore: Dataframes</h3>
 <p>There will always be one or more dataframes that include the primary data of the
 data product you downloaded. Multiple dataframes are available when there are
@@ -476,9 +473,10 @@ csd &lt;- loadByProduct(dpID=&quot;DP4.00130.001&quot;,
 <pre><code># view all components of the list
 
 names(csd)
+
+## [1] &quot;categoricalCodes_00130&quot;      &quot;citation_00130_RELEASE-2026&quot; &quot;csd_15_min&quot;                  &quot;issueLog_00130&quot;             
+## [5] &quot;readme_00130&quot;                &quot;science_review_flags_00130&quot;  &quot;sensor_positions_00130&quot;      &quot;variables_00130&quot;
 </code></pre>
-<p>[1] “categoricalCodes_00130”      “citation_00130_RELEASE-2026” “csd_15_min”                  “issueLog_00130”              “readme_00130”                “science_review_flags_00130”  “sensor_positions_00130”<br />
-[8] “variables_00130”</p>
 <p>This AIS data product contains 1 data table available in the basic package:</p>
 <ul>
 <li><code>csd_15_min</code>
@@ -628,13 +626,14 @@ sampler_habitat_summ &lt;- inv_fieldTaxJoined%&gt;%
   distinct(siteID, samplerType, habitatType)
 
 sampler_habitat_summ  
+
+##   siteID samplerType habitatType
+## 1   CUPE      surber      riffle
+## 2   CUPE      surber         run
+## 3   GUIL        hess        pool
+## 4   GUIL      surber      riffle
+## 5   GUIL        hess         run
 </code></pre>
-<p>siteID samplerType habitatType
-1   CUPE      surber      riffle
-2   CUPE      surber         run
-3   GUIL        hess        pool
-4   GUIL      surber      riffle
-5   GUIL        hess         run</p>
 <p>Let’s wrangle invertebrate data and calculate abundance per square meter.</p>
 <pre><code># using the `tidyverse` collection, we can clean the data in one piped function
 
@@ -1043,7 +1042,12 @@ cat(&quot;Primary keys in swc_externalLabDataByAnalyte are:&quot;,
 
 swc_externalLabDataByAnalyte_dups &lt;- removeDups(swc_externalLabDataByAnalyte,
                                                 variables_20093)
+
+cat(&quot;There are&quot;,
+    sum(swc_externalLabDataByAnalyte_dups$duplicateRecordQF%in%c(1, 2)),
+    &quot;duplicate records in 'swc_externalLabDataByAnalyte'&quot;)
 </code></pre>
+<p>There are 0 duplicate records in ‘swc_externalLabDataByAnalyte’</p>
 <p>Great, there are no duplicates!</p>
 <p>Next, let’s look at all the analytes returned for a single water sample. There
 can be up to 28 analytes returned per sample. The data is returned in ‘long-
@@ -1052,11 +1056,14 @@ data.</p>
 <pre><code># show all the analytes published in the lab data
 
 print(unique(swc_externalLabDataByAnalyte$analyte))
+
+##  [1] &quot;Ca&quot;                     &quot;Fe&quot;                     &quot;Cl&quot;                     &quot;K&quot;                      &quot;TPC&quot;                   
+##  [6] &quot;TN&quot;                     &quot;Na&quot;                     &quot;F&quot;                      &quot;TPN&quot;                    &quot;SO4&quot;                   
+## [11] &quot;NO3+NO2 - N&quot;            &quot;DIC&quot;                    &quot;Mn&quot;                     &quot;TDS&quot;                    &quot;Ortho - P&quot;             
+## [16] &quot;DOC&quot;                    &quot;NH4 - N&quot;                &quot;TDN&quot;                    &quot;TSS&quot;                    &quot;TP&quot;                    
+## [21] &quot;UV Absorbance (254 nm)&quot; &quot;Si&quot;                     &quot;TOC&quot;                    &quot;TDP&quot;                    &quot;NO2 - N&quot;               
+## [26] &quot;Br&quot;                     &quot;UV Absorbance (280 nm)&quot; &quot;Mg&quot;
 </code></pre>
-<p>[1] “Ca”                     “Fe”                     “Cl”                     “K”                      “TPC”                    “TN”                     “Na”                     “F”<br />
-[9] “TPN”                    “SO4”                    “NO3+NO2 - N”            “DIC”                    “Mn”                     “TDS”                    “Ortho - P”              “DOC”<br />
-[17] “NH4 - N”                “TDN”                    “TSS”                    “TP”                     “UV Absorbance (254 nm)” “Si”                     “TOC”                    “TDP”<br />
-[25] “NO2 - N”                “Br”                     “UV Absorbance (280 nm)” “Mg”</p>
 <p>For this exercise, we will subset lab data to only dissolved organic carbon
 (DOC). Let’s see what a DOC timeseries looks like.</p>
 <pre><code># subset lab data to only dissolved organic carbon (DOC)
@@ -1393,7 +1400,12 @@ cat(&quot;Primary keys in geo_pebbleCount are:&quot;,
 <pre><code># identify duplicates in geo_pebbleCount
 
 geo_pebbleCount_dups &lt;- removeDups(geo_pebbleCount,variables_00131)
+
+cat(&quot;There are&quot;,
+    sum(geo_pebbleCount_dups$duplicateRecordQF%in%c(1, 2)),
+    &quot;duplicate records in 'geo_pebbleCount'&quot;)
 </code></pre>
+<p>There are 0 duplicate records in ‘geo_pebbleCount’</p>
 <p>There are no duplicates! Let’s proceed.</p>
 <p>Next, let’s wrangle the data and plot cumulative frequency curves to visualize
 particle size distributions for NEON D04 aquatic sites across water years 2022,
