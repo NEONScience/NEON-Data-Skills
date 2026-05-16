@@ -1,11 +1,11 @@
-## ----setup, include=FALSE-------------------------------------------------------------------
+## ----setup, include=FALSE----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 require(knitr)
 opts_chunk$set(message=FALSE, warning=FALSE)
 
 
 
-## ----set-up-env, eval=F---------------------------------------------------------------------
-# # # Install neonUtilities package if you have not yet.
+## ----set-up-env, eval=F------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# # # install neonUtilities package if you have not yet.
 # # install.packages("neonUtilities")
 # # install.packages("neonOS")
 # # install.packages("tidyverse")
@@ -17,8 +17,8 @@ opts_chunk$set(message=FALSE, warning=FALSE)
 # 
 
 
-## ----load-packages--------------------------------------------------------------------------
-# Load required packages
+## ----load-packages, results='hide'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# load required packages
 library(neonUtilities)
 library(neonOS)
 library(tidyverse)
@@ -30,14 +30,14 @@ library(htmltools)
 
 
 
-## ----choose sites, results='hide'-----------------------------------------------------------
-# Create vector of site names to use in loadByProduct()
+## ----choose-sites, eval=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# create vector of site names to use in loadByProduct()
 siteList <- c("CUPE", "GUIL")
 
 
 
-## ----choose years, results='hide'-----------------------------------------------------------
-# Set the start and end water years to explore
+## ----choose-years, eval=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# set the start and end water years to explore
 startWY <- 2022
 endWY <- 2024
 
@@ -47,7 +47,7 @@ endWY_query <- paste0(endWY, "-09")
 
 
 
-## ----download-data-inv, results='hide'------------------------------------------------------
+## ----download-data-inv, results='hide'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Macroinvertebrate collection
 inv <- loadByProduct(dpID="DP1.20120.001",
                      site=siteList,
@@ -61,38 +61,38 @@ inv <- loadByProduct(dpID="DP1.20120.001",
 
 
 
-## ----names-inv------------------------------------------------------------------------------
+## ----names-inv, results='asis'-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(inv)
 
 
 
-## ----unlist-inv-----------------------------------------------------------------------------
+## ----unlist-inv, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(inv, envir=.GlobalEnv)
 
 
 
-## ----view-citation--------------------------------------------------------------------------
-# View formatted citations for DP1.20120.001 download
-# Locate any citation files and print them in the console
+## ----view-citation, results='asis'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# view formatted citations for DP1.20120.001 download
+# locate any citation files and print them in the console
 citationFiles <- names(inv)[grepl("citation", names(inv))]
 for(c in citationFiles){cat(get(c))}
 
 
-## ----view-vars, eval=FALSE------------------------------------------------------------------
+## ----view-vars, eval=FALSE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # view the entire dataframe in your R environment
 # view(variables_20120)
 # 
 
 
-## ----view-df, eval=FALSE--------------------------------------------------------------------
+## ----view-df, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # # view the entire dataframe in your R environment
 # view(inv_fieldData)
 # 
 
 
-## ----download-data-csd, results='hide'------------------------------------------------------
+## ----download-data-csd, results='hide'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Continuous discharge
 csd <- loadByProduct(dpID="DP4.00130.001",
                      site=siteList, 
@@ -106,19 +106,19 @@ csd <- loadByProduct(dpID="DP4.00130.001",
 
 
 
-## ----names-csd------------------------------------------------------------------------------
+## ----names-csd, results='asis'-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # view all components of the list
 names(csd)
 
 
 
-## ----unlist-csd-----------------------------------------------------------------------------
+## ----unlist-csd, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # unlist the variables and add to the global environment
 list2env(csd, .GlobalEnv)
 
 
 
-## ----id-dups--------------------------------------------------------------------------------
+## ----id-dups, results='asis'-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # what are the primary keys in inv_fieldData?
 cat("Primary keys in inv_fieldData are:",
     paste(variables_20120$fieldName[
@@ -166,20 +166,21 @@ cat("There are",
 
 
 
-## ----table-join-----------------------------------------------------------------------------
+## ----table-join, eval=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # join inv_fieldData and inv_taxonomyProcessed
 inv_fieldTaxJoined <- joinTableNEON(inv_fieldData, inv_taxonomyProcessed)
 
 
 
-## ----sampler-habitat type-------------------------------------------------------------------
-# Show breakdown of sampler type by habitat type at each site
+## ----sampler-habitat-type, results='asis'------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# show breakdown of sampler type by habitat type at each site
 sampler_habitat_summ <- inv_fieldTaxJoined%>%
   distinct(siteID, samplerType, habitatType)
 sampler_habitat_summ  
 
 
-## ----inv abundance wrangle------------------------------------------------------------------
+
+## ----inv-abundance-wrangle, echo=TRUE----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # using the `tidyverse` collection, we can clean the data in one piped function
 inv_abundance_summ <- inv_fieldTaxJoined%>%
   # remove events when no samples were collected (samplingImpractical)
@@ -211,7 +212,7 @@ inv_abundance_summ <- inv_fieldTaxJoined%>%
 
 
 
-## ----inv abundance plot---------------------------------------------------------------------
+## ----inv-abundance-plot, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # produce stacked plot to show trends within and across sites
 inv_abundance_summ%>%
   ggplot(aes(fill=habitatType, color=habitatType,
@@ -229,32 +230,28 @@ inv_abundance_summ%>%
 
 
 
-## ----inv richness wrangle-------------------------------------------------------------------
+## ----inv-richness-wrangle, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 inv_richness_clean <- inv_fieldTaxJoined%>%
   # remove events when no samples were collected (samplingImpractical)
   # remove samples not associated with a bout
   filter(is.na(samplingImpractical)&!grepl("GRAB|BRYOZOAN", sampleID))%>%
   # clean `collectDate` column header
   rename(collectDate=collectDate.x)
-
 # extract sample metadata
 inv_sample_info <- inv_richness_clean%>%
   select(sampleID, domainID, siteID, namedLocation, 
          collectDate, eventID, boutNumber, 
          habitatType, samplerType, benthicArea)%>%
   distinct()
-
 # filter out rare taxa: only observed 1 (singleton) or 2 (doubleton) times
 inv_rare_taxa <- inv_richness_clean%>%
   distinct(sampleID, acceptedTaxonID, scientificName)%>%
   group_by(scientificName)%>%
   summarize(occurrences=n())%>%
   filter(occurrences > 2)
-
 # filter richness table based on taxon list excluding singletons and doubletons
 inv_richness_clean <- inv_richness_clean %>%
   filter(scientificName%in%inv_rare_taxa$scientificName) 
-
 # create a matrix of taxa by sampleID
 inv_richness_clean_wide <- inv_richness_clean %>%
   # subset to unique combinations of `sampleID` and `scientificName`
@@ -274,7 +271,6 @@ inv_richness_clean_wide <- inv_richness_clean %>%
   
   #round to integer so that vegan functions will run
   round()
-
 # code check - check col and row sums
 # mins should all be > 0 for further analysis in vegan
 if(colSums(inv_richness_clean_wide) %>% min()==0){
@@ -286,45 +282,38 @@ if(rowSums(inv_richness_clean_wide) %>% min()==0){
 
 
 
-## ----inv richness calculate-----------------------------------------------------------------
+## ----inv-richness-calculate, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # calculate richness
 inv_richness <- as.data.frame(
   specnumber(inv_richness_clean_wide)
   )
 names(inv_richness) <- "richness"
-
 inv_richness_stats <- estimateR(inv_richness_clean_wide)
-
 # calculate evenness
 inv_evenness <- as.data.frame(
   diversity(inv_richness_clean_wide)/log(specnumber(inv_richness_clean_wide))
   )
 names(inv_evenness) <- "evenness"
-
 # calculate shannon index
 inv_shannon <- as.data.frame(
   diversity(inv_richness_clean_wide, index="shannon")
   )
 names(inv_shannon) <- "shannon"
-
 # calculate simpson index
 inv_simpson <- as.data.frame(
   diversity(inv_richness_clean_wide, index="simpson")
   )
 names(inv_simpson) <- "simpson"
-
 # create a single data frame
 inv_diversity_indices <- cbind(inv_richness, 
                                inv_evenness, 
                                inv_shannon, 
                                inv_simpson)
-
 # bring in the metadata table created earlier
 inv_diversity_indices <- left_join(rownames_to_column(inv_diversity_indices),
                                    inv_sample_info,
                                    by=c("rowname"="sampleID")) %>%
   rename(sampleID=rowname)
-
 # create summary table for plotting
 inv_diversity_summ <- inv_diversity_indices%>%
   pivot_longer(c(richness, evenness, shannon, simpson),
@@ -338,7 +327,8 @@ inv_diversity_summ <- inv_diversity_indices%>%
          yearBout=paste(year, "Bout", boutNumber, sep="."))
 
 
-## ----inv richness plot----------------------------------------------------------------------
+
+## ----inv-richness-plot, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # produce plot to show trends within and across sites
 inv_diversity_summ%>%
   filter(indexName=="richness")%>%
@@ -355,8 +345,8 @@ inv_diversity_summ%>%
 
 
 
-## ----csd-plot-------------------------------------------------------------------------------
-# Plot with discharge in linear scale
+## ----csd-plot-1, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# plot with discharge in linear scale
 csd_15_min%>%
   ggplot(aes(x=startDateTime, y=dischargeContinuous))+
   geom_line()+
@@ -364,7 +354,9 @@ csd_15_min%>%
   labs(title="Continuous Discharge for Water Years 2022-2024",
        y= "Discharge (L/s)", x="Date")
 
-# Plot with discharge in log scale
+
+## ----csd-plot-2, echo=TRUE---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# plot with discharge in log scale
 csd_15_min%>%
   ggplot(aes(x=startDateTime, y=dischargeContinuous))+
   geom_line()+
@@ -375,7 +367,7 @@ csd_15_min%>%
 
 
 
-## ----aos-ais-plot, out.width='100%', out.height='600px', fig.height=4, fig.width=8----------
+## ----aos-ais-plot, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 for(s in 1:length(siteList)){
   # begin the plot code
   AOS_AIS_plot <- csd_15_min%>%
@@ -463,16 +455,16 @@ for(s in 1:length(siteList)){
               method='relayout',
               args=list(list(yaxis=list(type='log'))))))))
   
-  # Assign a site-specific plot for using in case studies
+  # assign a site-specific plot for using in case studies
   assign(paste0("AOS_AIS_plot_", siteList[s]), AOS_AIS_plot)
   
-  # Save HTML plot to local documents folder
+  # save HTML plot to local documents folder
   saveWidget(as_widget(AOS_AIS_plot), paste0("~/", siteList[s], "_INV_CSD.html"))
 }
 
 
 
-## ----case study 1 inputs, include=FALSE-----------------------------------------------------
+## ----case-study-1-inputs, include=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 siteList <- c("WLOU")
 startWY <- 2022
 endWY <- 2024
@@ -480,7 +472,7 @@ startWY_query <- paste0(startWY-1, "-10")
 endWY_query <- paste0(endWY, "-09")
 
 
-## ----download-swc, results='hide'-----------------------------------------------------------
+## ----download-swc, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Chemical properties of surface water
 swc <- loadByProduct(dpID="DP1.20093.001",
                      site=siteList, 
@@ -491,13 +483,12 @@ swc <- loadByProduct(dpID="DP1.20093.001",
                      include.provisional=T,
                      token=Sys.getenv("NEON_TOKEN"),
                      check.size=F)
-
 # unlist the variables and add to the global environment
 list2env(swc, envir=.GlobalEnv)
 
 
 
-## ----wrangle-plot-swc-----------------------------------------------------------------------
+## ----dups-swc, results='asis'------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # check if there are duplicate DOC records
 # what are the primary keys in swc_externalLabDataByAnalyte?
 cat("Primary keys in swc_externalLabDataByAnalyte are:",
@@ -507,21 +498,21 @@ cat("Primary keys in swc_externalLabDataByAnalyte are:",
     ],
     collapse=", ")
     )
-
 # identify duplicates in swc_externalLabDataByAnalyte
 swc_externalLabDataByAnalyte_dups <- removeDups(swc_externalLabDataByAnalyte,
                                                 variables_20093)
 
-# no duplicates, great!
 
-# lab data is published `long-format` with 28 analytes analyzed
+## ----analytes-swc, results='asis'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # show all the analytes published in the lab data
 print(unique(swc_externalLabDataByAnalyte$analyte))
 
-# for this exercise, subset lab data to only dissolved organic carbon (DOC)
+
+
+## ----plot-DOC-swc, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# subset lab data to only dissolved organic carbon (DOC)
 DOC <- swc_externalLabDataByAnalyte%>%
   filter(analyte=="DOC")
-
 # plot a timeseries of DOC
 DOC_plot <- DOC%>%
   ggplot(aes(x=collectDate, y=analyteConcentration))+
@@ -529,12 +520,11 @@ DOC_plot <- DOC%>%
   labs(title="Dissolved organic carbon (DOC) over time",
        y="DOC (mg/L)",
        x="Date")
-
 DOC_plot
 
 
 
-## ----download-waq, results='hide'-----------------------------------------------------------
+## ----download-waq, results='hide'--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AIS - Water quality
 waq <- loadByProduct(dpID="DP1.20288.001",
                      site=siteList, 
@@ -545,37 +535,28 @@ waq <- loadByProduct(dpID="DP1.20288.001",
                      include.provisional=T,
                      token=Sys.getenv("NEON_TOKEN"),
                      check.size=F)
-
 # unlist the variables and add to the global environment
 list2env(waq, envir=.GlobalEnv)
 
 
 
-## ----wrangle-plot-waq-----------------------------------------------------------------------
-# `waq_instantaneous` table published many water quality metrics in wide-format
-# other than fDOM, many other metrics are published in `waq_instantaneous`
-# including: dissolved oxygen, specific conductance, pH, chlorophyll, turbidity
-
-# according to the NEON AIS spatial design, fDOM is only measured at the 
-# downstream sensor set (S2, HOR=102); subset to HOR 102
-WAQ_102 <- waq_instantaneous%>%
+## ----HOR-waq, echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# subset to HOR 102 for WLOU
+WAQ_S2 <- waq_instantaneous%>%
   filter(horizontalPosition==102)
 
-# `waq_instantaneous` is published at a 1 minute temporal resolution
-# for ease of plotting, let's create a 15-minute average table
-fDOM_15min <- WAQ_102%>%
-  
-  # remove NULL records
+
+## ----QF-average-waq, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# subset out QFs and average to 15 minute resolution
+fDOM_15min <- WAQ_S2%>%
   filter(!is.na(rawCalibratedfDOM))%>%
-  
-  # remove records with a final QF
   filter(fDOMFinalQF==0)%>%
-  
-  # create 15-minute average of fDOM
   mutate(roundDate=round_date(endDateTime, "15 min"))%>%
   group_by(siteID, roundDate)%>%
   summarize(mean_fDOM=mean(rawCalibratedfDOM))
 
+
+## ----plot-fDOM-waq, echo=TRUE, fig.height=4, fig.width=8---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # plot a timeseries of fDOM
 fDOM_plot <- fDOM_15min%>%
   ggplot(aes(x=roundDate, y=mean_fDOM))+
@@ -583,27 +564,26 @@ fDOM_plot <- fDOM_15min%>%
   labs(title="fluorescent dissolved organic matter (fDOM) over time",
        y="fDOM (QSU)",
        x="Date")
-
 fDOM_plot
 
 
 
-## ----join-aos-ais---------------------------------------------------------------------------
+## ----join-aos-ais, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # round DOC `collectDate` to the nearest 15 minute timestamp
 DOC$roundDate <- round_date(DOC$collectDate, "15 min")
-
 # perform a left-join, which will join an AIS DOC record to every AIS fDOM 
 # record based on matching timestamps
 fDOM_DOC_join <- left_join(fDOM_15min, DOC, by="roundDate")
 
 
-## ----linear-regression----------------------------------------------------------------------
+## ----linear-regression, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # use `lm` function to create a linear regression: DOC~fDOM
 model <- lm(analyteConcentration~mean_fDOM, data=fDOM_DOC_join)
-
 # view a summary of the regression model
 print(summary(model))
 
+
+## ----regression-plot---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # show a plot of the relationship with a linear trendline added
 fDOM_DOC_plot <- fDOM_DOC_join%>%
   ggplot(aes(x=mean_fDOM, y=analyteConcentration))+
@@ -613,17 +593,15 @@ fDOM_DOC_plot <- fDOM_DOC_join%>%
   labs(title="AOS-DOC vs. AIS-fDOM",
        y="DOC (mg/L)",
        x="fDOM (QSU)")
-
 fDOM_DOC_plot
 
 
 
-## ----model-doc------------------------------------------------------------------------------
+## ----model-doc, echo=TRUE----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # predict continuous doc based on the linear regression model coefficients
 fDOM_DOC_join$fit <- predict(model,
                              newdata=fDOM_DOC_join,
                              interval="confidence")[, "fit"]
-
 # add two more columns with predicted 95% CI uncertainty around the modeled DOC
 conf_int <- predict(model, newdata=fDOM_DOC_join, interval="confidence")
 fDOM_DOC_join$lwr <- conf_int[, "lwr"]
@@ -631,7 +609,7 @@ fDOM_DOC_join$upr <- conf_int[, "upr"]
 
 
 
-## ----plot-model-doc-------------------------------------------------------------------------
+## ----plot-model-doc, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # create plot
 fDOM_DOC_plot <- plot_ly(data=fDOM_DOC_join)%>%
   
@@ -663,12 +641,12 @@ fDOM_DOC_plot <- plot_ly(data=fDOM_DOC_join)%>%
                      orientation='h',
                      x=0.5, y=-0.2))
 
-# Save HTML plot to local documents folder
+# save HTML plot to local documents folder
 saveWidget(as_widget(fDOM_DOC_plot), paste0("~/", siteList, "_fDOM_DOC_model.html"))
 
 
 
-## ----case study 2 inputs, include=FALSE-----------------------------------------------------
+## ----case-study-2-inputs, include=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 siteList <- c("CUPE", "GUIL")
 startWY <- 2022
 endWY <- 2024
@@ -676,10 +654,9 @@ startWY_query <- paste0(startWY-1, "-10")
 endWY_query <- paste0(endWY, "-09")
 
 
-## ----case study 2 fiona---------------------------------------------------------------------
+## ----case-study-2-fiona, echo=TRUE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # identify the date of Fiona
 fionaDate <- "2022-09-19"
-
 # highlight Fiona at CUPE
 AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE%>%
   # add dashed vertical line to plot created in previous exercise
@@ -691,9 +668,8 @@ AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE%>%
                  na.rm=T),
                name="Fiona",
                line=list(color='red', dash='dash'))
-# Save HTML plot to local documents folder
+# save HTML plot to local documents folder
 saveWidget(as_widget(AOS_AIS_plot_CUPE_Fiona), "~/CUPE_INV_CSD_Fiona.html")
-
 # highlight Fiona at GUIL
 AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
   # add dashed vertical line to plot created in previous exercise
@@ -705,12 +681,12 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL%>%
                  na.rm=T),
                name="Fiona",
                line=list(color='red', dash='dash'))
-# Save HTML plot to local documents folder
+# save HTML plot to local documents folder
 saveWidget(as_widget(AOS_AIS_plot_GUIL_Fiona), "~/GUIL_INV_CSD_Fiona.html")
 
 
 
-## ----download-data-geo, results='hide'------------------------------------------------------
+## ----download-data-geo, results='hide'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # download data of interest - AOS - Stream morphology maps
 # the expanded download package is needed to read in the geo_pebbleCount table
 geo <- loadByProduct(dpID="DP4.00131.001",
@@ -722,13 +698,12 @@ geo <- loadByProduct(dpID="DP4.00131.001",
                      include.provisional=T,
                      token=Sys.getenv("NEON_TOKEN"),
                      check.size=F)
-
 # unlist the variables and add to the global environment
 list2env(geo, envir=.GlobalEnv)
 
 
 
-## ----id-dups-geo----------------------------------------------------------------------------
+## ----id-dups-geo, results='asis'---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # what are the primary keys in geo_pebbleCount?
 cat("Primary keys in geo_pebbleCount are:",
     paste(variables_00131$fieldName[
@@ -741,10 +716,8 @@ cat("Primary keys in geo_pebbleCount are:",
 geo_pebbleCount_dups <- removeDups(geo_pebbleCount,variables_00131)
 
 
-## ----wrangle-plot-geo-----------------------------------------------------------------------
-# we want to plot the frequency of `pebbleSize`
-# `pebbleSize` is published as a categorical variable (range of size - mm)
-# For plotting purposes, convert `pebbleSize` to numeric (lower number in range)
+## ----convert-numeric-geo, echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# convert pebbleSize to numeric 
 geo_pebbleCount$pebbleSize_num <- NA
 geo_pebbleCount$pebbleSize_num[
   geo_pebbleCount$pebbleSize=="< 2 mm: silt/clay"
@@ -801,13 +774,12 @@ geo_pebbleCount$pebbleSize_num[
   geo_pebbleCount$pebbleSize=="> 256 mm: bedrock"
   ] <- 256
 
-# each 'siteID' and 'surveyEndDate' represents a unique pebble count survey
 
+## ----wrangle-geo, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # group by 'siteID' and 'surveyEndDate'` and calculate frequency
 geo_pebbleCount_freq <- geo_pebbleCount%>%
   group_by(siteID, surveyEndDate, eventID, pebbleSize_num)%>%
   summarise(frequency=n()/200)
-
 # calculate a cumulative sum of frequency per event ID
 for(e in 1:length(unique(geo_pebbleCount_freq$eventID))){
   eventID_freq <- geo_pebbleCount_freq%>%
@@ -819,11 +791,13 @@ for(e in 1:length(unique(geo_pebbleCount_freq$eventID))){
     geo_pebbleCount_freqCumm <- rbind(geo_pebbleCount_freqCumm, eventID_freq)
   }
 }
-
 # assign a year to each survey
 geo_pebbleCount_freqCumm <- geo_pebbleCount_freqCumm%>%
   mutate(year=format(surveyEndDate, "%Y"))
 
+
+
+## ----plot-geo----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # create cumulative frequency curve plot using `geom_smooth`
 geo_pebbleCount_freqCumm%>%
   ggplot(aes(x=pebbleSize_num, y=CumulativeFreq, color=year)) +
@@ -834,7 +808,7 @@ geo_pebbleCount_freqCumm%>%
 
 
 
-## ----highlight-fiona-psd, out.width='100%', out.height='800px'------------------------------
+## ----highlight-fiona-psd, echo=TRUE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # generate small, simple subplots of each pebble count survey
 # loop through each site and year to make plot and save to the working directory
 for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
@@ -856,22 +830,24 @@ for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
                     width=4, height=7, units="cm")
   }
 }
-
 # re-generate the CUPE plot with particle size distribution subplots added
 AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE_Fiona%>%
   layout(images=list(
+    
     # show the CUPE 2022 pebble count survey, conducted 2022-04
     list(source=dataURI(file="~/images/psd_CUPE2022.png"),
          x=0.05, y=0.7, 
          sizex=0.25, sizey=0.25,
          xref="paper", yref="paper", 
          xanchor="left", yanchor="bottom"),
+    
     # show the CUPE 2023 pebble count survey, conducted 2022-05
     list(source=dataURI(file="~/images/psd_CUPE2023.png"),
          x=0.4, y=0.7, 
          sizex=0.25, sizey=0.25,
          xref="paper", yref="paper", 
          xanchor="left", yanchor="bottom"),
+    
     # show the CUPE 2024 pebble count survey, conducted 2022-05
     list(source=dataURI(file="~/images/psd_CUPE2024.png"),
          x=0.7, y=0.7, 
@@ -880,24 +856,26 @@ AOS_AIS_plot_CUPE_Fiona <- AOS_AIS_plot_CUPE_Fiona%>%
          xanchor="left", yanchor="bottom")
     
     ))
-# Save HTML plot to local documents folder
+# save HTML plot to local documents folder
 saveWidget(as_widget(AOS_AIS_plot_CUPE_Fiona), "~/CUPE_INV_CSD_GEO_Fiona.html")
-
 # re-generate the GUIL plot with particle size distribution subplots added
 AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL_Fiona%>%
   layout(images=list(
+    
     # show the GUIL 2022 pebble count survey, conducted 2022-04
       list(source=dataURI(file="~/images/psd_GUIL2022.png"),
          x=0.05, y=0.7, 
          sizex=0.25, sizey=0.25,
          xref="paper", yref="paper", 
          xanchor="left", yanchor="bottom"),
+    
     # show the GUIL 2023 pebble count survey, conducted 2023-03
     list(source=dataURI(file="~/images/psd_GUIL2023.png"),
          x=0.35, y=0.7, 
          sizex=0.25, sizey=0.25,
          xref="paper", yref="paper", 
          xanchor="left", yanchor="bottom"),
+    
     # show the GUIL 2024 pebble count survey, conducted 2024-07
     list(source=dataURI(file="~/images/psd_GUIL2024.png"),
          x=0.75, y=0.7, 
@@ -906,13 +884,13 @@ AOS_AIS_plot_GUIL_Fiona <- AOS_AIS_plot_GUIL_Fiona%>%
          xanchor="left", yanchor="bottom")
     
     ))
-# Save HTML plot to local documents folder
+# save HTML plot to local documents folder
 saveWidget(as_widget(AOS_AIS_plot_GUIL_Fiona), "~/_INV_CSD_GEO_Fiona.html")
 
 
 
-## ----case study 3 inputs, include=FALSE-----------------------------------------------------
-# Run code in the background that repeats intro to AOS and AIS for case study
+## ----case-study-3-inputs, include=FALSE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# run code in the background that repeats intro to AOS and AIS for case study
 siteList <- c("KING", "ARIK", "SYCA")
 startWY <- 2022
 endWY <- 2025
@@ -1023,8 +1001,8 @@ list2env(csd, .GlobalEnv)
 
 
 
-## ----case study 3 wrangle-------------------------------------------------------------------
-# Assign each discharge record a water year
+## ----case-study-3-wrangle, echo=TRUE-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# assign each discharge record a water year
 csd_15_min <- csd_15_min%>%
   mutate(waterYear=ifelse(month(startDateTime)>=10,
                           year(startDateTime)+1,
@@ -1032,16 +1010,14 @@ csd_15_min <- csd_15_min%>%
          waterYearStart=as.Date(paste0(waterYear-1, "-10-01")),
          dayOfWaterYear=as.integer(as.Date(startDateTime)-waterYearStart)+1,
          plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1))
-
-# Group by site ID and water year and summarize a cumulative sum of discharge to make a cumulative flow curve
+# group by site ID and water year and summarize a cumulative sum of discharge to make a cumulative flow curve
 csd_15_min_summ <- csd_15_min%>%
   arrange(siteID, waterYear, startDateTime)%>%
   group_by(siteID, waterYear)%>%
   mutate(cumulativeFlow=cumsum(dischargeContinuous),
          cumulativeFlowPct=100*cumulativeFlow/max(cumulativeFlow, na.rm=TRUE))%>%
   ungroup()
-
-# Assign water year and day-of-water-year to invert abundance summary
+# assign water year and day-of-water-year to invert abundance summary
 inv_abundance_case2 <- inv_abundance_summ%>%
   ungroup()%>%
   mutate(waterYear=ifelse(month(collectDate)>=10,
@@ -1052,8 +1028,7 @@ inv_abundance_case2 <- inv_abundance_summ%>%
          plotDateWY=as.Date("1999-10-01") + (dayOfWaterYear-1),
          abun_M2_sum_se=coalesce(abun_M2_sum_se, 0))%>%
   arrange(siteID, waterYear, habitatType, dayOfWaterYear)
-
-# Assign water year and day-of-water-year to invert richness summary
+# assign water year and day-of-water-year to invert richness summary
 inv_richness_case2 <- inv_diversity_summ%>%
   filter(indexName=="richness")%>%
   ungroup()%>%
@@ -1067,13 +1042,13 @@ inv_richness_case2 <- inv_diversity_summ%>%
   arrange(siteID, waterYear, habitatType, dayOfWaterYear)
 
 
-## ----case study 3 plot----------------------------------------------------------------------
-# Build one stacked plot per site with cumulative flow, abundance, and richness
+
+## ----case-study-3-plot, echo=TRUE--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# build one stacked plot per site with cumulative flow, abundance, and richness
 for(s in 1:length(siteList)){
   waterYears <- sort(
     unique(csd_15_min_summ$waterYear[csd_15_min_summ$siteID==siteList[s]]))
-
-  # Set fixed axis ranges for this site so all WY panels are directly comparable
+  # set fixed axis ranges for this site so all WY panels are directly comparable
   site_flow <- csd_15_min_summ%>%
     filter(siteID==siteList[s])
   site_abun <- inv_abundance_case2%>%
@@ -1098,15 +1073,15 @@ for(s in 1:length(siteList)){
   }else{
     y3_range <- c(0, max(rich_upper, na.rm=TRUE))
   }
-  
-  # Create each subplot and store in list
+  # create each subplot and store in list
   wyPlots <- list()
   for(wy in 1:length(waterYears)){
-    # Subset down to current site and water year
+    # subset down to current site and water year
     cumsumPlot <- plot_ly(data=csd_15_min_summ%>%
                             filter(siteID==siteList[s]
                                    &waterYear==waterYears[wy]))%>%
-      # Cumulative flow curve
+      
+      # cumulative flow curve
       add_trace(x=~plotDateWY,
                 y=~cumulativeFlow,
                 type="scatter",
@@ -1114,7 +1089,8 @@ for(s in 1:length(siteList)){
                 line=list(color="darkgray"),
                 name="Cumulative Flow",
                 showlegend=F)%>%
-      # Benthic macroinvertebrate abundance by habitat type
+      
+      # benthic macroinvertebrate abundance by habitat type
       add_trace(data=inv_abundance_case2%>%
                   filter(siteID==siteList[s]
                                 &waterYear==waterYears[wy]),
@@ -1131,7 +1107,8 @@ for(s in 1:length(siteList)){
                 marker=list(color="darkorange"),
                 line=list(color="darkorange", width=2),
                 showlegend=F)%>%
-      # Benthic macroinvertebrate richness by habitat type
+      
+      # benthic macroinvertebrate richness by habitat type
       add_trace(data=inv_richness_case2%>%
                   filter(siteID==siteList[s]
                                 &waterYear==waterYears[wy]),
@@ -1148,7 +1125,8 @@ for(s in 1:length(siteList)){
                 marker=list(color="darkgreen"),
                 line=list(color="darkgreen", width=2),
                 showlegend=F)%>%
-      # Plot layout
+      
+      # plot layout
       layout(
         title=paste0(siteList[s], " | WY ", waterYears[wy]),
         xaxis=list(title="Month-Day",
@@ -1192,9 +1170,7 @@ for(s in 1:length(siteList)){
 
     wyPlots[[wy]] <- cumsumPlot
   }
-  
-  # Create customized legend that will link to traces on all plots
-  # Uses a combination of HTML tools and custom JavaScript
+  # Create custom legend
   legend_items <- c(
     list(tags$button(
       type="button",
@@ -1246,8 +1222,7 @@ for(s in 1:length(siteList)){
     ),
     siteList[s]
   )
-  
-  # Build final stacked plots
+  # build final stacked plots
   curr_plot <- tagList(
     tags$h3(
       paste0("Cumulative Flow, Abundance, and Richness for ",
@@ -1271,7 +1246,7 @@ for(s in 1:length(siteList)){
     tags$script(HTML(legendSyncJs))
   )
 
-  # Save HTML plot to local documents folder
+  # save HTML plot to local documents folder
   output_file <- file.path(path.expand("~"), paste0(siteList[s], "_cumSumWY.html"))
   save_html(
     browsable(curr_plot),
