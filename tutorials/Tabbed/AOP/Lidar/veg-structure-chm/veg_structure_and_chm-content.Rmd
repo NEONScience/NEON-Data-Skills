@@ -56,6 +56,12 @@ Start by installing and loading packages (if necessary) and setting
 options. Installation can be run once, then periodically to get 
 package updates.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot 
+scraping and improve user support. Tokens can be generated in NEON data portal 
+user accounts - log in to your account or create one, and go to the API Tokens 
+section. For best practices in storing and using tokens, follow the 
+instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.’
+
 ### R
 
 One of the packages we'll be using, `geoNEON`, is only 
@@ -74,7 +80,7 @@ devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
 Now load packages. This needs to be done every time you run code. 
 We'll also set a working directory for data downloads (adapt the 
-working directory path for your system).
+working directory path for your system) and load our API token.
 
 ```{r load-packages, results="hide", message=FALSE}
 
@@ -106,7 +112,7 @@ pip install rasterstats
 
 ```
 
-Now load packages.
+Now load packages and API token.
 
 ```{python p-load-packages, results="hide"}
 
@@ -125,6 +131,9 @@ import requests
 import time
 import os
 import dotenv
+
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 
 ```
 

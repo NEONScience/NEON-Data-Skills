@@ -97,7 +97,6 @@ install.packages("neonUtilities")
 
 # load neonUtilities
 library(neonUtilities)
-token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -108,6 +107,7 @@ token <- Sys.getenv("NEON_TOKEN")
 # install neonutilities - can skip if already installed
 # do this in the command line
 pip install neonutilities
+pip install dotenv
 
 ```
 
@@ -116,6 +116,7 @@ pip install neonutilities
 # load neonutilities in working environment
 import neonutilities as nu
 import dotenv
+import os
 
 ```
 
@@ -140,8 +141,14 @@ the data every time.
 but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
 data, and some of the data tables in the microbial data products. For 
 functions that download AOP data, see the `byFileAOP()` and `byTileAOP()` 
-sections in this tutorial. For functions that work with SAE data, see 
-the <a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON eddy flux data tutorial</a>. SAE functions are not yet available in Python.
+sections in this tutorial. For SAE data, use `zipsByProduct()` and then 
+`stackEddy()`.
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot 
+scraping and improve user support. Tokens can be generated in NEON data portal 
+user accounts - log in to your account or create one, and go to the API Tokens 
+section. For best practices in storing and using tokens, follow the 
+instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 The inputs to `loadByProduct()` control which data to download and how 
 to manage the processing:
@@ -233,15 +240,23 @@ to download. The DPID can be found on the
 Explore Data Products page</a>.
 It will be in the form DP#.#####.###
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot 
+scraping and improve user support. Tokens can be generated in NEON data portal 
+user accounts - log in to your account or create one, and go to the API Tokens 
+section. For best practices in storing and using tokens, follow the instructions 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Demo data download and read {.tabset}
 
 Let's get triple-aspirated air temperature data (DP1.00003.001) 
-from Moab and Onaqui (MOAB and ONAQ), from May--August 2018, and 
+from Moab and Onaqui (MOAB and ONAQ), from May-August 2018, and 
 name the data object `triptemp`:
 
 #### R
 
 ```{r loadBy, eval=F}
+
+token <- Sys.getenv("NEON_TOKEN")
 
 triptemp <- loadByProduct(dpID="DP1.00003.001", 
                           site=c("MOAB","ONAQ"),
@@ -251,6 +266,8 @@ triptemp <- loadByProduct(dpID="DP1.00003.001",
 
 ```
 ```{r loadBy-hidden, results="hide", include=FALSE}
+
+token <- Sys.getenv("NEON_TOKEN")
 
 triptemp <- loadByProduct(dpID="DP1.00003.001", 
                           site=c("MOAB","ONAQ"),
@@ -264,6 +281,7 @@ triptemp <- loadByProduct(dpID="DP1.00003.001",
 #### Python
 
 ```{python p-loadBy, eval=F}
+
 dotenv.load_dotenv()
 token = os.environ.get("NEON_TOKEN")
 
@@ -275,6 +293,9 @@ triptemp = nu.load_by_product(dpid="DP1.00003.001",
 
 ```
 ```{python p-loadBy-hidden, results="hide", include=FALSE}
+
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 
 triptemp = nu.load_by_product(dpid="DP1.00003.001", 
                               site=["MOAB","ONAQ"],

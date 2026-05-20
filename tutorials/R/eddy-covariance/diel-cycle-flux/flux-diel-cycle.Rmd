@@ -48,12 +48,13 @@ Now that all the required packages are loaded, let's define all the necessary fu
 Inputs to the `zipsByProduct()` function:
 
 * `dpID`: DP4.00200.001, the bundled eddy covariance product
-* `package`: basic (the expanded package has additional quality metrics and advanced footprint matrices that are not relevant to this tutoiral)
+* `package`: basic (the expanded package has additional quality metrics and advanced footprint matrices that are not relevant to this tutorial)
 * `site`: STEI and TREE
 * `startate`: 2022-04
 * `enddate`: 2022-09 
 * `savepath`: modify this to something logical on your machine or use the R `tempdir()`
 * `check.size`: TRUE if you want to see file size before downloading, otherwise FALSE
+* `token`: NEON API token. Required for data downloads. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 The download may take a while, especially if you're on a slow network. 
 For faster downloads, consider using an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API token</a>.

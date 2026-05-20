@@ -42,9 +42,15 @@ on your computer to complete this tutorial.
 
 ### Download Data 
 
-This tutorial is designed to have you download data directly from the NEON
-portal API using the neonUtilities package. However, you can also directly 
-download this data, prepackaged, from FigShare. This data set includes all the 
+This tutorial is designed to have you download data from the NEON
+API using the neonUtilities package. As of June 2026, NEON requires an API token 
+for data downloads, to reduce bot scraping and improve user support. Tokens can 
+be generated in NEON data portal user accounts - log in to your account or 
+create one, and go to the API Tokens section. For best practices in storing and 
+using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+You can also 
+download this data in prepackaged form from FigShare. This data set includes all the 
 files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
 tutorial series. The data are in the format you would receive if downloading them
 using the `zipsByProduct()` function in the neonUtilities package. 
@@ -211,10 +217,6 @@ of data. If this is too large, use a smaller date range. If you opt to do this,
 your figures and some output may look different later in the tutorial. 
 
 With this information, we can download our data using the neonUtilities package. 
-If you are not using a NEON token to download your data, remove the 
-`token = Sys.getenv(NEON_TOKEN)` line of code (learn more about NEON API tokens 
-in the 
-<a href="https://www.neonscience.org/neon-api-tokens-tutorial" target="_blank">*Using an API Token when Accessing NEON Data with neonUtilities* tutorial</a>). 
 
 If you are using the data downloaded at the start of the tutorial, use the 
 commented out code in the second half of this code chunk. 

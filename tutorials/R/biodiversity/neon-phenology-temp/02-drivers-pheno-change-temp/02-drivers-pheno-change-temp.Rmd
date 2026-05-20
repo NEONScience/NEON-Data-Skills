@@ -106,6 +106,8 @@ access through a data partner (select data products only), writing code to
 directly pull data from the NEON API, or, as we'll do here, using the neonUtilities
 package which is a wrapper for the API to make working with the data easier. 
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.’
+
 ### Downloading from the Data Portal
 
 If you prefer to download data from the data portal, please 

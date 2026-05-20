@@ -21,6 +21,8 @@ Some of the functions and techniques described in those tutorials will
 be used here, as well as functions and data formats that are unique to 
 the eddy flux system.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 This tutorial assumes general familiarity with eddy flux data and 
 associated concepts.
 
@@ -44,7 +46,7 @@ install.packages('ggplot2')
 
 ```
 
-Now load packages.
+Now load packages and API token.
 
 ```{r package-load, warning=FALSE}
 
