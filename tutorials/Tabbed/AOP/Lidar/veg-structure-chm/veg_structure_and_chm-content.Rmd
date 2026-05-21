@@ -88,9 +88,8 @@ library(terra)
 library(neonUtilities)
 library(neonOS)
 library(geoNEON)
-token <- Sys.getenv("NEON_TOKEN")
 
-options(stringsAsFactors=F)
+token <- Sys.getenv("NEON_TOKEN")
 
 wd <- "~/data"
 
@@ -109,6 +108,7 @@ pip install geopandas
 pip install rasterio
 pip install rioxarray
 pip install rasterstats
+pip install python-dotenv
 
 ```
 
@@ -188,8 +188,6 @@ possible function inputs. The cheat sheet is focused on the R package, but
 nearly all the inputs are the same.
 
 ```{python p-veglist, results="hide"}
-dotenv.load_dotenv()
-token = os.environ.get("NEON_TOKEN")
 
 veglist = nu.load_by_product(dpid="DP1.10098.001", 
                          site="WREF", 

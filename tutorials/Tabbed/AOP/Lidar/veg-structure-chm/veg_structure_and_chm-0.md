@@ -199,6 +199,8 @@ package documentation for more details.</p>
 <pre class="r"><code>vegmap &lt;- getLocTOS(veglist$vst_mappingandtagging, 
                           &quot;vst_mappingandtagging&quot;)</code></pre>
 <pre><code>## Please note locations will be calculated only for mapped woody individuals. To find subplot locations for unmapped individuals, use this function with the vst_apparentindividual, vst_non-woody, and/or vst_shrubgroup tables.</code></pre>
+<pre><code>## 
+## Rate limit reached. Pausing for 100 seconds to reset.</code></pre>
 </div>
 <div id="python-2" class="section level4">
 <h4>Python</h4>
