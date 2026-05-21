@@ -42,8 +42,10 @@ You can follow either the R or Python code throughout this tutorial.
 * For Python users, we recommend using Python 3.10+.
 
 ```{r setup, include=FALSE}
+library(arrow)
 library(reticulate)
-knitr::opts_chunk$set(dev="png")
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Set up: Install Packages {.tabset}

@@ -1,32 +1,23 @@
 ##################
 
-# This code takes a set of Rmd files from a designated git repo and
-# 1) knits them to jekyll flavored markdown
-# 2) purls them to .R files
-# it then cleans up all image directories, etc from the working dir!
+# This code attempts to run all the code chunks in the specified Rmd files.
 ##################
 rm(list=ls())
 require(knitr)
 require(markdown)
 options(timeout=300)
 
-# Choose the directory under 'tutorials' to knit
-# You can choose a high-level directory and this script will search
-# that directory recursively, knitting every .Rmd within it.
-# Note: do not put '/' at the end of your directory name
-dirs <- c("Tabbed/NEON-general/NEON-download-explore",
-          "R/NEON-general/neon-code-packages/tokens-simple",
-          "R/biodiversity/biorepository",
-          "R/biodiversity/fish",
-          "R/NEON-general/neon-overview/new-features-2025",
-          "R/eddy-covariance/intro-to-eddy4R/eddy_intro",
-          "R/AOP/Lidar/lidar-topography/veg_structure_and_chm",
-          "R/AIS-data/L4-Discharge-Series/continuous-discharge-basic",
-          "R/AIS-data/NEON-hydrology-tutorial")
+# 2 input options:
+# 1. Choose a directory under 'tutorials'. Code will attempt all Rmd files found 
+#    under the directory (recursively)
+# 2. Input a list of paths to specific Rmd files.
+dirs <- c("R/NEON-general/neon-overview")
+
+# dirs <- c("R/NEON-general/neon-overview/NEON-download-explore/NEON-download-explore-content.Rmd")
 
 #################### Set up Input Variables #############################
 
-# set directory (order above) that you'd like to build
+# option to subset the list above
 
 subDir <- dirs[1]
 
@@ -36,15 +27,13 @@ gitRepoPath <-"~/GitHub/NEON-Data-Skills"
 gitRepoPath <- path.expand(gitRepoPath) # expand tilde to later remove this root dir from longer filepaths
 
 # set working dir - this is where the data are located
-# this is also where a temporary dir is created by this
-# processing_code to generate documents and figures
+# this is also where a temporary dir is created 
+# to store figures (for easier cleanup at the end)
 wd_processing_doc <- "/Users/clunch/data"
 
 # set the base url for images and links in the md file
 base.url <- "https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/"
 
-# how to reference raw images on github:
-# https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/NEON-general/GGplot.png
 opts_knit$set(base.url = base.url)
 opts_knit$set(root.dir = wd_processing_doc)
 
@@ -58,14 +47,6 @@ rmd.files <- list.files(file.path(gitRepoPath, "tutorials", subDir),
 rmd.files
 
 #################### Set up Image Directory #############################
-
-# just render one file
-# rmd.files <- rmd.files[43:61] #41-44 are CO floods tutorials. 
-# #41 COOP-NEIS-Precipitation-In-R.Rmd is causing a problem when reading in data
-# so is #42 nCLIMDIV-Palmer-Drought-In-R.Rmd
-# Should update with paste0(wd,...) to make it work again!
-
-#rmd.files <- c(rmd.files[1:40], rmd.files[43:61])
 
 setwd(wd_processing_doc)
 
