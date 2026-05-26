@@ -67,41 +67,31 @@ var clbj_tos = ee.FeatureCollection('projects/neon/AOP_TOS_Boundaries/D11_CLBJ_T
 var clbj_airshed = ee.FeatureCollection('projects/neon/Airsheds/CLBJ_90percent_footprint')
 ```
 
-Next, let's display the Digital Terrain Model (DTM) and Canopy Height Model (CHM) from the 2017 CLBJ collection, masking out the no-data values (-9999). 
+Next, display the Canopy Height Model (`CHM/001`) from the 2017 CLBJ collection.
 
 ```javascript
-// Display Digital Terrain Model (DTM) for CLBJ. 
-// Filter the DEM image collection by the year and geographic location & select the DEM type (DTM)
-var clbj_dtm2017 = ee.ImageCollection('projects/neon-prod-earthengine/assets/DEM/001')
-  .filterDate('2017-01-01', '2017-12-31')
-  .filterBounds(geo)
-  .select('DTM')
-  .first();
-
-// Add the DTM to the map using a histogram stretch based on min and max data values
-Map.addLayer(clbj_dtm2017, {min:285, max:1294}, 'CLBJ DTM 2017',0);
-
-// Display Canopy Height Model (CHM) for CLBJ. 
+// Read in Canopy Height Model (CHM) for CLBJ. 
 var clbj_chm2017 = ee.ImageCollection('projects/neon-prod-earthengine/assets/CHM/001')
   .filterDate('2017-01-01', '2017-12-31')
   .filterBounds(geo)
   .first();
   
-// Add to the map using a histogram stretch based on min and max data values
+// Add CHM to the map using a histogram stretch based on min and max CHM values
 Map.addLayer(clbj_chm2017, {min:0, max:33}, 'CLBJ CHM 2017',0);
 ```
 
 We also want to pull in the Surface Directional Reflectance data . When we do this, we want to keep only the valid bands. Water vapor absorbs light between wavelengths 1340-1445 nm and 1790-1955 nm, and the atmospheric correction that converts radiance to reflectance subsequently results in spikes in reflectance in these two band windows. For more information on the water vapor bands, refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/plot-spec-sig-tiles-python" target="_blank">Plot Spectral Signatures in Python</a>. We will also remove the last 10 bands, as the bands in this region also tend to be noisy.
 
-To remove bands in GEE, you can specify the bands to exclude (here we named this `bandsToRemove`) and use the `.removeAll` function to keep only the valid bands. Note we are including as much spectral information as possible for this tutorial, but you could select a smaller subset of bands and likely obtain similar results. We encourage you to test this out on your own. When running the classification on a larger area, it may be a valuable trade-off to include a smaller number of bands so the code runs faster (or doesn't run out of memory).  
+To remove bands in GEE, you can specify the bands to exclude (here we named this `bands_to_remove`) and use the `.removeAll` function to keep only the valid bands. Note we are including as much spectral information as possible for this tutorial, but you could select a smaller subset of bands and likely obtain similar results. We encourage you to test this out on your own. When running the classification on a larger area, it may be a worthwhile trade-off to include a smaller number of bands so the code runs faster (or doesn't run out of memory).  
 
 ```javascript
-// Display Surface Directional Reflectance (HSI_REFL/001) image for CLBJ. 
+// Read in Surface Directional Reflectance (HSI_REFL/001) image for CLBJ
 var clbj_sdr2017 = ee.ImageCollection('projects/neon-prod-earthengine/assets/HSI_REFL/001')
   .filterDate('2017-01-01', '2017-12-31')
   .filterBounds(geo)
   .first()
-  
+
+// Display the reflectance band names
 var band_names = clbj_sdr2017.bandNames()
 print('Band Names',band_names)
 
@@ -120,9 +110,8 @@ var clbj_sdr2017_subset = clbj_sdr2017.select(bands_to_keep)
 print('CLBJ SDR 2017 Valid Band Subset')
 print(clbj_sdr2017_subset)
 
-// Mask out the no-data values (-9999) in the image and add to the map using a histogram stretch based on lower and upper data values
-// var CLBJ_SDR2017mask = CLBJ_SDR2017.updateMask(CLBJ_SDR2017.gte(0.0000)).select(['B053', 'B035', 'B019']);
-Map.addLayer(clbj_sdr2017, {min:.5, max:10}, 'CLBJ SDR 2017', 0);
+// Add the reflectance layer to the map using a min max values (histogram stretch) based on lower and upper reflectance values
+Map.addLayer(clbj_sdr2017, {bands:['B053', 'B035', 'B019'], min: 150, max: 850}, 'CLBJ SDR 2017', 0);
 ```
 
 ## Combine Subset Reflectance and CHM bands
@@ -134,8 +123,8 @@ var clbj_sdr_chm2017 = clbj_sdr2017_subset.addBands(clbj_chm2017).aside(print, '
 
 // Crop the reflectance image/CHM composite to the NEON tower airshed boundary and add to the map
 var clbj_sdr_chm_airshed = clbj_sdr_chm2017.clip(clbj_airshed) // comment if uncommenting next line of code
-//var CLBJ_SDR2017_airshed = composite // uncomment to classify entire SDR scene
-Map.addLayer(clbj_sdr_chm_airshed, {bands:['B053', 'B035', 'B019'], min:.5, max:10}, 'CLBJ-Airshed SDR/CHM 2017');
+// var clbj_sdr_chm_airshed = clbj_sdr_chm2017 // uncomment to classify entire reflectance scene, and comment the line above
+Map.addLayer(clbj_sdr_chm_airshed, {bands:['B053', 'B035', 'B019'], min: 150, max: 850}, 'CLBJ-Airshed Reflectance + CHM 2017');
 ```
 
 ## Display Woody Vegetation Data
@@ -148,6 +137,7 @@ Map.addLayer(clbj_tos.style({width: 3, color: "blue", fillColor: "#00000000"}),{
 
 // Display the Airshed polygon layer
 Map.addLayer(clbj_airshed.style({width: 3, color: "white", fillColor: "#00000000"}),{},"CLBJ Airshed", 0)
+Map.centerObject(clbj_airshed)
 
 // Print details about the NEON vegetation structure Feature Collection to the Console
 // Plant species data were derived from the NEON woody plant vegetation structure data product (DP1.10098.001)
@@ -165,30 +155,50 @@ If you have run all the code so far, you should be able to see the following lay
 
 ## Create Training Data Variables
 
-Now that we've added the relevant AOP data, let's start preparing the training data, which we pulled in at the beginning of the script to the variable `CLBJ_veg`.
-This next chunk of code pulls out each species into separate variables (by their taxon ID), and adds a layer to the Map for each of these variables.
+Now that we've added the relevant AOP data, let's start preparing the training data, which we read in at the beginning of the script to the variable `clbj_veg`.
+This next chunk of code pulls out each species into separate variables (by their taxon ID), and adds a layer to the Map for each of these variables. For more details about each taxa, refer to the USDA plant profile page for each, e.g. CELA: https://plants.sc.egov.usda.gov/plant-profile/CELA.
 
 ```javascript
-var CLBJ_QUMA3 = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['QUMA3']))
-Map.addLayer(CLBJ_QUMA3, {color: 'orange'}, 'Blackjack oak', 0);
+// Filter to pull out the individual species recorded at CLBJ
+var cela = clbj_veg.filter(ee.Filter.inList('taxonID', ['CELA']))
+// print('CELA', cela)
+Map.addLayer(cela, {color: 'yellow'}, 'Sugarberry', 0);
 
-var CLBJ_QUST = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['QUST']))
-Map.addLayer(CLBJ_QUST, {color: 'darkgreen'}, 'Post oak', 0);
+var juvi = clbj_veg.filter(ee.Filter.inList('taxonID', ['JUVI']))
+// print('JUVI', juvi)
+Map.addLayer(juvi, {color: 'white'}, 'Eastern red cedar', 0);
 
-var CLBJ_ULAL = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['ULAL']))
-Map.addLayer(CLBJ_ULAL, {color: 'cyan'}, 'Winged elm', 0);
+var prme = clbj_veg.filter(ee.Filter.inList('taxonID', ['PRME']))
+// print('PRME', prme)
+Map.addLayer(prme, {color: 'green'}, 'Mexican plum', 0);
 
-var CLBJ_ULCR = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['ULCR']))
-Map.addLayer(CLBJ_ULCR, {color: 'purple'}, 'Cedar elm', 0);
+var quma3 = clbj_veg.filter(ee.Filter.inList('taxonID', ['QUMA3']))
+//print('QUMA3', quma3)
+Map.addLayer(quma3, {color: 'orange'}, 'Blackjack oak', 0);
 
-var CLBJ_GRSS = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['GRSS']))
-Map.addLayer(CLBJ_GRSS, {color: 'lightgreen'}, 'Grassland', 0);
+var qust = clbj_veg.filter(ee.Filter.inList('taxonID', ['QUST']))
+// print('QUST', qust)
+Map.addLayer(qust, {color: 'darkgreen'}, 'Post oak', 0);
 
-var CLBJ_WATR = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['WATR']))
-Map.addLayer(CLBJ_WATR, {color: 'blue'}, 'Water', 0);
+var ulal = clbj_veg.filter(ee.Filter.inList('taxonID', ['ULAL']))
+// print('ULAL', ulal)
+Map.addLayer(ulal, {color: 'cyan'}, 'Winged elm', 0);
 
-var CLBJ_SHADE = CLBJ_veg.filter(ee.Filter.inList('taxonID', ['SHADE']));
-Map.addLayer(CLBJ_SHADE, {color: 'black'}, 'Shade', 0);
+var ulcr = clbj_veg.filter(ee.Filter.inList('taxonID', ['ULCR']))
+// print('ULCR', ulcr)
+Map.addLayer(ulcr, {color: 'purple'}, 'Cedar elm', 0);
+
+var grass = clbj_veg.filter(ee.Filter.inList('taxonID', ['GRSS']))
+// print('GRASS', grass)
+Map.addLayer(grass, {color: 'lightgreen'}, 'Grassland', 0);
+
+var water = clbj_veg.filter(ee.Filter.inList('taxonID', ['WATR']))
+// print('WATER', water)
+Map.addLayer(water, {color: 'blue'}, 'Water', 0);
+
+var shade = clbj_veg.filter(ee.Filter.inList('taxonID', ['SHADE']));
+// print('SHADE', shade)
+Map.addLayer(shade, {color: 'black'}, 'Shade', 0);
 ```
 
 ## Train/Test Split
@@ -197,58 +207,70 @@ Once we have the training data for each species, we can split the data for each 
 
 ```javascript
 // Create training and test subsets for each class (i.e., species types) using stratified random sampling (80/20%)
+// Filter.lt means less than and Filter.gte means greater than or equal
+// uncomment the print statements to display each of the training samples
 
-var new_table = CLBJ_CELA.randomColumn({seed: 1});
-var CELAtraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var CELAtest = new_table.filter(ee.Filter.gte('random', 0.80));
+var cela_random = cela.randomColumn({seed: 1});
+var cela_train = cela_random.filter(ee.Filter.lt('random', 0.80));
+var cela_test = cela_random.filter(ee.Filter.gte('random', 0.80));
+// print('Sugarberry training samples', cela_train)
 
-var new_table = CLBJ_JUVI.randomColumn({seed: 1});
-var JUVItraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var JUVItest = new_table.filter(ee.Filter.gte('random', 0.80));
+var juvi_random = juvi.randomColumn({seed: 1});
+var juvi_train = juvi_random.filter(ee.Filter.lt('random', 0.80));
+var juvi_test = juvi_random.filter(ee.Filter.gte('random', 0.80));
+// print('Eastern Red Cedar training samples', juvi_train)
 
-var new_table = CLBJ_PRME.randomColumn({seed: 1});
-var PRMEtraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var PRMEtest = new_table.filter(ee.Filter.gte('random', 0.80));
+var prme_random = prme.randomColumn({seed: 1});
+var prme_train = prme_random.filter(ee.Filter.lt('random', 0.80));
+var prme_test = prme_random.filter(ee.Filter.gte('random', 0.80));
+// print('Mexican Plum training samples', prme_train)
 
-var new_table = CLBJ_QUMA3.randomColumn({seed: 1});
-var QUMA3training = new_table.filter(ee.Filter.lt('random', 0.80));
-var QUMA3test = new_table.filter(ee.Filter.gte('random', 0.80));
+var quma3_random = quma3.randomColumn({seed: 1});
+var quma3_train = quma3_random.filter(ee.Filter.lt('random', 0.80));
+var quma3_test = quma3_random.filter(ee.Filter.gte('random', 0.80));
+// print('Blackjack Oak training samples', quma3_train)
 
-var new_table = CLBJ_QUST.randomColumn({seed: 1});
-var QUSTtraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var QUSTtest = new_table.filter(ee.Filter.gte('random', 0.80));
+var qust_random = qust.randomColumn({seed: 1});
+var qust_train = qust_random.filter(ee.Filter.lt('random', 0.80));
+var qust_test = qust_random.filter(ee.Filter.gte('random', 0.80));
+// print('Post Oak training samples', qust_train)
 
-var new_table = CLBJ_ULAL.randomColumn({seed: 1});
-var ULALtraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var ULALtest = new_table.filter(ee.Filter.gte('random', 0.80));
+var ulal_random = ulal.randomColumn({seed: 1});
+var ulal_train = ulal_random.filter(ee.Filter.lt('random', 0.80));
+var ulal_test = ulal_random.filter(ee.Filter.gte('random', 0.80));
+// print('Winged Elm training samples', ulal_train)
 
-var new_table = CLBJ_ULCR.randomColumn({seed: 1});
-var ULCRtraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var ULCRtest = new_table.filter(ee.Filter.gte('random', 0.80));
+var ulcr_random = ulcr.randomColumn({seed: 1});
+var ulcr_train = ulcr_random.filter(ee.Filter.lt('random', 0.80));
+var ulcr_test = ulcr_random.filter(ee.Filter.gte('random', 0.80));
+// print('# of Cedar Elm training samples', ulcr_train)
 
-var new_table = CLBJ_GRSS.randomColumn({seed: 1});
-var GRSStraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var GRSStest = new_table.filter(ee.Filter.gte('random', 0.80));
+var grass_random = grass.randomColumn({seed: 1});
+var grass_train = grass_random.filter(ee.Filter.lt('random', 0.80));
+var grass_test = grass_random.filter(ee.Filter.gte('random', 0.80));
+// print('Grassland training samples', grass_train)
 
-var new_table = CLBJ_WATR.randomColumn({seed: 1});
-var WATRtraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var WATRtest = new_table.filter(ee.Filter.gte('random', 0.80));
+var water_random = water.randomColumn({seed: 1});
+var water_train = water_random.filter(ee.Filter.lt('random', 0.80));
+var water_test = water_random.filter(ee.Filter.gte('random', 0.80));
+// print('Water training samples', water_train)
 
-var new_table = CLBJ_SHADE.randomColumn({seed: 1});
-var SHADEtraining = new_table.filter(ee.Filter.lt('random', 0.80));
-var SHADEtest = new_table.filter(ee.Filter.gte('random', 0.80));
+var shade_random = shade.randomColumn({seed: 1});
+var shade_train = shade_random.filter(ee.Filter.lt('random', 0.80));
+var shade_test = shade_random.filter(ee.Filter.gte('random', 0.80));
+// print('Shade training samples', shade_train)
 ```
 
 Now we can merge all the training data for each species together to create the `training` data (variable), and similarly merge the test data to create the full `test` data. From those data we'll create a `Features` variable containing the predictor data (from the spectral and CHM composite) for the training data.
 
 ```javascript
-// Combine species-type reference points for training partition
-var training = (CELAtraining).merge(JUVItraining).merge(PRMEtraining).merge(QUMA3training).merge(QUSTtraining).merge(ULALtraining).merge(ULCRtraining).merge(GRSStraining).merge(WATRtraining).merge(SHADEtraining).aside(print, 'Training partition');
-var test = (CELAtest).merge(JUVItest).merge(PRMEtest).merge(QUMA3test).merge(QUSTtest).merge(ULALtest).merge(ULCRtest).merge(GRSStest).merge(WATRtest).merge(SHADEtest).aside(print, 'Test partition');
-var points = training.merge(test).aside(print,'All points');
+// Combine species-type reference points for training and test partitions
+var training = (cela_train).merge(juvi_train).merge(prme_train).merge(quma3_train).merge(qust_train).merge(ulal_train).merge(ulcr_train).merge(grass_train).merge(water_train).merge(shade_train).aside(print, 'Training partition');
+var test = (cela_test).merge(juvi_test).merge(prme_test).merge(quma3_test).merge(qust_test).merge(ulal_test).merge(ulcr_test).merge(grass_test).merge(water_test).merge(shade_test).aside(print, 'Test partition');
+var all_points = training.merge(test).aside(print,'All points');
 
-// Extract spectral signatures from airshed reflectance/CHM image for training sample based on species ID 
-var Features = CLBJ_SDR2017_airshed.sampleRegions({
+// Extract spectral signatures from airshed reflectance/CHM image for training sample based on taxon ID 
+var Features = clbj_sdr_chm_airshed.sampleRegions({
   collection: training,
   properties: ['taxonIDnum'],
   scale: 1,
@@ -263,15 +285,15 @@ Now that we've assembled the training and test data, and generated predictor dat
 
 ```javascript
 // Train a 100-tree random forest classifier based on spectral signatures from the training sample for each species 
-var trainedClassifier = ee.Classifier.smileRandomForest(100)
+var trained_classifier = ee.Classifier.smileRandomForest(100)
 .train({
   features: Features,
   classProperty: 'taxonIDnum',
-  inputProperties: CLBJ_SDR2017_airshed.bandNames()
+  inputProperties: clbj_sdr_chm_airshed.bandNames()
 });
 
-// Classify the reflectance/CHM image from the trained classifier
-var classified = CLBJ_SDR2017_airshed.classify(trainedClassifier);
+// Classify the combined reflectance-CHM image from the trained classifier
+var classified = clbj_sdr_chm_airshed.classify(trained_classifier);
 ```
 
 ## Assess Model Performance
@@ -279,10 +301,11 @@ var classified = CLBJ_SDR2017_airshed.classify(trainedClassifier);
 Next we can assess the performance of this classificiation, by looking at some different metrics. The train accuracy should be high (close to 1, or 100%), as it is testing the performance on the data used to generate the model - however, it is not an accurate representation of the actual accuracy. Instead, the test accuracy tends to be a little more reliable, as it is an independent assessment on the separate (test) data set.
 
 ```javascript
-// Calulate a confusion matrix and overall accuracy for the training sample
+// Accuracy Assessment
+// Calculate a confusion matrix and overall accuracy for the training sample
 // Note that this overestimates the accuracy of the model since it does not consider the test sample
-var trainAccuracy = trainedClassifier.confusionMatrix().accuracy();
-print('Train Accuracy', trainAccuracy);
+var train_accuracy = trained_classifier.confusionMatrix().accuracy();
+print('Train Accuracy', train_accuracy);
 ```
 
 If you look at the console, you should see a train accuracy of 0.973, pretty good! But we expect this to be good, because we are calculating the accuracy of the samples we used to generate the model. It is not representative of the actual model accuracy.
@@ -298,7 +321,7 @@ We can also look at some other accuracy metrics. We won't go into details on eac
 ```javascript
 // Test the classification accuracy (more reliable estimation of accuracy)
 // Extract spectral signatures from airshed reflectance image for test sample
-var test = CLBJ_SDR2017_airshed.sampleRegions({
+var test = clbj_sdr_chm_airshed.sampleRegions({
   collection: test,
   properties: ['taxonIDnum'],
   scale: 1,
@@ -306,12 +329,15 @@ var test = CLBJ_SDR2017_airshed.sampleRegions({
 });
 
 // Calculate different test accuracy estimates
-var Test = test.classify(trainedClassifier);
-print('Confusion Matrix', Test.errorMatrix('taxonIDnum', 'classification'));
-print('Overall Accuracy', Test.errorMatrix('taxonIDnum', 'classification').accuracy());
-print('Kappa Coefficient', Test.errorMatrix('taxonIDnum', 'classification').kappa());
-print('Producers Accuracy', Test.errorMatrix('taxonIDnum', 'classification').producersAccuracy());
-print('Users Accuracy', Test.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
+var test_classification = test.classify(trained_classifier);
+print('Confusion Matrix', test_classification.errorMatrix('taxonIDnum', 'classification'));
+print('Overall Accuracy', test_classification.errorMatrix('taxonIDnum', 'classification').accuracy());
+// Kappa Coefficient: evaluates how well a classification performs as compared to randomly assigning values
+print('Kappa Coefficient', test_classification.errorMatrix('taxonIDnum', 'classification').kappa());
+// Producer's Accuracy: frequency with which a real feature on the ground is correctly shown in the classified map (corresponds to error of omission)
+print('Producers Accuracy', test_classification.errorMatrix('taxonIDnum', 'classification').producersAccuracy());
+// User's Accuracy: frequency with which a feature in the classified map will actually be present on the ground (corresponds to error of commission)
+print('Users Accuracy', test_classification.errorMatrix('taxonIDnum', 'classification').consumersAccuracy());
 ```
 
 When you look in the Console and expand the metrics, you can assess the values. Note each taxon ID is assigned a number so you will need to refer to the order in the code to understand the Confusion Matrix as well as the Producer's and User's Accuracy. Each class is listed below for reference, along with the number of training samples for each of the species, in parentheses. When interpreting accuracy, it's important to consider how many training samples were used to generate the model; the model accuracy is impacted if there is poor representation in the training data.
@@ -332,6 +358,7 @@ When you look in the Console and expand the metrics, you can assess the values. 
 Lastly, we can write a function to display the image classification
 ```
 // Function used to display training data and image classification
+// Function used to display training data and image classification
 function showTrainingData(){
   var colours = ee.List(["yellow", "white", "green", "orange", "darkgreen", "cyan", "purple","lightgreen","blue","black"]);
   var lc_type = ee.List(["CELA", "JUVI", "PRME","QUMA3","QUST","ULAL","ULCR","GRSS","WATR","SHADE"]);
@@ -340,13 +367,13 @@ function showTrainingData(){
   var lc_points = ee.FeatureCollection(
     lc_type.map(function(lc){
       var colour = colours.get(lc_type.indexOf(lc));
-      return points.filterMetadata("taxonIDnum", "equals", lc_type.indexOf(lc))
+      return all_points.filterMetadata("taxonIDnum", "equals", lc_type.indexOf(lc))
                   .map(function(point){
                     return point.set('style', {color: colour, pointShape: "diamond", pointSize: 3, width: 2, fillColor: "00000000"});
                   });
         })).flatten();
 
-  Map.addLayer(classified, {min: 0, max: 9, palette: ["yellow","white", "green", "orange", "darkgreen", "cyan", "purple", "lightgreen", "blue", "black"]}, 'Classified image', false);
+  Map.addLayer(classified, {min: 0, max: 9, palette: ["yellow","white", "green", "orange", "darkgreen", "cyan", "purple", "lightgreen", "blue", "black"]}, 'Classified image');
   Map.addLayer(lc_points.style({styleProperty: "style"}), {}, 'All training sample points', false);
   Map.centerObject(geo, 16)
 }
