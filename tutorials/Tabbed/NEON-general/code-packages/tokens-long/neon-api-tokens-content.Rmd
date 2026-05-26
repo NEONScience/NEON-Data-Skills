@@ -4,10 +4,18 @@ output: html_fragment
 dateCreated: '2024-12-30'
 ---
 
+```{r setup, include=FALSE}
+library(arrow)
+library(reticulate)
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 This tutorial explains the background of NEON API tokens, provides a few 
 options for how to store and use your API token, and demonstrates how to use a 
-token with the neonUtilities code packages. If you are looking for a 
-quick and easy guide to getting a token and storing it in the recommended way, 
+token with the neonUtilities code packages. If you aren't interested in these 
+details and are looking for a quick and easy guide to getting a token and 
+storing it in the recommended way, 
 see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">Set Up an API Token</a> tutorial.
 
 NEON data can be downloaded from either the NEON Data Portal or the NEON API. 
@@ -75,6 +83,7 @@ Load the package.
 ```{python p-loadStuff}
 
 import neonutilities as nu
+import os
 
 ```
 
@@ -122,7 +131,7 @@ Click on the Copy button to copy your API token to the clipboard:
 
 In the next section, we'll walk through saving your token somewhere secure but 
 accessible to your code. But first let's try out using the token the easy way, 
-by using it as a simple text string.
+as a simple text string.
 
 NEON API tokens are very long, so it would be annoying to keep pasting the 
 entire string into functions. Assign your token an object name:
@@ -136,12 +145,13 @@ NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 ```
 
 Now we'll use the `loadByProduct()` function to download data. Your 
-API token is entered as the optional `token` input parameter. For 
-this example, we'll download Plant foliar traits (DP1.10026.001).
+API token is entered as the `token` input parameter. For 
+this example, we'll download Plant foliar traits (DP1.10026.001) at Wind River 
+(WREF).
 
-```{r getCFC, results="hide"}
+```{r getCFC, results="hide", message=FALSE}
 
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+foliar <- loadByProduct(dpID="DP1.10026.001", site="WREF", 
                         package="expanded", check.size=F,
                         token=NEON_TOKEN)
 
@@ -156,12 +166,13 @@ NEON_TOKEN = "PASTE YOUR TOKEN HERE"
 ```
 
 Now we'll use the `load_by_product()` function to download data. Your 
-API token is entered as the optional `token` input parameter. For 
-this example, we'll download Plant foliar traits (DP1.10026.001).
+API token is entered as the `token` input parameter. For 
+this example, we'll download Plant foliar traits (DP1.10026.001) at Wind River 
+(WREF).
 
 ```{python p-getCFC, results="hide"}
 
-foliar = nu.load_by_product(dpid="DP1.10026.001", site="all", 
+foliar = nu.load_by_product(dpid="DP1.10026.001", site="WREF", 
                         package="expanded", check_size=False,
                         token=NEON_TOKEN)
 
@@ -224,7 +235,7 @@ do this, we'll show two options here.
 requires a line of code in every script.
 
 * Option 2: Set the token as an environment variable and you can access it 
-from any script. This is a little harder to set up initially, but once it's 
+from any script. This is a little more work to set up initially, but once it's 
 done, it's done globally, and it will work in every script you run in that 
 environment.
 
@@ -293,13 +304,12 @@ To create a persistent environment variable in R, we use a
 R is using as your home directory:
 
 ```{r getdir, results="hide"}
-
 # For Windows:
 Sys.getenv("R_USER")
-
+```
+```{r getdir-2, results="hide"}
 # For Mac/Linux:
 Sys.getenv("HOME")
-
 ```
 
 Check the home directory to see if you already have a `.Renviron` file, **using 
@@ -327,16 +337,15 @@ NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 ```
 
-Save the file as `.Renviron`, in the RStudio home directory identified above. 
-Double check the spelling, this will not work if you have a typo. Re-start 
-R to load the environment.
+Save the file as `.Renviron` in the RStudio home directory identified above. 
+Re-start R to load the environment.
 
 Once your token is assigned to an environment variable, use the function 
 `Sys.getenv()` to access it. For example, in `loadByProduct()`:
 
-```{r useEnvtToken, results="hide"}
+```{r useEnvtToken, results="hide", message=FALSE}
 
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+foliar <- loadByProduct(dpID="DP1.10026.001", site="WREF", 
                         package="expanded", check.size=F,
                         token=Sys.getenv("NEON_TOKEN"))
 
@@ -384,7 +393,7 @@ dotenv.load_dotenv()
 
 ```{python p-useEnvtToken, results="hide"}
 
-foliar = nu.load_by_product(dpid="DP1.10026.001", site="all", 
+foliar = nu.load_by_product(dpid="DP1.10026.001", site="WREF", 
                         package="expanded", check_size=False,
                         token=os.environ.get("NEON_TOKEN"))
 
