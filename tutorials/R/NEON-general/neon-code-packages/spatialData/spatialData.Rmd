@@ -472,9 +472,10 @@ the data.
 
 # paste horizontalPosition and verticalPosition together
 # to match HOR.VER in the sensor positions file
-soilT$ST_30_minute$HOR.VER <- paste(soilT$ST_30_minute$horizontalPosition,
-                                    soilT$ST_30_minute$verticalPosition,
-                                    sep=".")
+soilT$ST_30_minute <- soilT$ST_30_minute |>
+  mutate(HOR.VER = paste(horizontalPosition,
+                         verticalPosition,
+                         sep="."))
 
 # left join to keep all temperature records
 soilTHV <- merge(soilT$ST_30_minute, pos, 
