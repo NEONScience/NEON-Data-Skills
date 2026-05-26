@@ -395,4 +395,4 @@ This tutorial was modified from a lesson developed by the <a href="https://tropi
 
 ## Get Lesson Code
 
-<a href="https://code.earthengine.google.com/2c7078b994777fb5a2020f464fa990b8" target="_blank">AOP GEE Hyperspectral Random Forest Classification</a>
+<a href="https://code.earthengine.google.com/3e0f963fe9f07cedfc03c556e823735f" target="_blank">AOP GEE Hyperspectral Random Forest Classification</a>
