@@ -4,6 +4,13 @@ output: html_fragment
 dateCreated: '2024-09-22'
 ---
 
+```{r setup, include=FALSE}
+library(arrow)
+library(reticulate)
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 This tutorial provides an overview of functions in the `neonUtilities` 
 package in R and the `neonutilities` package in Python. These packages 
 provide a toolbox of basic functionality for working with NEON data.
@@ -31,6 +38,8 @@ the monthly files by data table to create a single file per table.
 downloads data based on data product and site criteria. Stores 
 downloaded data in a format that can then be joined by 
 `stackByTable()`.
+* `readTableNEON()`: Reads NEON data tables into R, using the 
+variables file to assign R classes to each column.
 * `loadByProduct()`: Combines the functionality of `zipsByProduct()`,  
 `stackByTable()`, and `readTableNEON()`: Downloads the specified data, 
 stacks the files, and loads the files to the R environment.
@@ -40,8 +49,6 @@ Preserves the file structure of the original data.
 * `byTileAOP()`: Downloads remote sensing data for the specified 
 data product, subset to tiles that intersect a list of 
 coordinates.
-* `readTableNEON()`: Reads NEON data tables into R, using the 
-variables file to assign R classes to each column.
 * `getCitation()`: Get a BibTeX citation for a particular data 
 product and release.
 
@@ -56,6 +63,8 @@ the monthly files by data table to create a single file per table.
 downloads data based on data product and site criteria. Stores 
 downloaded data in a format that can then be joined by 
 `stack_by_table()`.
+* `read_table_neon()`: Reads NEON data tables into R, using the 
+variables file to assign R classes to each column.
 * `load_by_product()`: Combines the functionality of `zips_by_product()`,  
 `stack_by_table()`, and `read_table_neon()`: Downloads the specified data, 
 stacks the files, and loads the files to the R environment.
@@ -65,8 +74,6 @@ Preserves the file structure of the original data.
 * `by_tile_aop()`: Downloads remote sensing data for the specified 
 data product, subset to tiles that intersect a list of 
 coordinates.
-* `read_table_neon()`: Reads NEON data tables into R, using the 
-variables file to assign R classes to each column.
 * `get_citation()`: Get a BibTeX citation for a particular data 
 product and release.
 
@@ -90,12 +97,10 @@ every time you run your code.
 
 ### R
 
-```{r loadStuff, eval=6}
+```{r loadStuff, eval=4}
 
-# install neonUtilities - can skip if already installed
 install.packages("neonUtilities")
 
-# load neonUtilities
 library(neonUtilities)
 
 ```
@@ -104,10 +109,9 @@ library(neonUtilities)
 
 ```{python p-install, eval=FALSE}
 
-# install neonutilities - can skip if already installed
 # do this in the command line
 pip install neonutilities
-pip install dotenv
+pip install python-dotenv
 
 ```
 
@@ -138,11 +142,10 @@ use it in a workflow you run repeatedly, keep in mind it will re-download
 the data every time.
 
 `loadByProduct()` works on most observational (OS) and sensor (IS) data, 
-but not on surface-atmosphere exchange (SAE) data, remote sensing (AOP) 
-data, and some of the data tables in the microbial data products. For 
-functions that download AOP data, see the `byFileAOP()` and `byTileAOP()` 
-sections in this tutorial. For SAE data, use `zipsByProduct()` and then 
-`stackEddy()`.
+but not on surface-atmosphere exchange (SAE) data and remote sensing (AOP) 
+data. For functions that download AOP data, see the `byFileAOP()` and 
+`byTileAOP()` sections in this tutorial. For SAE data, use `zipsByProduct()` 
+and then `stackEddy()`, and see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">flux data tutorial</a>.
 
 As of June 2026, NEON requires an API token for data downloads, to reduce bot 
 scraping and improve user support. Tokens can be generated in NEON data portal 
@@ -188,8 +191,11 @@ data and warn you about the size of your download? Defaults to T; if
 you are using this function within a script or batch process you 
 will want to set it to F.
 * `token`: NEON API token.
-* `nCores`: Number of cores to use for parallel processing. Defaults 
-to 1, i.e. no parallelization.
+* `cloud.mode`: Can be set to True if you are working in a cloud 
+environment; provides more efficient data transfer from NEON cloud 
+storage to other cloud environments.
+* `progress`: Set to False to omit the progress bar during download 
+and stacking.
 
 ### Python
 
@@ -239,12 +245,6 @@ to download. The DPID can be found on the
 <a href="http://data.neonscience.org/data-products/explore" target="_blank">
 Explore Data Products page</a>.
 It will be in the form DP#.#####.###
-
-As of June 2026, NEON requires an API token for data downloads, to reduce bot 
-scraping and improve user support. Tokens can be generated in NEON data portal 
-user accounts - log in to your account or create one, and go to the API Tokens 
-section. For best practices in storing and using tokens, follow the instructions 
-<a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ### Demo data download and read {.tabset}
 
@@ -381,7 +381,7 @@ below.
 Your data will download from the Portal in a single zipped file. 
 
 The stacking function will only work on zipped Comma Separated Value (.csv) 
-files and not the NEON data stored in other formats (HDF5, etc). 
+files and not on NEON data stored in other formats (HDF5, etc). 
 
 ### Run `stackByTable()` {.tabset}
 
@@ -395,7 +395,7 @@ downloaded and zipped file.
 ```{r run-function, eval = FALSE}
 
 # Modify the file path to the file location on your computer
-stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
+stackByTable(filepath="~data/NEON_temp-air-single.zip")
 
 ```
 
@@ -404,7 +404,7 @@ stackByTable(filepath="~neon/data/NEON_temp-air-single.zip")
 ```{python p-run-function, eval = FALSE}
 
 # Modify the file path to the file location on your computer
-nu.stack_by_table(filepath="/neon/data/NEON_temp-air-single.zip")
+nu.stack_by_table(filepath="/data/NEON_temp-air-single.zip")
 
 ```
 

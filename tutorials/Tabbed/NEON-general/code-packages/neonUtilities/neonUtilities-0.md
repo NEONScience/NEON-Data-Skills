@@ -52,6 +52,8 @@ monthly files by data table to create a single file per table.</li>
 API</a>; downloads data based on data product and site criteria. Stores
 downloaded data in a format that can then be joined by
 <code>stackByTable()</code>.</li>
+<li><code>readTableNEON()</code>: Reads NEON data tables into R, using
+the variables file to assign R classes to each column.</li>
 <li><code>loadByProduct()</code>: Combines the functionality of
 <code>zipsByProduct()</code>,<br />
 <code>stackByTable()</code>, and <code>readTableNEON()</code>: Downloads
@@ -63,8 +65,6 @@ Preserves the file structure of the original data.</li>
 <li><code>byTileAOP()</code>: Downloads remote sensing data for the
 specified data product, subset to tiles that intersect a list of
 coordinates.</li>
-<li><code>readTableNEON()</code>: Reads NEON data tables into R, using
-the variables file to assign R classes to each column.</li>
 <li><code>getCitation()</code>: Get a BibTeX citation for a particular
 data product and release.</li>
 </ul>
@@ -81,6 +81,8 @@ monthly files by data table to create a single file per table.</li>
 API</a>; downloads data based on data product and site criteria. Stores
 downloaded data in a format that can then be joined by
 <code>stack_by_table()</code>.</li>
+<li><code>read_table_neon()</code>: Reads NEON data tables into R, using
+the variables file to assign R classes to each column.</li>
 <li><code>load_by_product()</code>: Combines the functionality of
 <code>zips_by_product()</code>,<br />
 <code>stack_by_table()</code>, and <code>read_table_neon()</code>:
@@ -92,8 +94,6 @@ Preserves the file structure of the original data.</li>
 <li><code>by_tile_aop()</code>: Downloads remote sensing data for the
 specified data product, subset to tiles that intersect a list of
 coordinates.</li>
-<li><code>read_table_neon()</code>: Reads NEON data tables into R, using
-the variables file to assign R classes to each column.</li>
 <li><code>get_citation()</code>: Get a BibTeX citation for a particular
 data product and release.</li>
 </ul>
@@ -119,21 +119,21 @@ your code.</p>
 <div id="r-1" class="section level3">
 <h3>R</h3>
 <pre class="r"><code>## 
-## # install neonUtilities - can skip if already installed
 ## install.packages(&quot;neonUtilities&quot;)
 ## 
-## # load neonUtilities
 library(neonUtilities)
 ## </code></pre>
 </div>
 <div id="python-1" class="section level3">
 <h3>Python</h3>
-<pre class="python"><code># install neonutilities - can skip if already installed
-# do this in the command line
-pip install neonutilities</code></pre>
+<pre class="python"><code># do this in the command line
+pip install neonutilities
+pip install python-dotenv</code></pre>
 <pre class="python"><code>
 # load neonutilities in working environment
-import neonutilities as nu</code></pre>
+import neonutilities as nu
+import dotenv
+import os</code></pre>
 </div>
 </div>
 <div id="section-1" class="section level2 unnumbered">
@@ -154,14 +154,19 @@ with the latest data, and it ends with ready-to-use tables. However, if
 you use it in a workflow you run repeatedly, keep in mind it will
 re-download the data every time.</p>
 <p><code>loadByProduct()</code> works on most observational (OS) and
-sensor (IS) data, but not on surface-atmosphere exchange (SAE) data,
-remote sensing (AOP) data, and some of the data tables in the microbial
-data products. For functions that download AOP data, see the
+sensor (IS) data, but not on surface-atmosphere exchange (SAE) data and
+remote sensing (AOP) data. For functions that download AOP data, see the
 <code>byFileAOP()</code> and <code>byTileAOP()</code> sections in this
-tutorial. For functions that work with SAE data, see the
-<a href="https://www.neonscience.org/eddy-data-intro" target="_blank">NEON
-eddy flux data tutorial</a>. SAE functions are not yet available in
-Python.</p>
+tutorial. For SAE data, use <code>zipsByProduct()</code> and then
+<code>stackEddy()</code>, and see the
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">flux
+data tutorial</a>.</p>
+<p>As of June 2026, NEON requires an API token for data downloads, to
+reduce bot scraping and improve user support. Tokens can be generated in
+NEON data portal user accounts - log in to your account or create one,
+and go to the API Tokens section. For best practices in storing and
+using tokens, follow the instructions
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
 <p>The inputs to <code>loadByProduct()</code> control which data to
 download and how to manage the processing:</p>
 <div id="r-2" class="section level3">
@@ -199,11 +204,12 @@ defaults to the working directory.</li>
 downloading data and warn you about the size of your download? Defaults
 to T; if you are using this function within a script or batch process
 you will want to set it to F.</li>
-<li><code>token</code>: Optional API token for faster downloads. See the
-<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">
-API token</a> tutorial.</li>
-<li><code>nCores</code>: Number of cores to use for parallel processing.
-Defaults to 1, i.e. no parallelization.</li>
+<li><code>token</code>: NEON API token.</li>
+<li><code>cloud.mode</code>: Can be set to True if you are working in a
+cloud environment; provides more efficient data transfer from NEON cloud
+storage to other cloud environments.</li>
+<li><code>progress</code>: Set to False to omit the progress bar during
+download and stacking.</li>
 </ul>
 </div>
 <div id="python-2" class="section level3">
@@ -241,9 +247,7 @@ defaults to the working directory.</li>
 before downloading data and warn you about the size of your download?
 Defaults to True; if you are using this function within a script or
 batch process you will want to set it to False.</li>
-<li><code>token</code>: Optional API token for faster downloads. See the
-<a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">
-API token</a> tutorial.</li>
+<li><code>token</code>: NEON API token.</li>
 <li><code>cloud_mode</code>: Can be set to True if you are working in a
 cloud environment; provides more efficient data transfer from NEON cloud
 storage to other cloud environments.</li>
@@ -262,21 +266,28 @@ Explore Data Products page</a>. It will be in the form DP#.#####.###</p>
 <div id="demo-data-download-and-read" class="section level3 tabset">
 <h3 class="tabset">Demo data download and read</h3>
 <p>Let’s get triple-aspirated air temperature data (DP1.00003.001) from
-Moab and Onaqui (MOAB and ONAQ), from May–August 2018, and name the data
+Moab and Onaqui (MOAB and ONAQ), from May-August 2018, and name the data
 object <code>triptemp</code>:</p>
 <div id="r-3" class="section level4">
 <h4>R</h4>
-<pre class="r"><code>triptemp &lt;- loadByProduct(dpID=&quot;DP1.00003.001&quot;, 
+<pre class="r"><code>token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
+
+triptemp &lt;- loadByProduct(dpID=&quot;DP1.00003.001&quot;, 
                           site=c(&quot;MOAB&quot;,&quot;ONAQ&quot;),
                           startdate=&quot;2018-05&quot;, 
-                          enddate=&quot;2018-08&quot;)</code></pre>
+                          enddate=&quot;2018-08&quot;,
+                          token=token)</code></pre>
 </div>
 <div id="python-3" class="section level4">
 <h4>Python</h4>
-<pre class="python"><code>triptemp = nu.load_by_product(dpid=&quot;DP1.00003.001&quot;, 
+<pre class="python"><code>dotenv.load_dotenv()
+token = os.environ.get(&quot;NEON_TOKEN&quot;)
+
+triptemp = nu.load_by_product(dpid=&quot;DP1.00003.001&quot;, 
                               site=[&quot;MOAB&quot;,&quot;ONAQ&quot;],
                               startdate=&quot;2018-05&quot;, 
-                              enddate=&quot;2018-08&quot;)</code></pre>
+                              enddate=&quot;2018-08&quot;,
+                              token=token)</code></pre>
 </div>
 </div>
 <div id="section-3" class="section level3 unnumbered">
@@ -290,7 +301,7 @@ each of them, select them from the list.</p>
 <div id="r-4" class="section level4">
 <h4>R</h4>
 <pre class="r"><code>names(triptemp)</code></pre>
-<pre><code>## [1] &quot;citation_00003_RELEASE-2024&quot; &quot;issueLog_00003&quot;             
+<pre><code>## [1] &quot;citation_00003_RELEASE-2026&quot; &quot;issueLog_00003&quot;             
 ## [3] &quot;readme_00003&quot;                &quot;sensor_positions_00003&quot;     
 ## [5] &quot;TAAT_1min&quot;                   &quot;TAAT_30min&quot;                 
 ## [7] &quot;variables_00003&quot;</code></pre>
@@ -303,7 +314,7 @@ function:</p>
 <div id="python-4" class="section level4">
 <h4>Python</h4>
 <pre class="python"><code>triptemp.keys()</code></pre>
-<pre><code>## dict_keys([&#39;TAAT_1min&#39;, &#39;TAAT_30min&#39;, &#39;citation_00003_RELEASE-2024&#39;, &#39;issueLog_00003&#39;, &#39;readme_00003&#39;, &#39;sensor_positions_00003&#39;, &#39;variables_00003&#39;])</code></pre>
+<pre><code>## dict_keys([&#39;TAAT_1min&#39;, &#39;TAAT_30min&#39;, &#39;citation_00003_RELEASE-2026&#39;, &#39;issueLog_00003&#39;, &#39;readme_00003&#39;, &#39;sensor_positions_00003&#39;, &#39;variables_00003&#39;])</code></pre>
 <pre class="python"><code>temp30 = triptemp[&quot;TAAT_30min&quot;]</code></pre>
 <p>If you prefer to extract each table from the list and work with it as
 an independent object, you can use<br />
@@ -339,7 +350,7 @@ Data Portal</a>. To stack data downloaded from the API, see the
 <code>zipsByProduct()</code> section below.</p>
 <p>Your data will download from the Portal in a single zipped file.</p>
 <p>The stacking function will only work on zipped Comma Separated Value
-(.csv) files and not the NEON data stored in other formats (HDF5,
+(.csv) files and not on NEON data stored in other formats (HDF5,
 etc).</p>
 </div>
 <div id="run-stackbytable" class="section level3 tabset">
@@ -350,12 +361,12 @@ to the downloaded and zipped file.</p>
 <div id="r-5" class="section level4">
 <h4>R</h4>
 <pre class="r"><code># Modify the file path to the file location on your computer
-stackByTable(filepath=&quot;~neon/data/NEON_temp-air-single.zip&quot;)</code></pre>
+stackByTable(filepath=&quot;~data/NEON_temp-air-single.zip&quot;)</code></pre>
 </div>
 <div id="python-5" class="section level4">
 <h4>Python</h4>
 <pre class="python"><code># Modify the file path to the file location on your computer
-nu.stack_by_table(filepath=&quot;/neon/data/NEON_temp-air-single.zip&quot;)</code></pre>
+nu.stack_by_table(filepath=&quot;/data/NEON_temp-air-single.zip&quot;)</code></pre>
 </div>
 </div>
 <div id="section-5" class="section level3 unnumbered">
@@ -389,7 +400,7 @@ ensures time stamps and missing data are interpreted correctly.</p>
 </div>
 <div id="python-6" class="section level3">
 <h3>Python</h3>
-<pre class="python"><code>SAAT30 = nu.read_table_neon(
+<pre class="python"><code>SAAT30 = read_table_neon(
   dataFile=&#39;/stackedFiles/SAAT_30min.csv&#39;,
   varFile=&#39;/stackedFiles/variables_00002.csv&#39;
 )</code></pre>
@@ -447,7 +458,8 @@ data from Wind River Experimental Forest (WREF) for April and May of
 <h3>R</h3>
 <pre class="r"><code>zipsByProduct(dpID=&quot;DP1.00002.001&quot;, site=&quot;WREF&quot;, 
               startdate=&quot;2019-04&quot;, enddate=&quot;2019-05&quot;,
-              package=&quot;basic&quot;, check.size=T)</code></pre>
+              package=&quot;basic&quot;, check.size=T,
+              token=token)</code></pre>
 <p>Downloaded files can now be passed to <code>stackByTable()</code> to
 be stacked.</p>
 <pre class="r"><code>stackByTable(filepath=paste(getwd(), 
@@ -458,7 +470,8 @@ be stacked.</p>
 <h3>Python</h3>
 <pre class="python"><code>nu.zips_by_product(dpid=&quot;DP1.00002.001&quot;, site=&quot;WREF&quot;, 
                    startdate=&quot;2019-04&quot;, enddate=&quot;2019-05&quot;,
-                   package=&quot;basic&quot;, check_size=True)</code></pre>
+                   package=&quot;basic&quot;, check_size=True,
+                   token=token)</code></pre>
 <p>Downloaded files can now be passed to <code>stackByTable()</code> to
 be stacked.</p>
 <pre class="python"><code>nu.stack_by_table(filepath=os.getcwd()+
@@ -483,14 +496,16 @@ at WREF:</p>
 <pre class="r"><code>zipsByProduct(dpID=&quot;DP1.00002.001&quot;, site=&quot;WREF&quot;, 
               startdate=&quot;2019-04&quot;, enddate=&quot;2019-05&quot;,
               package=&quot;basic&quot;, timeIndex=30, 
-              check.size=T)</code></pre>
+              check.size=T,
+              token=token)</code></pre>
 </div>
 <div id="python-9" class="section level4">
 <h4>Python</h4>
 <pre class="python"><code>nu.zips_by_product(dpid=&quot;DP1.00002.001&quot;, site=&quot;WREF&quot;, 
                    startdate=&quot;2019-04&quot;, 
                    enddate=&quot;2019-05&quot;, package=&quot;basic&quot;, 
-                   timeindex=30, check_size=True)</code></pre>
+                   timeindex=30, check_size=True,
+                   token=token)</code></pre>
 </div>
 </div>
 <div id="section-9" class="section level3 unnumbered">
@@ -515,13 +530,15 @@ relatively small year-site-product combination.</p>
 <div id="r-10" class="section level3">
 <h3>R</h3>
 <pre class="r"><code>byFileAOP(&quot;DP3.30015.001&quot;, site=&quot;HOPB&quot;, 
-          year=2017, check.size=T)</code></pre>
+          year=2017, check.size=T,
+          token=token)</code></pre>
 </div>
 <div id="python-10" class="section level3">
 <h3>Python</h3>
 <pre class="python"><code>nu.by_file_aop(dpid=&quot;DP3.30015.001&quot;, 
                site=&quot;HOPB&quot;, year=2017, 
-               check_size=True)</code></pre>
+               check_size=True,
+               token=token)</code></pre>
 </div>
 </div>
 <div id="section-10" class="section level2 unnumbered">
@@ -558,7 +575,8 @@ easting and northing coordinates.</p>
 <pre class="r"><code>byTileAOP(dpID=&quot;DP3.30026.001&quot;, site=&quot;SOAP&quot;, 
           year=2018, easting=c(298755,299296),
           northing=c(4101405,4101461),
-          buffer=20)</code></pre>
+          buffer=20,
+          token=token)</code></pre>
 </div>
 <div id="python-11" class="section level3">
 <h3>Python</h3>
@@ -566,7 +584,8 @@ easting and northing coordinates.</p>
                site=&quot;SOAP&quot;, year=2018, 
                easting=[298755,299296],
                northing=[4101405,4101461],
-               buffer=20)</code></pre>
+               buffer=20,
+               token=token)</code></pre>
 </div>
 </div>
 <div id="section-11" class="section level2 unnumbered">

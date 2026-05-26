@@ -16,6 +16,7 @@ options(timeout=300)
 # Note: do not put '/' at the end of your directory name
 dirs <- c("Tabbed/NEON-general/NEON-download-explore",
           "Tabbed/NEON-general/code-packages/tokens-long",
+          "Tabbed/NEON-general/code-packages/neonUtilities",
           "R/biodiversity/biorepository",
           "R/biodiversity/fish",
           "R/NEON-general/neon-overview/new-features-2025",
@@ -28,7 +29,7 @@ dirs <- c("Tabbed/NEON-general/NEON-download-explore",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[2]
+subDir <- dirs[3]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"
