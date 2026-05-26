@@ -391,7 +391,7 @@ Here is our final classified image:
 
 ## Acknowledgements
 
-This tutorial was modified from a lesson developed by the <a href="https://tropicalstudies.org/" target="_blank">Organization for Tropical Studies</a> as part of the course <a href="https://tropicalstudies.org/course/google-earth-engine-for-ecology-and-conservation/" target="_blank">Google Earth Engine for Ecology and Conservation</a>. Thank you OTS!
+This tutorial was modified from a lesson developed by the <a href="https://tropicalstudies.org/" target="_blank">Organization for Tropical Studies (OTS)</a> as part of the course <a href="https://tropicalstudies.org/course/google-earth-engine-for-ecology-and-conservation/" target="_blank">Google Earth Engine for Ecology and Conservation</a>. Thank you OTS!
 
 ## Get Lesson Code
 
