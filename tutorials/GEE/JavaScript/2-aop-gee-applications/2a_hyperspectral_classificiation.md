@@ -203,7 +203,7 @@ Map.addLayer(shade, {color: 'black'}, 'Shade', 0);
 
 ## Train/Test Split
 
-Once we have the training data for each species, we can split the data for each species into training and test data, using an 80/20 split. The training data will be used later on to train the random forest model, and the test data is used to test the accuracy of the model results on an independent data set.
+Once we have the training data for each species, we can split the data for each species into training and test data, using an 80/20 split. To get the training data we will filter the random samples less than (`Filter.lt`) 0.8, and to get the test data we will filter the random samples greater than (`Filter.gte`) 0.8. The training data will be used later on to train the random forest model, and the test data is used to test the accuracy of the model results on an independent data set.
 
 ```javascript
 // Create training and test subsets for each class (i.e., species types) using stratified random sampling (80/20%)
@@ -298,7 +298,7 @@ var classified = clbj_sdr_chm_airshed.classify(trained_classifier);
 
 ## Assess Model Performance
 
-Next we can assess the performance of this classificiation, by looking at some different metrics. The train accuracy should be high (close to 1, or 100%), as it is testing the performance on the data used to generate the model - however, it is not an accurate representation of the actual accuracy. Instead, the test accuracy tends to be a little more reliable, as it is an independent assessment on the separate (test) data set.
+Next we can assess the performance of this classification, by looking at some different metrics. The train accuracy should be high (close to 1, or 100%), as it is testing the performance on the data used to generate the model - however, it is not an accurate representation of the actual accuracy. Instead, the test accuracy tends to be a little more reliable, as it is an independent assessment on the separate (test) data set.
 
 ```javascript
 // Accuracy Assessment
@@ -308,7 +308,7 @@ var train_accuracy = trained_classifier.confusionMatrix().accuracy();
 print('Train Accuracy', train_accuracy);
 ```
 
-If you look at the console, you should see a train accuracy of 0.973, pretty good! But we expect this to be good, because we are calculating the accuracy of the samples we used to generate the model. It is not representative of the actual model accuracy.
+If you look at the console, you should see a train accuracy of close to 0.99, pretty good! But we expect this to be good, because we are calculating the accuracy of the samples we used to generate the model. It is not representative of the actual model accuracy.
 
 We can also look at some other accuracy metrics. We won't go into details on each of these, but highlight some of the main takeaways for each of the metrics. For more information on accuracy assessments, you can also refer to <a href="https://blog.gishub.org/earth-engine-tutorial-33-performing-accuracy-assessment-for-image-classification" target="_blank"> Qiusheng Wu's Accuracy Assessment for Image Classification Tutorial</a>
 
