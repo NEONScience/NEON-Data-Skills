@@ -60,11 +60,11 @@ The plant species data, contained in the `CLBJ_veg_2017_filtered` feature collec
 // Specify CLBJ location
 var geo = ee.Geometry.Point([-97.5706464, 33.4045729])
 // Load species/land cover samples feature collection to variable (originally a .csv file extracted from  NEON woody plant vegetation structure data product (DP1.10098.001))
-var CLBJ_veg = ee.FeatureCollection('projects/neon/AOP_NEON_Plots/CLBJ_veg_2017_filtered')
+var clbj_veg = ee.FeatureCollection('projects/neon/AOP_NEON_Plots/CLBJ_veg_2017_filtered')
 // Load terrestrial observation system (TOS) boundary to a variable
-var CLBJ_TOS = ee.FeatureCollection('projects/neon/AOP_TOS_Boundaries/D11_CLBJ_TOS_dissolve')
-//Load tower airshed boundary to a variable
-var CLBJ_Airshed = ee.FeatureCollection('projects/neon/Airsheds/CLBJ_90percent_footprint')
+var clbj_tos = ee.FeatureCollection('projects/neon/AOP_TOS_Boundaries/D11_CLBJ_TOS_dissolve')
+// Load tower airshed boundary to a variable
+var clbj_airshed = ee.FeatureCollection('projects/neon/Airsheds/CLBJ_90percent_footprint')
 ```
 
 Next, let's display the Digital Terrain Model (DTM) and Canopy Height Model (CHM) from the 2017 CLBJ collection, masking out the no-data values (-9999). 
