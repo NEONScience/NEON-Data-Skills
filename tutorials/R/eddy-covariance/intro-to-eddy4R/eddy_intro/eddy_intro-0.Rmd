@@ -15,7 +15,7 @@ tutorialSeries:
 urlTitle: eddy-data-intro
 ---
 
-```{r setup, echo=FALSE, warning=FALSE}
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
 
 library(htmltools)
 
@@ -24,6 +24,6 @@ library(htmltools)
 
 ```{r html, echo=FALSE, warning=FALSE, message=FALSE}
 
-htmltools::includeHTML("https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/refs/heads/main/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro-content.html")
+htmltools::includeHTML("/Users/clunch/GitHub/NEON-Data-Skills/tutorials/R/eddy-covariance/intro-to-eddy4R/eddy_intro/eddy_intro-content.html")
 
 ```

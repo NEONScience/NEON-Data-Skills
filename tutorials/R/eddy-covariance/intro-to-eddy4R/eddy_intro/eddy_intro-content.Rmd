@@ -15,9 +15,8 @@ This data tutorial provides an introduction to working with NEON eddy
 flux data, using the `neonUtilities` R package or the `neonutilities` 
 Python package. If you are new to NEON 
 data, we recommend starting with a more general tutorial, such as the 
-<a href="https://www.neonscience.org/neonDataStackR" target="_blank">neonUtilities tutorial</a> 
-or the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore tutorial</a>. 
-Some of the functions and techniques described in those tutorials will 
+<a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore tutorial</a>. 
+Some of the functions and techniques described there will 
 be used here, as well as functions and data formats that are unique to 
 the eddy flux system.
 
@@ -68,7 +67,7 @@ pip install neonutilities
 
 ```
 
-Now load packages.
+Now load packages and token.
 
 ```{python p-load-packages, results="hide"}
 
@@ -77,7 +76,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import dotenv
 import os
+
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 
 ```
 
@@ -102,10 +105,9 @@ Inputs to the `zipsByProduct()` function for this tutorial:
 * `enddate`: 2018-07 (both dates are inclusive)
 * `savepath`: path to download to; here we use the working directory
 * `check.size`: T if you want to see file size before downloading, otherwise F
+* `token`: NEON API token
 
-The download may take a while, especially if you're on a slow network. 
-For faster downloads, consider using an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API token</a>.
-
+The download may take a while, especially if you're on a slow network.
 
 ```{r download, results="hide", message=FALSE}
 
@@ -135,10 +137,9 @@ Inputs to the `zips_by_product()` function for this tutorial:
 * `enddate`: 2018-07 (both dates are inclusive)
 * `savepath`: path to download to; here we use the working directory
 * `check_size`: T if you want to see file size before downloading, otherwise F
+* `token`: NEON API token
 
-The download may take a while, especially if you're on a slow network. 
-For faster downloads, consider using an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API token</a>.
-
+The download may take a while, especially if you're on a slow network.
 
 ```{python p-download, results="hide", message=FALSE}
 
@@ -146,7 +147,8 @@ nu.zips_by_product(dpid="DP4.00200.001", package="basic",
               site=["NIWO","HARV"], 
               startdate="2018-06", enddate="2018-07",
               savepath=os.getcwd(), 
-              check_size=False)
+              check_size=False,
+              token=token)
 
 ```
 
@@ -442,6 +444,7 @@ needed are:
 * `enddate`: 2018-07
 * `package`: basic
 * `timeIndex`: 30
+* `token`: your API token
 
 The new input here is `timeIndex=30`, which downloads only the 30-minute data. 
 Since the flux data are at a 30-minute resolution, we can save on 
@@ -475,6 +478,7 @@ needed are:
 * `enddate`: 2018-07
 * `package`: basic
 * `timeindex`: 30
+* `token`: your API token
 
 The new input here is `timeindex=30`, which downloads only the 30-minute data. 
 Since the flux data are at a 30-minute resolution, we can save on 
@@ -486,8 +490,10 @@ all available averaging intervals.
 
 pr = nu.load_by_product("DP1.00024.001", site="NIWO", 
                     timeindex=30, package="basic", 
-                    startdate="2018-06", enddate="2018-07",
-                    check_size=False)
+                    startdate="2018-06", 
+                    enddate="2018-07",
+                    check_size=False,
+                    token=token)
 
 ```
 
