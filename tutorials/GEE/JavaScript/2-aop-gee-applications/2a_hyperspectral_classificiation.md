@@ -203,7 +203,7 @@ Map.addLayer(shade, {color: 'black'}, 'Shade', 0);
 
 ## Train/Test Split
 
-Once we have the training data for each species, we can split the data for each species into training and test data, using an 80/20 split. To get the training data we will filter the random samples less than (`Filter.lt`) 0.8, and to get the test data we will filter the random samples greater than (`Filter.gte`) 0.8. The training data will be used later on to train the random forest model, and the test data is used to test the accuracy of the model results on an independent data set.
+Once we have the training data for each species, we can split the data for each species into training and test data, using an 80/20 split. We'll start by using the `.randomColumn()` function to create a new property (a column named "random") to all points in each species variable; these are saved to a new variable ending in `_random` (e.g. `cela_random`, `juvi_random`) for each taxa. Each point is assigned a value between 0 and 1. To get the training data, the code filters for points where the random number is less than 0.80 (`ee.Filter.lt`); these are the 80% used to train (or teach) the model. Then we can filter the random samples greater than 0.8 (using `ee.Filter.lt`) to get the 20% test data. The test data is used to assess the accuracy of the model results on an independent data set. The random assignment shuffles the data up uniformly across the entire study area to ensure stratification and prevent spatial bias, and this method is computationally efficient in GEE.
 
 ```javascript
 // Create training and test subsets for each class (i.e., species types) using stratified random sampling (80/20%)
