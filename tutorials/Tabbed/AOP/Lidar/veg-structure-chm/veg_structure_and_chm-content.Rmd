@@ -73,6 +73,7 @@ The other packages can be installed directly from CRAN.
 install.packages("neonUtilities")
 install.packages("neonOS")
 install.packages("terra")
+install.packages("dplyr")
 install.packages("devtools")
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
@@ -82,9 +83,10 @@ Now load packages. This needs to be done every time you run code.
 We'll also set a working directory for data downloads (adapt the 
 working directory path for your system) and load our API token.
 
-```{r load-packages, results="hide", message=FALSE}
+```{r load-packages, results="hide", message=FALSE, warning=FALSE}
 
 library(terra)
+library(dplyr)
 library(neonUtilities)
 library(neonOS)
 library(geoNEON)
@@ -376,12 +378,18 @@ to get the scale right.
 
 ```{r plot-1}
 
-veg2017 <- veg[which(veg$eventID.y=="vst_WREF_2017"),]
+veg2017 <- veg |>
+  filter(eventID.y=="vst_WREF_2017")
 
-symbols(veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
-        veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")], 
-        circles=veg2017$stemDiameter[which(veg2017$plotID=="WREF_075")]/100/2, 
-        inches=F, xlab="Easting", ylab="Northing")
+veg2017.075 <- veg2017 |>
+  filter(plotID=="WREF_075")
+
+symbols(veg2017.075$adjEasting, 
+        veg2017.075$adjNorthing, 
+        circles=veg2017.075$stemDiameter/100/2, 
+        xlab="Easting", 
+        ylab="Northing", 
+        inches=F)
 
 ```
 
@@ -390,14 +398,17 @@ in blue:
 
 ```{r plot-2}
 
-symbols(veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
-        veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")], 
-        circles=veg2017$stemDiameter[which(veg2017$plotID=="WREF_075")]/100/2, 
-        inches=F, xlab="Easting", ylab="Northing")
-symbols(veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
-        veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")], 
-        circles=veg2017$adjCoordinateUncertainty[which(veg2017$plotID=="WREF_075")], 
-        inches=F, add=T, fg="lightblue")
+symbols(veg2017.075$adjEasting, 
+        veg2017.075$adjNorthing, 
+        circles=veg2017.075$stemDiameter/100/2, 
+        xlab="Easting", 
+        ylab="Northing", 
+        inches=F)
+symbols(veg2017.075$adjEasting, 
+        veg2017.075$adjNorthing, 
+        circles=veg2017.075$adjCoordinateUncertainty, 
+        inches=F, add=T, 
+        fg="lightblue")
 
 ```
 
@@ -467,8 +478,8 @@ in R and the `rasterio` and `rioxarray`` packages in Python.
 ```{r get-chm, results="hide", message=FALSE}
 
 byTileAOP(dpID="DP3.30015.001", site="WREF", year=2017, 
-          easting=veg2017$adjEasting[which(veg2017$plotID=="WREF_075")], 
-          northing=veg2017$adjNorthing[which(veg2017$plotID=="WREF_075")],
+          easting=veg2017.075$adjEasting, 
+          northing=veg2017.075$adjNorthing,
           check.size=FALSE, savepath=wd,
           token=token)
 
@@ -540,10 +551,11 @@ forward, we're working with all measured trees within the tile area.
 
 ```{r vegsub}
 
-vegsub <- veg2017[which(veg2017$adjEasting >= ext(chm)[1] &
-                        veg2017$adjEasting <= ext(chm)[2] &
-                        veg2017$adjNorthing >= ext(chm)[3] & 
-                        veg2017$adjNorthing <= ext(chm)[4]),]
+vegsub <- veg2017 |>
+  filter(adjEasting >= ext(chm)[1] &
+         adjEasting <= ext(chm)[2] &
+         adjNorthing >= ext(chm)[3] & 
+         adjNorthing <= ext(chm)[4])
 
 ```
 
@@ -670,7 +682,7 @@ To extract values using a buffer in Python, we need to create a
 shapefile of the buffered locations, and then extract the maximum 
 value for each area in the shapefile.
 
-```{python p-buffer-chm}
+```{python p-buffer-chm, message=FALSE, warning=FALSE}
 
 vegloc = vegsub[["individualID","adjEasting","adjNorthing","adjCoordinateUncertainty"]]
 v = vegloc.rename(columns={"individualID": "indID", "adjEasting": "easting",
@@ -899,14 +911,14 @@ using the trees as the starting point instead of map area.
 
 ### Find the top-of-canopy trees and compare to model {.tabset}
 
-Start by sorting the veg structure data by height.
+Start by sorting the vegetation structure data by height.
 
 #### R
 
 ```{r vegsub-2}
 
-vegsub <- vegsub[order(vegsub$height, 
-                       decreasing=T),]
+vegsub <- vegsub |>
+  arrange(desc(height))
 
 ```
 
@@ -934,7 +946,8 @@ for(i in 1:nrow(vegsub)) {
                         vegsub$height<vegsub$height[i])] <- NA
 }
 
-vegfil <- vegfil[which(!is.na(vegfil$height)),]
+vegfil <- vegfil |>
+  filter(!is.na(height))
 
 ```
 
@@ -1040,7 +1053,8 @@ trees that aren't alive:
 
 ```{r live-trees}
 
-vegfil <- vegfil[which(vegfil$plantStatus=="Live"),]
+vegfil <- vegfil |>
+  filter(plantStatus=="Live")
 
 filterCHM <- extract(chm, 
                      cbind(vegfil$adjEasting, 
