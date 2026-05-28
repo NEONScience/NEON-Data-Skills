@@ -1,136 +1,119 @@
-## ----install_packages, eval=FALSE--------------------------------------------------------------------
+## ----install_packages, eval=FALSE---------------------------------------------------------------------------
 # 
 # install.packages("neonUtilities")
+# install.packages("neonOS")
+# install.packages("dplyr")
+# install.packages("ggplot2")
 # 
 
 
-## ----load-packages, results="hide"-------------------------------------------------------------------
+## ----load-packages, results="hide", message=FALSE, warning=FALSE--------------------------------------------
 
+library(dplyr)
+library(ggplot2)
 library(neonUtilities)
+library(neonOS)
+token <- Sys.getenv("NEON_TOKEN")
 
 
 
-## ----soildata, results="hide", message=FALSE---------------------------------------------------------
+## ----soildata, results="hide", message=FALSE----------------------------------------------------------------
 
 microb <- loadByProduct(dpID = "DP1.10104.001", 
                         site = "GUAN", 
                         release = "RELEASE-2024", 
-                        check.size = F)
+                        check.size = F,
+                        token=token)
 
 soil <- loadByProduct(dpID = "DP1.10086.001", 
                       site = "GUAN", 
                       release = "RELEASE-2024", 
-                      check.size = F)
+                      check.size = F,
+                      token=token)
+
+list2env(microb, .GlobalEnv)
+list2env(soil, .GlobalEnv)
 
 
 
-## ----explore-microb----------------------------------------------------------------------------------
+## ----explore-microb-----------------------------------------------------------------------------------------
 
 # View the first few rows of the microbial biomass table
-head(microb$sme_scaledMicrobialBiomass)
+head(sme_scaledMicrobialBiomass)
 
 
 
-## ----total-lipid-conc-correction---------------------------------------------------------------------
+## ----total-lipid-conc-correction----------------------------------------------------------------------------
 
-# Identify pre- (i.e., c18To0ScaledConcentration = NA) and post-November 2021 data
-preNov2021 <- is.na(microb$sme_scaledMicrobialBiomass$c18To0ScaledConcentration)
-
-# Add the pre-November 2021 total lipid concentration data to a new column (no correction needed)
-microb$sme_scaledMicrobialBiomass$correctedTotLipidConc[preNov2021] <- 
-  microb$sme_scaledMicrobialBiomass$totalLipidScaledConcentration[preNov2021]
-
-# Add the corrected (totalLipidScaledConcentration - c18To0ScaledConcentration) total lipid concentration data to the new column
-microb$sme_scaledMicrobialBiomass$correctedTotLipidConc[!preNov2021] <- 
-  microb$sme_scaledMicrobialBiomass$totalLipidScaledConcentration[!preNov2021] - 
-  microb$sme_scaledMicrobialBiomass$c18To0ScaledConcentration[!preNov2021]
+sme_scaledMicrobialBiomass <- sme_scaledMicrobialBiomass |>
+  mutate(correctedTotLipidConc = ifelse(is.na(c18To0ScaledConcentration),
+                                        totalLipidScaledConcentration,
+                                        totalLipidScaledConcentration - c18To0ScaledConcentration))
 
 
 
-## ----microb-units------------------------------------------------------------------------------------
+## ----microb-units-------------------------------------------------------------------------------------------
 
-# Identify the units of the totalLipidConcentration data
-microb$variables_10104[grep("totalLipidConcentration", microb$variables_10104$fieldName), c("description", "units")]
+variables_10104 |>
+  filter(fieldName=="totalLipidConcentration") |>
+  select(description, units)
 
 
 
-## ----explore-soil------------------------------------------------------------------------------------
+## ----explore-soil-------------------------------------------------------------------------------------------
 
 # View the first few rows of the soil core table, which includes soil temperature
-head(soil$sls_soilCoreCollection)
+head(sls_soilCoreCollection)
 
 # View the first few rows of the soil moisture table
-head(soil$sls_soilMoisture)
+head(sls_soilMoisture)
 
 
 
-## ----soil-units--------------------------------------------------------------------------------------
+## ----soil-units---------------------------------------------------------------------------------------------
 
-# Identify the units of the soilTemp data
-soil$variables_10086[grep("soilTemp", soil$variables_10086$fieldName), c("description", "units")]
+variables_10086 |>
+  filter(fieldName=="soilTemp") |>
+  select(description, units)
 
-# Identify the units of the soilTemp data
-soil$variables_10086[grep("soilMoisture", soil$variables_10086$fieldName), c("description", "units")]
-
-
-
-## ----temp-rows---------------------------------------------------------------------------------------
-
-# Merge microbial biomass and soil core data tables
-coreMicrob <- merge(soil$sls_soilCoreCollection, microb$sme_scaledMicrobialBiomass, by="sampleID")
-
-# Merge soil moisture table with microbial and core table
-swcMicrob <- merge(soil$sls_soilMoisture, coreMicrob, by="sampleID")
+variables_10086 |>
+  filter(fieldName=="soilMoisture") |>
+  select(description, units)
 
 
 
-## ----mb-temp-plot------------------------------------------------------------------------------------
+## ----temp-rows----------------------------------------------------------------------------------------------
 
-# Identify the different soil plots represented in the table
-soilPlots <- unique(swcMicrob$plotID)
+# Merge soil moisture and soil collection data tables
+soilcm <- joinTableNEON(sls_soilCoreCollection, 
+                        sls_soilMoisture)
 
-# Create a color vector with a different color for each soil plot
-colors <- rainbow(length(soilPlots))
-
-# Identify rows that passed the QA/QC tests
-goodRows <- grep("OK", swcMicrob$analysisResultsQF)
-
-# Create an empty plotting window for the soil temperature and microbial biomass relationship
-plot(swcMicrob$soilTemp, 
-     swcMicrob$correctedTotLipidConc, 
-     pch=NA, 
-     xlab="Soil temperature (degrees C)", 
-     ylab="Microbial biomass (nmol lipids/g soil)")
-
-# Loop through the soil plots and add the temperature-microbial biomass relationship
-for(i in 1:length(soilPlots)){
-  points(swcMicrob$soilTemp[intersect(goodRows, grep(soilPlots[i], swcMicrob$plotID))], 
-         swcMicrob$correctedTotLipidConc[intersect(goodRows, grep(soilPlots[i], swcMicrob$plotID))], 
-         col=colors[i])
-}
-
-# Add a plot legend
-legend("topleft", legend=soilPlots, col=colors, pch=1, bty="n")
+# Merge soil data and microbe biomass data
+swcMicrob <- joinTableNEON(soilcm, 
+                           sme_scaledMicrobialBiomass, 
+                           name1="sls_soilCoreCollection",
+                           name2="sme_scaledMicrobialBiomass")
 
 
 
-## ----mb-swc-plot-------------------------------------------------------------------------------------
+## ----mb-temp-plot-------------------------------------------------------------------------------------------
 
-# Create an empty plotting window for the soil moisture and microbial biomass relationship
-plot(swcMicrob$soilMoisture, 
-     swcMicrob$correctedTotLipidConc, 
-     pch=NA, 
-     xlab="Soil moisture (g water / g soil)", 
-     ylab="Microbial biomass (nmol lipids/g soil)")
+gg <- ggplot(subset(swcMicrob, analysisResultsQF=="OK"), 
+             aes(soilTemp, correctedTotLipidConc)) +
+  geom_point(aes(color=plotID)) +
+  xlab("Soil temperature (degrees C)") +
+  ylab("Microbial biomass (nmol lipids/g soil)")
+gg
 
-# Loop through the soil plots and add the moisture-microbial biomass relationship
-for(i in 1:length(soilPlots)){
-  points(swcMicrob$soilMoisture[intersect(goodRows, grep(soilPlots[i], swcMicrob$plotID))], 
-         swcMicrob$correctedTotLipidConc[intersect(goodRows, grep(soilPlots[i], swcMicrob$plotID))], 
-         col=colors[i])
-}
 
-# Add a plot legend
-legend("topleft", legend=soilPlots, col=colors, pch=1, bty="n")
+
+## ----mb-swc-plot--------------------------------------------------------------------------------------------
+
+gg <- ggplot(subset(swcMicrob, analysisResultsQF=="OK"), 
+             aes(soilMoisture, correctedTotLipidConc)) +
+  geom_point(aes(color=plotID)) +
+  xlab("Soil moisture (g water / g soil)") +
+  ylab("Microbial biomass (nmol lipids/g soil)")
+gg
 
 
