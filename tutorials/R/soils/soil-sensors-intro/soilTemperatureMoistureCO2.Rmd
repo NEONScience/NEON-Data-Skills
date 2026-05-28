@@ -26,14 +26,17 @@ data products to investigate controls on soil CO<sub>2</sub> concentrations:
 * **DP1.00094.001, Soil water content and water salinity**
 * **DP1.00095.001, Soil CO<sub>2</sub> concentration**
 
-<a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Soil temperature</a>, <a href="https://data.neonscience.org/data-products/DP1.00094.001" target="_blank">soil water content</a>, and <a href="https://data.neonscience.org/data-products/DP1.00095.001" target="_blank">soil CO<sub>2</sub> concentration</a> are measured in each of the five sensor-based soil plots at each NEON terrestrial site. Vertical profiles of soil temperature (up to 9 measurement levels per plot) and soil water content (up to 8 levels) are measured from near the soil surface down to 2 m deep or restrictive feature if shallower. Soil CO<sub>2</sub> concentrations are measured at three different surface soil depths, typically <20 cm deep. Within each soil plot all these measurements are made within a few meters of one-another.
+<a href="https://data.neonscience.org/data-products/DP1.00041.001" target="_blank">Soil temperature</a>, <a href="https://data.neonscience.org/data-products/DP1.00094.001" target="_blank">soil water content</a>, and <a href="https://data.neonscience.org/data-products/DP1.00095.001" target="_blank">soil CO<sub>2</sub> concentration</a> are measured in each of the five sensor-based soil plots at each NEON terrestrial site. Vertical profiles of soil temperature (up to 9 measurement levels per plot) and soil water content (up to 8 levels) are measured from near the soil surface down to 2 m deep or restrictive feature if shallower. Soil CO<sub>2</sub> concentrations are measured at three different surface soil depths, typically <20 cm deep. Within each soil plot all these measurements are made within a few meters of one another.
 
 We will be using data from the <a href="https://www.neonscience.org/field-sites/srer" target="_blank">Santa Rita Experimental Range</a> (SRER) site in Arizona. The site is in the Sonoran Desert. Winters are short and mild, while summers are long and hot.
 
 <div id="ds-objectives" markdown="1">
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of R loaded on your computer to complete this tutorial.
+
+* You will need the a version of R (4+) and preferably RStudio loaded on your computer to complete this tutorial.
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 </div>
 
@@ -46,13 +49,15 @@ As of June 2026, NEON requires an API token for data downloads, to reduce bot sc
 ```{r install_packages, eval=FALSE}
 
 install.packages("neonUtilities")
+install.packages("dplyr")
 
 ```
 
 Now load packages and read in your token. This needs to be done every time you run code. 
 
-```{r load-packages, results="hide"}
+```{r load-packages, results="hide", message=FALSE, warning=FALSE}
 
+library(dplyr)
 library(neonUtilities)
 token <- Sys.getenv("NEON_TOKEN")
 
@@ -74,7 +79,7 @@ needed for the function are:
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
 * `token`: NEON API token
 
-Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
+Refer to the <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
 for the `neonUtilities` package for more details if desired.
 
 Note that this will download files totaling approximately 200 MB. If this is too large for your computer or internet connection you can reduce the date range and continue with the rest of the tutorial (e.g., startdate = 2021-06 and enddate = 2021-08; approximately 50 MB).
@@ -113,14 +118,14 @@ co2 <- loadByProduct(dpID="DP1.00095.001",
 
 ## 3. Soil temperature
 
-The data we downloaded contains data from each of the five sensor-based soil plots, but here we will just focus on one of the soil plots (soil plot 1; horizontalPosition = "001"). In addition, soil temperature is measured at multiple depths in each soil plot, but for simplicity we will just use measurements with a nominal depth of 6 cm (verticalPosition = "502"). Lastly, we only want to use data that passed the QA/QC tests (finalQF = 0). The following steps will identify the rows that correspond to each of these conditions and we will then identify the rows corresponding to all of these conditions using the `intersect()` function.
+The data we downloaded contains data from each of the five sensor-based soil plots, but here we will just focus on one of the soil plots (soil plot 1; horizontalPosition = "001"). In addition, soil temperature is measured at multiple depths in each soil plot, but for simplicity we will just use measurements with a nominal depth of 6 cm (verticalPosition = "502"). Lastly, we only want to use data that passed the QA/QC tests (finalQF = 0).
 
 ```{r temp-rows}
 
-p1rowsT <- grep("001", st$ST_30_minute$horizontalPosition)
-d2rowsT <- grep("502", st$ST_30_minute$verticalPosition)
-goodRowsT <- which(st$ST_30_minute$finalQF == 0)
-useTheseT <- intersect(intersect(p1rowsT, d2rowsT), goodRowsT)
+soilTsub <- st$ST_30_minute |>
+  filter(horizontalPosition=="001" & 
+           verticalPosition=="502" & 
+           finalQF==0)
 
 ```
 
@@ -136,7 +141,9 @@ We just want to know the depth (zOffset) of the sensor at soil plot 1 measuremen
 
 ```{r temp-depth-2}
 
-st$sensor_positions_00041[grep("001.502", st$sensor_positions_00041$HOR.VER), "zOffset"]
+st$sensor_positions_00041 |>
+  filter(HOR.VER=="001.502") |>
+  select(zOffset)
 
 ```
 
