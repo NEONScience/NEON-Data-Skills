@@ -1,505 +1,509 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-<title>Load megapit data to R</title>
-
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
-
-
-
-
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="generator" content="litedown 0.7">
+<title>Plotting and Clustering Megapit Soils Data</title>
 <style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
 body {
+  font-family: sans-serif;
   max-width: 800px;
   margin: auto;
   padding: 1em;
-  line-height: 20px;
+  line-height: 1.5;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+body, .abstract, code, .footnotes, footer, #refs, .caption { font-size: .9em; }
+li li { font-size: .95em; }
+ul:has(li > input[type="checkbox"]) { list-style: none; padding-left: 1em; }
+*, :before, :after { box-sizing: border-box; }
+a { color: steelblue; }
+pre, img { max-width: 100%; }
+pre { white-space: pre-wrap; word-break: break-word; }
+pre code { display: block; padding: 1em; overflow-x: auto; }
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre, th) > code, code[class], div > .caption { background: #f8f8f8; }
+pre > code:is(:not([class]), .language-plain, .language-none, .plain), .box, .figure, .table { background: inherit; border: 1px solid #eee; }
+pre > code {
+  &.message { border-color: #9eeaf9; }
+  &.warning { background: #fff3cd; border-color: #fff3cd; }
+  &.error { background: #f8d7da; border-color: #f8d7da; }
 }
-
-h1 {
-   font-size:2.2em;
+.fenced-chunk { border-left: 1px solid #666; }
+.code-fence {
+  opacity: .4;
+  border: 1px dashed #666;
+  border-left: 2px solid;
+  &:hover { opacity: inherit; }
 }
-
-h2 {
-   font-size:1.8em;
+.box, .figure, .table, table { margin: 1em auto; }
+div > .caption { padding: 1px 1em; }
+.figure { p:has(img, svg), pre:has(svg) { text-align: center; } }
+.flex-col { display: flex; justify-content: space-between; }
+table {
+  &:only-child:not(.table > *) { margin: auto; }
+  th, td { padding: 5px; font-variant-numeric: tabular-nums; }
+  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+  thead th { border-bottom: 1px solid #ddd; }
+  &:not(.datatable-table) {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
 }
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
 blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+  color: #666;
+  margin: 0;
+  padding: 1px 1em;
+  border-left: .5em solid #eee;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC {
+  a { text-decoration: none; }
+  ul { list-style: none; padding-left: 1em; }
+  & > ul { padding: 0; }
+  ul ul { border-left: 1px solid lightsteelblue; }
+}
+.body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.main-number::after { content: "."; }
+span[class^="ref-number-"] { font-weight: bold; }
+.ref-number-fig::after, .ref-number-tab::after { content: ":"; }
+.cross-ref-chp::before { content: "Chapter "; }
+.cross-ref-sec::before { content: "Section "; }
+.cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
+.cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
+.cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
+.abstract, #refs {
+  &::before { display: block; margin: 1em auto; font-weight: bold; }
+}
+.abstract::before { content: "Abstract"; text-align: center; }
+#refs::before { content: "Bibliography"; font-size: 1.5em; }
+.ref-paren-open::before { content: "("; }
+.ref-paren-close::after { content: ")"; }
+.ref-semicolon::after { content: "; "; }
+.ref-and::after { content: " and "; }
+.ref-et-al::after { content: " et al."; font-style: italic; }
+.footnote-ref a {
+  &::before { content: "["; }
+  &::after { content: "]"; }
+}
+section.footnotes {
+  margin-top: 2em;
+  &::before { content: ""; display: block; max-width: 20em; }
+}
+.fade {
+  background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
+  opacity: 0.6;
 }
 
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+  body { max-width: 100%; }
+  tr, img { break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  body:not(.pagesjs) pre:has(.line-numbers):not(:hover) { white-space: pre; }
 }
 </style>
-
-
-
 </head>
-
 <body>
-<p>This tutorial will show you how to download NEON Megapit soils data, plot soil profiles by texture and chemical proterties, and to cluster the different megapit profiles according to their similarity across multiple dimensions. </p>
-
-<div id="ds-objectives" markdown="1">
-
-## Objectives
-
-After completing this activity, you will be able to:
-
-* Download NEON megapit data using the neonUtilities package.
-* Join megapit data tables
-* Plot profiles of megapit data by horizon
-* Cluster sites into groups based on physical and chemical properties
-
-## Things You&rsquo;ll Need To Complete This Tutorial
-To complete this tutorial you will need R (version >3.6) and, 
-preferably, RStudio loaded on your computer.
-
-### Install R Packages
-
-* **neonUtilities**: Basic functions for accessing NEON data
-* **dplyr**: Data manipulation functions
-* **aqp**: Algorithms for Quantitative Pedology
-* **cluster**: Clustering utilities
-* **sharpshootR**: Plotting tools for clustered data
-* **Ternary**: Tools for making Ternary plots
-
-These packages are on CRAN and can be installed by 
-install.packages().
-
-### Additional Resources
-
-* <a href="https://data.neonscience.org/megapit-info" target="_blank">Images and narrative descriptions of megapit soils</a>
-
+<div class="frontmatter">
+<div class="title"><h1>Plotting and Clustering Megapit Soils Data</h1></div>
 </div>
+<div class="body">
+<p>This tutorial will show you how to download NEON Megapit soils data, plot soil profiles by texture and chemical properties, and cluster the different megapit profiles according to their similarity across multiple dimensions.</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="sec:objectives">Objectives</h2>
+<p>After completing this activity, you will be able to:</p>
+<ul>
+<li>Download NEON megapit data using the <code>neonUtilities</code> package.</li>
+<li>Join megapit data tables</li>
+<li>Plot profiles of megapit data by horizon</li>
+<li>Cluster sites into groups based on physical and chemical properties</li>
+</ul>
+<h2 id="sec:things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<p>To complete this tutorial you will need R (version 4+) and,
+preferably, RStudio loaded on your computer.</p>
+<h3 id="sec:install-r-packages">Install R Packages</h3>
+<ul>
+<li><strong>neonUtilities</strong>: Basic functions for accessing NEON data</li>
+<li><strong>dplyr</strong>: Data manipulation functions</li>
+<li><strong>aqp</strong>: Algorithms for Quantitative Pedology</li>
+<li><strong>cluster</strong>: Clustering utilities</li>
+<li><strong>sharpshootR</strong>: Plotting tools for clustered data</li>
+<li><strong>Ternary</strong>: Tools for making Ternary plots</li>
+</ul>
+<p>These packages are on CRAN and can be installed by
+<code>install.packages()</code>.</p>
+<h3 id="sec:additional-resources">Additional Resources</h3>
+<ul>
+<li><a href="https://data.neonscience.org/megapit-info" target="_blank">Images and narrative descriptions of megapit soils</a></li>
+</ul>
+</div>
+<h2 id="sec:set-up-code-environment">Set up code environment</h2>
+<p>Before we get the data, we need to install (if not already done) and load
+the R packages needed for data load and analysis.</p>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot
+scraping and improve user support. Tokens can be generated in NEON data portal
+user accounts - log in to your account or create one, and go to the API Tokens
+section. For best practices in storing and using tokens, follow the
+instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
+<p>Install packages:</p>
+<pre><code>install.packages(&quot;neonUtilities&quot;)
 
-<h2>Load megapit data to R</h2>
+install.packages(&quot;neonOS&quot;)
 
-<p>Before we get the data, we need to install (if not already done) and load 
-the R packages needed for data load and analysis. </p>
-
-<pre><code># Install packages if you have not yet.
-install.packages(&quot;neonUtilities&quot;)
 install.packages(&quot;aqp&quot;)
+
 install.packages(&quot;cluster&quot;)
+
 install.packages(&quot;sharpshootR&quot;)
+
 install.packages(&quot;dplyr&quot;)
+
 install.packages(&quot;Ternary&quot;)
-
-
-# Set global option to NOT convert all character variables to factors
-options(stringsAsFactors=F)
-
-# Load required packages
-library(neonUtilities)
-library(aqp)
-library(cluster)
-library(sharpshootR)
-library(dplyr)
-library(Ternary)
 </code></pre>
+<p>Load packages and API token.</p>
+<pre><code># Load required packages
 
-<p>Megapit physical and chemial properties:</p>
+library(neonUtilities)
 
+library(neonOS)
+
+library(aqp)
+
+library(cluster)
+
+library(sharpshootR)
+
+library(dplyr)
+
+library(Ternary)
+
+
+
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
+</code></pre>
+<h2 id="sec:download-megapit-data">Download megapit data</h2>
+<p>Documentation about the Megapit physical and chemical properties data product
+can be found here:</p>
 <ul>
 <li><a href="https://data.neonscience.org/data-products/DP1.00096.001">Soil physical and chemical properties, Megapit DP1.00096.001</a></li>
 </ul>
-
-<p>In this exercise, we want all available data, so we won&#39;t subset by 
+<p>If you are unfamiliar with <code>neonUtilities</code> and NEON data download workflows, we
+recommend starting with the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> tutorial.</p>
+<p>In this exercise, we want all available data, so we won’t subset by
 site or date range.</p>
+<pre><code>MP &lt;- loadByProduct(dpID=&quot;DP1.00096.001&quot;, 
+                    check.size = F,
+                    token=token)
 
-<pre><code>MP &lt;- loadByProduct(dpID = &quot;DP1.00096.001&quot;, check.size = F)
 
-# Unlist to environment - see download/explore tutorial for description
+
 list2env(MP, .GlobalEnv)
 </code></pre>
+<h2 id="sec:join-tables-and-convert-to-custom-soil-profile-format">Join tables and convert to custom soil profile format</h2>
+<p>We’ll join the horizon data to the physical and chemical characteristics data
+in order to see a depth profile of biogeochemical characteristics. The <code>neonOS</code>
+package contains the <code>joinTableNEON()</code> function, which uses metadata from the
+data product’s Quick Start Guide to join tables.</p>
+<pre><code>S &lt;- joinTableNEON(mgp_perhorizon,
+                   mgp_perbiogeosample)
 
-<h2>Merge Tables</h2>
 
-<p>We&#39;ll join the horizon data to the physical and chemical characteristics data in order to 
-see a depth profile of biogeochemical characteristics. The variables 
-needed to join correctly are horizon (either name or ID) and either 
-pitID or siteID, but we&#39;ll include several other columns that appear 
-in both tables, to avoid creaing duplicate columns.</p>
 
-<pre><code># duplicate the &#39;horizon&#39; information into a new table
-S &lt;- mgp_perhorizon
-
-# duplicate the biogeochemical information into a new table
-B &lt;- mgp_perbiogeosample
-
-# Select only &#39;Regular&#39; samples (not audit)
-B &lt;- B[B$biogeoSampleType==&quot;Regular&quot; &amp; 
-         !is.na(B$biogeoSampleType),]
-
-# Join biogeochem data to horizon data
-S &lt;- left_join(S, B, by=c(&#39;horizonID&#39;, &#39;siteID&#39;,
-                          &#39;pitID&#39;,&#39;setDate&#39;,
-                          &#39;collectDate&#39;,
-                          &#39;domainID&#39;,
-                          &#39;horizonName&#39;))
 S &lt;- arrange(S, siteID, horizonTopDepth)
 </code></pre>
+<p>There are two more things that we need to do before converting this data frame into a <code>SoilProfileCollection</code> object. First, we will make a new <code>siteLabel</code> column to use when plotting several pedons at once.</p>
+<pre><code>## combine 'domainID' and 'siteID' into a new label variable
 
-<p>There are two more things that we will want to do before converting this dataframe into a <code>SoilProfileCollection</code> object. First, we will make a new <code>siteLabel</code> column to use when plotting seeral pedons at once. </p>
-
-<pre><code>## combine &#39;domainID&#39; and &#39;siteID&#39; into a new label variable
-S$siteLabel=sprintf(&quot;%s-%s&quot;, S$domainID, S$siteID)
+S$siteLabel &lt;- sprintf(&quot;%s-%s&quot;, S$domainID, S$siteID)
 </code></pre>
-
-<p>Second, we will convert the soil physical properties (sand, silt, clay percentages) into an RGB color that we can use for plotting later. These steps are much easier to do now while the data are in a simple data.frame.</p>
-
+<p>Second, we will translate the soil physical properties (sand, silt, clay percentages) into an RGB color scheme that we can use for plotting later. These steps are much easier to do now while the data are in a simple data frame.</p>
 <pre><code># duplicate physical property variables
-S$r=S$sandTotal # Sand is Red &#39;r&#39;
-S$g=S$siltTotal # Silt is Green &#39;g&#39;
-S$b=S$clayTotal # Clay is Blue &#39;b&#39;
 
-# set &#39;na&#39; values to 100 (white)
-S$r[is.na(S$r)]=100
-S$g[is.na(S$g)]=100
-S$b[is.na(S$b)]=100
+S$r &lt;- S$sandTotal # Sand is Red 'r'
 
-# normalize values to 1 and convert to vector of colors using &#39;rgb()&#39; function
-S$textureColor=rgb(red=S$r/100, 
-                   green=S$g/100, 
-                   blue=S$b/100, 
-                   alpha=1, 
-                   maxColorValue = 1)
+S$g &lt;- S$siltTotal # Silt is Green 'g'
+
+S$b &lt;- S$clayTotal # Clay is Blue 'b'
+
+
+
+# set NA values to 100 (white)
+
+S$r[is.na(S$r)] &lt;- 100
+
+S$g[is.na(S$g)] &lt;- 100
+
+S$b[is.na(S$b)] &lt;- 100
+
+
+
+# normalize values to 1 and convert to vector of colors using 'rgb()' function
+
+S$textureColor &lt;- rgb(red=S$r/100, 
+                      green=S$g/100, 
+                      blue=S$b/100, 
+                      alpha=1, 
+                      maxColorValue = 1)
 </code></pre>
-
-<p>We now have a data frame of biogeochemical data, organized 
-by site and horizon. We can convert this to a 
+<p>We now have a data frame of biogeochemical data, organized
+by site and horizon. We can convert this to a
 <code>SoilProfileCollection</code> object using the <code>aqp</code> package.</p>
-
 <pre><code>depths(S) &lt;- siteLabel ~ horizonTopDepth + horizonBottomDepth
 </code></pre>
-
-<p>We then move the site-level attributes to the @site &#39;slot&#39; of <code>S</code>, our AQP object.
- This makes our <code>S</code> object easy to subset to look at a particular site. (Thanks 
- to Dylan Beaudette of the USDA-NRCS for the helpful tips on how to best use 
- this package!)</p>
-
-<pre><code> site(S) &lt;- ~ siteID + nrcsDescriptionID
+<p>We then move the site-level metadata to the @site attributes of <code>S</code>, our AQP object.
+This makes our <code>S</code> object easy to subset to look at a particular site. (Thanks
+to Dylan Beaudette of the USDA-NRCS for the helpful tips on how to best use
+this package!)</p>
+<pre><code>site(S) &lt;- ~ siteID + nrcsDescriptionID
 </code></pre>
-
-<h1>Plot Simple Soil Profiles</h1>
-
-<p>Using the plotting functions in the <code>aqp</code> package, 
-let&#39;s start exploring some depth profiles. We&#39;ll start with 
-a single site, the Smithsonian Environmental Research Center 
+<h2 id="sec:plot-simple-soil-profiles">Plot simple soil profiles</h2>
+<p>Using the plotting functions in the <code>aqp</code> package,
+let’s start exploring some depth profiles. We’ll start with
+a single site, the Smithsonian Environmental Research Center
 (SERC), and plot clay content by depth.</p>
+<pre><code># set plot margins
 
-<pre><code># adjust margins
-par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
+par(mar=c(1,0,3,15), mfrow=c(1,1), xpd=NA)
+
+
 
 # Plot SERC clay profile
+
 plotSPC(subset(S, siteID==&quot;SERC&quot;), 
-        name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
-        color=&#39;clayTotal&#39;, col.label=&#39;Clay Content (%)&#39;,
-        col.palette=viridis::viridis(10), cex.names=1, 
-        width = .1, axis.line.offset = -6, 
+        name='horizonName.x', label='siteLabel', 
+        color='clayTotal', col.label='Clay Content (%)',
+        col.palette=viridis::viridis(10), 
+        cex.names=1, width = 0.1, 
+        depth.axis = list(style=&quot;traditional&quot;,
+                          line=6,
+                          cex=1), 
         col.legend.cex = 1.5, n.legend=6, 
         x.idx.offset = 0, n=.88)
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-SERC-1.png" alt=" "/></p>
-
-<p>Now let&#39;s take a look at phosphorus at Wind River 
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-SERC-1.png" alt=" " /></p>
+<p>Now let’s take a look at phosphorus at Wind River
 Experimental Forest (WREF).</p>
+<pre><code>par(mar=c(1,0,3,15), mfrow=c(1,1), xpd=NA)
 
-<pre><code># adjust margins
-par(mar=c(1,6,3,4), mfrow=c(1,1), xpd=NA)
+
 
 plotSPC(subset(S, siteID==&quot;WREF&quot;),  
-        name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
-        color=&#39;pMjelm&#39;, 
-        col.label=&#39;Phosphorus (mg/Kg)&#39;,
-        col.palette=viridis::viridis(10), cex.names=1, 
-        width = .1, axis.line.offset = -6, 
+        name='horizonName.x', label='siteLabel', 
+        color='pMjelm', 
+        col.label='Phosphorus (mg/Kg)',
+        col.palette=viridis::viridis(10), 
+        cex.names=1, width = 0.1, 
+        depth.axis = list(style=&quot;traditional&quot;,
+                          line=6,
+                          cex=1), 
         col.legend.cex = 1.5, n.legend=4, 
         x.idx.offset = 0, n=.88)
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-WREF-1.png" alt=" "/></p>
-
-<h2>Plotting Multiple Sites</h2>
-
-<p>We can even pass the plotting function multiple sites in order to compare the pedons directly:</p>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-WREF-1.png" alt=" " /></p>
+<h2 id="sec:plotting-multiple-sites">Plotting multiple sites</h2>
+<p>We can pass the plotting function multiple sites in order to compare pedons directly.
+We’ll choose three very different sites with very different soils: Guanica (GUAN),
+a subtropical dry forest in Puerto Rico, Jornada (JORN), a desert in New Mexico,
+and Wind River (WREF), a temperate rainforest in Washington State.</p>
 <pre><code>par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-plotSPC(subset(S, siteID %in% c(&#39;JERC&#39;, &#39;OSBS&#39;, &#39;LAJA&#39;)), # pass multiple sites here
-        name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
-        color=&#39;sandTotal&#39;, 
-        col.label=&#39;Percent Sand (%)&#39;,
+
+
+
+plotSPC(subset(S, siteID %in% c('WREF', 'JORN', 'GUAN')),
+        name='horizonName.x', label='siteLabel', 
+        color='sandTotal', 
+        col.label='Percent Sand (%)',
         col.palette=viridis::viridis(10),
         n.legend = 5)
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-three-1.png" alt=" " /></p>
+<h2 id="sec:multivariate-plotting">Multivariate plotting</h2>
+<p>When analyzing soils data, we are often interested in more than one variable at a time. A classic example is texture, which in its simplest terms, is described in terms of percent Sand, Silt, and Clay. In order to plot these three variables together, we can describe each percentage as a color on the color wheel. Remember, in the section above, we assigned the color Red to Sand, Green to Silt, and Blue to Clay. We can plot these colors on the familiar three-axis plot that is often used to describe soil texture to serve as our color legend. To do this, we will use the <code>Ternary</code> package:</p>
+<pre><code>par(mfrow=c(1, 1), mar=rep(.3, 4))
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-three-1.png" alt=" "/></p>
 
-<h2>Multivariate Plotting</h2>
 
-<p>When analyzing soils data, we are often interested in more than one variable at a time. A classic example is texture, which in its simplest terms, is described in terms of percent Sand, Silt, and Clay. In order to plot these three variables at a time, we can describe each percentage as a color on the color wheel. Remember, in the section above, we assigned the color Red to Sand, Green to Silt, and Blue to Clay. We can plot these colors on the familiar three-axis plot that is often used to describe soil texture to serve as our color legend. To do this, we will use the <code>Ternary</code> package:</p>
-
-<pre><code># Set plot margins
-par(mfrow=c(1, 1), mar=rep(.3, 4))
-
-# Make ternary plot grid
 TernaryPlot(alab=&quot;% Sand \u2192&quot;, blab=&quot;% Silt \u2192&quot;, clab=&quot;\u2190 % Clay &quot;,
-            lab.col=c(&#39;red&#39;, &#39;green3&#39;, &#39;blue&#39;),
-            point=&#39;up&#39;, lab.cex=1.5, grid.minor.lines=1, axis.cex=1.5,
-            grid.lty=&#39;solid&#39;, col=rgb(0.9, 0.9, 0.9), grid.col=&#39;white&#39;, 
+            lab.col=c('red', 'green3', 'blue'),
+            point='up', lab.cex=1.5, grid.minor.lines=1, axis.cex=1.5,
+            grid.lty='solid', col=rgb(0.9, 0.9, 0.9), grid.col='white', 
             axis.col=rgb(0.6, 0.6, 0.6), ticks.col=rgb(0.6, 0.6, 0.6),
             padding=0.08)
 
-# Define colors for the background
+
+
 cols &lt;- TernaryPointValues(rgb)
 
-# Add colors to Ternary plot
+
+
 ColourTernary(cols, spectrum = NULL, resolution=45)
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/ternary-plot-1.png" alt=" "/></p>
-
-<p>Now, we can plot the pedons according to their soil texture:</p>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/ternary-plot-1.png" alt=" " /></p>
+<p>Now, we can plot the soil texture of pedons as a color scheme:</p>
 <pre><code>par(mar=c(0,2,3,2.5), mfrow=c(1,1), xpd=NA)
-plotSPC(subset(S, siteID %in% c(&#39;JERC&#39;, &#39;OSBS&#39;, &#39;LAJA&#39;)), # pass multiple sites here
-        name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
-        color=&#39;textureColor&#39;)
+
+
+
+plotSPC(subset(S, siteID %in% c('WREF', 'JORN', 'GUAN')),
+        name='horizonName.x', label='siteLabel', 
+        color='textureColor')
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-physical-texture-1.png" alt=" " /></p>
+<h2 id="sec:multivariate-clustering">Multivariate clustering</h2>
+<p>We have 47 Megapit samples across the NEON observatory, spanning a wide range of
+soil types, textures, and chemical profiles. While it may be helpful from a
+geographic perspective to group the pedons by site, it may be more informative
+to group the samples by their inherent properties. For example, grouping soils
+by texture, or by their organic matter content. In order to make these groupings,
+we will employ a DIvisive ANAlysis (DIANA) clustering technique using the
+<code>cluster</code> package.</p>
+<p>The clustering algorithm requires regularized data, so first we subset the data
+to records meeting the <code>aqp</code> package’s quality standards, using the
+<code>HzDepthLogicSubset()</code> function.</p>
+<pre><code># subset to meet quality threshold
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/plot-physical-texture-1.png" alt=" "/></p>
+S.sub &lt;- HzDepthLogicSubset(S)
 
-<h2>Multivariate Clustering</h2>
+## dropping profiles with invalid depth logic, see `metadata(x)$removed.profiles`
 
-<p>We have 47 Megapit samples across the NEON observatory, spanning a wide range of soil types, textures, and chemical profiles. While it may be helpful from a geographic perspective to group the pedons by Site ID, it may be even more helpful to group the samples by their inherent properties. For example, grouping soils by texture, or by their organic matter content. 
-In order to make these groupings, we will employ a DIvisive ANAlysis (DIANA) clustering technique using the <code>cluster</code> package. First, let&#39;s group by soil texture:</p>
+# classify soil profiles
 
-<pre><code>d &lt;- profile_compare(S, vars=c(&#39;clayTotal&#39;,&#39;sandTotal&#39;, &#39;siltTotal&#39;), 
-                     k=0, max_d=100)
+d &lt;- NCSP(S.sub, vars=c('clayTotal',
+                        'sandTotal', 
+                        'siltTotal'), 
+          k=0)
 
-## Computing dissimilarity matrices from 47 profiles [1.28 Mb]
+## Computing dissimilarity matrices from 33 profiles
+
+##  [2 Mb]
+
+## cache: 133 | slices: 300
 
 # vizualize dissimilarity matrix via divisive hierarchical clustering
+
 d.diana &lt;- diana(d)
 
+
+
 # Plot the resulting dendrogram
-plotProfileDendrogram(S, d.diana, scaling.factor = .6, 
+
+plotProfileDendrogram(S.sub, d.diana, scaling.factor = .6, 
                       y.offset = 2, width=0.25, cex.names=.4, 
-                      name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;, 
-                      color=&#39;textureColor&#39;)
+                      name='horizonName.x', label='siteLabel', 
+                      color='textureColor')
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/cluster-texture-1.png" alt=" "/></p>
-
-<p>Well, it seems to have worked and plotted, but it is really hard to see all of this information in the small plotting area.</p>
-
-<p>In order to visualize these data, we will need to make a plotting area large enough to contain the full plot with labels. To do so, we will open a <code>PDF</code> graphics device, generate the plot in that device, then close and save the device using <code>dev.off()</code>. It will also be a good idea to check your current working directory, and perhaps change that to where you want to save your PDFs.</p>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/soils/megapit-data/megapit-profiles/rfigs/cluster-texture-1.png" alt=" " /></p>
+<pre><code>## dend.y.scale: 536
+</code></pre>
+<p>We have a dendrogram of the soil texture profiles.</p>
+<p>To zoom in and vizualise more clearly, we need to make a plotting area large enough to contain the full plot with labels. To do so, we will open a <code>PDF</code> graphics device, generate the plot in that device, then close and save the device using <code>dev.off()</code>. It will also be a good idea to check your current working directory, and perhaps change that to where you want to save your PDFs.</p>
 <pre><code># Check and set working directory as needed.
+
 getwd()
 
-## [1] &quot;/Users/olearyd/Git/data&quot;
+## [1] &quot;/Users/clunch/data&quot;
 
 # setwd(&quot;enter path to save PDF here&quot;)
 
-# Open &#39;pdf&#39; graphic device. Define file name and large dimensions
+
+
+# Open 'pdf' graphic device. Define file name and large dimensions
+
 pdf(file=&quot;NEON_Soils_Texture_Color_Clusters.pdf&quot;, width=24, height=10)
 
+
+
 # set plot margins and generate plot
+
 par(mar=c(12,2,10,1), mfrow=c(1,1), xpd=NA)
-plotProfileDendrogram(S, d.diana, scaling.factor = .6, 
+
+plotProfileDendrogram(S.sub, d.diana, scaling.factor = .6, 
                       y.offset = 2, width=0.25, cex.names=.4, 
-                      name=&#39;horizonName&#39;, label=&#39;siteLabel&#39;,
-                      color=&#39;textureColor&#39;)
+                      name='horizonName', label='siteLabel',
+                      color='textureColor')
+
+## dend.y.scale: 536
 
 # Close and save the device
+
 dev.off()
 
 ## quartz_off_screen 
 ##                 2
 </code></pre>
-
-<p>This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a></p>
-
-<h2>Clustering by Nutrients</h2>
-
+<p>This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/R/soils/megapit-data/megapit-profiles/NEON_Soils_Texture_Color_Clusters.pdf">PDF here.</a></p>
+<h2 id="sec:clustering-by-nutrients">Clustering by Nutrients</h2>
 <p>Rather than cluster based on physical properties, we can also cluster based on nutrient contents (nitrogen, carbon, and sulfur):</p>
-
 <pre><code>## Cluster as above, but for nutrient variables
-d.nutrients &lt;- profile_compare(S, 
-                               vars=c(&#39;nitrogenTot&#39;,&#39;carbonTot&#39;, &#39;sulfurTot&#39;),
-                               k=0, max_d=100)
 
-## Computing dissimilarity matrices from 47 profiles [1.27 Mb]
+d.nutrients &lt;- NCSP(S.sub, 
+                    vars=c('nitrogenTot',
+                           'carbonTot', 
+                           'sulfurTot'),
+                    k=0)
+
+## Computing dissimilarity matrices from 33 profiles [2 Mb]
+## cache: 133 | slices: 300
 
 # vizualize dissimilarity matrix via divisive hierarchical clustering
+
 d.diana.nutrients &lt;- diana(d.nutrients)
 </code></pre>
+<p>Let’s make another PDF for our plot. However, this time it isn’t as straightforward to plot the three nutrients of interest as ‘rgb’ colors, so we will make three separate plots for each nutrient:</p>
+<pre><code># Open 'pdf' graphic device. Define file name and large dimensions
 
-<p>Let&#39;s make another PDF for our plot. However, this time is itsn&#39;t as straightforward to plot the three nutrients of interest as &#39;rgb&#39; colors, so we will make three separate plots for each nutrient:</p>
-
-<pre><code># Open &#39;pdf&#39; graphic device. Define file name and large dimensions
 pdf(file=&quot;NEON_Soils_Nutrient_Clusters.pdf&quot;, width=24, height=14)
 
+
+
 # Set plot margins
+
 par(mar=c(8,2,5,1), mfrow=c(3,1), xpd=NA)
 
+
+
 # Make plots for each nutrient of interest
-plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = .6, 
-                      y.offset = 2, width=0.25, name=&#39;horizonName&#39;, 
-                      label=&#39;siteLabel&#39;, color=&#39;nitrogenTot&#39;,
-                      col.label=&#39;Total Nitrogen (g/Kg)&#39;, 
+
+plotProfileDendrogram(S.sub, d.diana.nutrients, scaling.factor = .6, 
+                      y.offset = 2, width=0.25, name='horizonName', 
+                      label='siteLabel', color='nitrogenTot',
+                      col.label='Total Nitrogen (g/Kg)', 
                       col.legend.cex = 1.2, n.legend=6, 
-                      col.palette=viridis::viridis(10))
-plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = .6, 
-                      y.offset = 2, width=0.25, name=&#39;horizonName&#39;, 
-                      label=&#39;siteLabel&#39;, color=&#39;carbonTot&#39;,
-                      col.label=&#39;Total Carbon (g/Kg)&#39;, 
+                      col.palette=viridis::viridis(8))
+
+## dend.y.scale: 558
+
+plotProfileDendrogram(S.sub, d.diana.nutrients, scaling.factor = .6, 
+                      y.offset = 2, width=0.25, name='horizonName', 
+                      label='siteLabel', color='carbonTot',
+                      col.label='Total Carbon (g/Kg)', 
                       col.legend.cex = 1.2, n.legend=6, 
-                      col.palette=viridis::viridis(10))
-plotProfileDendrogram(S, d.diana.nutrients, scaling.factor = .6, 
-                      y.offset = 2, width=0.25, name=&#39;horizonName&#39;, 
-                      label=&#39;siteLabel&#39;, color=&#39;sulfurTot&#39;,
-                      col.label=&#39;Total Sulfur (g/Kg)&#39;, 
+                      col.palette=viridis::viridis(8))
+
+## dend.y.scale: 558
+
+plotProfileDendrogram(S.sub, d.diana.nutrients, scaling.factor = .6, 
+                      y.offset = 2, width=0.25, name='horizonName', 
+                      label='siteLabel', color='sulfurTot',
+                      col.label='Total Sulfur (g/Kg)', 
                       col.legend.cex = 1.2, n.legend=6, 
-                      col.palette=viridis::viridis(10))
+                      col.palette=viridis::viridis(8))
+
+## dend.y.scale: 558
 
 # Close and save the device
+
 dev.off()
 
 ## quartz_off_screen 
 ##                 2
 </code></pre>
-
-<p>This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/dev-aten/tutorials/R/soils/megapit-data/megapit-profiles/NEON_Soils_Nutrient_Clusters.pdf">PDF here.</a></p>
-
+<p>This plot is not shown on this tutorial webpage, but you can view and download an example of the <a href="https://github.com/NEONScience/NEON-Data-Skills/blob/main/tutorials/R/soils/megapit-data/megapit-profiles/NEON_Soils_Nutrient_Clusters.pdf">PDF here.</a></p>
+</div>
 </body>
-
 </html>
