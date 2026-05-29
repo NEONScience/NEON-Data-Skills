@@ -126,8 +126,12 @@ section.footnotes {
 </ul>
 <h2 id="sec:things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
 <h3 id="sec:r-programming-language">R Programming Language</h3>
-<p>You will need a current version of R to complete this tutorial. We also recommend
-the RStudio IDE to work with R.</p>
+<ul>
+<li>You will need a current version of R (4+) to complete this tutorial. We also recommend
+the RStudio IDE to work with R.</li>
+<li>Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a></li>
+<li>Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data</li>
+</ul>
 <h3 id="sec:r-packages-to-install">R Packages To Install</h3>
 <p>Start by installing any packages that are used during the course of the tutorial (if necessary) and setting options. Installation can be run once, then periodically to get package updates.</p>
 <ul>
@@ -139,7 +143,8 @@ the RStudio IDE to work with R.</p>
 <p><a href="/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
 </div>
 <h2 id="sec:1-setup">1. Setup</h2>
-<h3 id="sec:load-r-packages">Load R Packages</h3>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
+<h3 id="sec:load-r-packages-and-token">Load R Packages and token</h3>
 <pre><code>library(neonUtilities)
 
 library(ggplot2)
@@ -147,6 +152,8 @@ library(ggplot2)
 library(dplyr)
 
 library(tidyr)
+
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
 </code></pre>
 <h3 id="sec:download-neon-fish-data">Download NEON Fish Data</h3>
 <p>Download <a href="https://data.neonscience.org/data-products/DP1.20107.001" target="_blank">Fish electrofishing, gill netting, and fyke netting counts</a> data using the <code>loadByProduct()</code> function in the <code>neonUtilities</code> package. Inputs needed to the function are:</p>
@@ -157,6 +164,7 @@ library(tidyr)
 <li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>TRUE</code> when downloading a dataset for the first time.</li>
 <li><code>startdate</code> and <code>enddate</code>: we will work with 2024 data in this tutorial</li>
 <li><code>release</code>: a particular data release, or <code>current</code> for the most recent release</li>
+<li><code>token</code>: your NEON API token</li>
 </ul>
 <p>Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
 for the <code>neonUtilities</code> package for more details.</p>
@@ -168,7 +176,8 @@ for the <code>neonUtilities</code> package for more details.</p>
   check.size = FALSE,
   startdate = &quot;2024-01&quot;,
   enddate = &quot;2024-12&quot;,
-  release = 'RELEASE-2026')
+  release = 'RELEASE-2026',
+  token=token)
 </code></pre>
 <h3 id="sec:neon-data-citation">NEON Data Citation</h3>
 <p>The use of NEON data should be cited according to our
@@ -185,16 +194,9 @@ for the <code>neonUtilities</code> package for more details.</p>
 
 names(fshdat)
 
-##  [1] &quot;categoricalCodes_20107&quot;     
-##  [2] &quot;citation_20107_RELEASE-2026&quot;
-##  [3] &quot;fsh_bulkCount&quot;              
-##  [4] &quot;fsh_fieldData&quot;              
-##  [5] &quot;fsh_perFish&quot;                
-##  [6] &quot;fsh_perPass&quot;                
-##  [7] &quot;issueLog_20107&quot;             
-##  [8] &quot;readme_20107&quot;               
-##  [9] &quot;validation_20107&quot;           
-## [10] &quot;variables_20107&quot;
+##  [1] &quot;categoricalCodes_20107&quot;      &quot;citation_20107_RELEASE-2026&quot; &quot;fsh_bulkCount&quot;               &quot;fsh_fieldData&quot;              
+##  [5] &quot;fsh_perFish&quot;                 &quot;fsh_perPass&quot;                 &quot;issueLog_20107&quot;              &quot;readme_20107&quot;               
+##  [9] &quot;validation_20107&quot;            &quot;variables_20107&quot;
 </code></pre>
 <ul>
 <li>
@@ -314,20 +316,13 @@ fixedRandomReach &lt;- fsh_fieldData %&gt;%
 
 print(fixedRandomReach)
 
-##          eventID              namedLocation
-## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
-## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06
-## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07
-## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08
-## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09
-## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10
-##   fixedRandomReach samplingImpractical
-## 1            fixed                &lt;NA&gt;
-## 2            fixed          logistical
-## 3           random          logistical
-## 4           random          logistical
-## 5           random                &lt;NA&gt;
-## 6            fixed          logistical
+##          eventID              namedLocation fixedRandomReach samplingImpractical
+## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03            fixed                &lt;NA&gt;
+## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06            fixed          logistical
+## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07           random          logistical
+## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08           random          logistical
+## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09           random                &lt;NA&gt;
+## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10            fixed          logistical
 
 samplerType &lt;- fsh_perPass %&gt;% 
   filter(eventID== &quot;CRAM.2024.fall&quot;) %&gt;%
@@ -338,24 +333,15 @@ samplerType &lt;- fsh_perPass %&gt;%
 
 print(samplerType)
 
-##          eventID              namedLocation
-## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
-## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03
-## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03
-## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03
-## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03
-## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09
-## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09
-## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09
-##   passNumber   samplerType
-## 1          1 electrofisher
-## 2          2 electrofisher
-## 3          3 electrofisher
-## 4          4 mini-fyke net
-## 5          5      gill net
-## 6          1 electrofisher
-## 7          4 mini-fyke net
-## 8          5      gill net
+##          eventID              namedLocation passNumber   samplerType
+## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03          1 electrofisher
+## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03          2 electrofisher
+## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03          3 electrofisher
+## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03          4 mini-fyke net
+## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03          5      gill net
+## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09          1 electrofisher
+## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09          4 mini-fyke net
+## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09          5      gill net
 </code></pre>
 <p>Now let’s take a look at the capture data from Crampton Lake during the Fall of 2024, which contains data from one fixed reach and one random reach.</p>
 <pre><code># Subset summary data by eventID
