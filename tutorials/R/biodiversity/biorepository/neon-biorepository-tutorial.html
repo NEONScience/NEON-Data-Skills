@@ -185,24 +185,31 @@ library(ggplot2)
 </code></pre>
 <h2 id="sec:obtain-relevant-neon-terrestrial-observation-system-data">Obtain relevant NEON Terrestrial Observation System data</h2>
 <p>In order to answer our question, we need to know which NEON sites and years correspond to available carbon and nitrogen stable isotope data for canopy foliage and litter samples. We will use the <code>loadByProduct()</code> function in the
-<code>neonUtilities</code> package to download all of the data from these two data products from the main NEON data portal. This requires that we know the NEON data product IDs for each relevant data product.</p>
+<code>neonUtilities</code> package to download all of the data from these two data products from the main NEON data portal.</p>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
+<p>To download data, we need to know the NEON data product IDs for each relevant data product.</p>
 <p><strong>NEON Plant Foliar Traits:</strong> <a href="https://data.neonscience.org/data-products/DP1.10026.001" target="_blank">DP1.10026.001</a></p>
 <p><strong>NEON Litterfall and fine woody debris production and chemistry:</strong> <a href="https://data.neonscience.org/data-products/DP1.10033.001" target="_blank">DP1.10033.001</a></p>
-<p>Because we are interested in the a portion of the eastern United States, we will subset the available data to sites in NEON Domains 1, 2, and 7.</p>
-<p>This download may take a few minutes. While not required, it is recommended that you use a <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">NEON API token</a> to achieve faster download speeds.</p>
+<p>Because we are interested in the a portion of the eastern United States, we will subset the available data to sites in NEON Domains 1, 2, and 7. This download may take a few minutes.</p>
 <p>Note that we have chosen to include <a href="https://www.neonscience.org/resources/learning-hub/tutorials/release-provisional-tutorial" target="_blank">Provisional data</a> for this exploratory analysis of sample and data availability. If you are interested in ensuring repeatability of analysis results, you should limit your download to data in a <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Release</a>.</p>
-<pre><code> NEON.cfc &lt;- loadByProduct(dpID=&quot;DP1.10026.001&quot;,
+<pre><code>token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
+
+
+
+ NEON.cfc &lt;- loadByProduct(dpID=&quot;DP1.10026.001&quot;,
                     include.provisional=TRUE,
                     site=c('BLAN','BART','GRSM','HARV',
                            'MLBS','ORNL','SCBI','SERC'),
-                    check.size=FALSE)
+                    check.size=FALSE,
+                    token=token)
 
  
 
  NEON.ltr &lt;- loadByProduct(dpID=&quot;DP1.10033.001&quot;,
                     site=c('BLAN','BART','GRSM','HARV',
                            'MLBS','ORNL','SCBI','SERC'),
-                    check.size=FALSE)
+                    check.size=FALSE,
+                    token=token)
 </code></pre>
 <p>Let’s take a look at what is included in each NEON data product download. We will extract and focus on the table that has collated all of the records for individual traps.</p>
 <pre><code># What's in a download?
@@ -211,18 +218,16 @@ library(ggplot2)
 
 names(NEON.cfc)
 
-##  [1] &quot;categoricalCodes_10026&quot;      &quot;cfc_carbonNitrogen&quot;          &quot;cfc_chemistrySubsampling&quot;   
-##  [4] &quot;cfc_chlorophyll&quot;             &quot;cfc_elements&quot;                &quot;cfc_fieldData&quot;              
-##  [7] &quot;cfc_lignin&quot;                  &quot;cfc_LMA&quot;                     &quot;cfc_shapefile&quot;              
-## [10] &quot;citation_10026_PROVISIONAL&quot;  &quot;citation_10026_RELEASE-2026&quot; &quot;issueLog_10026&quot;             
+##  [1] &quot;categoricalCodes_10026&quot;      &quot;cfc_carbonNitrogen&quot;          &quot;cfc_chemistrySubsampling&quot;    &quot;cfc_chlorophyll&quot;            
+##  [5] &quot;cfc_elements&quot;                &quot;cfc_fieldData&quot;               &quot;cfc_lignin&quot;                  &quot;cfc_LMA&quot;                    
+##  [9] &quot;cfc_shapefile&quot;               &quot;citation_10026_PROVISIONAL&quot;  &quot;citation_10026_RELEASE-2026&quot; &quot;issueLog_10026&quot;             
 ## [13] &quot;readme_10026&quot;                &quot;validation_10026&quot;            &quot;variables_10026&quot;
 
 names(NEON.ltr)
 
-##  [1] &quot;categoricalCodes_10033&quot;      &quot;citation_10033_RELEASE-2026&quot; &quot;issueLog_10033&quot;             
-##  [4] &quot;ltr_chemistrySubsampling&quot;    &quot;ltr_fielddata&quot;               &quot;ltr_litterCarbonNitrogen&quot;   
-##  [7] &quot;ltr_litterLignin&quot;            &quot;ltr_massdata&quot;                &quot;ltr_pertrap&quot;                
-## [10] &quot;readme_10033&quot;                &quot;validation_10033&quot;            &quot;variables_10033&quot;
+##  [1] &quot;categoricalCodes_10033&quot;      &quot;citation_10033_RELEASE-2026&quot; &quot;issueLog_10033&quot;              &quot;ltr_chemistrySubsampling&quot;   
+##  [5] &quot;ltr_fielddata&quot;               &quot;ltr_litterCarbonNitrogen&quot;    &quot;ltr_litterLignin&quot;            &quot;ltr_massdata&quot;               
+##  [9] &quot;ltr_pertrap&quot;                 &quot;readme_10033&quot;                &quot;validation_10033&quot;            &quot;variables_10033&quot;
 </code></pre>
 <p>We can see that the data downloads for each product include several tables. The Quick Start Guides on any NEON data product description page are especially useful for understanding these tables, as are the “variables” and “readme” files included in data downloads. It is recommended that anyone who plans to use NEON data in their work carefully review the associated reading materials.</p>
 <h2 id="sec:narrow-the-spatial-and-temporal-scope-based-on-available-data">Narrow the spatial and temporal scope based on available data</h2>

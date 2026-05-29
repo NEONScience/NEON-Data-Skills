@@ -3,7 +3,7 @@ syncID: 36f28672bd02458cb13c02ee26156d41
 title: "Exploring sample availability at the NEON Biorepository"
 description: "Get a list of available samples at the NEON Biorepository based on data availability and research criteria."
 dateCreated: 2025-01-02
-authors: [Kelsey Yule]
+authors: Kelsey Yule
 contributors: 
 estimatedTime: 30 minutes
 packagesLibraries: neonUtilities
@@ -86,14 +86,15 @@ library(leaflet)
 library(leaflet.minicharts)
 library(lubridate)
 library(ggplot2)
-token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
 ## Obtain relevant NEON Terrestrial Observation System data
 
 In order to answer our question, we need to know which NEON sites and years correspond to available carbon and nitrogen stable isotope data for canopy foliage and litter samples. We will use the `loadByProduct()` function in the
-`neonUtilities` package to download all of the data from these two data products from the main NEON data portal. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+`neonUtilities` package to download all of the data from these two data products from the main NEON data portal.
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 To download data, we need to know the NEON data product IDs for each relevant data product. 
 
@@ -107,6 +108,8 @@ Note that we have chosen to include <a href="https://www.neonscience.org/resourc
 
 
 ```{r download-Data-New, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+
+token <- Sys.getenv("NEON_TOKEN")
 
  NEON.cfc <- loadByProduct(dpID="DP1.10026.001",
                     include.provisional=TRUE,
