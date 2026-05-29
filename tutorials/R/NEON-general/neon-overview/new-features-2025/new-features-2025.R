@@ -1,4 +1,4 @@
-## ----setup, eval=FALSE-------------------------------------------------------------------------------
+## ----setup, eval=FALSE----------------------------------------------------------------------------------------------------
 # 
 # # install packages. can skip this step if
 # # the packages are already installed
@@ -17,9 +17,11 @@
 # library(dplyr)
 # library(visNetwork)
 # 
+# token <- Sys.getenv("NEON_TOKEN")
+# 
 
 
-## ----libraries, include=FALSE, results="hide"--------------------------------------------------------
+## ----libraries, include=FALSE, results="hide", warning=FALSE, message=FALSE-----------------------------------------------
 
 library(neonUtilities)
 library(neonOS)
@@ -28,9 +30,11 @@ library(lubridate)
 library(dplyr)
 library(visNetwork)
 
+token <- Sys.getenv("NEON_TOKEN")
 
 
-## ----load-data, results="hide"-----------------------------------------------------------------------
+
+## ----load-data, results="hide"--------------------------------------------------------------------------------------------
 
 soil <- loadByProduct(dpID="DP1.10086.001", 
                      site="SOAP",
@@ -38,13 +42,14 @@ soil <- loadByProduct(dpID="DP1.10086.001",
                      enddate="2024-12",
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 list2env(soil, .GlobalEnv)
 
 
 
-## ----dups--------------------------------------------------------------------------------------------
+## ----dups-----------------------------------------------------------------------------------------------------------------
 
 moisturedups <- removeDups(sls_soilMoisture, 
                            variables_10086)
@@ -54,14 +59,16 @@ chemdups <- removeDups(sls_soilChemistry,
 
 
 
-## ----join-chem-moist---------------------------------------------------------------------------------
+## ----join-chem-moist------------------------------------------------------------------------------------------------------
 
-moistchem <- joinTableNEON(sls_soilMoisture,
-                           sls_soilChemistry)
+moistchem <- joinTableNEON(moisturedups,
+                           chemdups,
+                           name1="sls_soilMoisture",
+                           name2="sls_soilChemistry")
 
 
 
-## ----plot-chem-moist---------------------------------------------------------------------------------
+## ----plot-chem-moist------------------------------------------------------------------------------------------------------
 
 plot(nitrogenPercent~soilMoisture, 
      data=moistchem,
@@ -69,32 +76,36 @@ plot(nitrogenPercent~soilMoisture,
 
 
 
-## ----soap-fire---------------------------------------------------------------------------------------
+## ----soap-fire------------------------------------------------------------------------------------------------------------
 
-sim <- byEventSIM("fire", site="SOAP")
+sim <- byEventSIM("fire", 
+                  site="SOAP",
+                  token=token)
 
 sim$sim_eventData
 
 
 
-## ----chem-dates--------------------------------------------------------------------------------------
+## ----chem-dates-----------------------------------------------------------------------------------------------------------
 
 unique(year(sls_soilChemistry$collectDate))
 
 
 
-## ----plot-time---------------------------------------------------------------------------------------
+## ----plot-time------------------------------------------------------------------------------------------------------------
 
 plot(nitrogenPercent~soilMoisture, 
-     data=moistchem[which(year(moistchem$collectDate.y)==2018),],
+     data=subset(moistchem,
+                 year(collectDate.y)==2018),
      pch=20)
 points(nitrogenPercent~soilMoisture, 
-     data=moistchem[which(year(moistchem$collectDate.y)==2024),],
+     data=subset(moistchem,
+                 year(collectDate.y)==2024),
      pch=20, col="red")
 
 
 
-## ----load-microbe-data, results="hide"---------------------------------------------------------------
+## ----load-microbe-data, results="hide"------------------------------------------------------------------------------------
 
 micro <- loadByProduct(dpID="DP1.10081.002", 
                      site="SOAP",
@@ -103,42 +114,50 @@ micro <- loadByProduct(dpID="DP1.10081.002",
                      package="expanded",
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 list2env(micro, .GlobalEnv)
 
 
 
-## ----plot-microbe-data-------------------------------------------------------------------------------
+## ----plot-microbe-data----------------------------------------------------------------------------------------------------
 
-gg <- ggplot(mct_soilPerSampleTaxonomy_ITS, aes(phylum, individualCount)) +
+gg <- ggplot(mct_soilPerSampleTaxonomy_ITS, 
+             aes(phylum, individualCount)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 90))
 gg
 
 
 
-## ----microbe-dates-----------------------------------------------------------------------------------
+## ----microbe-dates--------------------------------------------------------------------------------------------------------
 
 unique(year(mct_soilSampleMetadata_ITS$collectDate))
 
 
 
-## ----get-sample-tree-1-------------------------------------------------------------------------------
+## ----get-sample-tree-1----------------------------------------------------------------------------------------------------
 
-samp <- getSampleTree(sls_soilCoreCollection$sampleID[1])
-edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
-nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[1],
+                      token=token)
+edges <- data.frame(cbind(to=samp$sampleUuid, 
+                          from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, 
+                          label=samp$sampleTag))
 visNetwork(nodes, edges) |>
   visEdges(arrows="to")
 
 
 
-## ----get-sample-tree-2-------------------------------------------------------------------------------
+## ----get-sample-tree-2----------------------------------------------------------------------------------------------------
 
-samp <- getSampleTree(sls_soilCoreCollection$sampleID[2])
-edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
-nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[2],
+                      token=token)
+edges <- data.frame(cbind(to=samp$sampleUuid, 
+                          from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, 
+                          label=samp$sampleTag))
 visNetwork(nodes, edges) |>
   visEdges(arrows="to")
 
