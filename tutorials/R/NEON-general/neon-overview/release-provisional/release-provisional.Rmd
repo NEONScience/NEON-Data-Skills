@@ -89,7 +89,7 @@ setwd("~/data")
 
 ```
 
-```{r libraries, include=FALSE}
+```{r libraries, include=FALSE, warning=FALSE, message=FALSE}
 library(neonUtilities)
 library(ggplot2)
 
@@ -151,7 +151,7 @@ doing this is available on the <a href="https://www.neonscience.org/data-samples
 ### Latest and provisional
 
 Go back to the main Explore Data Products page and click on Download Data. 
-Select BARR (Utquiagvik) and BONA (Caribou Creek) for the year of 2023. 
+Select BARR (Utqiagvik) and BONA (Caribou Creek) for the year of 2023. 
 Click Next.
 
 <figure>
@@ -200,18 +200,18 @@ tutorial as well as this one, for a more complete introduction.
 
 Let's download a full year of data for two sites, as we did on the Data 
 Portal above. Here we'll download data from HEAL (Healy) and GUAN 
-(Guanica), January 2023 - December 2023.
+(Guanica), January 2025 - December 2025.
 
-(Note: To see the code behavior below, if you are following this tutorial in 
-2025 or later, you may need to adjust the dates. In general, use the most 
-recent full year of data.)
+(Note: To see the expected data results below, if you are following this 
+tutorial in 2027 or later, you may need to adjust the dates. In general, use 
+the most recent full year of data.)
 
-``` {r load-data, results="hide"}
+``` {r load-data, results="hide", message=FALSE}
 
 qpr <- loadByProduct(dpID="DP1.00066.001", 
                      site=c("HEAL", "GUAN"),
-                     startdate="2023-01",
-                     enddate="2023-12",
+                     startdate="2025-01",
+                     enddate="2025-12",
                      check.size=F,
                      token=token)
 
@@ -238,18 +238,18 @@ gg
 
 ```
 
-As we can see, the only data present from 2023 are from the first 
-half of the year, the data included in RELEASE-2024. Provisional 
-data from July 2023 onward were omitted.
+As we can see, the only data present from 2025 are from the first 
+half of the year, the data included in RELEASE-2026. Provisional 
+data from July 2025 onward were omitted.
 
 Now let's download the Provisional data as well:
 
-``` {r load-prov, results="hide"}
+``` {r load-prov, results="hide", message=FALSE}
 
 qpr <- loadByProduct(dpID="DP1.00066.001", 
                      site=c("HEAL", "GUAN"),
-                     startdate="2023-01",
-                     enddate="2023-12",
+                     startdate="2025-01",
+                     enddate="2025-12",
                      include.provisional=T,
                      check.size=F,
                      token=token)
@@ -273,7 +273,7 @@ gg
 To download a specific Release, add the input parameter `release=`. 
 Let's download the data from collection year 2021 in RELEASE-2023.
 
-```{r load-release-2023, results="hide"}
+```{r load-release-2023, results="hide", message=FALSE}
 
 qpr23 <- loadByProduct(dpID="DP1.00066.001", 
                      site=c("HEAL", "GUAN"),
@@ -288,7 +288,7 @@ qpr23 <- loadByProduct(dpID="DP1.00066.001",
 What types of differences might there be in data from different 
 Releases? Let's look at the same data set in RELEASE-2024.
 
-```{r load-release-2024, results="hide"}
+```{r load-release-2024, results="hide", message=FALSE}
 
 qpr24 <- loadByProduct(dpID="DP1.00066.001", 
                      site=c("HEAL", "GUAN"),
@@ -305,15 +305,24 @@ soil plot 001, to simplify the figure. We'll plot RELEASE-2023 in black
 and RELEASE-2024 in partially transparent blue, to see differences 
 where they're overlaid.
 
+```{r posix, include=FALSE}
+
+qpr24$PARQL_30min$endDateTime <- as.POSIXct(qpr24$PARQL_30min$endDateTime,
+                                            format="%Y-%m-%dT%H:%M:%S", tz="GMT")
+qpr24$PARQL_30min$linePARMean <- as.numeric(qpr24$PARQL_30min$linePARMean)
+qpr24$PARQL_30min$linePARKurtosis <- as.numeric(qpr24$PARQL_30min$linePARKurtosis)
+
+```
+
 ```{r plot-release-compare}
 
-gg <- ggplot(qpr23$PARQL_30min
-             [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
+gg <- ggplot(data=subset(qpr23$PARQL_30min,
+                    horizontalPosition=="001"), 
              aes(endDateTime, linePARMean)) +
   geom_line() +
   facet_wrap(~siteID) +
-  geom_line(data=qpr24$PARQL_30min
-            [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+  geom_line(data=subset(qpr24$PARQL_30min,
+            horizontalPosition=="001"),
             color="blue", alpha=0.3)
 gg
 
@@ -330,27 +339,27 @@ tail(qpr24$issueLog_00066)
 
 ```
 
-The final issue noted in the table was reported and resolved in January 
+The issue on row 58 in the table was reported and resolved in January 
 2024. It tells us that the data were reprocessed for the 2024 Release, and 
 the algorithms for the skewness and kurtosis statistics were updated. Let's 
 take a look at the kurtosis statistics from the two Releases.
 
 ```{r plot-release-compare-k}
 
-gg <- ggplot(qpr23$PARQL_30min
-             [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
+gg <- ggplot(data=subset(qpr23$PARQL_30min,
+             horizontalPosition=="001"), 
              aes(endDateTime, linePARKurtosis)) +
   geom_line() +
   facet_wrap(~siteID) +
-  geom_line(data=qpr24$PARQL_30min
-            [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+  geom_line(data=subset(qpr24$PARQL_30min,
+            horizontalPosition=="001"), 
             color="blue", alpha=0.3)
 gg
 
 ```
 
 Here, we can see the kurtosis values have shifted slightly higher in 
-RELEASE-2024, relative to their values in RELEASE-2023. This is a 
+RELEASE-2024, relative to their values in RELEASE-2023. Kurtosis is a 
 metric of the distribution of PAR observations within the averaging 
 interval; if this aspect of variability is important for your analysis, 
 you would now be able to incorporate these improved estimates into your 
@@ -370,11 +379,11 @@ writeLines(qpr$citation_00066_PROVISIONAL)
 
 ```
 
-RELEASE-2024:
+RELEASE-2026:
 
 ```{r cite-rel}
 
-writeLines(qpr$`citation_00066_RELEASE-2024`)
+writeLines(qpr$`citation_00066_RELEASE-2026`)
 
 ```
 
@@ -394,7 +403,7 @@ Provisional data, you may want to re-download each time you work on an
 analysis, to ensure you're always working with the most up-to-date 
 data.
 
-The `neonUtilities` <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">cheat sheet</a> includes an overview 
+The `neonUtilities` <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> includes an overview 
 of the operations carried out by each function, for reference.
 
 Here, we'll outline some suggested workflows for data management, 
@@ -409,7 +418,7 @@ working with data in a Release, it can be convenient to save the
 downloaded data as an R object and re-load it the next time you 
 work on your analysis, rather than downloading again.
 
-``` {r load-tick-data, results="hide"}
+``` {r load-tick-data, results="hide", message=FALSE}
 
 tick <- loadByProduct(dpID="DP1.10093.001", 
                      site=c("GUAN"),
@@ -445,7 +454,7 @@ same way on files downloaded from the Data Portal or by
 and then use `stackEddy()` every time you need to access any of the 
 file contents.
 
-``` {r download-sae, results="hide"}
+``` {r download-sae, results="hide", message=FALSE}
 
 zipsByProduct(dpID="DP4.00200.001", 
               site=c("TEAK"),
@@ -466,7 +475,7 @@ The next time you need to work with these data, you can skip the
 come back later and decide you want to work with the isotope data 
 instead of the flux data, still no need to re-download:
 
-``` {r stack-iso, results="hide"}
+``` {r stack-iso, results="hide", message=FALSE}
 
 iso <- stackEddy(paste0(getwd(), "/filesToStack00200"),
                 level="dp01", var="isoCo2", avg=6)
@@ -490,6 +499,9 @@ Provisional data can be downloaded at any given time.
 DOIs for past Releases of AOP data remain available, and can be used to 
 cite the data in perpetuity. Their DOI status is set to "tombstone", the 
 term used to denote a dataset that is citable but no longer accessible.
+
+Guidelines and recommendations for data management when working with AOP data 
+can be found in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-data-management-releases" target="_blank">Best Practices for AOP Data Management</a> tutorial.
 
 See the Large Data Packages section on the 
 <a href="https://www.neonscience.org/data-samples/guidelines-policies/publishing-research-outputs" target="_blank">Publishing Research Outputs</a> page for 
