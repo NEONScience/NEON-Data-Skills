@@ -113,10 +113,10 @@ section.footnotes {
 <div class="title"><h1>New Resources for Working with NEON Data</h1></div>
 </div>
 <div class="body">
-<p>This tutorial provides a tour of recent (as of fall 2025) updates and enhancements to NEON code resources.</p>
+<p>This tutorial provides a tour of recent (as of fall 2025, with a minor update in spring 2026) updates and enhancements to NEON code resources.</p>
 <p>If you are new to using NEON data, we recommend first following the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial to get familiar with NEON data formats and the <code>neonUtilities</code> package.</p>
 <h2 id="sec:set-up-r-environment">Set up R environment</h2>
-<p>First install and load the necessary packages.</p>
+<p>First install and load the necessary packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
 <pre><code># install packages. can skip this step if 
 
 # the packages are already installed
@@ -148,6 +148,10 @@ library(lubridate)
 library(dplyr)
 
 library(visNetwork)
+
+
+
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
 </code></pre>
 <h2 id="sec:the-neonos-package">The neonOS package</h2>
 <p>The <code>neonOS</code> package provides functions specifically for working with NEON observational (OS) data products. NEON’s human-collected data present some unique challenges: the structure and data relationships within each product are unique, automation is more difficult, and sample relationships are often essential. The <code>neonOS</code> package contains functions for duplicate checking, table joining, and sample exploration.</p>
@@ -161,7 +165,8 @@ library(visNetwork)
                      enddate=&quot;2024-12&quot;,
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 
 
@@ -183,8 +188,10 @@ chemdups &lt;- removeDups(sls_soilChemistry,
 <p>Neither table contains any duplicates. This is common - staff internal to NEON take advantage of these code resources, too, and use them to detect and resolve duplicates. However, especially if you use Provisional data, it’s a good idea to check. See the <code>neonOS</code> <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neonos-duplicates-joins" target="_blank">tutorial</a> for more details about the <code>removeDups()</code> function, and to see an example that does contain duplicates.</p>
 <p>Now we can join the tables.</p>
 <h3 id="sec:feature-join-observational-data-tables">Feature: Join observational data tables</h3>
-<pre><code>moistchem &lt;- joinTableNEON(sls_soilMoisture,
-                           sls_soilChemistry)
+<pre><code>moistchem &lt;- joinTableNEON(moisturedups,
+                           chemdups,
+                           name1=&quot;sls_soilMoisture&quot;,
+                           name2=&quot;sls_soilChemistry&quot;)
 </code></pre>
 <p>Now that we have the nitrogen and moisture data in a single table, we can compare.</p>
 <pre><code>plot(nitrogenPercent~soilMoisture, 
@@ -197,7 +204,9 @@ chemdups &lt;- removeDups(sls_soilChemistry,
 <p>We are also interested in the impact of disturbance on these soils. Soaproot Saddle is in California - has it burned during the observed time period?</p>
 <p>The Site management and event reporting (DP1.10111.001) data product contains records of disturbance and management events that occur at NEON sites. We could download all records from SOAP, but a new function in <code>neonUtilities</code> allows us to run a targeted query for specific event types.</p>
 <h3 id="sec:feature-get-event-data-by-event-type">Feature: Get event data by event type</h3>
-<pre><code>sim &lt;- byEventSIM(&quot;fire&quot;, site=&quot;SOAP&quot;)
+<pre><code>sim &lt;- byEventSIM(&quot;fire&quot;, 
+                  site=&quot;SOAP&quot;,
+                  token=token)
 
 
 
@@ -217,34 +226,34 @@ sim$sim_eventData
 ## 4 SOAP_002.basePlot.all, SOAP_005.basePlot.all, SOAP_006.basePlot.all, SOAP_008.basePlot.all, SOAP_012.basePlot.all, SOAP_013.basePlot.all, SOAP_023.basePlot.all, SOAP_024.basePlot.all, SOAP_026.basePlot.all, SOAP_027.basePlot.all, SOAP_028.basePlot.all, SOAP_043.basePlot.all, SOAP_044.basePlot.all, SOAP_046.basePlot.all, SOAP_050.basePlot.all, SOAP_051.basePlot.all, SOAP_052.basePlot.all, SOAP_055.basePlot.all, SOAP_058.basePlot.all, SOAP_059.basePlot.all, SOAP_060.basePlot.all, SOAP_061.basePlot.all, SOAP_005.tickPlot.tck, SOAP_006.tickPlot.tck, SOAP_026.tickPlot.tck, SOAP_002.mammalGrid.mam, SOAP_006.mammalGrid.mam, SOAP_008.mammalGrid.mam, SOAP_012.mammalGrid.mam, SOAP_032.mammalGrid.mam, SOAP_033.mosquitoPoint.mos, SOAP_035.mosquitoPoint.mos, SOAP_037.mosquitoPoint.mos, SOAP_038.mosquitoPoint.mos, SOAP_039.mosquitoPoint.mos, SOAP_040.mosquitoPoint.mos, SOAP
 ## 5 SOAP_002.basePlot.all, SOAP_005.basePlot.all, SOAP_006.basePlot.all, SOAP_008.basePlot.all, SOAP_012.basePlot.all, SOAP_013.basePlot.all, SOAP_023.basePlot.all, SOAP_024.basePlot.all, SOAP_026.basePlot.all, SOAP_027.basePlot.all, SOAP_028.basePlot.all, SOAP_043.basePlot.all, SOAP_044.basePlot.all, SOAP_046.basePlot.all, SOAP_050.basePlot.all, SOAP_051.basePlot.all, SOAP_052.basePlot.all, SOAP_055.basePlot.all, SOAP_058.basePlot.all, SOAP_059.basePlot.all, SOAP_060.basePlot.all, SOAP_061.basePlot.all, SOAP_005.tickPlot.tck, SOAP_006.tickPlot.tck, SOAP_026.tickPlot.tck, SOAP_002.mammalGrid.mam, SOAP_006.mammalGrid.mam, SOAP_008.mammalGrid.mam, SOAP_012.mammalGrid.mam, SOAP_032.mammalGrid.mam, SOAP_033.mosquitoPoint.mos, SOAP_035.mosquitoPoint.mos, SOAP_037.mosquitoPoint.mos, SOAP_038.mosquitoPoint.mos, SOAP_039.mosquitoPoint.mos, SOAP_040.mosquitoPoint.mos, SOAP
 ## 6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     SOAP_014.basePlot.all, SOAP_016.basePlot.all, SOAP_020.basePlot.all, SOAP_045.basePlot.all, SOAP_047.basePlot.all, SOAP_053.basePlot.all, SOAP_054.basePlot.all, SOAP_056.basePlot.all, SOAP_062.phenology.phe, SOAP
-##    startDate    endDate ongoingEvent estimatedOrActualDate dateRemarks            eventID
-## 1 2020-02-24 2020-03-09            N                  &lt;NA&gt;        &lt;NA&gt; SOAP.20200224.fire
-## 2 2020-09-04 2020-10-04            Y                actual        &lt;NA&gt; SOAP.20200904.fire
-## 3 2020-10-04 2020-11-03            Y                actual        &lt;NA&gt; SOAP.20201004.fire
-## 4 2020-11-03 2020-12-03            Y                actual        &lt;NA&gt; SOAP.20201004.fire
-## 5 2020-12-03 2020-12-24            N                actual        &lt;NA&gt; SOAP.20201004.fire
-## 6 2021-06-29 2021-07-08            N                actual        &lt;NA&gt; SOAP.20210629.fire
-##   samplingProtocolVersion eventType    methodTypeChoice name scientificName otherScientificName
-## 1       NEON.DOC.003282vC      fire fire-controlledBurn &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;
-## 2       NEON.DOC.003282vD      fire       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;
-## 3       NEON.DOC.003282vD      fire       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;
-## 4       NEON.DOC.003282vD      fire       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;
-## 5       NEON.DOC.003282vD      fire       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;
-## 6       NEON.DOC.003282vD      fire       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;
-##   fireSeverity biomassRemoval minQuantity maxQuantity quantityUnit reporterType         remarks
-## 1      unknown           &lt;NA&gt;          NA          NA         &lt;NA&gt;    secondary controlled burn
-## 2         high           &lt;NA&gt;          NA          NA         &lt;NA&gt;      primary      Creek Fire
-## 3         high           &lt;NA&gt;          NA          NA         &lt;NA&gt;      primary      Creek Fire
-## 4         high           &lt;NA&gt;          NA          NA         &lt;NA&gt;      primary      Creek Fire
-## 5         high           &lt;NA&gt;          NA          NA         &lt;NA&gt;      primary      Creek Fire
-## 6         high           &lt;NA&gt;          NA          NA         &lt;NA&gt;      primary       Blue Fire
-##            recordedBy dataQF
-## 1 0000-0002-4748-8985   &lt;NA&gt;
-## 2 0000-0001-7920-7757   &lt;NA&gt;
-## 3 0000-0001-7920-7757   &lt;NA&gt;
-## 4 0000-0001-7920-7757   &lt;NA&gt;
-## 5 0000-0001-7920-7757   &lt;NA&gt;
-## 6 0000-0001-7920-7757   &lt;NA&gt;
+##    startDate    endDate ongoingEvent estimatedOrActualDate dateRemarks            eventID samplingProtocolVersion eventType
+## 1 2020-02-24 2020-03-09            N                  &lt;NA&gt;        &lt;NA&gt; SOAP.20200224.fire       NEON.DOC.003282vC      fire
+## 2 2020-09-04 2020-10-04            Y                actual        &lt;NA&gt; SOAP.20200904.fire       NEON.DOC.003282vD      fire
+## 3 2020-10-04 2020-11-03            Y                actual        &lt;NA&gt; SOAP.20201004.fire       NEON.DOC.003282vD      fire
+## 4 2020-11-03 2020-12-03            Y                actual        &lt;NA&gt; SOAP.20201004.fire       NEON.DOC.003282vD      fire
+## 5 2020-12-03 2020-12-24            N                actual        &lt;NA&gt; SOAP.20201004.fire       NEON.DOC.003282vD      fire
+## 6 2021-06-29 2021-07-08            N                actual        &lt;NA&gt; SOAP.20210629.fire       NEON.DOC.003282vD      fire
+##      methodTypeChoice name scientificName otherScientificName fireSeverity biomassRemoval minQuantity maxQuantity
+## 1 fire-controlledBurn &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;      unknown           &lt;NA&gt;          NA          NA
+## 2       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;         high           &lt;NA&gt;          NA          NA
+## 3       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;         high           &lt;NA&gt;          NA          NA
+## 4       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;         high           &lt;NA&gt;          NA          NA
+## 5       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;         high           &lt;NA&gt;          NA          NA
+## 6       fire-wildfire &lt;NA&gt;           &lt;NA&gt;                &lt;NA&gt;         high           &lt;NA&gt;          NA          NA
+##   quantityUnit reporterType         remarks          recordedBy dataQF
+## 1         &lt;NA&gt;    secondary controlled burn 0000-0002-4748-8985   &lt;NA&gt;
+## 2         &lt;NA&gt;      primary      Creek Fire 0000-0001-7920-7757   &lt;NA&gt;
+## 3         &lt;NA&gt;      primary      Creek Fire 0000-0001-7920-7757   &lt;NA&gt;
+## 4         &lt;NA&gt;      primary      Creek Fire 0000-0001-7920-7757   &lt;NA&gt;
+## 5         &lt;NA&gt;      primary      Creek Fire 0000-0001-7920-7757   &lt;NA&gt;
+## 6         &lt;NA&gt;      primary       Blue Fire 0000-0001-7920-7757   &lt;NA&gt;
+##                                                                                                                                                                                               filename
+## 1 https://storage.googleapis.com/neon-publication/NEON.DOM.SITE.DP1.10111.001/SOAP/20200301T000000--20200401T000000/basic/NEON.D17.SOAP.DP1.10111.001.sim_eventData.2020-03.basic.20251205T223131Z.csv
+## 2 https://storage.googleapis.com/neon-publication/NEON.DOM.SITE.DP1.10111.001/SOAP/20201001T000000--20201101T000000/basic/NEON.D17.SOAP.DP1.10111.001.sim_eventData.2020-10.basic.20251205T212610Z.csv
+## 3 https://storage.googleapis.com/neon-publication/NEON.DOM.SITE.DP1.10111.001/SOAP/20201101T000000--20201201T000000/basic/NEON.D17.SOAP.DP1.10111.001.sim_eventData.2020-11.basic.20251205T220607Z.csv
+## 4 https://storage.googleapis.com/neon-publication/NEON.DOM.SITE.DP1.10111.001/SOAP/20201201T000000--20210101T000000/basic/NEON.D17.SOAP.DP1.10111.001.sim_eventData.2020-12.basic.20251205T213421Z.csv
+## 5 https://storage.googleapis.com/neon-publication/NEON.DOM.SITE.DP1.10111.001/SOAP/20201201T000000--20210101T000000/basic/NEON.D17.SOAP.DP1.10111.001.sim_eventData.2020-12.basic.20251205T213421Z.csv
+## 6 https://storage.googleapis.com/neon-publication/NEON.DOM.SITE.DP1.10111.001/SOAP/20210701T000000--20210801T000000/basic/NEON.D17.SOAP.DP1.10111.001.sim_eventData.2021-07.basic.20251206T022332Z.csv
 </code></pre>
 <p>There are six records about fires at SOAP. Looking at the details, we can see one controlled burn in 2020, the Creek Fire in 2020 (four records), and the Blue Fire in 2021.</p>
 <p>How does this compare to the measurement dates for the chemistry data?</p>
@@ -254,18 +263,20 @@ sim$sim_eventData
 </code></pre>
 <p>Chemistry measurements were made in 2018 and 2024, before and after the fires. Do nitrogen values differ between the two measurement dates?</p>
 <pre><code>plot(nitrogenPercent~soilMoisture, 
-     data=moistchem[which(year(moistchem$collectDate.y)==2018),],
+     data=subset(moistchem,
+                 year(collectDate.y)==2018),
      pch=20)
 
 points(nitrogenPercent~soilMoisture, 
-     data=moistchem[which(year(moistchem$collectDate.y)==2024),],
+     data=subset(moistchem,
+                 year(collectDate.y)==2024),
      pch=20, col=&quot;red&quot;)
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/new-features-2025/rfigs/plot-time-1.png" alt=" " /></p>
 <p>No obvious differences in the pattern between the two measurement dates.</p>
 <p>If we wanted to dig into the effects of fire more deeply, note that the event data table includes a <code>locationID</code> field. This field contains a record of the NEON sampling plots affected by the event - in this case, which plots burned. If there are both burned and unburned plots in our dataset, this could be very informative.</p>
-<h3 id="sec:pending-feature-site-management-location-data-details">Pending feature: Site management location data details</h3>
-<p>There is a NEON code package in development that will help users to more easily work with the location data associated with site events. Stay tuned!</p>
+<h3 id="sec:site-management-location-data-details">Site management location data details</h3>
+<p>There is a new NEON code package to help users to more easily work with the location data associated with site events. Get an introduction to this package in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/site-management" target="_blank">Site management tutorial</a>.</p>
 <h2 id="sec:community-data">Community data</h2>
 <p>We mentioned above that we are also interested in microbial communities. What microbes are living in these soils, and how have they changed over time? Let’s download the Soil microbe community taxonomy (DP1.10081.002) data for the same time period at SOAP.</p>
 <h3 id="sec:feature-seamless-stacking-of-microbe-community-data">Feature: Seamless stacking of microbe community data</h3>
@@ -277,16 +288,16 @@ points(nitrogenPercent~soilMoisture,
                      package=&quot;expanded&quot;,
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 ## Stacking per-sample files. These files may be very large; download data in smaller subsets if performance problems are encountered.
-
-## Variables file was not found or was inconsistent for table mct_soilPerSampleTaxonomy_ITS. Schema will be inferred; performance may be reduced.
 
 list2env(micro, .GlobalEnv)
 </code></pre>
 <p>Let’s look at the distribution by phylum of fungal taxon units at SOAP.</p>
-<pre><code>gg &lt;- ggplot(mct_soilPerSampleTaxonomy_ITS, aes(phylum, individualCount)) +
+<pre><code>gg &lt;- ggplot(mct_soilPerSampleTaxonomy_ITS, 
+             aes(phylum, individualCount)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 90))
 
@@ -296,7 +307,7 @@ gg
 <p>But can we compare the communities at the two time points?</p>
 <pre><code>unique(year(mct_soilSampleMetadata_ITS$collectDate))
 
-## [1] 2018
+## [1] 2018 2024
 </code></pre>
 <p>Marker gene data were collected in 2024, but the community taxonomy data are not available yet.</p>
 <p>Suppose we wanted to compare soil chemistry data to plant communities instead of microbial communities? The Plant presence and percent cover (DP1.10058.001) data product would be a good place to start.</p>
@@ -308,22 +319,28 @@ gg
 <h3 id="sec:feature-get-sample-hierarchies">Feature: Get sample hierarchies</h3>
 <p>Let’s look at the sample hierarchies from the first two soil samples in the dataset we downloaded. We’ll use the <code>visNetwork</code> package (a public package not specific to NEON) to visualize the sample relationships.</p>
 <p>First sample:</p>
-<pre><code>samp &lt;- getSampleTree(sls_soilCoreCollection$sampleID[1])
+<pre><code>samp &lt;- getSampleTree(sls_soilCoreCollection$sampleID[1],
+                      token=token)
 
-edges &lt;- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+edges &lt;- data.frame(cbind(to=samp$sampleUuid, 
+                          from=samp$parentSampleUuid))
 
-nodes &lt;- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+nodes &lt;- data.frame(cbind(id=samp$sampleUuid, 
+                          label=samp$sampleTag))
 
 visNetwork(nodes, edges) |&gt;
   visEdges(arrows=&quot;to&quot;)
 </code></pre>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/new-features-2025/rfigs/get-sample-tree-1-1.png" alt=" " /></p>
 <p>Second sample:</p>
-<pre><code>samp &lt;- getSampleTree(sls_soilCoreCollection$sampleID[2])
+<pre><code>samp &lt;- getSampleTree(sls_soilCoreCollection$sampleID[2],
+                      token=token)
 
-edges &lt;- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
+edges &lt;- data.frame(cbind(to=samp$sampleUuid, 
+                          from=samp$parentSampleUuid))
 
-nodes &lt;- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+nodes &lt;- data.frame(cbind(id=samp$sampleUuid, 
+                          label=samp$sampleTag))
 
 visNetwork(nodes, edges) |&gt;
   visEdges(arrows=&quot;to&quot;)
@@ -337,6 +354,8 @@ visNetwork(nodes, edges) |&gt;
 <p>Aside from some minor formatting differences - <code>neonutilities</code> in all lower case, function names in <code>snake_case</code> rather than <code>camelCase</code> - the functions and inputs are the same in Python as in R. For example, to download the same soil dataset:</p>
 <pre><code>
 import neonutilities as nu
+dotenv.load_dotenv()
+token = os.environ.get(&quot;NEON_TOKEN&quot;)
 
 soil = nu.load_by_product(dpid=&quot;DP1.10086.001&quot;, 
                      site=&quot;SOAP&quot;,
@@ -344,12 +363,13 @@ soil = nu.load_by_product(dpid=&quot;DP1.10086.001&quot;,
                      enddate=&quot;2024-12&quot;,
                      include_provisional=True,
                      progress=False,
-                     check_size=False)
+                     check_size=False,
+                     token=token)
 
 </code></pre>
-<p>Other code packages, including <code>neonOS</code> and <code>geoNEON</code>, haven’t been implemented in Python yet. Similarly, not all features of neonUtilities are available in Python yet. In particular, we are actively working on incoporating the surface-atmosphere exchange functions in Python.</p>
-<h3 id="sec:pending-feature-surface-atmosphere-exchange-data-stacking-in-python">Pending feature: Surface-atmosphere exchange data stacking in Python</h3>
-<p>This should be available within a few weeks.</p>
+<p>Other code packages, including <code>neonOS</code> and <code>geoNEON</code>, haven’t been implemented in Python yet.</p>
+<h3 id="sec:feature-surface-atmosphere-exchange-data-stacking-in-python">Feature: Surface-atmosphere exchange data stacking in Python</h3>
+<p>This is now available in the <code>stack_eddy()</code> function! The <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Introduction to NEON Flux Data</a> tutorial now includes code in both languages.</p>
 <h3 id="sec:feature-cloud-mode">Feature: Cloud mode</h3>
 <p>The <code>loadByProduct()</code> function works by downloading NEON data files to a temporary directory and then reading them into R in stacked form. With new cloud-native software, it is possible to accomplish this without the intermediate download step - the files are imported directly to the code environment and stacked simultaneously. If you are working in a cloud environment, add the input <code>cloud.mode=T</code> (or <code>cloud_mode=True</code> in Python) to <code>loadByProduct()</code> for much faster and more efficient data access.</p>
 <p>If you are new to working in cloud environments but want to start exploring, we recommend checking out <a href="https://cyverse.org/" target="_blank">CyVerse</a>.</p>
