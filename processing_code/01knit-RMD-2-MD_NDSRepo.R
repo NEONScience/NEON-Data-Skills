@@ -17,7 +17,7 @@ options(timeout=300)
 dirs <- c("Tabbed/NEON-general/NEON-download-explore",
           "Tabbed/NEON-general/code-packages/tokens-long",
           "Tabbed/NEON-general/code-packages/neonUtilities",
-          "R/soils/soil-microbe-biomass",
+          "R/soils/soil-sensors-intro",
           "R/biodiversity/fish",
           "R/NEON-general/neon-overview/new-features-2025",
           "R/NEON-general/neon-code-packages/spatialData",
