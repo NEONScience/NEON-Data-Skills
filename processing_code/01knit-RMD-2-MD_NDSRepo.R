@@ -23,7 +23,7 @@ dirs <- c("Tabbed/NEON-general/NEON-download-explore",
           "R/NEON-general/neon-code-packages/spatialData",
           "R/NMDC_NEON_Workshop_ESA2023",
           "Tabbed/AOP/Lidar/veg-structure-chm",
-          "R/Aquatics/AIS-quality-flags/clean-AIS-data",
+          "R/Aquatics/AIS-quality-flags/download-AIS-data",
           "R/AIS-data/L4-Discharge-Series/continuous-discharge-basic",
           "R/AIS-data/NEON-hydrology-tutorial")
 
