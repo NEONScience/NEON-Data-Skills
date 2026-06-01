@@ -30,8 +30,10 @@ After completing this activity, you will be able to:
 * Fill small gaps in the data record.
 
 ## Things You'll Need To Complete This Tutorial
-To complete this tutorial you will need R (version >4.1) and, 
+* To complete this tutorial you will need R (version >4.1) and, 
 preferably, RStudio loaded on your computer.
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### Install R Packages
 
@@ -52,12 +54,14 @@ These packages are on CRAN and can be installed by
 ## Download and Visually Inspect the Data
 
 Before we get started, we need to install (if not already done) and load 
-the required R packages. 
+the required R packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 
     # Install the required package if you have not yet.
 
     install.packages("neonUtilities")
+
+    install.packages("dplyr")
 
     install.packages("ggplot2")
 
@@ -66,15 +70,19 @@ the required R packages.
     install.packages("kableExtra")
 
 
-    # Load required packages
+    # Load required packages and token
 
     library(neonUtilities)
+
+    library(dplyr)
 
     library(ggplot2)
 
     library(zoo)
 
     library(kableExtra)
+
+    token <- Sys.getenv("NEON_TOKEN")
 
 ## Part 1. Water Quality
 
@@ -90,11 +98,13 @@ Resources section above. Be sure to download the expanded data package so that
 individual quality flags and Calibration Records are included.  
 
 
-    waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001", site="WALK", 
+    waq <- neonUtilities::loadByProduct(dpID="DP1.20288.001", 
+                                        site="WALK", 
                          startdate="2024-04", enddate="2024-05",
                          package="expanded", release="current",
                          include.provisional=T,
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
     list2env(waq,.GlobalEnv)
 
@@ -105,7 +115,8 @@ the horizontalPosition and verticalPosition, use the tutorial linked in the
 Additional Resources section above.
 
 
-    waq_down<-waq_instantaneous[(waq_instantaneous$horizontalPosition==102),]
+    waq_down <- waq_instantaneous %>%
+      filter(horizontalPosition==102)
 
 Water Quality includes multiple parameters. For this tutorial, we'll focus on
 local dissolved oxygen saturation at the downstream location.  We'll first plot 
@@ -114,13 +125,18 @@ uncertainty bands.
 
 
     doPlotRaw <- ggplot() +
-    	geom_line(data = waq_down,aes(startDateTime, localDissolvedOxygenSat, colour="raw"),na.rm=TRUE) +
+    	geom_line(data = waq_down,aes(startDateTime, 
+    	                              localDissolvedOxygenSat, 
+    	                              colour="raw"),na.rm=TRUE) +
       geom_ribbon(data=waq_down,aes(x=startDateTime, 
                       ymin = (localDissolvedOxygenSat - localDOSatExpUncert), 
                       ymax = (localDissolvedOxygenSat + localDOSatExpUncert)), 
                       alpha = 0.3, fill = "red") +
-      scale_colour_manual("",breaks=c("raw"),values=c("red")) +
-    	ylim(0, 120) + ylab("saturation (%)") + xlab("Date")+ ggtitle("WALK dissolvedOxygenSat with Uncertainty")
+      scale_colour_manual("",breaks=c("raw"),
+                          values=c("red")) +
+    	ylim(0, 120) + ylab("saturation (%)") + 
+      xlab("Date") + 
+      ggtitle("WALK dissolvedOxygenSat with Uncertainty")
 
     doPlotRaw
 
@@ -133,13 +149,19 @@ any changes that have been made to the data product. We'll first filter the
 Issue Log for any records pertaining to this site and date range.
 
 
-    issueLog_20288<-issueLog_20288[(grepl(unique(waq_instantaneous$siteID),
-                                          issueLog_20288$locationAffected))]
+    issueLog_20288 <- issueLog_20288 %>%
+      filter(grepl(unique(waq_instantaneous$siteID), 
+                   locationAffected))
 
-    issueLog_20288<-issueLog_20288[!((issueLog_20288$dateRangeStart>
-                                        max(waq_instantaneous$startDateTime))
-                  |(issueLog_20288$dateRangeEnd<
-                      min(waq_instantaneous$startDateTime))),]
+    
+
+    issueLog_20288 <- issueLog_20288 %>%
+      filter(dateRangeStart<
+               max(waq_instantaneous$startDateTime) & 
+               dateRangeEnd>
+               min(waq_instantaneous$startDateTime))
+
+    
 
     issueLog_20288 %>%
       kbl() %>%
@@ -164,10 +186,10 @@ Issue Log for any records pertaining to this site and date range.
    <td style="text-align:right;"> 89108 </td>
    <td style="text-align:right;"> 89104 </td>
    <td style="text-align:left;"> 2024-06-17T00:00:00Z </td>
-   <td style="text-align:left;"> 2024-06-17T00:00:00Z </td>
+   <td style="text-align:left;"> 2024-10-16T00:00:00Z </td>
    <td style="text-align:left;"> 2024-04-29T00:00:00Z </td>
    <td style="text-align:left;"> 2024-05-13T00:00:00Z </td>
-   <td style="text-align:left;"> WALK (101.001; 102.001) </td>
+   <td style="text-align:left;"> WALK (101.100; 102.100) </td>
    <td style="text-align:left;"> Dissolved Oxygen sensor is drifting. </td>
    <td style="text-align:left;"> Sensor was cleaned and recalibrated if necessary.  The cleaning and calibration records can be used to post-correct for this drift. </td>
   </tr>
@@ -198,7 +220,7 @@ We’ll initially populate it with the raw values as a starting point, and then
 set any with a final quality flag to NA.
 
 
-    waq_down$cleanDissolvedOxygenSat<-waq_down$localDissolvedOxygenSat
+    waq_down$cleanDissolvedOxygenSat <- waq_down$localDissolvedOxygenSat
 
     waq_down$cleanDissolvedOxygenSat[waq_down$localDOSatFinalQF == 1] <- NA
  
@@ -258,14 +280,21 @@ We'll use red for the raw data and blue for the clean data.
 
 
     doPlotQF <- ggplot() +
-    	geom_line(data = waq_down,aes(startDateTime, localDissolvedOxygenSat, colour="raw"),na.rm=TRUE) +
-      geom_line(data = waq_down,aes(startDateTime, cleanDissolvedOxygenSat, colour="clean"),na.rm=TRUE) +
+    	geom_line(data = waq_down,aes(startDateTime, 
+    	                              localDissolvedOxygenSat, 
+    	                              colour="raw"),na.rm=TRUE) +
+      geom_line(data = waq_down,aes(startDateTime, 
+                                    cleanDissolvedOxygenSat, 
+                                    colour="clean"),na.rm=TRUE) +
       geom_ribbon(data=waq_down,aes(x=startDateTime, 
                       ymin = (cleanDissolvedOxygenSat - localDOSatExpUncert), 
                       ymax = (cleanDissolvedOxygenSat + localDOSatExpUncert)), 
                       alpha = 0.3, fill = "blue") +
-      scale_colour_manual("",breaks=c("raw","clean"),values=c("red","blue")) +
-    	ylim(0, 120) + ylab("saturation (%)") + xlab("Date")+ ggtitle("WALK dissolvedOxygenSat with Uncertainty")
+      scale_colour_manual("",breaks=c("raw","clean"),
+                          values=c("red","blue")) +
+    	ylim(0, 120) + ylab("saturation (%)") + 
+      xlab("Date") + 
+      ggtitle("WALK dissolvedOxygenSat with Uncertainty")
 
     doPlotQF
 
@@ -284,11 +313,14 @@ multiple sensors.  We'll first filter the records to just those related to
 dissolved oxygen.
 
 
-    doCleanCal<-ais_multisondeCleanCal[,c("startDate","s1PreCleaningDO",
-                              "s2PreCleaningDO","s1PostCleaningDO",
-                              "s2PostCleaningDO","s1DOCalSuccessful",
-                              "s2DOCalSuccessful","s1BucketDO",
-                              "s2BucketDO")]
+    doCleanCal <- ais_multisondeCleanCal %>%
+      select(startDate, s1PreCleaningDO,
+             s2PreCleaningDO, s1PostCleaningDO,
+             s2PostCleaningDO, s1DOCalSuccessful,
+             s2DOCalSuccessful, s1BucketDO,
+             s2BucketDO)
+
+    
 
     doCleanCal %>%
       kbl() %>%
@@ -416,14 +448,21 @@ Let's re-plot the data and see what these adjustments have done.
 
 
     doPlotDrift <- ggplot() +
-    	geom_line(data = waq_down,aes(startDateTime, localDissolvedOxygenSat, colour="raw"),na.rm=TRUE) +
-      geom_line(data = waq_down,aes(startDateTime, cleanDissolvedOxygenSat, colour="clean"),na.rm=TRUE) +
+    	geom_line(data = waq_down,aes(startDateTime, 
+    	                              localDissolvedOxygenSat, 
+    	                              colour="raw"),na.rm=TRUE) +
+      geom_line(data = waq_down,aes(startDateTime, 
+                                    cleanDissolvedOxygenSat, 
+                                    colour="clean"),na.rm=TRUE) +
       geom_ribbon(data=waq_down,aes(x=startDateTime, 
                       ymin = (cleanDissolvedOxygenSat - localDOSatExpUncert), 
                       ymax = (cleanDissolvedOxygenSat + localDOSatExpUncert)), 
                       alpha = 0.3, fill = "blue") +
-      scale_colour_manual("",breaks=c("raw","clean"),values=c("red","blue")) +
-    	ylim(90, 110) + ylab("saturation (%)") + xlab("Date")+ ggtitle("WALK dissolvedOxygenSat with Uncertainty")
+      scale_colour_manual("",breaks=c("raw","clean"),
+                          values=c("red","blue")) +
+    	ylim(90, 110) + ylab("saturation (%)") + 
+      xlab("Date") + 
+      ggtitle("WALK dissolvedOxygenSat with Uncertainty")
 
     doPlotDrift
 
@@ -444,21 +483,27 @@ minutes to hours), it is probably safe to use simple linear interpolation. We
 can do this using the na.approx function in the zoo package.
 
 
-    waq_down$cleanDissolvedOxygenSat<-
-      zoo::na.approx(waq_down$cleanDissolvedOxygenSat,maxgap=300)
+    waq_down$cleanDissolvedOxygenSat <-
+      zoo::na.approx(waq_down$cleanDissolvedOxygenSat,
+                     maxgap=300)
 
 Let's re-plot the data and see what the gap filled data look like.
 
 
     doPlotFilled <- ggplot() +
-    	geom_line(data = waq_down,aes(startDateTime, localDissolvedOxygenSat, colour="raw"),na.rm=TRUE) +
-      geom_line(data = waq_down,aes(startDateTime, cleanDissolvedOxygenSat, colour="clean"),na.rm=TRUE) +
+    	geom_line(data = waq_down,aes(startDateTime, 
+    	                              localDissolvedOxygenSat, 
+    	                              colour="raw"),na.rm=TRUE) +
+      geom_line(data = waq_down,aes(startDateTime, 
+                                    cleanDissolvedOxygenSat, 
+                                    colour="clean"),na.rm=TRUE) +
       geom_ribbon(data=waq_down,aes(x=startDateTime, 
                       ymin = (cleanDissolvedOxygenSat - localDOSatExpUncert), 
                       ymax = (cleanDissolvedOxygenSat + localDOSatExpUncert)), 
                       alpha = 0.3, fill = "blue") +
       scale_colour_manual("",breaks=c("raw","clean"),values=c("red","blue")) +
-    	ylim(90, 110) + ylab("saturation (%)") + xlab("Date")+ ggtitle("WALK dissolvedOxygenSat with Uncertainty")
+    	ylim(90, 110) + ylab("saturation (%)") + xlab("Date") + 
+      ggtitle("WALK dissolvedOxygenSat with Uncertainty")
 
     doPlotFilled
 
@@ -489,11 +534,13 @@ We will first download the expanded package for Nitrate in surface water using
 the `neonUtilities` package.  
 
 
-    nsw <- neonUtilities::loadByProduct(dpID="DP1.20033.001", site="WALK", 
+    nsw <- neonUtilities::loadByProduct(dpID="DP1.20033.001", 
+                                        site="WALK", 
                          startdate="2024-01", enddate="2024-02",
                          package="expanded", release="current",
                          include.provisional=T,
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
     list2env(nsw,.GlobalEnv)
 
@@ -511,13 +558,16 @@ We can now plot the data, including uncertainty bands.
 
 
     nswPlotRaw <- ggplot() +
-    	geom_line(data = NSW_15_minute,aes(startDateTime, surfWaterNitrateMean, colour="raw"),na.rm=TRUE) +
+    	geom_line(data = NSW_15_minute,aes(startDateTime, 
+    	                                   surfWaterNitrateMean, 
+    	                                   colour="raw"),na.rm=TRUE) +
       geom_ribbon(data=NSW_15_minute,aes(x=startDateTime, 
                       ymin = (surfWaterNitrateMean - surfWaterNitrateExpUncert), 
                       ymax = (surfWaterNitrateMean + surfWaterNitrateExpUncert)), 
                       alpha = 0.3, fill = "red") +
       scale_colour_manual("",breaks=c("raw"),values=c("red")) +
-    	ylim(-2, 12) + ylab("concentration (uM)") + xlab("Date")+ ggtitle("WALK surfWaterNitrateMean with Uncertainty")
+    	ylim(-2, 12) + ylab("concentration (uM)") + xlab("Date") + 
+      ggtitle("WALK surfWaterNitrateMean with Uncertainty")
 
     nswPlotRaw
 
@@ -531,13 +581,19 @@ about this shift. Just like we did for Water quality, we'll filter the log for
 records pertaining to this site and date range.
 
 
-    issueLog_20033<-issueLog_20033[(grepl(unique(NSW_15_minute$siteID),
-                                          issueLog_20033$locationAffected))]
+    issueLog_20033 <- issueLog_20033 %>%
+      filter(grepl(unique(NSW_15_minute$siteID),
+                   locationAffected))
 
-    issueLog_20033<-issueLog_20033[!((issueLog_20033$dateRangeStart>
-                                        max(NSW_15_minute$startDateTime))
-                  |(issueLog_20033$dateRangeEnd<
-                      min(NSW_15_minute$startDateTime))),]
+    
+
+    issueLog_20033 <- issueLog_20033 %>%
+      filter(dateRangeStart<
+               max(NSW_15_minute$startDateTime) &
+               dateRangeEnd>
+               min(NSW_15_minute$startDateTime))
+
+    
 
     issueLog_20033 %>%
       kbl() %>%
@@ -570,7 +626,7 @@ at Walker Branch during this date range.
 Next, let's remove any quality flagged measurements.
 
 
-    NSW_15_minute$cleanSurfWaterNitrate<-NSW_15_minute$surfWaterNitrateMean
+    NSW_15_minute$cleanSurfWaterNitrate <- NSW_15_minute$surfWaterNitrateMean
 
     NSW_15_minute$cleanSurfWaterNitrate[NSW_15_minute$finalQF == 1] <- NA
  
@@ -578,14 +634,19 @@ We can then re-plot the cleaned data
 
 
     nswPlotQF <- ggplot() +
-    	geom_line(data = NSW_15_minute,aes(startDateTime, surfWaterNitrateMean, colour="raw"),na.rm=TRUE) +
-      geom_line(data = NSW_15_minute,aes(startDateTime, cleanSurfWaterNitrate, colour="clean"),na.rm=TRUE) +
+    	geom_line(data = NSW_15_minute,aes(startDateTime, 
+    	                                   surfWaterNitrateMean, 
+    	                                   colour="raw"),na.rm=TRUE) +
+      geom_line(data = NSW_15_minute,aes(startDateTime, 
+                                         cleanSurfWaterNitrate, 
+                                         colour="clean"),na.rm=TRUE) +
       geom_ribbon(data=NSW_15_minute,aes(x=startDateTime, 
                       ymin = (cleanSurfWaterNitrate - surfWaterNitrateExpUncert), 
                       ymax = (cleanSurfWaterNitrate + surfWaterNitrateExpUncert)), 
                       alpha = 0.3, fill = "blue") +
       scale_colour_manual("",breaks=c("raw","clean"),values=c("red","blue")) +
-    	ylim(-2, 12) + ylab("concentration (uM)") + xlab("Date")+ ggtitle("WALK surfWaterNitrateMean with Uncertainty")
+    	ylim(-2, 12) + ylab("concentration (uM)") + xlab("Date") + 
+      ggtitle("WALK surfWaterNitrateMean with Uncertainty")
 
     nswPlotQF
 
@@ -602,8 +663,13 @@ post-calibration measurements found in the Cleaning and Calibration Records,
 similar to how we corrected for drift in the Water Quality data.
 
 
-    nswCleanCal<-ais_sunaCleanAndCal[,c("collectDate","preCleanNitrateBlankConc",
-                              "postCleanNitrateBlankConc","postCalNitrateBlankConc")]
+    nswCleanCal <- ais_sunaCleanAndCal %>%
+      select(collectDate, 
+             preCleanNitrateBlankConc,
+             postCleanNitrateBlankConc,
+             postCalNitrateBlankConc)
+
+    
 
     nswCleanCal %>%
       kbl() %>%
@@ -674,14 +740,19 @@ We can then re-plot the shifted data.
 
 
     nswPlotShift <- ggplot() +
-    	geom_line(data = NSW_15_minute,aes(startDateTime, surfWaterNitrateMean, colour="raw"),na.rm=TRUE) +
-      geom_line(data = NSW_15_minute,aes(startDateTime, cleanSurfWaterNitrate, colour="clean"),na.rm=TRUE) +
+    	geom_line(data = NSW_15_minute,aes(startDateTime, 
+    	                                   surfWaterNitrateMean, 
+    	                                   colour="raw"),na.rm=TRUE) +
+      geom_line(data = NSW_15_minute,aes(startDateTime, 
+                                         cleanSurfWaterNitrate, 
+                                         colour="clean"),na.rm=TRUE) +
       geom_ribbon(data=NSW_15_minute,aes(x=startDateTime, 
                       ymin = (cleanSurfWaterNitrate - surfWaterNitrateExpUncert), 
                       ymax = (cleanSurfWaterNitrate + surfWaterNitrateExpUncert)), 
                       alpha = 0.3, fill = "blue") +
       scale_colour_manual("",breaks=c("raw","clean"),values=c("red","blue")) +
-    	ylim(-2, 12) + ylab("concentration (uM)") + xlab("Date")+ ggtitle("WALK surfWaterNitrateMean with Uncertainty")
+    	ylim(-2, 12) + ylab("concentration (uM)") + xlab("Date") + 
+      ggtitle("WALK surfWaterNitrateMean with Uncertainty")
 
     nswPlotShift
 
