@@ -27,8 +27,12 @@ After completing this tutorial you will be able to:
 ## Things You’ll Need To Complete This Tutorial
 
 ### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
+You will need a current version of R (4+) to complete this tutorial. We also recommend 
 the RStudio IDE to work with R. 
+
+### API Access
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### R Packages to Install
 Prior to starting the tutorial ensure that the following packages are installed. 
@@ -51,7 +55,7 @@ As of June 2026, NEON requires an API token for data downloads, to reduce bot sc
 
 There is an optional section in this code chunk to clear your environment. Clearing out your environment will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! 
 
-```{r load libraries, warning=FALSE}
+```{r load libraries, warning=FALSE, message=FALSE}
 
 # clean out workspace
 
@@ -84,6 +88,7 @@ my_site_list <- c('ARIK', 'POSE', 'MAYF')
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = my_dpid,
   site = my_site_list,
+  release = 'RELEASE-2024',
   token = token,
   check.size = F)
 
