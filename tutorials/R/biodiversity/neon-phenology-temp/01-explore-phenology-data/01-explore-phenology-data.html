@@ -1,932 +1,491 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-<title>Explore Phenology Data</title>
-
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
-
-
-
-
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="generator" content="litedown 0.7">
+<title>Work With NEON’s Plant Phenology Data</title>
 <style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
 body {
+  font-family: sans-serif;
   max-width: 800px;
   margin: auto;
   padding: 1em;
-  line-height: 20px;
+  line-height: 1.5;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+body, .abstract, code, .footnotes, footer, #refs, .caption { font-size: .9em; }
+li li { font-size: .95em; }
+ul:has(li > input[type="checkbox"]) { list-style: none; padding-left: 1em; }
+*, :before, :after { box-sizing: border-box; }
+a { color: steelblue; }
+pre, img { max-width: 100%; }
+pre { white-space: pre-wrap; word-break: break-word; }
+pre code { display: block; padding: 1em; overflow-x: auto; }
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre, th) > code, code[class], div > .caption { background: #f8f8f8; }
+pre > code:is(:not([class]), .language-plain, .language-none, .plain), .box, .figure, .table { background: inherit; border: 1px solid #eee; }
+pre > code {
+  &.message { border-color: #9eeaf9; }
+  &.warning { background: #fff3cd; border-color: #fff3cd; }
+  &.error { background: #f8d7da; border-color: #f8d7da; }
 }
-
-h1 {
-   font-size:2.2em;
+.fenced-chunk { border-left: 1px solid #666; }
+.code-fence {
+  opacity: .4;
+  border: 1px dashed #666;
+  border-left: 2px solid;
+  &:hover { opacity: inherit; }
 }
-
-h2 {
-   font-size:1.8em;
+.box, .figure, .table, table { margin: 1em auto; }
+div > .caption { padding: 1px 1em; }
+.figure { p:has(img, svg), pre:has(svg) { text-align: center; } }
+.flex-col { display: flex; justify-content: space-between; }
+table {
+  &:only-child:not(.table > *) { margin: auto; }
+  th, td { padding: 5px; font-variant-numeric: tabular-nums; }
+  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+  thead th { border-bottom: 1px solid #ddd; }
+  &:not(.datatable-table) {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
 }
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
 blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+  color: #666;
+  margin: 0;
+  padding: 1px 1em;
+  border-left: .5em solid #eee;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC {
+  a { text-decoration: none; }
+  ul { list-style: none; padding-left: 1em; }
+  & > ul { padding: 0; }
+  ul ul { border-left: 1px solid lightsteelblue; }
+}
+.body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.main-number::after { content: "."; }
+span[class^="ref-number-"] { font-weight: bold; }
+.ref-number-fig::after, .ref-number-tab::after { content: ":"; }
+.cross-ref-chp::before { content: "Chapter "; }
+.cross-ref-sec::before { content: "Section "; }
+.cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
+.cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
+.cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
+.abstract, #refs {
+  &::before { display: block; margin: 1em auto; font-weight: bold; }
+}
+.abstract::before { content: "Abstract"; text-align: center; }
+#refs::before { content: "Bibliography"; font-size: 1.5em; }
+.ref-paren-open::before { content: "("; }
+.ref-paren-close::after { content: ")"; }
+.ref-semicolon::after { content: "; "; }
+.ref-and::after { content: " and "; }
+.ref-et-al::after { content: " et al."; font-style: italic; }
+.footnote-ref a {
+  &::before { content: "["; }
+  &::after { content: "]"; }
+}
+section.footnotes {
+  margin-top: 2em;
+  &::before { content: ""; display: block; max-width: 20em; }
+}
+.fade {
+  background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
+  opacity: 0.6;
 }
 
 @media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+  body { max-width: 100%; }
+  tr, img { break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  body:not(.pagesjs) pre:has(.line-numbers):not(:hover) { white-space: pre; }
 }
 </style>
-
-
-
 </head>
-
 <body>
-<p>Many organisms, including plants, show patterns of change across seasons - 
-the different stages of this observable change are called phenophases. In this 
-tutorial we explore how to work with NEON plant phenophase data. </p>
-
-<div id="ds-objectives" markdown="1">
-
-## Objectives
-After completing this activity, you will be able to:
-
- * work with NEON Plant Phenology Observation data. 
- * use dplyr functions to filter data.
- * plot time series data in a bar plot using ggplot the function. 
-
-## Things You’ll Need To Complete This Tutorial
-You will need the most current version of R and, preferably, RStudio loaded
-on your computer to complete this tutorial.
-
-### Install R Packages
-
-* **neonUtilities:** install.packages(&ldquo;neonUtilities&rdquo;)
-* **ggplot2:** install.packages(&ldquo;ggplot2&rdquo;)
-* **dplyr:** install.packages(&ldquo;dplyr&rdquo;)
-
-<a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
-
-### Download Data 
-
-This tutorial is designed to have you download data directly from the NEON
-portal API using the neonUtilities package. However, you can also directly 
-download this data, prepackaged, from FigShare. This data set includes all the 
-files needed for the *Work with NEON OS & IS Data - Plant Phenology & Temperature* 
-tutorial series. The data are in the format you would receive if downloading them
-using the zipsByProduct() function in the neonUtilities package. 
-
-<a href = "https://ndownloader.figshare.com/files/22775042">Direct Download: **NEON Phenology & Temp Time Series Teaching Data Subset (v2 - 2017-2019 data)** (12 MB)</a>
-
-****
-
-## Additional Resources
-
-* NEON <a href="http://data.neonscience.org" target="_blank"> data portal </a>
-* NEON Plant Phenology Observations <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>
-* RStudio&rsquo;s <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
-* <a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub Organization</a>
-* <a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo API wrapper on CRAN </a>
-
+<div class="frontmatter">
+<div class="title"><h1>Work With NEON’s Plant Phenology Data</h1></div>
 </div>
-
-<p>Plants change throughout the year - these are phenophases. 
-Why do they change? </p>
-
-<h2>Explore Phenology Data</h2>
-
-<p>The following sections provide a brief overview of the NEON plant phenology 
-observation data. When designing a research project using this data, you 
-need to consult the 
-<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary. </p>
-
-<p><em>The following description of the NEON Plant Phenology Observation data is modified 
-from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.</em></p>
-
-<h3>NEON Plant Phenology Observation Data</h3>
-
-<p>NEON collects plant phenology data and provides it as NEON data product 
-<strong>DP1.10055.001</strong>.</p>
-
-<p>The plant phenology observations data product provides in-situ observations of 
-the phenological status and intensity of tagged plants (or patches) during 
-discrete observations events. </p>
-
-<p>Sampling occurs at all terrestrial field sites at site and season specific 
-intervals. During Phase I (dominant species) sampling (pre-2021), three species 
-with 30 individuals each are sampled. In 2021, Phase II (community) sampling 
-will begin, with &lt;=20 species with 5 or more individuals sampled will occur.</p>
-
-<h4>Status-based Monitoring</h4>
-
-<p>NEON employs status-based monitoring, in which the phenological condition of an 
-individual is reported any time that individual is observed. At every observations 
-bout, records are generated for every phenophase that is occurring and for every 
-phenophase not occurring. With this approach, events (such as leaf emergence in 
-Mediterranean climates, or flowering in many desert species) that may occur 
-multiple times during a single year, can be captured. Continuous reporting of
-phenophase status enables quantification of the duration of phenophases rather 
-than just their date of onset while allows enabling the explicit quantification 
-of uncertainty in phenophase transition dates that are introduced by monitoring 
-in discrete temporal bouts.</p>
-
-<p>Specific products derived from this sampling include the observed phenophase 
-status (whether or not a phenophase is occurring) and the intensity of 
-phenophases for individuals in which phenophase status = ‘yes’. Phenophases 
-reported are derived from the USA National Phenology Network (USA-NPN) categories. 
-The number of phenophases observed varies by growth form and ranges from 1 
-phenophase (cactus) to 7 phenophases (semi-evergreen broadleaf). 
-In this tutorial we will focus only on the state of the phenophase, not the 
-phenophase intensity data. </p>
-
-<h4>Phenology Transects</h4>
-
-<p>Plant phenology observations occurs at all terrestrial NEON sites along an 800 
-meter square loop transect (primary) and within a 200 m x 200 m plot located 
-within view of a canopy level, tower-mounted, phenology camera.</p>
-
-<p><figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png"
-    alt="Diagram of a phenology transect layout, with meter layout marked. Point-level geolocations are recorded at eight reference
-    points along the perimeter; plot-level geolocation at the plot centroid(star).">
-    </a>
-    <figcaption> Diagram of a phenology transect layout, with meter layout marked.
-    Point-level geolocations are recorded at eight reference points along the 
-    perimeter, plot-level geolocation at the plot centroid (star). 
-    Source: National Ecological Observatory Network (NEON)
-    </figcaption>
-</figure></p>
-
-<h4>Timing of Observations</h4>
-
-<p>At each site, there are: </p>
-
+<div class="body">
+<p>Many organisms, including plants, show patterns of change across seasons -
+the different stages of this observable change are called phenophases. In this
+tutorial we explore how to work with NEON plant phenophase data.</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="sec:objectives">Objectives</h2>
+<p>After completing this activity, you will be able to:</p>
 <ul>
-<li>~50 observation bouts per year. </li>
+<li>work with NEON Plant Phenology Observation data.</li>
+<li>use dplyr functions to filter data.</li>
+<li>plot time series data in a bar plot using ggplot the function.</li>
+</ul>
+<h2 id="sec:things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<ul>
+<li>You will need a current version of R (4+) and, preferably, <code>RStudio</code> loaded
+on your computer to complete this tutorial.</li>
+<li>Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a></li>
+<li>Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data</li>
+</ul>
+<h3 id="sec:install-r-packages">Install R Packages</h3>
+<ul>
+<li><strong>neonUtilities:</strong> <code>install.packages(&quot;neonUtilities&quot;)</code></li>
+<li><strong>neonOS</strong> <code>install.packages(&quot;neonOS&quot;)</code></li>
+<li><strong>ggplot2:</strong> <code>install.packages(&quot;ggplot2&quot;)</code></li>
+<li><strong>dplyr:</strong> <code>install.packages(&quot;dplyr&quot;)</code></li>
+</ul>
+<p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
+<hr />
+<h2 id="sec:additional-resources">Additional Resources</h2>
+<ul>
+<li>NEON <a href="http://data.neonscience.org" target="_blank"> data portal </a></li>
+<li>NEON Plant Phenology Observations <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a></li>
+<li>RStudio’s <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a></li>
+<li><a href="https://github.com/NEONScience" target="_blank">NEONScience GitHub Organization</a></li>
+<li><a href="https://cran.r-project.org/web/packages/nneo/index.html" target="_blank">nneo API wrapper on CRAN </a></li>
+</ul>
+</div>
+<p>Plants change throughout the year - these are phenophases.
+Why do they change?</p>
+<h2 id="sec:explore-phenology-data">Explore Phenology Data</h2>
+<p>The following sections provide a brief overview of the NEON plant phenology
+observation data. When designing a research project using this data, you
+need to consult the
+<a href="http://data.neonscience.org/data-products/DP1.10055.001" target="_blank">documents associated with this data product</a> and not rely solely on this summary.</p>
+<p><em>The following description of the NEON Plant Phenology Observation data is modified
+from the <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> data product user guide</a>.</em></p>
+<h3 id="sec:neon-plant-phenology-observation-data">NEON Plant Phenology Observation Data</h3>
+<p>NEON collects plant phenology data and provides it as NEON data product
+<strong>DP1.10055.001</strong>.</p>
+<p>The plant phenology observations data product provides in-situ observations of
+the phenological status and intensity of tagged plants (or patches) during
+discrete observations events.</p>
+<p>Sampling occurs at all terrestrial field sites at site and season specific
+intervals. During Phase I (dominant species) sampling (pre-2021), three species
+with 30 individuals each are sampled. In 2021, Phase II (community) sampling
+will begin, with &lt;=20 species with 5 or more individuals sampled will occur.</p>
+<h4 id="sec:status-based-monitoring">Status-based Monitoring</h4>
+<p>NEON employs status-based monitoring, in which the phenological condition of an
+individual is reported any time that individual is observed. At every observations
+bout, records are generated for every phenophase that is occurring and for every
+phenophase not occurring. With this approach, events (such as leaf emergence in
+Mediterranean zones, or flowering in many desert species) that may occur
+multiple times during a single year, can be captured. Continuous reporting of
+phenophase status enables quantification of the duration of phenophases rather
+than just their date of onset while allows enabling the explicit quantification
+of uncertainty in phenophase transition dates that are introduced by monitoring
+in discrete temporal bouts.</p>
+<p>Specific products derived from this sampling include the observed phenophase
+status (whether or not a phenophase is occurring) and the intensity of
+phenophases for individuals in which phenophase status = ‘yes’. Phenophases
+reported are derived from the USA National Phenology Network (USA-NPN) categories.
+The number of phenophases observed varies by growth form and ranges from 1
+phenophase (cactus) to 7 phenophases (semi-evergreen broadleaf).
+In this tutorial we will focus only on the state of the phenophase, not the
+phenophase intensity data.</p>
+<h4 id="sec:phenology-transects">Phenology Transects</h4>
+<p>Plant phenology observations occur at all terrestrial NEON sites along an 800
+meter square loop transect (primary) and within a 200 m x 200 m plot located
+within view of a canopy level, tower-mounted, phenology camera.</p>
+ <figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/neon-organisms/NEONphenoTransect.png"
+	alt="Diagram of a phenology transect layout, with meter layout marked. Point-level geolocations are recorded at eight reference
+	points along the perimeter; plot-level geolocation at the plot centroid(star).">
+	</a>
+	<figcaption> Diagram of a phenology transect layout, with meter layout marked.
+	Point-level geolocations are recorded at eight reference points along the 
+	perimeter, plot-level geolocation at the plot centroid (star). 
+	Source: National Ecological Observatory Network (NEON)
+	</figcaption>
+</figure>
+<h4 id="sec:timing-of-observations">Timing of Observations</h4>
+<p>At each site, there are:</p>
+<ul>
+<li>~50 observation bouts per year.</li>
 <li>no more that 100 sampling points per phenology transect.</li>
-<li>no more than 9 sampling points per phenocam plot. </li>
-<li>1 annual measurement per year to collect annual size and disease status measurements from 
+<li>no more than 9 sampling points per phenocam plot.</li>
+<li>1 annual measurement per year to collect annual size and disease status measurements from
 each sampling point.</li>
 </ul>
-
-<h4>Available Data Tables</h4>
-
-<p>In the downloaded data packet, data are available in two main files</p>
-
+<h4 id="sec:available-data-tables">Available Data Tables</h4>
+<p>The phenology dataset contains three data tables:</p>
 <ul>
-<li><strong>phe_statusintensity:</strong> Plant phenophase status and intensity data </li>
+<li><strong>phe_statusintensity:</strong> Plant phenophase status and intensity data</li>
 <li><strong>phe_perindividual:</strong> Geolocation and taxonomic identification for phenology plants</li>
-<li><strong>phe_perindividualperyear:</strong> recorded once a year, essentially the &ldquo;metadata&rdquo; 
-about the plant: DBH, height, etc. </li>
+<li><strong>phe_perindividualperyear:</strong> Pecorded once per year, essentially the “metadata” about the plant: DBH, height, etc.</li>
 </ul>
-
-<p>There are other files in each download including a <strong>readme</strong> with information on 
-the data product and the download; a <strong>variables</strong> file that defines the 
-term descriptions, data types, and units; a <strong>validation</strong> file with data entry 
-validation and parsing rules; and an <strong>XML</strong> with machine readable metadata. </p>
-
-<h2>Stack NEON Data</h2>
-
-<p>NEON data are delivered in a site and year-month format. When you download data,
-you will get a single zipped file containing a directory for each month and site that you&#39;ve 
-requested data for. Dealing with these separate tables from even one or two sites
-over a 12 month period can be a bit overwhelming. Luckily NEON provides an R package
-<strong>neonUtilities</strong> that takes the unzipped downloaded file and joining the data 
-files. The teaching data downloaded with this tutorial is already stacked. If you
-are working with other NEON data, please go through the tutorial to stack the data
-in 
-<a href="https://www.neonscience.org/neonDataStackR" target="_blank">R</a> or in <a href="https://www.neonscience.org/neon-utilities-python" target="_blank">Python</a> 
-and then return to this tutorial. </p>
-
-<h2>Work with NEON Data</h2>
-
-<p>When we do this for phenology data we get three files, one for each data table, 
-with all the data from your site and date range of interest. </p>
-
-<p>First, we need to set up our R environment. </p>
-
+<p>There are other files in each download including a <strong>readme</strong> with information on
+the data product and the download; a <strong>variables</strong> file that defines the
+term descriptions, data types, and units; a <strong>validation</strong> file with data entry
+validation and parsing rules; and a <strong>citation</strong> file giving the BibTeX citation
+for the downloaded data.</p>
+<h2 id="sec:set-up-r-environment">Set up R environment</h2>
+<p>This tutorial is designed to have you download data from the NEON
+API using the <code>neonUtilities</code> package. As of June 2026, NEON requires an API token
+for data downloads, to reduce bot scraping and improve user support. Tokens can
+be generated in NEON data portal user accounts - log in to your account or
+create one, and go to the API Tokens section. For best practices in storing and
+using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
+<p>Install and load packages, and load your token. This code assumes you have
+stored your token as an environment variable, as described at the link above.
+If your token is stored in a different way, modify the line of code below as
+needed.</p>
 <pre><code># install needed package (only uncomment &amp; run if not already installed)
+
 #install.packages(&quot;neonUtilities&quot;)
+
 #install.packages(&quot;dplyr&quot;)
+
 #install.packages(&quot;ggplot2&quot;)
 
+
+
 # load needed packages
+
 library(neonUtilities)
+
+library(neonOS)
+
 library(dplyr)
+
 library(ggplot2)
 
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
 
-options(stringsAsFactors=F) #keep strings as character type not factors
+
 
 # set working directory to ensure R can find the file we wish to import and where
+
 # we want to save our files. Be sure to move the download into your working directory!
-wd &lt;- &quot;~/Git/data/&quot; # Change this to match your local environment
+
+wd &lt;- &quot;~/data&quot; # Change this to match your local environment
+
 setwd(wd)
 </code></pre>
-
-<p>Let&#39;s start by loading our data of interest. For this series, we&#39;ll work with 
-date from the NEON Domain 02 sites:</p>
-
+<p>Let’s start by loading our data of interest. For this series, we’ll work with
+data from the NEON Domain 02 sites:</p>
 <ul>
 <li>Blandy Farm (BLAN)</li>
 <li>Smithsonian Conservation Biology Institute (SCBI)</li>
 <li>Smithsonian Environmental Research Center (SERC)</li>
 </ul>
+<p>And we’ll use data from January 2017 to December 2019. This downloads over 9MB
+of data. If this is too large, use a smaller date range. If you opt to do this,
+your figures and some output may look different later in the tutorial.</p>
+<p>With this information, we can download our data using the <code>neonUtilities</code> package.</p>
+<pre><code>phe &lt;- loadByProduct(dpID = &quot;DP1.10055.001&quot;, 
+                     site=c(&quot;BLAN&quot;,&quot;SCBI&quot;,&quot;SERC&quot;), 
+										 startdate = &quot;2017-01&quot;, 
+										 enddate=&quot;2019-12&quot;, 
+										 release=&quot;RELEASE-2026&quot;,
+										 token=token,
+										 check.size = F) 
 
-<p>And we&#39;ll use data from January 2017 to December 2019. This downloads over 9MB
-of data. If this is too large, use a smaller date range. If you opt to do this, 
-your figures and some output may look different later in the tutorial. </p>
 
-<p>With this information, we can download our data using the neonUtilities package. 
-If you are not using a NEON token to download your data, remove the 
-<code>token = Sys.getenv(NEON_TOKEN)</code> line of code (learn more about NEON API tokens 
-in the 
-<a href="https://www.neonscience.org/neon-api-tokens-tutorial" target="_blank"><em>Using an API Token when Accessing NEON Data with neonUtilities</em> tutorial</a>). </p>
-
-<p>If you are using the data downloaded at the start of the tutorial, use the 
-commented out code in the second half of this code chunk. </p>
-
-<pre><code>## Two options for accessing data - programmatic or from the example dataset
-# Read data from data portal 
-
-phe &lt;- loadByProduct(dpID = &quot;DP1.10055.001&quot;, site=c(&quot;BLAN&quot;,&quot;SCBI&quot;,&quot;SERC&quot;), 
-                                         startdate = &quot;2017-01&quot;, enddate=&quot;2019-12&quot;, 
-                                         token = Sys.getenv(&quot;NEON_TOKEN&quot;),
-                                         check.size = F) 
-
-## API token was not recognized. Public rate limit applied.
-## Finding available files
-## 
-</code></pre>
-
-<p>|<br/>
-  |                                                             |   0%
-  |<br/>
-  |=                                                            |   1%
-  |<br/>
-  |=                                                            |   2%
-  |<br/>
-  |==                                                           |   3%
-  |<br/>
-  |===                                                          |   4%
-  |<br/>
-  |===                                                          |   5%
-  |<br/>
-  |====                                                         |   6%
-  |<br/>
-  |====                                                         |   7%
-  |<br/>
-  |=====                                                        |   8%
-  |<br/>
-  |======                                                       |   9%
-  |<br/>
-  |======                                                       |  11%
-  |<br/>
-  |=======                                                      |  12%
-  |<br/>
-  |========                                                     |  13%
-  |<br/>
-  |========                                                     |  14%
-  |<br/>
-  |=========                                                    |  15%
-  |<br/>
-  |==========                                                   |  16%
-  |<br/>
-  |==========                                                   |  17%
-  |<br/>
-  |===========                                                  |  18%
-  |<br/>
-  |============                                                 |  19%
-  |<br/>
-  |============                                                 |  20%
-  |<br/>
-  |=============                                                |  21%
-  |<br/>
-  |=============                                                |  22%
-  |<br/>
-  |==============                                               |  23%
-  |<br/>
-  |===============                                              |  24%
-  |<br/>
-  |===============                                              |  25%
-  |<br/>
-  |================                                             |  26%
-  |<br/>
-  |=================                                            |  27%
-  |<br/>
-  |=================                                            |  28%
-  |<br/>
-  |==================                                           |  29%
-  |<br/>
-  |===================                                          |  31%
-  |<br/>
-  |===================                                          |  32%
-  |<br/>
-  |====================                                         |  33%
-  |<br/>
-  |=====================                                        |  34%
-  |<br/>
-  |=====================                                        |  35%
-  |<br/>
-  |======================                                       |  36%
-  |<br/>
-  |======================                                       |  37%
-  |<br/>
-  |=======================                                      |  38%
-  |<br/>
-  |========================                                     |  39%
-  |<br/>
-  |========================                                     |  40%
-  |<br/>
-  |=========================                                    |  41%
-  |<br/>
-  |==========================                                   |  42%
-  |<br/>
-  |==========================                                   |  43%
-  |<br/>
-  |===========================                                  |  44%
-  |<br/>
-  |============================                                 |  45%
-  |<br/>
-  |============================                                 |  46%
-  |<br/>
-  |=============================                                |  47%
-  |<br/>
-  |==============================                               |  48%
-  |<br/>
-  |==============================                               |  49%
-  |<br/>
-  |===============================                              |  51%
-  |<br/>
-  |===============================                              |  52%
-  |<br/>
-  |================================                             |  53%
-  |<br/>
-  |=================================                            |  54%
-  |<br/>
-  |=================================                            |  55%
-  |<br/>
-  |==================================                           |  56%
-  |<br/>
-  |===================================                          |  57%
-  |<br/>
-  |===================================                          |  58%
-  |<br/>
-  |====================================                         |  59%
-  |<br/>
-  |=====================================                        |  60%
-  |<br/>
-  |=====================================                        |  61%
-  |<br/>
-  |======================================                       |  62%
-  |<br/>
-  |=======================================                      |  63%
-  |<br/>
-  |=======================================                      |  64%
-  |<br/>
-  |========================================                     |  65%
-  |<br/>
-  |========================================                     |  66%
-  |<br/>
-  |=========================================                    |  67%
-  |<br/>
-  |==========================================                   |  68%
-  |<br/>
-  |==========================================                   |  69%
-  |<br/>
-  |===========================================                  |  71%
-  |<br/>
-  |============================================                 |  72%
-  |<br/>
-  |============================================                 |  73%
-  |<br/>
-  |=============================================                |  74%
-  |<br/>
-  |==============================================               |  75%
-  |<br/>
-  |==============================================               |  76%
-  |<br/>
-  |===============================================              |  77%
-  |<br/>
-  |================================================             |  78%
-  |<br/>
-  |================================================             |  79%
-  |<br/>
-  |=================================================            |  80%
-  |<br/>
-  |=================================================            |  81%
-  |<br/>
-  |==================================================           |  82%
-  |<br/>
-  |===================================================          |  83%
-  |<br/>
-  |===================================================          |  84%
-  |<br/>
-  |====================================================         |  85%
-  |<br/>
-  |=====================================================        |  86%
-  |<br/>
-  |=====================================================        |  87%
-  |<br/>
-  |======================================================       |  88%
-  |<br/>
-  |=======================================================      |  89%
-  |<br/>
-  |=======================================================      |  91%
-  |<br/>
-  |========================================================     |  92%
-  |<br/>
-  |=========================================================    |  93%
-  |<br/>
-  |=========================================================    |  94%
-  |<br/>
-  |==========================================================   |  95%
-  |<br/>
-  |==========================================================   |  96%
-  |<br/>
-  |===========================================================  |  97%
-  |<br/>
-  |============================================================ |  98%
-  |<br/>
-  |============================================================ |  99%
-  |<br/>
-  |=============================================================| 100%
-    ## 
-    ## Downloading files totaling approximately 7.985319 MB
-    ## Downloading 95 files
-    ## 
-  |<br/>
-  |                                                             |   0%
-  |<br/>
-  |=                                                            |   1%
-  |<br/>
-  |=                                                            |   2%
-  |<br/>
-  |==                                                           |   3%
-  |<br/>
-  |===                                                          |   4%
-  |<br/>
-  |===                                                          |   5%
-  |<br/>
-  |====                                                         |   6%
-  |<br/>
-  |=====                                                        |   7%
-  |<br/>
-  |=====                                                        |   9%
-  |<br/>
-  |======                                                       |  10%
-  |<br/>
-  |======                                                       |  11%
-  |<br/>
-  |=======                                                      |  12%
-  |<br/>
-  |========                                                     |  13%
-  |<br/>
-  |========                                                     |  14%
-  |<br/>
-  |=========                                                    |  15%
-  |<br/>
-  |==========                                                   |  16%
-  |<br/>
-  |==========                                                   |  17%
-  |<br/>
-  |===========                                                  |  18%
-  |<br/>
-  |============                                                 |  19%
-  |<br/>
-  |============                                                 |  20%
-  |<br/>
-  |=============                                                |  21%
-  |<br/>
-  |==============                                               |  22%
-  |<br/>
-  |==============                                               |  23%
-  |<br/>
-  |===============                                              |  24%
-  |<br/>
-  |================                                             |  26%
-  |<br/>
-  |================                                             |  27%
-  |<br/>
-  |=================                                            |  28%
-  |<br/>
-  |==================                                           |  29%
-  |<br/>
-  |==================                                           |  30%
-  |<br/>
-  |===================                                          |  31%
-  |<br/>
-  |===================                                          |  32%
-  |<br/>
-  |====================                                         |  33%
-  |<br/>
-  |=====================                                        |  34%
-  |<br/>
-  |=====================                                        |  35%
-  |<br/>
-  |======================                                       |  36%
-  |<br/>
-  |=======================                                      |  37%
-  |<br/>
-  |=======================                                      |  38%
-  |<br/>
-  |========================                                     |  39%
-  |<br/>
-  |=========================                                    |  40%
-  |<br/>
-  |=========================                                    |  41%
-  |<br/>
-  |==========================                                   |  43%
-  |<br/>
-  |===========================                                  |  44%
-  |<br/>
-  |===========================                                  |  45%
-  |<br/>
-  |============================                                 |  46%
-  |<br/>
-  |=============================                                |  47%
-  |<br/>
-  |=============================                                |  48%
-  |<br/>
-  |==============================                               |  49%
-  |<br/>
-  |==============================                               |  50%
-  |<br/>
-  |===============================                              |  51%
-  |<br/>
-  |================================                             |  52%
-  |<br/>
-  |================================                             |  53%
-  |<br/>
-  |=================================                            |  54%
-  |<br/>
-  |==================================                           |  55%
-  |<br/>
-  |==================================                           |  56%
-  |<br/>
-  |===================================                          |  57%
-  |<br/>
-  |====================================                         |  59%
-  |<br/>
-  |====================================                         |  60%
-  |<br/>
-  |=====================================                        |  61%
-  |<br/>
-  |======================================                       |  62%
-  |<br/>
-  |======================================                       |  63%
-  |<br/>
-  |=======================================                      |  64%
-  |<br/>
-  |========================================                     |  65%
-  |<br/>
-  |========================================                     |  66%
-  |<br/>
-  |=========================================                    |  67%
-  |<br/>
-  |==========================================                   |  68%
-  |<br/>
-  |==========================================                   |  69%
-  |<br/>
-  |===========================================                  |  70%
-  |<br/>
-  |===========================================                  |  71%
-  |<br/>
-  |============================================                 |  72%
-  |<br/>
-  |=============================================                |  73%
-  |<br/>
-  |=============================================                |  74%
-  |<br/>
-  |==============================================               |  76%
-  |<br/>
-  |===============================================              |  77%
-  |<br/>
-  |===============================================              |  78%
-  |<br/>
-  |================================================             |  79%
-  |<br/>
-  |=================================================            |  80%
-  |<br/>
-  |=================================================            |  81%
-  |<br/>
-  |==================================================           |  82%
-  |<br/>
-  |===================================================          |  83%
-  |<br/>
-  |===================================================          |  84%
-  |<br/>
-  |====================================================         |  85%
-  |<br/>
-  |=====================================================        |  86%
-  |<br/>
-  |=====================================================        |  87%
-  |<br/>
-  |======================================================       |  88%
-  |<br/>
-  |=======================================================      |  89%
-  |<br/>
-  |=======================================================      |  90%
-  |<br/>
-  |========================================================     |  91%
-  |<br/>
-  |========================================================     |  93%
-  |<br/>
-  |=========================================================    |  94%
-  |<br/>
-  |==========================================================   |  95%
-  |<br/>
-  |==========================================================   |  96%
-  |<br/>
-  |===========================================================  |  97%
-  |<br/>
-  |============================================================ |  98%
-  |<br/>
-  |============================================================ |  99%
-  |<br/>
-  |=============================================================| 100%
-    ## 
-    ## Unpacking zip files using 1 cores.
-    ## Stacking operation across a single core.
-    ## Stacking table phe_perindividual
-    ## Stacking table phe_statusintensity
-    ## Stacking table phe_perindividualperyear
-    ## Copied the most recent publication of validation file to /stackedFiles
-    ## Copied the most recent publication of categoricalCodes file to /stackedFiles
-    ## Copied the most recent publication of variable definition file to /stackedFiles
-    ## Finished: Stacked 3 data tables and 3 metadata tables!
-    ## Stacking took 1.46806 secs</p>
-
-<pre><code># if you aren&#39;t sure you can handle the data file size use check.size = T. 
 
 # save dataframes from the downloaded list
+
 ind &lt;- phe$phe_perindividual  #individual information
+
 status &lt;- phe$phe_statusintensity  #status &amp; intensity info
-
-
-##If choosing to use example dataset downloaded from this tutorial: 
-
-# Stack multiple files within the downloaded phenology data
-#stackByTable(&quot;NEON-pheno-temp-timeseries_v2/filesToStack10055&quot;, folder = T)
-
-# read in data - readTableNEON uses the variables file to assign the correct
-# data type for each variable
-#ind &lt;- readTableNEON(&#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_perindividual.csv&#39;, &#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv&#39;)
-
-#status &lt;- readTableNEON(&#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/phe_statusintensity.csv&#39;, &#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv&#39;)
 </code></pre>
-
-<p>Let&#39;s explore the data. Let&#39;s get to know what the <code>ind</code> dataframe looks like.</p>
-
+<p>Let’s explore the data. Let’s get to know what the <code>ind</code> dataframe looks like.</p>
 <pre><code># What are the fieldnames in this dataset?
+
 names(ind)
 
-##  [1] &quot;uid&quot;                         &quot;namedLocation&quot;              
-##  [3] &quot;domainID&quot;                    &quot;siteID&quot;                     
-##  [5] &quot;plotID&quot;                      &quot;decimalLatitude&quot;            
-##  [7] &quot;decimalLongitude&quot;            &quot;geodeticDatum&quot;              
-##  [9] &quot;coordinateUncertainty&quot;       &quot;elevation&quot;                  
-## [11] &quot;elevationUncertainty&quot;        &quot;subtypeSpecification&quot;       
-## [13] &quot;transectMeter&quot;               &quot;directionFromTransect&quot;      
-## [15] &quot;ninetyDegreeDistance&quot;        &quot;sampleLatitude&quot;             
-## [17] &quot;sampleLongitude&quot;             &quot;sampleGeodeticDatum&quot;        
-## [19] &quot;sampleCoordinateUncertainty&quot; &quot;sampleElevation&quot;            
-## [21] &quot;sampleElevationUncertainty&quot;  &quot;date&quot;                       
-## [23] &quot;editedDate&quot;                  &quot;individualID&quot;               
-## [25] &quot;taxonID&quot;                     &quot;scientificName&quot;             
-## [27] &quot;identificationQualifier&quot;     &quot;taxonRank&quot;                  
-## [29] &quot;nativeStatusCode&quot;            &quot;growthForm&quot;                 
-## [31] &quot;vstTag&quot;                      &quot;samplingProtocolVersion&quot;    
-## [33] &quot;measuredBy&quot;                  &quot;identifiedBy&quot;               
-## [35] &quot;recordedBy&quot;                  &quot;remarks&quot;                    
-## [37] &quot;dataQF&quot;                      &quot;publicationDate&quot;            
-## [39] &quot;release&quot;
+##  [1] &quot;uid&quot;                         &quot;namedLocation&quot;               &quot;domainID&quot;                    &quot;siteID&quot;                     
+##  [5] &quot;plotID&quot;                      &quot;decimalLatitude&quot;             &quot;decimalLongitude&quot;            &quot;geodeticDatum&quot;              
+##  [9] &quot;coordinateUncertainty&quot;       &quot;elevation&quot;                   &quot;elevationUncertainty&quot;        &quot;subtypeSpecification&quot;       
+## [13] &quot;transectMeter&quot;               &quot;directionFromTransect&quot;       &quot;ninetyDegreeDistance&quot;        &quot;sampleLatitude&quot;             
+## [17] &quot;sampleLongitude&quot;             &quot;sampleCoordinateUncertainty&quot; &quot;sampleElevation&quot;             &quot;sampleElevationUncertainty&quot; 
+## [21] &quot;date&quot;                        &quot;editedDate&quot;                  &quot;individualID&quot;                &quot;taxonID&quot;                    
+## [25] &quot;scientificName&quot;              &quot;identificationQualifier&quot;     &quot;taxonRank&quot;                   &quot;nativeStatusCode&quot;           
+## [29] &quot;identificationHistoryID&quot;     &quot;growthForm&quot;                  &quot;vstTag&quot;                      &quot;measuredBy&quot;                 
+## [33] &quot;identifiedBy&quot;                &quot;recordedBy&quot;                  &quot;remarks&quot;                     &quot;dataQF&quot;                     
+## [37] &quot;publicationDate&quot;             &quot;release&quot;
 
-# Unsure of what some of the variables are you? Look at the variables table!
+# Unsure of what some of the variables are? Look at the variables table!
+
 View(phe$variables_10055)
-# if using the pre-downloaded data, you need to read in the variables file 
-# or open and look at it on your desktop
-#var &lt;- read.csv(&#39;NEON-pheno-temp-timeseries_v2/filesToStack10055/stackedFiles/variables_10055.csv&#39;)
-#View(var)
+
+
 
 # how many rows are in the data?
+
 nrow(ind)
 
-## [1] 433
+## [1] 791
 
 # look at the first six rows of data.
-#head(ind) #this is a good function to use but looks messy so not rendering it 
+
+head(ind)
+
+##                                    uid          namedLocation domainID siteID   plotID decimalLatitude decimalLongitude
+## 1 c1949cda-a607-4f9c-b866-3c77c1c47856 BLAN_061.phenology.phe      D02   BLAN BLAN_061        39.05963        -78.07385
+## 2 4871339b-5815-43e1-b0ee-2f0491b28be7 BLAN_061.phenology.phe      D02   BLAN BLAN_061        39.05963        -78.07385
+## 3 9f170c36-214b-49e9-9571-84475b10c37a BLAN_061.phenology.phe      D02   BLAN BLAN_061        39.05963        -78.07385
+## 4 2c8bb258-91f3-444b-85e0-6a589bd5fb6a BLAN_061.phenology.phe      D02   BLAN BLAN_061        39.05963        -78.07385
+## 5 76afbf22-34f0-4e73-979a-4daeac316ab3 BLAN_061.phenology.phe      D02   BLAN BLAN_061        39.05963        -78.07385
+## 6 fc3cfb08-d6df-4112-ae08-6f2ad3544cd2 BLAN_061.phenology.phe      D02   BLAN BLAN_061        39.05963        -78.07385
+##   geodeticDatum coordinateUncertainty elevation elevationUncertainty subtypeSpecification transectMeter
+## 1         WGS84                    NA       183                   NA              primary           491
+## 2         WGS84                    NA       183                   NA              primary           139
+## 3         WGS84                    NA       183                   NA              primary           575
+## 4         WGS84                    NA       183                   NA              primary           501
+## 5         WGS84                    NA       183                   NA              primary           632
+## 6         WGS84                    NA       183                   NA              primary           657
+##   directionFromTransect ninetyDegreeDistance sampleLatitude sampleLongitude sampleCoordinateUncertainty sampleElevation
+## 1                  Left                  0.5             NA              NA                          NA              NA
+## 2                  Left                  2.0             NA              NA                          NA              NA
+## 3                 Right                  2.0             NA              NA                          NA              NA
+## 4                 Right                  3.0             NA              NA                          NA              NA
+## 5                  Left                  3.0             NA              NA                          NA              NA
+## 6                  Left                  2.0             NA              NA                          NA              NA
+##   sampleElevationUncertainty       date editedDate            individualID taxonID         scientificName
+## 1                         NA 2016-04-20 2016-05-09 NEON.PLA.D02.BLAN.06290    RHDA Rhamnus davurica Pall.
+## 2                         NA 2017-02-24 2021-07-13 NEON.PLA.D02.BLAN.06231    RHDA Rhamnus davurica Pall.
+## 3                         NA 2017-02-24 2021-07-13 NEON.PLA.D02.BLAN.06208    RHDA Rhamnus davurica Pall.
+## 4                         NA 2017-02-24 2021-07-13 NEON.PLA.D02.BLAN.06503   SOAL6  Solidago altissima L.
+## 5                         NA 2017-02-24 2021-07-13 NEON.PLA.D02.BLAN.06508   SOAL6  Solidago altissima L.
+## 6                         NA 2017-02-24 2021-07-13 NEON.PLA.D02.BLAN.06214    RHDA Rhamnus davurica Pall.
+##   identificationQualifier taxonRank nativeStatusCode identificationHistoryID          growthForm vstTag
+## 1                    &lt;NA&gt;   species                I                    &lt;NA&gt; Deciduous broadleaf      N
+## 2                    &lt;NA&gt;   species                I                    &lt;NA&gt; Deciduous broadleaf      N
+## 3                    &lt;NA&gt;   species                I                    &lt;NA&gt; Deciduous broadleaf      N
+## 4                    &lt;NA&gt;   species                N                    &lt;NA&gt;                Forb      N
+## 5                    &lt;NA&gt;   species                N                    &lt;NA&gt;                Forb      N
+## 6                    &lt;NA&gt;   species                I                    &lt;NA&gt; Deciduous broadleaf      N
+##                     measuredBy          identifiedBy           recordedBy
+## 1          jcoloso@neoninc.org  shackley@neoninc.org shackley@neoninc.org
+## 2 mastersb@battelleecology.org llemmon@field-ops.org                 &lt;NA&gt;
+## 3 mastersb@battelleecology.org llemmon@field-ops.org                 &lt;NA&gt;
+## 4 mastersb@battelleecology.org llemmon@field-ops.org                 &lt;NA&gt;
+## 5 mastersb@battelleecology.org llemmon@field-ops.org                 &lt;NA&gt;
+## 6 mastersb@battelleecology.org llemmon@field-ops.org                 &lt;NA&gt;
+##                                                                remarks dataQF  publicationDate      release
+## 1                                               Nearly dead shaded out   &lt;NA&gt; 20251222T234455Z RELEASE-2026
+## 2                                                                 &lt;NA&gt;   &lt;NA&gt; 20251222T234455Z RELEASE-2026
+## 3                                                                 &lt;NA&gt;   &lt;NA&gt; 20251222T234455Z RELEASE-2026
+## 4 Dropped 20190717 no individuals present had been small and unhealthy   &lt;NA&gt; 20251222T234455Z RELEASE-2026
+## 5                                                                 &lt;NA&gt;   &lt;NA&gt; 20251222T234455Z RELEASE-2026
+## 6                                                                 &lt;NA&gt;   &lt;NA&gt; 20251222T234455Z RELEASE-2026
 
 # look at the structure of the dataframe.
+
 str(ind)
 
-## &#39;data.frame&#39;:    433 obs. of  39 variables:
-##  $ uid                        : chr  &quot;76bf37d9-c834-43fc-a430-83d87e4b9289&quot; &quot;cf0239bb-2953-44a8-8fd2-051539be5727&quot; &quot;833e5f41-d5cb-4550-ba60-e6f000a2b1b6&quot; &quot;6c2e348d-d19e-4543-9d22-0527819ee964&quot; ...
+## 'data.frame':	791 obs. of  38 variables:
+##  $ uid                        : chr  &quot;c1949cda-a607-4f9c-b866-3c77c1c47856&quot; &quot;4871339b-5815-43e1-b0ee-2f0491b28be7&quot; &quot;9f170c36-214b-49e9-9571-84475b10c37a&quot; &quot;2c8bb258-91f3-444b-85e0-6a589bd5fb6a&quot; ...
 ##  $ namedLocation              : chr  &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; ...
 ##  $ domainID                   : chr  &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; ...
 ##  $ siteID                     : chr  &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; ...
 ##  $ plotID                     : chr  &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; ...
 ##  $ decimalLatitude            : num  39.1 39.1 39.1 39.1 39.1 ...
 ##  $ decimalLongitude           : num  -78.1 -78.1 -78.1 -78.1 -78.1 ...
-##  $ geodeticDatum              : chr  NA NA NA NA ...
+##  $ geodeticDatum              : chr  &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; ...
 ##  $ coordinateUncertainty      : num  NA NA NA NA NA NA NA NA NA NA ...
 ##  $ elevation                  : num  183 183 183 183 183 183 183 183 183 183 ...
 ##  $ elevationUncertainty       : num  NA NA NA NA NA NA NA NA NA NA ...
 ##  $ subtypeSpecification       : chr  &quot;primary&quot; &quot;primary&quot; &quot;primary&quot; &quot;primary&quot; ...
-##  $ transectMeter              : num  491 464 537 15 753 506 527 305 627 501 ...
-##  $ directionFromTransect      : chr  &quot;Left&quot; &quot;Right&quot; &quot;Left&quot; &quot;Left&quot; ...
-##  $ ninetyDegreeDistance       : num  0.5 4 2 3 2 1 2 3 2 3 ...
+##  $ transectMeter              : num  491 139 575 501 632 657 336 680 753 38 ...
+##  $ directionFromTransect      : chr  &quot;Left&quot; &quot;Left&quot; &quot;Right&quot; &quot;Right&quot; ...
+##  $ ninetyDegreeDistance       : num  0.5 2 2 3 3 2 6 5 2 2 ...
 ##  $ sampleLatitude             : num  NA NA NA NA NA NA NA NA NA NA ...
 ##  $ sampleLongitude            : num  NA NA NA NA NA NA NA NA NA NA ...
-##  $ sampleGeodeticDatum        : chr  &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; ...
 ##  $ sampleCoordinateUncertainty: num  NA NA NA NA NA NA NA NA NA NA ...
 ##  $ sampleElevation            : num  NA NA NA NA NA NA NA NA NA NA ...
 ##  $ sampleElevationUncertainty : num  NA NA NA NA NA NA NA NA NA NA ...
-##  $ date                       : POSIXct, format: &quot;2016-04-20&quot; ...
-##  $ editedDate                 : POSIXct, format: &quot;2016-05-09&quot; ...
-##  $ individualID               : chr  &quot;NEON.PLA.D02.BLAN.06290&quot; &quot;NEON.PLA.D02.BLAN.06501&quot; &quot;NEON.PLA.D02.BLAN.06204&quot; &quot;NEON.PLA.D02.BLAN.06223&quot; ...
-##  $ taxonID                    : chr  &quot;RHDA&quot; &quot;SOAL6&quot; &quot;RHDA&quot; &quot;LOMA6&quot; ...
-##  $ scientificName             : chr  &quot;Rhamnus davurica Pall.&quot; &quot;Solidago altissima L.&quot; &quot;Rhamnus davurica Pall.&quot; &quot;Lonicera maackii (Rupr.) Herder&quot; ...
+##  $ date                       : Date, format: &quot;2016-04-20&quot; &quot;2017-02-24&quot; &quot;2017-02-24&quot; &quot;2017-02-24&quot; ...
+##  $ editedDate                 : Date, format: &quot;2016-05-09&quot; &quot;2021-07-13&quot; &quot;2021-07-13&quot; &quot;2021-07-13&quot; ...
+##  $ individualID               : chr  &quot;NEON.PLA.D02.BLAN.06290&quot; &quot;NEON.PLA.D02.BLAN.06231&quot; &quot;NEON.PLA.D02.BLAN.06208&quot; &quot;NEON.PLA.D02.BLAN.06503&quot; ...
+##  $ taxonID                    : chr  &quot;RHDA&quot; &quot;RHDA&quot; &quot;RHDA&quot; &quot;SOAL6&quot; ...
+##  $ scientificName             : chr  &quot;Rhamnus davurica Pall.&quot; &quot;Rhamnus davurica Pall.&quot; &quot;Rhamnus davurica Pall.&quot; &quot;Solidago altissima L.&quot; ...
 ##  $ identificationQualifier    : chr  NA NA NA NA ...
 ##  $ taxonRank                  : chr  &quot;species&quot; &quot;species&quot; &quot;species&quot; &quot;species&quot; ...
-##  $ nativeStatusCode           : chr  &quot;I&quot; &quot;N&quot; &quot;I&quot; &quot;I&quot; ...
-##  $ growthForm                 : chr  &quot;Deciduous broadleaf&quot; &quot;Forb&quot; &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; ...
-##  $ vstTag                     : chr  NA NA NA NA ...
-##  $ samplingProtocolVersion    : chr  NA &quot;NEON.DOC.014040vJ&quot; &quot;NEON.DOC.014040vJ&quot; &quot;NEON.DOC.014040vJ&quot; ...
-##  $ measuredBy                 : chr  &quot;jcoloso@neoninc.org&quot; &quot;jward@battelleecology.org&quot; &quot;alandes@field-ops.org&quot; &quot;alandes@field-ops.org&quot; ...
+##  $ nativeStatusCode           : chr  &quot;I&quot; &quot;I&quot; &quot;I&quot; &quot;N&quot; ...
+##  $ identificationHistoryID    : chr  NA NA NA NA ...
+##  $ growthForm                 : chr  &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; &quot;Deciduous broadleaf&quot; &quot;Forb&quot; ...
+##  $ vstTag                     : chr  &quot;N&quot; &quot;N&quot; &quot;N&quot; &quot;N&quot; ...
+##  $ measuredBy                 : chr  &quot;jcoloso@neoninc.org&quot; &quot;mastersb@battelleecology.org&quot; &quot;mastersb@battelleecology.org&quot; &quot;mastersb@battelleecology.org&quot; ...
 ##  $ identifiedBy               : chr  &quot;shackley@neoninc.org&quot; &quot;llemmon@field-ops.org&quot; &quot;llemmon@field-ops.org&quot; &quot;llemmon@field-ops.org&quot; ...
 ##  $ recordedBy                 : chr  &quot;shackley@neoninc.org&quot; NA NA NA ...
-##  $ remarks                    : chr  &quot;Nearly dead shaded out&quot; &quot;no entry&quot; &quot;no entry&quot; &quot;no entry&quot; ...
+##  $ remarks                    : chr  &quot;Nearly dead shaded out&quot; NA NA &quot;Dropped 20190717 no individuals present had been small and unhealthy&quot; ...
 ##  $ dataQF                     : chr  NA NA NA NA ...
-##  $ publicationDate            : chr  &quot;20201218T103411Z&quot; &quot;20201218T103411Z&quot; &quot;20201218T103411Z&quot; &quot;20201218T103411Z&quot; ...
-##  $ release                    : chr  &quot;RELEASE-2021&quot; &quot;RELEASE-2021&quot; &quot;RELEASE-2021&quot; &quot;RELEASE-2021&quot; ...
+##  $ publicationDate            : chr  &quot;20251222T234455Z&quot; &quot;20251222T234455Z&quot; &quot;20251222T234455Z&quot; &quot;20251222T234455Z&quot; ...
+##  $ release                    : chr  &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; ...
 </code></pre>
-
-<p>Notice that the neonUtilities package read the data type from the variables file
-and then automatically converts the data to the correct date type in R. </p>
-
-<p>(Note that if you first opened your data file in Excel, you might see 06/14/2014 as 
-the format instead of 2014-06-14. Excel can do some <del>weird</del> interesting things
-to dates.)</p>
-
-<h4>Phenology status</h4>
-
-<p>Now let&#39;s look at the status data. </p>
-
+<p>Notice that the <code>neonUtilities</code> package read the data type from the variables file
+and then automatically converts the data to the correct date type in R.</p>
+<h4 id="sec:phenology-status">Phenology status</h4>
+<p>Now let’s look at the status data.</p>
 <pre><code># What variables are included in this dataset?
+
 names(status)
 
-##  [1] &quot;uid&quot;                           &quot;namedLocation&quot;                
-##  [3] &quot;domainID&quot;                      &quot;siteID&quot;                       
-##  [5] &quot;plotID&quot;                        &quot;date&quot;                         
-##  [7] &quot;editedDate&quot;                    &quot;dayOfYear&quot;                    
-##  [9] &quot;individualID&quot;                  &quot;phenophaseName&quot;               
-## [11] &quot;phenophaseStatus&quot;              &quot;phenophaseIntensityDefinition&quot;
-## [13] &quot;phenophaseIntensity&quot;           &quot;samplingProtocolVersion&quot;      
-## [15] &quot;measuredBy&quot;                    &quot;recordedBy&quot;                   
-## [17] &quot;remarks&quot;                       &quot;dataQF&quot;                       
-## [19] &quot;publicationDate&quot;               &quot;release&quot;
+##  [1] &quot;uid&quot;                           &quot;namedLocation&quot;                 &quot;domainID&quot;                     
+##  [4] &quot;siteID&quot;                        &quot;plotID&quot;                        &quot;date&quot;                         
+##  [7] &quot;editedDate&quot;                    &quot;dayOfYear&quot;                     &quot;eventID&quot;                      
+## [10] &quot;individualID&quot;                  &quot;phenophaseName&quot;                &quot;phenophaseStatus&quot;             
+## [13] &quot;phenophaseIntensityDefinition&quot; &quot;phenophaseIntensity&quot;           &quot;samplingProtocolVersion&quot;      
+## [16] &quot;measuredBy&quot;                    &quot;recordedBy&quot;                    &quot;remarks&quot;                      
+## [19] &quot;dataEntryRecordID&quot;             &quot;dataQF&quot;                        &quot;publicationDate&quot;              
+## [22] &quot;release&quot;
 
 nrow(status)
 
-## [1] 219357
+## [1] 219327
 
-#head(status)   #this is a good function to use but looks messy so not rendering it 
+head(status)
+
+##                                    uid          namedLocation domainID siteID   plotID       date editedDate dayOfYear
+## 1 25367e54-14e2-4d60-add6-57e9232a4b4a BLAN_061.phenology.phe      D02   BLAN BLAN_061 2017-02-24 2017-03-31        55
+## 2 95dc8be6-a8e7-44f6-a510-3d7024794fa5 BLAN_061.phenology.phe      D02   BLAN BLAN_061 2017-02-24 2017-03-31        55
+## 3 29994dd9-6bf7-4fe5-9420-03fbdc9c6d35 BLAN_061.phenology.phe      D02   BLAN BLAN_061 2017-02-24 2017-03-31        55
+## 4 03514dba-fa81-4734-b39c-3deacb4bece2 BLAN_061.phenology.phe      D02   BLAN BLAN_061 2017-02-24 2017-03-31        55
+## 5 e93412c3-ec6d-4608-9a71-33e8cae7ac66 BLAN_061.phenology.phe      D02   BLAN BLAN_061 2017-02-24 2017-03-31        55
+## 6 8d2ec4e2-58a1-4ec0-93ae-6544a5f877de BLAN_061.phenology.phe      D02   BLAN BLAN_061 2017-02-24 2017-03-31        55
+##   eventID            individualID       phenophaseName phenophaseStatus phenophaseIntensityDefinition phenophaseIntensity
+## 1    &lt;NA&gt; NEON.PLA.D02.BLAN.06238 Increasing leaf size               no                          &lt;NA&gt;                &lt;NA&gt;
+## 2    &lt;NA&gt; NEON.PLA.D02.BLAN.06229       Colored leaves               no                          &lt;NA&gt;                &lt;NA&gt;
+## 3    &lt;NA&gt; NEON.PLA.D02.BLAN.06221   Breaking leaf buds               no                          &lt;NA&gt;                &lt;NA&gt;
+## 4    &lt;NA&gt; NEON.PLA.D02.BLAN.06212               Leaves               no                          &lt;NA&gt;                &lt;NA&gt;
+## 5    &lt;NA&gt; NEON.PLA.D02.BLAN.06514       Initial growth               no                          &lt;NA&gt;                &lt;NA&gt;
+## 6    &lt;NA&gt; NEON.PLA.D02.BLAN.06245   Breaking leaf buds               no                          &lt;NA&gt;                &lt;NA&gt;
+##   samplingProtocolVersion          measuredBy          recordedBy remarks dataEntryRecordID     dataQF  publicationDate
+## 1                    &lt;NA&gt; llemmon@neoninc.org llemmon@neoninc.org    &lt;NA&gt;              &lt;NA&gt; legacyData 20251222T234455Z
+## 2                    &lt;NA&gt; llemmon@neoninc.org llemmon@neoninc.org    &lt;NA&gt;              &lt;NA&gt; legacyData 20251222T234455Z
+## 3                    &lt;NA&gt; llemmon@neoninc.org llemmon@neoninc.org    &lt;NA&gt;              &lt;NA&gt; legacyData 20251222T234455Z
+## 4                    &lt;NA&gt; llemmon@neoninc.org llemmon@neoninc.org    &lt;NA&gt;              &lt;NA&gt; legacyData 20251222T234455Z
+## 5                    &lt;NA&gt; llemmon@neoninc.org llemmon@neoninc.org    &lt;NA&gt;              &lt;NA&gt; legacyData 20251222T234455Z
+## 6                    &lt;NA&gt; llemmon@neoninc.org llemmon@neoninc.org    &lt;NA&gt;              &lt;NA&gt; legacyData 20251222T234455Z
+##        release
+## 1 RELEASE-2026
+## 2 RELEASE-2026
+## 3 RELEASE-2026
+## 4 RELEASE-2026
+## 5 RELEASE-2026
+## 6 RELEASE-2026
+
 str(status)
 
-## &#39;data.frame&#39;:    219357 obs. of  20 variables:
-##  $ uid                          : chr  &quot;b69ada55-41d1-41c7-9031-149c54de51f9&quot; &quot;9be6f7ad-4422-40ac-ba7f-e32e0184782d&quot; &quot;58e7aeaf-163c-4ea2-ad75-db79a580f2f8&quot; &quot;efe7ca02-d09e-4964-b35d-aebdac8f3efb&quot; ...
+## 'data.frame':	219327 obs. of  22 variables:
+##  $ uid                          : chr  &quot;25367e54-14e2-4d60-add6-57e9232a4b4a&quot; &quot;95dc8be6-a8e7-44f6-a510-3d7024794fa5&quot; &quot;29994dd9-6bf7-4fe5-9420-03fbdc9c6d35&quot; &quot;03514dba-fa81-4734-b39c-3deacb4bece2&quot; ...
 ##  $ namedLocation                : chr  &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; &quot;BLAN_061.phenology.phe&quot; ...
 ##  $ domainID                     : chr  &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; &quot;D02&quot; ...
 ##  $ siteID                       : chr  &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; &quot;BLAN&quot; ...
 ##  $ plotID                       : chr  &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; &quot;BLAN_061&quot; ...
-##  $ date                         : POSIXct, format: &quot;2017-02-24&quot; ...
-##  $ editedDate                   : POSIXct, format: &quot;2017-03-31&quot; ...
-##  $ dayOfYear                    : num  55 55 55 55 55 55 55 55 55 55 ...
-##  $ individualID                 : chr  &quot;NEON.PLA.D02.BLAN.06229&quot; &quot;NEON.PLA.D02.BLAN.06226&quot; &quot;NEON.PLA.D02.BLAN.06222&quot; &quot;NEON.PLA.D02.BLAN.06223&quot; ...
-##  $ phenophaseName               : chr  &quot;Leaves&quot; &quot;Leaves&quot; &quot;Leaves&quot; &quot;Leaves&quot; ...
+##  $ date                         : Date, format: &quot;2017-02-24&quot; &quot;2017-02-24&quot; &quot;2017-02-24&quot; &quot;2017-02-24&quot; ...
+##  $ editedDate                   : Date, format: &quot;2017-03-31&quot; &quot;2017-03-31&quot; &quot;2017-03-31&quot; &quot;2017-03-31&quot; ...
+##  $ dayOfYear                    : int  55 55 55 55 55 55 55 55 55 55 ...
+##  $ eventID                      : chr  NA NA NA NA ...
+##  $ individualID                 : chr  &quot;NEON.PLA.D02.BLAN.06238&quot; &quot;NEON.PLA.D02.BLAN.06229&quot; &quot;NEON.PLA.D02.BLAN.06221&quot; &quot;NEON.PLA.D02.BLAN.06212&quot; ...
+##  $ phenophaseName               : chr  &quot;Increasing leaf size&quot; &quot;Colored leaves&quot; &quot;Breaking leaf buds&quot; &quot;Leaves&quot; ...
 ##  $ phenophaseStatus             : chr  &quot;no&quot; &quot;no&quot; &quot;no&quot; &quot;no&quot; ...
 ##  $ phenophaseIntensityDefinition: chr  NA NA NA NA ...
 ##  $ phenophaseIntensity          : chr  NA NA NA NA ...
@@ -934,81 +493,87 @@ str(status)
 ##  $ measuredBy                   : chr  &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; ...
 ##  $ recordedBy                   : chr  &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; &quot;llemmon@neoninc.org&quot; ...
 ##  $ remarks                      : chr  NA NA NA NA ...
+##  $ dataEntryRecordID            : chr  NA NA NA NA ...
 ##  $ dataQF                       : chr  &quot;legacyData&quot; &quot;legacyData&quot; &quot;legacyData&quot; &quot;legacyData&quot; ...
-##  $ publicationDate              : chr  &quot;20201217T203824Z&quot; &quot;20201217T203824Z&quot; &quot;20201217T203824Z&quot; &quot;20201217T203824Z&quot; ...
-##  $ release                      : chr  &quot;RELEASE-2021&quot; &quot;RELEASE-2021&quot; &quot;RELEASE-2021&quot; &quot;RELEASE-2021&quot; ...
+##  $ publicationDate              : chr  &quot;20251222T234455Z&quot; &quot;20251222T234455Z&quot; &quot;20251222T234455Z&quot; &quot;20251222T234455Z&quot; ...
+##  $ release                      : chr  &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; ...
 
 # date range
+
 min(status$date)
 
-## [1] &quot;2017-02-24 GMT&quot;
+## [1] &quot;2017-02-24&quot;
 
 max(status$date)
 
-## [1] &quot;2019-12-12 GMT&quot;
+## [1] &quot;2019-12-12&quot;
 </code></pre>
-
-<h2>Clean up the Data</h2>
-
+<h2 id="sec:data-cleanup-and-transformation">Data cleanup and transformation</h2>
 <ul>
-<li>remove duplicates (full rows)</li>
-<li>convert to date format</li>
-<li>retain only the most recent <code>editedDate</code> in the perIndividual and status table.</li>
+<li>Check for duplicates</li>
+<li>Retain only the most recent <code>editedDate</code> in each table</li>
+<li>Join tables</li>
 </ul>
+<h3 id="sec:check-for-duplicates">Check for duplicates</h3>
+<p>NEON data are quality-controlled on data entry and ingest to the database, but
+one of the most common data entry errors is duplicate entry. The <code>neonOS</code>
+package contains a function, <code>removeDups()</code>, that uses metadata from the
+variables file to check for duplicate records and resolve them if possible. Of
+course NEON also uses these tools internally; if you detect duplicates in data
+in one Release, they may be resolved in the next Release.</p>
+<p>Let’s check both tables for duplicates.</p>
+<pre><code>ind_noD &lt;- removeDups(ind, 
+                      variables=phe$variables_10055,
+                      table=&quot;phe_perindividual&quot;)
 
-<h3>Remove Duplicates</h3>
+## No duplicated key values found!
 
-<p>The individual table (ind) file is included in each site by month-year file. As 
-a result when all the tables are stacked there are many duplicates. </p>
+status_noD &lt;- removeDups(status,
+                         variables=phe$variables_10055,
+                         table=&quot;phe_statusintensity&quot;)
 
-<p>Let&#39;s remove any duplicates that exist.</p>
+## 1761 duplicated key values found, representing 3522 non-unique records. Attempting to resolve.
 
-<pre><code># drop UID as that will be unique for duplicate records
-ind_noUID &lt;- select(ind, -(uid))
+## 833 resolveable duplicates merged into matching records
+## 833 resolved records flagged with duplicateRecordQF=1
 
-status_noUID &lt;- select(status, -(uid))
-
-# remove duplicates
-## expect many
-
-ind_noD &lt;- distinct(ind_noUID)
-nrow(ind_noD)
-
-## [1] 433
-
-status_noD&lt;-distinct(status_noUID)
-nrow(status_noD)
-
-## [1] 216837
+## 1856 unresolveable duplicates flagged with duplicateRecordQF=2
 </code></pre>
-
-<h3>Variable Overlap between Tables</h3>
-
+<p>There are no duplicates in the perindividual table, but there are 3522 duplicate
+records (out of 219327 total records) in the statusintensity table. Inspecting
+the records, the majority are commissioning tests, when two people recorded each
+phenophase to check for agreement. <code>removeDups()</code> has resolved each pair to a
+single record when the phenophase data matched, and left as duplicates when the
+data didn’t match.</p>
+<h3 id="sec:filter-to-last-editeddate">Filter to last editedDate</h3>
+<p>The individual (ind) table contains all instances that any of the location or
+taxonomy data of an individual was updated. Therefore there are many rows for
+some individuals. We only want the latest <code>editedDate</code> in the ind table.</p>
+<pre><code>ind_last &lt;- ind_noD %&gt;%
+	group_by(individualID) %&gt;%
+	filter(editedDate==max(editedDate))
+</code></pre>
+<p>In this case no rows were removed from the table; NEON staff have already
+resolved the data to the most recent <code>editedDate</code>. It is always good to check
+for this, but it is more likely to come up in Provisional data.</p>
+<h3 id="sec:prepare-to-join-variable-overlap-between-tables">Prepare to join: Variable overlap between tables</h3>
 <p>From the initial inspection of the data we can see there is overlap in variable
 names between the fields.</p>
+<p>Let’s see what they are.</p>
+<pre><code>intersect(names(status_noD), 
+          names(ind_last))
 
-<p>Let&#39;s see what they are.</p>
-
-<pre><code># where is there an intersection of names
-intersect(names(status_noD), names(ind_noD))
-
-##  [1] &quot;namedLocation&quot;           &quot;domainID&quot;               
-##  [3] &quot;siteID&quot;                  &quot;plotID&quot;                 
-##  [5] &quot;date&quot;                    &quot;editedDate&quot;             
-##  [7] &quot;individualID&quot;            &quot;samplingProtocolVersion&quot;
-##  [9] &quot;measuredBy&quot;              &quot;recordedBy&quot;             
-## [11] &quot;remarks&quot;                 &quot;dataQF&quot;                 
-## [13] &quot;publicationDate&quot;         &quot;release&quot;
+##  [1] &quot;uid&quot;               &quot;namedLocation&quot;     &quot;domainID&quot;          &quot;siteID&quot;            &quot;plotID&quot;            &quot;date&quot;             
+##  [7] &quot;editedDate&quot;        &quot;individualID&quot;      &quot;measuredBy&quot;        &quot;recordedBy&quot;        &quot;remarks&quot;           &quot;dataQF&quot;           
+## [13] &quot;publicationDate&quot;   &quot;release&quot;           &quot;duplicateRecordQF&quot;
 </code></pre>
-
 <p>There are several fields that overlap between the datasets. Some of these are
-expected to be the same and will be what we join on. </p>
-
-<p>However, some of these will have different values in each table. We want to keep 
-those distinct value and not join on them. Therefore, we can rename these 
+expected to be the same and will be what we join on.</p>
+<p>However, some of these will have different values in each table. We want to keep
+those distinct value and not join on them. Therefore, we rename these
 fields before joining:</p>
-
 <ul>
+<li>uid</li>
 <li>date</li>
 <li>editedDate</li>
 <li>measuredBy</li>
@@ -1018,358 +583,340 @@ fields before joining:</p>
 <li>dataQF</li>
 <li>publicationDate</li>
 </ul>
-
-<p>Now we want to rename the variables that would have duplicate names. We can 
-rename all the variables in the status object to have &ldquo;Stat&rdquo; at the end of the 
-variable name. </p>
-
-<pre><code># in Status table rename like columns 
-status_noD &lt;- rename(status_noD, dateStat=date, 
-                                         editedDateStat=editedDate, measuredByStat=measuredBy, 
-                                         recordedByStat=recordedBy, 
-                                         samplingProtocolVersionStat=samplingProtocolVersion, 
-                                         remarksStat=remarks, dataQFStat=dataQF, 
-                                         publicationDateStat=publicationDate)
+<p>We’ll rename all the variables in the status object to have “Stat” at the end
+of the variable name.</p>
+<pre><code>status_noD &lt;- status_noD %&gt;%
+  rename(uidStat=uid, dateStat=date, 
+         editedDateStat=editedDate, 
+         measuredByStat=measuredBy, 
+         recordedByStat=recordedBy, 
+         samplingProtocolVersionStat=samplingProtocolVersion, 
+         remarksStat=remarks, 
+         dataQFStat=dataQF, 
+         publicationDateStat=publicationDate)
 </code></pre>
+<h3 id="sec:join-dataframes">Join Dataframes</h3>
+<p>Now we can join the two data frames on all the variables with the same name.
+We use a <code>left_join()</code> from the dpylr package because we want to match all the
+rows from the “left” (status) dataframe to any rows that also occur in the “right”
+(individual) dataframe.</p>
+<p>Check out RStudio’s
+<a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
+for other types of joins.</p>
+<pre><code>phe_ind &lt;- left_join(status_noD, 
+                     ind_last)
 
-<h3>Filter to last editedDate</h3>
-
-<p>The individual (ind) table contains all instances that any of the location or 
-taxonomy data of an individual was updated. Therefore there are many rows for
-some individuals.  We only want the latest <code>editedDate</code> on ind. </p>
-
-<pre><code># retain only the max of the date for each individualID
-ind_last &lt;- ind_noD %&gt;%
-    group_by(individualID) %&gt;%
-    filter(editedDate==max(editedDate))
-
-# oh wait, duplicate dates, retain only the most recent editedDate
-ind_lastnoD &lt;- ind_last %&gt;%
-    group_by(editedDate, individualID) %&gt;%
-    filter(row_number()==1)
+## Joining with `by = join_by(namedLocation, domainID, siteID, plotID, individualID, release, duplicateRecordQF)`
 </code></pre>
+<p>In some cases, the steps above result in date fields being converted to
+string. Check, and convert back to dates if necessary.</p>
+<pre><code>if(class(phe_ind$date)==&quot;character&quot;) {
+  phe_ind$date &lt;- as.POSIXct(phe_ind$date,
+                             format=&quot;%Y-%m-%d&quot;,
+                             tz=&quot;GMT&quot;)
+}
 
-<h3>Join Dataframes</h3>
 
-<p>Now we can join the two data frames on all the variables with the same name. 
-We use a <code>left_join()</code> from the dpylr package because we want to match all the 
-rows from the &ldquo;left&rdquo; (first) dataframe to any rows that also occur in the &ldquo;right&rdquo;
- (second) dataframe.  </p>
 
-<p>Check out RStudio&#39;s 
- <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf" target="_blank"> data wrangling (dplyr/tidyr) cheatsheet</a>
- for other types of joins. </p>
-
-<pre><code># Create a new dataframe &quot;phe_ind&quot; with all the data from status and some from ind_lastnoD
-phe_ind &lt;- left_join(status_noD, ind_lastnoD)
-
-## Joining, by = c(&quot;namedLocation&quot;, &quot;domainID&quot;, &quot;siteID&quot;, &quot;plotID&quot;, &quot;individualID&quot;, &quot;release&quot;)
+if(class(phe_ind$dateStat)==&quot;character&quot;) {
+  phe_ind$dateStat &lt;- as.POSIXct(phe_ind$dateStat,
+                             format=&quot;%Y-%m-%d&quot;,
+                             tz=&quot;GMT&quot;)
+}
 </code></pre>
-
-<p>Now that we have clean datasets we can begin looking into our particular data to 
-address our research question: do plants show patterns of changes in phenophase 
+<p>Now that we have a clean, joined dataset we can begin to
+explore our research question: do plants show patterns of changes in phenophase
 across season?</p>
-
-<h2>Patterns in Phenophase</h2>
-
-<p>From our larger dataset (several sites, species, phenophases), let&#39;s create a
-dataframe with only the data from a single site, species, and phenophase and 
+<h2 id="sec:patterns-in-phenophase">Patterns in phenophase</h2>
+<p>From our larger dataset (several sites, species, phenophases), let’s create a
+dataframe with only the data from a single site, species, and phenophase and
 call it <code>phe_1sp</code>.</p>
+<h2 id="sec:select-site-s-of-interest">Select site(s) of interest</h2>
+<p>To do this, we’ll first select our site of interest. Note how we set this up
+with an object that is our site of interest. This will allow us to more easily change
+which site or sites if we want to adapt our code later.</p>
+<pre><code>siteOfInterest &lt;- &quot;SCBI&quot;
 
-<h2>Select Site(s) of Interest</h2>
 
-<p>To do this, we&#39;ll first select our site of interest. Note how we set this up 
-with an object that is our site of interest. This will allow us to more easily change 
-which site or sites if we want to adapt our code later. </p>
 
-<pre><code># set site of interest
-siteOfInterest &lt;- &quot;SCBI&quot;
-
-# use filter to select only the site of Interest 
 ## using %in% allows one to add a vector if you want more than one site. 
-## could also do it with == instead of %in% but won&#39;t work with vectors
 
-phe_1st &lt;- filter(phe_ind, siteID %in% siteOfInterest)
+## could also do it with == but won't work with vectors
+
+
+
+phe_1st &lt;- phe_ind %&gt;% 
+  filter(siteID %in% siteOfInterest)
 </code></pre>
-
-<h2>Select Species of Interest</h2>
-
-<p>Now we may only want to view a single species or a set of species. Let&#39;s first 
+<h2 id="sec:select-species-of-interest">Select species of interest</h2>
+<p>Now we may only want to view a single species or a set of species. Let’s first
 look at the species that are present in our data. We could do this just by looking
-at the <code>taxonID</code> field which give the four letter UDSA plant code for each 
-species. But if we don&#39;t know all the plant codes, we can get a bit fancier and 
-view both </p>
+at the <code>taxonID</code> field which give the four letter UDSA plant code for each
+species. But if we don’t know all the plant codes, we can get a bit fancier and
+view both the <code>taxonID</code> and <code>scientificName</code>.</p>
+<pre><code>unique(phe_1st$taxonID)
 
-<pre><code># see which species are present - taxon ID only
-unique(phe_1st$taxonID)
+## [1] &quot;JUNI&quot; &quot;LITU&quot; &quot;MIVI&quot; NA
 
-## [1] &quot;JUNI&quot; &quot;MIVI&quot; &quot;LITU&quot;
+unique(paste(phe_1st$taxonID, 
+             phe_1st$scientificName, 
+             sep=' - ')) 
 
-# or see which species are present with taxon ID + species name
-unique(paste(phe_1st$taxonID, phe_1st$scientificName, sep=&#39; - &#39;)) 
-
-## [1] &quot;JUNI - Juglans nigra L.&quot;                      
-## [2] &quot;MIVI - Microstegium vimineum (Trin.) A. Camus&quot;
-## [3] &quot;LITU - Liriodendron tulipifera L.&quot;
+## [1] &quot;JUNI - Juglans nigra L.&quot;                       &quot;LITU - Liriodendron tulipifera L.&quot;            
+## [3] &quot;MIVI - Microstegium vimineum (Trin.) A. Camus&quot; &quot;NA - NA&quot;
 </code></pre>
-
-<p>For now, let&#39;s choose only the flowering tree <em>Liriodendron tulipifera</em> (LITU). 
+<p>For now, let’s choose only the flowering tree <em>Liriodendron tulipifera</em> (LITU).
 By writing it this way, we could also add a list of species to the <code>speciesOfInterest</code>
-object to select for multiple species. </p>
-
+object to select for multiple species.</p>
 <pre><code>speciesOfInterest &lt;- &quot;LITU&quot;
 
-#subset to just &quot;LITU&quot;
-# here just use == but could also use %in%
-phe_1sp &lt;- filter(phe_1st, taxonID==speciesOfInterest)
+
+
+phe_1sp &lt;- phe_1st %&gt;%
+  filter(taxonID==speciesOfInterest)
+
+
 
 # check that it worked
+
 unique(phe_1sp$taxonID)
 
 ## [1] &quot;LITU&quot;
 </code></pre>
-
-<h2>Select Phenophase of Interest</h2>
-
-<p>And, perhaps a single phenophase. </p>
-
+<h2 id="sec:select-phenophase-of-interest">Select phenophase of interest</h2>
+<p>And, perhaps a single phenophase.</p>
 <pre><code># see which phenophases are present
+
 unique(phe_1sp$phenophaseName)
 
-## [1] &quot;Open flowers&quot;         &quot;Breaking leaf buds&quot;  
-## [3] &quot;Colored leaves&quot;       &quot;Increasing leaf size&quot;
-## [5] &quot;Falling leaves&quot;       &quot;Leaves&quot;
+## [1] &quot;Increasing leaf size&quot; &quot;Leaves&quot;               &quot;Colored leaves&quot;       &quot;Open flowers&quot;         &quot;Falling leaves&quot;      
+## [6] &quot;Breaking leaf buds&quot;
 
 phenophaseOfInterest &lt;- &quot;Leaves&quot;
 
-#subset to just the phenosphase of interest 
-phe_1sp &lt;- filter(phe_1sp, phenophaseName %in% phenophaseOfInterest)
+
+
+# subset to just the phenophase of interest 
+
+phe_1sp &lt;- phe_1sp %&gt;%
+  filter(phenophaseName %in% phenophaseOfInterest)
+
+
 
 # check that it worked
+
 unique(phe_1sp$phenophaseName)
 
 ## [1] &quot;Leaves&quot;
 </code></pre>
-
-<h2>Select only Primary Plots</h2>
-
-<p>NEON plant phenology observations are collected along two types of plots. </p>
-
+<h2 id="sec:select-only-primary-plots">Select only primary plots</h2>
+<p>NEON plant phenology observations are collected in two types of plots.</p>
 <ul>
 <li>Primary plots: an 800 meter square phenology loop transect</li>
-<li>Phenocam plots: a 200 m x 200 m plot located within view of a canopy level, 
+<li>Phenocam plots: a 200 m x 200 m plot located within view of a canopy level,
 tower-mounted, phenology camera</li>
 </ul>
-
-<p>In the data, these plots are differentiated by the <code>subtypeSpecification</code>. 
-Depending on your question you may want to use only one or both of these plot types. 
-For this activity, we&#39;re going to only look at the primary plots. </p>
-
+<p>In the data, these plots are differentiated by the <code>subtypeSpecification</code>.
+Depending on your question you may want to use only one or both of these plot types.
+For this activity, we’re going to only look at the primary plots.</p>
 <div id="ds-dataTip" markdown="1">
 <i class="fa fa-star"></i> **Data Tip:** How do I learn this on my own? Read 
 the Data Product User Guide and use the variables files with the data download 
 to find the corresponding variables names.
 </div>
-
 <pre><code># what plots are present?
+
 unique(phe_1sp$subtypeSpecification)
 
 ## [1] &quot;primary&quot;  &quot;phenocam&quot;
 
 # filter
-phe_1spPrimary &lt;- filter(phe_1sp, subtypeSpecification == &#39;primary&#39;)
+
+phe_1spPrimary &lt;- phe_1sp %&gt;%
+  filter(subtypeSpecification == 'primary')
+
+
 
 # check that it worked
+
 unique(phe_1spPrimary$subtypeSpecification)
 
 ## [1] &quot;primary&quot;
 </code></pre>
-
-<h2>Total in Phenophase of Interest</h2>
-
-<p>The <code>phenophaseState</code> is recorded as &ldquo;yes&rdquo; or &ldquo;no&rdquo; that the individual is in that
+<h2 id="sec:total-in-phenophase-of-interest">Total in phenophase of interest</h2>
+<p>The <code>phenophaseState</code> is recorded as “yes” or “no” that the individual is in that
 phenophase. The <code>phenophaseIntensity</code> are categories for how much of the individual
-is in that state. For now, we will stick with <code>phenophaseState</code>. </p>
-
-<p>We can now calculate the total number of individuals with that state. We use 
-<code>n_distinct(indvidualID)</code> count the individuals (and not the records) in case 
-there are duplicate records for an individual. </p>
-
-<p>But later on we&#39;ll also want to calculate the percent of the observed individuals
-in the &ldquo;leaves&rdquo; status, therefore, we&#39;re also adding in a step here to retain the 
-sample size so that we can calculate % later. </p>
-
-<p>Here we use pipes <code>%&gt;%</code> from the dpylr package to &ldquo;pass&rdquo; objects onto the next
-function. </p>
-
-<pre><code># Calculate sample size for later use
-sampSize &lt;- phe_1spPrimary %&gt;%
+is in that state. For now, we will stick with <code>phenophaseState</code>.</p>
+<p>We can now calculate the total number of individuals in that state. We use
+<code>n_distinct(indvidualID)</code> to count the individuals (and not the records) in case
+there are duplicate records for an individual.</p>
+<p>But later on we’ll also want to calculate the percent of the observed individuals
+in the “leaves” status, therefore, we’re also adding in a step here to retain the
+sample size so that we can calculate % later.</p>
+<pre><code>sampSize &lt;- phe_1spPrimary %&gt;%
   group_by(dateStat) %&gt;%
-  summarise(numInd= n_distinct(individualID))
+  summarise(numInd=n_distinct(individualID))
 
-# Total in status by day for distinct individuals
-inStat &lt;- phe_1spPrimary%&gt;%
-  group_by(dateStat, phenophaseStatus)%&gt;%
+
+
+inStat &lt;- phe_1spPrimary %&gt;%
+  group_by(dateStat, phenophaseStatus) %&gt;%
   summarise(countYes=n_distinct(individualID))
 
-## `summarise()` has grouped output by &#39;dateStat&#39;. You can override using the `.groups` argument.
+## `summarise()` has regrouped the output.
+## ℹ Summaries were computed grouped by dateStat and phenophaseStatus.
+## ℹ Output is grouped by dateStat.
+## ℹ Use `summarise(.groups = &quot;drop_last&quot;)` to silence this message.
+## ℹ Use `summarise(.by = c(dateStat, phenophaseStatus))` for per-operation grouping (`?dplyr::dplyr_by`) instead.
 
-inStat &lt;- full_join(sampSize, inStat, by=&quot;dateStat&quot;)
+inStat &lt;- full_join(sampSize, 
+                    inStat, 
+                    by=&quot;dateStat&quot;)
+
+
 
 # Retain only Yes
-inStat_T &lt;- filter(inStat, phenophaseStatus %in% &quot;yes&quot;)
+
+inStat_T &lt;- inStat %&gt;% 
+  filter(phenophaseStatus %in% &quot;yes&quot;)
+
+
 
 # check that it worked
+
 unique(inStat_T$phenophaseStatus)
 
 ## [1] &quot;yes&quot;
 </code></pre>
-
-<p>Now that we have the data we can plot it. </p>
-
-<h2>Plot with ggplot</h2>
-
-<p>The <code>ggplot()</code> function within the <code>ggplot2</code> package gives us considerable control
-over plot appearance. Three basic elements are needed for <code>ggplot()</code> to work:</p>
-
-<ol>
-<li>The <strong>data_frame:</strong> containing the variables that we wish to plot,</li>
-<li><strong><code>aes</code> (aesthetics):</strong> which denotes which variables will map to the x-, y-
-(and other) axes,<br/></li>
-<li>**<code>geom_XXXX</code> (geometry):** which defines the data&#39;s graphical representation
-(e.g. points (<code>geom_point</code>), bars (<code>geom_bar</code>), lines (<code>geom_line</code>), etc).</li>
-</ol>
-
-<p>The syntax begins with the base statement that includes the <code>data_frame</code>
-(<code>inStat_T</code>) and associated x (<code>date</code>) and y (<code>n</code>) variables to be
-plotted:</p>
-
-<p><code>ggplot(inStat_T, aes(date, n))</code></p>
-
+<p>Now that we have the data we can plot it.</p>
+<h2 id="sec:plot-with-ggplot">Plot with ggplot</h2>
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** For a more detailed introduction to 
-using ggplot(), visit 
+<i class="fa fa-star"></i> **Data Tip:** For a detailed introduction to 
+using `ggplot()`, visit 
 <a href="https://www.neonscience.org/dc-time-series-plot-ggplot-r" target="_blank"> *Time Series 05: Plot Time Series with ggplot2 in R* tutorial</a>. 
 </div>
-
-<h3>Bar Plots with ggplot</h3>
-
-<p>To successfully plot, the last piece that is needed is the <code>geom</code>etry type. 
-To create a bar plot, we set the <code>geom</code> element from to <code>geom_bar()</code>.  </p>
-
 <p>The default setting for a ggplot bar plot -  <code>geom_bar()</code> - is a histogram
-designated by <code>stat=&quot;bin&quot;</code>. However, in this case, we want to plot count values. 
+designated by <code>stat=&quot;bin&quot;</code>. However, in this case, we want to plot count values.
 We can use <code>geom_bar(stat=&quot;identity&quot;)</code> to force ggplot to plot actual values.</p>
-
 <pre><code># plot number of individuals in leaf
-phenoPlot &lt;- ggplot(inStat_T, aes(dateStat, countYes)) +
+
+phenoPlot &lt;- ggplot(inStat_T, 
+                    aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) 
+
+
 
 phenoPlot
 </code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-total-1.png" alt="Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a ‘yes’ for the phenophase of interest,‘Leaves’, and were from the primary plots." /></p>
+<pre><code># Now let's make the plot look a bit more presentable
 
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-total-1.png" alt="Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots."/></p>
-
-<pre><code># Now let&#39;s make the plot look a bit more presentable
-phenoPlot &lt;- ggplot(inStat_T, aes(dateStat, countYes)) +
+phenoPlot &lt;- ggplot(inStat_T, 
+                    aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
     ggtitle(&quot;Total Individuals in Leaf&quot;) +
     xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
-    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
+    theme(plot.title = element_text(lineheight=.8, 
+                                    face=&quot;bold&quot;, 
+                                    size = 20)) +
     theme(text = element_text(size=18))
+
+
 
 phenoPlot
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-total-2.png" alt="Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots. Axis labels and title have been added to make the graph more presentable."/></p>
-
-<p>We could also covert this to percentage and plot that. </p>
-
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-total-2.png" alt="Bar plot showing the count of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). Counts represent individuals that were recorded as a ‘yes’ for the phenophase of interest,‘Leaves’, and were from the primary plots. Axis labels and title have been added to make the graph more presentable." /></p>
+<p>We could also covert this to percentage and plot that.</p>
 <pre><code># convert to percent
-inStat_T$percent&lt;- ((inStat_T$countYes)/inStat_T$numInd)*100
+
+inStat_T$percent &lt;- ((inStat_T$countYes)/
+                       inStat_T$numInd)*100
+
+
 
 # plot percent of leaves
-phenoPlot_P &lt;- ggplot(inStat_T, aes(dateStat, percent)) +
+
+phenoPlot_P &lt;- ggplot(inStat_T, 
+                      aes(dateStat, percent)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
     ggtitle(&quot;Proportion in Leaf&quot;) +
     xlab(&quot;Date&quot;) + ylab(&quot;% of Individuals&quot;) +
-    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
+    theme(plot.title = element_text(lineheight=.8, 
+                                    face=&quot;bold&quot;, 
+                                    size = 20)) +
     theme(text = element_text(size=18))
+
+
 
 phenoPlot_P
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-percentage-1.png" alt="It might also be useful to visualize the data in different ways while exploring the data. As such, before plotting, we can convert our count data into a percentage by writting an expression that divides the number of individuals with a &#39;yes&#39; for the phenophase of interest, &#39;Leaves&#39;, by the total number of individuals and then multiplies the result by 100. Using this newly generated dataset of percentages, we can plot the data similarly to how we did in the previous plot. Only this time, the y-axis range goes from 0 to 100 to reflect the percentage data we just generated. The resulting plot now shows a bar plot of the proportion of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). The y-axis represents the percent of individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots."/></p>
-
-<p>The plots demonstrate the nice expected pattern of increasing leaf-out, peak, 
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-leaves-percentage-1.png" alt="It might also be useful to visualize the data in different ways while exploring the data. As such, before plotting, we can convert our count data into a percentage by writting an expression that divides the number of individuals with a ‘yes’ for the phenophase of interest, ‘Leaves’, by the total number of individuals and then multiplies the result by 100. Using this newly generated dataset of percentages, we can plot the data similarly to how we did in the previous plot. Only this time, the y-axis range goes from 0 to 100 to reflect the percentage data we just generated. The resulting plot now shows a bar plot of the proportion of Liriodendrum tulipifera (LITU) individuals from January 2017 through December 2019 at the Smithsonian Conservation Biology Institute (SCBI). The y-axis represents the percent of individuals that were recorded as a ‘yes’ for the phenophase of interest,‘Leaves’, and were from the primary plots." /></p>
+<p>The plots demonstrate the nice expected pattern of increasing leaf-out, peak,
 and drop-off.</p>
-
-<h2>Drivers of Phenology</h2>
-
-<p>Now that we see that there are differences in and shifts in phenophases, what 
+<h2 id="sec:drivers-of-phenology">Drivers of phenology</h2>
+<p>Now that we see that there are differences in and shifts in phenophases, what
 are the drivers of phenophases?</p>
-
-<p>The NEON phenology measurements track sensitive and easily observed indicators 
-of biotic responses to climate variability by monitoring the timing and duration 
-of phenological stages in plant communities. Plant phenology is affected by forces 
-such as temperature, timing and duration of pest infestations and disease outbreaks, 
-water fluxes, nutrient budgets, carbon dynamics, and food availability and has 
-feedbacks to trophic interactions, carbon sequestration, community composition 
-and ecosystem function.  (quoted from 
+<p>The NEON phenology measurements track sensitive and easily observed indicators
+of biotic responses to meteorological variability by monitoring the timing and duration
+of phenological stages in plant communities. Plant phenology is affected by forces
+such as temperature, timing and duration of pest infestations and disease outbreaks,
+water fluxes, nutrient budgets, carbon dynamics, and food availability and has
+feedbacks to trophic interactions, carbon sequestration, community composition
+and ecosystem function.  (quoted from
 <a href="http://data.neonscience.org/api/v0/documents/NEON_phenology_userGuide_vA" target="_blank"> Plant Phenology Observations user guide</a>.)</p>
-
-<h2>Filter by Date</h2>
-
+<h2 id="sec:filter-by-date">Filter by date</h2>
 <p>In the next part of this series, we will be exploring temperature as a driver of
-phenology. Temperature date is quite large (NEON provides this in 1 minute or 30
-minute intervals) so let&#39;s trim our phenology date down to only one year so that 
-we aren&#39;t working with as large a data. </p>
-
-<p>Let&#39;s filter to just 2018 data. </p>
-
+phenology. Temperature data are quite large (NEON provides this in 1 minute or 30
+minute intervals) so let’s trim our phenology date down to only one year so that
+we aren’t working with as large a dataset.</p>
+<p>Let’s filter to just 2018 data.</p>
 <pre><code># use filter to select only the date of interest 
-phe_1sp_2018 &lt;- filter(inStat_T, dateStat &gt;= &quot;2018-01-01&quot; &amp; dateStat &lt;= &quot;2018-12-31&quot;)
+
+phe_1sp_2018 &lt;- inStat_T %&gt;% 
+  filter(dateStat &gt;= &quot;2018-01-01&quot; &amp; 
+           dateStat &lt;= &quot;2018-12-31&quot;)
+
+
 
 # did it work?
+
 range(phe_1sp_2018$dateStat)
 
 ## [1] &quot;2018-04-13 GMT&quot; &quot;2018-11-20 GMT&quot;
 </code></pre>
+<p>How does that look?</p>
+<pre><code># Now let's make the plot look a bit more presentable
 
-<p>How does that look? </p>
-
-<pre><code># Now let&#39;s make the plot look a bit more presentable
-phenoPlot18 &lt;- ggplot(phe_1sp_2018, aes(dateStat, countYes)) +
+phenoPlot18 &lt;- ggplot(phe_1sp_2018, 
+                      aes(dateStat, countYes)) +
     geom_bar(stat=&quot;identity&quot;, na.rm = TRUE) +
     ggtitle(&quot;Total Individuals in Leaf&quot;) +
     xlab(&quot;Date&quot;) + ylab(&quot;Number of Individuals&quot;) +
-    theme(plot.title = element_text(lineheight=.8, face=&quot;bold&quot;, size = 20)) +
+    theme(plot.title = element_text(lineheight=.8, 
+                                    face=&quot;bold&quot;, 
+                                    size = 20)) +
     theme(text = element_text(size=18))
+
+
 
 phenoPlot18
 </code></pre>
-
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-2018-1.png" alt="In the previous step, we filtered our data by date to only include data from 2018. Reviewing the newly generated dataset we get a bar plot showing the count of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. Counts represent individuals that were recorded as a &#39;yes&#39; for the phenophase of interest,&#39;Leaves&#39;, and were from the primary plots."/></p>
-
-<p>Now that we&#39;ve filtered down to just the 2018 data from SCBI for LITU in leaf, 
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/01-explore-phenology-data/rfigs/plot-2018-1.png" alt="In the previous step, we filtered our data by date to only include data from 2018. Reviewing the newly generated dataset we get a bar plot showing the count of Liriodendrum tulipifera (LITU) individuals at the Smithsonian Conservation Biology Institute (SCBI) for the year 2018. Counts represent individuals that were recorded as a ‘yes’ for the phenophase of interest,‘Leaves’, and were from the primary plots." /></p>
+<p>Now that we’ve filtered down to just the 2018 data from SCBI for LITU in leaf,
 we may want to save that subsetted data for another use. To do that you can write
-the data frame to a .csv file. </p>
-
+the data frame to a .csv file.</p>
 <p>You do not need to follow this step if you are continuing on to the next tutorials
 in this series as you already have the data frame in your environment. Of course
-if you close R and then come back to it, you will need to re-load this data and 
-instructions for that are provided in the relevant tutorials. </p>
+if you close R and then come back to it, you will need to re-load this data and
+instructions for that are provided in the relevant tutorials.</p>
+<pre><code># optional
 
-<pre><code># Write .csv - this step is optional 
-# This will write to your current working directory, change as desired.
-write.csv( phe_1sp_2018 , file=&quot;NEONpheno_LITU_Leaves_SCBI_2018.csv&quot;, row.names=F)
+write.csv(phe_1sp_2018 , 
 
-#If you are using the downloaded example date, this code will write it to the 
-# pheno data file. Note - this file is already a part of the download.
+          file=&quot;NEONpheno_LITU_Leaves_SCBI_2018.csv&quot;, 
 
-#write.csv( phe_1sp_2018 , file=&quot;NEON-pheno-temp-timeseries_v2/NEONpheno_LITU_Leaves_SCBI_2018.csv&quot;, row.names=F)
+          row.names=F)
 </code></pre>
-
+</div>
 </body>
-
 </html>
