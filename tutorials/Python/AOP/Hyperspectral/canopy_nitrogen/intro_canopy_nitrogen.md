@@ -29,13 +29,20 @@ After completing this tutorial, you will be able to:
 - Understand what the needle v. non-needle classification and valid pixel masks mean and how to use them
 - Mask the Nitrogen data to include only valid pixels
 
+## Things You’ll Need To Complete This Tutorial
+
+To complete this tutorial, you will need: 
+* Python version 3.9 or higher
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
+
 ## Install Python Packages
 - neonutilities
 - rasterio
 
 </div>
 
-Let's get started! First import the required Python packages, `neonutilities` and `rasterio`.
+Let's get started! First import the required Python packages, `neonutilities` and `rasterio` as well as some other packages for plotting and interacting with the operating system.
 
 
 ```python
@@ -48,6 +55,15 @@ import matplotlib.patches as mpatches
 import rasterio
 from rasterio.plot import show
 from rasterio.plot import plotting_extent
+import dotenv
+```
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've saved your token, you can load it to a variable called `token` as follows: 
+
+```python
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
+# print(token) # uncomment to display the token; if you haven't set the token properly in the environment, this will print nothing
 ```
 
 First let's see what data are available. As of Feb 2026, only a subset of sites have been published, as NEON is seeking input from the user community before producing this model for all NEON terrrestrial sites. See the Data Notification <a href="https://www.neonscience.org/impact/observatory-blog/new-data-product-canopy-nitrogen-subset-data-available-community-review" target=_blank>New Data Product: Canopy Nitrogen, Subset of Data Available for Community Review</a> for more details.
@@ -79,7 +95,8 @@ nu.by_tile_aop(dpid="DP3.30018.002", # download the Canopy Nitrogen Product
                easting=723000, # UTM easting
                northing=4708000, # UTM northing
                include_provisional=True, # include provisional data
-               savepath=download_dir)
+               savepath=download_dir,
+               token=token)
 ```
 
     Provisional NEON data are included. To exclude provisional data, use input parameter include_provisional=False.
