@@ -352,16 +352,15 @@ Finally, we can create a `widget` to interactively view the spectra of different
 
 
 ```python
-#define refl_band, refl, and metadata, as copies of the original serc_refl data
 from ipywidgets import interact
 
 # --- Data Initialization Setup ---
-# (Assumes sercb56, serc_refl, and serc_refl_md already exist in your workspace)
+# define refl_band, refl, and metadata, as copies of the original serc_refl data
 refl_band = sercb56
 refl = serc_refl.copy()
 metadata = serc_refl_md.copy()
 
-# pre-extract coordinate mapping info to keep the loop clean
+# pre-extract coordinate mapping info
 ext = metadata['extent']
 
 def interactive_spectra_plot(pixel_x, pixel_y):
