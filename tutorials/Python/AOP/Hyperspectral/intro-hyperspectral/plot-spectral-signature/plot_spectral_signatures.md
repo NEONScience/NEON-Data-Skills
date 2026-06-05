@@ -407,19 +407,14 @@ def interactive_spectra_plot(pixel_x, pixel_y):
     # calculate coordinate markers
     marker_x = ext[0] + pixel_x
     marker_y = ext[3] - pixel_y
-    ax2.plot(marker_x, marker_y, marker='s', 
-             
-             
-             
-             
-             markersize=5, color='red')
+    ax2.plot(marker_x, marker_y, marker='s', markersize=5, color='red')
     
     ax2.set_xlim(ext[0], ext[1])
     ax2.set_ylim(ext[2], ext[3])
     
-    plt.show() # Explicitly handle displaying the combined figures cleanly
+    plt.show() 
 
-# --- Step 4: Run Interactive UI ---
+# --- Run Interactive UI ---
 interact(
     interactive_spectra_plot, 
     pixel_x=(0, refl.shape[1] - 1, 1),
