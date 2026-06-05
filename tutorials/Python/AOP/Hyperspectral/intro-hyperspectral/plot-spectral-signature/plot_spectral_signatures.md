@@ -165,10 +165,8 @@ nu.by_tile_aop('DP3.30006.002',
     Provisional NEON data are included. To exclude provisional data, use input parameter include_provisional=False.
     
 
-    Continuing will download 2 NEON data files totaling approximately 661.3 MB. Do you want to proceed? (y/n)  n
+    Continuing will download 2 NEON data files totaling approximately 661.3 MB. Do you want to proceed? (y/n)  y
     
-
-    Download halted
     
 
 The reflectance data tile is now downloaded into the 'C:/NEON_Data/DP3.30006.002' directory. You can use the code cell below to walk through all the directories and display where the .h5 file was downloaded.
