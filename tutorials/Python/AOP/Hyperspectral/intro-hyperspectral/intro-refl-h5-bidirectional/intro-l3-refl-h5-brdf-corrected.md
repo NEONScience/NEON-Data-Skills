@@ -41,6 +41,7 @@ After completing this tutorial, you will be able to:
 * **pandas**
 * **neonutilities**
 * **scikit-image**
+* **python-dotenv**
 
 ### Things You’ll Need To Complete This Tutorial
 
@@ -135,7 +136,7 @@ from skimage import exposure
 import dotenv
 ```
 
-As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've set up your token as an environment variable, you can load it using  the `dotenv` package as follows, optionally specifying the path to the `.env` file.
 
 
 ```python
@@ -193,7 +194,7 @@ by_tile_aop(dpid='DP3.30006.002',
     100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:13<00:00,  6.83s/it]
     
 
-The reflectance data tile is now downloaded into the './data' directory and maintains a path structure as the data is stored on Google Cloud Storage (GCS). You can use the code cell below to walk through all the directories and display where the .h5 file was downloaded.
+The reflectance data tile is now downloaded into the 'C:/NEON_Data/DP3.30006.002' directory and maintains a path structure as the data is stored on Google Cloud Storage (GCS). You can use the code cell below to walk through all the directories and display where the .h5 file was downloaded.
 
 
 ```python
