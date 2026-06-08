@@ -10,7 +10,7 @@ packagesLibraries:
 topics: Biorepository, Samples, Specimens
 languagesTool: 
 dataProduct: 
-code1: 
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Other/Biorepository/01-sampleTypes/01-sampleTypes.md
 tutorialSeries: biorepository-series
 urlTitle: biorepository-understanding-neon-sample-types
 ---
