@@ -12,7 +12,7 @@ languagesTool:
 dataProduct: 
 code1: 
 tutorialSeries: biorepository-series
-urlTitle: biorepository-understanding-sample-types
+urlTitle: biorepository-understanding-neon-sample-types
 ---
 
 In this tutorial, we’ll explore the types of materials archived in the NEON Biorepository and how they are organized. We’ll use the Sample Type Browser and Sample Type Profiles to explore the diversity of archived materials and learn where to find additional information about associated protocols and data products.
