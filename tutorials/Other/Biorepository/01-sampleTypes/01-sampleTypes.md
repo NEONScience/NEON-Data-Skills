@@ -55,9 +55,9 @@ This can help clarify:
 
 For example, a researcher interested in plant materials may discover that the Biorepository contains not only the typical pressed herbarium specimens, but also frozen leaves, dried canopy foliage, root cores, and litterfall.
 
-The Sample Type Browser is available through the Biorepository Sample Portal under **Samples & Specimens > About Samples > Sample Types**, or directly at:
+The Sample Type Browser is available under **Samples & Specimens > About Samples > Sample Types**, or directly at:
 
-<a href="https://biorepo.neonscience.org/portal/collections/misc/browsecollprofiles.php?utm_source=neon_tutorial&utm_medium=directlink" target="_blank">Sample Type Browser</a>
+<a href="https://biorepo.neonscience.org/portal/collections/misc/browsecollprofiles.php?utm_source=neon_tutorial&utm_medium=directlink" target="_blank" class="link--button link--arrow">Sample Type Browser</a>
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/biorepository/sampletypebrowser.jpg">
