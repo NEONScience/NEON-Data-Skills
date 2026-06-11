@@ -6,11 +6,11 @@ dateCreated: 2022-09-24
 authors: Bridget Hass
 contributors: 
 estimatedTime: 45 minutes - 1 hour
-packagesLibraries: requests, json, gdal, geopandas, laspy, lasrs
+packagesLibraries: requests, json, gdal, geopandas, laspy, lasrs, neonutilities
 topics:
 languagesTool: python
-dataProduct: DP3.10003.001, 
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds.py
+dataProduct: DP1.30003.001, DP3.30015.001 
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/Lidar/intro-lidar/intro-point-clouds/intro_discrete_point_clouds.ipynb
 tutorialSeries: 
 urlTitle: neon-discrete-point-clouds
 ---
@@ -237,7 +237,7 @@ plt.xticks(rotation=90); #optionally rotate the xtick labels
 ```
 
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds_files/intro_discrete_point_clouds_28_0.png)    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/intro-point-clouds/intro_discrete_point_clouds_files/intro_discrete_point_clouds_28_0.png)    
 
 
 Now that we can see the extent of the tiles, we'll pick a single tile in this area to download. For this example, specify the tile `726000_1986000` towards the southern part of the site, including both land and sea.
@@ -464,7 +464,7 @@ plt.show()
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds_files/intro_discrete_point_clouds_61_0.png)   
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/intro-point-clouds/intro_discrete_point_clouds_files/intro_discrete_point_clouds_61_0.png)   
     
 
 
@@ -516,7 +516,7 @@ ax.ticklabel_format(style='plain', axis='y') # turn off scientific notation for 
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/intro_point_clouds_py/intro_discrete_point_clouds_files/intro_discrete_point_clouds_71_0.png) 
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/intro-point-clouds/intro_discrete_point_clouds_files/intro_discrete_point_clouds_71_0.png) 
     
 
 
