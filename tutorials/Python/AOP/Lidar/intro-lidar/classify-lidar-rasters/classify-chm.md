@@ -163,7 +163,7 @@ plt.show();
 ```
 
     
-![png]((https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/intro_discrete_point_clouds_files/classify-chm_files/classify-chm_12_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/intro_discrete_point_clouds_files/classify-chm_files/classify-chm_12_0.png)
     
 
 
@@ -178,7 +178,7 @@ plt.hist(valid_data.flatten(),bins=30);
 
 
     
-![png]((https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/intro_discrete_point_clouds_files/classify-chm_files/classify-chm_14_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/intro_discrete_point_clouds_files/classify-chm_files/classify-chm_14_0.png)
     
 
 
