@@ -1,17 +1,17 @@
 --- 
 syncID: a6db1047adb34f41b9d17d6ed41f5fd5
 title: "Exploring Uncertainty in Lidar Raster Data using Python"
-description: "Learn to analyze the difference between rasters taken a few days apart to assess the uncertainty between days." 
+description: "Assess lidar raster uncertainty by comparing data from lidar acquisitions collected a few days apart." 
 dateCreated: 2017-06-21 
 authors: Tristan Goulden
 contributors: Bridget Hass
 estimatedTime: 30 minutes
 packagesLibraries: neonutilities, rasterio
-topics: hyperspectral-remote-sensing, remote-sensing
+topics: remote-sensing, lidar, uncertainty
 languagesTool: Python
 dataProduct: DP3.30015.001, DP3.30024.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/AOP/Lidar/uncertainty-and-validation/lidar_uncertainty.py
-tutorialSeries: rs-uncertainty-py-series
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/AOP/Lidar/lidar-uncertainty/lidar_uncertainty.ipynb
+tutorialSeries: 
 urlTitle: lidar-uncertainty-py
 ---
 
@@ -19,7 +19,7 @@ In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, a
 
 <div id="ds-objectives" markdown="1">
 
-### Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
 * Load several L3 Lidar tif files
@@ -28,16 +28,16 @@ After completing this tutorial, you will be able to:
 * Remove vegetated areas of DSM & DTMs using the CHM
 * Compare difference in DSM and DTMs over vegetated and ground pixels
 
-### Install Python Packages
+#### To complete this tutorial, you will need: 
+* Python version 3.9 or higher
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
+
+#### Install Python Packages
 
 * neonutilities
 * rasterio
 
-### Download Data
-
-Data required to run this tutorial will be downloaded using the Python <a href="https://pypi.org/project/neonutilities/" target="_blank">neonutilities</a> package, which can be installed with `pip` as follows:
-
-`pip install neonutilities`
 
 </div>
 
@@ -57,9 +57,18 @@ import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+import dotenv
 ```
 
 ## Download DEM and CHM data
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've set up your token as an environment variable, you can load it using  the `python-dotenv` package as follows, optionally specifying the path to the `.env` file in `load_dotenv()`.
+
+
+```python
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
+```
 
 Use the `neonutilities` package, imported as `nu` to download the CHM and DEM data, for a single tile. You will need to type `y` to proceed with the download.
 
@@ -71,8 +80,20 @@ nu.by_tile_aop(dpid="DP3.30015.001",
                year=2016,
                easting=607000, 
                northing=3696000, 
-               savepath=os.path.expanduser("~/Downloads"))
+               savepath=os.path.expanduser("~/Downloads"),
+               token=token)
 ```
+
+    Provisional NEON data are not included. To download provisional data, use input parameter include_provisional=True.
+    
+
+    Continuing will download 3 NEON data files totaling approximately 1.8 MB. Do you want to proceed? (y/n)  y
+    
+
+    Downloading 3 NEON data files totaling approximately 1.8 MB
+    
+    100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:01<00:00,  2.56it/s]
+    
 
 
 ```python
@@ -82,8 +103,20 @@ nu.by_tile_aop(dpid="DP3.30024.001",
                year=2016,
                easting=607000, 
                northing=3696000, 
-               savepath=os.path.expanduser("~/Downloads"))
+               savepath=os.path.expanduser("~/Downloads"),
+               token=token)
 ```
+
+    Provisional NEON data are not included. To download provisional data, use input parameter include_provisional=True.
+    
+
+    Continuing will download 5 NEON data files totaling approximately 11.3 MB. Do you want to proceed? (y/n)  y
+    
+
+    Downloading 5 NEON data files totaling approximately 11.3 MB
+    
+    100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:02<00:00,  2.24it/s]
+    
 
 ## Read in Lidar raster data files
 
@@ -147,7 +180,9 @@ show(dsm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_11_0.png)
+![png](lidar_uncertainty_files/lidar_uncertainty_13_0.png)
+    
+
 
 
 ```python
@@ -159,11 +194,11 @@ show(dtm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_12_0.png)
+![png](lidar_uncertainty_files/lidar_uncertainty_14_0.png)
     
 
 
-Since we want to know what changed between the two days, we will create an array containing the pixel differences across the two arrays.  To do this let's subtract the two DSMs. First let's extract the data from the datasets as follows:
+Since we want to know what the changed between the two days, we will create an array containing the pixel differences across the two arrays.  To do this let's subtract the two DSMs. First let's extract the data from the datasets as follows:
 
 
 ```python
@@ -199,7 +234,7 @@ plt.show()
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_18_0.png)
+![png](lidar_uncertainty_files/lidar_uncertainty_20_0.png)
     
 
 
@@ -215,18 +250,18 @@ plt.show()
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_20_0.png)
+
+![png](lidar_uncertainty_files/lidar_uncertainty_22_0.png)
     
 
 
-The histogram shows a wide variation in DSM differences, with those at the 95% limit at around +/- 1.5 m. Let's take a look at the spatial distribution of the errors by plotting a map of the difference between the two DSMs. Here we'll also use the extra variable in the plot function to constrain the limits of the colorbar to 95% of the observations. 
+The histogram shows a wide variation in DSM differences, with those at the 95% limit at around +/- 1.5 m. Let's take a look at the spatial distribution of the errors by plotting a map of the difference between the two DSMs. Here we'll also use the `vmin` and `vmax` variables in the plot function to constrain the limits of the colorbar to 95% of the observations. 
 
 
 ```python
 # define the min and max histogram values
-dsm_diff_vmin = diff_dsm_array_mean-2*diff_dsm_array_std
-dsm_diff_vmax = diff_dsm_array_mean+2*diff_dsm_array_std
+dsm_diff_vmin = diff_dsm_array_mean-diff_dsm_array_std; #print(dsm_diff_vmin)
+dsm_diff_vmax = diff_dsm_array_mean+diff_dsm_array_std; #print(dsm_diff_vmax)
 
 # get the extent (bounds) from dsm1_dataset
 left, bottom, right, top = dsm1_dataset.bounds
@@ -234,7 +269,7 @@ ext = [left, right, bottom, top]
 
 # Plot, with some formatting to make it look nice
 fig, ax = plt.subplots(1, 1, figsize=(5,6))
-dsm_diff_map = show(diff_dsm_array,vmin=dsm_diff_vmin, vmax=dsm_diff_vmax, extent = ext, ax = ax, cmap='viridis')
+dsm_diff_map = show(diff_dsm_array,vmin=dsm_diff_vmin, vmax=dsm_diff_vmax, extent = ext, ax = ax, cmap='RdBu')
 im = dsm_diff_map.get_images()[0]
 divider = make_axes_locatable(ax) 
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -245,9 +280,11 @@ ax.set_title('DSM Difference Map');
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_22_0.png)
+![png](lidar_uncertainty_files/lidar_uncertainty_24_0.png)
     
 
+
+Here we can see that there is a mean offset somewhere around 0.02, and it looks like there are higher differences in the forested areas.
 
 It seems that there is a spatial pattern in the distribution of errors. Now let's take a look at the statistics (mean, standard deviation), histogram and map for the difference in DTMs.
 
@@ -272,12 +309,13 @@ print('Standard deviation of difference in DTMs: ',round(diff_dtm_array_std,3),'
 
 
 ```python
-dtm_diff_vmin = diff_dtm_array_mean-2*diff_dtm_array_std
-dtm_diff_vmax = diff_dtm_array_mean+2*diff_dtm_array_std
+dtm_diff_vmin = diff_dtm_array_mean-diff_dtm_array_std
+dtm_diff_vmax = diff_dtm_array_mean+diff_dtm_array_std
 
 # Plot, with some formatting to make it look nice
 fig, ax = plt.subplots(1, 1, figsize=(5,6))
-dtm_diff_map = show(diff_dtm_array,vmin=dtm_diff_vmin, vmax=dtm_diff_vmax, extent = ext, ax = ax, cmap='viridis');
+# dtm_diff_map = show(diff_dtm_array,vmin=dtm_diff_vmin, vmax=dtm_diff_vmax, extent = ext, ax = ax, cmap='seismic');
+dtm_diff_map = show(diff_dtm_array,vmin=-0.5, vmax=0.5, extent = ext, ax = ax, cmap='RdBu');
 im = dtm_diff_map.get_images()[0]
 divider = make_axes_locatable(ax) 
 cax = divider.append_axes('right', size='5%', pad=0.05)
@@ -288,8 +326,8 @@ ax.set_title('DTM Difference Map');
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_26_0.png)
+
+![png](lidar_uncertainty_files/lidar_uncertainty_29_0.png)
     
 
 
@@ -306,14 +344,14 @@ show(chm2_dataset, ax=ax2); ax2.ticklabel_format(style='plain'); ax2.set_title('
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_28_0.png)
+
+![png](lidar_uncertainty_files/lidar_uncertainty_31_0.png)
     
 
 
 From the CHM, it appears the spatial distribution of error patterns follow the location of vegetation. 
 
-Now let's isolate only the pixels in the difference DSM that correspond to vegetation location, calculate the mean and standard deviation, and plot the associated histogram. Before displaying the histogram, we'll remove the no data values from the difference DSM and the non-zero pixels from the CHM. To keep the number of elements the same in each vector to allow element-wise logical operations in Python, we have to remove the difference DSM no data elements from the CHM array as well. 
+Now let's isolate only the pixels in the difference DSM that correspond to vegetation location, calculate the mean and standard deviation and plot the associated histogram. Before displaying the histogram, we'll remove the no data values from the difference DSM and the non-zero pixels from the CHM. To keep the number of elements the same in each vector to allow element-wise logical operations in Python, we have to remove the difference DSM no data elements from the CHM array as well. 
 
 
 ```python
@@ -343,14 +381,14 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency');
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_31_0.png)
+
+![png](lidar_uncertainty_files/lidar_uncertainty_34_0.png)
     
 
 
 The results show a similar mean difference of near zero, but an extremely high standard deviation of 1.381 m! Since the DSM represents the top of the tree canopy, this provides the level of uncertainty we can expect in the canopy height in forests characteristic of the PRIN site using NEON LiDAR data. 
 
-Next we'll calculate the statistics and plot the histogram of the DTM vegetated areas
+Next we'll calculate the statistics and plot the histogram of the DTM vegetated areas.
 
 
 ```python
@@ -379,12 +417,12 @@ plt.xlabel('Height Difference (m)'); plt.ylabel('Frequency');
 ```
 
 
-    
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_35_0.png)
+
+![png](lidar_uncertainty_files/lidar_uncertainty_38_0.png)
     
 
 
-Although the variation is reduced, it is still larger than expected for LiDAR. This is because under vegetation there may not be much laser energy reaching the ground, and the points that reach the ground may return with lower signal. The sparsity of points leads to surface interpolation over larger distances, which can miss variations in the topography. Since the distribution of LIDAR points varied on each day, this resulted in different terrain representations and an uncertainty in the ground surface. This shows that the accuracy of LiDAR DTMs is reduced when there is vegetation present.
+Although the variation is reduced, it is still larger than expected for LiDAR. This is because under vegetation there may not be much laser energy reaching the ground, and the points that do reach the ground may return with lower signal. The sparsity of points leads to surface interpolation over larger distances which can miss variations in the topography. Since the distribution of LIDAR points and their position varied for each day, this resulted in different terrain representations and a uncertianty in the ground surface. This shows that the accuracy of LiDAR DTMs is reduced when vegetation is present.
 
 Finally, let's look at the DTM difference on only the ground points (where CHM = 0).
 
@@ -411,15 +449,14 @@ plt.xlabel('Height Difference(m)'); plt.ylabel('Frequency');
 ```
 
 
+
+![png](lidar_uncertainty_files/lidar_uncertainty_41_0.png)
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/uncertainty-validation/lidar_uncertainty/lidar_uncertainty_files/lidar_uncertainty_38_0.png)
-    
 
 
-In the open ground scenario we are able to see the error characteristics we expect, with a mean difference of only 0.011 m and a variation of 0.068 m. 
+In the open ground, we are able to see the error characteristics we expect with a mean difference of 0.011 m and a variation of ~0.07 m. 
 
-This shows that the uncertainty we expect in the NEON LiDAR system (~0.15 m) is only valid in bare, open, hard-surfaces. We cannot expect the LiDAR to be as accurate when vegetation is present. Quantifying the top of the canopy is particularly difficult and can lead to uncertainty in excess of 1 m for any given pixel.  
-
+This shows that the uncertainty we expect in the NEON LiDAR system (~0.15 m) is only valid in bare, open, hard surfaces. We cannot expect the accuracy of the LiDAR to reach this level when vegetation is present. Quantifying the top of the canopy is particularly difficult and can lead to uncertainty in excess of 1 m for any given pixel.  
 
 <div id="ds-challenge" markdown="1">
 
