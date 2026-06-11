@@ -266,7 +266,7 @@ ax.legend(handles=[class1,class2,class3,class4,class5],
 
 
     
-![png]((https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/classify-chm_files/classify-chm_22_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/classify-lidar-rasters/classify-chm_files/classify-chm_22_0.png)
     
 
 
