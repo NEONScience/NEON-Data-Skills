@@ -46,7 +46,7 @@ d42286b3af6148f3a8fd0863f00752a7,Creating a Raster Stack from Hyperspectral Imag
 c1cd91f1343b430c9c37497c52cf98ac,Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R,hsi-hdf5-r,,
 c9e8285168284e26ac252d7d099ba4ed,The Basics of LiDAR - Light Detection and Ranging - Remote Sensing,lidar-basics,,
 c10184c4075445bf8ade25415103d78d,What is a CHM DSM and DTM? About Gridded Raster LiDAR Data,chm-dsm-dtm,,
-8e3b475ba47d407dae623ddadb0924fe,Plas.io: Free Online Data Viz to Explore LiDAR Data,plasio-view-pointclouds,2026-03-31,
+8e3b475ba47d407dae623ddadb0924fe,Plas.io: Free Online Data Viz to Explore LiDAR Data,plasio-view-pointclouds,2026-06-11,
 319d19d8d6e84aaaab8515beaa3915e9,Going On The Grid -- An Intro to Gridding & Spatial Interpolation,spatial-interpolation-basics,,
 4a21c923ecc848e08af1222e5552bc89,Create a Canopy Height Model from LiDAR-derived Rasters in R,create-chm-rasters-r,,
 75f786a3b9ee4abba21878eb721704b6,Extract Values from a Raster in R,extract-values-rasters-r,,
