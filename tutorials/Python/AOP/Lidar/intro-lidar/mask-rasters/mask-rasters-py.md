@@ -46,7 +46,7 @@ To complete this tutorial, you will need:
 
 #### Download Data
 
-For this lesson, we will read in Canopy Height Model data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `neonutilities` package.
+For this lesson, we will work with Aspect and NDVI data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `neonutilities` package.
 
 </div>
 
