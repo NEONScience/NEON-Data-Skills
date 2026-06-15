@@ -121,7 +121,7 @@ byTileAOP(dpID='DP3.30024.001',
           easting=607000,
           northing=3696000,
           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-          savepath = data_dir,
+          savepath=data_dir,
           token=token)
 ```
 
@@ -157,7 +157,7 @@ dtm2 <- rast(dtm_file2)
 chm1
 ```
 
-``` {r plot-dsm}
+``` {r plot-dsm, eval=TRUE}
 # plot the set of DTM rasters
 # Set up the plotting area to have 1 row and 2 columns
 par(mfrow = c(1, 2))
@@ -167,7 +167,7 @@ plot(dsm1, main = "2016_PRIN_1 DSM")
 plot(dsm2, main = "2016_PRIN_2 DSM")
 ```
 
-``` {r plot-dtm}
+``` {r plot-dtm, eval=TRUE}
 # Reset the plotting area
 par(mfrow = c(1, 2))
 
@@ -179,7 +179,7 @@ plot(dtm2, main = "2016_PRIN_2 DTM")
 Since we want to know what changed between the two days, we will difference the sets of rasters (i.e. DSM1 - DSM2).
 
 
-```{r diff-dsm }
+```{r diff-dsm}
 
 # Difference the 2 DSM rasters
 dsm_diff <- dsm1 - dsm2
@@ -201,7 +201,7 @@ an error below 0.15 meters! Let's take a look at a histogram of the DSM differen
 raster to see if we can get a better idea of what's going on.
 
 
-```{r dsm-diff-hist}
+```{r dsm-diff-hist, eval=TRUE}
 
 # Set options to avoid scientific notation
 options(scipen = 999)
@@ -285,7 +285,7 @@ spatial pattern of the error is evident.
 
 Now, we'll plot the Canopy Height Model (CHM) of the same area. In the CHM, the tree heights above ground are represented, with all ground pixels having zero elevation. This time we'll use a colorbar which shows the ground as light green and the highest vegetation as dark green.
 
-``` {r plot-chm}
+``` {r plot-chm, eval=TRUE}
 # Reset the plotting area
 par(mfrow = c(1, 2))
 

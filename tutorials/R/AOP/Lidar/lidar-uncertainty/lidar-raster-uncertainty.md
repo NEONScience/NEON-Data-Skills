@@ -18,7 +18,8 @@ urlTitle: lidar-uncertainty-r
 
 In 2016 the NEON AOP flew the PRIN site in D11 on a poor weather day to ensure coverage of the site. The following day, the weather improved and the site was flown again to collect clear-weather spectrometer data. Having collections only one day apart provides an opportunity to assess lidar uncertainty because we expect that nothing has changed at the site between the two collections. In this exercise we will analyze several NEON Level 3 lidar rasters to assess the uncertainty.
 
-In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) and assess the uncertainty between data collected over the same area on different days, collected a day apart.
+In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) 
+and assess the uncertainty between data collected over the same area on different days, collected a day apart.
 
 
 <div id="ds-objectives" markdown="1">
@@ -54,10 +55,13 @@ Lidar raster data are downloaded using the R `neonUtilities::byTileAOP()` functi
 
 These remote sensing data files provide information on the vegetation at NEON's
 <a href="https://www.neonscience.org/field-sites/PRIN" target="_blank"> Pringle Creek (PRIN)</a> site in Texas.
-The complete datasets can be downloaded using `neonUtilities::byFileAOP()`, or accessed from the <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+The complete datasets can be downloaded using `neonUtilities::byFileAOP()`, or accessed from the 
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
 
-**R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce skills. If available, the code for challenge solutions is found in the downloadable R script of the entire lesson, available in the footer of each lesson page.
+**R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce 
+skills. If available, the code for challenge solutions is found in the downloadable R 
+script of the entire lesson, available in the footer of each lesson page.
 
 
 ***
@@ -106,11 +110,7 @@ You can run `help(byTileAOP)` to see more details on what the various inputs are
 
     ## Downloading 2 files
 
-    ## 
-  |                                                                                                    
-  |                                                                                              |   0%
-  |                                                                                                    
-  |==============================================================================================| 100%
+    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
 
     ## Successfully downloaded 2 files to ~/data//DP3.30015.001
 
@@ -127,22 +127,14 @@ Similarly, we can download the Digital Elevation Models (DSM and DEM) as follows
               easting=607000,
               northing=3696000,
               check.size=FALSE, # set to TRUE if you want to confirm before downloading
-              savepath = data_dir,
+              savepath=data_dir,
               token=token)
 
     ## Downloading files totaling approximately 11.837943 MB
 
     ## Downloading 4 files
 
-    ## 
-  |                                                                                                    
-  |                                                                                              |   0%
-  |                                                                                                    
-  |===============================                                                               |  33%
-  |                                                                                                    
-  |===============================================================                               |  67%
-  |                                                                                                    
-  |==============================================================================================| 100%
+    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |===========================                                                     |  33%  |                                                                                        |=====================================================                           |  67%  |                                                                                        |================================================================================| 100%
 
     ## Successfully downloaded 4 files to ~/data//DP3.30024.001
 

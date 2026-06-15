@@ -22,7 +22,7 @@ byTileAOP(dpID='DP3.30024.001',
           easting=607000,
           northing=3696000,
           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-          savepath = data_dir,
+          savepath=data_dir,
           token=token)
 
 # Define the CHM, DSM and DTM file names, including the full path
