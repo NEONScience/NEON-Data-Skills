@@ -7,7 +7,7 @@ dateCreated: 2015-08-08 20:49:52
 description: Extract a single pixel's worth of spectra from a hyperspectral dataset stored in HDF5 format in R. Visualize the spectral signature.
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
-dataProduct: DP3.30006.001
+dataProduct: DP3.30006.001, DP3.30006.002
 packagesLibraries: rhdf5, plyr, ggplot2, neonUtilties
 authors: Leah A. Wasser, Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
@@ -60,34 +60,36 @@ Everything on our planet reflects electromagnetic radiation from the Sun, and di
 that different land cover types (vegetation, pavement, bare soils, etc.) have distinct patterns in their reflectance values, a property that we call the 
 'spectral signature' of a particular land cover class. 
 
-In this tutorial, we will extract the reflectance values for all bands of a single pixel to plot a spectral signature for that pixel. In order to do this,
-we need to pair the reflectance values for that pixel with the wavelength values of the bands that are represented in those measurements. We will also need to adjust the reflectance values by the scaling factor that is saved as an 'attribute' in the HDF5 file. 
+In this tutorial, we will extract the reflectance values for all bands of a single pixel to plot a spectral signature for that pixel. In order to do this, we need to pair the reflectance values for that pixel with the wavelength values of the bands that are represented in those measurements. We will also need to adjust the reflectance values by the scaling factor that is saved as an 'attribute' in the HDF5 file. 
 
 As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 Let's start by defining the working directory, loading your token, and reading in the example dataset.
 
-```{r call-libraries, results="hide" }
+```{r import-libraries, results="hide" }
 
-# Call required packages
+# Import required libraries
 library(rhdf5)
 library(plyr)
 library(ggplot2)
 library(neonUtilities)
+```
+
+``` {r set-token, results="hide"}
 token <- Sys.getenv("NEON_TOKEN")
 
-wd <- "~/data/" #This will depend on your local environment
-setwd(wd)
+data_dir <- "~/data/"
 ```
+
 If you haven't already downloaded the hyperspectral data tile (in one of the previous tutorials in this series), you can use the `neonUtilities` function `byTileAOP` to download a single reflectance tile. You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000, 4112000).
 
-```{r download-refl, eval=FALSE}
+```{r download-refl, eval=TRUE}
 byTileAOP(dpID = 'DP3.30006.001',
           site = 'SJER',
           year = '2021',
-          easting = 257500,
-          northing = 4112500,
-          savepath = wd,
+          easting = 257000,
+          northing = 4112000,
+          savepath = data_dir,
           token=token)
 ```
 
@@ -97,7 +99,7 @@ Now we can read in the file and look at the contents using `h5ls`. You can move 
 
 ```{r open-H5-file }
 # define the h5 file name (specify the full path)
-h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+h5_file <- paste0(data_dir,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 # look at the HDF5 file structure 
 h5ls(h5_file) #optionally specify all=True if you want to see all of the information
@@ -167,4 +169,3 @@ ggplot(data=aPixeldf)+
    ylab("Reflectance")
 
 ```
-
