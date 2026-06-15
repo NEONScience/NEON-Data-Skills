@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, terra, neonUtilities
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
 dataProudct: DP3.30006.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/raster-stack-rgb.R
 tutorialSeries: intro-hsi-r-series
 urlTitle: create-raster-stack-hsi-hdf5-r
 ---
@@ -31,7 +31,7 @@ After completing this activity, you will be able to:
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, 
-preferably, RStudio loaded on your computer.
+preferably, RStudio loaded on your computer. You will also need to create a NEON API token.
 
 ### R Libraries to Install:
 
@@ -44,11 +44,6 @@ preferably, RStudio loaded on your computer.
 ### Data
 
 These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
-
-
-**Set Working Directory:** This lesson assumes that you have set your working directory to the location of the downloaded data, as explained in the tutorial. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
 **R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce skills. If available, the code for challenge solutions is found in the downloadable R script of the entire lesson, available in the footer of each lesson page.
 
@@ -106,20 +101,19 @@ Next set the working directory to ensure R can find the file we wish to import.
 Be sure to move the download into your working directory!
 
 ```{r set-wd}
-# set working directory (this will depend on your local environment)
-wd <- "~/data/"
-setwd(wd)
+# set data directory (this will depend on your local environment)
+data_dir <- "~/data/"
 ```
 
 We can use the `neonUtilities` function `byTileAOP` to download a single reflectance tile. You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000, 4112000).
 
-```{r download-refl, eval=FALSE}
+```{r download-refl, eval=TRUE}
 byTileAOP(dpID = 'DP3.30006.001',
           site = 'SJER',
           year = '2021',
           easting = 257500,
           northing = 4112500,
-          savepath = wd,
+          savepath = data_dir,
           token=token)
 ```
 
@@ -129,7 +123,7 @@ Now we can read in the file. You can move this file to a different location, but
 
 ```{r define-h5, results="hide" }
 # Define the h5 file name to be opened
-h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+h5_file <- paste0(data_dir,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 ```
 
 As in the last lesson, let's use `View(h5ls)` to take a look inside this hdf5 dataset:
@@ -284,7 +278,7 @@ plot(rgbStack$Band_58, main="Band 58")
 
 We can play with the color ramps too if we want:
 
-```{r plot-HSI-raster, fig.cap=c("Raster plot of band 14 from the raster stack created using different colors available from the terrain.colors funtion. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.","Raster plot of band 58 from the raster stack created with a 0.5 adjustment of the z plane, which causes the image to be stretched. The x-axis and y-axis values represent the extent, which range from 257500 to 25800 meters easting, and 4112500 to 4113000 meters northing, respectively. The plot legend depicts the range of reflectance values, which go from 0 to 0.8.","Raster plot of band 58 from the raster stack created using a different color palette. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.")}
+```{r plot-HSI-raster, fig.cap=c("Raster plot of band 14 from the raster stack created using different colors available from the terrain.colors function. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.","Raster plot of band 58 from the raster stack created with a 0.5 adjustment of the z plane, which causes the image to be stretched. The x-axis and y-axis values represent the extent, which range from 257500 to 25800 meters easting, and 4112500 to 4113000 meters northing, respectively. The plot legend depicts the range of reflectance values, which go from 0 to 0.8.","Raster plot of band 58 from the raster stack created using a different color palette. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.")}
 
 # change the colors of our raster 
 colors1 <- terrain.colors(25)

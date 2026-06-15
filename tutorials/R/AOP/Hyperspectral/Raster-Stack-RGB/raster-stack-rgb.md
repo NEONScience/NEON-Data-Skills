@@ -10,7 +10,7 @@ packagesLibraries: rhdf5, terra, neonUtilities
 topics: hyperspectral, HDF5, remote-sensing
 languagesTool: R
 dataProudct: DP3.30006.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/RasterStack-RGB-Images-in-R-Using-HSI.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/raster-stack-rgb.R
 tutorialSeries: intro-hsi-r-series
 urlTitle: create-raster-stack-hsi-hdf5-r
 ---
@@ -31,7 +31,7 @@ After completing this activity, you will be able to:
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, 
-preferably, RStudio loaded on your computer.
+preferably, RStudio loaded on your computer. You will also need to create a NEON API token.
 
 ### R Libraries to Install:
 
@@ -44,11 +44,6 @@ preferably, RStudio loaded on your computer.
 ### Data
 
 These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
-
-
-**Set Working Directory:** This lesson assumes that you have set your working directory to the location of the downloaded data, as explained in the tutorial. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
 **R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce skills. If available, the code for challenge solutions is found in the downloadable R script of the entire lesson, available in the footer of each lesson page.
 
@@ -91,7 +86,9 @@ We often want to generate a 3 band image from multi or hyperspectral data. The m
 In the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">previous lesson</a>, we exported a single band of the NEON Reflectance data from a HDF5 file. In this activity, we will create a full color image using 3 (red, green and blue - RGB) bands. We will follow many of the steps we followed in the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">Intro to Working with Hyperspectral Remote Sensing Data in HDF5 Format in R</a> tutorial. 
 These steps included loading required packages, downloading the data (optionally, you don't need to do this if you downloaded the data from the previous lesson), and reading in our file and viewing the hdf5 file structure.
 
-First, let's load the required R packages, `terra` and `rhdf5`.
+First, let's load the required R packages, `terra` and `rhdf5`, and read in our token. 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 
 
     library(terra)
@@ -100,30 +97,36 @@ First, let's load the required R packages, `terra` and `rhdf5`.
 
     library(neonUtilities)
 
+    token <- Sys.getenv("NEON_TOKEN")
+
 Next set the working directory to ensure R can find the file we wish to import. 
 Be sure to move the download into your working directory!
 
 
-    # set working directory (this will depend on your local environment)
+    # set data directory (this will depend on your local environment)
 
-    wd <- "~/data/"
-
-    setwd(wd)
+    data_dir <- "~/data/"
 
 We can use the `neonUtilities` function `byTileAOP` to download a single reflectance tile. You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000, 4112000).
 
 
     byTileAOP(dpID = 'DP3.30006.001',
-
               site = 'SJER',
-
               year = '2021',
-
               easting = 257500,
-
               northing = 4112500,
+              savepath = data_dir,
+              token=token)
 
-              savepath = wd)
+    ## Downloading 1 files
+
+    ## 
+  |                                                                                                    
+  |                                                                                              |   0%
+  |                                                                                                    
+  |==============================================================================================| 100%
+
+    ## Successfully downloaded 1 files to ~/data//DP3.30006.001
 
 This file will be downloaded into a nested subdirectory under the `~/data` folder, inside a folder named `DP3.30006.001` (the Data Product ID). The file should show up in this location:  `~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5`.
 
@@ -132,7 +135,7 @@ Now we can read in the file. You can move this file to a different location, but
 
     # Define the h5 file name to be opened
 
-    h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+    h5_file <- paste0(data_dir,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 As in the last lesson, let's use `View(h5ls)` to take a look inside this hdf5 dataset:
 
@@ -275,36 +278,36 @@ Check out the properties or rgb_rast:
     rgb_rast
 
     ## [[1]]
-    ## class       : SpatRaster 
-    ## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
+    ## class       : SpatRaster
+    ## size        : 1000, 1000, 1  (nrow, ncol, nlyr)
     ## resolution  : 1, 1  (x, y)
     ## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : WGS 84 / UTM zone 11N 
+    ## coord. ref. : WGS 84 / UTM zone 11N
     ## source(s)   : memory
-    ## name        : lyr.1 
-    ## min value   :     0 
-    ## max value   : 14950 
+    ## name        : lyr.1
+    ## min value   :     0
+    ## max value   : 14950
     ## 
     ## [[2]]
-    ## class       : SpatRaster 
-    ## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
+    ## class       : SpatRaster
+    ## size        : 1000, 1000, 1  (nrow, ncol, nlyr)
     ## resolution  : 1, 1  (x, y)
     ## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : WGS 84 / UTM zone 11N 
+    ## coord. ref. : WGS 84 / UTM zone 11N
     ## source(s)   : memory
-    ## name        : lyr.1 
-    ## min value   :    32 
-    ## max value   : 13129 
+    ## name        : lyr.1
+    ## min value   :    32
+    ## max value   : 13129
     ## 
     ## [[3]]
-    ## class       : SpatRaster 
-    ## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
+    ## class       : SpatRaster
+    ## size        : 1000, 1000, 1  (nrow, ncol, nlyr)
     ## resolution  : 1, 1  (x, y)
     ## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : WGS 84 / UTM zone 11N 
+    ## coord. ref. : WGS 84 / UTM zone 11N
     ## source(s)   : memory
-    ## name        : lyr.1 
-    ## min value   :     9 
+    ## name        : lyr.1
+    ## min value   :     9
     ## max value   : 11802
 
 Note that it displays properties of 3 rasters. Finally, we can create a raster stack from our list of rasters as follows:
@@ -335,14 +338,14 @@ Next, add the names of the bands to the raster so we can easily keep track of th
 
     rgbStack
 
-    ## class       : SpatRaster 
-    ## dimensions  : 1000, 1000, 3  (nrow, ncol, nlyr)
+    ## class       : SpatRaster
+    ## size        : 1000, 1000, 3  (nrow, ncol, nlyr)
     ## resolution  : 1, 1  (x, y)
     ## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : WGS 84 / UTM zone 11N 
+    ## coord. ref. : WGS 84 / UTM zone 11N
     ## source(s)   : memory
-    ## names       : Band_58, Band_34, Band_19 
-    ## min values  :       0,      32,       9 
+    ## names       : Band_58, Band_34, Band_19
+    ## min values  :       0,      32,       9
     ## max values  :   14950,   13129,   11802
 
 
@@ -356,7 +359,7 @@ Next, add the names of the bands to the raster so we can easily keep track of th
 
     plot(rgbStack$Band_58, main="Band 58")
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/scale-plot-refl-1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/scale-plot-refl-1.png)
 
 We can play with the color ramps too if we want:
 
@@ -367,13 +370,13 @@ We can play with the color ramps too if we want:
 
     image(rgbStack$Band_58, main="Band 58", col=colors1)
 
-![Raster plot of band 14 from the raster stack created using different colors available from the terrain.colors funtion. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-1.png)
+![Raster plot of band 14 from the raster stack created using different colors available from the terrain.colors function. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/plot-HSI-raster-1.png)
 
     # adjust the zlims or the stretch of the image
 
     image(rgbStack$Band_58, main="Band 58", col=colors1, zlim = c(0,.5))
 
-![Raster plot of band 58 from the raster stack created with a 0.5 adjustment of the z plane, which causes the image to be stretched. The x-axis and y-axis values represent the extent, which range from 257500 to 25800 meters easting, and 4112500 to 4113000 meters northing, respectively. The plot legend depicts the range of reflectance values, which go from 0 to 0.8.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-2.png)
+![Raster plot of band 58 from the raster stack created with a 0.5 adjustment of the z plane, which causes the image to be stretched. The x-axis and y-axis values represent the extent, which range from 257500 to 25800 meters easting, and 4112500 to 4113000 meters northing, respectively. The plot legend depicts the range of reflectance values, which go from 0 to 0.8.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/plot-HSI-raster-2.png)
 
     # try a different color palette
 
@@ -381,7 +384,7 @@ We can play with the color ramps too if we want:
 
     image(rgbStack$Band_58, main="Band 58", col=colors2, zlim=c(0,.5))
 
-![Raster plot of band 58 from the raster stack created using a different color palette. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-HSI-raster-3.png)
+![Raster plot of band 58 from the raster stack created using a different color palette. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/plot-HSI-raster-3.png)
 
 
 The `plotRGB` function allows you to combine three bands to create an true-color image. 
@@ -394,7 +397,7 @@ The `plotRGB` function allows you to combine three bands to create an true-color
             r=1,g=2,b=3,
             stretch = "lin")
 
-![RGB image of a portion of the SJER field site using 3 bands fom the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/plot-RGB-Image-1.png)
+![RGB image of a portion of the SJER field site using 3 bands fom the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/plot-RGB-Image-1.png)
 
 <i class="fa fa-star"></i>**A note about image stretching:** Notice that we use the argument `stretch="lin"` in this plotting function, which automatically stretches the brightness values for us to produce a natural-looking image.
 
@@ -472,14 +475,14 @@ Please keep in mind that there are different ways to aggregate bands when using 
 
     ndviStack
 
-    ## class       : SpatRaster 
-    ## dimensions  : 1000, 1000, 2  (nrow, ncol, nlyr)
+    ## class       : SpatRaster
+    ## size        : 1000, 1000, 2  (nrow, ncol, nlyr)
     ## resolution  : 1, 1  (x, y)
     ## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : WGS 84 / UTM zone 11N 
+    ## coord. ref. : WGS 84 / UTM zone 11N
     ## source(s)   : memory
-    ## names       : Band_58, Band_90 
-    ## min values  :       0,      11 
+    ## names       : Band_58, Band_90
+    ## min values  :       0,      11
     ## max values  :   14950,   14887
 
     #calculate NDVI
@@ -492,7 +495,7 @@ Please keep in mind that there are different ways to aggregate bands when using 
 
     plot(ndviCalc, main="NDVI for the NEON SJER Field Site")
 
-![Raster plot of a portion of the SJER field site showing calculated NDVI values. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. Plot legend goes from -1 to 1.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-1.png)
+![Raster plot of a portion of the SJER field site showing calculated NDVI values. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. Plot legend goes from -1 to 1.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/create-NDVI-1.png)
 
     # Now, play with breaks and colors to create a meaningful map
 
@@ -510,7 +513,7 @@ Please keep in mind that there are different ways to aggregate bands when using 
 
     plot(ndviCalc, main="NDVI for the NEON SJER Field Site", col=myCol, breaks=brk)
 
-![Raster plot of a portion of the SJER field site showing calculated NDVI values with predefined breaks at 0, 0.25, 0.5, 05, and 1. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. Plot legend goes from 0 to 1.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/RasterStack-RGB-Images-in-R-Using-HSI/rfigs/create-NDVI-2.png)
+![Raster plot of a portion of the SJER field site showing calculated NDVI values with predefined breaks at 0, 0.25, 0.5, 05, and 1. The x-axis and y-axis values represent the extent, which range from 257500 to 258000 meters easting, and 4112500 to 4113000 meters northing, respectively. Plot legend goes from 0 to 1.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/create-NDVI-2.png)
 
 	
 <div id="ds-challenge" markdown="1">
@@ -525,7 +528,6 @@ Try the following on your own:
 $$
 NDNI = \frac{log(\frac{1}{p_{1510}}) - log(\frac{1}{p_{1680}})}{log(\frac{1}{p_{1510}}) + log(\frac{1}{p_{1680}})}
 $$
-
 2. Calculate the Enhanced Vegetation Index (EVI). Hint: Look up the formula, and apply the appropriate NEON bands. Hint: You can look at satellite datasets, such as <a href="https://www.usgs.gov/landsat-missions/landsat-enhanced-vegetation-index" target="_blank">USGS Landsat EVI.</a>  
 
 3. Explore the bands in the hyperspectral data. What happens if you average reflectance values across multiple Red and NIR bands and then calculate NDVI?
