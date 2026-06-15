@@ -38,6 +38,8 @@ After completing this tutorial, you will be able to:
 You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Install R Packages
 
 * **terra:** `install.packages("terra")`
@@ -46,8 +48,7 @@ on your computer to complete this tutorial.
 
 ### Download Data
 
-Data required for this tutorial will be downloaded using `neonUtilities` in the lesson. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
-
+Data required for this tutorial will be downloaded using `neonUtilities` in the lesson. 
 The LiDAR and imagery data used in this lesson were collected over the 
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
 <a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> 
@@ -61,8 +62,7 @@ The entire dataset can be accessed from the
 
 **Set Working Directory:** This lesson will explain how to set the working directory. You may wish to set your working directory to some other location, depending on how you prefer to organize your data.
 
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
 ****
 
@@ -258,11 +258,15 @@ Read More:
 * <a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf" target="_blank"> NCEAS Overview of CRS in R.</a>
 
 ### How Map Projections Can Fool the Eye
-Check out this short video, from 
-<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank"> Buzzfeed</a>, 
-highlighting how map projections can make continents seems proportionally larger or smaller than they actually are!
+Check out this animation which highlights how map projections can make continents seems proportionally larger or smaller than they actually are!
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif"
+    alt="A relation between the Mercator projection and the actual relative size of each country.">
+    </a>
+    <figcaption> Credit: Jakub Nowosad, Wikimedia Commons</figcaption>
+</figure>
 
  
 ### View Raster Coordinate Reference System (CRS) in R
@@ -288,8 +292,7 @@ The `CRS` of our `DSM_HARV` object tells us that our data are in the UTM project
 		</figcaption>
 </figure>
 
-The CRS in this case is in a `char` format. This means that the projection
-information is strung together as a series of text elements.
+The CRS in this case is in a `char` format. This means that the projection information is strung together as a series of text elements.
 
 We'll focus on the first few components of the CRS, as described above.
 
@@ -376,7 +379,7 @@ byTileAOP(dpID='DP3.30010.001',
           year='2022',
           easting=737500,
           northing=4701500,
-          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
+          check.size=FALSE, # set to TRUE to check the size before downloading
           savepath = wd,
           token=token)
 ```

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="generator" content="litedown 0.9">
 <title>Raster 00: Intro to Raster Data in R</title>
 <style type="text/css">
 body {
@@ -11,73 +12,105 @@ body {
   margin: auto;
   padding: 1em;
   line-height: 1.5;
-  box-sizing: border-box;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
-body, .footnotes, code { font-size: .9em; }
+body, .abstract, code, .footnotes, footer, #refs, .caption { font-size: .9em; }
 li li { font-size: .95em; }
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+ul:has(li > input[type="checkbox"]) { list-style: none; padding-left: 1em; }
+*, :before, :after { box-sizing: border-box; }
+a { color: steelblue; }
 pre, img { max-width: 100%; }
-pre, pre:hover {
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-pre code {
-  display: block;
-  overflow-x: auto;
-}
+pre { white-space: pre-wrap; word-break: break-word; }
+pre code { display: block; padding: 1em; overflow-x: auto; }
 code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
-:not(pre) > code, code[class] { background-color: #F8F8F8; }
-code.language-undefined, pre > code:not([class]) {
-  background-color: inherit;
-  border: 1px solid #eee;
+:not(pre, th) > code, code[class], div > .caption { background: #f8f8f8; }
+pre > code:is(:not([class]), .language-plain, .language-none, .plain), .box, .figure, .table { background: inherit; border: 1px solid #eee; }
+pre > code {
+  &.message { border-color: #9eeaf9; }
+  &.warning { background: #fff3cd; border-color: #fff3cd; }
+  &.error { background: #f8d7da; border-color: #f8d7da; }
 }
+.fenced-chunk { border-left: 1px solid #666; }
+.code-fence {
+  opacity: .4;
+  border: 1px dashed #666;
+  border-left: 2px solid;
+  &:hover { opacity: inherit; }
+}
+.box, .figure, .table, table { margin: 1em auto; }
+div > .caption { padding: 1px 1em; }
+.figure { p:has(img, svg), pre:has(svg) { text-align: center; } }
+.flex-col { display: flex; justify-content: space-between; }
 table {
-  margin: auto;
-  border-top: 1px solid #666;
+  &:only-child:not(.table > *) { margin: auto; }
+  th, td { padding: 5px; font-variant-numeric: tabular-nums; }
+  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+  thead th { border-bottom: 1px solid #ddd; }
+  &:not(.datatable-table) {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
 }
-table thead th { border-bottom: 1px solid #ddd; }
-th, td { padding: 5px; }
-thead, tfoot, tr:nth-child(even) { background: #eee; }
 blockquote {
   color: #666;
   margin: 0;
-  padding-left: 1em;
-  border-left: 0.5em solid #eee;
+  padding: 1px 1em;
+  border-left: .5em solid #eee;
 }
 hr, .footnotes::before { border: 1px dashed #ddd; }
 .frontmatter { text-align: center; }
-#TOC .numbered li { list-style: none; }
-#TOC .numbered { padding-left: 0; }
-#TOC .numbered ul { padding-left: 1em; }
-table, .body h2 { border-bottom: 1px solid #666; }
+#TOC {
+  a { text-decoration: none; }
+  ul { list-style: none; padding-left: 1em; }
+  & > ul { padding: 0; }
+  ul ul { border-left: 1px solid lightsteelblue; }
+}
+.body h2 { border-bottom: 1px solid #666; }
 .body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
-.footnote-ref a::before { content: "["; }
-.footnote-ref a::after { content: "]"; }
-section.footnotes::before {
-  content: "";
-  display: block;
-  max-width: 20em;
+.main-number::after { content: "."; }
+span[class^="ref-number-"] { font-weight: bold; }
+.ref-number-fig::after, .ref-number-tab::after { content: ":"; }
+.cross-ref-chp::before { content: "Chapter "; }
+.cross-ref-sec::before { content: "Section "; }
+.cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
+.cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
+.cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
+.abstract, #refs {
+  &::before { display: block; margin: 1em auto; font-weight: bold; }
+}
+.abstract::before { content: "Abstract"; text-align: center; }
+#refs::before { content: "Bibliography"; font-size: 1.5em; }
+.ref-paren-open::before { content: "("; }
+.ref-paren-close::after { content: ")"; }
+.ref-semicolon::after { content: "; "; }
+.ref-and::after { content: " and "; }
+.ref-et-al::after { content: " et al."; font-style: italic; }
+.footnote-ref a {
+  &::before { content: "["; }
+  &::after { content: "]"; }
+}
+section.footnotes {
+  margin-top: 2em;
+  &::before { content: ""; display: block; max-width: 20em; }
+}
+.fade {
+  background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
+  opacity: 0.6;
 }
 
 @media print {
-  body {
-    font-size: 12pt;
-    max-width: 100%;
-  }
-  tr, img { page-break-inside: avoid; }
+  body { max-width: 100%; }
+  tr, img { break-inside: avoid; }
 }
 @media only screen and (min-width: 992px) {
-  pre { white-space: pre; }
+  body:not(.pagesjs) pre:has(.line-numbers):not(:hover) { white-space: pre; }
 }
 </style>
 </head>
 <body>
 <div class="frontmatter">
 <div class="title"><h1>Raster 00: Intro to Raster Data in R</h1></div>
-<div class="author"><h2></h2></div>
-<div class="date"><h3></h3></div>
 </div>
 <div class="body">
 <p>In this tutorial, we will review the fundamental principles, packages and
@@ -87,7 +120,7 @@ with rasters in R: <strong>CRS</strong>, <strong>extent</strong> and <strong>res
 missing and bad data values as stored in a raster and how R handles these
 elements. Finally, we introduce the GeoTiff file format.</p>
 <div id="ds-objectives" markdown="1">
-<h2 id="learning-objectives">Learning Objectives</h2>
+<h2 id="sec:learning-objectives">Learning Objectives</h2>
 <p>After completing this tutorial, you will be able to:</p>
 <ul>
 <li>Understand what a raster dataset is and its fundamental attributes.</li>
@@ -96,10 +129,11 @@ elements. Finally, we introduce the GeoTiff file format.</p>
 <li>Be able to quickly plot a raster file in R.</li>
 <li>Understand the difference between single- and multi-band rasters.</li>
 </ul>
-<h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<h2 id="sec:things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
 <p>You will need the most current version of R and, preferably, <code>RStudio</code> loaded
 on your computer to complete this tutorial.</p>
-<h3 id="install-r-packages">Install R Packages</h3>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
+<h3 id="sec:install-r-packages">Install R Packages</h3>
 <ul>
 <li>
 <p><strong>terra:</strong> <code>install.packages(&quot;terra&quot;)</code></p>
@@ -108,9 +142,9 @@ on your computer to complete this tutorial.</p>
 <p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.</p>
 </li>
 </ul>
-<h3 id="download-data">Download Data</h3>
-<p>Data required for this tutorial will be downloaded using <code>neonUtilities</code> in the lesson.</p>
-<p>The LiDAR and imagery data used in this lesson were collected over the
+<h3 id="sec:download-data">Download Data</h3>
+<p>Data required for this tutorial will be downloaded using <code>neonUtilities</code> in the lesson.
+The LiDAR and imagery data used in this lesson were collected over the
 <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network’s</a>
 <a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a>
 field site.</p>
@@ -118,8 +152,7 @@ field site.</p>
 <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.</p>
 <hr />
 <p><strong>Set Working Directory:</strong> This lesson will explain how to set the working directory. You may wish to set your working directory to some other location, depending on how you prefer to organize your data.</p>
-<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a></p>
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a></p>
 <hr />
 <ul>
 <li>
@@ -132,7 +165,7 @@ of setting the working directory in R can be found here.</a></p>
 <li><a href="https://www.neonscience.org/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a></li>
 </ul>
 </div>
-<h2 id="about-raster-data">About Raster Data</h2>
+<h2 id="sec:about-raster-data">About Raster Data</h2>
 <p>Raster or “gridded” data are stored as a grid of values which are rendered on a
 map as pixels. Each pixel value represents an area on the Earth’s surface.</p>
 <figure>
@@ -143,9 +176,13 @@ map as pixels. Each pixel value represents an area on the Earth’s surface.</p>
     <figcaption> Source: National Ecological Observatory Network (NEON)
     </figcaption>
 </figure>
-<h2 id="raster-data-in-r">Raster Data in R</h2>
+<h2 id="sec:raster-data-in-r">Raster Data in R</h2>
 <p>Let’s first import a raster dataset into R and explore its metadata. To open rasters in R, we will use the <code>terra</code> package.</p>
 <pre><code>library(terra)
+
+
+
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
 
 
 
@@ -155,7 +192,7 @@ wd &lt;- &quot;~/data/&quot;
 
 setwd(wd)
 </code></pre>
-<h2 id="download-lidar-raster-data">Download LiDAR Raster Data</h2>
+<h2 id="sec:download-lidar-raster-data">Download LiDAR Raster Data</h2>
 <p>We can use the neonUtilities function byTileAOP to download a single elevation tiles (DSM and DTM). You can run help(byTileAOP) to see more details on what the various inputs are. For this exercise, we’ll specify the UTM Easting and Northing to be (732000, 4713500), which will download the tile with the lower left corner (732000,4713000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~8 MB, so make sure you have enough space on your local drive. You can set <code>check.size=TRUE</code> if you want to check the file size before downloading.</p>
 <pre><code>byTileAOP(dpID='DP3.30024.001', # lidar elevation
 
@@ -169,10 +206,12 @@ setwd(wd)
 
           check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
 
-          savepath = wd)
+          savepath = wd,
+
+          token=token)
 </code></pre>
 <p>This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30024.001 (the Data Product ID). The file should show up in this location: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.</p>
-<h2 id="open-a-raster-in-r">Open a Raster in R</h2>
+<h2 id="sec:open-a-raster-in-r">Open a Raster in R</h2>
 <p>We can use <code>terra</code>’s <code>rast(&quot;path-to-raster-here&quot;)</code> function to open a raster in R.</p>
 <div id="ds-dataTip" markdown="1">
 <p><i class="fa fa-star"></i> <strong>Data Tip:</strong>  VARIABLE NAMES! To improve code
@@ -186,28 +225,28 @@ dsm_harv_file &lt;- paste0(wd, &quot;DP3.30024.001/neon-aop-products/2022/FullSi
 
 DSM_HARV &lt;- rast(dsm_harv_file)
 
+## Warning:
+## ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif:
+## No such file or directory (GDAL error 4)
 
+## Error:
+## ! [rast] file does not exist: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif
 
 # View raster structure
 
 DSM_HARV 
 
-## class       : SpatRaster 
-## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
-## resolution  : 1, 1  (x, y)
-## extent      : 732000, 733000, 4713000, 4714000  (xmin, xmax, ymin, ymax)
-## coord. ref. : WGS 84 / UTM zone 18N (EPSG:32618) 
-## source      : NEON_D01_HARV_DP3_732000_4713000_DSM.tif 
-## name        : NEON_D01_HARV_DP3_732000_4713000_DSM 
-## min value   :                               317.91 
-## max value   :                               433.94
+## Error:
+## ! object 'DSM_HARV' not found
 
 # plot raster 
 
 plot(DSM_HARV, main=&quot;Digital Surface Model - HARV&quot;)
+
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DSM_HARV' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/open-raster-1.png" alt="Digital surface model showing the elevation of NEON’s site Harvard Forest" /></p>
-<h2 id="types-of-data-stored-in-raster-format">Types of Data Stored in Raster Format</h2>
+<h2 id="sec:types-of-data-stored-in-raster-format">Types of Data Stored in Raster Format</h2>
 <p>Raster data can be continuous or categorical. Continuous rasters can have a
 range of quantitative values. Some examples of continuous rasters include:</p>
 <ol>
@@ -228,7 +267,7 @@ maps include:</p>
 <li>Tree height maps classified as short, medium, tall trees.</li>
 <li>Elevation maps classified as low, medium and high elevation.</li>
 </ol>
-<h4 id="categorical-landcover-map-for-the-united-states">Categorical Landcover Map for the United States</h4>
+<h4 id="sec:categorical-landcover-map-for-the-united-states">Categorical Landcover Map for the United States</h4>
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif ">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif"
@@ -240,7 +279,7 @@ maps include:</p>
     Multi-Resolution Land Characteristics Consortium, USGS</a> 
     </figcaption>
 </figure>
-<h4 id="categorical-elevation-map-of-the-neon-harvard-forest-site">Categorical Elevation Map of the NEON Harvard Forest Site</h4>
+<h4 id="sec:categorical-elevation-map-of-the-neon-harvard-forest-site">Categorical Elevation Map of the NEON Harvard Forest Site</h4>
 <p>The legend of this map shows the colors representing each discrete class.</p>
 <pre><code># add a color map with 5 colors
 
@@ -265,7 +304,8 @@ plot(DSM_HARV,
 	legend = FALSE
 	)
 
-
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'plot': object 'DSM_HARV' not found
 
 # turn xpd back on to force the legend to fit next to the plot.
 
@@ -276,9 +316,11 @@ par(xpd = TRUE)
 legend( 733100, 4713700,
         legend = c(&quot;High Elevation&quot;, &quot;Middle&quot;,&quot;Low Elevation&quot;), 
         fill = rev(col))
+
+## Error:
+## ! plot.new has not been called yet
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/classified-elevation-map-1.png" alt="Classified elevation map of NEON’s site Harvard Forest" /></p>
-<h2 id="what-is-a-geotiff">What is a GeoTIFF??</h2>
+<h2 id="sec:what-is-a-geotiff">What is a GeoTIFF??</h2>
 <p>Raster data can come in many different formats. In this tutorial, we will use the
 geotiff format which has the extension <code>.tif</code>. A <code>.tif</code> file stores metadata
 or attributes about the file as embedded <code>tif tags</code>. For instance, your camera
@@ -298,7 +340,7 @@ as tags. These tags can include the following raster metadata:</p>
 <li><a href="https://en.wikipedia.org/wiki/GeoTIFF" target="_blank"> GeoTIFF on Wikipedia</a></li>
 <li><a href="https://trac.osgeo.org/geotiff/" target="_blank"> OSGEO TIFF documentation</a></li>
 </ul>
-<h2 id="coordinate-reference-system">Coordinate Reference System</h2>
+<h2 id="sec:coordinate-reference-system">Coordinate Reference System</h2>
 <p>The Coordinate Reference System or <code>CRS</code> tells R where the raster is located
 in geographic space. It also tells R what method should be used to “flatten”
 or project the raster in geographic space.</p>
@@ -312,7 +354,7 @@ or project the raster in geographic space.</p>
     differences are a direct result of the calculations used to "flatten" the 
     data onto a 2-dimensional map. Source: M. Corey, opennews.org</figcaption>
 </figure>
-<h3 id="what-makes-spatial-data-line-up-on-a-map">What Makes Spatial Data Line Up On A Map?</h3>
+<h3 id="sec:what-makes-spatial-data-line-up-on-a-map">What Makes Spatial Data Line Up On A Map?</h3>
 <p>There are many great resources that describe coordinate reference systems and
 projections in greater detail (read more, below). For the purposes of this
 activity, it is important to understand that <strong>data from the same location
@@ -327,28 +369,31 @@ it throughout data processing and analysis.</p>
 <li><a href="https://source.opennews.org/en-US/learning/choosing-right-map-projection/" target="_blank">Choosing the Right Map Projection.</a></li>
 <li><a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf" target="_blank"> NCEAS Overview of CRS in R.</a></li>
 </ul>
-<h3 id="how-map-projections-can-fool-the-eye">How Map Projections Can Fool the Eye</h3>
-<p>Check out this short video, from
-<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank"> Buzzfeed</a>,
-highlighting how map projections can make continents seems proportionally larger or smaller than they actually are!</p>
-<iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
-<h3 id="view-raster-coordinate-reference-system-crs-in-r">View Raster Coordinate Reference System (CRS) in R</h3>
+<h3 id="sec:how-map-projections-can-fool-the-eye">How Map Projections Can Fool the Eye</h3>
+<p>Check out this animation which highlights how map projections can make continents seems proportionally larger or smaller than they actually are!</p>
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif"
+    alt="A relation between the Mercator projection and the actual relative size of each country.">
+    </a>
+    <figcaption> Credit: Jakub Nowosad, Wikimedia Commons</figcaption>
+</figure>
+<h3 id="sec:view-raster-coordinate-reference-system-crs-in-r">View Raster Coordinate Reference System (CRS) in R</h3>
 <p>We can view the <code>CRS</code> string associated with our R object using the<code>crs()</code>
 method. We can assign this string to an R object, too.</p>
 <pre><code># view crs description
 
 crs(DSM_HARV,describe=TRUE)
 
-##                    name authority  code
-## 1 WGS 84 / UTM zone 18N      EPSG 32618
-##                                                                                                                                                                                                                                                          area
-## 1 Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela
-##            extent
-## 1 -78, -72, 84, 0
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'crs': object 'DSM_HARV' not found
 
 # assign crs to an object (class) to use for reprojection and other tasks
 
 harvCRS &lt;- crs(DSM_HARV)
+
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'crs': object 'DSM_HARV' not found
 </code></pre>
 <p>The <code>CRS</code> of our <code>DSM_HARV</code> object tells us that our data are in the UTM projection, in zone 18N.</p>
 <figure>
@@ -358,15 +403,14 @@ harvCRS &lt;- crs(DSM_HARV)
    	<figcaption> The UTM zones across the continental United States. Source: Chrismurf, wikimedia.org.
 		</figcaption>
 </figure>
-<p>The CRS in this case is in a <code>char</code> format. This means that the projection
-information is strung together as a series of text elements.</p>
+<p>The CRS in this case is in a <code>char</code> format. This means that the projection information is strung together as a series of text elements.</p>
 <p>We’ll focus on the first few components of the CRS, as described above.</p>
 <ul>
 <li><code>name</code>: The projection of the dataset. Our data are in WGS84 (World Geodetic System 1984) / UTM (Universal Transverse Mercator) zone 18N. WGS84 is the datum. The UTM projection divides up the world into zones, this element tells you which zone the data are in. Harvard Forest is in Zone 18.</li>
 <li><code>authority</code>: EPSG (European Petroleum Survey Group) - organization that maintains a geodetic parameter database with standard codes</li>
 <li><code>code</code>: The EPSG code. For more details, see <a href="https://epsg.io/32618" target="_blank">EPSG 32618</a>.</li>
 </ul>
-<h2 id="extent">Extent</h2>
+<h2 id="sec:extent">Extent</h2>
 <p>The spatial extent is the geographic area that the raster data covers.</p>
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/vector-general/spatial_extent.png">
@@ -382,9 +426,10 @@ represents the overall geographic coverage of the spatial object.</p>
 <p>You can see the spatial extent using <code>terra::ext</code>:</p>
 <pre><code>ext(DSM_HARV)
 
-## SpatExtent : 732000, 733000, 4713000, 4714000 (xmin, xmax, ymin, ymax)
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'ext': object 'DSM_HARV' not found
 </code></pre>
-<h2 id="resolution">Resolution</h2>
+<h2 id="sec:resolution">Resolution</h2>
 <p>A raster has horizontal (x and y) resolution. This resolution represents the
 area on the ground that each pixel covers. The units for our data are in meters.
 Given our data resolution is 1 x 1, this means that each pixel represents a
@@ -400,9 +445,10 @@ Given our data resolution is 1 x 1, this means that each pixel represents a
 <p>The best way to view resolution units is to look at the coordinate reference system string <code>crs(rast,proj=TRUE)</code>. Notice our data contains: <code>+units=m</code>.</p>
 <pre><code>crs(DSM_HARV,proj=TRUE)
 
-## [1] &quot;+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs&quot;
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'crs': object 'DSM_HARV' not found
 </code></pre>
-<h2 id="display-raster-min-and-max-values">Display Raster Min and Max Values</h2>
+<h2 id="sec:display-raster-min-and-max-values">Display Raster Min and Max Values</h2>
 <p>It can be useful to know the minimum or maximum values of a raster dataset. In
 this case, given we are working with elevation data, these values represent the
 min/max elevation range at our site.</p>
@@ -413,19 +459,11 @@ However if they weren’t already calculated, we can calculate them using the
 
 min(DSM_HARV)
 
-## class       : SpatRaster 
-## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
-## resolution  : 1, 1  (x, y)
-## extent      : 732000, 733000, 4713000, 4714000  (xmin, xmax, ymin, ymax)
-## coord. ref. : WGS 84 / UTM zone 18N (EPSG:32618) 
-## source(s)   : memory
-## varname     : NEON_D01_HARV_DP3_732000_4713000_DSM 
-## name        :    min 
-## min value   : 317.91 
-## max value   : 433.94
+## Error:
+## ! object 'DSM_HARV' not found
 </code></pre>
 <p>We can see that the elevation at our site ranges from 317.91 m to 433.94 m.</p>
-<h2 id="nodata-values-in-rasters">NoData Values in Rasters</h2>
+<h2 id="sec:nodata-values-in-rasters">NoData Values in Rasters</h2>
 <p>Raster data often has a <code>NoDataValue</code> associated with it. This is a value
 assigned to pixels where data are missing or no data were collected.</p>
 <p>By default the shape of a raster is always square or rectangular. So if we
@@ -444,9 +482,11 @@ region.</p>
 
           northing=4701500,
 
-          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
+          check.size=FALSE, # set to TRUE to check the size before downloading
 
-          savepath = wd)
+          savepath = wd,
+
+          token=token)
 </code></pre>
 <p>This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30010.001 (the Camera Data Product ID). The file should show up in this location: ~/data/DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif.</p>
 <p>In the image below, the pixels that are black have <code>NoDataValue</code>s. The camera did not collect data in these areas.</p>
@@ -455,15 +495,22 @@ region.</p>
 RGB_HARV &lt;- 
   rast(paste0(wd,&quot;DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif&quot;))
 
+## Warning:
+## ~/data/DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif:
+## No such file or directory (GDAL error 4)
 
+## Error:
+## ! [rast] file does not exist: ~/data/DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif
 
 # Create an RGB image from the raster
 
 par(col.axis=&quot;white&quot;,col.lab=&quot;white&quot;,tck=0)
 
 plotRGB(RGB_HARV, r = 1, g = 2, b = 3, axes=TRUE)
+
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'RGB_HARV' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-black-1.png" alt="Colorized raster image with NoDataValues around the edge rendered in black" /></p>
 <p>In the next image, the black edges have been assigned <code>NoDataValue</code>. R doesn’t
 render pixels that contain a specified <code>NoDataValue</code>. R assigns missing data
 with the <code>NoDataValue</code> as <code>NA</code>.</p>
@@ -477,23 +524,19 @@ func &lt;- function(x) {
 
 newRGBImage &lt;- app(RGB_HARV, func)
 
-## 
-</code></pre>
-<h1 id="section">|———|———|———|———|</h1>
-<pre><code>par(col.axis=&quot;white&quot;,col.lab=&quot;white&quot;,tck=0)
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'app': object 'RGB_HARV' not found
+
+par(col.axis=&quot;white&quot;,col.lab=&quot;white&quot;,tck=0)
 
 # Create an RGB image from the raster stack
 
 plotRGB(newRGBImage, r = 1, g = 2, b = 3, axis=TRUE)
 
-## Warning in plot.window(...): &quot;axis&quot; is not a graphical parameter
-
-## Warning in plot.xy(xy, type, ...): &quot;axis&quot; is not a graphical parameter
-
-## Warning in title(...): &quot;axis&quot; is not a graphical parameter
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'plotRGB': object 'newRGBImage' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/demonstrate-no-data-1.png" alt="Colorized raster image with NoDataValues around the edge removed" /></p>
-<h3 id="nodata-value-standard">NoData Value Standard</h3>
+<h3 id="sec:nodata-value-standard">NoData Value Standard</h3>
 <p>The assigned <code>NoDataValue</code> varies across disciplines; <code>-9999</code> is a common value
 used in both the remote sensing field and the atmospheric fields. It is also
 the standard used by the <a href="https://www.neonscience.org/" target="_blank">
@@ -503,7 +546,7 @@ National Ecological Observatory Network (NEON)</a>.</p>
 raster’s metadata. If a <code>NoDataValue</code> was stored in the GeoTIFF tag, when R
 opens up the raster, it will assign each instance of the value to <code>NA</code>. Values
 of <code>NA</code> will be ignored by R as demonstrated above.</p>
-<h2 id="bad-data-values-in-rasters">Bad Data Values in Rasters</h2>
+<h2 id="sec:bad-data-values-in-rasters">Bad Data Values in Rasters</h2>
 <p>Bad data values are different from <code>NoDataValue</code>s. Bad data values are values
 that fall outside of the applicable range of a dataset.</p>
 <p>Examples of Bad Data Values:</p>
@@ -517,13 +560,13 @@ is likely caused by an error in either data collection or processing. These
 erroneous values can occur, for example, in water vapor absorption bands, which
 contain invalid data, and are meant to be disregarded.</li>
 </ul>
-<h3 id="find-bad-data-values">Find Bad Data Values</h3>
+<h3 id="sec:find-bad-data-values">Find Bad Data Values</h3>
 <p>Sometimes a raster’s metadata will tell us the range of expected values for a
 raster. Values outside of this range are suspect and we need to consider than
 when we analyze the data. Sometimes, we need to use some common sense and
 scientific insight as we examine the data - just as we would for field data to
 identify questionable values.</p>
-<h2 id="create-a-histogram-of-raster-values">Create A Histogram of Raster Values</h2>
+<h2 id="sec:create-a-histogram-of-raster-values">Create A Histogram of Raster Values</h2>
 <p>We can explore the distribution of values contained within our raster using the
 <code>hist()</code> function which produces a histogram. Histograms are often useful in
 identifying outliers and bad data values in our raster data.</p>
@@ -534,11 +577,13 @@ hist(DSM_HARV,
      xlab=&quot;DSM Elevation Value (m)&quot;,
      ylab=&quot;Frequency&quot;,
      col=&quot;lightblue&quot;)
+
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'hist': object 'DSM_HARV' not found
 </code></pre>
-<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/00-Raster-Structure/rfigs/view-raster-histogram-1.png" alt="Histogram showing the distribution of digital surface model values" /></p>
 <p>The distribution of elevation values for our <code>Digital Surface Model (DSM)</code> looks
 reasonable. It is likely there are no bad data values in this particular raster.</p>
-<h2 id="raster-bands">Raster Bands</h2>
+<h2 id="sec:raster-bands">Raster Bands</h2>
 <p>The Digital Surface Model object (<code>DSM_HARV</code>) that we’ve been working with
 is a single band raster. This means that there is only one dataset stored in
 the raster: surface elevation in meters for one time period.</p>
@@ -554,13 +599,15 @@ the raster: surface elevation in meters for one time period.</p>
 
 nlyr(DSM_HARV)
 
-## [1] 1
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'nlyr': object 'DSM_HARV' not found
 
 # view number of bands in the RGB Camera raster
 
 nlyr(RGB_HARV)
 
-## [1] 3
+## Error in `h()`:
+## ! error in evaluating the argument 'x' in selecting a method for function 'nlyr': object 'RGB_HARV' not found
 </code></pre>
 <p>As we see from the RGB camera raster, raster data can also be multi-band,
 meaning one raster file contains data for more than one variable or time period
@@ -570,7 +617,7 @@ layer, for example.</p>
 <p>Jump to the fourth tutorial in this series for a tutorial on multi-band rasters:
 <a href="https://www.neonscience.org/dc-multiband-rasters-r" target="_blank">
 <em>Work with Multi-band Rasters: Images in R</em></a>.</p>
-<h2 id="view-raster-file-attributes">View Raster File Attributes</h2>
+<h2 id="sec:view-raster-file-attributes">View Raster File Attributes</h2>
 <p>Remember that a <code>GeoTIFF</code> contains a set of embedded tags that contain
 metadata about the raster. So far, we’ve explored raster metadata <strong>after</strong>
 importing it in R. However, we can use the <code>describe(&quot;path-to-raster-here&quot;)</code>
@@ -580,111 +627,18 @@ R. Use <code>help(describe)</code> to see other options for exploring the file c
 
 describe(path.expand(dsm_harv_file),meta=TRUE)
 
-##  [1] &quot;AREA_OR_POINT=Area&quot;                                                                                                                                                                                                                                                                                   
-##  [2] &quot;TIFFTAG_ARTIST=Created by the National Ecological Observatory Network (NEON)&quot;                                                                                                                                                                                                                         
-##  [3] &quot;TIFFTAG_COPYRIGHT=The National Ecological Observatory Network is a project sponsored by the National Science Foundation and managed under cooperative agreement by Battelle. This material is based in part upon work supported by the National Science Foundation under Grant No. DBI-0752017.&quot;      
-##  [4] &quot;TIFFTAG_DATETIME=Flown on 2022080312, 2022080412, 2022081213, 2022081413&quot;                                                                                                                                                                                                                             
-##  [5] &quot;TIFFTAG_IMAGEDESCRIPTION=Elevation LiDAR - NEON.DP3.30024 acquired at HARV by RIEGL LASER MEASUREMENT SYSTEMS Q780 2220855 as part of 2022-P3C1&quot;                                                                                                                                                      
-##  [6] &quot;TIFFTAG_MAXSAMPLEVALUE=434&quot;                                                                                                                                                                                                                                                                           
-##  [7] &quot;TIFFTAG_MINSAMPLEVALUE=318&quot;                                                                                                                                                                                                                                                                           
-##  [8] &quot;TIFFTAG_RESOLUTIONUNIT=2 (pixels/inch)&quot;                                                                                                                                                                                                                                                               
-##  [9] &quot;TIFFTAG_SOFTWARE=Tif file created with a Matlab script (write_gtiff.m) written by Tristan Goulden (tgoulden@battelleecology.org) with data processed from the following scripts: create_tiles_from_mosaic.m, combine_dtm_dsm_gtif.m, lastools_workflow.csh which implemented LAStools version 210418.&quot;
-## [10] &quot;TIFFTAG_XRESOLUTION=1&quot;                                                                                                                                                                                                                                                                                
-## [11] &quot;TIFFTAG_YRESOLUTION=1&quot;
+## character(0)
 </code></pre>
 <p>Specifying <code>options=c(&quot;stats&quot;)</code> will show some summary statistics:</p>
 <pre><code># view summary statistics before opening the file
 
 describe(path.expand(dsm_harv_file),options=c(&quot;stats&quot;))
 
-##  [1] &quot;Driver: GTiff/GeoTIFF&quot;                                                                                                                                                                                                                                                                                  
-##  [2] &quot;Files: C:/Users/bhass/Documents/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif&quot;                                                                                                                                   
-##  [3] &quot;       C:/Users/bhass/Documents/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.aux.xml&quot;                                                                                                                           
-##  [4] &quot;Size is 1000, 1000&quot;                                                                                                                                                                                                                                                                                     
-##  [5] &quot;Coordinate System is:&quot;                                                                                                                                                                                                                                                                                  
-##  [6] &quot;PROJCRS[\&quot;WGS 84 / UTM zone 18N\&quot;,&quot;                                                                                                                                                                                                                                                                     
-##  [7] &quot;    BASEGEOGCRS[\&quot;WGS 84\&quot;,&quot;                                                                                                                                                                                                                                                                            
-##  [8] &quot;        ENSEMBLE[\&quot;World Geodetic System 1984 ensemble\&quot;,&quot;                                                                                                                                                                                                                                              
-##  [9] &quot;            MEMBER[\&quot;World Geodetic System 1984 (Transit)\&quot;],&quot;                                                                                                                                                                                                                                          
-## [10] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G730)\&quot;],&quot;                                                                                                                                                                                                                                             
-## [11] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G873)\&quot;],&quot;                                                                                                                                                                                                                                             
-## [12] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G1150)\&quot;],&quot;                                                                                                                                                                                                                                            
-## [13] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G1674)\&quot;],&quot;                                                                                                                                                                                                                                            
-## [14] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G1762)\&quot;],&quot;                                                                                                                                                                                                                                            
-## [15] &quot;            MEMBER[\&quot;World Geodetic System 1984 (G2139)\&quot;],&quot;                                                                                                                                                                                                                                            
-## [16] &quot;            ELLIPSOID[\&quot;WGS 84\&quot;,6378137,298.257223563,&quot;                                                                                                                                                                                                                                                
-## [17] &quot;                LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                                              
-## [18] &quot;            ENSEMBLEACCURACY[2.0]],&quot;                                                                                                                                                                                                                                                                    
-## [19] &quot;        PRIMEM[\&quot;Greenwich\&quot;,0,&quot;                                                                                                                                                                                                                                                                        
-## [20] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433]],&quot;                                                                                                                                                                                                                                                 
-## [21] &quot;        ID[\&quot;EPSG\&quot;,4326]],&quot;                                                                                                                                                                                                                                                                            
-## [22] &quot;    CONVERSION[\&quot;UTM zone 18N\&quot;,&quot;                                                                                                                                                                                                                                                                       
-## [23] &quot;        METHOD[\&quot;Transverse Mercator\&quot;,&quot;                                                                                                                                                                                                                                                                
-## [24] &quot;            ID[\&quot;EPSG\&quot;,9807]],&quot;                                                                                                                                                                                                                                                                        
-## [25] &quot;        PARAMETER[\&quot;Latitude of natural origin\&quot;,0,&quot;                                                                                                                                                                                                                                                    
-## [26] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                                                  
-## [27] &quot;            ID[\&quot;EPSG\&quot;,8801]],&quot;                                                                                                                                                                                                                                                                        
-## [28] &quot;        PARAMETER[\&quot;Longitude of natural origin\&quot;,-75,&quot;                                                                                                                                                                                                                                                 
-## [29] &quot;            ANGLEUNIT[\&quot;degree\&quot;,0.0174532925199433],&quot;                                                                                                                                                                                                                                                  
-## [30] &quot;            ID[\&quot;EPSG\&quot;,8802]],&quot;                                                                                                                                                                                                                                                                        
-## [31] &quot;        PARAMETER[\&quot;Scale factor at natural origin\&quot;,0.9996,&quot;                                                                                                                                                                                                                                           
-## [32] &quot;            SCALEUNIT[\&quot;unity\&quot;,1],&quot;                                                                                                                                                                                                                                                                    
-## [33] &quot;            ID[\&quot;EPSG\&quot;,8805]],&quot;                                                                                                                                                                                                                                                                        
-## [34] &quot;        PARAMETER[\&quot;False easting\&quot;,500000,&quot;                                                                                                                                                                                                                                                            
-## [35] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                                                   
-## [36] &quot;            ID[\&quot;EPSG\&quot;,8806]],&quot;                                                                                                                                                                                                                                                                        
-## [37] &quot;        PARAMETER[\&quot;False northing\&quot;,0,&quot;                                                                                                                                                                                                                                                                
-## [38] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1],&quot;                                                                                                                                                                                                                                                                   
-## [39] &quot;            ID[\&quot;EPSG\&quot;,8807]]],&quot;                                                                                                                                                                                                                                                                       
-## [40] &quot;    CS[Cartesian,2],&quot;                                                                                                                                                                                                                                                                                   
-## [41] &quot;        AXIS[\&quot;(E)\&quot;,east,&quot;                                                                                                                                                                                                                                                                             
-## [42] &quot;            ORDER[1],&quot;                                                                                                                                                                                                                                                                                  
-## [43] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                                                  
-## [44] &quot;        AXIS[\&quot;(N)\&quot;,north,&quot;                                                                                                                                                                                                                                                                            
-## [45] &quot;            ORDER[2],&quot;                                                                                                                                                                                                                                                                                  
-## [46] &quot;            LENGTHUNIT[\&quot;metre\&quot;,1]],&quot;                                                                                                                                                                                                                                                                  
-## [47] &quot;    USAGE[&quot;                                                                                                                                                                                                                                                                                             
-## [48] &quot;        SCOPE[\&quot;Navigation and medium accuracy spatial referencing.\&quot;],&quot;                                                                                                                                                                                                                                
-## [49] &quot;        AREA[\&quot;Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela.\&quot;],&quot;                        
-## [50] &quot;        BBOX[0,-78,84,-72]],&quot;                                                                                                                                                                                                                                                                           
-## [51] &quot;    ID[\&quot;EPSG\&quot;,32618]]&quot;                                                                                                                                                                                                                                                                                
-## [52] &quot;Data axis to CRS axis mapping: 1,2&quot;                                                                                                                                                                                                                                                                     
-## [53] &quot;Origin = (732000.000000000000000,4714000.000000000000000)&quot;                                                                                                                                                                                                                                              
-## [54] &quot;Pixel Size = (1.000000000000000,-1.000000000000000)&quot;                                                                                                                                                                                                                                                    
-## [55] &quot;Metadata:&quot;                                                                                                                                                                                                                                                                                              
-## [56] &quot;  AREA_OR_POINT=Area&quot;                                                                                                                                                                                                                                                                                   
-## [57] &quot;  TIFFTAG_ARTIST=Created by the National Ecological Observatory Network (NEON)&quot;                                                                                                                                                                                                                         
-## [58] &quot;  TIFFTAG_COPYRIGHT=The National Ecological Observatory Network is a project sponsored by the National Science Foundation and managed under cooperative agreement by Battelle. This material is based in part upon work supported by the National Science Foundation under Grant No. DBI-0752017.&quot;      
-## [59] &quot;  TIFFTAG_DATETIME=Flown on 2022080312, 2022080412, 2022081213, 2022081413&quot;                                                                                                                                                                                                                             
-## [60] &quot;  TIFFTAG_IMAGEDESCRIPTION=Elevation LiDAR - NEON.DP3.30024 acquired at HARV by RIEGL LASER MEASUREMENT SYSTEMS Q780 2220855 as part of 2022-P3C1&quot;                                                                                                                                                      
-## [61] &quot;  TIFFTAG_MAXSAMPLEVALUE=434&quot;                                                                                                                                                                                                                                                                           
-## [62] &quot;  TIFFTAG_MINSAMPLEVALUE=318&quot;                                                                                                                                                                                                                                                                           
-## [63] &quot;  TIFFTAG_RESOLUTIONUNIT=2 (pixels/inch)&quot;                                                                                                                                                                                                                                                               
-## [64] &quot;  TIFFTAG_SOFTWARE=Tif file created with a Matlab script (write_gtiff.m) written by Tristan Goulden (tgoulden@battelleecology.org) with data processed from the following scripts: create_tiles_from_mosaic.m, combine_dtm_dsm_gtif.m, lastools_workflow.csh which implemented LAStools version 210418.&quot;
-## [65] &quot;  TIFFTAG_XRESOLUTION=1&quot;                                                                                                                                                                                                                                                                                
-## [66] &quot;  TIFFTAG_YRESOLUTION=1&quot;                                                                                                                                                                                                                                                                                
-## [67] &quot;Image Structure Metadata:&quot;                                                                                                                                                                                                                                                                              
-## [68] &quot;  INTERLEAVE=BAND&quot;                                                                                                                                                                                                                                                                                      
-## [69] &quot;Corner Coordinates:&quot;                                                                                                                                                                                                                                                                                    
-## [70] &quot;Upper Left  (  732000.000, 4714000.000) ( 72d10'28.52\&quot;W, 42d32'36.84\&quot;N)&quot;                                                                                                                                                                                                                              
-## [71] &quot;Lower Left  (  732000.000, 4713000.000) ( 72d10'29.98\&quot;W, 42d32' 4.46\&quot;N)&quot;                                                                                                                                                                                                                              
-## [72] &quot;Upper Right (  733000.000, 4714000.000) ( 72d 9'44.73\&quot;W, 42d32'35.75\&quot;N)&quot;                                                                                                                                                                                                                              
-## [73] &quot;Lower Right (  733000.000, 4713000.000) ( 72d 9'46.20\&quot;W, 42d32' 3.37\&quot;N)&quot;                                                                                                                                                                                                                              
-## [74] &quot;Center      (  732500.000, 4713500.000) ( 72d10' 7.36\&quot;W, 42d32'20.11\&quot;N)&quot;                                                                                                                                                                                                                              
-## [75] &quot;Band 1 Block=1000x1 Type=Float32, ColorInterp=Gray&quot;                                                                                                                                                                                                                                                     
-## [76] &quot;  Min=317.910 Max=433.940 &quot;                                                                                                                                                                                                                                                                             
-## [77] &quot;  Minimum=317.910, Maximum=433.940, Mean=358.584, StdDev=17.156&quot;                                                                                                                                                                                                                                        
-## [78] &quot;  NoData Value=-9999&quot;                                                                                                                                                                                                                                                                                   
-## [79] &quot;  Metadata:&quot;                                                                                                                                                                                                                                                                                            
-## [80] &quot;    STATISTICS_MAXIMUM=433.94000244141&quot;                                                                                                                                                                                                                                                                 
-## [81] &quot;    STATISTICS_MEAN=358.58371301653&quot;                                                                                                                                                                                                                                                                    
-## [82] &quot;    STATISTICS_MINIMUM=317.91000366211&quot;                                                                                                                                                                                                                                                                 
-## [83] &quot;    STATISTICS_STDDEV=17.156044149253&quot;                                                                                                                                                                                                                                                                  
-## [84] &quot;    STATISTICS_VALID_PERCENT=100&quot;
+## character(0)
 </code></pre>
 <p>It can be useful to use <code>describe</code> to explore your file <strong>before</strong> reading it into R.</p>
 <div id="ds-challenge" markdown="1">
-<h3 id="challenge-explore-raster-metadata">Challenge: Explore Raster Metadata</h3>
+<h3 id="sec:challenge-explore-raster-metadata">Challenge: Explore Raster Metadata</h3>
 <p>Without using the <code>terra</code> function to read the file into R, determine the following information about the DTM file. This was downloaded at the same time as the DSM file, and as long as you didn’t move the data, it should be located here: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DTMGtif/NEON_D01_HARV_DP3_732000_4713000_DTM.tif.</p>
 <ol>
 <li>Does this file has the same <code>CRS</code> as <code>DSM_HARV</code>?</li>
