@@ -308,7 +308,7 @@ Check out this animation which highlights how map projections can make continent
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif"
     alt="A relation between the Mercator projection and the actual relative size of each country.">
     </a>
-    <figcaption> Credit: Jakub Nowosad, Wikimedia Commons</figcaption>
+    <figcaption> Credit: Jakub Nowosad, wikimedia.org</figcaption>
 </figure>
 
  
@@ -336,7 +336,7 @@ The `CRS` of our `DSM_HARV` object tells us that our data are in the UTM project
 
 <figure>
     <a href="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Utm-zones-USA.svg/720px-Utm-zones-USA.svg.png"
+    <img src="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg"
     alt="Image showing the ten different UTM zones (10-19) across the continental United States."></a>
    	<figcaption> The UTM zones across the continental United States. Source: Chrismurf, wikimedia.org.
 		</figcaption>
