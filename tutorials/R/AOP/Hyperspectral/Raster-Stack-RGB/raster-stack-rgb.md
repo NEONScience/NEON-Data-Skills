@@ -120,11 +120,7 @@ We can use the `neonUtilities` function `byTileAOP` to download a single reflect
 
     ## Downloading 1 files
 
-    ## 
-  |                                                                                                    
-  |                                                                                              |   0%
-  |                                                                                                    
-  |==============================================================================================| 100%
+    ##   |                                                                                              |                                                                                      |   0%  |                                                                                              |======================================================================================| 100%
 
     ## Successfully downloaded 1 files to ~/data//DP3.30006.001
 
@@ -359,7 +355,7 @@ Next, add the names of the bands to the raster so we can easily keep track of th
 
     plot(rgbStack$Band_58, main="Band 58")
 
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/scale-plot-refl-1.png)
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Raster-Stack-RGB/rfigs/scale-plot-refl-1.png)
 
 We can play with the color ramps too if we want:
 
@@ -409,7 +405,7 @@ Once you've created your raster, you can export it as a GeoTIFF using `writeRast
 
     # Note: if you set overwrite to TRUE, then you will overwrite (and lose) any older version of the tif file! 
 
-    writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_image.tif"), overwrite=TRUE)
+    writeRaster(rgbStack, file=paste0(data_dir,"NEON_D17_SJER_DP3_257000_4112000_reflectance_2021_RGB.tif"), overwrite=TRUE)
 
 <div id="ds-dataTip" markdown="1">
 

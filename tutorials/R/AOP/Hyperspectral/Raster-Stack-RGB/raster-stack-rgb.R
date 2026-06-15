@@ -120,9 +120,9 @@ plotRGB(rgbStack,
         r=1,g=2,b=3,
         stretch = "lin")
 
-# # Write out final raster	
-# # Note: if you set overwrite to TRUE, then you will overwrite (and lose) any older version of the tif file!
-# writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_image.tif"), overwrite=TRUE)
+# Write out final raster	
+# Note: if you set overwrite to TRUE, then you will overwrite (and lose) any older version of the tif file! 
+writeRaster(rgbStack, file=paste0(data_dir,"NEON_D17_SJER_DP3_257000_4112000_reflectance_2021_RGB.tif"), overwrite=TRUE)
 
 
 # Calculate NDVI

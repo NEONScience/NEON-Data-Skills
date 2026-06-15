@@ -309,10 +309,10 @@ plotRGB(rgbStack,
 
 Once you've created your raster, you can export it as a GeoTIFF using `writeRaster`. You can bring this GeoTIFF into any GIS software, such as QGIS or ArcGIS.
 
-```{r save-raster-geotiff, eval=FALSE, comment=NA}
+```{r save-raster-geotiff, eval=TRUE, comment=NA}
 # Write out final raster	
 # Note: if you set overwrite to TRUE, then you will overwrite (and lose) any older version of the tif file! 
-writeRaster(rgbStack, file=paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_image.tif"), overwrite=TRUE)
+writeRaster(rgbStack, file=paste0(data_dir,"NEON_D17_SJER_DP3_257000_4112000_reflectance_2021_RGB.tif"), overwrite=TRUE)
 ```
 
 <div id="ds-dataTip" markdown="1">

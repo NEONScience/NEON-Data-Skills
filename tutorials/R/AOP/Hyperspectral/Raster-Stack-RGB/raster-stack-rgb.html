@@ -191,9 +191,9 @@ data_dir &lt;- &quot;~/data/&quot;
 ## 
 </code></pre>
 <p>|<br />
-|                                                                                              |   0%
+|                                                                                      |   0%
 |<br />
-|==============================================================================================| 100%</p>
+|======================================================================================| 100%</p>
 <pre><code>## Successfully downloaded 1 files to ~/data//DP3.30006.001
 </code></pre>
 <p>This file will be downloaded into a nested subdirectory under the <code>~/data</code> folder, inside a folder named <code>DP3.30006.001</code> (the Data Product ID). The file should show up in this location:  <code>~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5</code>.</p>
@@ -437,7 +437,7 @@ plotRGB(rgbStack,
 
 # Note: if you set overwrite to TRUE, then you will overwrite (and lose) any older version of the tif file! 
 
-writeRaster(rgbStack, file=paste0(wd,&quot;NEON_hyperspectral_tutorial_example_RGB_image.tif&quot;), overwrite=TRUE)
+writeRaster(rgbStack, file=paste0(data_dir,&quot;NEON_D17_SJER_DP3_257000_4112000_reflectance_2021_RGB.tif&quot;), overwrite=TRUE)
 </code></pre>
 <div id="ds-dataTip" markdown="1">
 <p><i class="fa fa-star"></i><strong>Data Tip - False color and near infrared images:</strong>
