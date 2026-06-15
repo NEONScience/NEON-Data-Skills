@@ -1,6 +1,8 @@
 ---
+syncID: 63635a0daf0c417090e5c38c3103a09a
 title: "Filter, Piping, and GREPL Using R DPLYR - An Intro"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/basic-R-skills/R-dplyr-GREPL-Summarise-Piping/R-dplyr-GREPL-Summarise-Piping.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/R-skills/basic-R-skills/R-dplyr-grepl-piping/r-dplyr-grepl-piping.R
+authors: Natalie Robinson, Kate Thibault, Donal O'Leary
 contributors: Garrett M. Williams
 dataProduct: DP1.10072.001
 dateCreated: '2015-05-27'
@@ -10,12 +12,11 @@ description: Learn how to use the filter, group_by, and summarize functions with
 estimatedTime: 1.0 - 1.5 Hours
 languagesTool: R
 packagesLibraries: dplyr, neonUtilities
-syncID: 63635a0daf0c417090e5c38c3103a09a
-authors: Natalie Robinson, Kate Thibault, Donal O'Leary
 topics: data-analysis
 tutorialSeries: null
 urlTitle: grepl-filter-piping-dplyr-r
 ---
+
 
 <div id="ds-objectives" markdown="1">
 
@@ -32,6 +33,8 @@ After completing this tutorial, you will be able to:
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ### Install R Packages
 
@@ -148,7 +151,7 @@ do so, we will use the `loadByProduct()` function from the `neonUtilities`
 package to download data straight from the NEON servers. To learn more about 
 this function, please see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore NEON data tutorial here.</a>
 
-As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+As mentioned in the "Things You’ll Need To Complete This Tutorial" section at the top, you will need an API token in order to download NEON data using neonUtilities. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 Let's look at the NEON small mammal capture data from Harvard Forest (within 
 Domain 01) for all of 2014. This site is located in the heart of the Lyme 
@@ -169,8 +172,8 @@ token <- Sys.getenv("NEON_TOKEN")
 # the quantity of data requested
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                  startdate = "2014-01", enddate = "2014-12", 
-                 check.size = TRUE,
-                 token=token) # Console requires your response!
+                 check.size = TRUE, # console requires your response (y/n)
+                 token=token) 
 
 # if you'd like, check out the data
 str(loadData)
@@ -185,8 +188,7 @@ token <- Sys.getenv("NEON_TOKEN")
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                  startdate = "2014-01", enddate = "2014-12", 
                  check.size = F,
-                 token=token) # set to F in hidden code chunk
-                                 # to allow knitting to process correctly
+                 token=token) 
 
 ```
 
@@ -216,7 +218,7 @@ variables within 'myData':
 * `identificationQualifier` a string noting uncertainty in the species 
   identification
 
-## filter()
+## filter() function
 This function: 
 
 * extracts only a subset of rows from a data frame according to specified
@@ -467,5 +469,3 @@ dataBySpFem_byHand <- data.frame('scientificName'=sciName,
 dataBySpFem_byHand
 
 ```
-
-

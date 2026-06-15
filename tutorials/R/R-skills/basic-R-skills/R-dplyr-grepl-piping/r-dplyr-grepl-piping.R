@@ -1,60 +1,50 @@
-## ----example-nested-functions, eval=FALSE---------------------------------------------
-## function3(function2(function1(my_data)))
+# function3(function2(function1(my_data)))
 
+# my_data %>%
+#   function1() %>%
+#   function2() %>%
+#   function3()
 
-## ----example-piped-functions, eval=FALSE----------------------------------------------
-## my_data %>%
-##   function1() %>%
-##   function2() %>%
-##   function3()
+# 	myMammalData %>%                     # start with a data frame
+# 		filter(sex=='M') %>%               # first filter for rows where sex is male
+# 		summarise (mean_weight = mean(weight))  # find the mean of the weight
+#                                             # column, store as mean_weight
 
-
-## ----example-mammal-data, eval=FALSE--------------------------------------------------
-## 	myMammalData %>%                     # start with a data frame
-## 		filter(sex=='M') %>%               # first filter for rows where sex is male
-## 		summarise (mean_weight = mean(weight))  # find the mean of the weight
-##                                             # column, store as mean_weight
-
-
-## ----load-dplyr-library-import-data, eval=FALSE, comment=NA---------------------------
-
-# load packages
-library(dplyr)
-library(neonUtilities)
-
-# load the NEON small mammal capture data
-# NOTE: the check.size = TRUE argument means the function 
-# will require confirmation from you that you want to load 
-# the quantity of data requested
-loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
-                 startdate = "2014-01", enddate = "2014-12", 
-                 check.size = TRUE) # Console requires your response!
-
-# if you'd like, check out the data
-str(loadData)
-
-## ----load-dplyr-library-import-data-hidden, include=FALSE-----------------------------
+# 
+# # load packages and token
+# library(dplyr)
+# library(neonUtilities)
+# token <- Sys.getenv("NEON_TOKEN")
+# 
+# # load the NEON small mammal capture data
+# # NOTE: the check.size = TRUE argument means the function
+# # will require confirmation from you that you want to load
+# # the quantity of data requested
+# loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV",
+#                  startdate = "2014-01", enddate = "2014-12",
+#                  check.size = TRUE, # console requires your response (y/n)
+#                  token=token)
+# 
+# # if you'd like, check out the data
+# str(loadData)
 
 library(dplyr)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 # load the NEON small mammal capture data
 loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
                  startdate = "2014-01", enddate = "2014-12", 
-                 check.size = F) # set to F in hidden code chunk
-                                 # to allow knitting to process correctly
+                 check.size = F,
+                 token=token) 
 
 
-
-## ----extract-pertrapnight-------------------------------------------------------------
 
 myData <- loadData$mam_pertrapnight
 
 class(myData) # Confirm that 'myData' is a data.frame
 
 
-
-## ----dplyr-filter-function------------------------------------------------------------
 
 # filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
 # two equals signs (==) signifies "is"
@@ -66,8 +56,6 @@ data_PeroManicFemales <- filter(myData,
 # pretty cool!
 
 
-
-## ----dplyr-filter-print---------------------------------------------------------------
 # how many female P. maniculatus are in the dataset
 # would could simply count the number of rows in the new dataset
 nrow(data_PeroManicFemales)
@@ -78,8 +66,6 @@ print(paste('In 2014, NEON technicians captured',
                    'female Peromyscus maniculatus at Harvard Forest.',
                    sep = ' '))
 
-
-## ----dplyr-filter-function-uncertainty------------------------------------------------
 
 # filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
 # two equals signs (==) signifies "is"
@@ -92,8 +78,6 @@ data_PeroManicFemalesCertain <- filter(myData,
 nrow(data_PeroManicFemalesCertain)
 
 
-
-## ----using grepl with the dplyr filter function---------------------------------------
 
 # combine filter & grepl to get all Peromyscus (a part of the 
 # scientificName string)
@@ -108,8 +92,6 @@ print(paste('In 2014, NEON technicians captured',
                    sep = ' '))
 
 
-
-## ----dplyr-group_by-summarise---------------------------------------------------------
 # how many of each species & sex were there?
 # step 1: group by species & sex
 dataBySpSex <- group_by(myData, scientificName, sex)
@@ -122,22 +104,16 @@ head(countsBySpSex, 10)
 
 
 
-## ----compare-classes------------------------------------------------------------------
-
 # View class of 'myData' object
 class(myData)
 
 # View class of 'dataBySpSex' object
 class(dataBySpSex)
 
+# # View help file for group_by() function
+# ?group_by()
+# 
 
-## ----compare-classes-2, eval=FALSE, comment=NA----------------------------------------
-# View help file for group_by() function
-?group_by()
-
-
-
-## ----dplyr-piping-combine-functions---------------------------------------------------
 
 # combine several functions to get a summary of the numbers of individuals of 
 # female Peromyscus species in our dataset.
@@ -154,8 +130,6 @@ dataBySpFem <- myData %>%
 dataBySpFem
 
 
-
-## ----same-but-base-r------------------------------------------------------------------
 # For reference, the same output but using R's base functions
 
 # First, subset the data to only female Peromyscus
@@ -190,5 +164,4 @@ dataBySpFem_byHand <- data.frame('scientificName'=sciName,
 
 # view output
 dataBySpFem_byHand
-
 
