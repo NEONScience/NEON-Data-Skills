@@ -104,7 +104,7 @@ setwd(wd)
 
 We can use the neonUtilities function byTileAOP to download a single elevation tiles (DSM and DTM). You can run help(byTileAOP) to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (732000, 4713500), which will download the tile with the lower left corner (732000,4713000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~8 MB, so make sure you have enough space on your local drive. You can set `check.size=TRUE` if you want to check the file size before downloading.
 
-``` {r download-dsm-data, eval=FALSE}
+``` {r download-dsm-data, eval=TRUE}
 byTileAOP(dpID='DP3.30024.001', # lidar elevation
           site='HARV',
           year='2022',
@@ -373,7 +373,7 @@ region.
 
 Let's take a look at some of the RGB Camera data over HARV, this time downloading a tile at the edge of the flight box.
 
-``` {r download-rgb-data, eval=FALSE}
+``` {r download-rgb-data, eval=TRUE}
 byTileAOP(dpID='DP3.30010.001',
           site='HARV',
           year='2022',

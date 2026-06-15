@@ -6,14 +6,14 @@ token <- Sys.getenv("NEON_TOKEN")
 wd <- "~/data/" 
 setwd(wd)
 
-# byTileAOP(dpID='DP3.30024.001', # lidar elevation
-#           site='HARV',
-#           year='2022',
-#           easting=732000,
-#           northing=4713500,
-#           check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-#           savepath = wd,
-#           token=token)
+byTileAOP(dpID='DP3.30024.001', # lidar elevation
+          site='HARV',
+          year='2022',
+          easting=732000,
+          northing=4713500,
+          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
+          savepath = wd,
+          token=token)
 
 # Load raster into R
 dsm_harv_file <- paste0(wd, "DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif")
@@ -62,14 +62,14 @@ crs(DSM_HARV,proj=TRUE)
 # view the min and max values
 min(DSM_HARV)
 
-# byTileAOP(dpID='DP3.30010.001',
-#           site='HARV',
-#           year='2022',
-#           easting=737500,
-#           northing=4701500,
-#           check.size=FALSE, # set to TRUE to check the size before downloading
-#           savepath = wd,
-#           token=token)
+byTileAOP(dpID='DP3.30010.001',
+          site='HARV',
+          year='2022',
+          easting=737500,
+          northing=4701500,
+          check.size=FALSE, # set to TRUE to check the size before downloading
+          savepath = wd,
+          token=token)
 
 # Use rast function to read in all bands
 RGB_HARV <- 
