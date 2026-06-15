@@ -210,7 +210,7 @@ As described in the Field Spectra Data Quick Start Guide,
 
 > "To find the geographic location of each plant, use the plant crown shapefiles in the Plant foliar physical and chemical properties data product (DP1.10026.001, table cfc_shapefile). For the locations of plants that have not been mapped to shapefiles, follow the instructions in the Data Product User Guide for DP1.10026.001."
 
-This next section outlines how you would go about finding the geolocation information for the field spectra data. This is necessary if you are linking with the AOP hyperspectral data, which we will demonstrate next. We will start by demonstrating how to pull in the spectra of the single pixel. Not all foliar data have crown polygons, so this method is useful if the crown polygon data is not available. We will also demonstrate how to pull in the crown polygon shapefiles, and use that to extract the reflectance, at the end. This method requires a few extra steps.
+This next section outlines how you would go about finding the geolocation information for the field spectra data. This is necessary if you are linking with the AOP hyperspectral data, which we will demonstrate next. We will start by showing how to pull in the spectra of the single pixel. Not all foliar data have crown polygons, so this method is useful if the crown polygon data is not available. We will also demonstrate how to pull in the crown polygon shapefiles, and use that to extract the reflectance, at the end. This method requires a few extra steps.
 
 Let's start by looking at the product information for this foliar trait data product. As before, you can un-comment the `#View` lines to explore this dataset more.
 
@@ -265,13 +265,12 @@ Great, now we have the field spectra data and the corresponding locations of the
 
 ## Airborne Reflectance Data
 
-For the final part of this lesson, we will download the airborne reflectance data, and use some R functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. First, let's set the working directory to where we want to download the data. 
+For the final part of this lesson, we will download the airborne reflectance data, and use some R functions to read the reflectance data into a `terra:rast` Spatial Object, and extract the spectral signature of the pixel corresponding to the location of the leaf-clip sample. We can use the `neonUtilities::byTileAOP` function to download only the 1km x 1km tile that contains the data we're interested in. First, let's set the data directory to where we want to download the data. 
 
 
 ``` {r set-wd, results="hide"}
-# set working directory (this will depend on your local environment)
-wd <- "~/data/"
-setwd(wd)
+# set data directory (the absolute path will depend on your local environment)
+data_dir <- "~/data/"
 ```
 
 We will download the corresponding reflectance spectra of the pixel corresponding to where a single PICOL sample was located. Let's extract that sample from the `spectral_traits` table so we can easily pull out the geographic information.
@@ -282,13 +281,13 @@ fsp_rmnp_picol_20200720_1304 <- spectra_traits[spectra_traits$spectralSampleID =
 
 Download the reflectance data that encompasses this data point. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means you will need to enter `y` in order to continue the download.
 
-``` {r download-reflectance, eval=FALSE}
+``` {r download-reflectance, eval=TRUE}
 byTileAOP(dpID='DP3.30006.001',
           site='RMNP',
           year=2020,
           easting=fsp_rmnp_picol_20200720_1304$adjEasting,
           northing=fsp_rmnp_picol_20200720_1304$adjNorthing,
-          savepath=wd,
+          savepath=data_dir,
           token=token)
 ```
 
@@ -296,7 +295,7 @@ This file will be downloaded into a nested subdirectory under the ~/data folder,
 
 ``` {r read-h5-file}
 # Define the h5 file name to be opened
-h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMNP_3/L3/Spectrometer/Reflectance/NEON_D10_RMNP_DP3_455000_4446000_reflectance.h5")
+h5_file <- paste0(data_dir,"DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMNP_3/L3/Spectrometer/Reflectance/NEON_D10_RMNP_DP3_455000_4446000_reflectance.h5")
 ```
 
 Now we can use some pre-defined functions for working with the airborne reflectance data. For more details, please refer to the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data" target="_blank">Introduction to Hyperspectral Remote Sensing</a> tutorial series.
