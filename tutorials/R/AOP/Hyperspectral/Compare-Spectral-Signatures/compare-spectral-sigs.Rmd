@@ -1,13 +1,13 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/Select-Pixels-Compare-Spectral-Signatures.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Compare-Spectral-Signatures/compare-spectral-sigs.R
 contributors: Megan Jones, Felipe Sanchez
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
 estimatedTime: 0.5 - 1 Hours
 languagesTool: R
-dataProudct: DP3.30006.001
+dataProduct: DP3.30006.001, DP3.30006.002
 packagesLibraries: rhdf5, terra, plyr, reshape2, ggplot2, neonUtilities
 authors: Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
@@ -34,6 +34,10 @@ After completing this activity, you will be able to:
 To complete this tutorial you will need the most current version of R and, 
 preferably, RStudio loaded on your computer.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+You will also need to complete the lesson: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/create-raster-stack-hsi-hdf5-r" target="_blank">Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R</a>
+
 ### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
@@ -49,12 +53,6 @@ preferably, RStudio loaded on your computer.
 ### Data to Download
 
 These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
-
-As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
-
-**Set Working Directory:** This lesson assumes that you have set your working directory to the location of the downloaded data. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
 
 ### Recommended Skills
@@ -77,11 +75,11 @@ library(terra)
 library(plyr)
 library(ggplot2)
 library(grDevices)
+library(neonUtilities)
 
 # set working directory, you can change this if desired
-wd <- "~/data/" 
-setwd(wd)
-
+data_dir <- "~/data/" 
+# read in NEON token
 token <- Sys.getenv("NEON_TOKEN")
 
 ```
@@ -94,7 +92,7 @@ byTileAOP(dpID = 'DP3.30006.001',
           year = '2021',
           easting = 257500,
           northing = 4112500,
-          savepath = wd,
+          savepath = data_dir,
           token=token)
 ```
 
@@ -102,7 +100,7 @@ And then we can read in the hyperspectral hdf5 data. We will also collect a few 
 
 ``` {r read-h5}
 # define filepath to the hyperspectral dataset
-h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
+h5_file <- paste0(data_dir,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 # read in the wavelength information from the HDF5 file
 wavelengths <- h5read(h5_file,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
@@ -113,17 +111,15 @@ reflInfo <- h5readAttributes(h5_file,"/SJER/Reflectance/Reflectance_Data" )
 scaleFact <- reflInfo$Scale_Factor
 ```
 
-Now, we will read in the RGB image that we created in an earlier tutorial and plot it. 
+Now, we will read in the RGB image that we created in the earlier tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-r#toggle-8" target="_blank">Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R</a> and plot the raster. 
 
 ```{r read-in-RGB-and-plot, fig.cap="RGB image of a portion of the SJER field site using 3 bands from the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image."}
 
 # read in RGB image as a 'stack' rather than a plain 'raster'
-rgbStack <- rast(paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_image.tif"))
+rgbStack <- rast(paste0(data_dir,"NEON_D17_SJER_DP3_257000_4112000_reflectance_2021_RGB.tif"))
 
 # plot as RGB image, with a linear stretch
-plotRGB(rgbStack,
-        r=1,g=2,b=3, scale=300, 
-        stretch = "lin")
+plotRGB(rgbStack, r=1, g=2, b=3, stretch = "lin")
 ```
 
 ## Interactive `click` Function from the `terra` Package

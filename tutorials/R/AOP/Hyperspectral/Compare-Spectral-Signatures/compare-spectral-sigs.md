@@ -34,6 +34,10 @@ After completing this activity, you will be able to:
 To complete this tutorial you will need the most current version of R and, 
 preferably, RStudio loaded on your computer.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+You will also need to complete the lesson: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/create-raster-stack-hsi-hdf5-r" target="_blank">Creating a Raster Stack from Hyperspectral Imagery in HDF5 Format in R</a>
+
 ### R Libraries to Install:
 
 * **rhdf5**: `install.packages("BiocManager")`, `BiocManager::install("rhdf5")`
@@ -133,7 +137,7 @@ Now, we will read in the RGB image that we created in an earlier tutorial and pl
 
     # read in RGB image as a 'stack' rather than a plain 'raster'
 
-    rgbStack <- rast(paste0(wd,"NEON_hyperspectral_tutorial_example_RGB_image.tif"))
+    rgbStack <- rast(paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance_2021_RGB.tif"))
 
     
 
