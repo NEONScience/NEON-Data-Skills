@@ -66,10 +66,9 @@ The entire dataset can be accessed from the
 
 ****
 
-* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
-Read more about the `terra` package in R.</a>
-* <a href="https://www.neonscience.org/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
-* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
+* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">Read more about the `terra` package in R.</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank">NEON Data Skills tutorial: Raster Data in R - The Basics</a>
+* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank">NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
 
 </div>
 
@@ -123,7 +122,11 @@ We can use the neonUtilities function byTileAOP to download a single elevation t
 
     ## Downloading 2 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |================================================================================| 100%
 
     ## Successfully downloaded 2 files to ~/data//DP3.30024.001
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30024.001 (the Data Product ID). The file should show up in this location: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.
@@ -192,7 +195,7 @@ maps include:
 
 #### Categorical Landcover Map for the United States 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif ">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif"
     alt="Map of the different land cover types of the continental United States each represented by different colors." >
     </a>
@@ -447,7 +450,11 @@ Let's take a look at some of the RGB Camera data over HARV, this time downloadin
 
     ## Downloading 1 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |================================================================================| 100%
 
     ## Successfully downloaded 1 files to ~/data//DP3.30010.001
 
@@ -486,7 +493,11 @@ with the `NoDataValue` as `NA`.
 
     newRGBImage <- app(RGB_HARV, func)
 
-    ## |---------|---------|---------|---------|=========================================                                          
+    ## 
+|---------|---------|---------|---------|
+=========================================
+                                          
+
 
     par(col.axis="white",col.lab="white",tck=0)
 
