@@ -61,8 +61,7 @@ The entire dataset can be accessed from the <a href="http://data.neonscience.org
 
 ### Additional Resources
 
-* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
-Read more about the `terra` package in R.</a>
+* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">Read more about the `terra` package in R.</a>
 
 </div>
 
@@ -112,7 +111,11 @@ For this exercise, we'll specify the UTM Easting and Northing to be (732000, 471
 
     ## Downloading 2 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |================================================================================| 100%
 
     ## Successfully downloaded 2 files to ~/data//DP3.30024.001
 
