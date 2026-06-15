@@ -118,8 +118,7 @@ To work with multiband raster data we will use the `terra` package.
 
     setwd(wd)
 
-In this tutorial, the multi-band data that we are working with is imagery collected using the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a> high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot each band of a multi-band image individually. 
-
+### Download RGB Data
 
 
     byTileAOP(dpID='DP3.30010.001', # rgb camera data
@@ -135,13 +134,15 @@ In this tutorial, the multi-band data that we are working with is imagery collec
 
     ## Downloading 1 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
+    ##   |                                                                                  |                                                                          |   0%  |                                                                                  |==========================================================================| 100%
 
     ## Successfully downloaded 1 files to ~/data//DP3.30010.001
 
+In this tutorial, the multi-band data that we are working with is imagery collected using the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a> high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot the RGB band combination of the image using `plotRGB`. 
+
 ![Red, green, and blue composite (true color) image of NEON's Harvard Forest (HARV) site](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png)
 
-Or we can plot each bands separately as follows:
+Or we can plot each band separately as follows:
 
 
     # Determine the number of bands

@@ -114,8 +114,7 @@ setwd(wd)
 
 ```
 
-In this tutorial, the multi-band data that we are working with is imagery collected using the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a> high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot each band of a multi-band image individually. 
-
+### Download RGB Data
 
 ```{r download-harv-camera-data}
 
@@ -130,6 +129,8 @@ byTileAOP(dpID='DP3.30010.001', # rgb camera data
 
 ```
 
+In this tutorial, the multi-band data that we are working with is imagery collected using the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a> high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot the RGB band combination of the image using `plotRGB`. 
+
 ```{r demonstrate-RGB-Image, fig.cap="Red, green, and blue composite (true color) image of NEON's Harvard Forest (HARV) site", echo=FALSE}
 
 # read the file as a raster
@@ -142,7 +143,7 @@ plotRGB(RGB_HARV, axes=F)
 
 ```
 
-Or we can plot each bands separately as follows:
+Or we can plot each band separately as follows:
 
 ```{r plot-bands, fig.cap=c("Red band", "Green band", "Blue band")}
 

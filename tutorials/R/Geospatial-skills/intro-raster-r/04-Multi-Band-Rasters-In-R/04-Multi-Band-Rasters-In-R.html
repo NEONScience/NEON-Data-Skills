@@ -196,7 +196,7 @@ wd &lt;- &quot;~/data/&quot; # this will depend on your local environment enviro
 
 setwd(wd)
 </code></pre>
-<p>In this tutorial, the multi-band data that we are working with is imagery collected using the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a> high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot each band of a multi-band image individually.</p>
+<h3 id="sec:download-rgb-data">Download RGB Data</h3>
 <pre><code>byTileAOP(dpID='DP3.30010.001', # rgb camera data
           site='HARV',
           year='2022',
@@ -213,13 +213,14 @@ setwd(wd)
 ## 
 </code></pre>
 <p>|<br />
-|                                                                                |   0%
+|                                                                          |   0%
 |<br />
-|================================================================================| 100%</p>
+|==========================================================================| 100%</p>
 <pre><code>## Successfully downloaded 1 files to ~/data//DP3.30010.001
 </code></pre>
+<p>In this tutorial, the multi-band data that we are working with is imagery collected using the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a> high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot the RGB band combination of the image using <code>plotRGB</code>.</p>
 <p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png" alt="Red, green, and blue composite (true color) image of NEON’s Harvard Forest (HARV) site" /></p>
-<p>Or we can plot each bands separately as follows:</p>
+<p>Or we can plot each band separately as follows:</p>
 <pre><code># Determine the number of bands
 
 num_bands &lt;- nlyr(RGB_HARV)
