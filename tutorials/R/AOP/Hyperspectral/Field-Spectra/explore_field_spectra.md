@@ -114,7 +114,7 @@ Now that we know what sites have this field spectral data, let's take a look at 
 
     ## Finished: Stacked 3 data tables and 5 metadata tables!
 
-    ## Stacking took 1.516586 secs
+    ## Stacking took 2.063552 secs
 
 Let's take a look at all the associated tables contained in this data product, using the `names` function:
 
@@ -366,7 +366,7 @@ Let's download the foliar trait data from 2020-07 at RMNP to obtain the precise 
 
     ## Finished: Stacked 14 data tables and 5 metadata tables!
 
-    ## Stacking took 1.559379 secs
+    ## Stacking took 1.545084 secs
 
     names(foliar_traits)
 
@@ -443,18 +443,18 @@ Download the reflectance data that encompasses this data point. Reflectance data
 
 
     byTileAOP(dpID='DP3.30006.001',
+
               site='RMNP',
+
               year=2020,
+
               easting=fsp_rmnp_picol_20200720_1304$adjEasting,
+
               northing=fsp_rmnp_picol_20200720_1304$adjNorthing,
+
               savepath=data_dir,
+
               token=token)
-
-    ## Downloading 1 files
-
-    ##   |                                                                                                      |                                                                                              |   0%  |                                                                                                      |==============================================================================================| 100%
-
-    ## Successfully downloaded 1 files to ~/data//DP3.30006.001
 
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30006.001 (the Data Product ID of the aerial reflectance data). The file should show up in this location: ~/data/DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMNP_3/L3/Spectrometer/Reflectance/NEON_D10_RMNP_DP3_455000_4446000_reflectance.h5. Let's define an `h5_file` variable that points to the full path to this file.
 
@@ -643,18 +643,33 @@ First, we can use the `neonUtilities::loadByProduct` and `zipsByURI` functions t
 
 
     crown_polys <- loadByProduct(dpID='DP1.10026.001', 
-
                                  site='RMNP',
-
                                  tabl='cfc_shapefile', 
-
                                  include.provisional=T,
-
                                  check.size=F,
-
                                  token=token)
 
-    zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
+    ## Warning: Downloading only table cfc_shapefile. Downloading by table is not recommended unless you are already familiar with the data product and its contents.
+
+    ## Finding available files
+
+    ## Downloading files totaling approximately 0.223929 MB
+
+    ## Downloading 7 files
+
+    ## Stacking data files
+
+    ## Finished: Stacked 1 data tables and 3 metadata tables!
+
+    ## Stacking took 1.293172 secs
+
+    zipsByURI(crown_polys, savepath=paste0(data_dir,'crown_polygons'),check.size=FALSE)
+
+    ## checking file sizes...
+
+    ## Downloading2files totaling approximately0.036609 MB.
+
+    ## 2file(s) successfully downloaded to~/data/crown_polygons
 
 Next we can read in the polygon data as a terra `SpatVector` object as follows. Display the coordinate reference system (CRS) information. You can un-comment the last line to display more detailed information about the CRS.
 
@@ -663,13 +678,10 @@ Next we can read in the polygon data as a terra `SpatVector` object as follows. 
 
     rmnp_crown_poly <- terra::vect(shp_file)
 
-    ## Error:
-    ## ! [vect] file does not exist: ~/data/crown_polygons/RMNP-2020-polygons-v3/RMNP-2020-polygons.shp
-
     crs(rmnp_crown_poly, describe=TRUE) # display dataframe describing the CRS
 
-    ## Error in `h()`:
-    ## ! error in evaluating the argument 'x' in selecting a method for function 'crs': object 'rmnp_crown_poly' not found
+    ##                    name authority  code area         extent
+    ## 1 WGS 84 / UTM zone 13N      EPSG 32613 <NA> NA, NA, NA, NA
 
     # cat(crs(rmnp_crown_poly), "\n")
 The crown polygon is in the same projection as the AOP reflectance data, so we can continue. Next let's plot the crown polygon data (orange line) along with the RGB reflectance image and tree location (red point).
@@ -679,50 +691,26 @@ The crown polygon is in the same projection as the AOP reflectance data, so we c
 
     plot(tree_loc, col="red", add = T) # plot the location of the tree (red point)
 
-![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-sample-with-crown-poly-1.png)
-
     picol_crown_poly <- rmnp_crown_poly[rmnp_crown_poly$crownPolyg == "RMNP.04015.2020"]
-
-    ## Error:
-    ## ! object 'rmnp_crown_poly' not found
 
     plot(picol_crown_poly, border = "orange", lwd = 2, add=T) # plot the tree crown polygon
 
-    ## Error in `h()`:
-    ## ! error in evaluating the argument 'x' in selecting a method for function 'plot': object 'picol_crown_poly' not found
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-sample-with-crown-poly-1.png)
 
 We can again use `terra:extract` to pull out the reflectance values of all the pixels inside this area. Then use the `reshape2::melt` function to reformat the data so it is simpler to plot.
 
 
     refl_crown <- extract(refl_rast, picol_crown_poly,ID=FALSE)
 
-    ## Error in `h()`:
-    ## ! error in evaluating the argument 'y' in selecting a method for function 'extract': object 'picol_crown_poly' not found
-
     refl_crown_df <- data.frame(t(refl_crown))
-
-    ## Error in `h()`:
-    ## ! error in evaluating the argument 'x' in selecting a method for function 't': object 'refl_crown' not found
 
     refl_crown_df$wavelengths <- h5_meta$wavelengths
 
-    ## Error:
-    ## ! object 'refl_crown_df' not found
-
     names(refl_crown_df) <- c('1','2','3','4','5','6','wavelength')
-
-    ## Error:
-    ## ! object 'refl_crown_df' not found
 
     row.names(refl_crown_df) <- NULL #reset the row names so they represent the band #s
 
-    ## Error:
-    ## ! object 'refl_crown_df' not found
-
     picol_crown_df <- melt(refl_crown_df, id.vars = 'wavelength', value.name = 'reflectance', variable.name = 'crown_pixel')
-
-    ## Error:
-    ## ! object 'refl_crown_df' not found
 
     # head(picol_crown_df[c("crown_pixel","wavelength","reflectance")]) #optionally display the first part of the data
 
@@ -731,19 +719,15 @@ Plot the spectra of all the pixels in the tree crown polygon, first applying the
 
     picol_crown_df$reflectance <- (picol_crown_df$reflectance/10000)
 
-    ## Error:
-    ## ! object 'picol_crown_df' not found
-
     picol_crown_plot <- ggplot(picol_crown_df, aes(x=wavelength, y=reflectance, color=crown_pixel)) + 
       labs(x="Wavelength (nm)",  y="Reflectance") + geom_line() + ylim(0,0.35)
 
-    ## Error:
-    ## ! object 'picol_crown_df' not found
-
     print(picol_crown_plot + ggtitle("Airborne Reflectance Spectra of Tree Crown Polygon Pixels of PICOL at RMNP"))
 
-    ## Error:
-    ## ! object 'picol_crown_plot' not found
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/plot-picol-crown-pixels-1.png" alt=" "  />
+<p class="caption"> </p>
+</div>
 
 Great, we've plotted the reflectance curves of all the pixels captured within the tree crown polygon area. What might cause some of the differences between these spectral signatures? Lastly, let's plot the reflectance of the airborne hyperspectral data (all pixels in the tree-crown polygon) along with the ground-measured leaf-clip spectra.
 
@@ -752,27 +736,20 @@ Great, we've plotted the reflectance curves of all the pixels captured within th
 
     combined_df <- bind_rows(fsp_rmnp_picol_20200720_1304[c("wavelength","reflectance")],picol_crown_df[c("wavelength","reflectance")])
 
-    ## Error:
-    ## ! object 'picol_crown_df' not found
-
     # add a new column to indicate spectra data source
 
     combined_df$spectra_source <- c(rep("leaf-clip reflectance", nrow(fsp_rmnp_picol_20200720_1304)), rep("airborne reflectance", nrow(picol_crown_df)))
-
-    ## Error in `h()`:
-    ## ! error in evaluating the argument 'x' in selecting a method for function 'nrow': object 'picol_crown_df' not found
 
     spectra_crown_plot <- ggplot() + 
       geom_line(data=combined_df, aes(x=wavelength, y=reflectance, color=spectra_source), show.legend=TRUE) +
       labs(x="Wavelength (nm)",  y="Reflectance") + theme(legend.position = c(0.8, 0.8)) +  ylim(0, 0.5)
 
-    ## Error:
-    ## ! object 'combined_df' not found
-
     print(spectra_crown_plot + ggtitle("Spectra of PICOL Leaf Clip Sample & Corresponding Airborne Tree-Crown Pixels at RMNP"))
 
-    ## Error:
-    ## ! object 'spectra_crown_plot' not found
+<div class="figure" style="text-align: center">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Field-Spectra/rfigs/combine-fsp-crown-poly-spectra-plot-1.png" alt=" "  />
+<p class="caption"> </p>
+</div>
 
 Again we can see there is some difference between the airborne and field spectra, and there is a decent amount of variation between the spectra of the pixels contained within the tree crown polygon. The leaf-clip spectra is one "end-member" that contributes to the 1-m pixel combined reflectance. The exploratory analysis demonstrated in this tutorial is an example of some steps you might take to get a feel for the data. We recommend you explore some other samples at this site, or field spectra data at another site, building off this R code to answer some questions you come up with as you start digging into the data.
 

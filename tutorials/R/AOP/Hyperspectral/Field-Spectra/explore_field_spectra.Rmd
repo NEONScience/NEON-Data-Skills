@@ -281,7 +281,7 @@ fsp_rmnp_picol_20200720_1304 <- spectra_traits[spectra_traits$spectralSampleID =
 
 Download the reflectance data that encompasses this data point. Reflectance data can be quite large (~500-600+ MB per tile), so for this example, we'll only download the single tile needed. We'll leave the `check.size` field empty (default is TRUE), which means you will need to enter `y` in order to continue the download.
 
-``` {r download-reflectance, eval=TRUE}
+``` {r download-reflectance, eval=FALSE}
 byTileAOP(dpID='DP3.30006.001',
           site='RMNP',
           year=2020,
@@ -439,14 +439,14 @@ Starting in 2020 (including RMNP 2020), the foliar traits data products include 
 
 First, we can use the `neonUtilities::loadByProduct` and `zipsByURI` functions to download all the tree crown polygon shapefile data, as follows. This is also the recommended way to determine which crown polygon data are available, across all the sites.
 
-``` {r crown-poly, eval=FALSE, results="hide"}
+``` {r crown-poly, eval=TRUE, results="hide"}
 crown_polys <- loadByProduct(dpID='DP1.10026.001', 
                              site='RMNP',
                              tabl='cfc_shapefile', 
                              include.provisional=T,
                              check.size=F,
                              token=token)
-zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
+zipsByURI(crown_polys, savepath=paste0(data_dir,'crown_polygons'),check.size=FALSE)
 ```
 
 Next we can read in the polygon data as a terra `SpatVector` object as follows. Display the coordinate reference system (CRS) information. You can un-comment the last line to display more detailed information about the CRS.

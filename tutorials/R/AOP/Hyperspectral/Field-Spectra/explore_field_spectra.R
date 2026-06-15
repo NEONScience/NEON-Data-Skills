@@ -102,13 +102,13 @@ data_dir <- "~/data/"
 
 fsp_rmnp_picol_20200720_1304 <- spectra_traits[spectra_traits$spectralSampleID == "FSP_RMNP_20200720_1304",]
 
-byTileAOP(dpID='DP3.30006.001',
-          site='RMNP',
-          year=2020,
-          easting=fsp_rmnp_picol_20200720_1304$adjEasting,
-          northing=fsp_rmnp_picol_20200720_1304$adjNorthing,
-          savepath=data_dir,
-          token=token)
+# byTileAOP(dpID='DP3.30006.001',
+#           site='RMNP',
+#           year=2020,
+#           easting=fsp_rmnp_picol_20200720_1304$adjEasting,
+#           northing=fsp_rmnp_picol_20200720_1304$adjNorthing,
+#           savepath=data_dir,
+#           token=token)
 
 # Define the h5 file name to be opened
 h5_file <- paste0(data_dir,"DP3.30006.001/neon-aop-products/2020/FullSite/D10/2020_RMNP_3/L3/Spectrometer/Reflectance/NEON_D10_RMNP_DP3_455000_4446000_reflectance.h5")
@@ -210,13 +210,13 @@ spectra_plot <- ggplot() +
 
 print(spectra_plot + ggtitle("Spectra of PICOL Leaf Clip Sample & Corresponding Airborne Pixel at RMNP"))
 
-# crown_polys <- loadByProduct(dpID='DP1.10026.001',
-#                              site='RMNP',
-#                              tabl='cfc_shapefile',
-#                              include.provisional=T,
-#                              check.size=F,
-#                              token=token)
-# zipsByURI(crown_polys, savepath=paste0(wd,'crown_polygons'),check.size=FALSE)
+crown_polys <- loadByProduct(dpID='DP1.10026.001', 
+                             site='RMNP',
+                             tabl='cfc_shapefile', 
+                             include.provisional=T,
+                             check.size=F,
+                             token=token)
+zipsByURI(crown_polys, savepath=paste0(data_dir,'crown_polygons'),check.size=FALSE)
 
 shp_file <- paste0('~/data/','crown_polygons/RMNP-2020-polygons-v3/RMNP-2020-polygons.shp')
 rmnp_crown_poly <- terra::vect(shp_file)
