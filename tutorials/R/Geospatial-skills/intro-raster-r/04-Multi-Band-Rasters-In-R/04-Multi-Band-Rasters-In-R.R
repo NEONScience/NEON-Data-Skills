@@ -1,13 +1,9 @@
-## ----load-libraries---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# terra package to work with raster data
-library(terra)
 
-# package for downloading NEON data
-library(neonUtilities)
-
-# package for specifying color palettes
-library(RColorBrewer)
+library(terra) # terra package to work with raster data
+library(neonUtilities) # package for downloading NEON data
+library(RColorBrewer) # package for specifying color palettes
+token <- Sys.getenv("NEON_TOKEN") # read in API token
 
 # set working directory to ensure R can find the file we wish to import
 wd <- "~/data/" # this will depend on your local environment environment
@@ -16,19 +12,16 @@ setwd(wd)
 
 
 
-## ----download-harv-camera-data----------------------------------------------------------------------------------------------------------------------------------------------
-
 byTileAOP(dpID='DP3.30010.001', # rgb camera data
           site='HARV',
           year='2022',
           easting=732000,
           northing=4713500,
-          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-          savepath = wd)
+          check.size=FALSE, # set to TRUE or remove to check the size before downloading
+          savepath = wd,
+          token=token)
 
 
-
-## ----demonstrate-RGB-Image, fig.cap="Red, green, and blue composite (true color) image of NEON's Harvard Forest (HARV) site", echo=FALSE------------------------------------
 
 # read the file as a raster
 rgb_harv_file <- paste0(wd, "DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_732000_4713000_image.tif")
@@ -39,8 +32,6 @@ plotRGB(RGB_HARV, axes=F)
 # plot(RGB_HARV, axes=F) < this gives the same result as plotRGB
 
 
-
-## ----plot-bands, fig.cap=c("Red band", "Green band", "Blue band")-----------------------------------------------------------------------------------------------------------
 
 # Determine the number of bands
 num_bands <- nlyr(RGB_HARV)
@@ -58,8 +49,6 @@ for (i in 1:num_bands) {
   plot(RGB_HARV[[i]], main=paste("Band", i), col=colors[[i]])
 }
 
-
-## ----raster-attributes------------------------------------------------------------------------------------------------------------------------------------------------------
 # Print dimensions
 cat("Dimensions:\n")
 cat("Number of rows:", nrow(RGB_HARV), "\n")
@@ -87,12 +76,8 @@ cat("Extent of the raster: \n")
 cat(extent_str, "\n")
 
 
-
-## ----print-CRS--------------------------------------------------------------------------------------------------------------------------------------------------------------
 crs(RGB_HARV, describe=TRUE)
 
-
-## ----min-max-image----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Replace Inf and -Inf with NA
 values(RGB_HARV)[is.infinite(values(RGB_HARV))] <- NA
@@ -104,15 +89,11 @@ min_max_values <- minmax(RGB_HARV)
 cat("Min and Max Values for All Bands:\n")
 print(min_max_values)
 
+# 
+# # We'd expect a *brighter* value for the forest in band 2 (green) than in # band 1 (red) because the leaves on trees of most often appear "green" -
+# # healthy leaves reflect MORE green light compared to red light.
+# 
 
-## ----challenge1-answer, eval=FALSE, echo=FALSE------------------------------------------------------------------------------------------------------------------------------
-## 
-## # We'd expect a *brighter* value for the forest in band 2 (green) than in # band 1 (red) because the leaves on trees of most often appear "green" -
-## # healthy leaves reflect MORE green light compared to red light.
-## 
-
-
-## ----image-stretch, fig.cap=c("Composite RGB image of HARV with a linear stretch", "Composite RGB image of HARV with a histogram stretch")----------------------------------
 # What does stretch do?
 
 # Plot the linearly stretched raster
@@ -122,8 +103,6 @@ plotRGB(RGB_HARV, stretch="lin")
 plotRGB(RGB_HARV, stretch="hist")
 
 
-
-## ----challenge-code-calling-methods, include=TRUE, results="hide", echo=FALSE-----------------------------------------------------------------------------------------------
 # 1
 # methods for calling a stack
 methods(class=class(RGB_HARV))
@@ -134,4 +113,3 @@ methods(class=class(RGB_HARV))
 methods(class=class(RGB_HARV[1]))
 
 # 72 There are more methods you can apply to a full stack (304) than you can apply to a single band (72).
-

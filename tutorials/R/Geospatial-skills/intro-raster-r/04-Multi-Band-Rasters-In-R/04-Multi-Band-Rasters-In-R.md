@@ -34,23 +34,21 @@ After completing this tutorial, you will be able to:
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of R and, preferably, `RStudio` installed on your computer to complete this tutorial.
 
+Data required for this tutorial will be downloaded using `neonUtilities` in the lesson. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Install R Packages
 
 * **terra:** `install.packages("terra")`
 * **neonUtilities:** `install.packages("neonUtilities")`
 
-
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
 #### Data to Download
 
-Data required for this tutorial will be downloaded using `neonUtilities` in the lesson.
-
 The LiDAR and imagery data used in this lesson were collected over the 
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> field site. 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> field site. 
 
-The entire dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
+Data will be downloaded using `neonUtilities` at the start of the lesson. If you have already downloaded the data earlier in this tutorial series, you can skip the download step. The entire HARV datasets can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
 
 
@@ -70,8 +68,7 @@ The entire dataset can be accessed from the <a href="http://data.neonscience.org
 <iframe width="640" height="360" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
 
 ## About Raster Bands in R 
-As discussed in the <a href="https://www.neonscience.org/dc-raster-data-r" target="_blank"> *Intro to Raster Data* tutorial</a>, 
-a raster can contain 1 or more bands.
+As discussed in the <a href="https://www.neonscience.org/dc-raster-data-r" target="_blank"> *Intro to Raster Data* tutorial</a>, a raster can contain 1 or more bands.
 
 <figure>
     <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/single_multi_raster.png">
@@ -82,7 +79,7 @@ a raster can contain 1 or more bands.
     raster. Source: National Ecological Observatory Network (NEON).</figcaption>
 </figure>
 
-To work with multiband rasters in R, we need to change how we import and plot our data in several ways. 
+To work with multiband rasters in R, we need to change how we import and plot our data in several ways.  
 
 * To import multiband raster data we will use the `stack()` function.
 * If our multiband data are imagery that we wish to composite, we can use `plotRGB()` (instead of `plot()`) to plot a 3 band raster image.
@@ -103,21 +100,13 @@ One type of multiband raster dataset that is familiar to many of us is a color i
 To work with multiband raster data we will use the `terra` package.
 
 
-    # terra package to work with raster data
+    library(terra) # terra package to work with raster data
 
-    library(terra)
+    library(neonUtilities) # package for downloading NEON data
 
-    
+    library(RColorBrewer) # package for specifying color palettes
 
-    # package for downloading NEON data
-
-    library(neonUtilities)
-
-    
-
-    # package for specifying color palettes
-
-    library(RColorBrewer)
+    token <- Sys.getenv("NEON_TOKEN") # read in API token
 
     
 
@@ -129,9 +118,7 @@ To work with multiband raster data we will use the `terra` package.
 
     setwd(wd)
 
-In this tutorial, the multi-band data that we are working with is imagery collected using the 
-<a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a>
-high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot each band of a multi-band image individually. 
+In this tutorial, the multi-band data that we are working with is imagery collected using the <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank">NEON Airborne Observation Platform</a> high resolution camera over the <a href="https://www.neonscience.org/field-sites/field-sites-map/HARV" target="_blank">NEON Harvard Forest field site</a>. Each RGB image is a 3-band raster. The same steps would apply to working with a multi-spectral image with 4 or more bands - like Landsat imagery, or even hyperspectral imagery (in geotiff format). We can plot each band of a multi-band image individually. 
 
 
 
@@ -140,12 +127,16 @@ high resolution camera over the <a href="https://www.neonscience.org/field-sites
               year='2022',
               easting=732000,
               northing=4713500,
-              check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-              savepath = wd)
+              check.size=FALSE, # set to TRUE or remove to check the size before downloading
+              savepath = wd,
+              token=token)
 
-    ## Downloading files totaling approximately 351.004249 MB 
+    ## Downloading files totaling approximately 351.004249 MB
+
     ## Downloading 1 files
-    ##   |                                                                                                                                                                            |                                                                                                                                                                    |   0%  |                                                                                                                                                                            |====================================================================================================================================================================| 100%
+
+    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
+
     ## Successfully downloaded 1 files to ~/data//DP3.30010.001
 
 ![Red, green, and blue composite (true color) image of NEON's Harvard Forest (HARV) site](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/04-Multi-Band-Rasters-In-R/rfigs/demonstrate-RGB-Image-1.png)
@@ -243,6 +234,7 @@ We can display some of the attributes about the raster, as shown below:
     cat(extent_str, "\n")
 
     ## xmin: 732000, xmax: 733000, ymin: 4713000, ymax: 4714000
+
 Let's take a look at the coordinate reference system, or CRS. You can use the parameters `describe=TRUE` to display this information more succinctly.
 
 
@@ -253,7 +245,7 @@ Let's take a look at the coordinate reference system, or CRS. You can use the pa
     ##                                                                                                                                                                                                                                                          area
     ## 1 Between 78°W and 72°W, northern hemisphere between equator and 84°N, onshore and offshore. Bahamas. Canada - Nunavut; Ontario; Quebec. Colombia. Cuba. Ecuador. Greenland. Haiti. Jamaica. Panama. Turks and Caicos Islands. United States (USA). Venezuela
     ##            extent
-    ## 1 -78, -72, 84, 0
+    ## 1 -78, -72, 0, 84
 
 Let's next examine the raster's minimum and maximum values. What is the range of values for each band?
 
@@ -278,13 +270,14 @@ Let's next examine the raster's minimum and maximum values. What is the range of
 
     print(min_max_values)
 
-    ##     2022_HARV_7_732000_4713000_image_1 2022_HARV_7_732000_4713000_image_2 2022_HARV_7_732000_4713000_image_3
-    ## min                                  0                                  0                                  0
-    ## max                                255                                255                                255
+    ##     2022_HARV_7_732000_4713000_image_1 2022_HARV_7_732000_4713000_image_2
+    ## min                                  0                                  0
+    ## max                                255                                255
+    ##     2022_HARV_7_732000_4713000_image_3
+    ## min                                  0
+    ## max                                255
 
-This raster contains values between 0 and 255. These values represent the intensity of brightness associated with the image band. In 
-the case of a RGB image (red, green and blue), band 1 is the red band. When we plot the red band, larger numbers (towards 255) represent 
-pixels with more red in them (a strong red reflection). Smaller numbers (towards 0) represent pixels with less red in them (less red was reflected). 
+This raster contains values between 0 and 255. These values represent the intensity of brightness associated with the image band. In the case of a RGB image (red, green and blue), band 1 is the red band. When we plot the red band, larger numbers (towards 255) represent pixels with more red in them (a strong red reflection). Smaller numbers (towards 0) represent pixels with less red in them (less red was reflected). 
 To plot an RGB image, we mix red + green + blue values into one single color to create a full color image - this is the standard color image a digital camera creates.
 
 <div id="ds-challenge" markdown="1">
@@ -356,6 +349,5 @@ We can view various methods available to call on an R object with `methods(class
 3. Why do you think there is a difference? 
 
 </div>
-
 
 
