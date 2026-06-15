@@ -94,10 +94,10 @@ print(paste('In 2014, NEON technicians captured',
 
 # how many of each species & sex were there?
 # step 1: group by species & sex
-dataBySpSex <- group_by(myData, scientificName, sex)
+dataBySpSex <- dplyr::group_by(myData, scientificName, sex)
 
 # step 2: summarize the number of individuals of each using the new df
-countsBySpSex <- summarise(dataBySpSex, n_individuals = n())
+countsBySpSex <- dplyr::summarise(dataBySpSex, n_individuals = dplyr::n())
 
 # view the data (just top 10 rows)
 head(countsBySpSex, 10)
@@ -122,9 +122,9 @@ class(dataBySpSex)
 # to the next. 
 
 dataBySpFem <- myData %>% 
-                  filter(grepl('Peromyscus', scientificName), sex == "F") %>%
-                  group_by(scientificName) %>%
-                  summarise(n_individuals = n())
+                  dplyr::filter(grepl('Peromyscus', scientificName), sex == "F") %>%
+                  dplyr::group_by(scientificName) %>%
+                  dplyr::summarise(n_individuals = dplyr::n())
 
 # view the data
 dataBySpFem

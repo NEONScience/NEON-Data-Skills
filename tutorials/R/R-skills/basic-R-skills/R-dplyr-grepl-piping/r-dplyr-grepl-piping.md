@@ -384,23 +384,39 @@ code, using `group_by` and `summarise`.
 
     # step 1: group by species & sex
 
-    dataBySpSex <- group_by(myData, scientificName, sex)
+    dataBySpSex <- dplyr::group_by(myData, scientificName, sex)
 
     
 
     # step 2: summarize the number of individuals of each using the new df
 
-    countsBySpSex <- summarise(dataBySpSex, n_individuals = n())
+    countsBySpSex <- dplyr::summarise(dataBySpSex, n_individuals = dplyr::n())
 
-    ## Error in `n()`:
-    ## ! Must only be used inside data-masking verbs like `mutate()`, `filter()`, and `group_by()`.
+    ## `summarise()` has regrouped the output.
+    ## ℹ Summaries were computed grouped by scientificName and sex.
+    ## ℹ Output is grouped by scientificName.
+    ## ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+    ## ℹ Use `summarise(.by = c(scientificName, sex))` for per-operation grouping
+    ##   (`?dplyr::dplyr_by`) instead.
 
     # view the data (just top 10 rows)
 
     head(countsBySpSex, 10)
 
-    ## Error in `h()`:
-    ## ! error in evaluating the argument 'x' in selecting a method for function 'head': object 'countsBySpSex' not found
+    ## # A tibble: 10 × 3
+    ## # Groups:   scientificName [6]
+    ##    scientificName          sex   n_individuals
+    ##    <chr>                   <chr>         <int>
+    ##  1 Blarina brevicauda      F                50
+    ##  2 Blarina brevicauda      M                 8
+    ##  3 Blarina brevicauda      U                41
+    ##  4 Glaucomys volans        M                 1
+    ##  5 Mammalia sp.            U                 2
+    ##  6 Microtus pennsylvanicus F                 2
+    ##  7 Myodes gapperi          F               103
+    ##  8 Myodes gapperi          M                99
+    ##  9 Myodes gapperi          U                 2
+    ## 10 Napaeozapus insignis    F                42
 
 Note: the output of step 1 (`dataBySpSex`) does not look any different than the 
 original dataframe (`myData`), but the application of subsequent functions (e.g.,
@@ -452,19 +468,22 @@ females, `grepl` to get only Peromyscus spp., `group_by` individual species, and
     
 
     dataBySpFem <- myData %>% 
-                      filter(grepl('Peromyscus', scientificName), sex == "F") %>%
-                      group_by(scientificName) %>%
-                      summarise(n_individuals = n())
+                      dplyr::filter(grepl('Peromyscus', scientificName), sex == "F") %>%
+                      dplyr::group_by(scientificName) %>%
+                      dplyr::summarise(n_individuals = dplyr::n())
 
-    ## Error in `n()`:
-    ## ! Must only be used inside data-masking verbs like `mutate()`, `filter()`, and `group_by()`.
+    
 
     # view the data
 
     dataBySpFem
 
-    ## Error:
-    ## ! object 'dataBySpFem' not found
+    ## # A tibble: 3 × 2
+    ##   scientificName         n_individuals
+    ##   <chr>                          <int>
+    ## 1 Peromyscus leucopus              455
+    ## 2 Peromyscus maniculatus            98
+    ## 3 Peromyscus sp.                     5
 
 Cool!  
 
