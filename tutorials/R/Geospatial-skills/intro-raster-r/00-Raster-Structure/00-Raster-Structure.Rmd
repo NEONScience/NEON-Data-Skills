@@ -50,9 +50,7 @@ As of June 2026, NEON requires an API token for data downloads, to reduce bot sc
 
 Data required for this tutorial will be downloaded using `neonUtilities` in the lesson. 
 The LiDAR and imagery data used in this lesson were collected over the 
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> 
-field site. 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> field site. 
 
 The entire dataset can be accessed from the 
 <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
@@ -66,10 +64,9 @@ The entire dataset can be accessed from the
 
 ****
 
-* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
-Read more about the `terra` package in R.</a>
-* <a href="https://www.neonscience.org/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
-* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
+* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">Read more about the `terra` package in R.</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank">NEON Data Skills tutorial: Raster Data in R - The Basics</a>
+* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank">NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
 
 </div>
 
@@ -166,7 +163,7 @@ maps include:
 
 #### Categorical Landcover Map for the United States 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif ">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif"
     alt="Map of the different land cover types of the continental United States each represented by different colors." >
     </a>
@@ -265,7 +262,7 @@ Check out this animation which highlights how map projections can make continent
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif"
     alt="A relation between the Mercator projection and the actual relative size of each country.">
     </a>
-    <figcaption> Credit: Jakub Nowosad, Wikimedia Commons</figcaption>
+    <figcaption> Credit: Jakub Nowosad, wikimedia.org</figcaption>
 </figure>
 
  
@@ -286,7 +283,7 @@ The `CRS` of our `DSM_HARV` object tells us that our data are in the UTM project
 
 <figure>
     <a href="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Utm-zones-USA.svg/720px-Utm-zones-USA.svg.png"
+    <img src="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg"
     alt="Image showing the ten different UTM zones (10-19) across the continental United States."></a>
    	<figcaption> The UTM zones across the continental United States. Source: Chrismurf, wikimedia.org.
 		</figcaption>
