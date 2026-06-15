@@ -1,33 +1,26 @@
-## ----load-libraries, message=FALSE, warning=FALSE----------------------------------------------------------------------------------------------------------------------------
 
-# Load needed packages
+# Load needed packages and set API token
 library(terra)
 library(neonUtilities)
+token <- Sys.getenv("NEON_TOKEN")
 
 
-## ----set-working-directory---------------------------------------------------------------------------------------------------------------------------------------------------
-
-wd="~/data/" #This will depend on your local environment
-setwd(wd)
+data_dir="~/data/" #This will depend on your local environment
 
 
-## ----download-refl, eval=FALSE-----------------------------------------------------------------------------------------------------------------------------------------------
-## byTileAOP(dpID='DP3.30024.001',
-##           site='SJER',
-##           year='2021',
-##           easting=257500,
-##           northing=4112500,
-##           check.size=TRUE, # set to FALSE if you don't want to enter y/n
-##           savepath = wd)
+byTileAOP(dpID='DP3.30024.001',
+          site='SJER',
+          year='2021',
+          easting=257500,
+          northing=4112500,
+          check.size=TRUE, # set to FALSE if you don't want to enter y/n
+          savepath = data_dir,
+          token=token)
 
-
-## ----define-h5, results="hide"-----------------------------------------------------------------------------------------------------------------------------------------------
 # Define the DSM and DTM file names, including the full path
-dsm_file <- paste0(wd,"DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DSMGtif/NEON_D17_SJER_DP3_257000_4112000_DSM.tif")
-dtm_file <- paste0(wd,"DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DTMGtif/NEON_D17_SJER_DP3_257000_4112000_DTM.tif")
+dsm_file <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DSMGtif/NEON_D17_SJER_DP3_257000_4112000_DSM.tif")
+dtm_file <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DTMGtif/NEON_D17_SJER_DP3_257000_4112000_DTM.tif")
 
-
-## ----import-dsm--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # assign raster to object
 dsm <- rast(dsm_file)
@@ -40,16 +33,12 @@ plot(dsm, main="Lidar Digital Surface Model \n SJER, California")
 
 
 
-## ----plot-DTM----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 # import the digital terrain model
 dtm <- rast(dtm_file)
 
 plot(dtm, main="Lidar Digital Terrain Model \n SJER, California")
 
 
-
-## ----calculate-plot-CHM------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # use raster math to create CHM
 chm <- dsm - dtm
@@ -60,17 +49,12 @@ chm
 plot(chm, main="Lidar CHM - SJER, California")
 
 
-
-## ----challenge-code-raster-math, include=TRUE, results="hide", echo=FALSE----------------------------------------------------------------------------------------------------
 # conversion 1m = 3.28084 ft
 chm_ft <- chm*3.28084
 
 # plot 
 plot(chm_ft, main="Lidar Canopy Height Model (in feet)")
 
-
-## ----write-raster-to-geotiff, eval=FALSE, comment=NA-------------------------------------------------------------------------------------------------------------------------
-# write out the CHM in tiff format. 
-writeRaster(chm,paste0(wd,"CHM_SJER.tif"),"GTiff")
-
-
+# # write out the CHM in tiff format.
+# writeRaster(chm,paste0(wd,"CHM_SJER.tif"),"GTiff")
+# 
