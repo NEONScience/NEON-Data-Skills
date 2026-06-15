@@ -1,48 +1,38 @@
-## ----load-libraries, message=FALSE, warning=FALSE--------------------------------------------------------------------
 
-# Load needed packages
+# Load needed packages and read in NEON API token
 library(terra)
 library(neonUtilities)
-library(ggplot2)
+token <- Sys.getenv("NEON_TOKEN")
 
 
-## ----set-working-directory-------------------------------------------------------------------------------------------
+data_dir="~/data/" #This will depend on your local environment
 
-wd="~/data/" #This will depend on your local environment
-setwd(wd)
+byTileAOP(dpID='DP3.30015.001',
+          site='PRIN',
+          year='2016',
+          easting=607000,
+          northing=3696000,
+          check.size=FALSE, # set to TRUE if you want to confirm before downloading
+          savepath = data_dir,
+          token=token)
 
+byTileAOP(dpID='DP3.30024.001',
+          site='PRIN',
+          year='2016',
+          easting=607000,
+          northing=3696000,
+          check.size=FALSE, # set to TRUE if you want to confirm before downloading
+          savepath = data_dir,
+          token=token)
 
-## ----download-chm, eval=FALSE----------------------------------------------------------------------------------------
-## byTileAOP(dpID='DP3.30015.001',
-##           site='PRIN',
-##           year='2016',
-##           easting=607000,
-##           northing=3696000,
-##           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-##           savepath = wd)
-
-
-## ----download-dem, eval=FALSE----------------------------------------------------------------------------------------
-## byTileAOP(dpID='DP3.30024.001',
-##           site='PRIN',
-##           year='2016',
-##           easting=607000,
-##           northing=3696000,
-##           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-##           savepath = wd)
-
-
-## ----define-lidar-paths, results="hide"------------------------------------------------------------------------------
 # Define the CHM, DSM and DTM file names, including the full path
-chm_file1 <- paste0(wd,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
-chm_file2 <- paste0(wd,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
-dsm_file1 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
-dsm_file2 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
-dtm_file1 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
-dtm_file2 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
+chm_file1 <- paste0(data_dir,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
+chm_file2 <- paste0(data_dir,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
+dsm_file1 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
+dsm_file2 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
+dtm_file1 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
+dtm_file2 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
 
-
-## ----terra-rasters---------------------------------------------------------------------------------------------------
 
 # assign raster to object
 chm1 <- rast(chm_file1)
@@ -55,8 +45,6 @@ dtm2 <- rast(dtm_file2)
 # view info about one of the rasters
 chm1
 
-
-## ----plot-dsm--------------------------------------------------------------------------------------------------------
 # plot the set of DTM rasters
 # Set up the plotting area to have 1 row and 2 columns
 par(mfrow = c(1, 2))
@@ -65,8 +53,6 @@ par(mfrow = c(1, 2))
 plot(dsm1, main = "2016_PRIN_1 DSM")
 plot(dsm2, main = "2016_PRIN_2 DSM")
 
-
-## ----plot-dtm--------------------------------------------------------------------------------------------------------
 # Reset the plotting area
 par(mfrow = c(1, 2))
 
@@ -74,8 +60,6 @@ par(mfrow = c(1, 2))
 plot(dtm1, main = "2016_PRIN_1 DTM")
 plot(dtm2, main = "2016_PRIN_2 DTM")
 
-
-## ----diff-dsm--------------------------------------------------------------------------------------------------------
 
 # Difference the 2 DSM rasters
 dsm_diff <- dsm1 - dsm2
@@ -90,8 +74,6 @@ print(paste("Standard Deviation of DSM Difference:", round(dsm_diff_std_dev,3)))
 
 
 
-## ----dsm-diff-hist---------------------------------------------------------------------------------------------------
-
 # Set options to avoid scientific notation
 options(scipen = 999)
 
@@ -99,8 +81,6 @@ options(scipen = 999)
 hist(dsm_diff, breaks = 100, main = "Histogram of DSM Difference", xlab = "Height Difference (m)", ylab = "Frequency", col = "lightblue", border = "black")
 
 
-
-## ----dsm-diff-hist-zoomed-in-----------------------------------------------------------------------------------------
 
 # Calculate x-axis limits: mean ± 2 * standard deviation
 xlim_lower <- dsm_diff_mean - 2 * dsm_diff_std_dev
@@ -112,8 +92,6 @@ hist(dsm_diff, breaks = 250, xlim = c(xlim_lower, xlim_upper),
      ylab = "Frequency", col = "lightblue", border = "black")
 
 
-
-## ----spatial-distribution-dsm-diff-----------------------------------------------------------------------------------
 
 custom_palette <- colorRampPalette(c("blue", "white", "red"))(9)
 breaks = c(-1.75, -1.25, -0.75, -0.25, 0.25, 0.75, 1.25, 2)
@@ -128,8 +106,6 @@ plot(dsm_diff,
 
 
 
-## ----diff-dtm--------------------------------------------------------------------------------------------------------
-
 # Difference the 2 DTM rasters
 dtm_diff <- dtm1 - dtm2
 
@@ -143,8 +119,6 @@ print(paste("Standard Deviation of DSM Difference:", round(dtm_diff_std_dev,3)))
 
 
 
-## ----spatial-distribution-dtm-diff-----------------------------------------------------------------------------------
-
 custom_palette <- colorRampPalette(c("blue", "white", "red"))(5)
 breaks = c(-1, -0.6, -0.2, 0.2, 0.6, 1)
 
@@ -155,8 +129,6 @@ plot(dtm_diff,
      axes = TRUE, 
      legend = TRUE)
 
-
-## ----plot-chm--------------------------------------------------------------------------------------------------------
 # Reset the plotting area
 par(mfrow = c(1, 2))
 
@@ -164,8 +136,6 @@ par(mfrow = c(1, 2))
 plot(chm1, main = "2016_PRIN_1 CHM")
 plot(chm2, main = "2016_PRIN_2 CHM")
 
-
-## ----mask-dsm-veg-pixels---------------------------------------------------------------------------------------------
 
 # Create a mask of non-zero values in the CHM raster
 chm_mask <- chm1 != 0
@@ -183,8 +153,6 @@ print(paste("Standard Deviation of DSM Difference on Veg Pixels:", round(dsm_dif
 
 
 
-## ----masked-dsm-histogram--------------------------------------------------------------------------------------------
-
 # Calculate x-axis limits: mean ± 2 * standard deviation
 masked_xlim_lower <- dsm_diff_masked_veg_mean - 2 * dsm_diff_masked_veg_std_dev
 masked_xlim_upper <- dsm_diff_masked_veg_mean + 2 * dsm_diff_masked_veg_std_dev
@@ -194,8 +162,6 @@ hist(dsm_diff_masked_veg, breaks = 250, xlim = c(masked_xlim_lower, masked_xlim_
      main = "Histogram of Difference DSM in Vegetated Areas", xlab = "Height Difference (m)", 
      ylab = "Frequency", col = "lightblue", border = "black")
 
-
-## ----mask-dtm-veg-pixels---------------------------------------------------------------------------------------------
 
 # Apply the veg mask to the DTM difference raster
 dtm_diff_masked_veg <- mask(dtm_diff, chm_mask, maskvalue = FALSE)
@@ -209,8 +175,6 @@ print(paste("Mean DTM Difference on Veg Pixels:", round(dtm_diff_masked_veg_mean
 print(paste("Standard Deviation of DTM Difference on Veg Pixels:", round(dtm_diff_masked_veg_std_dev,3)))
 
 
-## ----masked-dtm-histogram--------------------------------------------------------------------------------------------
-
 # Calculate x-axis limits: mean ± 2 * standard deviation
 masked_xlim_lower <- dtm_diff_masked_veg_mean - 2 * dtm_diff_masked_veg_std_dev
 masked_xlim_upper <- dtm_diff_masked_veg_mean + 2 * dtm_diff_masked_veg_std_dev
@@ -220,8 +184,6 @@ hist(dtm_diff_masked_veg, breaks = 250, xlim = c(masked_xlim_lower, masked_xlim_
      main = "Histogram of Difference DTM in Vegetated Areas", xlab = "Height Difference (m)", 
      ylab = "Frequency", col = "lightblue", border = "black")
 
-
-## ----mask-dsm-ground-------------------------------------------------------------------------------------------------
 
 ground_mask <- chm1 == 0
 
@@ -237,8 +199,6 @@ print(paste("Mean DSM Difference on Ground Pixels:", round(dsm_diff_masked_groun
 print(paste("Standard Deviation of DSM Difference on Ground Pixels:", round(dsm_diff_masked_ground_std_dev,3)))
 
 
-## ----dsm-diff-masked-ground-hist-------------------------------------------------------------------------------------
-
 # Calculate x-axis limits: mean ± 2 * standard deviation
 masked_xlim_lower <- dsm_diff_masked_ground_mean - 2 * dsm_diff_masked_ground_std_dev
 masked_xlim_upper <- dsm_diff_masked_ground_mean + 2 * dsm_diff_masked_ground_std_dev
@@ -247,4 +207,3 @@ masked_xlim_upper <- dsm_diff_masked_ground_mean + 2 * dsm_diff_masked_ground_st
 hist(dsm_diff_masked_ground, breaks = 500, xlim = c(masked_xlim_lower, masked_xlim_upper), 
      main = "Histogram of Difference DTM over Ground Pixels", xlab = "Height Difference (m)", 
      ylab = "Frequency", col = "lightblue", border = "black")
-

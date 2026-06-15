@@ -10,7 +10,7 @@ packagesLibraries: terra, neonUtilities
 topics: lidar, R, raster, remote-sensing, spatial-data-gis, uncertainty
 languagesTool: R
 dataProduct: DP3.30015.001, DP3.30024.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/lidar_raster_uncertainty.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/lidar-raster-uncertainty.R
 tutorialSeries: 
 urlTitle: lidar-uncertainty-r
 ---
@@ -40,6 +40,8 @@ After completing this tutorial, you will be able to:
 You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Install R Packages
 
 * **terra:** `install.packages("terra")`
@@ -49,23 +51,13 @@ on your computer to complete this tutorial.
 
 ## Download Data
 
-Lidar raster data are downloaded using the R `neonUtilities::byTileAOP()` function in the script. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+Lidar raster data are downloaded using the R `neonUtilities::byTileAOP()` function in the script. 
 
 These remote sensing data files provide information on the vegetation at NEON's
 <a href="https://www.neonscience.org/field-sites/PRIN" target="_blank"> Pringle Creek (PRIN)</a> site in Texas.
 The complete datasets can be downloaded using `neonUtilities::byFileAOP()`, or accessed from the 
 <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
-
-This tutorial is designed for you to set your working directory to the directory
-created by unzipping this file.
-
-****
-
-**Set Working Directory:** This lesson will walk you through setting the working 
-directory before downloading the datasets from neonUtilities.
-
-An overview of setting the working directory in R can be found <a href="https://www.neonscience.org/set-working-directory-r" target="_blank">here</a>.
 
 **R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce 
 skills. If available, the code for challenge solutions is found in the downloadable R 
@@ -87,7 +79,7 @@ Model (DSM), Digital Terrain Model (DTM), and Canopy Height Model (CHM).
 
 ```{r load-libraries, message=FALSE, warning=FALSE}
 
-# Load needed packages
+# Load needed packages and read in NEON API token
 library(terra)
 library(neonUtilities)
 token <- Sys.getenv("NEON_TOKEN")
@@ -95,47 +87,45 @@ token <- Sys.getenv("NEON_TOKEN")
 
 Set the working directory so you know where to download data.
 
-``` {r set-working-directory}
+``` {r set-data-dir}
 
-wd="~/data/" #This will depend on your local environment
-setwd(wd)
+data_dir="~/data/" #This will depend on your local environment
 ```
 
-We can use the `neonUtilities` function `byTileAOP` to download a single CHM, DTM, and DSM tile at PRIN. 
-The CHM is delivered under the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure (DP3.30015.001)</a> data product. Both the DTM and DSM are delivered 
+We can use the `neonUtilities` function `byTileAOP` to download a single CHM, DTM, and DSM tile at PRIN. The CHM is delivered under the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure (DP3.30015.001)</a> data product. Both the DTM and DSM are delivered 
 under the <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR (DP3.30024.001)</a> data product.
 
 You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (607000, 3696000), which will download the tile with the lower left corner (607000, 3696000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). You can set `check.size=FALSE` if you want to download without a prompt. This example will not be very large (~8MB), since it is only downloading two single-band rasters (plus some associated metadata).
 
-```{r download-chm, eval=FALSE}
+```{r download-chm, eval=TRUE}
 byTileAOP(dpID='DP3.30015.001',
           site='PRIN',
           year='2016',
           easting=607000,
           northing=3696000,
           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-          savepath = wd,
+          savepath = data_dir,
           token=token)
 ```
 
-The fileS from the two 2016 collections (2016_PRIN_1 and 2016_PRIN_2) will be downloaded into a nested 
-subdirectory under the `~/data` folder, inside a folder named `DP3.30024.001` (the Data Product ID). 
+The files from the two 2016 collections (2016_PRIN_1 and 2016_PRIN_2) will be downloaded into a nested subdirectory under the `~/data` folder, inside a folder named `DP3.30024.001` (the Data Product ID). 
+
 The files should show up in these locations:  `~/data/DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif` and `~/data/DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif`.
 
 Similarly, we can download the Digital Elevation Models (DSM and DEM) as follows:
 
-```{r download-dem, eval=FALSE}
+```{r download-dem, eval=TRUE}
 byTileAOP(dpID='DP3.30024.001',
           site='PRIN',
           year='2016',
           easting=607000,
           northing=3696000,
           check.size=FALSE, # set to TRUE if you want to confirm before downloading
-          savepath = wd,
+          savepath = data_dir,
           token=token)
 ```
 
-These files should be located in the folder:
+These files should be located in the folders:
 `~/data/DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/` and 
 `~/data/DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/`.
 
@@ -143,15 +133,15 @@ Now we can read in the files. You can move the files to a different location (eg
 
 ```{r define-lidar-paths, results="hide" }
 # Define the CHM, DSM and DTM file names, including the full path
-chm_file1 <- paste0(wd,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
-chm_file2 <- paste0(wd,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
-dsm_file1 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
-dsm_file2 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
-dtm_file1 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
-dtm_file2 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
+chm_file1 <- paste0(data_dir,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
+chm_file2 <- paste0(data_dir,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
+dsm_file1 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
+dsm_file2 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
+dtm_file1 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
+dtm_file2 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
 ```
 
-We can use terra::rast` to read in all these files. 
+We can use `terra::rast` to read in all these files. 
 
 ```{r terra-rasters}
 
@@ -186,7 +176,7 @@ plot(dtm1, main = "2016_PRIN_1 DTM")
 plot(dtm2, main = "2016_PRIN_2 DTM")
 ```
 
-Since we want to know what changed between the two days, we will difference the sets of rasters (i.e. DSM1 - DSM2)
+Since we want to know what changed between the two days, we will difference the sets of rasters (i.e. DSM1 - DSM2).
 
 
 ```{r diff-dsm }
@@ -211,7 +201,7 @@ an error below 0.15 meters! Let's take a look at a histogram of the DSM differen
 raster to see if we can get a better idea of what's going on.
 
 
-```{r dsm-diff-hist }
+```{r dsm-diff-hist}
 
 # Set options to avoid scientific notation
 options(scipen = 999)

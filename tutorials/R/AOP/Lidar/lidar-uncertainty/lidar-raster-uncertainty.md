@@ -1,5 +1,5 @@
 ---
-syncID: 6234ea3dc95549b8b29b01dd23885880
+syncID: 
 title: "Exploring Uncertainty in Lidar Raster Data using R"
 description: "Analyze the difference between lidar rasters to assess uncertainty."
 dateCreated: 2025-04-10
@@ -10,16 +10,15 @@ packagesLibraries: terra, neonUtilities
 topics: lidar, R, raster, remote-sensing, spatial-data-gis, uncertainty
 languagesTool: R
 dataProduct: DP3.30015.001, DP3.30024.001
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/lidar_raster_uncertainty.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/lidar-raster-uncertainty.R
 tutorialSeries: 
 urlTitle: lidar-uncertainty-r
 ---
 
 
-In 2016 the NEON AOP flew the PRIN site in D11 on a poor weather day to ensure coverage of the site. The following day, the weather improved and the site was flown again to collect clear-weather spectrometer data. Having collections only one day apart provides an opportunity to assess LiDAR uncertainty because we expect that nothing has changed at the site between the two collections. In this exercise we will analyze several NEON Level 3 lidar rasters to assess the uncertainty.
+In 2016 the NEON AOP flew the PRIN site in D11 on a poor weather day to ensure coverage of the site. The following day, the weather improved and the site was flown again to collect clear-weather spectrometer data. Having collections only one day apart provides an opportunity to assess lidar uncertainty because we expect that nothing has changed at the site between the two collections. In this exercise we will analyze several NEON Level 3 lidar rasters to assess the uncertainty.
 
-In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) 
-and assess the uncertainty between data collected over the same area on different days, collected a day apart.
+In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) and assess the uncertainty between data collected over the same area on different days, collected a day apart.
 
 
 <div id="ds-objectives" markdown="1">
@@ -28,7 +27,7 @@ and assess the uncertainty between data collected over the same area on differen
 
 After completing this tutorial, you will be able to:
 
-* Load several L3 lidar geotiff files
+* Download and read in several L3 lidar geotiff files
 * Difference lidar raster geotiff files
 * Create histograms raster differences (DTM and DSM)
 * Mask out vegetated areas of DSM & DTMs using the CHM
@@ -40,6 +39,8 @@ After completing this tutorial, you will be able to:
 You will need the most current version of R and, preferably, `RStudio` loaded 
 on your computer to complete this tutorial.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Install R Packages
 
 * **terra:** `install.packages("terra")`
@@ -49,24 +50,14 @@ on your computer to complete this tutorial.
 
 ## Download Data
 
-Lidar raster data are downloaded using the R `neonUtilities::byTileAOP` function in the script.
+Lidar raster data are downloaded using the R `neonUtilities::byTileAOP()` function in the script. 
 
 These remote sensing data files provide information on the vegetation at NEON's
 <a href="https://www.neonscience.org/field-sites/PRIN" target="_blank"> Pringle Creek (PRIN)</a> site in Texas.
-The complete datasets can be downloaded using `neonUtilities::byFileAOP`, or accessed from the 
-<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
+The complete datasets can be downloaded using `neonUtilities::byFileAOP()`, or accessed from the <a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.
 
-****
 
-**Set Working Directory:** This lesson will walk you through setting the working 
-directory before downloading the datasets from neonUtilities.
-
-An overview of setting the working directory in R can be found 
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank">here.</a>
-
-**R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce 
-skills. If available, the code for challenge solutions is found in the downloadable R 
-script of the entire lesson, available in the footer of each lesson page.
+**R Script & Challenge Code:** NEON data lessons often contain challenges to reinforce skills. If available, the code for challenge solutions is found in the downloadable R script of the entire lesson, available in the footer of each lesson page.
 
 
 ***
@@ -77,67 +68,85 @@ What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
 
 </div>
 
+
 Let's get started! First, we will load the required packages. We will use the 
 `terra` R package to work with the the lidar-derived rasters: the Digital Surface 
 Model (DSM), Digital Terrain Model (DTM), and Canopy Height Model (CHM).
 
 
-    # Load needed packages
+    # Load needed packages and read in NEON API token
 
     library(terra)
 
     library(neonUtilities)
 
+    token <- Sys.getenv("NEON_TOKEN")
+
 Set the working directory so you know where to download data.
 
 
-    wd="~/data/" #This will depend on your local environment
+    data_dir="~/data/" #This will depend on your local environment
 
-    setwd(wd)
-
-We can use the `neonUtilities` function `byTileAOP` to download a single CHM, DTM, and DSM tile at PRIN. 
-The CHM is delivered under the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure (DP3.30015.001)</a> data product. Both the DTM and DSM are delivered 
+We can use the `neonUtilities` function `byTileAOP` to download a single CHM, DTM, and DSM tile at PRIN. The CHM is delivered under the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure (DP3.30015.001)</a> data product. Both the DTM and DSM are delivered 
 under the <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR (DP3.30024.001)</a> data product.
 
 You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (607000, 3696000), which will download the tile with the lower left corner (607000, 3696000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). You can set `check.size=FALSE` if you want to download without a prompt. This example will not be very large (~8MB), since it is only downloading two single-band rasters (plus some associated metadata).
 
 
     byTileAOP(dpID='DP3.30015.001',
-
               site='PRIN',
-
               year='2016',
-
               easting=607000,
-
               northing=3696000,
-
               check.size=FALSE, # set to TRUE if you want to confirm before downloading
+              savepath = data_dir,
+              token=token)
 
-              savepath = wd)
+    ## Downloading files totaling approximately 1.888932 MB
 
-The fileS from the two 2016 collections (2016_PRIN_1 and 2016_PRIN_2) will be downloaded into a nested 
-subdirectory under the `~/data` folder, inside a folder named `DP3.30024.001` (the Data Product ID). 
+    ## Downloading 2 files
+
+    ## 
+  |                                                                                                    
+  |                                                                                              |   0%
+  |                                                                                                    
+  |==============================================================================================| 100%
+
+    ## Successfully downloaded 2 files to ~/data//DP3.30015.001
+
+The files from the two 2016 collections (2016_PRIN_1 and 2016_PRIN_2) will be downloaded into a nested subdirectory under the `~/data` folder, inside a folder named `DP3.30024.001` (the Data Product ID). 
+
 The files should show up in these locations:  `~/data/DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif` and `~/data/DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif`.
 
 Similarly, we can download the Digital Elevation Models (DSM and DEM) as follows:
 
 
     byTileAOP(dpID='DP3.30024.001',
-
               site='PRIN',
-
               year='2016',
-
               easting=607000,
-
               northing=3696000,
-
               check.size=FALSE, # set to TRUE if you want to confirm before downloading
+              savepath = data_dir,
+              token=token)
 
-              savepath = wd)
+    ## Downloading files totaling approximately 11.837943 MB
 
-These files should be located in the folder:
+    ## Downloading 4 files
+
+    ## 
+  |                                                                                                    
+  |                                                                                              |   0%
+  |                                                                                                    
+  |===============================                                                               |  33%
+  |                                                                                                    
+  |===============================================================                               |  67%
+  |                                                                                                    
+  |==============================================================================================| 100%
+
+    ## Successfully downloaded 4 files to ~/data//DP3.30024.001
+
+These files should be located in the folders:
 `~/data/DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/` and 
 `~/data/DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/`.
 
@@ -146,17 +155,17 @@ Now we can read in the files. You can move the files to a different location (eg
 
     # Define the CHM, DSM and DTM file names, including the full path
 
-    chm_file1 <- paste0(wd,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
+    chm_file1 <- paste0(data_dir,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
 
-    chm_file2 <- paste0(wd,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
+    chm_file2 <- paste0(data_dir,"DP3.30015.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D11_PRIN_DP3_607000_3696000_CHM.tif")
 
-    dsm_file1 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
+    dsm_file1 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
 
-    dsm_file2 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
+    dsm_file2 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DSMGtif/NEON_D11_PRIN_DP3_607000_3696000_DSM.tif")
 
-    dtm_file1 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
+    dtm_file1 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_1/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
 
-    dtm_file2 <- paste0(wd,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
+    dtm_file2 <- paste0(data_dir,"DP3.30024.001/neon-aop-products/2016/FullSite/D11/2016_PRIN_2/L3/DiscreteLidar/DTMGtif/NEON_D11_PRIN_DP3_607000_3696000_DTM.tif")
 
 We can use `terra::rast` to read in all these files. 
 
@@ -181,12 +190,12 @@ We can use `terra::rast` to read in all these files.
 
     chm1
 
-    ## class       : SpatRaster 
-    ## dimensions  : 1000, 1000, 1  (nrow, ncol, nlyr)
+    ## class       : SpatRaster
+    ## size        : 1000, 1000, 1  (nrow, ncol, nlyr)
     ## resolution  : 1, 1  (x, y)
     ## extent      : 607000, 608000, 3696000, 3697000  (xmin, xmax, ymin, ymax)
-    ## coord. ref. : WGS 84 / UTM zone 14N (EPSG:32614) 
-    ## source      : NEON_D11_PRIN_DP3_607000_3696000_CHM.tif 
+    ## coord. ref. : WGS 84 / UTM zone 14N (EPSG:32614)
+    ## source      : NEON_D11_PRIN_DP3_607000_3696000_CHM.tif
     ## name        : NEON_D11_PRIN_DP3_607000_3696000_CHM
 
 
@@ -204,10 +213,7 @@ We can use `terra::rast` to read in all these files.
 
     plot(dsm2, main = "2016_PRIN_2 DSM")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_rasters.png" alt=" "  />
-<p class="PRIN 2016 DSM Maps"> </p>
-</div>
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/plot-dsm-1.png)
 
 
     # Reset the plotting area
@@ -222,12 +228,9 @@ We can use `terra::rast` to read in all these files.
 
     plot(dtm2, main = "2016_PRIN_2 DTM")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_rasters.png" alt=" "  />
-<p class="PRIN 2016 DTM Maps"> </p>
-</div>
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/plot-dtm-1.png)
 
-Since we want to know what changed between the two days, we will difference the sets of rasters (i.e. DSM1 - DSM2)
+Since we want to know what changed between the two days, we will difference the sets of rasters (i.e. DSM1 - DSM2).
 
 
 
@@ -273,10 +276,7 @@ raster to see if we can get a better idea of what's going on.
 
     hist(dsm_diff, breaks = 100, main = "Histogram of DSM Difference", xlab = "Height Difference (m)", ylab = "Frequency", col = "lightblue", border = "black")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_hist1.png" alt=" "  />
-<p class="PRIN 2016 DSM Differene Histogram"> </p>
-</div>
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/dsm-diff-hist-1.png)
 
 The histogram has long tails, obscuring the distribution near the center. To 
 constrain the x-limits of the histogram we will use the mean and standard 
@@ -300,11 +300,7 @@ deviations above and below the mean.
          main = "Histogram of Difference DSM", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_hist2.png" alt=" "  />
-<p class="PRIN 2016 DSM Difference Histogram, Zoomed In"> </p>
-</div>
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/dsm-diff-hist-zoomed-in-1.png)
 The histogram shows a wide variation in DSM differences, with those at the 95% 
 limit at around +/- 1.5 m. Let's take a look at the spatial distribution of the 
 errors by plotting a map of the difference between the two DSMs. Here we'll also
@@ -327,11 +323,7 @@ colorbar to 95% of the observations.
          axes = TRUE, 
          legend = TRUE)
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_map.png" alt=" "  />
-<p class="PRIN 2016 DSM Difference Map"> </p>
-</div>
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/spatial-distribution-dsm-diff-1.png)
 It looks like there is a spatial pattern in the distribution of errors. Now let's take a
 look at the statistics (mean, standard deviation), histogram and map for the difference in DTMs.
 
@@ -374,11 +366,7 @@ look at the statistics (mean, standard deviation), histogram and map for the dif
          axes = TRUE, 
          legend = TRUE)
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_diff_map.png" alt=" "  />
-<p class="PRIN 2016 DTM Difference Map"> </p>
-</div>
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/spatial-distribution-dtm-diff-1.png)
 The overall magnitude of differences are smaller than in the DSM but the same 
 spatial pattern of the error is evident.
 
@@ -397,10 +385,7 @@ Now, we'll plot the Canopy Height Model (CHM) of the same area. In the CHM, the 
 
     plot(chm2, main = "2016_PRIN_2 CHM")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_chm_rasters.png" alt=" "  />
-<p class="PRIN 2016 DTM Difference Map"> </p>
-</div>
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/plot-chm-1.png)
 
 From the CHM, it appears the spatial distribution of error patterns follow the location of vegetation.
 
@@ -452,11 +437,7 @@ Now let's isolate only the pixels in the difference DSM that correspond to veget
          main = "Histogram of Difference DSM in Vegetated Areas", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dsm_diff_veg_hist.png" alt=" "  />
-<p class="PRIN 2016 DSM Difference Histogram, Masked by Vegetation Pixels"> </p>
-</div>
-
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/masked-dsm-histogram-1.png)
 The results show a similar mean difference of near zero, but an extremely high standard deviation of 1.381 m! Since the DSM represents the top of the tree canopy, this provides the level of uncertainty we can expect in the canopy height in forests characteristic of the PRIN site using NEON lidar data.
 
 Next we'll calculate the statistics and plot the histogram of the DTM vegetated areas.
@@ -503,10 +484,7 @@ DSM variation (0.163 m). Let's look at the histogram.
          main = "Histogram of Difference DTM in Vegetated Areas", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_diff_veg_hist.png" alt=" "  />
-<p class="PRIN 2016 DTM Difference Histogram, Masked by Vegetation Pixels"> </p>
-</div>
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/masked-dtm-histogram-1.png)
 
 Although the variation of the DTM is lower than in the DSM, it is still larger 
 than expected for lidar. This is because under vegetation there may not be much 
@@ -563,10 +541,7 @@ Finally, let's look at the DTM difference on only the ground points (where CHM =
          main = "Histogram of Difference DTM over Ground Pixels", xlab = "Height Difference (m)", 
          ylab = "Frequency", col = "lightblue", border = "black")
 
-<div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/aop-r/lidar-uncertainty/prin_dtm_diff_ground_hist.png" alt=" "  />
-<p class="PRIN 2016 DTM Difference Histogram, Masked by Ground Pixels"> </p>
-</div>
+![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/lidar-uncertainty/rfigs/dsm-diff-masked-ground-hist-1.png)
 
 In the open ground scenario we are able to see the error characteristics we expect, 
 with a mean difference of ~ 0 m and a variation of 0.21 m.
