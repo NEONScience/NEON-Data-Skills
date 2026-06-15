@@ -1,17 +1,17 @@
 ---
 syncID: db9715ca243944fabbe81031f2ed5cec
 title: "Select pixels and compare spectral signatures in R"
-code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/Select-Pixels-Compare-Spectral-Signatures.R
+code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Compare-Spectral-Signatures/compare-spectral-sigs.R
 contributors: Megan Jones, Felipe Sanchez
 dateCreated: 2020-02-18
 description: Plot and comapre the spectral signatures of multiple different land cover types using an interactive click-to-extract interface to select pixels.
 estimatedTime: 0.5 - 1 Hours
 languagesTool: R
-dataProudct: DP3.30006.001
+dataProudct: DP3.30006.001, DP3.30006.002
 packagesLibraries: rhdf5, terra, plyr, reshape2, ggplot2, neonUtilities
 authors: Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
-tutorialSeries: null
+tutorialSeries: introduction-hyperspectral-remote-sensing-data-r
 urlTitle: select-pixels-compare-spectral-signatures-r
 ---
 
@@ -62,7 +62,7 @@ These hyperspectral remote sensing data provide information on the <a href="http
 
 ### Recommended Skills
 
-This tutorial will require that you be comfortable navigating HDF5 files, and have an understanding of what spectral signatures are. For additional information on these topics, we highly recommend you work through the earlier tutorials in this <a href="https://neonscience.org/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a> before starting on this tutorial.
+This tutorial will require that you be comfortable navigating HDF5 files, and have an understanding of what spectral signatures are. For additional information on these topics, we highly recommend you work through the earlier tutorials in this <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-r" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a> before starting on this tutorial.
 
 </div>
 

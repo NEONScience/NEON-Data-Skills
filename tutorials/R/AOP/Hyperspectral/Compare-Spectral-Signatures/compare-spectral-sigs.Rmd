@@ -11,7 +11,7 @@ dataProduct: DP3.30006.001, DP3.30006.002
 packagesLibraries: rhdf5, terra, plyr, reshape2, ggplot2, neonUtilities
 authors: Donal O'Leary
 topics: hyperspectral, HDF5, remote-sensing
-tutorialSeries: null
+tutorialSeries: introduction-hyperspectral-remote-sensing-data-r
 urlTitle: select-pixels-compare-spectral-signatures-r
 ---
 
@@ -57,7 +57,7 @@ These hyperspectral remote sensing data provide information on the <a href="http
 
 ### Recommended Skills
 
-This tutorial will require that you be comfortable navigating HDF5 files, and have an understanding of what spectral signatures are. For additional information on these topics, we highly recommend you work through the earlier tutorials in this <a href="https://neonscience.org/intro-hsi-r-series" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data* series</a> before starting on this tutorial.
+This tutorial will require that you be comfortable navigating HDF5 files, and have an understanding of what spectral signatures are. For additional information on these topics, we highly recommend you work through the earlier tutorials in this <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-r" target="_blank"> *Introduction to Hyperspectral Remote Sensing Data in R* series</a> before starting on this tutorial.
 
 </div>
 
