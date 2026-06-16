@@ -6,31 +6,34 @@ dateCreated: 2017-06-21
 authors: Tristan Goulden
 contributors: Donal O'Leary, Bridget Hass
 estimatedTime: 1 hour
-packagesLibraries: os, sys, numpy, matplotlib, gdal, scipy, scikit-learn, scikit-image
-topics: lidar, remote-sensing
-languagesTool: python
+packagesLibraries: gdal, neonutilities, python-dotenv, scipy, scikit-learn, scikit-image
+topics: lidar, remote-sensing, biomass
+languagesTool: Python
 dataProduct: DP1.10098.001, DP3.30015.001 
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py.ipynb
-tutorialSeries: intro-lidar-py-series
+tutorialSeries:
 urlTitle: calc-biomass-py
 ---
 
 <div id="ds-objectives" markdown="1">
 
-In this tutorial, we will calculate the biomass for a section of the SJER site. We 
-will be using the Canopy Height Model discrete LiDAR data product as well as NEON
-field data on vegetation data. This tutorial will calculate Biomass for individual 
-trees in the forest. 
+In this tutorial, we will calculate the biomass for a section of the SJER site. We will be using the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem structure</a>, or Canopy Height Model (CHM), derived from discrete lidar, as well as training data derived from NEON <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Vegetation structure</a> data. This tutorial will calculate Biomass for individual trees in the forest. 
 
-### Objectives
+### Learning Objectives
 After completing this tutorial, you will be able to:
 
-* Learn how to apply a Gaussian smoothing kernel for high-frequency spatial filtering
+* Learn how to apply a guassian smoothing kernel for high-frequency spatial filtering
 * Apply a watershed segmentation algorithm for delineating tree crowns
 * Calculate biomass predictor variables from a CHM
-* Set up training data for biomass predictions
-* Apply a Random Forest machine learning model to calculate biomass
+* Setup training data for Biomass predictions
+* Apply a Random Forest machine learning approach to calculate biomass
 
+### Things You’ll Need To Complete This Tutorial
+
+To complete this tutorial, you will need: 
+* Python version 3.9 or higher
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### Install Python Packages
 
@@ -38,6 +41,8 @@ After completing this tutorial, you will be able to:
 * **scipy** 
 * **scikit-learn**
 * **scikit-image**
+* **neonutilities**
+* **python-dotenv**
 
 The following packages should be part of the standard conda installation:
 * **os**
@@ -45,44 +50,40 @@ The following packages should be part of the standard conda installation:
 * **numpy**
 * **matplotlib**
 
-
 ### Download Data
 
-If you have already downloaded the data set for the Data Institute, you have the 
-data for this tutorial within the SJER directory. If you would like to just 
-download the data for this tutorial use the following links. 
+The Canopy Height Model data will be downloaded programmatically at the start of the script. Download the training data by clicking on the link below.
 
-**Download the Training Data:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/SJER_Biomass_Training.csv" class="link--button link--arrow">SJER_Biomass_Training.csv</a>
-
-**Download the SJER Canopy Height Model Tile:** <a href="https://storage.googleapis.com/neon-aop-products/2018/FullSite/D17/2018_SJER_3/L3/DiscreteLidar/CanopyHeightModelGtif/NEON_D17_SJER_DP3_256000_4106000_CHM.tif" class="link--button link--arrow">NEON_D17_SJER_DP3_256000_4106000_CHM.tif</a>
+**Download the Training Data:** <a href="./calc-biomass_py_files/SJER_Biomass_Training.csv" download="SJER_Biomass_Training.csv">SJER_Biomass_Training.csv</a> and save it in your working directory.
 
 </div>
 
-In this tutorial, we will calculate the biomass for a section of the SJER site. We will be using the Canopy Height Model discrete LiDAR data product as well as NEON field data on vegetation data. This tutorial will calculate biomass for individual 
-trees in the forest. 
+In this tutorial, we will calculate the biomass for a section of the SJER site. We will be using the Canopy Height Model discrete LiDAR data product as well as NEON field data on vegetation data. This tutorial will calculate biomass for individual trees in the forest. 
 
-The calculation of biomass consists of four primary steps:
+Calculating biomass using this method consists of four primary steps:
 
-1. Delineate individual tree crowns
+1. Delineate individual tree crowns using watershed segmentation
 2. Calculate predictor variables for all individual trees
 3. Collect training data
 4. Apply a Random Forest regression model to estimate biomass from the predictor variables
 
-In this tutorial we will use a watershed segmentation algorithm for delineating tree crowns (step 1) and and a Random Forest (RF) machine learning algorithm for relating the predictor variables to biomass (part 4). The predictor variables were 
-selected following suggestions by Gleason et al. (2012) and biomass estimates were determined from DBH (diameter at breast height) measurements following relationships given in Jenkins et al. (2003). 
+In this tutorial we use a Random Forest (RF) machine learning algorithm for relating the predictor variables to biomass (part 4). The predictor variables were selected following suggestions by Gleason et al. (2012) and biomass estimates were determined from the stem diameter measurements (diameter at breast height, or DBH) from NEON's vegetation structure data product, following relationships given in Jenkins et al. (2003). 
 
 ## Get Started
 
-First, we will import some Python packages required to run various parts of the script:
+First, import the Python packages required to run various parts of the script:
 
 
 ```python
-import os, sys
-import gdal, osr
-import numpy as np
+import os, sys, dotenv
+from osgeo import gdal, osr
 import matplotlib.pyplot as plt
+import neonutilities as nu
+import numpy as np
+import pandas as pd
+import rasterio as rio
+from rasterio.plot import show, show_hist
 from scipy import ndimage as ndi
-%matplotlib inline 
 ```
 
 Next, we will add libraries from scikit-learn which will help with the watershed delination, determination of predictor variables and random forest algorithm
@@ -90,7 +91,7 @@ Next, we will add libraries from scikit-learn which will help with the watershed
 
 ```python
 #Import biomass specific libraries
-from skimage.morphology import watershed
+from skimage.segmentation import watershed
 from skimage.feature import peak_local_max
 from skimage.measure import regionprops
 from sklearn.ensemble import RandomForestRegressor
@@ -100,107 +101,12 @@ We also need to specify the directory where we will find and save the data neede
 
 
 ```python
-data_path = os.path.abspath(os.path.join(os.sep,'neon_biomass_tutorial','data'))
-data_path
+data_path = "C:\data"
 ```
-
-
-
-
-    'D:\\neon_biomass_tutorial\\data'
-
-
 
 ## Define functions 
 
-Now we will define a few functions that allow us to more easily work with the NEON data. 
-
-* `plot_band_array`: function to plot NEON geospatial raster data
-
-
-```python
-#Define a function to plot a raster band
-def plot_band_array(band_array,image_extent,title,cmap_title,colormap,colormap_limits):
-    plt.imshow(band_array,extent=image_extent)
-    cbar = plt.colorbar(); plt.set_cmap(colormap); plt.clim(colormap_limits)
-    cbar.set_label(cmap_title,rotation=270,labelpad=20)
-    plt.title(title); ax = plt.gca()
-    ax.ticklabel_format(useOffset=False, style='plain') 
-    rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90)
-```
-
-* `array2raster`: function to convert a numpy array to a geotiff file
-
-
-```python
-def array2raster(newRasterfn,rasterOrigin,pixelWidth,pixelHeight,array,epsg):
-
-    cols = array.shape[1]
-    rows = array.shape[0]
-    originX = rasterOrigin[0]
-    originY = rasterOrigin[1]
-
-    driver = gdal.GetDriverByName('GTiff')
-    outRaster = driver.Create(newRasterfn, cols, rows, 1, gdal.GDT_Float32)
-    outRaster.SetGeoTransform((originX, pixelWidth, 0, originY, 0, pixelHeight))
-    outband = outRaster.GetRasterBand(1)
-    outband.WriteArray(array)
-    outRasterSRS = osr.SpatialReference()
-    outRasterSRS.ImportFromEPSG(epsg)
-    outRaster.SetProjection(outRasterSRS.ExportToWkt())
-    outband.FlushCache()
-```
-
-* `raster2array`: function to conver rasters to an array
-
-
-```python
-def raster2array(geotif_file):
-    metadata = {}
-    dataset = gdal.Open(geotif_file)
-    metadata['array_rows'] = dataset.RasterYSize
-    metadata['array_cols'] = dataset.RasterXSize
-    metadata['bands'] = dataset.RasterCount
-    metadata['driver'] = dataset.GetDriver().LongName
-    metadata['projection'] = dataset.GetProjection()
-    metadata['geotransform'] = dataset.GetGeoTransform()
-
-    mapinfo = dataset.GetGeoTransform()
-    metadata['pixelWidth'] = mapinfo[1]
-    metadata['pixelHeight'] = mapinfo[5]
-
-    metadata['ext_dict'] = {}
-    metadata['ext_dict']['xMin'] = mapinfo[0]
-    metadata['ext_dict']['xMax'] = mapinfo[0] + dataset.RasterXSize/mapinfo[1]
-    metadata['ext_dict']['yMin'] = mapinfo[3] + dataset.RasterYSize/mapinfo[5]
-    metadata['ext_dict']['yMax'] = mapinfo[3]
-
-    metadata['extent'] = (metadata['ext_dict']['xMin'],metadata['ext_dict']['xMax'],
-                          metadata['ext_dict']['yMin'],metadata['ext_dict']['yMax'])
-
-    if metadata['bands'] == 1:
-        raster = dataset.GetRasterBand(1)
-        metadata['noDataValue'] = raster.GetNoDataValue()
-        metadata['scaleFactor'] = raster.GetScale()
-
-        # band statistics
-        metadata['bandstats'] = {} # make a nested dictionary to store band stats in same 
-        stats = raster.GetStatistics(True,True)
-        metadata['bandstats']['min'] = round(stats[0],2)
-        metadata['bandstats']['max'] = round(stats[1],2)
-        metadata['bandstats']['mean'] = round(stats[2],2)
-        metadata['bandstats']['stdev'] = round(stats[3],2)
-
-        array = dataset.GetRasterBand(1).ReadAsArray(0,0,
-                                                     metadata['array_cols'],
-                                                     metadata['array_rows']).astype(np.float)
-        array[array==int(metadata['noDataValue'])]=np.nan
-        array = array/metadata['scaleFactor']
-        return array, metadata
-
-    else:
-        print('More than one band ... function only set up for single band data')
-```
+Now we will define a few functions that allow us to pull metrics from the CHM data and get predictor variables.
 
 * `crown_geometric_volume_pct`: function to get the tree height and crown volume percentiles
 
@@ -213,7 +119,7 @@ def crown_geometric_volume_pct(tree_data,min_tree_height,pct):
     return crown_geometric_volume_pct, p
 ```
 
-* `get_predictors`: function to get the predictor variables from the biomass data
+* `get_predictors`: function to get the predictor variables from the CHM data
 
 
 ```python
@@ -228,7 +134,7 @@ def get_predictors(tree,chm_array, labels):
     crown70, p70 = crown_geometric_volume_pct(tree_crown_heights,tree.min_intensity,70)
         
     return [tree.label,
-            np.float(tree.area),
+            float(tree.area),
             tree.major_axis_length,
             tree.max_intensity,
             tree.min_intensity, 
@@ -237,62 +143,105 @@ def get_predictors(tree,chm_array, labels):
             crown50, crown60, crown70]
 ```
 
-## Canopy Height Data
+* `output_raster`: function to write out intermediate rasters and the final biomass raster
+
+
+```python
+def output_raster(output_path, array, profile, dtype="float32", nodata=None):
+    out_profile = profile.copy()
+    out_profile.update(driver="GTiff", count=1, dtype=dtype, nodata=nodata)
+    
+    with rio.open(output_path, "w", **out_profile) as dst:
+        dst.write(np.asarray(array, dtype=dtype), 1)
+```
+
+## Download CHM Data
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've set up your token as an environment variable, you can load it using  the `python-dotenv` package as follows, optionally specifying the path to the `.env` file in `load_dotenv()`.
+
+
+```python
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
+```
+
+
+```python
+# download the CHM data to the C:/data directory - change this if desired
+nu.by_tile_aop(dpid='DP3.30015.001',
+               site='SJER',
+               year=2018,
+               easting=256000,
+               northing=4106000,
+               token=token,
+               savepath=r'C:\data')
+```
+
+    Provisional NEON data are not included. To download provisional data, use input parameter include_provisional=True.
+    
+
+    Continuing will download 2 NEON data files totaling approximately 551.9 KB. Do you want to proceed? (y/n)  y
+    
+
+    Downloading 2 NEON data files totaling approximately 551.9 KB
+    
+    100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<00:00,  2.64it/s]
+        
+
+
+```python
+chm_dir = os.path.expanduser(r"C:\data\DP3.30015.001\neon-aop-products\2018")
+
+for root, dirs, files in os.walk(chm_dir):
+    for file in files:
+        if file.endswith('.tif'):
+            chm_file = os.path.join(root, file)
+            print(chm_file)
+```
+
+    C:\data\DP3.30015.001\neon-aop-products\2018\FullSite\D17\2018_SJER_3\L3\DiscreteLidar\CanopyHeightModelGtif\NEON_D17_SJER_DP3_256000_4106000_CHM.tif
+    
+
+## Plot CHM Data
 
 With everything set up, we can now start working with our data by define the file path to our CHM file. Note that you will need to change this and subsequent filepaths according to your local machine.
 
-
-```python
-chm_file = os.path.join(data_path,'NEON_D17_SJER_DP3_256000_4106000_CHM.tif')
-chm_file
-```
-
-
-
-
-    'D:\\neon_biomass_tutorial\\data\\NEON_D17_SJER_DP3_256000_4106000_CHM.tif'
-
-
-
 When we output the results, we will want to include the same file information as the input, so we will gather the file name information. 
 
+Now we will read in the CHM data using `rasterio` ...
+
 
 ```python
-#Get info from chm file for outputting results
-chm_name = os.path.basename(chm_file)
+chm_dataset = rio.open(chm_file)
 ```
 
-Now we will get the CHM data...
+..., and plot it.
 
 
 ```python
-chm_array, chm_array_metadata = raster2array(chm_file)
-```
-
-..., plot it, and save the figure.
-
-
-```python
-#Plot the original CHM
-plt.figure(1)
-
-#Plot the CHM figure
-plot_band_array(chm_array,chm_array_metadata['extent'],
-                'Canopy Height Model',
-                'Canopy Height (m)',
-                'Greens',[0, 9])
-plt.savefig(os.path.join(data_path,chm_name.replace('.tif','.png')),dpi=300,orientation='landscape',
-            bbox_inches='tight',
-            pad_inches=0.1)
+show(chm_dataset);
 ```
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_25_0.png)
+![png](pyfigs/output_24_0.png)
     
-
 
 It looks like SJER primarily has low vegetation with scattered taller trees. 
+
+Read in the CHM as an array, as well as other relevant info we'll use later on:
+
+
+```python
+with rio.open(chm_file) as src:
+    # Read CHM values and keep ground/no-data as 0 for downstream segmentation steps
+    chm_array = src.read(1, masked=True).filled(0).astype(np.float32)
+    chm_profile = src.profile.copy()
+    chm_bounds = src.bounds
+    extent = (chm_bounds.left, chm_bounds.right, chm_bounds.bottom, chm_bounds.top)
+    chm_name = os.path.basename(chm_file)
+```
+
 
 ## Create Filtered CHM
 
@@ -313,11 +262,16 @@ Now save a copy of filtered CHM. We will later use this in our code, so we'll ou
 
 
 ```python
-#Save the smoothed CHM
-array2raster(os.path.join(data_path,'chm_filter.tif'),
-             (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
-             1,-1,np.array(chm_array_smooth,dtype=float),32611)
+# Save the smoothed CHM using rasterio
+output_raster(
+    os.path.join(data_path, 'chm_filter.tif'),
+    chm_array_smooth,
+    chm_profile,
+    dtype="float32",
+    nodata=0
+    )
 ```
+
 
 ## Determine local maximums
 
@@ -325,8 +279,28 @@ Now we will run an algorithm to determine local maximums within the image. Setti
 
 
 ```python
-#Calculate local maximum points in the smoothed CHM
-local_maxi = peak_local_max(chm_array_smooth,indices=False, footprint=np.ones((5, 5)))
+# Calculate local maximum points for filtered and unfiltered CHM
+footprint = np.ones((5, 5), dtype=bool)
+
+# Unfiltered maxima
+local_max_coords_unfiltered = peak_local_max(
+    chm_array,
+    footprint=footprint,
+    exclude_border=False
+    )
+local_maxi_unfiltered = np.zeros_like(chm_array, dtype=bool)
+if local_max_coords_unfiltered.size > 0:
+    local_maxi_unfiltered[tuple(local_max_coords_unfiltered.T)] = True
+
+# Filtered maxima (used downstream for segmentation)
+local_max_coords = peak_local_max(
+    chm_array_smooth,
+    footprint=footprint,
+    exclude_border=False
+    )
+local_maxi = np.zeros_like(chm_array_smooth, dtype=bool)
+if local_max_coords.size > 0:
+    local_maxi[tuple(local_max_coords.T)] = True
 ```
 
 Our new object `local_maxi` is an array of boolean values where each pixel is identified as either being the local maximum (`True`) or not being the local maximum (`False`). 
@@ -340,16 +314,17 @@ local_maxi
 
 
     array([[False, False, False, ..., False, False, False],
-           [False, False, False, ..., False, False, False],
+           [False, False,  True, ..., False, False, False],
            [False, False, False, ..., False, False, False],
            ...,
            [False, False, False, ..., False, False, False],
            [False, False, False, ..., False, False, False],
-           [False, False, False, ..., False, False, False]])
+           [False, False, False, ..., False, False, False]],
+          shape=(1000, 1000))
 
 
 
-This is helpful, but it can be difficult to visualize boolean values using our typical numeric plotting procedures as defined in the `plot_band_array` function above. Therefore, we will need to convert this boolean array to an numeric format to use this function. Booleans convert easily to integers with values of `False=0` and `True=1` using the `.astype(int)` method.
+This is helpful, but it can be difficult to visualize boolean values. We can convert this boolean array to an numeric format to use this function. Booleans convert easily to integers with values of `False=0` and `True=1` using the `.astype(int)` method.
 
 
 ```python
@@ -360,12 +335,12 @@ local_maxi.astype(int)
 
 
     array([[0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0],
+           [0, 0, 1, ..., 0, 0, 0],
            [0, 0, 0, ..., 0, 0, 0],
            ...,
            [0, 0, 0, ..., 0, 0, 0],
            [0, 0, 0, ..., 0, 0, 0],
-           [0, 0, 0, ..., 0, 0, 0]])
+           [0, 0, 0, ..., 0, 0, 0]], shape=(1000, 1000))
 
 
 
@@ -375,41 +350,107 @@ We will save the graphics (.png) in an outputs folder sister to our working dire
 
 
 ```python
-#Plot the local maximums
+# Plot the local maximums
 plt.figure(2)
-plot_band_array(local_maxi.astype(int),chm_array_metadata['extent'],
-                'Maximum',
-                'Maxi',
-                'Greys',
-                [0, 1])
+plt.imshow(local_maxi.astype(int), cmap='Greys', extent=extent, origin='upper', vmin=0, vmax=1)
+plt.title('Local Maxima')
+plt.xlabel('Maxi')
+plt.colorbar(label='Maxi')
 
 plt.savefig(data_path+chm_name[0:-4]+ '_Maximums.png',
             dpi=300,orientation='landscape',
             bbox_inches='tight',pad_inches=0.1)
 
-array2raster(data_path+'maximum.tif',
-             (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
-             1,-1,np.array(local_maxi,dtype=np.float32),32611)
+output_raster(
+    os.path.join(data_path, 'maximum.tif'),
+    local_maxi.astype(np.uint8),
+    chm_profile,
+    dtype="uint8",
+    nodata=0
+    )
+```
+
+    
+![png](pyfigs/output_38_1.png)
+    
+
+
+Looking at the overlap between the tree crowns and the local maxima from each method, you can see that filtering improves the results.
+
+
+```python
+# Zoomed CHM section with unfiltered vs filtered local maxima overlay
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+n_rows, n_cols = chm_array_smooth.shape
+
+# Define a small window around the center of the tile
+win_rows = min(250, n_rows)
+win_cols = min(250, n_cols)
+r0 = max(0, (n_rows // 2) - (win_rows // 2))
+c0 = max(0, (n_cols // 2) - (win_cols // 2))
+r1 = min(n_rows, r0 + win_rows)
+c1 = min(n_cols, c0 + win_cols)
+
+chm_zoom = chm_array_smooth[r0:r1, c0:c1]
+local_zoom_filtered = local_maxi[r0:r1, c0:c1]
+local_zoom_unfiltered = local_maxi_unfiltered[r0:r1, c0:c1]
+
+# Use rasterio transform to get the true map extent for this zoom window
+transform = chm_profile["transform"]
+left, top = rio.transform.xy(transform, r0, c0, offset='ul')
+right, bottom = rio.transform.xy(transform, r1 - 1, c1 - 1, offset='lr')
+zoom_extent = (left, right, bottom, top)
+
+# Convert local maxima row/col indices to map x/y for plotting
+peak_rows_filtered, peak_cols_filtered = np.where(local_zoom_filtered)
+peak_x_filtered, peak_y_filtered = rio.transform.xy(
+    transform,
+    peak_rows_filtered + r0,
+    peak_cols_filtered + c0,
+    offset='center'
+    )
+
+peak_rows_unfiltered, peak_cols_unfiltered = np.where(local_zoom_unfiltered)
+peak_x_unfiltered, peak_y_unfiltered = rio.transform.xy(
+    transform,
+    peak_rows_unfiltered + r0,
+    peak_cols_unfiltered + c0,
+    offset='center'
+    )
+
+fig, ax = plt.subplots(figsize=(8, 8))
+im = ax.imshow(chm_zoom, cmap='terrain', extent=zoom_extent, origin='upper')
+
+if len(peak_x_unfiltered) > 0:
+    ax.scatter(
+        peak_x_unfiltered, peak_y_unfiltered, s=18, marker='x', c='yellow',
+        linewidths=0.7, label='Unfiltered maxima'
+        )
+if len(peak_x_filtered) > 0:
+    ax.scatter(
+        peak_x_filtered, peak_y_filtered, s=14, c='red', edgecolors='black',
+        linewidths=0.3, label='Filtered maxima'
+        )
+
+ax.set_title('Zoomed CHM: Unfiltered vs Filtered Local Maxima')
+ax.set_xlabel('Easting (m)')
+ax.set_ylabel('Northing (m)')
+ax.legend(loc='upper right')
+
+# Create a colorbar axis matched to the plot's y-axis height
+divider = make_axes_locatable(ax)
+cax = divider.append_axes('right', size='4%', pad=0.08)
+fig.colorbar(im, cax=cax, label='Canopy height (m)')
+
+plt.tight_layout()
 ```
 
 
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_37_0.png)
+![png](pyfigs/output_40_0.png)
     
 
-
-If we were to look at the overlap between the tree crowns and the local maxima from each method, it would appear a bit like this raster. 
-
- <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg" >
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-filter-vs-nonfilter.jpg" width="70%"/></a>
-	<figcaption> The difference in finding local maximums for a filtered vs. un-filtered CHM. 
-	Source: National Ecological Observatory Network (NEON) 
-	</figcaption>
-</figure>
-
-
-Apply labels to all of the local maximum points
 
 
 ```python
@@ -417,7 +458,7 @@ Apply labels to all of the local maximum points
 markers = ndi.label(local_maxi)[0]
 ```
 
-Next we will create a mask layer of all of the vegetation points so that the watershed segmentation will only occur on the trees and not extend into the surrounding ground points. Since 0 represent ground points in the CHM, setting the mask to 1 where the CHM is not zero will define the mask
+Next, create a mask layer of all of the vegetation points so that the watershed segmentation will only occur on the trees and not extend into the surrounding ground points. Since 0 represent ground points in the CHM, setting the mask to 1 where the CHM is not zero will define the mask
 
 
 ```python
@@ -430,19 +471,46 @@ chm_mask[chm_array_smooth != 0] = 1
 
 As in a river system, a watershed is divided by a ridge that divides areas. Here our watershed are the individual tree canopies and the ridge is the delineation between each one. 
 
-<figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/raster-classification-watershed-segments.png" width="70%"></a>
-	<figcaption> A raster classified based on watershed segmentation. 
-	Source: National Ecological Observatory Network (NEON) 
-	</figcaption>
-</figure>
+See <a href="https://vincmazet.github.io/bip/segmentation/watershed.html" target="_blank">Basics of Image Processing - Watershed Segmentation</a> for more information on this algorithm.
 
-Next, we will perform the watershed segmentation which produces a raster of labels.
+Next, carry out the watershed segmentation. This produces a raster of labels. First, we'll visualize the steps of the watershed segmentation process.
 
 
 ```python
-#Perform watershed segmentation        
+# Create a visualization showing the watershed segmentation process
+fig, axes = plt.subplots(1, 2, figsize=(15, 5))
+
+# Panel 1: Smoothed CHM with local maxima (markers)
+im1 = axes[0].imshow(chm_array_smooth, cmap='viridis', extent=extent, origin='upper')
+axes[0].scatter(chm_bounds.left + np.where(markers)[1] * (chm_bounds.right - chm_bounds.left) / chm_array_smooth.shape[1],
+                chm_bounds.top - np.where(markers)[0] * (chm_bounds.top - chm_bounds.bottom) / chm_array_smooth.shape[0],
+                c='red', s=30, marker='x', linewidths=2, label='Tree tops (markers)')
+axes[0].set_title('Step 1: Smoothed CHM\nwith Tree Top Markers', fontsize=12, fontweight='bold')
+axes[0].set_xlabel('X coordinate')
+axes[0].set_ylabel('Y coordinate')
+axes[0].legend(loc='upper right')
+plt.colorbar(im1, ax=axes[0], label='Height (m)')
+
+# Panel 2: CHM with vegetation mask
+masked_chm = np.where(chm_mask, chm_array_smooth, np.nan)
+im2 = axes[1].imshow(masked_chm, cmap='Greens', extent=extent, origin='upper')
+axes[1].set_title('Step 2: Vegetation Mask\n(Algorithm only operates on vegetation)', fontsize=12, fontweight='bold')
+axes[1].set_xlabel('X coordinate')
+axes[1].set_ylabel('Y coordinate')
+plt.colorbar(im2, ax=axes[1], label='Height (m)');
+```
+
+
+    
+![png](pyfigs/output_45_0.png)
+    
+
+
+The visualization above shows the first two stages of watershed segmentation: 1. smoothing the CHM with detected tree top markers (red x's), and 2) the vegetation mask, showing only areas with trees included. The third and final step showing the resulting segments are shown after performing the watershed segmentation, in the next cell.
+
+
+```python
+# Perform watershed segmentation        
 labels = watershed(chm_array_smooth, markers, mask=chm_mask)
 labels_for_plot = labels.copy()
 labels_for_plot = np.array(labels_for_plot,dtype = np.float32)
@@ -452,28 +520,31 @@ max_labels = np.max(labels)
 
 
 ```python
-#Plot the segments      
-plot_band_array(labels_for_plot,chm_array_metadata['extent'],
-                'Crown Segmentation','Tree Crown Number',
-                'Spectral',[0, max_labels])
+# Plot the segments
+plt.figure(4)
+plt.imshow(labels_for_plot, cmap='Spectral', extent=extent, origin='upper', vmin=0, vmax=max_labels)
+plt.title('Crown Segmentation')
+plt.colorbar(label='Tree Crown Number')
 
 plt.savefig(data_path+chm_name[0:-4]+'_Segmentation.png',
             dpi=300,orientation='landscape',
             bbox_inches='tight',pad_inches=0.1)
 
-array2raster(data_path+'labels.tif',
-             (chm_array_metadata['ext_dict']['xMin'],
-              chm_array_metadata['ext_dict']['yMax']),
-             1,-1,np.array(labels,dtype=float),32611)
+output_raster(
+    os.path.join(data_path, 'labels.tif'),
+    labels,
+    chm_profile,
+    dtype="int32",
+    nodata=0
+    )
 ```
 
-
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_44_0.png)
+![png](pyfigs/output_48_1.png)
     
 
 
-Now we will get several properties of the individual trees will be used as predictor variables. 
+Now collect several properties of the individual trees that will be used as predictor variables. 
 
 
 ```python
@@ -481,7 +552,7 @@ Now we will get several properties of the individual trees will be used as predi
 tree_properties = regionprops(labels,chm_array)
 ```
 
-Now we will get the predictor variables to match the (soon to be loaded) training data using the `get_predictors` function defined above. The first column will be segment IDs, the rest will be the predictor variables, namely the tree label, area, major_axis_length, maximum height, minimum height, height percentiles (p50, p60, p70), and crown geometric volume percentiles (full and percentiles 50, 60, and 70).
+Now we will get the predictor variables to match the (soon to be loaded) training data using the `get_predictors` function defined above. The first column is the segment ID, and the rest are the predictor variables, namely the tree area (pixels), major_axis_length, maximum height, minimum height, height percentiles (p50, p60, p70), and crown geometric volume percentiles (full and percentiles 50, 60, and 70).
 
 
 ```python
@@ -490,26 +561,416 @@ X = predictors_chm[:,1:]
 tree_ids = predictors_chm[:,0]
 ```
 
-## Training data
 
-We now bring in the training data file which is a simple CSV file with no header. If you haven't yet downloaded this, you can scroll up to the top of the lesson and find the **Download Data** section. The first column is biomass, and the remaining columns are the same predictor variables defined above. The tree diameter and max height are defined in the NEON vegetation structure data along with the tree DBH. The field validated values are used for training, while the other were determined from the CHM and camera images by manually delineating the tree crowns and pulling out the relevant information from the CHM. 
+```python
+np.shape(predictors_chm)
+```
 
-Biomass was calculated from DBH according to the formulas in Jenkins et al. (2003). 
+
+
+
+    (2749, 12)
+
+
+
+We now read the training data directly from GitHub. The CSV contains 12 columns: `biomass` (the target variable), followed by 11 predictor variables: `area`, `major_axis_length`, `max_height`, `min_height`, `p50`, `p60`, `p70`, `full_crown`, `crown50`, `crown60`, and `crown70`. Field-validated tree diameter (DBH) values are used to compute biomass using the formulas from Jenkins et al. (2003), while the remaining predictors were derived from the CHM by manually delineating tree crowns.
 
 
 ```python
-#Get the full path + training data file
-training_data_file = os.path.join(data_path,'SJER_Biomass_Training.csv')
+# Read training data from download path
+training_data_csv = r'C:\NEON-Data-Skills\tutorials\Python\AOP\Lidar\lidar-applications\lidar-biomass\calc-biomass_py_files\SJER_Biomass_Training.csv'
 
-#Read in the training data csv file into a numpy array
-training_data = np.genfromtxt(training_data_file,delimiter=',') 
+# Alternatively, read training data directly from GitHub (raw CSV)
+# training_data_csv = ('https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/'
+#                      'main/tutorials/Python/AOP/Lidar/lidar-applications/'
+#                      'lidar-biomass/calc-biomass_py_files/SJER_Biomass_Training.csv')
 
-#Grab the biomass (Y) from the first column
-biomass = training_data[:,0]
+training_df = pd.read_csv(training_data_csv)
 
-#Grab the biomass predictors from the remaining columns
-biomass_predictors = training_data[:,1:12]
+# Build per-column rounding: 0 dp for integer columns, 1 dp for float columns
+decimals = {c: (0 if training_df[c].dtype == np.int64 else 1) for c in training_df.columns}
+
+# Preview the data
+print('Shape:', training_df.shape)
+print()
+print('First 5 rows:')
+display(training_df.head().round(decimals))
+print()
+print('Summary statistics:')
+display(training_df.describe().round(1))
+
+# Extract numpy arrays for the model
+biomass = training_df['biomass'].values
+biomass_predictors = training_df.drop(columns=['biomass']).values
 ```
+
+    Shape: (42, 12)
+    
+    First 5 rows:
+    
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>biomass</th>
+      <th>area</th>
+      <th>major_axis_length</th>
+      <th>max_height</th>
+      <th>min_height</th>
+      <th>p50</th>
+      <th>p60</th>
+      <th>p70</th>
+      <th>full_crown</th>
+      <th>crown50</th>
+      <th>crown60</th>
+      <th>crown70</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>14.2</td>
+      <td>23</td>
+      <td>5.6</td>
+      <td>9</td>
+      <td>5.4</td>
+      <td>8.2</td>
+      <td>8.4</td>
+      <td>8.5</td>
+      <td>54.1</td>
+      <td>48.7</td>
+      <td>50.5</td>
+      <td>51.5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>7643.4</td>
+      <td>47</td>
+      <td>10.9</td>
+      <td>12</td>
+      <td>6.7</td>
+      <td>10.4</td>
+      <td>10.7</td>
+      <td>10.8</td>
+      <td>159.0</td>
+      <td>146.0</td>
+      <td>151.0</td>
+      <td>154.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>889.0</td>
+      <td>16</td>
+      <td>12.4</td>
+      <td>11</td>
+      <td>7.0</td>
+      <td>9.8</td>
+      <td>10.1</td>
+      <td>10.2</td>
+      <td>39.5</td>
+      <td>34.8</td>
+      <td>37.0</td>
+      <td>37.3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>456.9</td>
+      <td>26</td>
+      <td>10.3</td>
+      <td>11</td>
+      <td>5.8</td>
+      <td>8.6</td>
+      <td>9.0</td>
+      <td>9.2</td>
+      <td>68.6</td>
+      <td>55.5</td>
+      <td>60.8</td>
+      <td>62.6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>296.7</td>
+      <td>5</td>
+      <td>11.8</td>
+      <td>11</td>
+      <td>8.3</td>
+      <td>10.6</td>
+      <td>10.7</td>
+      <td>10.8</td>
+      <td>9.4</td>
+      <td>8.4</td>
+      <td>8.6</td>
+      <td>8.7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+    
+    Summary statistics:
+    
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>biomass</th>
+      <th>area</th>
+      <th>major_axis_length</th>
+      <th>max_height</th>
+      <th>min_height</th>
+      <th>p50</th>
+      <th>p60</th>
+      <th>p70</th>
+      <th>full_crown</th>
+      <th>crown50</th>
+      <th>crown60</th>
+      <th>crown70</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+      <td>42.0</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>2644.0</td>
+      <td>33.5</td>
+      <td>8.4</td>
+      <td>9.2</td>
+      <td>5.1</td>
+      <td>7.5</td>
+      <td>7.8</td>
+      <td>8.0</td>
+      <td>99.9</td>
+      <td>85.6</td>
+      <td>90.1</td>
+      <td>93.2</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>4851.6</td>
+      <td>29.3</td>
+      <td>3.4</td>
+      <td>3.6</td>
+      <td>1.8</td>
+      <td>2.7</td>
+      <td>2.8</td>
+      <td>2.9</td>
+      <td>129.5</td>
+      <td>113.3</td>
+      <td>118.5</td>
+      <td>122.2</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>14.2</td>
+      <td>3.0</td>
+      <td>3.6</td>
+      <td>5.0</td>
+      <td>2.1</td>
+      <td>2.8</td>
+      <td>2.9</td>
+      <td>3.3</td>
+      <td>1.4</td>
+      <td>0.3</td>
+      <td>0.5</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>240.1</td>
+      <td>15.2</td>
+      <td>6.1</td>
+      <td>7.0</td>
+      <td>4.0</td>
+      <td>5.7</td>
+      <td>5.8</td>
+      <td>6.0</td>
+      <td>26.2</td>
+      <td>23.5</td>
+      <td>24.0</td>
+      <td>24.7</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>659.4</td>
+      <td>23.0</td>
+      <td>7.5</td>
+      <td>8.5</td>
+      <td>5.0</td>
+      <td>7.0</td>
+      <td>7.2</td>
+      <td>7.3</td>
+      <td>47.4</td>
+      <td>38.2</td>
+      <td>41.0</td>
+      <td>42.3</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>2791.3</td>
+      <td>41.2</td>
+      <td>10.7</td>
+      <td>11.0</td>
+      <td>5.7</td>
+      <td>8.6</td>
+      <td>9.0</td>
+      <td>9.2</td>
+      <td>88.4</td>
+      <td>72.2</td>
+      <td>78.4</td>
+      <td>82.8</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>25968.4</td>
+      <td>118.0</td>
+      <td>18.2</td>
+      <td>21.0</td>
+      <td>11.8</td>
+      <td>15.5</td>
+      <td>16.0</td>
+      <td>16.5</td>
+      <td>627.0</td>
+      <td>553.0</td>
+      <td>574.0</td>
+      <td>591.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+Let's inspect the training data by making some pairwise plots.
+
+
+```python
+# Inspect pairwise relationships among training-data columns
+column_names = training_df.columns.tolist()
+
+# Summary table
+summary = training_df.describe().round(1)
+print('Column summary (min, max, mean, std):')
+for name in column_names:
+    mn = summary.loc['min', name]
+    mx = summary.loc['max', name]
+    mu = summary.loc['mean', name]
+    sd = summary.loc['std', name]
+    print(f'{name:>16s}: min={mn:10.1f}, max={mx:10.1f}, mean={mu:10.1f}, std={sd:10.1f}')
+
+# Plot 1: correlation heatmap (all columns)
+corr = training_df.corr(numeric_only=True)
+fig, ax = plt.subplots(figsize=(10, 8))
+im = ax.imshow(corr, cmap='coolwarm', vmin=-1, vmax=1)
+ax.set_xticks(np.arange(len(corr.columns)))
+ax.set_yticks(np.arange(len(corr.columns)))
+ax.set_xticklabels(corr.columns, rotation=45, ha='right')
+ax.set_yticklabels(corr.columns)
+ax.set_title('Training Data Correlation Matrix')
+plt.colorbar(im, ax=ax, label='Pearson r')
+plt.tight_layout()
+
+# Plot 2: scatter matrix style plot (key variables)
+plot_columns = [
+    'area', 'major_axis_length', 'max_height', 'p70',
+    'full_crown', 'crown70', 'biomass'
+    ]
+plot_df = training_df[plot_columns]
+
+n = len(plot_columns)
+fig, axes = plt.subplots(n, n, figsize=(2.2 * n, 2.2 * n), squeeze=False)
+for i in range(n):
+    for j in range(n):
+        ax = axes[i, j]
+        if i == j:
+            ax.hist(plot_df.iloc[:, j], bins=20, color='gray', alpha=0.8)
+        else:
+            ax.scatter(plot_df.iloc[:, j], plot_df.iloc[:, i], s=10, alpha=0.6, color='tab:blue')
+
+        if i == n - 1:
+            ax.set_xlabel(plot_columns[j], fontsize=8, rotation=45)
+        else:
+            ax.set_xticklabels([])
+        if j == 0:
+            ax.set_ylabel(plot_columns[i], fontsize=8)
+        else:
+            ax.set_yticklabels([])
+
+fig.suptitle('Pairwise Relationships Among Key Training Variables', y=1.02)
+plt.tight_layout()
+```
+
+    Column summary (min, max, mean, std):
+             biomass: min=      14.2, max=   25968.4, mean=    2644.0, std=    4851.6
+                area: min=       3.0, max=     118.0, mean=      33.5, std=      29.3
+    major_axis_length: min=       3.6, max=      18.2, mean=       8.4, std=       3.4
+          max_height: min=       5.0, max=      21.0, mean=       9.2, std=       3.6
+          min_height: min=       2.1, max=      11.8, mean=       5.1, std=       1.8
+                 p50: min=       2.8, max=      15.5, mean=       7.5, std=       2.7
+                 p60: min=       2.9, max=      16.0, mean=       7.8, std=       2.8
+                 p70: min=       3.3, max=      16.5, mean=       8.0, std=       2.9
+          full_crown: min=       1.4, max=     627.0, mean=      99.9, std=     129.5
+             crown50: min=       0.3, max=     553.0, mean=      85.6, std=     113.3
+             crown60: min=       0.5, max=     574.0, mean=      90.1, std=     118.5
+             crown70: min=       0.8, max=     591.0, mean=      93.2, std=     122.2
+    
+
+
+    
+![png](pyfigs/output_57_1.png)
+    
+
+
+
+    
+![png](pyfigs/output_57_2.png)
+    
+
 
 ## Random Forest classifiers
 
@@ -530,13 +991,716 @@ regr_rf.fit(biomass_predictors,biomass)
 
 
 
-    RandomForestRegressor(bootstrap=True, ccp_alpha=0.0, criterion='mse',
-                          max_depth=30, max_features='auto', max_leaf_nodes=None,
-                          max_samples=None, min_impurity_decrease=0.0,
-                          min_impurity_split=None, min_samples_leaf=1,
-                          min_samples_split=2, min_weight_fraction_leaf=0.0,
-                          n_estimators=100, n_jobs=None, oob_score=False,
-                          random_state=2, verbose=0, warm_start=False)
+<style>#sk-container-id-1 {
+  /* Definition of color scheme common for light and dark mode */
+  --sklearn-color-text: #000;
+  --sklearn-color-text-muted: #666;
+  --sklearn-color-line: gray;
+  /* Definition of color scheme for unfitted estimators */
+  --sklearn-color-unfitted-level-0: #fff5e6;
+  --sklearn-color-unfitted-level-1: #f6e4d2;
+  --sklearn-color-unfitted-level-2: #ffe0b3;
+  --sklearn-color-unfitted-level-3: chocolate;
+  /* Definition of color scheme for fitted estimators */
+  --sklearn-color-fitted-level-0: #f0f8ff;
+  --sklearn-color-fitted-level-1: #d4ebff;
+  --sklearn-color-fitted-level-2: #b3dbfd;
+  --sklearn-color-fitted-level-3: cornflowerblue;
+
+  /* Specific color for light theme */
+  --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, white)));
+  --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, black)));
+  --sklearn-color-icon: #696969;
+
+  @media (prefers-color-scheme: dark) {
+    /* Redefinition of color scheme for dark theme */
+    --sklearn-color-text-on-default-background: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-background: var(--sg-background-color, var(--theme-background, var(--jp-layout-color0, #111)));
+    --sklearn-color-border-box: var(--sg-text-color, var(--theme-code-foreground, var(--jp-content-font-color1, white)));
+    --sklearn-color-icon: #878787;
+  }
+}
+
+#sk-container-id-1 {
+  color: var(--sklearn-color-text);
+}
+
+#sk-container-id-1 pre {
+  padding: 0;
+}
+
+#sk-container-id-1 input.sk-hidden--visually {
+  border: 0;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+#sk-container-id-1 div.sk-dashed-wrapped {
+  border: 1px dashed var(--sklearn-color-line);
+  margin: 0 0.4em 0.5em 0.4em;
+  box-sizing: border-box;
+  padding-bottom: 0.4em;
+  background-color: var(--sklearn-color-background);
+}
+
+#sk-container-id-1 div.sk-container {
+  /* jupyter's `normalize.less` sets `[hidden] { display: none; }`
+     but bootstrap.min.css set `[hidden] { display: none !important; }`
+     so we also need the `!important` here to be able to override the
+     default hidden behavior on the sphinx rendered scikit-learn.org.
+     See: https://github.com/scikit-learn/scikit-learn/issues/21755 */
+  display: inline-block !important;
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-text-repr-fallback {
+  display: none;
+}
+
+div.sk-parallel-item,
+div.sk-serial,
+div.sk-item {
+  /* draw centered vertical line to link estimators */
+  background-image: linear-gradient(var(--sklearn-color-text-on-default-background), var(--sklearn-color-text-on-default-background));
+  background-size: 2px 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+/* Parallel-specific style estimator block */
+
+#sk-container-id-1 div.sk-parallel-item::after {
+  content: "";
+  width: 100%;
+  border-bottom: 2px solid var(--sklearn-color-text-on-default-background);
+  flex-grow: 1;
+}
+
+#sk-container-id-1 div.sk-parallel {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: var(--sklearn-color-background);
+  position: relative;
+}
+
+#sk-container-id-1 div.sk-parallel-item {
+  display: flex;
+  flex-direction: column;
+}
+
+#sk-container-id-1 div.sk-parallel-item:first-child::after {
+  align-self: flex-end;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:last-child::after {
+  align-self: flex-start;
+  width: 50%;
+}
+
+#sk-container-id-1 div.sk-parallel-item:only-child::after {
+  width: 0;
+}
+
+/* Serial-specific style estimator block */
+
+#sk-container-id-1 div.sk-serial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--sklearn-color-background);
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
+
+/* Toggleable style: style used for estimator/Pipeline/ColumnTransformer box that is
+clickable and can be expanded/collapsed.
+- Pipeline and ColumnTransformer use this feature and define the default style
+- Estimators will overwrite some part of the style using the `sk-estimator` class
+*/
+
+/* Pipeline and ColumnTransformer style (default) */
+
+#sk-container-id-1 div.sk-toggleable {
+  /* Default theme specific background. It is overwritten whether we have a
+  specific estimator or a Pipeline/ColumnTransformer */
+  background-color: var(--sklearn-color-background);
+}
+
+/* Toggleable label */
+#sk-container-id-1 label.sk-toggleable__label {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.5em;
+  box-sizing: border-box;
+  text-align: center;
+  align-items: start;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+#sk-container-id-1 label.sk-toggleable__label .caption {
+  font-size: 0.6rem;
+  font-weight: lighter;
+  color: var(--sklearn-color-text-muted);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:before {
+  /* Arrow on the left of the label */
+  content: "▸";
+  float: left;
+  margin-right: 0.25em;
+  color: var(--sklearn-color-icon);
+}
+
+#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {
+  color: var(--sklearn-color-text);
+}
+
+/* Toggleable content - dropdown */
+
+#sk-container-id-1 div.sk-toggleable__content {
+  display: none;
+  text-align: left;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content pre {
+  margin: 0.2em;
+  border-radius: 0.25em;
+  color: var(--sklearn-color-text);
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-toggleable__content.fitted pre {
+  /* unfitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {
+  /* Expand drop-down */
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {
+  content: "▾";
+}
+
+/* Pipeline/ColumnTransformer-specific style */
+
+#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator-specific style */
+
+/* Colorize estimator box */
+#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted input.sk-toggleable__control:checked~label.sk-toggleable__label {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+#sk-container-id-1 div.sk-label label.sk-toggleable__label,
+#sk-container-id-1 div.sk-label label {
+  /* The background is the default theme color */
+  color: var(--sklearn-color-text-on-default-background);
+}
+
+/* On hover, darken the color of the background */
+#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+/* Label box, darken color on hover, fitted */
+#sk-container-id-1 div.sk-label.fitted:hover label.sk-toggleable__label.fitted {
+  color: var(--sklearn-color-text);
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Estimator label */
+
+#sk-container-id-1 div.sk-label label {
+  font-family: monospace;
+  font-weight: bold;
+  display: inline-block;
+  line-height: 1.2em;
+}
+
+#sk-container-id-1 div.sk-label-container {
+  text-align: center;
+}
+
+/* Estimator-specific */
+#sk-container-id-1 div.sk-estimator {
+  font-family: monospace;
+  border: 1px dotted var(--sklearn-color-border-box);
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  margin-bottom: 0.5em;
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-0);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-0);
+}
+
+/* on hover */
+#sk-container-id-1 div.sk-estimator:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-2);
+}
+
+#sk-container-id-1 div.sk-estimator.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-2);
+}
+
+/* Specification for estimator info (e.g. "i" and "?") */
+
+/* Common style for "i" and "?" */
+
+.sk-estimator-doc-link,
+a:link.sk-estimator-doc-link,
+a:visited.sk-estimator-doc-link {
+  float: right;
+  font-size: smaller;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1em;
+  height: 1em;
+  width: 1em;
+  text-decoration: none !important;
+  margin-left: 0.5em;
+  text-align: center;
+  /* unfitted */
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+  color: var(--sklearn-color-unfitted-level-1);
+}
+
+.sk-estimator-doc-link.fitted,
+a:link.sk-estimator-doc-link.fitted,
+a:visited.sk-estimator-doc-link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+div.sk-estimator:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover,
+div.sk-label-container:hover .sk-estimator-doc-link:hover,
+.sk-estimator-doc-link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+div.sk-estimator.fitted:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover,
+div.sk-label-container:hover .sk-estimator-doc-link.fitted:hover,
+.sk-estimator-doc-link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+/* Span, style for the box shown on hovering the info icon */
+.sk-estimator-doc-link span {
+  display: none;
+  z-index: 9999;
+  position: relative;
+  font-weight: normal;
+  right: .2ex;
+  padding: .5ex;
+  margin: .5ex;
+  width: min-content;
+  min-width: 20ex;
+  max-width: 50ex;
+  color: var(--sklearn-color-text);
+  box-shadow: 2pt 2pt 4pt #999;
+  /* unfitted */
+  background: var(--sklearn-color-unfitted-level-0);
+  border: .5pt solid var(--sklearn-color-unfitted-level-3);
+}
+
+.sk-estimator-doc-link.fitted span {
+  /* fitted */
+  background: var(--sklearn-color-fitted-level-0);
+  border: var(--sklearn-color-fitted-level-3);
+}
+
+.sk-estimator-doc-link:hover span {
+  display: block;
+}
+
+/* "?"-specific style due to the `<a>` HTML tag */
+
+#sk-container-id-1 a.estimator_doc_link {
+  float: right;
+  font-size: 1rem;
+  line-height: 1em;
+  font-family: monospace;
+  background-color: var(--sklearn-color-background);
+  border-radius: 1rem;
+  height: 1rem;
+  width: 1rem;
+  text-decoration: none;
+  /* unfitted */
+  color: var(--sklearn-color-unfitted-level-1);
+  border: var(--sklearn-color-unfitted-level-1) 1pt solid;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted {
+  /* fitted */
+  border: var(--sklearn-color-fitted-level-1) 1pt solid;
+  color: var(--sklearn-color-fitted-level-1);
+}
+
+/* On hover */
+#sk-container-id-1 a.estimator_doc_link:hover {
+  /* unfitted */
+  background-color: var(--sklearn-color-unfitted-level-3);
+  color: var(--sklearn-color-background);
+  text-decoration: none;
+}
+
+#sk-container-id-1 a.estimator_doc_link.fitted:hover {
+  /* fitted */
+  background-color: var(--sklearn-color-fitted-level-3);
+}
+
+.estimator-table summary {
+    padding: .5rem;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+.estimator-table details[open] {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+    padding-bottom: 0.3rem;
+}
+
+.estimator-table .parameters-table {
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.estimator-table .parameters-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.estimator-table .parameters-table tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+
+.estimator-table .parameters-table tr:hover {
+    background-color: #e0e0e0;
+}
+
+.estimator-table table td {
+    border: 1px solid rgba(106, 105, 104, 0.232);
+}
+
+.user-set td {
+    color:rgb(255, 94, 0);
+    text-align: left;
+}
+
+.user-set td.value pre {
+    color:rgb(255, 94, 0) !important;
+    background-color: transparent !important;
+}
+
+.default td {
+    color: black;
+    text-align: left;
+}
+
+.user-set td i,
+.default td i {
+    color: black;
+}
+
+.copy-paste-icon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIwOCAwTDMzMi4xIDBjMTIuNyAwIDI0LjkgNS4xIDMzLjkgMTQuMWw2Ny45IDY3LjljOSA5IDE0LjEgMjEuMiAxNC4xIDMzLjlMNDQ4IDMzNmMwIDI2LjUtMjEuNSA0OC00OCA0OGwtMTkyIDBjLTI2LjUgMC00OC0yMS41LTQ4LTQ4bDAtMjg4YzAtMjYuNSAyMS41LTQ4IDQ4LTQ4ek00OCAxMjhsODAgMCAwIDY0LTY0IDAgMCAyNTYgMTkyIDAgMC0zMiA2NCAwIDAgNDhjMCAyNi41LTIxLjUgNDgtNDggNDhMNDggNTEyYy0yNi41IDAtNDgtMjEuNS00OC00OEwwIDE3NmMwLTI2LjUgMjEuNS00OCA0OC00OHoiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-size: 14px 14px;
+    background-position: 0;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+</style><body><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>RandomForestRegressor(max_depth=30, random_state=2)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator fitted sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label fitted sk-toggleable__label-arrow"><div><div>RandomForestRegressor</div></div><div><a class="sk-estimator-doc-link fitted" rel="noreferrer" target="_blank" href="https://scikit-learn.org/1.7/modules/generated/sklearn.ensemble.RandomForestRegressor.html">?<span>Documentation for RandomForestRegressor</span></a><span class="sk-estimator-doc-link fitted">i<span>Fitted</span></span></div></label><div class="sk-toggleable__content fitted" data-param-prefix="">
+        <div class="estimator-table">
+            <details>
+                <summary>Parameters</summary>
+                <table class="parameters-table">
+                  <tbody>
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('n_estimators',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">n_estimators&nbsp;</td>
+            <td class="value">100</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('criterion',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">criterion&nbsp;</td>
+            <td class="value">&#x27;squared_error&#x27;</td>
+        </tr>
+
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('max_depth',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">max_depth&nbsp;</td>
+            <td class="value">30</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_samples_split',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_samples_split&nbsp;</td>
+            <td class="value">2</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_samples_leaf',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_samples_leaf&nbsp;</td>
+            <td class="value">1</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_weight_fraction_leaf',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_weight_fraction_leaf&nbsp;</td>
+            <td class="value">0.0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('max_features',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">max_features&nbsp;</td>
+            <td class="value">1.0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('max_leaf_nodes',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">max_leaf_nodes&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('min_impurity_decrease',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">min_impurity_decrease&nbsp;</td>
+            <td class="value">0.0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('bootstrap',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">bootstrap&nbsp;</td>
+            <td class="value">True</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('oob_score',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">oob_score&nbsp;</td>
+            <td class="value">False</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('n_jobs',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">n_jobs&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="user-set">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('random_state',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">random_state&nbsp;</td>
+            <td class="value">2</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('verbose',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">verbose&nbsp;</td>
+            <td class="value">0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('warm_start',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">warm_start&nbsp;</td>
+            <td class="value">False</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('ccp_alpha',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">ccp_alpha&nbsp;</td>
+            <td class="value">0.0</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('max_samples',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">max_samples&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+
+        <tr class="default">
+            <td><i class="copy-paste-icon"
+                 onclick="copyToClipboard('monotonic_cst',
+                          this.parentElement.nextElementSibling)"
+            ></i></td>
+            <td class="param">monotonic_cst&nbsp;</td>
+            <td class="value">None</td>
+        </tr>
+
+                  </tbody>
+                </table>
+            </details>
+        </div>
+    </div></div></div></div></div><script>function copyToClipboard(text, element) {
+    // Get the parameter prefix from the closest toggleable content
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const fullParamName = paramPrefix ? `${paramPrefix}${text}` : text;
+
+    const originalStyle = element.style;
+    const computedStyle = window.getComputedStyle(element);
+    const originalWidth = computedStyle.width;
+    const originalHTML = element.innerHTML.replace('Copied!', '');
+
+    navigator.clipboard.writeText(fullParamName)
+        .then(() => {
+            element.style.width = originalWidth;
+            element.style.color = 'green';
+            element.innerHTML = "Copied!";
+
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        })
+        .catch(err => {
+            console.error('Failed to copy:', err);
+            element.style.color = 'red';
+            element.innerHTML = "Failed!";
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style = originalStyle;
+            }, 2000);
+        });
+    return false;
+}
+
+document.querySelectorAll('.fa-regular.fa-copy').forEach(function(element) {
+    const toggleableContent = element.closest('.sk-toggleable__content');
+    const paramPrefix = toggleableContent ? toggleableContent.dataset.paramPrefix : '';
+    const paramName = element.parentElement.nextElementSibling.textContent.trim();
+    const fullParamName = paramPrefix ? `${paramPrefix}${paramName}` : paramName;
+
+    element.setAttribute('title', fullParamName);
+});
+</script></body>
 
 
 
@@ -571,14 +1735,20 @@ std_biomass = np.std(estimated_biomass)
 min_biomass = np.min(estimated_biomass)
 sum_biomass = np.sum(estimated_biomass)
 
-print('Sum of biomass is ',sum_biomass,' kg')
+print('Sum of above ground biomass (AGB) is',round(sum_biomass,1),'kg')
 
-# Plot the biomass!
+# Plot the biomass
 plt.figure(5)
-plot_band_array(biomass_map,chm_array_metadata['extent'],
-                'Biomass (kg)','Biomass (kg)',
-                'winter',
-                [min_biomass+std_biomass, mean_biomass+std_biomass*3])
+plt.imshow(
+    biomass_map,
+    cmap='winter',
+    extent=extent,
+    origin='upper',
+    vmin=min_biomass + std_biomass,
+    vmax=mean_biomass + std_biomass * 3
+    )
+plt.title('Biomass (kg)')
+plt.colorbar(label='Biomass (kg)')
 
 # Save the biomass figure; use the same name as the original file, but replace CHM with Biomass
 plt.savefig(os.path.join(data_path,chm_name.replace('CHM.tif','Biomass.png')),
@@ -586,17 +1756,18 @@ plt.savefig(os.path.join(data_path,chm_name.replace('CHM.tif','Biomass.png')),
             bbox_inches='tight',
             pad_inches=0.1)
 
-# Use the array2raster function to create a geotiff file of the Biomass
-array2raster(os.path.join(data_path,chm_name.replace('CHM.tif','Biomass.tif')),
-             (chm_array_metadata['ext_dict']['xMin'],chm_array_metadata['ext_dict']['yMax']),
-             1,-1,np.array(biomass_map,dtype=float),32611)
+# Write biomass geotiff with rasterio
+output_raster(
+    os.path.join(data_path, chm_name.replace('CHM.tif','Biomass.tif')),
+    biomass_map,
+    chm_profile,
+    dtype="float32",
+    nodata=np.nan
+    )
 ```
 
-    Sum of biomass is  7249752.02745825  kg
+    Sum of above ground biomass (AGB) is 10515682.7 kg
     
 
-
     
-![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/calc-biomass_py_files/calc-biomass_py_59_1.png)
-    
-
+![png](pyfigs/output_65_2.png)
