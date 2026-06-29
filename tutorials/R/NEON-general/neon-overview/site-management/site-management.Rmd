@@ -1,23 +1,23 @@
 ---
-syncID: 
+syncID: 5864d718d32a4b3e92c837969b65887b
 title: "Working with NEON Site Management Data"
 description: "Access, work with, and navigate data from Site management and event reporting (DP1.10111.001)."
 dateCreated: 2025-09-04
-authors: Claire K. Lunch
+authors: Rachel Swanson, Claire K. Lunch
 contributors: 
-estimatedTime: 40 minutes
-packagesLibraries: neonUtilities, geoNEON
+estimatedTime: 60 minutes
+packagesLibraries: neonUtilities, geoNEON, neonSiteMgmtEventData
 topics: 
 languageTool: R
 dataProduct: 
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/site-management/site-management.R
 tutorialSeries:
-urlTitle: site-management-tutorial
+urlTitle: site-management
 
 ---
 
 
-This tutorial will guide you through accessing, navigating, and working with the NEON data product Site management and event reporting (DP1.10111.001), including how to use code tools in the `neonUtilities` and `geoNEON` R packages designed specifically for this data product.
+This tutorial will guide you through accessing, navigating, and working with the NEON data product Site management and event reporting (DP1.10111.001), including how to use code tools in the `neonUtilities`,`geoNEON`, and `neonSiteMgmtEventData` R packages designed specifically for this data product.
 
 If you are new to using NEON data, we recommend first following the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial to get familiar with NEON data formats and the `neonUtilities` package.
 
@@ -30,6 +30,8 @@ After completing this activity, you will be able to:
  * Download site event data by site or by event type
  * Access data related to the spatial extent of an event
  * Understand the metadata associated with site events
+ * Summarize the event data by combinations of site, year, and event type
+ * Create and export polygons to represent the spatial extent of unique event types
 
 ## Things You’ll Need To Complete This Tutorial
 
@@ -42,6 +44,7 @@ versions but it hasn't been tested.
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **devtools:** `install.packages("devtools")`
 * **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
+* **neonSiteMgmtEventData:** `devtools::install_github("NEONScience/neonSiteMgmtEventData")`
 
 ## Additional Resources
 
@@ -71,22 +74,33 @@ computer.
 install.packages("neonUtilities")
 install.packages("devtools")
 devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
+devtools::install_github("NEONScience/neonSiteMgmtEventData")
 install.packages("ggplot2")
 install.packages("dplyr")
 install.packages("stringr")
 install.packages("tidyr")
 install.packages("lubridate")
 install.packages("terra")
+install.packages("sf")
+install.packages("leaflet")
+install.packages("magrittr")
+install.packages("tidyselect")
+install.packages("tibble")
 
 library(neonUtilities)
 library(geoNEON)
+library(neonSiteMgmtEventData)
 library(ggplot2)
 library(dplyr)
 library(stringr)
 library(tidyr)
 library(lubridate)
 library(terra)
-token <- Sys.getenv("NEON_TOKEN")
+library(sf)
+library(leaflet)
+library(magrittr)
+library(tidyselect)
+library(tibble)
 
 setwd("~/data")
 
@@ -96,12 +110,18 @@ setwd("~/data")
 
 library(neonUtilities)
 library(geoNEON)
+library(neonSiteMgmtEventData)
 library(ggplot2)
 library(dplyr)
 library(stringr)
 library(tidyr)
 library(lubridate)
 library(terra)
+library(sf)
+library(leaflet)
+library(magrittr)
+library(tidyselect)
+library(tibble)
 
 ```
 
@@ -119,9 +139,13 @@ events <- loadByProduct(dpID="DP1.10111.001",
 
 ```
 
-The download includes the usual metadata files associated with NEON data, and a single data table: `sim_eventData`. Let's take a look at it.
+The download includes the usual metadata files associated with NEON data, and two data tables: `sim_eventData` and `sim_locationVisitsAndAttributes`. 
 
-``` {r view-data}
+The `sim_locationVisitsAndAttributes` table provides a summary of annual visit totals, environmental context, and mitigation actions by location to support estimates of NEON sampling impact and location vulnerability. For TEAK, and all other terrestrial sites, each `namedLocation` has a record per year for the total unique visits per sampling location. Additional fields describe environmental context (slope, soilOrder, land cover type), document location-specific mitigation measures (such as boardwalks or geoblocks used to minimize trampling), and report the number of sampling events that were cancelled because the location was deemed too vulnerable. Currently, TEAK has no additional mitigation structures, and one sampling bout at TEAK_013 was cancelled in 2025 due to vulnerability. At aquatic sites the total number of visits per site per year is reported, and more specific environmental context fields are not provided. 
+
+Let's take a closer look at `sim_eventData` which documents the external disturbance events.
+
+``` {r view-data,sim_eventData }
 
 list2env(events, .GlobalEnv)
 head(sim_eventData)
@@ -131,14 +155,24 @@ head(sim_eventData)
 Let's first check out the types of events recorded.
 
 ``` {r view-types}
-
 sim_eventData |>
   select(eventType, methodTypeChoice) |>
   unique()
 
 ```
+TEAK is a managed site, so the events recorded include both acts of nature and active management by the site hosts (grazing). 
 
-SJER is a managed site, so the events recorded include both acts of nature and active management by the site hosts (grazing). There is one wildfire reported. When we look at an event like a fire, we probably want to know exactly where this happened - which NEON sampling areas were burned?
+The `neonSiteMgmtEventData` package provides a `summarizeSIM()` function that provides 3 summary tables by site; site and eventType; and site, eventType, and year.
+
+``` {r view-types, neonSiteMgmtEventData::summarizeSIM}
+summarizeSIM(df= sim_eventData)
+```
+
+The `$summary` table sums the number of records in the input dataframe and summarizes the number of individual records, unique events (since a event that is longer than one month will have multiple records), and unique event types. 
+
+Next, the `$eventTypeTable` counts the number of unique eventIDs by eventType and site. The `$yearlyEventTypeTable` includes grouping by year as well.  At TEAK, there are over 100 records but most correspond to a long term grazing event. 
+
+There is one wildfire reported. When we look at an event like a fire, we probably want to know exactly where this happened - which NEON sampling areas were burned?
 
 ## Finding the spatial extent of an event
 
@@ -165,13 +199,11 @@ Now we have a list of NEON named locations. We can see if the plot(s) we are wor
 
 But what if we're interested in a broader picture, and we want to get a sense of the overall burned area?
 
-### Stay tuned! There is an R package in the works that converts these plot locations to a shapefile
-
-Below, we'll find spatial data associated with point locations of disturbance events.
+Below, we'll find spatial data associated with point locations of disturbance events and create a polygon to export as an sf object, shapefile, or kml for Google Earth.
 
 <div id="caveat-box" markdown="1">
 
-**Caveats about locations:** 
+### Caveats about locations:
 
 NEON field staff do their best to record the extent of a disturbance in the list of locations. In the case of planned disturbances, such as controlled burns and release of animals for grazing, the site host may be able to provide a very clear assessment of the locations affected. But for unplanned events such as wildfires or bark beetle outbreaks, these data depend on staff being in the right place at the right time to observe the disturbance. At some NEON sites, sampling plots are very far apart, and if staff are on-site for a particular protocol and only sampling a subset of plots, they may not know the impact of disturbance on other plots.
 
@@ -183,7 +215,7 @@ Finally, we have limited information available about the impact of events outsid
 
 ## Downloading event data by event type
 
-In many cases, you may be interested in a particular type of disturbance across sites, rather than in various disturbances within a site. Above, we found a report of a fire at TEAK, which is in the mountains in California. In recent years, the western US has experienced a large number of fires, and many of the individual fires have been unusually large. Let's look for all the fires that have affected NEON sites in California. We can do this using the `byEventSIM()` function:
+In many cases, you may be interested in a particular type of disturbance across sites, rather than in various disturbances within a site. Above, we found a report of a fire at TEAK, which is in the mountains in California. In recent years, the western US has experienced a large number of fires, and many of the individual fires have been unusually large. Let's look for all the fires that have affected NEON sites in California. We can do this using the `neonUtilities::byEventSIM()` function:
 
 ``` {r load-CA-fires, results="hide", message=FALSE}
 
@@ -201,7 +233,13 @@ Let's start by looking at the `siteID`, `startDate`, `endDate`, and `methodTypeC
 
 fires$sim_eventData |>
   select(siteID, startDate, endDate, methodTypeChoice)
+```
 
+We can also look at summary table by year using `neonSiteMgmtEventData::summarizeSIM()`
+``` {r fire-dates, summarizeSIM}
+fireSummary <- summarizeSIM(df= fires$sim_eventData)
+
+fireSummary$yearlyEventTypeTable
 ```
 
 We know 2020 was a terrible year for wildfires in the western US, and unsurprisingly many of the records here are from 2020. But there is also one controlled burn from early 2020, as well as fires in 2021 and 2025.
@@ -283,7 +321,7 @@ for(i in 2:length(tiles2019)) {
 
 And now plot the canopy height model data, with the burned locations marked as dots. Let's plot the wildfire first, and then add the controlled burn locations.
 
-``` {r plot-2019-wf}
+``` {r plot-2019-wf, fig.width=8, fig.height=4}
 
 plot(ndvi2019)
 
@@ -295,7 +333,7 @@ points(wf.SOAP$locationID_easting,
 
 ```
 
-``` {r plot-2019-all}
+``` {r plot-2019-all, fig.width=8, fig.height=4}
 
 plot(ndvi2019)
 
@@ -311,6 +349,70 @@ points(cb.SOAP$locationID_easting,
 
 
 ```
+
+We can utilize the `neonSiteMgmtEventData` package's `createSIMPolygon()` function to create a polygon around the point locations for each event. The input to `createSIMPolygon()` is the output of `geoNEON::getLocTOS()`.
+
+``` {r plot-2019-add-polygons, fig.width=8, fig.height=4}
+
+# wildfire polygons
+wf.SOAP.df <- fire.loc |>
+  filter(siteID=="SOAP" & endDate<"2021-01-01" & 
+           eventType == "fire" & 
+           methodTypeChoice=="fire-wildfire") 
+
+wf.SOAP.polygon <- createSIMPolygon(df= wf.SOAP.df)
+
+# transform the polygon from WGS84 (standard output) to utm zone 11N 
+# to match AOP tiles.  
+# coordinate reference system (crs) EPSG values can be searched for 
+# on https://spatialreference.org/ref/epsg/
+wf.SOAP.polygon.utm <- st_transform(wf.SOAP.polygon$sfObjects[[1]], 
+                                    crs = 32611)
+
+# controlled burn polygons
+cb.SOAP.df <- fire.loc |>
+  filter(siteID=="SOAP" & endDate<"2021-01-01" & 
+           eventType == "fire" & 
+           methodTypeChoice=="fire-controlledBurn")
+
+cb.SOAP.polygon <- createSIMPolygon(df= cb.SOAP.df)
+
+# transform the polygon from WGS84 (standard output) to utm zone 11N 
+# to match AOP tiles.  
+# coordinate reference system (crs) EPSG values can be searched for 
+# on https://spatialreference.org/ref/epsg/
+cb.SOAP.polygon.utm <- st_transform(cb.SOAP.polygon$sfObjects[[1]], 
+                                    crs = 32611)
+
+
+plot(ndvi2019)
+
+points(wf.SOAP$locationID_easting,
+       wf.SOAP$locationID_northing,
+       pch=20, col="hotpink")
+
+cb.SOAP <- fire.SOAP |>
+  filter(methodTypeChoice=="fire-controlledBurn")
+points(cb.SOAP$locationID_easting,
+       cb.SOAP$locationID_northing,
+       pch=20, col="darkred")
+
+plot(sf::st_geometry(wf.SOAP.polygon.utm),
+       border = "hotpink",
+       lwd = 2.5,
+       add = TRUE)
+
+plot(sf::st_geometry(cb.SOAP.polygon.utm),
+       border = "darkred",
+       lwd = 2.5,
+       add = TRUE)
+```
+
+We can see the wildfire polygon (light pink) include the entire site boundary since the site code "SOAP" was one of listed locationIDs.  
+
+The controlled burn polygon (dark red) was created as the smallest convex polygon around the listed locationID points. 
+
+The polygons provide our best estimate for the actual extent of the event across the site.   
 
 And now let's look at the same locations in 2021.
 
@@ -328,7 +430,7 @@ for(i in 2:length(tiles2021)) {
 
 ```
 
-``` {r plot-2021-all}
+``` {r plot-2021-all, fig.width=8, fig.height=4}
 
 plot(ndvi2021)
 
@@ -340,11 +442,42 @@ points(cb.SOAP$locationID_easting,
        cb.SOAP$locationID_northing,
        pch=20, col="darkred")
 
+plot(sf::st_geometry(wf.SOAP.polygon.utm),
+       border = "hotpink",
+       lwd = 2.5,
+       add = TRUE)
+
+plot(sf::st_geometry(cb.SOAP.polygon.utm),
+       border = "darkred",
+       lwd = 2.5,
+       add = TRUE)
 
 ```
 
-We can see a large region where NDVI is substantially lower in 2021 than 2019, matching the region where the wildfire was reported. The difference is much smaller in the region where only the controlled burn was reported.
+We can see a large region where NDVI is substantially lower in 2021 than 2019, matching the region where the wildfire was reported. Note there is some ambiguity in the region where the controlled burn was reported - it's inside the overall wildfire polygon, but those specific points weren't reported as burned by the wildfire. They are included because the site as a whole was reported.
 
-We only downloaded the 8 tiles overlapping the sampling locations that were reported as affected by the fire; the entire AOP footprint is much larger than this. As noted above, NEON field staff report events at locations they visit, but in this case the fire was much larger than the NEON sampling region. The implications of this depend on your analytical goals. If you are studying fire at a regional level, you may focus primarily on the AOP data, whereas if you are primarily interested in plant community responses, you may want to focus on plant presence and percent cover plots, and whether or not those specific plots burned.
+In addition, we only downloaded the 8 NDVI tiles overlapping the sampling locations that were reported as affected by the fire; the entire AOP footprint is much larger than this. As noted above, NEON field staff report events at locations they visit, but in this case the fire was much larger than the NEON sampling region. The implications of this depend on your analytical goals. If you are studying fire at a regional level, you may focus primarily on the AOP data, whereas if you are primarily interested in plant community responses, you may want to focus on plant presence and percent cover plots, and the status of those specific plots.
 
+If helpful for further analysis, we can export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFile()`.
+
+``` {r export polygons, warnings= F}
+# export the wildfire polygons as kmls
+writeExportFile(sfList = wf.SOAP.polygon$sfObjects, 
+                outDir = getwd(),
+                outType = "kml")
+
+# export the controlled burns polygons as shapefiles
+writeExportFile(sfList = cb.SOAP.polygon$sfObjects, 
+                outDir = getwd(),
+                outType = "shapefile")
+
+```
+
+For more information and examples using the `createSIMPolygon()` function please see the vignette associated with the package. 
+
+```
+devtools::install_github('NEONScience/neonSiteMgmtEventData', 
+                force = TRUE, build_vignettes = TRUE)
+browseVignettes("neonSiteMgmtEventData")
+```
 
