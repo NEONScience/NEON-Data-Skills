@@ -39,19 +39,19 @@ Start by installing and loading packages and setting options. The `rhdf5` packag
 
     ## install.packages('dplyr')
 
-    install.packages('tidyr')
+    ## install.packages('tidyr')
 
-    
+    ## 
 
-    ## library(neonUtilities)
+    library(neonUtilities)
 
-    ## library(rhdf5)
+    library(rhdf5)
 
-    ## library(ggplot2)
+    library(ggplot2)
 
-    ## library(dplyr)
+    library(dplyr)
 
-    ## library(tidyr)
+    library(tidyr)
 
     ## 
 
@@ -95,6 +95,7 @@ For faster downloads, consider using an <a href="https://www.neonscience.org/res
                   site=site, 
                   startdate=startDate, 
                   enddate=endDate,
+                  release="RELEASE-2024",
                   savepath=dirFile, 
                   check.size=FALSE,
                   token=token)
@@ -241,6 +242,9 @@ Let's look at some data! First, we will combine the data from the two sites into
                            name="qfFinal") +
         facet_grid(~Site) 
 
+    ## Warning: Removed 1179 rows containing missing values or values outside the scale range (`geom_point()`).
+
+
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-fluxes-1.png)
 
 When we plot the data turbulent CO<sub>2</sub> flux data, we see a good agreement
@@ -276,8 +280,8 @@ at our 2 sites.
     ## # A tibble: 2 × 2
     ##   Site  `mean(qfqm.fluxCo2.turb.qfFinl)`
     ##   <chr>                            <dbl>
-    ## 1 STEI                             0.286
-    ## 2 TREE                             0.371
+    ## 1 STEI                             0.223
+    ## 2 TREE                             0.280
 
 Now, lets plot the qfFinal failed percentage for all our flux data products:
 
@@ -316,7 +320,7 @@ for all the `fluxCo2` data streams, lets remove flagged data from our dataframe.
       summarise(across(everything(), sum))
 
     ##   qfqm.fluxCo2.nsae.qfFinl qfqm.fluxCo2.stor.qfFinl qfqm.fluxCo2.turb.qfFinl
-    ## 1                    10318                     7305                     5766
+    ## 1                     9633                     7283                     4423
 
     dfFlux %>% 
       select(contains("data") & 
@@ -326,7 +330,7 @@ for all the `fluxCo2` data streams, lets remove flagged data from our dataframe.
                          {sum(is.na(x))}))
 
     ##   data.fluxCo2.nsae.flux data.fluxCo2.stor.flux data.fluxCo2.turb.flux
-    ## 1                   3189                   2530                   1178
+    ## 1                   3195                   2508                   1179
 
     dfFlux$data.fluxCo2.turb.flux[(which(dfFlux$qfqm.fluxCo2.turb.qfFinal==1))] <- NA
 
@@ -342,7 +346,7 @@ for all the `fluxCo2` data streams, lets remove flagged data from our dataframe.
       summarise(across(everything(), sum))
 
     ##   qfqm.fluxCo2.nsae.qfFinl qfqm.fluxCo2.stor.qfFinl qfqm.fluxCo2.turb.qfFinl
-    ## 1                    10318                     7305                     5766
+    ## 1                     9633                     7283                     4423
 
     dfFlux %>% 
       select(contains("data") & 
@@ -352,7 +356,7 @@ for all the `fluxCo2` data streams, lets remove flagged data from our dataframe.
                          {sum(is.na(x))}))
 
     ##   data.fluxCo2.nsae.flux data.fluxCo2.stor.flux data.fluxCo2.turb.flux
-    ## 1                   3189                   2530                   1178
+    ## 1                   3195                   2508                   1179
 
 We see from the summary of the `fluxCo2` qfFinal and data NAs, that the number 
 of NAs has increased as expected, we have removed all the flagged data from 
@@ -383,6 +387,11 @@ relatively straightforward using `ggplot` and the boxplot function (`geom_boxplo
                    geom = 'line', 
                    aes(group = Site, 
                        colour = Site)) 
+
+    ## Warning: Removed 1179 rows containing non-finite outside the scale range (`stat_boxplot()`).
+
+    ## Warning: Removed 1179 rows containing non-finite outside the scale range (`stat_summary()`).
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-cycle-1.png)
 
@@ -452,13 +461,13 @@ only grab metadata from one file and apply to both sites.
     ## [1] 6
     ## 
     ## $`Pf$AngEnuXaxs`
-    ## [1] "0.020098,0.011307,0.012322,0.015949,0.009383,0.007431,0.002004,0.000912,0.002459,-0.002334,0.002954,0.005751,-0.003629,-0.010646,0.001082,-0.001088,0.000915,-0.00618,-0.007461,-0.012817,-0.016043,-0.010921,-0.005637,-0.012574,-0.012343,-0.015775,-0.016883,-0.007593,0.013444,0.02007"
+    ## [1] "0.020097,0.011307,0.012322,0.015949,0.009383,0.007431,0.002004,0.000912,0.002459,-0.002334,0.002954,0.005751,-0.003629,-0.010646,0.001082,-0.001088,0.000915,-0.00618,-0.007461,-0.012817,-0.016043,-0.010921,-0.005637,-0.012574,-0.012343,-0.015775,-0.016883,-0.007593,0.013444,0.02007"
     ## 
     ## $`Pf$AngEnuYaxs`
-    ## [1] "-0.024191,-0.023851,-0.017583,-0.013608,-0.006831,-0.015543,-0.002694,-0.006488,-0.007339,0.002997,0.013212,0.018439,0.017504,0.017,0.021775,0.017296,0.024619,0.028542,0.020075,0.017117,0.013442,0.018365,0.013516,0.009392,0.009889,-0.003119,-0.000946,0.009277,0.000653,-0.011161"
+    ## [1] "-0.024191,-0.023851,-0.017583,-0.013608,-0.006831,-0.015542,-0.002694,-0.006488,-0.007339,0.002997,0.013212,0.018439,0.017504,0.017,0.021775,0.017296,0.024619,0.028542,0.020075,0.017117,0.013442,0.018365,0.013516,0.009392,0.009889,-0.003119,-0.000946,0.009277,0.000653,-0.011161"
     ## 
     ## $`Pf$Ofst`
-    ## [1] "0.016017,0.014884,0.00062,0.008402,0.000912,0.0087,0.007929,0.015406,0.014684,0.011638,0.022359,0.037957,0.03573,0.042482,0.041988,0.02881,0.03758,0.05214,0.034529,0.036575,0.044748,0.041439,0.033977,0.043441,0.05317,0.078641,0.07376,0.0432,0.031761,0.043055"
+    ## [1] "0.016017,0.014884,0.000621,0.008402,0.000912,0.0087,0.007929,0.015406,0.014684,0.011638,0.022359,0.037957,0.03573,0.042482,0.041988,0.02881,0.03758,0.05214,0.034529,0.036575,0.044748,0.041439,0.033977,0.043441,0.053169,0.078641,0.07376,0.0432,0.031761,0.043055"
     ## 
     ## $TimeDiffUtcLt
     ## [1] -6
@@ -493,6 +502,11 @@ only grab metadata from one file and apply to both sites.
       scale_y_continuous(limits = quantile(dfFlux$data.fluxCo2.turb.flux, 
                                            c(0.001, 0.999), 
                                            na.rm = TRUE))
+
+    ## Warning: Removed 1213 rows containing non-finite outside the scale range (`stat_boxplot()`).
+
+    ## Warning: Removed 1213 rows containing non-finite outside the scale range (`stat_summary()`).
+
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-lst-1.png)
 
@@ -538,6 +552,11 @@ the storage flux and its impact on the NSAE flux at STEI and TREE:
                                            c(0.001, 0.999), 
                                            na.rm = TRUE))
 
+    ## Warning: Removed 2540 rows containing non-finite outside the scale range (`stat_boxplot()`).
+
+    ## Warning: Removed 2540 rows containing non-finite outside the scale range (`stat_summary()`).
+
+
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-stor-1.png)
 
 The storage flux as expected is smaller than the turbulent flux, and is 
@@ -559,6 +578,11 @@ at the TREE site. Let's look at how that impacts the overall NSAE flux:
                                            c(0.001, 0.999), 
                                            na.rm = TRUE))
 
+    ## Warning: Removed 3225 rows containing non-finite outside the scale range (`stat_boxplot()`).
+
+    ## Warning: Removed 3225 rows containing non-finite outside the scale range (`stat_summary()`).
+
+
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/eddy-covariance/diel-cycle-flux/rfigs/plot-diel-nsae-1.png)
 
  When we look at the NSAE flux we see that the STEI site appears to sequester 
@@ -578,8 +602,8 @@ at the TREE site. Let's look at how that impacts the overall NSAE flux:
     ## # A tibble: 2 × 4
     ##   Site  data.fluxCo2.nsae.flux data.fluxCo2.stor.flux data.fluxCo2.turb.flux
     ##   <chr>                  <dbl>                  <dbl>                  <dbl>
-    ## 1 STEI                   -2.30                 0.171                   -2.42
-    ## 2 TREE                   -1.71                -0.0251                  -1.77
+    ## 1 STEI                   -2.44                 0.0486                  -2.47
+    ## 2 TREE                   -1.71                -0.0242                  -1.77
 
 
 The difference between the two sites is small, but on average the STEI site takes 

@@ -26,7 +26,7 @@ This tutorial assumes general familiarity with eddy-covariance data, and will br
 
 Start by installing and loading packages and setting options. The `rhdf5` package is hosted on Bioconductor, requiring `BiocManager` to be installed to allow `rhdf5` to be pulled from the Bioconductor repository. You can skip the installation step if these packages are already installed on your machine, although checking for updates is always wise.
 
-```{r install-load, results='hide', message=FALSE, warning=FALSE, eval=7:8}
+```{r install-load, results='hide', message=FALSE, warning=FALSE, eval=9:13}
 
 install.packages('BiocManager')
 BiocManager::install('rhdf5')
@@ -75,6 +75,7 @@ zipsByProduct(dpID="DP4.00200.001", package="basic",
               site=site, 
               startdate=startDate, 
               enddate=endDate,
+              release="RELEASE-2024",
               savepath=dirFile, 
               check.size=FALSE,
               token=token)
