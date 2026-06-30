@@ -243,7 +243,7 @@ plt.show();
 
 
     
-![png](mask-rasters-py_files/output_17_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/output_17_0.png)
     
 
 
@@ -291,7 +291,7 @@ plt.show();
 
 
     
-![png](mask-rasters-py_files/output_23_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/output_23_0.png)
     
 
 
@@ -317,7 +317,7 @@ ax.legend(handles=[white_box,blue_box,red_box],handlelength=0.7,bbox_to_anchor=(
 
 
     
-![png](mask-rasters-py_files/output_25_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/output_25_0.png)
     
 
 
@@ -341,7 +341,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 
     
-![png](mask-rasters-py_files/output_27_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/output_27_0.png)
     
 
 
@@ -361,7 +361,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 
     
-![png](mask-rasters-py_files/output_28_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/output_28_0.png)
     
 
 
@@ -386,7 +386,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 
     
-![png](mask-rasters-py_files/output_30_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/intro-lidar/mask-rasters/mask-rasters-py_files/output_30_0.png)
     
 
 
