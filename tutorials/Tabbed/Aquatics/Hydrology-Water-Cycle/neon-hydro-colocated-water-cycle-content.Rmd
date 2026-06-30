@@ -109,7 +109,6 @@ library(neonUtilities)
 library(tidyverse)
 library(geosphere)
 library(plotly)
-token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ### Python
@@ -131,10 +130,12 @@ import dotenv
 
 ## Set NEON Data Portal API Token {.tabset}
 
-It is recommended that NEON data users have a NEON Data Portal API token
-set as an environment variable. See
+As of June 2026, NEON data users are required to have a user account for 
+downloads. To use `neonUtilities` download functions, you will need an API token 
+associated with your user account. See
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this
-tutorial.</a> for instructions on obtaining a NEON API token.
+tutorial</a> for instructions on obtaining a NEON API token and setting it as 
+an environment variable.
 
 ### R
 
@@ -145,7 +146,7 @@ Sys.setenv(NEON_PAT="YOUR_API_TOKEN_HERE")
 ### Python
 
 ```{python p-envvar, eval=FALSE, results="hide", message=FALSE, warning=FALSE}
-os.environ.setdefault('NEON_PAT',"YOUR_API_TOKEN_HERE")
+os.environ.setdefault("NEON_PAT","YOUR_API_TOKEN_HERE")
 ```
 
 ## {-}
