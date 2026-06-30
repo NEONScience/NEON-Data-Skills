@@ -34,8 +34,11 @@ After completing this tutorial you will be able to:
 ## Things You’ll Need To Complete This Tutorial
 
 ### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
+
+* You will need a current version of R (4+) to complete this tutorial. We also recommend 
 the RStudio IDE to work with R. 
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### R Packages To Install
 Start by installing any packages that are used during the course of the tutorial (if necessary) and setting options. Installation can be run once, then periodically to get package updates.
@@ -51,12 +54,15 @@ Start by installing any packages that are used during the course of the tutorial
 
 ## 1. Setup
 
-### Load R Packages
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+### Load R Packages and token
 ```{r load-packages, , message=FALSE, warning=FALSE, results="hide"}
 library(neonUtilities)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ### Download NEON Fish Data
@@ -68,6 +74,7 @@ Download <a href="https://data.neonscience.org/data-products/DP1.20107.001" targ
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
 * `startdate` and `enddate`: we will work with 2024 data in this tutorial
 * `release`: a particular data release, or `current` for the most recent release
+* `token`: your NEON API token
 
 Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
 for the `neonUtilities` package for more details.
@@ -82,7 +89,8 @@ fshdat <- neonUtilities::loadByProduct(
   check.size = FALSE,
   startdate = "2024-01",
   enddate = "2024-12",
-  release = 'RELEASE-2026')
+  release = 'RELEASE-2026',
+  token=token)
 ```
 
 ### NEON Data Citation

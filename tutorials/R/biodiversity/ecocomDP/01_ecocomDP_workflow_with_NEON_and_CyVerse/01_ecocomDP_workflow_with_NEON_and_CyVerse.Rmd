@@ -63,9 +63,9 @@ Exercises in this lesson will cover:
 
 You will need some familiarity with the R programming language to complete this tutorial and we recommend you use a version of the [RStudio IDE](https://www.rstudio.com/products/rstudio/). In this tutorial, we will describe how to access an instance of RStudio with all the required packages pre-installed via your web browser using the Visual Interactive Computing Environment (VICE) provided in the [CyVerse Discovery Environment](https://cyverse.org/discovery-environment). Alternatively, you can also complete most of the exercises in this tutorial using a locally installed version of [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/).
 
-#### _2. [OPTIONAL] A NEON user account and API token_  
+#### _2. A NEON user account and API token_  
 
-We recommend that you sign up for a NEON user account and set up an API token to access NEON data following the instructions outlined in [this tutorial](https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial). This is not required. You can download NEON data without a token, but using an API token will enable faster download speeds. 
+NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 #### _3. [OPTIONAL] Create a CyVerse account and request access to VICE_  
 
@@ -138,10 +138,11 @@ First, we will load all necessary libraries into our R environment. If you are n
 #rm(list = ls()) # OPTIONAL - clear out your environment
 #gc()            # Uncomment these lines if desired
 
-# load packages
+# load packages and token
 library(tidyverse)
 library(neonUtilities)
 library(ecocomDP)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -155,6 +156,7 @@ library(ecocomDP)
 library(tidyverse)
 library(neonUtilities)
 library(ecocomDP)
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -217,7 +219,7 @@ all_tabs_inv <- neonUtilities::loadByProduct(
   site = c("COMO","HOPB"), # NEON sites
   startdate = "2017-01", # start year-month
   enddate = "2019-12", # end year-month
-  token = Sys.getenv("NEON_TOKEN"), # use NEON_TOKEN environmental variable
+  token=token, # use NEON_TOKEN environmental variable
   check.size = F) # proceed with download regardless of file size
 
 ```
@@ -229,7 +231,7 @@ To download the entire dataset for all sites for all time, don't include the `si
 # this download as of Aug 2022 is ~100MB
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = "DP1.20120.001", # the NEON aquatic macroinvert data product
-  token = Sys.getenv("NEON_TOKEN"), # use NEON_TOKEN environmental variable
+  token=token, # use NEON_TOKEN environmental variable
   check.size = T) # you should probably check the filesize before proceeding
 
 ```
@@ -338,7 +340,7 @@ table_taxon <- inv_taxonomyProcessed %>%
 # full_taxon_table_from_api <- 
 #   neonOS::getTaxonList(
 #     "MACROINVERTEBRATE", 
-#     token = Sys.getenv("NEON_TOKEN"))
+#     token=token)
 
 
 # Make the observation table.
@@ -544,7 +546,7 @@ data_neon_inv <- read_data(
   site = c("COMO","HOPB"), # NEON sites
   startdate = "2017-01", # start year-month
   enddate = "2019-12", # end year-month
-  token = Sys.getenv("NEON_TOKEN"),
+  token=token,
   check.size = FALSE)
 
 ```
@@ -669,7 +671,7 @@ The full NEON macroinvertebrate dataset from RELEASE-2022 can be downloaded into
 # This could take up to 10 mins
 data_neon_inv_allsites <- read_data(
   id = "neon.ecocomdp.20120.001.001",
-  token = Sys.getenv("NEON_TOKEN"),
+  token=token,
   release = "RELEASE-2022",
   check.size = FALSE)
 ```

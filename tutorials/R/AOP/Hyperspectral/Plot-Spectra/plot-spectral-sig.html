@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="generator" content="litedown 0.9">
+<title>Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+body, .abstract, code, .footnotes, footer, #refs, .caption { font-size: .9em; }
+li li { font-size: .95em; }
+ul:has(li > input[type="checkbox"]) { list-style: none; padding-left: 1em; }
+*, :before, :after { box-sizing: border-box; }
+a { color: steelblue; }
+pre, img { max-width: 100%; }
+pre { white-space: pre-wrap; word-break: break-word; }
+pre code { display: block; padding: 1em; overflow-x: auto; }
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre, th) > code, code[class], div > .caption { background: #f8f8f8; }
+pre > code:is(:not([class]), .language-plain, .language-none, .plain), .box, .figure, .table { background: inherit; border: 1px solid #eee; }
+pre > code {
+  &.message { border-color: #9eeaf9; }
+  &.warning { background: #fff3cd; border-color: #fff3cd; }
+  &.error { background: #f8d7da; border-color: #f8d7da; }
+}
+.fenced-chunk { border-left: 1px solid #666; }
+.code-fence {
+  opacity: .4;
+  border: 1px dashed #666;
+  border-left: 2px solid;
+  &:hover { opacity: inherit; }
+}
+.box, .figure, .table, table { margin: 1em auto; }
+div > .caption { padding: 1px 1em; }
+.figure { p:has(img, svg), pre:has(svg) { text-align: center; } }
+.flex-col { display: flex; justify-content: space-between; }
+table {
+  &:only-child:not(.table > *) { margin: auto; }
+  th, td { padding: 5px; font-variant-numeric: tabular-nums; }
+  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+  thead th { border-bottom: 1px solid #ddd; }
+  &:not(.datatable-table) {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
+}
+blockquote {
+  color: #666;
+  margin: 0;
+  padding: 1px 1em;
+  border-left: .5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC {
+  a { text-decoration: none; }
+  ul { list-style: none; padding-left: 1em; }
+  & > ul { padding: 0; }
+  ul ul { border-left: 1px solid lightsteelblue; }
+}
+.body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.main-number::after { content: "."; }
+span[class^="ref-number-"] { font-weight: bold; }
+.ref-number-fig::after, .ref-number-tab::after { content: ":"; }
+.cross-ref-chp::before { content: "Chapter "; }
+.cross-ref-sec::before { content: "Section "; }
+.cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
+.cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
+.cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
+.abstract, #refs {
+  &::before { display: block; margin: 1em auto; font-weight: bold; }
+}
+.abstract::before { content: "Abstract"; text-align: center; }
+#refs::before { content: "Bibliography"; font-size: 1.5em; }
+.ref-paren-open::before { content: "("; }
+.ref-paren-close::after { content: ")"; }
+.ref-semicolon::after { content: "; "; }
+.ref-and::after { content: " and "; }
+.ref-et-al::after { content: " et al."; font-style: italic; }
+.footnote-ref a {
+  &::before { content: "["; }
+  &::after { content: "]"; }
+}
+section.footnotes {
+  margin-top: 2em;
+  &::before { content: ""; display: block; max-width: 20em; }
+}
+.fade {
+  background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
+  opacity: 0.6;
+}
+
+@media print {
+  body { max-width: 100%; }
+  tr, img { break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  body:not(.pagesjs) pre:has(.line-numbers):not(:hover) { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Plot Spectral Signatures Derived from Hyperspectral Remote Sensing Data in HDF5 Format in R</h1></div>
+</div>
+<div class="body">
+<div id="ds-objectives" markdown="1">
+<h2 id="sec:learning-objectives">Learning Objectives</h2>
+<p>After completing this tutorial, you will be able to:</p>
+<ul>
+<li>Extract and plot a single spectral signature from an HDF5 file.</li>
+<li>Work with groups and datasets within an HDF5 file.</li>
+</ul>
+<h2 id="sec:things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<p>To complete this tutorial you will need the most current version of R and,
+preferably, RStudio loaded on your computer.</p>
+<h3 id="sec:r-libraries-to-install">R Libraries to Install:</h3>
+<ul>
+<li><strong>rhdf5</strong>: <code>install.packages(&quot;BiocManager&quot;)</code>, <code>BiocManager::install(&quot;rhdf5&quot;)</code></li>
+<li><strong>plyr</strong>: <code>install.packages('plyr')</code></li>
+<li><strong>ggplot2</strong>: <code>install.packages('ggplot2')</code></li>
+<li><strong>neonUtilities</strong>: <code>install.packages('neonUtilities')</code></li>
+</ul>
+<p><a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in
+R - Adapted from Software Carpentry.</a></p>
+<h3 id="sec:data">Data</h3>
+<p>These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network’s</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.</p>
+<p><strong>Set Working Directory:</strong> This lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets.</p>
+<p><a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a></p>
+<h3 id="sec:recommended-skills">Recommended Skills</h3>
+<p>For this tutorial, you should be comfortable reading data from a HDF5 file and have a general familiarity with hyperspectral data. If you aren’t familiar with these steps already, we highly recommend you work through the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank">
+<em>Introduction to Working with Hyperspectral Data in HDF5 Format in R</em> tutorial</a> before moving on to this tutorial.</p>
+</div> 
+<p>Everything on our planet reflects electromagnetic radiation from the Sun, and different types of land cover often have dramatically different reflectance properties across the spectrum. One of the most powerful aspects of the NEON Imaging Spectrometer (NIS, or hyperspectral sensor) is that it can accurately measure these reflectance properties at a very high spectral resolution. When you plot the reflectance values across the observed spectrum, you will see
+that different land cover types (vegetation, pavement, bare soils, etc.) have distinct patterns in their reflectance values, a property that we call the
+‘spectral signature’ of a particular land cover class.</p>
+<p>In this tutorial, we will extract the reflectance values for all bands of a single pixel to plot a spectral signature for that pixel. In order to do this, we need to pair the reflectance values for that pixel with the wavelength values of the bands that are represented in those measurements. We will also need to adjust the reflectance values by the scaling factor that is saved as an ‘attribute’ in the HDF5 file.</p>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
+<p>Let’s start by defining the working directory, loading your token, and reading in the example dataset.</p>
+<pre><code># Import required libraries
+
+library(rhdf5)
+
+library(plyr)
+
+library(ggplot2)
+
+library(neonUtilities)
+
+
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
+
+
+
+data_dir &lt;- &quot;~/data/&quot;
+</code></pre>
+<p>If you haven’t already downloaded the hyperspectral data tile (in one of the previous tutorials in this series), you can use the <code>neonUtilities</code> function <code>byTileAOP</code> to download a single reflectance tile. You can run <code>help(byTileAOP)</code> to see more details on what the various inputs are. For this exercise, we’ll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000, 4112000).</p>
+<pre><code>byTileAOP(dpID = 'DP3.30006.001',
+          site = 'SJER',
+          year = '2021',
+          easting = 257000,
+          northing = 4112000,
+          savepath = data_dir,
+          token=token)
+
+## Downloading 1 files
+
+## 
+</code></pre>
+<p>|<br />
+|                                                                                              |   0%
+|<br />
+|==============================================================================================| 100%</p>
+<pre><code>## Successfully downloaded 1 files to ~/data//DP3.30006.001
+</code></pre>
+<p>This file will be downloaded into a nested subdirectory under the <code>~/data</code> folder (your working directory), inside a folder named <code>DP3.30006.001</code> (the Data Product ID). The file should show up in this location: <code>~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5</code>.</p>
+<p>Now we can read in the file and look at the contents using <code>h5ls</code>. You can move this file to a different location, but make sure to change the path accordingly.</p>
+<pre><code># define the h5 file name (specify the full path)
+
+h5_file &lt;- paste0(data_dir,&quot;DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5&quot;)
+
+
+
+# look at the HDF5 file structure 
+
+h5ls(h5_file) #optionally specify all=True if you want to see all of the information
+
+##                                           group                                 name       otype
+## 0                                             /                                 SJER   H5I_GROUP
+## 1                                         /SJER                          Reflectance   H5I_GROUP
+## 2                             /SJER/Reflectance                             Metadata   H5I_GROUP
+## 3                    /SJER/Reflectance/Metadata                    Ancillary_Imagery   H5I_GROUP
+## 4  /SJER/Reflectance/Metadata/Ancillary_Imagery                Aerosol_Optical_Depth H5I_DATASET
+## 5  /SJER/Reflectance/Metadata/Ancillary_Imagery                               Aspect H5I_DATASET
+## 6  /SJER/Reflectance/Metadata/Ancillary_Imagery                          Cast_Shadow H5I_DATASET
+## 7  /SJER/Reflectance/Metadata/Ancillary_Imagery Dark_Dense_Vegetation_Classification H5I_DATASET
+## 8  /SJER/Reflectance/Metadata/Ancillary_Imagery                 Data_Selection_Index H5I_DATASET
+## 9  /SJER/Reflectance/Metadata/Ancillary_Imagery                 Haze_Cloud_Water_Map H5I_DATASET
+## 10 /SJER/Reflectance/Metadata/Ancillary_Imagery                  Illumination_Factor H5I_DATASET
+## 11 /SJER/Reflectance/Metadata/Ancillary_Imagery                          Path_Length H5I_DATASET
+## 12 /SJER/Reflectance/Metadata/Ancillary_Imagery                      Sky_View_Factor H5I_DATASET
+## 13 /SJER/Reflectance/Metadata/Ancillary_Imagery                                Slope H5I_DATASET
+## 14 /SJER/Reflectance/Metadata/Ancillary_Imagery             Smooth_Surface_Elevation H5I_DATASET
+## 15 /SJER/Reflectance/Metadata/Ancillary_Imagery                 Visibility_Index_Map H5I_DATASET
+## 16 /SJER/Reflectance/Metadata/Ancillary_Imagery                   Water_Vapor_Column H5I_DATASET
+## 17 /SJER/Reflectance/Metadata/Ancillary_Imagery            Weather_Quality_Indicator H5I_DATASET
+## 18                   /SJER/Reflectance/Metadata                    Coordinate_System   H5I_GROUP
+## 19 /SJER/Reflectance/Metadata/Coordinate_System             Coordinate_System_String H5I_DATASET
+## 20 /SJER/Reflectance/Metadata/Coordinate_System                            EPSG Code H5I_DATASET
+## 21 /SJER/Reflectance/Metadata/Coordinate_System                             Map_Info H5I_DATASET
+## 22 /SJER/Reflectance/Metadata/Coordinate_System                                Proj4 H5I_DATASET
+## 23                   /SJER/Reflectance/Metadata                    Flight_Trajectory   H5I_GROUP
+## 24                   /SJER/Reflectance/Metadata                                 Logs   H5I_GROUP
+## 25              /SJER/Reflectance/Metadata/Logs                               195724   H5I_GROUP
+## 26       /SJER/Reflectance/Metadata/Logs/195724                     ATCOR_Input_file H5I_DATASET
+## 27       /SJER/Reflectance/Metadata/Logs/195724                 ATCOR_Processing_Log H5I_DATASET
+## 28       /SJER/Reflectance/Metadata/Logs/195724                Shadow_Processing_Log H5I_DATASET
+## 29       /SJER/Reflectance/Metadata/Logs/195724               Skyview_Processing_Log H5I_DATASET
+## 30       /SJER/Reflectance/Metadata/Logs/195724                  Solar_Azimuth_Angle H5I_DATASET
+## 31       /SJER/Reflectance/Metadata/Logs/195724                   Solar_Zenith_Angle H5I_DATASET
+## 32              /SJER/Reflectance/Metadata/Logs                               200251   H5I_GROUP
+## 33       /SJER/Reflectance/Metadata/Logs/200251                     ATCOR_Input_file H5I_DATASET
+## 34       /SJER/Reflectance/Metadata/Logs/200251                 ATCOR_Processing_Log H5I_DATASET
+## 35       /SJER/Reflectance/Metadata/Logs/200251                Shadow_Processing_Log H5I_DATASET
+## 36       /SJER/Reflectance/Metadata/Logs/200251               Skyview_Processing_Log H5I_DATASET
+## 37       /SJER/Reflectance/Metadata/Logs/200251                  Solar_Azimuth_Angle H5I_DATASET
+## 38       /SJER/Reflectance/Metadata/Logs/200251                   Solar_Zenith_Angle H5I_DATASET
+## 39              /SJER/Reflectance/Metadata/Logs                               200812   H5I_GROUP
+## 40       /SJER/Reflectance/Metadata/Logs/200812                     ATCOR_Input_file H5I_DATASET
+## 41       /SJER/Reflectance/Metadata/Logs/200812                 ATCOR_Processing_Log H5I_DATASET
+## 42       /SJER/Reflectance/Metadata/Logs/200812                Shadow_Processing_Log H5I_DATASET
+## 43       /SJER/Reflectance/Metadata/Logs/200812               Skyview_Processing_Log H5I_DATASET
+## 44       /SJER/Reflectance/Metadata/Logs/200812                  Solar_Azimuth_Angle H5I_DATASET
+## 45       /SJER/Reflectance/Metadata/Logs/200812                   Solar_Zenith_Angle H5I_DATASET
+## 46              /SJER/Reflectance/Metadata/Logs                               201441   H5I_GROUP
+## 47       /SJER/Reflectance/Metadata/Logs/201441                     ATCOR_Input_file H5I_DATASET
+## 48       /SJER/Reflectance/Metadata/Logs/201441                 ATCOR_Processing_Log H5I_DATASET
+## 49       /SJER/Reflectance/Metadata/Logs/201441                Shadow_Processing_Log H5I_DATASET
+## 50       /SJER/Reflectance/Metadata/Logs/201441               Skyview_Processing_Log H5I_DATASET
+## 51       /SJER/Reflectance/Metadata/Logs/201441                  Solar_Azimuth_Angle H5I_DATASET
+## 52       /SJER/Reflectance/Metadata/Logs/201441                   Solar_Zenith_Angle H5I_DATASET
+## 53                   /SJER/Reflectance/Metadata                        Spectral_Data   H5I_GROUP
+## 54     /SJER/Reflectance/Metadata/Spectral_Data                                 FWHM H5I_DATASET
+## 55     /SJER/Reflectance/Metadata/Spectral_Data                           Wavelength H5I_DATASET
+## 56                   /SJER/Reflectance/Metadata              to-sensor_azimuth_angle H5I_DATASET
+## 57                   /SJER/Reflectance/Metadata               to-sensor_zenith_angle H5I_DATASET
+## 58                            /SJER/Reflectance                     Reflectance_Data H5I_DATASET
+##     dclass               dim
+## 0                           
+## 1                           
+## 2                           
+## 3                           
+## 4  INTEGER       1000 x 1000
+## 5    FLOAT       1000 x 1000
+## 6  INTEGER       1000 x 1000
+## 7  INTEGER       1000 x 1000
+## 8  INTEGER       1000 x 1000
+## 9  INTEGER       1000 x 1000
+## 10 INTEGER       1000 x 1000
+## 11   FLOAT       1000 x 1000
+## 12 INTEGER       1000 x 1000
+## 13   FLOAT       1000 x 1000
+## 14   FLOAT       1000 x 1000
+## 15 INTEGER       1000 x 1000
+## 16   FLOAT       1000 x 1000
+## 17 INTEGER   3 x 1000 x 1000
+## 18                          
+## 19  STRING             ( 0 )
+## 20  STRING             ( 0 )
+## 21  STRING             ( 0 )
+## 22  STRING             ( 0 )
+## 23                          
+## 24                          
+## 25                          
+## 26  STRING             ( 0 )
+## 27  STRING             ( 0 )
+## 28  STRING             ( 0 )
+## 29  STRING             ( 0 )
+## 30   FLOAT             ( 0 )
+## 31   FLOAT             ( 0 )
+## 32                          
+## 33  STRING             ( 0 )
+## 34  STRING             ( 0 )
+## 35  STRING             ( 0 )
+## 36  STRING             ( 0 )
+## 37   FLOAT             ( 0 )
+## 38   FLOAT             ( 0 )
+## 39                          
+## 40  STRING             ( 0 )
+## 41  STRING             ( 0 )
+## 42  STRING             ( 0 )
+## 43  STRING             ( 0 )
+## 44   FLOAT             ( 0 )
+## 45   FLOAT             ( 0 )
+## 46                          
+## 47  STRING             ( 0 )
+## 48  STRING             ( 0 )
+## 49  STRING             ( 0 )
+## 50  STRING             ( 0 )
+## 51   FLOAT             ( 0 )
+## 52   FLOAT             ( 0 )
+## 53                          
+## 54   FLOAT               426
+## 55   FLOAT               426
+## 56   FLOAT       1000 x 1000
+## 57   FLOAT       1000 x 1000
+## 58 INTEGER 426 x 1000 x 1000
+</code></pre>
+<h2 id="sec:read-wavelength-values">Read Wavelength Values</h2>
+<p>Next, let’s read in the wavelength center associated with each band in the HDF5 file. We will later match these with the reflectance values and show both in our final spectral signature plot.</p>
+<pre><code># read in the wavelength information from the HDF5 file
+
+wavelengths &lt;- h5read(h5_file,&quot;/SJER/Reflectance/Metadata/Spectral_Data/Wavelength&quot;)
+</code></pre>
+<h2 id="sec:extract-z-dimension-data-slice">Extract Z-dimension data slice</h2>
+<p>Next, we will extract all reflectance values for one pixel. This makes up the spectral signature or profile of the pixel. To do that, we’ll use the <code>h5read()</code> function. Here we pick an arbitrary pixel at <code>(100,35)</code>, and use the <code>NULL</code> value to select <em>all</em> bands from that location.</p>
+<pre><code># extract all bands from a single pixel
+
+aPixel &lt;- h5read(h5_file,&quot;/SJER/Reflectance/Reflectance_Data&quot;,index=list(NULL,100,35))
+
+
+
+# The line above generates a vector of reflectance values.
+
+# Next, we reshape the data and turn them into a dataframe
+
+b &lt;- adply(aPixel,c(1))
+
+
+
+# create clean data frame
+
+aPixeldf &lt;- b[2]
+
+
+
+# add wavelength data to matrix
+
+aPixeldf$Wavelength &lt;- wavelengths
+
+
+
+head(aPixeldf)
+
+##    V1 Wavelength
+## 1 206   381.6035
+## 2 266   386.6132
+## 3 274   391.6229
+## 4 297   396.6327
+## 5 236   401.6424
+## 6 236   406.6522
+</code></pre>
+<h2 id="sec:scale-factor">Scale Factor</h2>
+<p>Then, we can pull the spatial attributes that we’ll need to adjust the reflectance values. Often, large raster data contain floating point (values with decimals) information. However, floating point data consume more space (yield a larger file size) compared to integer values. Thus, to keep the file sizes smaller, the data will be scaled by a factor of 10, 100, 10000, etc. This <code>scale factor</code> will be noted in the data attributes.</p>
+<pre><code># grab scale factor from the Reflectance attributes
+
+reflectanceAttr &lt;- h5readAttributes(h5_file,&quot;/SJER/Reflectance/Reflectance_Data&quot; )
+
+
+
+scaleFact &lt;- reflectanceAttr$Scale_Factor
+
+
+
+# add scaled data column to DF
+
+aPixeldf$scaled &lt;- (aPixeldf$V1/as.vector(scaleFact))
+
+
+
+# make nice column names
+
+names(aPixeldf) &lt;- c('Reflectance','Wavelength','ScaledReflectance')
+
+head(aPixeldf)
+
+##   Reflectance Wavelength ScaledReflectance
+## 1         206   381.6035            0.0206
+## 2         266   386.6132            0.0266
+## 3         274   391.6229            0.0274
+## 4         297   396.6327            0.0297
+## 5         236   401.6424            0.0236
+## 6         236   406.6522            0.0236
+</code></pre>
+<h2 id="sec:plot-spectral-signature">Plot Spectral Signature</h2>
+<p>Now we’re ready to plot our spectral signature!</p>
+<pre><code>ggplot(data=aPixeldf)+
+   geom_line(aes(x=Wavelength, y=ScaledReflectance))+
+   xlab(&quot;Wavelength (nm)&quot;)+
+   ylab(&quot;Reflectance&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Plot-Spectra/rfigs/plot-spectra-1.png" alt="Spectral signature plot with wavelength in nanometers on the x-axis and reflectance on the y-axis." /></p>
+</div>
+</body>
+</html>

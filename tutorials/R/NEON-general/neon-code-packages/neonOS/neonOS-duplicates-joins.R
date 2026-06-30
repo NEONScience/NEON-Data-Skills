@@ -1,54 +1,63 @@
-## ----setup, eval=FALSE-----------------------------------------------------------------------------------
-## 
-## # install packages. you can skip this step if
-## # the packages are already installed
-## install.packages("neonUtilities")
-## install.packages("neonOS")
-## install.packages("ggplot2")
-## 
-## # load packages
-## library(neonUtilities)
-## library(neonOS)
-## library(ggplot2)
-## 
+## ----setup, eval=FALSE------------------------------------------------------------------------------------------------------
+# 
+# # install packages. you can skip this step if
+# # the packages are already installed
+# install.packages("neonUtilities")
+# install.packages("neonOS")
+# install.packages("ggplot2")
+# install.packages("dplyr")
+# 
+# # load packages
+# library(neonUtilities)
+# library(neonOS)
+# library(ggplot2)
+# library(dplyr)
+# 
+# # load token
+# token <- Sys.getenv("NEON_TOKEN")
+# 
 
 
-## ----libraries, include=FALSE----------------------------------------------------------------------------
+## ----libraries, include=FALSE-----------------------------------------------------------------------------------------------
 library(neonUtilities)
 library(neonOS)
 library(ggplot2)
+library(dplyr)
+
+token <- Sys.getenv("NEON_TOKEN")
 
 
-## ----load-data, results="hide"---------------------------------------------------------------------------
+## ----load-data, results="hide", message=FALSE-------------------------------------------------------------------------------
 
 apchem <- loadByProduct(dpID="DP1.20063.001", 
                         site=c("PRLA","SUGG","TOOK"), 
                         package="expanded",
                         release="RELEASE-2022",
-                        check.size=F)
+                        check.size=F,
+                        token=token)
 
 
 
-## ----env, results="hide"---------------------------------------------------------------------------------
+## ----env, results="hide"----------------------------------------------------------------------------------------------------
 
 list2env(apchem, .GlobalEnv)
 
 
 
-## ----remove-dups-biomass---------------------------------------------------------------------------------
+## ----remove-dups-biomass----------------------------------------------------------------------------------------------------
 
 apl_biomass <- removeDups(data=apl_biomass, 
                           variables=variables_20063)
 
 
 
-## ----view-flag-values------------------------------------------------------------------------------------
+## ----view-flag-values-------------------------------------------------------------------------------------------------------
 
 unique(apl_biomass$duplicateRecordQF)
 
 
 
-## ----remove-dups-analytes, results="hide", message=FALSE-------------------------------------------------
+## ----remove-dups-analytes, results="hide", message=FALSE--------------------------------------------------------------------
 
 apl_plantExternalLabDataPerSample <- removeDups(
   data=apl_plantExternalLabDataPerSample, 
@@ -56,28 +65,28 @@ apl_plantExternalLabDataPerSample <- removeDups(
 
 
 
-## ----view-resolved---------------------------------------------------------------------------------------
+## ----view-resolved----------------------------------------------------------------------------------------------------------
 
-apl_plantExternalLabDataPerSample[which(
-  apl_plantExternalLabDataPerSample$duplicateRecordQF==1),]
-
-
-
-## ----view-unresolved-------------------------------------------------------------------------------------
-
-apl_plantExternalLabDataPerSample[which(
-  apl_plantExternalLabDataPerSample$duplicateRecordQF==2),]
+apl_plantExternalLabDataPerSample |>
+  filter(duplicateRecordQF==1)
 
 
 
-## ----join, results="hide", message=FALSE-----------------------------------------------------------------
+## ----view-unresolved--------------------------------------------------------------------------------------------------------
+
+apl_plantExternalLabDataPerSample |>
+  filter(duplicateRecordQF==2)
+
+
+
+## ----join, results="hide", message=FALSE------------------------------------------------------------------------------------
 
 aqbc <- joinTableNEON(apl_biomass,
                       apl_plantExternalLabDataPerSample)
 
 
 
-## ----aqbc-check------------------------------------------------------------------------------------------
+## ----aqbc-check-------------------------------------------------------------------------------------------------------------
 
 nrow(apl_biomass)
 nrow(apl_plantExternalLabDataPerSample)
@@ -85,13 +94,13 @@ nrow(aqbc)
 
 
 
-## ----aqbc-view, results="hide"---------------------------------------------------------------------------
+## ----aqbc-view, results="hide"----------------------------------------------------------------------------------------------
 
 View(aqbc)
 
 
 
-## ----aq-fig----------------------------------------------------------------------------------------------
+## ----aq-fig-----------------------------------------------------------------------------------------------------------------
 
 gg <- ggplot(subset(aqbc, analyte=="nitrogen"),
              aes(scientificName, analyteConcentration, 
@@ -109,7 +118,7 @@ gg
 
 
 
-## ----with-table-names, results="hide", message=FALSE-----------------------------------------------------
+## ----with-table-names, results="hide", message=FALSE------------------------------------------------------------------------
 
 bio.dup <- removeDups(data=apchem$apl_biomass,
                       variables=apchem$variables_20063,
@@ -124,31 +133,32 @@ aq.join <- joinTableNEON(table1=bio.dup,
 
 
 
-## ----load-mos, results="hide"----------------------------------------------------------------------------
+## ----load-mos, results="hide", message=FALSE--------------------------------------------------------------------------------
 
 mos <- loadByProduct(dpID="DP1.10043.001",
                      site="TOOL", 
                      release="RELEASE-2022",
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 list2env(mos, .GlobalEnv)
 
 
 
-## ----try-join-mos, eval=FALSE----------------------------------------------------------------------------
-## 
-## mos.sp <- joinTableNEON(mos_trapping,
-##                         mos_expertTaxonomistIDProcessed)
-## 
+## ----try-join-mos, eval=FALSE-----------------------------------------------------------------------------------------------
+# 
+# mos.sp <- joinTableNEON(mos_trapping,
+#                         mos_expertTaxonomistIDProcessed)
+# 
 
 
-## ----join-trap-sort, results="hide"----------------------------------------------------------------------
+## ----join-trap-sort, results="hide"-----------------------------------------------------------------------------------------
 
 mos.trap <- joinTableNEON(mos_trapping,
                           mos_sorting)
 
 
 
-## ----join-sort-tax, results="hide"-----------------------------------------------------------------------
+## ----join-sort-tax, results="hide"------------------------------------------------------------------------------------------
 
 mos.tax <- joinTableNEON(mos.trap,
                          mos_expertTaxonomistIDProcessed,
@@ -156,7 +166,7 @@ mos.tax <- joinTableNEON(mos.trap,
 
 
 
-## ----mos-fig---------------------------------------------------------------------------------------------
+## ----mos-fig----------------------------------------------------------------------------------------------------------------
 
 gg <- ggplot(mos.tax, 
              aes(scientificName, individualCount, 

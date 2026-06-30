@@ -41,16 +41,16 @@ you will need very accurate coordinates for each measurement on the ground.
 ## Learning Objectives 
 After completing this tutorial you will be able to: 
 
-* access NEON spatial data through data downloaded with the 
+* Access NEON spatial data through data downloaded with the 
 neonUtilities package.
-* access and plot specific sampling locations for TOS data products. 
-* access and use sensor location data. 
+* Access and plot specific sampling locations for TOS data products. 
+* Access and use sensor location data. 
 
 ## Things You’ll Need To Complete This Tutorial
 
 ### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
-the RStudio IDE to work with R. 
+You will need a current version of R (4+) to complete this tutorial. We also 
+recommend the RStudio IDE to work with R.
 
 </div>
 
@@ -58,26 +58,32 @@ the RStudio IDE to work with R.
 ## Setup R Environment
 
 We'll need several R packages in this tutorial. Install the packages, if not 
-already installed, and load the libraries for each. 
+already installed, and load the libraries for each. As of June 2026, NEON 
+requires an API token for data downloads, to reduce bot scraping and improve 
+user support. Tokens can be generated in NEON data portal user accounts - log 
+in to your account or create one, and go to the API Tokens section. For best 
+practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 
     # run once to get the package, and re-run if you need to get updates
 
-    install.packages("ggplot2")  # plotting
+    install.packages("ggplot2")
 
-    install.packages("neonUtilities")  # work with NEON data
+    install.packages("dplyr")
 
-    install.packages("neonOS")  # work with NEON observational data
+    install.packages("neonUtilities")
 
-    install.packages("devtools")  # to use the install_github() function
+    install.packages("neonOS")
 
-    devtools::install_github("NEONScience/NEON-geolocation/geoNEON")  # work with NEON spatial data
+    install.packages("devtools")
+
+    devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
 
 
-
-    # run every time you start a script
 
     library(ggplot2)
+
+    library(dplyr)
 
     library(neonUtilities)
 
@@ -87,11 +93,12 @@ already installed, and load the libraries for each.
 
     
 
-    options(stringsAsFactors=F)
+    token <- Sys.getenv("NEON_TOKEN")
 
 ## Locations for observational data
 
 ### Plot level locations
+
 Both aquatic and terrestrial observational data downloads include spatial 
 data in the downloaded files. The spatial data in the aquatic data files 
 are the most precise locations available for the sampling events. The 
@@ -108,17 +115,15 @@ varies from data product to data product, but the methods for working with
 the data are similar. 
 
 First, let's download the vegetation structure data from one site, Wind 
-River Experimental Forest (WREF).
+River Experimental Forest (WREF). If downloading data using the `neonUtilities` 
+package is new to you, check out the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial.
 
-If downloading data using the `neonUtilities` package is new to you, check out 
-the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial.
-
-
-    # load veg structure data
 
     vst <- loadByProduct(dpID="DP1.10098.001", 
                          site="WREF",
-                         check.size=F)
+                         include.provisional=T,
+                         check.size=F,
+                         token=token)
 
 Data downloaded this way are stored in R as a large list. For this tutorial, 
 we'll work with the individual dataframes within this large list. 
@@ -152,22 +157,17 @@ those plots where trees were found and measured.
 
     # start by subsetting data to plots with trees
 
-    vst.trees <- vst$vst_perplotperyear[which(
-            vst$vst_perplotperyear$treesPresent=="Y"),]
+    vst.trees <- vst$vst_perplotperyear |>
+      filter(treesPresent=="Y")
 
     
 
-    # make variable for plot sizes
+    # create plot size variable
 
-    plot.size <- numeric(nrow(vst.trees))
-
-    
-
-    # populate plot sizes in new variable
-
-    plot.size[which(vst.trees$plotType=="tower")] <- 40
-
-    plot.size[which(vst.trees$plotType=="distributed")] <- 20
+    vst.trees <- vst.trees |>
+      mutate(plotsize = case_when(plotType=="tower" ~ 40,
+                                  plotType=="distributed" ~ 20,
+                                  TRUE ~ NA))
 
     
 
@@ -175,8 +175,10 @@ those plots where trees were found and measured.
 
     symbols(vst.trees$easting,
             vst.trees$northing,
-            squares=plot.size, inches=F,
-            xlab="Easting", ylab="Northing")
+            squares=vst.trees$plotsize, 
+            inches=F,
+            xlab="Easting", 
+            ylab="Northing")
 
 ![All vegetation structure plots at WREF](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-plots-1.png)
 
@@ -225,32 +227,30 @@ and the
 For more information about the location calculations used in each data product, 
 see the **Data Product User Guide** for each product.
 
-The `getLocTOS()` function requires two inputs:
+The `getLocTOS()` function requires three inputs:
 
 * A data table that contains spatial data from a NEON TOS data product
 * The NEON table name of that data table
+* NEON API token
 
 For vegetation structure locations, the function call looks like this. This 
-function may take a while to download all the location data. For faster 
-downloads, use an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">API token</a>.
+function may take a while to download all the location data.
 
-
-    # calculate individual tree locations
 
     vst.loc <- getLocTOS(data=vst$vst_mappingandtagging,
-                         dataProd="vst_mappingandtagging")
+                         dataProd="vst_mappingandtagging",
+                         token=token)
 
-What additional data are now available in the data obtained by `getLocTOS()`?
+What additional data are now available that were obtained and calculated by 
+`getLocTOS()`? Let's see what new column names have been added to the table.
 
 
-    # print variable names that are new
+    setdiff(names(vst.loc),
+            names(vst$vst_mappingandtagging))
 
-    names(vst.loc)[which(!names(vst.loc) %in% 
-                          names(vst$vst_mappingandtagging))]
-
-    ## [1] "utmZone"                  "adjNorthing"              "adjEasting"              
-    ## [4] "adjCoordinateUncertainty" "adjDecimalLatitude"       "adjDecimalLongitude"     
-    ## [7] "adjElevation"             "adjElevationUncertainty"
+    ##  [1] "utmZone"                  "adjNorthing"              "adjEasting"               "adjCoordinateUncertainty"
+    ##  [5] "adjDecimalLatitude"       "adjDecimalLongitude"      "adjElevation"             "adjElevationUncertainty" 
+    ##  [9] "locationCurrent"          "locationStartDate"        "locationEndDate"
 
 Now we have adjusted latitude, longitude, and elevation, and the 
 corresponding easting and northing UTM data. We also have coordinate 
@@ -260,8 +260,11 @@ As we did with the plots above, we can use the easting and northing
 data to plot the locations of the individual trees.
 
 
-    plot(vst.loc$adjEasting, vst.loc$adjNorthing, 
-         pch=".", xlab="Easting", ylab="Northing")
+    plot(vst.loc$adjEasting, 
+         vst.loc$adjNorthing,
+         xlab="Easting", 
+         ylab="Northing",
+         pch=".")
 
 ![All mapped tree locations at WREF](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/vst-all-trees-1.png)
 
@@ -272,8 +275,8 @@ this scale is the cluster of dots that make up each plot.
 Let's zoom in on a single plot:
 
 
-    plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
-         vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
+    plot(subset(vst.loc, plotID=="WREF_085",
+                select=c(adjEasting, adjNorthing)),
          pch=20, xlab="Easting", ylab="Northing")
 
 ![Tree locations in plot WREF_085](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-WREF_085-1.png)
@@ -284,16 +287,23 @@ information about each tree. How are species distributed across the plot,
 for instance?
 
 We can plot the tree species at each location using the `text()` function 
-and the `vst.loc$taxonID` field.
+and the `taxonID` field.
 
 
-    plot(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
-         vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")], 
-         type="n", xlab="Easting", ylab="Northing")
+    vst.085 <- vst.loc |>
+      filter(plotID=="WREF_085")
 
-    text(vst.loc$adjEasting[which(vst.loc$plotID=="WREF_085")], 
-         vst.loc$adjNorthing[which(vst.loc$plotID=="WREF_085")],
-         labels=vst.loc$taxonID[which(vst.loc$plotID=="WREF_085")],
+    
+
+    plot(vst.085$adjEasting,
+         vst.085$adjNorthing,
+         xlab="Easting", 
+         ylab="Northing",
+         type="n")
+
+    text(vst.085$adjEasting,
+         vst.085$adjNorthing,
+         labels=vst.085$taxonID,
          cex=0.5)
 
 ![Tree species and their locations in plot WREF_085](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-WREF_085-species-1.png)
@@ -327,10 +337,17 @@ the plot. Note that `stemDiameter` is in centimeters, while easting and
 northing UTMs are in meters, so we divide by 100 to scale correctly.
 
 
-    symbols(veg$adjEasting[which(veg$plotID=="WREF_085")], 
-            veg$adjNorthing[which(veg$plotID=="WREF_085")], 
-            circles=veg$stemDiameter[which(veg$plotID=="WREF_085")]/100/2, 
-            inches=F, xlab="Easting", ylab="Northing")
+    veg.085 <- veg |>
+      filter(plotID=="WREF_085")
+
+    
+
+    symbols(veg.085$adjEasting, 
+            veg.085$adjNorthing, 
+            circles=veg.085$stemDiameter/100/2, 
+            inches=F, 
+            xlab="Easting", 
+            ylab="Northing")
 
 ![Tree bole diameters in plot WREF_085](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/plot-WREF_085-diameter-1.png)
 
@@ -365,15 +382,13 @@ This function will download about 7 MB of data as written so we have `check.size
 for ease of running the code. 
 
 
-    # load soil temperature data of interest 
-
     soilT <- loadByProduct(dpID="DP1.00041.001", site="TREE",
                         startdate="2018-07", enddate="2018-07",
-                        timeIndex=30, check.size=F)
-
-    ## Attempting to stack soil sensor data. Note that due to the number of soil sensors at each site, data volume is very high for these data. Consider dividing data processing into chunks, using the nCores= parameter to parallelize stacking, and/or using a high-performance system.
+                        timeIndex=30, check.size=F,
+                        token=token)
 
 ### Sensor positions file 
+
 Now we can specifically look at the sensor positions file.
 
 
@@ -387,18 +402,15 @@ Now we can specifically look at the sensor positions file.
 
     names(pos)
 
-    ##  [1] "siteID"                           "HOR.VER"                         
-    ##  [3] "sensorLocationID"                 "sensorLocationDescription"       
-    ##  [5] "positionStartDateTime"            "positionEndDateTime"             
-    ##  [7] "referenceLocationID"              "referenceLocationIDDescription"  
-    ##  [9] "referenceLocationIDStartDateTime" "referenceLocationIDEndDateTime"  
-    ## [11] "xOffset"                          "yOffset"                         
-    ## [13] "zOffset"                          "pitch"                           
-    ## [15] "roll"                             "azimuth"                         
-    ## [17] "locationReferenceLatitude"        "locationReferenceLongitude"      
-    ## [19] "locationReferenceElevation"       "eastOffset"                      
-    ## [21] "northOffset"                      "xAzimuth"                        
-    ## [23] "yAzimuth"                         "publicationDate"
+    ##  [1] "domainID"                         "siteID"                           "HOR.VER"                         
+    ##  [4] "sensorLocationID"                 "sensorLocationDescription"        "positionStartDateTime"           
+    ##  [7] "positionEndDateTime"              "referenceLocationID"              "referenceLocationIDDescription"  
+    ## [10] "referenceLocationIDStartDateTime" "referenceLocationIDEndDateTime"   "xOffset"                         
+    ## [13] "yOffset"                          "zOffset"                          "pitch"                           
+    ## [16] "roll"                             "azimuth"                          "locationReferenceLatitude"       
+    ## [19] "locationReferenceLongitude"       "locationReferenceElevation"       "eastOffset"                      
+    ## [22] "northOffset"                      "xAzimuth"                         "yAzimuth"                        
+    ## [25] "publicationDate"                  "release"
 
     # view table
 
@@ -413,11 +425,10 @@ Using `unique()` we can view all the location indices in this file.
 
     unique(pos$HOR.VER)
 
-    ##  [1] "001.501" "001.502" "001.503" "001.504" "001.505" "001.506" "001.507" "001.508" "001.509" "002.501"
-    ## [11] "002.502" "002.503" "002.504" "002.505" "002.506" "002.507" "002.508" "002.509" "003.501" "003.502"
-    ## [21] "003.503" "003.504" "003.505" "003.506" "003.507" "003.508" "003.509" "004.501" "004.502" "004.503"
-    ## [31] "004.504" "004.505" "004.506" "004.507" "004.508" "004.509" "005.501" "005.502" "005.503" "005.504"
-    ## [41] "005.505" "005.506" "005.507" "005.508" "005.509"
+    ##  [1] "001.501" "001.502" "001.503" "001.504" "001.505" "001.506" "001.507" "001.508" "001.509" "002.501" "002.502" "002.503"
+    ## [13] "002.504" "002.505" "002.506" "002.507" "002.508" "002.509" "003.501" "003.502" "003.503" "003.504" "003.505" "003.506"
+    ## [25] "003.507" "003.508" "003.509" "004.501" "004.502" "004.503" "004.504" "004.505" "004.506" "004.507" "004.508" "004.509"
+    ## [37] "005.501" "005.502" "005.503" "005.504" "005.505" "005.506" "005.507" "005.508" "005.509"
 
 Soil temperature data are collected in 5 instrumented soil plots inside the 
 tower footprint. We see this reflected in the data where HOR = 001 to 005. 
@@ -438,28 +449,29 @@ You can read about it in the issue log, which is displayed on the
 and also included as a table in the data download:
 
 
-    soilT$issueLog_00041[grep("TREE soil plot 1", 
-                         soilT$issueLog_00041$locationAffected),]
+    soilT$issueLog_00041 |>
+      filter(grepl("TREE soil plot 1", locationAffected))
 
-    ##      id parentIssueID            issueDate         resolvedDate       dateRangeStart         dateRangeEnd
-    ## 1: 9328            NA 2019-05-23T00:00:00Z 2019-05-23T00:00:00Z 2018-11-07T00:00:00Z 2019-04-19T00:00:00Z
-    ##                                                                                                                          locationAffected
-    ## 1: D05 TREE soil plot 1 measurement levels 1-9 (HOR.VER: 001.501, 001.502, 001.503, 001.504, 001.505, 001.506, 001.507, 001.508, 001.509)
-    ##                                                                                                                                                                                                                           issue
-    ## 1: Soil temperature sensors were pushed or pulled out of the ground by 3 cm over winter, presumably due to freeze-thaw action. The exact timing of this is unknown, but it occurred sometime between 2018-11-07 and 2019-04-19.
-    ##                                                                                        resolution
-    ## 1: Sensor depths were updated in the database with a start date of 2018-11-07 for the new depths.
+    ##     id parentIssueID            issueDate         resolvedDate       dateRangeStart         dateRangeEnd
+    ## 1 9328            NA 2019-05-23T00:00:00Z 2019-05-23T00:00:00Z 2018-11-07T00:00:00Z 2019-04-19T00:00:00Z
+    ##                                                                                                                         locationAffected
+    ## 1 D05 TREE soil plot 1 measurement levels 1-9 (HOR.VER: 001.501, 001.502, 001.503, 001.504, 001.505, 001.506, 001.507, 001.508, 001.509)
+    ##                                                                                                                                                                                                                          issue
+    ## 1 Soil temperature sensors were pushed or pulled out of the ground by 3 cm over winter, presumably due to freeze-thaw action. The exact timing of this is unknown, but it occurred sometime between 2018-11-07 and 2019-04-19.
+    ##                                                                                       resolution
+    ## 1 Sensor depths were updated in the database with a start date of 2018-11-07 for the new depths.
 
 Since we're working with data from July 2018, and the change in 
 sensor locations is dated Nov 2018, we'll use the original locations. 
 There are a number of ways to drop the later locations from the 
-table; here, we find the rows in which the `positionEndDateTime` field is empty, 
-indicating no end date, and the rows corresponding to soil plot 001, 
+table; here, here, we find the rows in which the `positionEndDateTime` field is 
+empty, indicating no end date, and the rows corresponding to soil plot 001, 
 and drop all the rows that meet both criteria.
 
 
-    pos <- pos[-intersect(grep("001.", pos$HOR.VER),
-                          which(pos$positionEndDateTime=="")),]
+    pos <- pos |>
+      filter_out(grepl("001.", pos$HOR.VER) & 
+                   is.na(positionEndDateTime))
 
 Our goal is to plot a time series of temperature, stratified by 
 depth, so let's start by joining the data file and sensor positions 
@@ -471,9 +483,10 @@ the data.
 
     # to match HOR.VER in the sensor positions file
 
-    soilT$ST_30_minute$HOR.VER <- paste(soilT$ST_30_minute$horizontalPosition,
-                                        soilT$ST_30_minute$verticalPosition,
-                                        sep=".")
+    soilT$ST_30_minute <- soilT$ST_30_minute |>
+      mutate(HOR.VER = paste(horizontalPosition,
+                             verticalPosition,
+                             sep="."))
 
     
 
@@ -496,7 +509,7 @@ is its own line:
 
     gg
 
-    ## Warning: Removed 1488 rows containing missing values (`geom_line()`).
+    ## Warning: Removed 1488 rows containing missing values or values outside the scale range (`geom_line()`).
 
 
 ![Tiled figure of temperature by depth in each plot](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/spatialData/rfigs/soilT-plot-1.png)

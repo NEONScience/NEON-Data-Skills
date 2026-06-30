@@ -4,7 +4,7 @@ title: "Understanding AOP Data Releases and Best Practices for AOP Data Manageme
 description: "Understand how AOP data releases differ from the rest of NEON and learn tips and tricks for handling large AOP data volumes"
 dateCreated: 2025-12-08 
 authors: Bridget Hass
-contributors: Claire Lunch, Christine Laney
+contributors: 
 estimatedTime: 1 hour
 packagesLibraries: neonutilities
 topics: remote-sensing
@@ -36,15 +36,13 @@ DOIs for AOP data products for a given RELEASE will be `tombstoned` prior to eac
     <figcaption>AOP Ecosystem Structure Data RELEASE-2023 Tombstone Page</figcaption>
 </figure>
 
-
 Prior to each annual NEON Release, AOP scientists review the existing data and reprocess data if any issues are identified. Then they begin an approximately month-long transition period of replacing older files with newer ones. During this period, the current data release tag may no longer point to the same exact files for certain AOP data products that are undergoing updates. Although the data portal or API may indicate availability of a data product at specific sites for specific months, some files may be unavailable for few days (or longer) before being replaced by updated versions.
 
-NEON will publish a Data Notification indicating when AOP is transitioning between one Release and the next (e.g., <a href="https://www.neonscience.org/impact/observatory-blog/aop-data-availability-notification-release-2024" target="_blank">AOP Data Availability Notification – Release 2024</a>). We suggest holding off on downloading AOP data during this interim period if it is not urgent, or submitting an inquiry through the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us Form</a> to obtain information about the status of the data products, sites, and years that you are interested in. 
+NEON will publish a Data Notification indicating when AOP is transitioning between one Release and the next (e.g., <a href="https://www.neonscience.org/impact/observatory-blog/aop-data-availability-notification-release-2026" target="_blank">AOP Data Availability Notification – Release 2026</a>). We suggest holding off on downloading AOP data during this interim period if it is not urgent, or submitting an inquiry through the <a href="https://www.neonscience.org/about/contact-us" target="_blank">NEON Contact Us Form</a> to obtain information about the status of the data products, sites, and years that you are interested in. 
 
 ## How can I tell if the AOP data I've downloaded is up to date?
 
-There are a few ways to check if and what AOP data have been updated since you last downloaded the data, both on the website, and programmatically using functionality built into the AOP download functions. On the website, you can check the Issue Log tables on each data product page and also see the Issue resolutions, and you can also check the Release pages for a complete summary of what has been changed between the past release and the current one; for example <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases/release-2025" target="_blank">Release 2025</a>. This tutorial will demonstrate some of the programmatic options to check if published AOP data has been modified compared to your local version.
-
+There are a few ways to check if and what AOP data have been updated since you last downloaded the data, both on the website, and programmatically using functionality built into the AOP download functions. On the website, you can check the Issue Log tables on each data product page and also see the Issue resolutions, and you can also check the Release pages for a complete summary of what has been changed between the past release and the current one; for example <a href="https://www.neonscience.org/release-2026" target="_blank">Release 2026</a>. This tutorial will demonstrate some of the programmatic options to check if published AOP data has been modified compared to your local version.
 
 <div id="ds-objectives" markdown="1">
 
@@ -54,12 +52,18 @@ After completing this activity, you will be able to:
  * Find available Released and Provisional AOP data for a given site and data product
  * Understand options for downloading AOP data
  * Display citation information for both Released and Provisional data
- * Learn about available tools to reduce large data downloads
+ * Learn about available tools to reduce repeat large data downloads
  * Understand some basic best practices for working with large volumes of AOP data
 
 ## Things You’ll Need To Complete This Tutorial
 
-To complete this tutorial, you will need a version of Python (3.9 or higher), the latest Python neonutilities package (1.2 or higher) and, preferably, Jupyter Notebooks or Spyder installed on your computer. Much of the lesson can also be carried out in R using the R neonUtilities package; however some of the functionality that is demonstrated is currently only available in Python.
+To complete this tutorial, you will need: 
+* Python version 3.9 or higher
+* The latest Python neonutilities package (1.2 or higher)
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
+
+Some of the lesson can also be carried out in R using the R neonUtilities package; however some of the functionality that is demonstrated is currently only available in Python.
 
 ## Additional Resources
 
@@ -70,17 +74,33 @@ To complete this tutorial, you will need a version of Python (3.9 or higher), th
 
 </div>
 
-## Import Required Packages
+## Import Required Packages and Define the API Token
 
-For this tutorial, we will mainly be exploring the functions imported below in the `neonutilities` package that allow us to explore availability of and download AOP data.
+For this tutorial, we will mainly be using the functions imported below in the `neonutilities` package that allow us to explore availability of and download AOP data. 
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+```python
+# if you haven't installed the packages, install as follows:
+!pip install neonutilities
+```
 
 
 ```python
 import csv
 import os
 from neonutilities import by_file_aop, list_available_dates, get_citation
+import dotenv
 ```
 
+
+```python
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
+# print(token) # uncomment to display the token; if you haven't set the token properly in the environment, this will print nothing
+```
+
+## List Available Dates
 First, we can use some the list_available_dates function to find available data. This will show us the data that is available both provisionally and as part of the latest release. First, run `help(list_available_dates)` to see the required inputs of this function.
 
 
@@ -104,30 +124,45 @@ help(list_available_dates)
             --------
             >>> list_available_dates('DP3.30015.001','JORN')
             RELEASE-2025 Available Dates: 2017-08, 2018-08, 2019-08, 2021-08, 2022-09
-        
+    
             >>> list_available_dates('DP3.30015.001','HOPB')
             PROVISIONAL Available Dates: 2024-09
             RELEASE-2025 Available Dates: 2016-08, 2017-08, 2019-08, 2022-08
-        
+    
             >>> list_available_dates('DP1.10098.001','HOPB')
             ValueError: There are no data available for the data product DP1.10098.001 at the site HOPB.
     
     
 
-The required inputs for this function are the data product id (`dpid`) and the site code (`site`). Let's try this out for the Canopy Height Model (Ecosystem Structure) data product at the McRae Creek site in Oregon (MCRA), to start. The CHM data product has the code `DP3.30015.001`.
+The required inputs for this function are the data product id (`dpid`) and the site code (`site`). Let's try this function out for the Leaf Area Index (LAI) data product at the McRae Creek site in Oregon (MCRA), to start. This data product has the code `DP3.30012.001` for data derived from directional reflectance, and `DP3.30012.002` for data derived from bidirectional reflectance (with BRDF and topographic corrections applied). As of 2026, all bidirectional reflectance data and data derived from the BRDF-corrected data are only available provisionally, and all directional reflectance data have been released.
 
 
 ```python
-list_available_dates('DP3.30015.001','MCRA')
+lai_dpid = 'DP3.30012.001' # lAI - directional reflectance
+lai_dpid2 = 'DP3.30012.002' # lAI - bidirectional reflectance
 ```
 
-    PROVISIONAL Available Dates: 2025-08
-    RELEASE-2025 Available Dates: 2018-07, 2021-07, 2022-07, 2023-07
+
+```python
+list_available_dates(lai_dpid,'MCRA')
+```
+
+    RELEASE-2026 Available Dates: 2018-07, 2021-07
     
 
-We can see that as of Dec 2025, CHM data at MCRA are available provisionally in 2025, and as part of RELEASE-2025 for the years 2018, 2021, 2022, and 2023. MCRA is a non-collocated aquatic site and is collected on an opportunistic basis, so it has been flown a little less frequently than the terrestrial or collocated aquatic sites.
 
-We can download the CHM data from the site MCRA collected in 2023 and 2025 using the `neonutilities` function `by_file_aop`. Note that `by_file_aop` downloads all available data for a given data product, while `by_tile_aop` downloads only data that intersect provided UTM coordinates (easting and northing). For the purposes of this tutorial, we will stick to using `by_file_aop`, but note that you could use `by_tile_aop` similarly, provided you know which tiles you want to download. First, take a quick look at the function documentation using `help`.
+```python
+list_available_dates(lai_dpid2,'MCRA')
+```
+
+    PROVISIONAL Available Dates: 2022-07, 2023-07, 2025-08
+    
+
+We can see that as of May 2026, LAI 002 data at MCRA are available provisionally in 2022, 2023, and 2025, and as part of RELEASE-2026 for the years 2018 and 2021. MCRA is a non-collocated aquatic site and is collected on an opportunistic basis, so it has been flown a little less frequently than the terrestrial or collocated aquatic sites.
+
+## Download All AOP Files v. Download By Tile
+
+We can download the LAI data from the site MCRA collected in 2021 and 2022 using the `neonutilities` function `by_file_aop`. Note that `by_file_aop` downloads all available data for a given data product, while `by_tile_aop` downloads only data that intersect provided UTM coordinates (easting and northing). For the purposes of this tutorial, we will stick to using `by_file_aop`, but note that you could use `by_tile_aop` similarly, provided you know which tiles you want to download. First, take a quick look at the function documentation using `help`.
 
 
 ```python
@@ -136,53 +171,65 @@ help(by_file_aop)
 
     Help on function by_file_aop in module neonutilities.aop_download:
     
-    by_file_aop(dpid, site, year, include_provisional=False, check_size=True, savepath=None, chunk_size=1024, token=None, verbose=False, skip_if_exists=False, overwrite='prompt')
+    by_file_aop(
+        dpid,
+        site,
+        year,
+        include_provisional=False,
+        check_size=True,
+        savepath=None,
+        chunk_size=1024,
+        token=None,
+        verbose=False,
+        skip_if_exists=False,
+        overwrite='prompt'
+    )
         This function queries the NEON API for AOP data by site, year, and product, and downloads all
         files found, preserving the original folder structure. It downloads files serially to
         avoid API rate-limit overload, which may take a long time.
-        
+    
         Parameters
         --------
         dpid: str
             The identifier of the NEON data product to pull, in the form DPL.PRNUM.REV, e.g. DP3.30001.001.
-        
+    
         site: str
             The four-letter code of a single NEON site, e.g. 'CLBJ'.
-        
+    
         year: str or int
             The four-digit year of data collection.
-        
+    
         include_provisional: bool, optional
             Should provisional data be downloaded? Defaults to False. See
             https://www.neonscience.org/data-samples/data-management/data-revisions-releases
             for details on the difference between provisional and released data.
-        
+    
         check_size: bool, optional
             Should the user approve the total file size before downloading? Defaults to True.
             If you have sufficient storage space on your local drive, when working
             in batch mode, or other non-interactive workflow, use check_size=False.
-        
+    
         savepath: str, optional
             The file path to download to. Defaults to None, in which case the working directory is used.
-        
+    
         chunk_size: integer, optional
             Size in bytes of chunk for chunked download. Defaults to 1024.
-        
+    
         token: str, optional
             User-specific API token from data.neonscience.org user account. Defaults to None.
             See https://data.neonscience.org/data-api/rate-limiting/ for details about API
             rate limits and user tokens.
-        
+    
         verbose: bool, optional
             If set to True, the function will print more detailed information about the download process.
-        
+    
         skip_if_exists: bool, optional
             If set to True, the function will skip downloading files that already exist in the
             savepath and are valid (local checksums match the checksums of the published file).
             Defaults to False. If any local file checksums don't match those of files published
             on the NEON Data Portal, the user will be prompted to skip these files or overwrite
             the existing files with the new ones (see overwrite input).
-        
+    
         overwrite: str, optional
             Must be one of:
                 'yes'    - overwrite mismatched files without prompting,
@@ -190,13 +237,13 @@ help(by_file_aop)
                 'prompt' - prompt the user (y/n) to overwrite mismatched files after displaying them (default).
             If skip_if_exists is False, this parameter is ignored, and any existing files in
             the savepath will be overwritten according to the function's default behavior.
-        
+    
         Returns
         --------
         None; data are downloaded to the directory specified (savepath) or the current working directory.
         If data already exist in the expected path, they will be overwritten by default. To check for
         existing files before downloading, set skip_if_exists=True along with an overwrite option (y/n/prompt).
-        
+    
         Examples
         --------
         >>> by_file_aop(dpid="DP3.30015.001",
@@ -208,7 +255,7 @@ help(by_file_aop)
         # If any files already exist in the savepath, they will be checked and skipped if they are valid.
         # The user will be prompted to ovewrite or skip downloading any existing files that do not match
         # the latest published data on the NEON Data Portal.
-        
+    
         Notes
         --------
         This function creates a folder named by the Data Product ID (DPID; e.g. DP3.30015.001) in the
@@ -232,12 +279,17 @@ Set the data directory, where data will be downloaded. Make sure this is a path 
 data_dir = r'C:\NEON_Data'
 ```
 
+## Download Provisional Data
+
+Let's take a look at the default behavior in the code, when we try to download provisional data.
+
 
 ```python
-by_file_aop(dpid='DP3.30015.001',
+by_file_aop(dpid=lai_dpid2,
             site='MCRA',
-            year='2025',
-            savepath=data_dir)
+            year='2022',
+            savepath=data_dir,
+            token=token)
 ```
 
     Provisional NEON data are not included. To download provisional data, use input parameter include_provisional=True.
@@ -248,25 +300,28 @@ Now let's set `include_provisional=True` to see what happens. Select "y" when pr
 
 
 ```python
-by_file_aop(dpid='DP3.30015.001',
+by_file_aop(dpid=lai_dpid2,
             site='MCRA',
-            year='2025',
+            year='2022',
             savepath=data_dir,
-            include_provisional=True)
+            include_provisional=True,
+            token=token)
 ```
 
     Provisional NEON data are included. To exclude provisional data, use input parameter include_provisional=False.
     
 
-    Continuing will download 32 NEON data files totaling approximately 342.5 MB. Do you want to proceed? (y/n)  y
+    Continuing will download 66 NEON data files totaling approximately 1.4 GB. Do you want to proceed? (y/n)  y
     
 
-    Downloading 32 NEON data files totaling approximately 342.5 MB
+    Downloading 66 NEON data files totaling approximately 1.4 GB
     
-    100%|██████████████████████████████████████████████████████████████████████████████████| 32/32 [00:42<00:00,  1.32s/it]
+    100%|███████████████████████████████████████████████████████████████████████████| 66/66 [04:18<00:00,  3.92s/it]
     
 
 You can also optionally set `check_size=False` if you don't want to be prompted to type yes or no (`y/n`) after the data volume is displayed. If this is your first time downloading data, we recommend keeping the default setting so you can make sure you have enough space on your computer before downloading.
+
+### Look at Contents of Downloaded Data
 
 Ok, simple enough! Let's take a look at the data we have downloaded. We'll write a couple of functions to let us see the folders and some of the files that have been downloaded. Feel free to explore the directory in File Explorer on your own as well.
 
@@ -301,9 +356,6 @@ def display_files_in_subdirectories(path):
     Args:
         path (str): The path to the root directory to start scanning from.
     """
-    # if not os.path.isdir(path):
-    #     print(f"Error: '{path}' is not a valid directory.")
-    #     return
 
     for dirpath, dirnames, filenames in os.walk(path):
         if filenames:
@@ -327,11 +379,14 @@ get_folders_with_files(data_dir)
 
 
 
-    ['C:\\NEON_Data\\DP3.30015.001',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-provisional-products\\2025\\FullSite\\D16\\2025_MCRA_5\\L3\\DiscreteLidar\\CanopyHeightModelGtif',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-provisional-products\\2025\\FullSite\\D16\\2025_MCRA_5\\Metadata\\DiscreteLidar\\Reports',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-provisional-products\\2025\\FullSite\\D16\\2025_MCRA_5\\Metadata\\DiscreteLidar\\TileBoundary',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-publication\\NEON.DOM.SITE.DP3.30015.001\\MCRA\\20250801T000000--20250901T000000\\basic']
+    ['C:\\NEON_Data\\DP3.30012.001',
+     'C:\\NEON_Data\\DP3.30012.001\\neon-aop-products\\2021\\FullSite\\D16\\2021_MCRA_2\\L3\\Spectrometer\\LAI',
+     'C:\\NEON_Data\\DP3.30012.001\\neon-aop-products\\2021\\FullSite\\D16\\2021_MCRA_2\\Metadata\\Spectrometer\\Reports',
+     'C:\\NEON_Data\\DP3.30012.001\\neon-publication\\release\\tag\\RELEASE-2026\\NEON.DOM.SITE.DP3.30012.001\\MCRA\\20210701T000000--20210801T000000\\basic',
+     'C:\\NEON_Data\\DP3.30012.002',
+     'C:\\NEON_Data\\DP3.30012.002\\neon-aop-provisional-products\\2022\\FullSite\\D16\\2022_MCRA_3\\L3\\Spectrometer\\LAI',
+     'C:\\NEON_Data\\DP3.30012.002\\neon-aop-provisional-products\\2022\\FullSite\\D16\\2022_MCRA_3\\Metadata\\Spectrometer\\Reports',
+     'C:\\NEON_Data\\DP3.30012.002\\neon-publication\\NEON.DOM.SITE.DP3.30012.002\\MCRA\\20220701T000000--20220801T000000\\basic']
 
 
 
@@ -341,50 +396,69 @@ display_files_in_subdirectories(data_dir)
 ```
 
     
-    Directory: C:\NEON_Data\DP3.30015.001
-      - citation_DP3.30015.001_PROVISIONAL.txt
-      - issueLog_DP3.30015.001.csv
+    Directory: C:\NEON_Data\DP3.30012.001
+      - citation_DP3.30012.001_RELEASE-2026.txt
+      - issueLog_DP3.30012.001.csv
     
-    Directory: C:\NEON_Data\DP3.30015.001\neon-aop-provisional-products\2025\FullSite\D16\2025_MCRA_5\L3\DiscreteLidar\CanopyHeightModelGtif
-      - NEON_D16_MCRA_DP3_565000_4900000_CHM.tif
-      - NEON_D16_MCRA_DP3_565000_4901000_CHM.tif
-      - NEON_D16_MCRA_DP3_565000_4902000_CHM.tif
-      - NEON_D16_MCRA_DP3_565000_4903000_CHM.tif
-      - NEON_D16_MCRA_DP3_565000_4904000_CHM.tif
-      ... (22 more files not shown)
+    Directory: C:\NEON_Data\DP3.30012.001\neon-aop-products\2021\FullSite\D16\2021_MCRA_2\L3\Spectrometer\LAI
+      - NEON_D16_MCRA_DP3_565000_4900000_LAI.tif
+      - NEON_D16_MCRA_DP3_565000_4900000_LAI_error.tif
+      - NEON_D16_MCRA_DP3_565000_4901000_LAI.tif
+      - NEON_D16_MCRA_DP3_565000_4901000_LAI_error.tif
+      - NEON_D16_MCRA_DP3_565000_4902000_LAI.tif
+      ... (53 more files not shown)
     
-    Directory: C:\NEON_Data\DP3.30015.001\neon-aop-provisional-products\2025\FullSite\D16\2025_MCRA_5\Metadata\DiscreteLidar\Reports
-      - 2025080216_P3C1_SBET_QAQC.pdf
-      - 2025_MCRA_5_L1_discrete_lidar_qa.html
-      - 2025_MCRA_5_L3_discrete_lidar_qa.html
+    Directory: C:\NEON_Data\DP3.30012.001\neon-aop-products\2021\FullSite\D16\2021_MCRA_2\Metadata\Spectrometer\Reports
+      - 2021_MCRA_2_2021072216_P1C2_L2_spectrometer_processing.pdf
+      - 2021_MCRA_2_MCRA_L3_spectrometer_processing.pdf
+      - MCRA_2021072216_L1_spectrometer_processing.pdf
     
-    Directory: C:\NEON_Data\DP3.30015.001\neon-aop-provisional-products\2025\FullSite\D16\2025_MCRA_5\Metadata\DiscreteLidar\TileBoundary
-      - 2025_MCRA_5_TileBoundary.zip
+    Directory: C:\NEON_Data\DP3.30012.001\neon-publication\release\tag\RELEASE-2026\NEON.DOM.SITE.DP3.30012.001\MCRA\20210701T000000--20210801T000000\basic
+      - NEON.D16.MCRA.DP3.30012.001.readme.20260123T000749Z.txt
     
-    Directory: C:\NEON_Data\DP3.30015.001\neon-publication\NEON.DOM.SITE.DP3.30015.001\MCRA\20250801T000000--20250901T000000\basic
-      - NEON.D16.MCRA.DP3.30015.001.readme.20250926T050145Z.txt
+    Directory: C:\NEON_Data\DP3.30012.002
+      - citation_DP3.30012.002_PROVISIONAL.txt
+      - issueLog_DP3.30012.002.csv
+    
+    Directory: C:\NEON_Data\DP3.30012.002\neon-aop-provisional-products\2022\FullSite\D16\2022_MCRA_3\L3\Spectrometer\LAI
+      - NEON_D16_MCRA_DP3_565000_4899000_bidirectional_LAI.tif
+      - NEON_D16_MCRA_DP3_565000_4899000_bidirectional_LAI_error.tif
+      - NEON_D16_MCRA_DP3_565000_4900000_bidirectional_LAI.tif
+      - NEON_D16_MCRA_DP3_565000_4900000_bidirectional_LAI_error.tif
+      - NEON_D16_MCRA_DP3_565000_4901000_bidirectional_LAI.tif
+      ... (57 more files not shown)
+    
+    Directory: C:\NEON_Data\DP3.30012.002\neon-aop-provisional-products\2022\FullSite\D16\2022_MCRA_3\Metadata\Spectrometer\Reports
+      - 2022_MCRA_3_L3_spectrometer_processing.pdf
+      - MCRA_2022071415_P1C1_L1_spectrometer_processing.pdf
+      - MCRA_2022071415_P1C1_L2_spectrometer_processing.pdf
+    
+    Directory: C:\NEON_Data\DP3.30012.002\neon-publication\NEON.DOM.SITE.DP3.30012.002\MCRA\20220701T000000--20220801T000000\basic
+      - NEON.D16.MCRA.DP3.30012.002.readme.20241224T041656Z.txt
     
 
-We can see that we've downloaded some files in subfolders under the `C:\NEON_Data\DP3.30015.001` folder. The provisional data are stored in a provisional bucket (or cloud storage path) called `neon-aop-provisional-products` and the full path of the data as it is stored on cloud storage is preserved in order to maintain organization. This is helpful if you are working with multiple data products, sites, and/or years of data. Note that there is an `L3\DiscreteLidar\CanopyHeightModelGtif`folder - this contains the Level 3 (L3) geotiff files (or .tif tiles), and there is also a `Metadata\DiscreteLidar` folder, which contains the subfolders called `Reports` and `TileBoundary`. The reports are informational documents (in pdf or html format) summarizing the processing parameters and useful quality information. The `TileBoundary` folder contains shapefiles and kml files that provide useful information about the extent of the data. Please explore the data more on your own!
+We can see that we've downloaded some files in subfolders under the `C:\NEON_Data\DP3.30015.001` folder. The provisional data are stored in a provisional "bucket" (or cloud storage path) called `neon-aop-provisional-products` and the full path of the data as it is stored on cloud storage is preserved in order to maintain organization. This is helpful if you are working with multiple data products, sites, and/or years of data. Note that there is an `L3\DiscreteLidar\CanopyHeightModelGtif`folder - this contains the Level 3 (L3) geotiff files (or .tif tiles), and there is also a `Metadata\DiscreteLidar` folder, which contains the subfolders called `Reports` and `TileBoundary`. The reports are informational documents (in pdf or html format) summarizing the processing parameters and useful quality information. The `TileBoundary` folder contains shapefiles and kml files that provide useful information about the extent of the data. Please explore the data more on your own!
+
+## Citations and Issue Logs
 
 Before continuing, let's take a quick look at the files `citation_DP3.30015.001_PROVISIONAL.txt` and `issueLog_DP3.30015.001.csv` that were downloaded in the `C:\NEON_Data\DP3.30015.001` folder.
 
 
 ```python
-with open(r'C:\NEON_Data\DP3.30015.001\citation_DP3.30015.001_PROVISIONAL.txt', 'r', newline='') as file:
+with open(r'C:\NEON_Data\DP3.30012.002\citation_DP3.30012.002_PROVISIONAL.txt', 'r', newline='') as file:
     reader = csv.reader(file)
     for row in reader:
         print(row[0])
 ```
 
-    @misc{DP3.30015.001/provisional
+    @misc{DP3.30012.002/provisional
       doi = {}
-      url = {https://data.neonscience.org/data-products/DP3.30015.001}
+      url = {https://data.neonscience.org/data-products/DP3.30012.002}
       author = {{National Ecological Observatory Network (NEON)}}
       language = {en}
-      title = {Ecosystem structure (DP3.30015.001)}
+      title = {LAI - spectrometer - bidirectional mosaic (DP3.30012.002)}
       publisher = {National Ecological Observatory Network (NEON)}
-      year = {2025}
+      year = {2026}
     }
     
 
@@ -393,58 +467,47 @@ We can also get the citation information from the `neonutilities` `get_citation`
 
 
 ```python
-mcra_chm_provisional_citation = get_citation('DP3.30015.001','PROVISIONAL')
-mcra_chm_provisional_citation
+mcra_lai_provisional_citation = get_citation('DP3.30012.002','PROVISIONAL')
+mcra_lai_provisional_citation.split('\n') # .split('\n') displays this output more nicely
 ```
 
 
 
 
-    '@misc{DP3.30015.001/provisional,\n  doi = {},\n  url = {https://data.neonscience.org/data-products/DP3.30015.001},\n  author = {{National Ecological Observatory Network (NEON)}},\n  language = {en},\n  title = {Ecosystem structure (DP3.30015.001)},\n  publisher = {National Ecological Observatory Network (NEON)},\n  year = {2025}\n}'
-
-
-
-We can format this a little more nicely as follows:
-
-
-```python
-mcra_chm_provisional_citation.split('\n')
-```
-
-
-
-
-    ['@misc{DP3.30015.001/provisional,',
+    ['@misc{DP3.30012.002/provisional,',
      '  doi = {},',
-     '  url = {https://data.neonscience.org/data-products/DP3.30015.001},',
+     '  url = {https://data.neonscience.org/data-products/DP3.30012.002},',
      '  author = {{National Ecological Observatory Network (NEON)}},',
      '  language = {en},',
-     '  title = {Ecosystem structure (DP3.30015.001)},',
+     '  title = {LAI - spectrometer - bidirectional mosaic (DP3.30012.002)},',
      '  publisher = {National Ecological Observatory Network (NEON)},',
-     '  year = {2025}',
+     '  year = {2026}',
      '}']
 
 
 
-Let's also download data that has been released. For this example, we'll download the CHM data from 2023. In this case, as we saw at the start, the data have been released as part of `RELEASE-2025`, so we do not need to set `include_provisional=True` (although it won't hurt).
+## Download Released Data
 
-We can re-run the `get_folders_with_files` function to see the new data that has been downloaded. Type "y" for yes when prompted.
+Let's also download data that has been released. For this example, we'll download the LAI data derived from the directional reflectance collected at the MCRA site in 2021. In this case, as we saw at the start, the data have been released as part of `RELEASE-2026` (or the most recent release), so we do not need to set `include_provisional=True` (although it won't hurt). Type "y" for yes when prompted.
 
 
 ```python
-by_file_aop(dpid='DP3.30015.001',
+by_file_aop(dpid=lai_dpid,
             site='MCRA',
-            year='2023',
-            savepath=data_dir)
+            year='2021',
+            savepath=data_dir,
+            token=token)
 ```
 
-    Continuing will download 124 NEON data files totaling approximately 94.3 MB. Do you want to proceed? (y/n)  y
+    Continuing will download 62 NEON data files totaling approximately 350.4 MB. Do you want to proceed? (y/n)  y
     
 
-    Downloading 124 NEON data files totaling approximately 94.3 MB
+    Downloading 62 NEON data files totaling approximately 350.4 MB
     
-    100%|████████████████████████████████████████████████████████████████████████████████| 124/124 [00:47<00:00,  2.62it/s]
+    100%|███████████████████████████████████████████████████████████████████████████| 62/62 [01:21<00:00,  1.31s/it]
     
+
+Re-run the `get_folders_with_files` function to see the new data that has been downloaded. 
 
 
 ```python
@@ -454,16 +517,14 @@ get_folders_with_files(data_dir)
 
 
 
-    ['C:\\NEON_Data\\DP3.30015.001',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-products\\2023\\FullSite\\D16\\2023_MCRA_4\\L3\\DiscreteLidar\\CanopyHeightModelGtif',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-products\\2023\\FullSite\\D16\\2023_MCRA_4\\Metadata\\DiscreteLidar\\Reports',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-products\\2023\\FullSite\\D16\\2023_MCRA_4\\Metadata\\DiscreteLidar\\TileBoundary\\kmls',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-products\\2023\\FullSite\\D16\\2023_MCRA_4\\Metadata\\DiscreteLidar\\TileBoundary\\shps',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-provisional-products\\2025\\FullSite\\D16\\2025_MCRA_5\\L3\\DiscreteLidar\\CanopyHeightModelGtif',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-provisional-products\\2025\\FullSite\\D16\\2025_MCRA_5\\Metadata\\DiscreteLidar\\Reports',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-aop-provisional-products\\2025\\FullSite\\D16\\2025_MCRA_5\\Metadata\\DiscreteLidar\\TileBoundary',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-publication\\NEON.DOM.SITE.DP3.30015.001\\MCRA\\20250801T000000--20250901T000000\\basic',
-     'C:\\NEON_Data\\DP3.30015.001\\neon-publication\\release\\tag\\RELEASE-2025\\NEON.DOM.SITE.DP3.30015.001\\MCRA\\20230701T000000--20230801T000000\\basic']
+    ['C:\\NEON_Data\\DP3.30012.001',
+     'C:\\NEON_Data\\DP3.30012.001\\neon-aop-products\\2021\\FullSite\\D16\\2021_MCRA_2\\L3\\Spectrometer\\LAI',
+     'C:\\NEON_Data\\DP3.30012.001\\neon-aop-products\\2021\\FullSite\\D16\\2021_MCRA_2\\Metadata\\Spectrometer\\Reports',
+     'C:\\NEON_Data\\DP3.30012.001\\neon-publication\\release\\tag\\RELEASE-2026\\NEON.DOM.SITE.DP3.30012.001\\MCRA\\20210701T000000--20210801T000000\\basic',
+     'C:\\NEON_Data\\DP3.30012.002',
+     'C:\\NEON_Data\\DP3.30012.002\\neon-aop-provisional-products\\2022\\FullSite\\D16\\2022_MCRA_3\\L3\\Spectrometer\\LAI',
+     'C:\\NEON_Data\\DP3.30012.002\\neon-aop-provisional-products\\2022\\FullSite\\D16\\2022_MCRA_3\\Metadata\\Spectrometer\\Reports',
+     'C:\\NEON_Data\\DP3.30012.002\\neon-publication\\NEON.DOM.SITE.DP3.30012.002\\MCRA\\20220701T000000--20220801T000000\\basic']
 
 
 
@@ -471,41 +532,25 @@ Now, in addition to the data in the `neon-aop-provisional-products` folder, we h
 
 
 ```python
-display_files_in_subdirectories(os.path.join(data_dir,'DP3.30015.001','neon-aop-products'))
+display_files_in_subdirectories(os.path.join(data_dir,lai_dpid,'neon-aop-products'))
 ```
 
     
-    Directory: C:\NEON_Data\DP3.30015.001\neon-aop-products\2023\FullSite\D16\2023_MCRA_4\L3\DiscreteLidar\CanopyHeightModelGtif
-      - NEON_D16_MCRA_DP3_565000_4900000_CHM.tif
-      - NEON_D16_MCRA_DP3_565000_4901000_CHM.tif
-      - NEON_D16_MCRA_DP3_565000_4902000_CHM.tif
-      - NEON_D16_MCRA_DP3_565000_4903000_CHM.tif
-      - NEON_D16_MCRA_DP3_566000_4900000_CHM.tif
-      ... (15 more files not shown)
+    Directory: C:\NEON_Data\DP3.30012.001\neon-aop-products\2021\FullSite\D16\2021_MCRA_2\L3\Spectrometer\LAI
+      - NEON_D16_MCRA_DP3_565000_4900000_LAI.tif
+      - NEON_D16_MCRA_DP3_565000_4900000_LAI_error.tif
+      - NEON_D16_MCRA_DP3_565000_4901000_LAI.tif
+      - NEON_D16_MCRA_DP3_565000_4901000_LAI_error.tif
+      - NEON_D16_MCRA_DP3_565000_4902000_LAI.tif
+      ... (53 more files not shown)
     
-    Directory: C:\NEON_Data\DP3.30015.001\neon-aop-products\2023\FullSite\D16\2023_MCRA_4\Metadata\DiscreteLidar\Reports
-      - 2023070115_P1C1_SBET_QAQC.pdf
-      - 2023_MCRA_4_L1_discrete_lidar_processing.pdf
-      - 2023_MCRA_4_L3_discrete_lidar_processing.pdf
-    
-    Directory: C:\NEON_Data\DP3.30015.001\neon-aop-products\2023\FullSite\D16\2023_MCRA_4\Metadata\DiscreteLidar\TileBoundary\kmls
-      - NEON_D16_MCRA_DPQA_565000_4900000_boundary.kml
-      - NEON_D16_MCRA_DPQA_565000_4901000_boundary.kml
-      - NEON_D16_MCRA_DPQA_565000_4902000_boundary.kml
-      - NEON_D16_MCRA_DPQA_565000_4903000_boundary.kml
-      - NEON_D16_MCRA_DPQA_566000_4900000_boundary.kml
-      ... (15 more files not shown)
-    
-    Directory: C:\NEON_Data\DP3.30015.001\neon-aop-products\2023\FullSite\D16\2023_MCRA_4\Metadata\DiscreteLidar\TileBoundary\shps
-      - NEON_D16_MCRA_DPQA_565000_4900000_boundary.dbf
-      - NEON_D16_MCRA_DPQA_565000_4900000_boundary.prj
-      - NEON_D16_MCRA_DPQA_565000_4900000_boundary.shp
-      - NEON_D16_MCRA_DPQA_565000_4900000_boundary.shx
-      - NEON_D16_MCRA_DPQA_565000_4901000_boundary.dbf
-      ... (75 more files not shown)
+    Directory: C:\NEON_Data\DP3.30012.001\neon-aop-products\2021\FullSite\D16\2021_MCRA_2\Metadata\Spectrometer\Reports
+      - 2021_MCRA_2_2021072216_P1C2_L2_spectrometer_processing.pdf
+      - 2021_MCRA_2_MCRA_L3_spectrometer_processing.pdf
+      - MCRA_2021072216_L1_spectrometer_processing.pdf
     
 
-We can see that the contents of the CHM geotiff files and Metadata reports are similar to what we saw in the provisional bucket. In the `TileBoundary` folder, there are both kmls and shapefiles (.shp, .shx, .dbf, .prj). Note that in `RELEASE-2026` all of the Metadata files will be consolidated into a single merged kml and shapefile with labels showing all of the individual tiles. This will greatly reduce the number of files that are downloaded. Stay tuned for this update in late January or early Februrary 2026!
+We can see that the contents of the LAI geotiff files and Metadata reports are similar to what we saw in the provisional bucket.
 
 ## AOP Data Management Considerations 
 
@@ -518,28 +563,29 @@ The latest version of Python `neonutilities`(1.2.0, released in October 2025, se
 Note that for the `skip_if_exists` option to work properly, some conditions must be met:
 
 1. The locally downloaded data must be saved in the same location as it was originally downloaded, and you have to use the same `savepath` when you re-download the data.
-2. Data that was originally provisional (thus in the `neon-aop-provisional-products` bucket) and is now released will not be compared, since the bucket has changed. So if you are trying to download newly released data, we recommend deleting the provisional data folders and re-downloading the latest, which will ensure you have the latest released version. If you prefer to check your local data agains the released data, you could do this, but would have to re-name the provisional folder `neon-aop-provisional-products` to `neon-aop-products` in order for the checks to work.
+2. Data that was originally provisional (thus in the `neon-aop-provisional-products` bucket) and is now released will not be compared, since the bucket has changed. So if you are trying to download newly released data, we recommend deleting the provisional data folders and re-downloading the latest, which will ensure you have the latest released version. If you prefer to check your local data against the released data, you could do this, but would have to re-name the provisional folder `neon-aop-provisional-products` to `neon-aop-products` in order for the checks to work.
 
-Let's go ahead and try out the `skip_if_exists` option. For now, we have just downloaded data from MCRA 2023 and 2025. Assuming you haven't changed anything in those download folders, if you set `skip_if_exists=True` (all else the same) the code should find that all the data are matching and there is no new data to download. Let's see!
+Let's go ahead and try out the `skip_if_exists` option. For now, we have just downloaded data from MCRA 2021 and 2022. Assuming you haven't changed anything in those download folders, if you set `skip_if_exists=True` (all else the same) the code should find that all the data are matching and there is no new data to download. Let's see!
 
 
 ```python
-by_file_aop(dpid='DP3.30015.001',
+by_file_aop(dpid=lai_dpid,
             site='MCRA',
-            year='2023',
+            year='2021',
             savepath=data_dir,
             check_size=False,
-            skip_if_exists=True)
+            skip_if_exists=True,
+            token=token)
 ```
 
-    Found 124 NEON data files totaling approximately 94.3 MB.
+    Found 62 NEON data files totaling approximately 350.4 MB.
     Files in savepath will be checked and skipped if they exist and match the latest version.
     Downloading README file
-    100%|████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  6.33it/s]
+    100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  8.53it/s]
     All files already exist locally and match the latest available data. Skipping download.
     
 
-Ok, we can see that "all files already exist locally and match the latest available data." so the download was skipped, aside from the README file.
+Ok, we can see the message `"All files already exist locally and match the latest available data. Skipping download."`, so the download was skipped, aside from the README file.
 
 If you removed any of the files, or modified any of them (or if the data changed due to a new release), you would see another message and then be provided with some options. To show how this would look, we can programmatically modify some of the local data.
 
@@ -547,38 +593,40 @@ This next code chunk is not something you would do typically, it is just to show
 
 
 ```python
-# remove the first CHM file
-os.remove(r'C:\NEON_Data\DP3.30015.001\neon-aop-products\2023\FullSite\D16\2023_MCRA_4\L3\DiscreteLidar\CanopyHeightModelGtif\NEON_D16_MCRA_DP3_565000_4900000_CHM.tif')
+# remove the first LAI file
+os.remove(r"C:\NEON_Data\DP3.30012.001\neon-aop-products\2021\FullSite\D16\2021_MCRA_2\L3\Spectrometer\LAI\NEON_D16_MCRA_DP3_565000_4900000_LAI.tif")
 
-chm_to_empty = r'C:\NEON_Data\DP3.30015.001\neon-aop-products\2023\FullSite\D16\2023_MCRA_4\L3\DiscreteLidar\CanopyHeightModelGtif\NEON_D16_MCRA_DP3_565000_4901000_CHM.tif'
-# set the second CHM file to a null value
-with open(chm_to_empty, "w") as f:
+file_to_empty = r"C:\NEON_Data\DP3.30012.001\neon-aop-products\2021\FullSite\D16\2021_MCRA_2\L3\Spectrometer\LAI\NEON_D16_MCRA_DP3_565000_4900000_LAI_error.tif"
+# set the second file to a null value
+with open(file_to_empty, "w") as f:
     # Opening in "w" mode truncates the file, making it empty.
     pass
 ```
 
+### Skip Downloading if the Same Data Already Exists
 Now that we've modified some of the local files, let's try re-downloading using `skip_if_exists`. Select `n` when prompted.
 
 
 ```python
-by_file_aop(dpid='DP3.30015.001',
+by_file_aop(dpid=lai_dpid,
             site='MCRA',
-            year='2023',
+            year='2021',
             savepath=data_dir,
             check_size=False,
-            skip_if_exists=True)
+            skip_if_exists=True,
+            token=token)
 ```
 
-    Found 124 NEON data files totaling approximately 94.3 MB.
+    Found 62 NEON data files totaling approximately 350.4 MB.
     Files in savepath will be checked and skipped if they exist and match the latest version.
     Downloading README file
-    100%|████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  5.22it/s]
+    100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  6.04it/s]
     The following files will be downloaded (they do not already exist locally):
-      NEON_D16_MCRA_DP3_565000_4900000_CHM.tif
-    100%|████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  1.58it/s]
+      NEON_D16_MCRA_DP3_565000_4900000_LAI.tif
+    100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:01<00:00,  1.74s/it]
     The remainder of the files in savepath will not be downloaded. They already exist locally and match the latest available data.
     The following files exist locally but have a different checksum than the remote files:
-      NEON_D16_MCRA_DP3_565000_4901000_CHM.tif
+      NEON_D16_MCRA_DP3_565000_4900000_LAI_error.tif
     
 
     Do you want to overwrite these files with the latest version? (y/n)  n
@@ -587,27 +635,30 @@ by_file_aop(dpid='DP3.30015.001',
     Skipped overwriting files with mismatched checksums.
     
 
-The `skip_if_exists` options identified the two changes we made. It found a file that was missing and automatically downloaded it, and it also found a file that existed locally but did not match the published data on the Data Portal. For that option, it asked whether we wanted to overwrite the existing file with the published file.
+The `skip_if_exists` options identified the two changes we made. It found a file that was missing and automatically downloaded it, and it also found a file that existed locally but did not match the published data on the Data Portal. For that option, it asked whether we wanted to overwrite the existing file with the ;atest version of the file.
+
+### Overwrite Options
 
 Note that so far, we have not used the `overwrite` input option. By default, this is set to `'prompt'`, meaning that it will prompt you to decide what to do if any mis-matched files are found (such as the one above). If you don't want to be prompted, and definitely want to download the latest data, you can set `overwrite='yes'` to automatically overwrite the existing files, and if you want to keep your local files, even if the currently published files are different, you can set `overwrite='no'`. Let's try `overwrite='no'`:
 
 
 ```python
-by_file_aop(dpid='DP3.30015.001',
+by_file_aop(dpid=lai_dpid,
             site='MCRA',
-            year='2023',
+            year='2021',
             savepath=data_dir,
             check_size=False,
             skip_if_exists=True,
-            overwrite='no')
+            overwrite='no',
+            token=token)
 ```
 
-    Found 124 NEON data files totaling approximately 94.3 MB.
+    Found 62 NEON data files totaling approximately 350.4 MB.
     Files in savepath will be checked and skipped if they exist and match the latest version.
     Downloading README file
-    100%|████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  6.41it/s]
+    100%|█████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  8.33it/s]
     The following files exist locally but have a different checksum than the remote files:
-      NEON_D16_MCRA_DP3_565000_4901000_CHM.tif
+      NEON_D16_MCRA_DP3_565000_4900000_LAI_error.tif
     Skipped overwriting files with mismatched checksums.
     
 
@@ -652,5 +703,12 @@ This tutorial provided a quick overview of downloading AOP data in Python and so
 - Pay attention to whether the data are Provisional or Released when you first download the data, and when you re-download data. The root folder where the data are downloaded may have changed from `neon-aop-provisional-products` to `neon-aop-products` if data has been released since you first downloaded.
 - There are multiple ways to find citation information: on the NEON Data Protal Data Product pages, in the downloaded citation file, or using the `neonutilities` `get_citation` function. Always cite NEON data, and update citations accordingly if data has since been released (and you have overwritten data with the most recent version).
 - If you want to work with the latest available AOP data and ensure everything is up to date, the cleanest option is to delete any pre-existing folders and re-download. The `skip_if_exists` and `overwrite` options do not handle every possible scenario (for example if you have additional files locally that are not published).
+
+## AOP Data on Google Earth Engine
 - Finally, a subset of the Level 3 (tiled) <a href="https://developers.google.com/earth-engine/datasets/tags/neon" target="_blank">AOP data are available on Google Earth Engine (GEE)</a>. The release information for those data are contained in the Image Properties under the `PROVISIONAL_RELEASED` and `RELEASE_YEAR` tags. There will be a short (less than a month) lag between when data are Released on the Data Portal and when data on GEE are updated to pull in the latest released data. GEE does not require downloading any data and has many built-in algorithms for cloud-processing of remote sensing data, so this is a good alternative if you want to avoid local storage and compute. Please refer to the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/intro-aop-data-google-earth-engine-gee-tutorial-series" target="_blank">Intro to AOP Data in Google Earth Engine (GEE) Tutorial Series</a> to get started working with AOP data in GEE. You can also work with the data in GEE using Python, for example as shown in the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-gee-py-intro" target="_blank">Intro to AOP Datasets in Google Earth Engine (GEE) using Python</a>.
 
+
+
+```python
+
+```

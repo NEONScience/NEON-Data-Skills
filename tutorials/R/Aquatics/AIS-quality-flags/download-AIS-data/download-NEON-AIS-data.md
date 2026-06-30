@@ -32,8 +32,10 @@ After completing this activity, you will be able to:
 * Understand and filter data using quality flags.
 
 ## Things You'll Need To Complete This Tutorial
-To complete this tutorial you will need R (version >4.1) and, 
+* To complete this tutorial you will need R (version >4.1) and, 
 preferably, RStudio loaded on your computer.
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### Install R Packages
 
@@ -62,7 +64,7 @@ data every time.
 
 Before we get the NEON data, we need to install (if not already done) and load 
 the `neonUtilities` R package, as well as other packages we will use in the 
-analysis. 
+analysis. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 
     # Install neonUtilities package if you have not yet.
@@ -71,18 +73,18 @@ analysis.
 
     install.packages("ggplot2")
 
+    install.packages("dplyr")
 
-    # Set global option to NOT convert all character variables to factors
 
-    options(stringsAsFactors=F)
-
-    
-
-    # Load required packages
+    # Load required packages and token
 
     library(neonUtilities)
 
     library(ggplot2)
+
+    library(dplyr)
+
+    token <- Sys.getenv("NEON_TOKEN")
 
 The inputs to `loadByProduct()` control which data to download and how 
 to manage the processing. The following are frequently used inputs: 
@@ -106,8 +108,7 @@ working directory.
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set this to F.
-* `token`: this allows you to input your NEON API token to obtain faster 
-downloads.
+* `token`: your NEON API token
 
 Learn more about NEON API tokens in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
 
@@ -172,10 +173,14 @@ check the file size, but for larger downloads this is advisable.
 
     # download data of interest - Water Quality
 
-    waq <- loadByProduct(dpID="DP1.20288.001", site="PRIN", 
-                         startdate="2020-02", enddate="2020-02", 
-                         package="expanded", release="current", 
-                         check.size = F)
+    waq <- loadByProduct(dpID="DP1.20288.001", 
+                         site="PRIN", 
+                         startdate="2020-02", 
+                         enddate="2020-02", 
+                         package="expanded", 
+                         release="current", 
+                         check.size = F,
+                         token=token)
 
 ## Files Associated with Downloads
 
@@ -186,8 +191,9 @@ The data we've downloaded comes as a list of objects.
 
     names(waq)
 
-    ##  [1] "ais_maintenance"             "ais_multisondeCleanCal"      "categoricalCodes_20288"      "citation_20288_RELEASE-2023" "issueLog_20288"             
-    ##  [6] "readme_20288"                "science_review_flags_20288"  "sensor_positions_20288"      "variables_20288"             "waq_instantaneous"
+    ##  [1] "ais_maintenance"             "ais_multisondeCleanCal"      "categoricalCodes_20288"      "citation_20288_RELEASE-2026"
+    ##  [5] "issueLog_20288"              "readme_20288"                "science_review_flags_20288"  "sensor_positions_20288"     
+    ##  [9] "variables_20288"             "waq_instantaneous"
 
 We can see that there are multiple objects in the downloaded water quality data. 
 One dataframe of data (`waq_instantaneous`) and multiple metadata files. 
@@ -242,7 +248,7 @@ because provisional data is non-static.
 
     unique(waq_instantaneous$release)
 
-    ## [1] "RELEASE-2023"
+    ## [1] "RELEASE-2026"
 Learn more about data versioning and appropriately reuse of NEON data on the <a href="https://www.neonscience.org/data-samples/guidelines-policies" target="_blank">**NEON Data Guidelines and Policy**</a> page. 
 
 ## Data from Different Sensor Locations 
@@ -292,10 +298,14 @@ different sensor set locations: upstream and the downstream.
     # Split data into separate dataframes by upstream/downstream locations.
 
     waq_up <- 
-      waq_instantaneous[(waq_instantaneous$horizontalPosition=="101"),]
+      waq_instantaneous %>%
+      filter(horizontalPosition=="101")
+
+    
 
     waq_down <- 
-      waq_instantaneous[(waq_instantaneous$horizontalPosition=="102"),]
+      waq_instantaneous %>%
+      filter(horizontalPosition=="102")
 
 ## Plot Data
 
@@ -311,44 +321,57 @@ dissolved oxygen data:
 
     colnames(waq_instantaneous)
 
-    ##   [1] "domainID"                      "siteID"                        "horizontalPosition"            "verticalPosition"             
-    ##   [5] "startDateTime"                 "endDateTime"                   "sensorDepth"                   "sensorDepthExpUncert"         
-    ##   [9] "sensorDepthRangeQF"            "sensorDepthNullQF"             "sensorDepthGapQF"              "sensorDepthValidCalQF"        
-    ##  [13] "sensorDepthSuspectCalQF"       "sensorDepthPersistQF"          "sensorDepthAlphaQF"            "sensorDepthBetaQF"            
-    ##  [17] "sensorDepthFinalQF"            "sensorDepthFinalQFSciRvw"      "specificConductance"           "specificConductanceExpUncert" 
-    ##  [21] "specificConductanceRangeQF"    "specificConductanceStepQF"     "specificConductanceNullQF"     "specificConductanceGapQF"     
-    ##  [25] "specificConductanceSpikeQF"    "specificConductanceValidCalQF" "specificCondSuspectCalQF"      "specificConductancePersistQF" 
-    ##  [29] "specificConductanceAlphaQF"    "specificConductanceBetaQF"     "specificCondFinalQF"           "specificCondFinalQFSciRvw"    
-    ##  [33] "dissolvedOxygen"               "dissolvedOxygenExpUncert"      "dissolvedOxygenRangeQF"        "dissolvedOxygenStepQF"        
-    ##  [37] "dissolvedOxygenNullQF"         "dissolvedOxygenGapQF"          "dissolvedOxygenSpikeQF"        "dissolvedOxygenValidCalQF"    
-    ##  [41] "dissolvedOxygenSuspectCalQF"   "dissolvedOxygenPersistenceQF"  "dissolvedOxygenAlphaQF"        "dissolvedOxygenBetaQF"        
-    ##  [45] "dissolvedOxygenFinalQF"        "dissolvedOxygenFinalQFSciRvw"  "seaLevelDissolvedOxygenSat"    "seaLevelDOSatExpUncert"       
-    ##  [49] "seaLevelDOSatRangeQF"          "seaLevelDOSatStepQF"           "seaLevelDOSatNullQF"           "seaLevelDOSatGapQF"           
-    ##  [53] "seaLevelDOSatSpikeQF"          "seaLevelDOSatValidCalQF"       "seaLevelDOSatSuspectCalQF"     "seaLevelDOSatPersistQF"       
-    ##  [57] "seaLevelDOSatAlphaQF"          "seaLevelDOSatBetaQF"           "seaLevelDOSatFinalQF"          "seaLevelDOSatFinalQFSciRvw"   
-    ##  [61] "localDissolvedOxygenSat"       "localDOSatExpUncert"           "localDOSatRangeQF"             "localDOSatStepQF"             
-    ##  [65] "localDOSatNullQF"              "localDOSatGapQF"               "localDOSatSpikeQF"             "localDOSatValidCalQF"         
-    ##  [69] "localDOSatSuspectCalQF"        "localDOSatPersistQF"           "localDOSatAlphaQF"             "localDOSatBetaQF"             
-    ##  [73] "localDOSatFinalQF"             "localDOSatFinalQFSciRvw"       "pH"                            "pHExpUncert"                  
-    ##  [77] "pHRangeQF"                     "pHStepQF"                      "pHNullQF"                      "pHGapQF"                      
-    ##  [81] "pHSpikeQF"                     "pHValidCalQF"                  "pHSuspectCalQF"                "pHPersistenceQF"              
-    ##  [85] "pHAlphaQF"                     "pHBetaQF"                      "pHFinalQF"                     "pHFinalQFSciRvw"              
-    ##  [89] "chlorophyll"                   "chlorophyllExpUncert"          "chlorophyllRangeQF"            "chlorophyllStepQF"            
-    ##  [93] "chlorophyllNullQF"             "chlorophyllGapQF"              "chlorophyllSpikeQF"            "chlorophyllValidCalQF"        
-    ##  [97] "chlorophyllSuspectCalQF"       "chlorophyllPersistenceQF"      "chlorophyllAlphaQF"            "chlorophyllBetaQF"            
-    ## [101] "chlorophyllFinalQF"            "chlorophyllFinalQFSciRvw"      "chlaRelativeFluorescence"      "chlaRelFluoroExpUncert"       
-    ## [105] "chlaRelFluoroRangeQF"          "chlaRelFluoroStepQF"           "chlaRelFluoroNullQF"           "chlaRelFluoroGapQF"           
-    ## [109] "chlaRelFluoroSpikeQF"          "chlaRelFluoroValidCalQF"       "chlaRelFluoroSuspectCalQF"     "chlaRelFluoroPersistenceQF"   
-    ## [113] "chlaRelFluoroAlphaQF"          "chlaRelFluoroBetaQF"           "chlaRelFluoroFinalQF"          "chlaRelFluoroFinalQFSciRvw"   
-    ## [117] "turbidity"                     "turbidityExpUncert"            "turbidityRangeQF"              "turbidityStepQF"              
-    ## [121] "turbidityNullQF"               "turbidityGapQF"                "turbiditySpikeQF"              "turbidityValidCalQF"          
-    ## [125] "turbiditySuspectCalQF"         "turbidityPersistenceQF"        "turbidityAlphaQF"              "turbidityBetaQF"              
-    ## [129] "turbidityFinalQF"              "turbidityFinalQFSciRvw"        "fDOM"                          "rawCalibratedfDOM"            
-    ## [133] "fDOMExpUncert"                 "fDOMRangeQF"                   "fDOMStepQF"                    "fDOMNullQF"                   
-    ## [137] "fDOMGapQF"                     "fDOMSpikeQF"                   "fDOMValidCalQF"                "fDOMSuspectCalQF"             
-    ## [141] "fDOMPersistenceQF"             "fDOMAlphaQF"                   "fDOMBetaQF"                    "fDOMTempQF"                   
-    ## [145] "fDOMAbsQF"                     "fDOMFinalQF"                   "fDOMFinalQFSciRvw"             "buoyNAFlag"                   
-    ## [149] "spectrumCount"                 "publicationDate"               "release"
+    ##   [1] "domainID"                      "siteID"                        "horizontalPosition"           
+    ##   [4] "verticalPosition"              "startDateTime"                 "endDateTime"                  
+    ##   [7] "sensorDepth"                   "sensorDepthExpUncert"          "sensorDepthRangeQF"           
+    ##  [10] "sensorDepthNullQF"             "sensorDepthGapQF"              "sensorDepthValidCalQF"        
+    ##  [13] "sensorDepthSuspectCalQF"       "sensorDepthPersistQF"          "sensorDepthAlphaQF"           
+    ##  [16] "sensorDepthBetaQF"             "sensorDepthFinalQF"            "sensorDepthFinalQFSciRvw"     
+    ##  [19] "specificConductance"           "specificConductanceExpUncert"  "specificConductanceRangeQF"   
+    ##  [22] "specificConductanceStepQF"     "specificConductanceNullQF"     "specificConductanceGapQF"     
+    ##  [25] "specificConductanceSpikeQF"    "specificConductanceValidCalQF" "specificCondSuspectCalQF"     
+    ##  [28] "specificConductancePersistQF"  "specificConductanceAlphaQF"    "specificConductanceBetaQF"    
+    ##  [31] "specificCondFinalQF"           "specificCondFinalQFSciRvw"     "dissolvedOxygen"              
+    ##  [34] "dissolvedOxygenExpUncert"      "dissolvedOxygenRangeQF"        "dissolvedOxygenStepQF"        
+    ##  [37] "dissolvedOxygenNullQF"         "dissolvedOxygenGapQF"          "dissolvedOxygenSpikeQF"       
+    ##  [40] "dissolvedOxygenValidCalQF"     "dissolvedOxygenSuspectCalQF"   "dissolvedOxygenPersistenceQF" 
+    ##  [43] "dissolvedOxygenAlphaQF"        "dissolvedOxygenBetaQF"         "dissolvedOxygenFinalQF"       
+    ##  [46] "dissolvedOxygenFinalQFSciRvw"  "seaLevelDissolvedOxygenSat"    "seaLevelDOSatExpUncert"       
+    ##  [49] "seaLevelDOSatRangeQF"          "seaLevelDOSatStepQF"           "seaLevelDOSatNullQF"          
+    ##  [52] "seaLevelDOSatGapQF"            "seaLevelDOSatSpikeQF"          "seaLevelDOSatValidCalQF"      
+    ##  [55] "seaLevelDOSatSuspectCalQF"     "seaLevelDOSatPersistQF"        "seaLevelDOSatAlphaQF"         
+    ##  [58] "seaLevelDOSatBetaQF"           "seaLevelDOSatFinalQF"          "seaLevelDOSatFinalQFSciRvw"   
+    ##  [61] "localDissolvedOxygenSat"       "localDOSatExpUncert"           "localDOSatRangeQF"            
+    ##  [64] "localDOSatStepQF"              "localDOSatNullQF"              "localDOSatGapQF"              
+    ##  [67] "localDOSatSpikeQF"             "localDOSatValidCalQF"          "localDOSatSuspectCalQF"       
+    ##  [70] "localDOSatPersistQF"           "localDOSatAlphaQF"             "localDOSatBetaQF"             
+    ##  [73] "localDOSatFinalQF"             "localDOSatFinalQFSciRvw"       "pH"                           
+    ##  [76] "pHExpUncert"                   "pHRangeQF"                     "pHStepQF"                     
+    ##  [79] "pHNullQF"                      "pHGapQF"                       "pHSpikeQF"                    
+    ##  [82] "pHValidCalQF"                  "pHSuspectCalQF"                "pHPersistenceQF"              
+    ##  [85] "pHAlphaQF"                     "pHBetaQF"                      "pHFinalQF"                    
+    ##  [88] "pHFinalQFSciRvw"               "chlorophyll"                   "chlorophyllExpUncert"         
+    ##  [91] "chlorophyllRangeQF"            "chlorophyllStepQF"             "chlorophyllNullQF"            
+    ##  [94] "chlorophyllGapQF"              "chlorophyllSpikeQF"            "chlorophyllValidCalQF"        
+    ##  [97] "chlorophyllSuspectCalQF"       "chlorophyllPersistenceQF"      "chlorophyllAlphaQF"           
+    ## [100] "chlorophyllBetaQF"             "chlorophyllFinalQF"            "chlorophyllFinalQFSciRvw"     
+    ## [103] "chlaRelativeFluorescence"      "chlaRelFluoroExpUncert"        "chlaRelFluoroRangeQF"         
+    ## [106] "chlaRelFluoroStepQF"           "chlaRelFluoroNullQF"           "chlaRelFluoroGapQF"           
+    ## [109] "chlaRelFluoroSpikeQF"          "chlaRelFluoroValidCalQF"       "chlaRelFluoroSuspectCalQF"    
+    ## [112] "chlaRelFluoroPersistenceQF"    "chlaRelFluoroAlphaQF"          "chlaRelFluoroBetaQF"          
+    ## [115] "chlaRelFluoroFinalQF"          "chlaRelFluoroFinalQFSciRvw"    "turbidity"                    
+    ## [118] "turbidityExpUncert"            "turbidityRangeQF"              "turbidityStepQF"              
+    ## [121] "turbidityNullQF"               "turbidityGapQF"                "turbiditySpikeQF"             
+    ## [124] "turbidityValidCalQF"           "turbiditySuspectCalQF"         "turbidityPersistenceQF"       
+    ## [127] "turbidityAlphaQF"              "turbidityBetaQF"               "turbidityFinalQF"             
+    ## [130] "turbidityFinalQFSciRvw"        "fDOM"                          "rawCalibratedfDOM"            
+    ## [133] "fDOMExpUncert"                 "fDOMRangeQF"                   "fDOMStepQF"                   
+    ## [136] "fDOMNullQF"                    "fDOMGapQF"                     "fDOMSpikeQF"                  
+    ## [139] "fDOMValidCalQF"                "fDOMSuspectCalQF"              "fDOMPersistenceQF"            
+    ## [142] "fDOMAlphaQF"                   "fDOMBetaQF"                    "fDOMTempQF"                   
+    ## [145] "fDOMAbsQF"                     "fDOMFinalQF"                   "fDOMFinalQFSciRvw"            
+    ## [148] "buoyNAFlag"                    "spectrumCount"                 "publicationDate"              
+    ## [151] "release"
 
 
     # Alternatively, view the variables object corresponding to the data product for more information
@@ -365,15 +388,16 @@ The data columns we would like to plot are `dissolvedOxygen` and
 `dissolvedOxygenExpUncert`.
 
 
-    # plot
-
     doPlot <- ggplot() +
-    	geom_line(data = waq_down,aes(endDateTime, dissolvedOxygen),na.rm=TRUE, color="blue") +
+    	geom_line(data = waq_down,aes(endDateTime, 
+    	                              dissolvedOxygen),
+    	          na.rm=TRUE, color="blue") +
       geom_ribbon(data=waq_down,aes(x=endDateTime, 
                       ymin = (dissolvedOxygen - dissolvedOxygenExpUncert), 
                       ymax = (dissolvedOxygen + dissolvedOxygenExpUncert)), 
                   alpha = 0.4, fill = "grey25") +
-    	ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + ggtitle("PRIN Downstream DO with Uncertainty Bounds") 
+    	ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + 
+      ggtitle("PRIN Downstream DO with Uncertainty Bounds") 
 
     
 
@@ -407,9 +431,11 @@ representing the fraction of flagged points within the time averaging window.
 
     # We need to remove those associated with dissolvedOxygenSaturation.
 
-    do_qf_names <- waq_qf_names[grep("dissolvedOxygen",waq_qf_names)]
+    do_qf_names <- waq_qf_names[grep("dissolvedOxygen",
+                                     waq_qf_names)]
 
-    do_qf_names <- do_qf_names[grep("dissolvedOxygenSat",do_qf_names,invert=T)]
+    do_qf_names <- do_qf_names[grep("dissolvedOxygenSat",
+                                    do_qf_names,invert=T)]
 
     
 
@@ -419,9 +445,10 @@ representing the fraction of flagged points within the time averaging window.
 
     print(do_qf_names)
 
-    ##  [1] "dissolvedOxygenRangeQF"       "dissolvedOxygenStepQF"        "dissolvedOxygenNullQF"        "dissolvedOxygenGapQF"        
-    ##  [5] "dissolvedOxygenSpikeQF"       "dissolvedOxygenValidCalQF"    "dissolvedOxygenSuspectCalQF"  "dissolvedOxygenPersistenceQF"
-    ##  [9] "dissolvedOxygenAlphaQF"       "dissolvedOxygenBetaQF"        "dissolvedOxygenFinalQF"       "dissolvedOxygenFinalQFSciRvw"
+    ##  [1] "dissolvedOxygenRangeQF"       "dissolvedOxygenStepQF"        "dissolvedOxygenNullQF"       
+    ##  [4] "dissolvedOxygenGapQF"         "dissolvedOxygenSpikeQF"       "dissolvedOxygenValidCalQF"   
+    ##  [7] "dissolvedOxygenSuspectCalQF"  "dissolvedOxygenPersistenceQF" "dissolvedOxygenAlphaQF"      
+    ## [10] "dissolvedOxygenBetaQF"        "dissolvedOxygenFinalQF"       "dissolvedOxygenFinalQFSciRvw"
 
 A quality flag (QF) of 0 indicates a pass, 1 indicates a fail, and -1 indicates
 a test that could not be performed. For example, a range test cannot be 
@@ -527,10 +554,13 @@ color.
     # plot
 
     doPlot <- ggplot() +
-    	geom_line(data = waq_down, aes(x=endDateTime, y=dissolvedOxygen,
-    	                 color=factor(dissolvedOxygenFinalQF)), na.rm=TRUE) +
+    	geom_line(data = waq_down, aes(x=endDateTime, 
+    	                               y=dissolvedOxygen,
+    	                 color=factor(dissolvedOxygenFinalQF)), 
+    	          na.rm=TRUE) +
       scale_color_manual(values = c("0" = "blue","1"="red")) +
-      ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + ggtitle("PRIN Downstream DO filtered by FinalQF") 
+      ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + 
+      ggtitle("PRIN Downstream DO filtered by FinalQF") 
 
       
 
@@ -547,10 +577,14 @@ that we just looked at for water quality?
 
     # download continuous discharge data
 
-    csd <- loadByProduct(dpID="DP1.20053.001", site="PRIN", 
-                         startdate="2020-02", enddate="2020-02", 
-                         package="expanded", release="current", 
-                         check.size = F)
+    csd <- loadByProduct(dpID="DP1.20053.001", 
+                         site="PRIN", 
+                         startdate="2020-02", 
+                         enddate="2020-02", 
+                         package="expanded", 
+                         release="current", 
+                         check.size = F,
+                         token=token)
 
     list2env(csd,.GlobalEnv)
 
@@ -574,14 +608,16 @@ Let's use the downstream data just like we did for water quality.
     # Split data into separate dataframe for downstream location.
 
     tsw_down <- 
-      TSW_30min[(TSW_30min$horizontalPosition=="102"),]
+      TSW_30min %>% 
+      filter(horizontalPosition=="102")
 
 Can you remove the quality flagged values?
 
 
     # remove values with a final quality flag
 
-    tsw_down<-tsw_down[(tsw_down$finalQF=="0"),]
+    tsw_down <- tsw_down %>%
+      filter(finalQF==0)
 
 Can you plot the data?
 
@@ -589,12 +625,15 @@ Can you plot the data?
     # plot
 
     csdPlot <- ggplot() +
-    	geom_line(data = tsw_down,aes(endDateTime, surfWaterTempMean),na.rm=TRUE, color="blue") +
+    	geom_line(data = tsw_down,aes(endDateTime, 
+    	                              surfWaterTempMean),
+    	          na.rm=TRUE, color="blue") +
       geom_ribbon(data=tsw_down,aes(x=endDateTime, 
                       ymin = (surfWaterTempMean-surfWaterTempExpUncert), 
                       ymax = (surfWaterTempMean+surfWaterTempExpUncert)), 
                   alpha = 0.4, fill = "grey25") +
-    	ylim(2, 16) + ylab("Temp (C)") + xlab("Date") + ggtitle("PRIN Downstream Temp with Uncertainty Bounds") 
+    	ylim(2, 16) + ylab("Temp (C)") + xlab("Date") + 
+      ggtitle("PRIN Downstream Temp with Uncertainty Bounds") 
 
     
 
@@ -611,10 +650,14 @@ month that we just looked at for water quality?
 
     # download continuous discharge data
 
-    csd <- loadByProduct(dpID="DP4.00130.001", site="PRIN", 
-                         startdate="2020-02", enddate="2020-02", 
-                         package="expanded", release="current", 
-                         check.size = F)
+    csd <- loadByProduct(dpID="DP4.00130.001", 
+                         site="PRIN", 
+                         startdate="2020-02", 
+                         enddate="2020-02", 
+                         package="expanded", 
+                         release="current", 
+                         check.size = F,
+                         token=token)
 
     list2env(csd,.GlobalEnv)
 
@@ -625,20 +668,25 @@ values?
 
     # remove values with a final quality flag
 
-    csd_continuousDischarge<-csd_continuousDischarge[(csd_continuousDischarge$dischargeFinalQF=="0"),]
+    csd_continuousDischarge <- 
+      csd_continuousDischarge %>%
+      filter(dischargeFinalQF==0)
 
 Can you plot the discharge data?
 
 
-    # plot
-
     csdPlot <- ggplot() +
-    	geom_line(data = csd_continuousDischarge,aes(endDate, maxpostDischarge),na.rm=TRUE, color="blue") +
-      geom_ribbon(data=csd_continuousDischarge,aes(x=endDate, 
+    	geom_line(data = csd_continuousDischarge,
+    	          aes(endDate, 
+    	              maxpostDischarge),
+    	          na.rm=TRUE, color="blue") +
+      geom_ribbon(data=csd_continuousDischarge,
+                  aes(x=endDate, 
                       ymin = (withRemnUncQLower1Std), 
                       ymax = (withRemnUncQUpper1Std)), 
                   alpha = 0.4, fill = "grey25") +
-    	ylim(0, 4000) + ylab("Q (L/s)") + xlab("Date") + ggtitle("PRIN Discharge with Uncertainty Bounds") 
+    	ylim(0, 4000) + ylab("Q (L/s)") + xlab("Date") + 
+      ggtitle("PRIN Discharge with Uncertainty Bounds") 
 
     
 

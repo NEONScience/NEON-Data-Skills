@@ -18,7 +18,7 @@ urlTitle: "neon-data-for-metagenomics"
 
 
 
-The purpose of this tutorial is to introduce users to accessing NEON data for expanding metagenomic analyses. The tutorial is being run in conjunction with the workshop "FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative", presented at the annual meeting of the Ecological Society of America. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline. 
+The purpose of this tutorial is to introduce users to accessing NEON data for expanding metagenomic analyses. The tutorial is being run in conjunction with the workshop "FAIR Data and NEON Data discovery at the National Microbiome Data Collaborative", presented at the annual meeting of the Ecological Society of America, but users can follow the tutorial independently on their own as well. The purpose of this component is to provide a brief introduction to how to download NEON data, with a focus on those NEON data that can be used as metadata for the NMDC metagenomic analyses of NEON samples. We will provide some brief examples of how to download relevant NEON data for soil and aquatic samples, and then how to wrangle the data to link them to NEON metagenomic samples that have been run through the NMDC Edge pipeline. 
 
 
 <div id="ds-objectives" markdown="1">
@@ -34,7 +34,7 @@ After completing this tutorial you will be able to:
 
 
 ### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
+You will need a current version of R (4+) to complete this tutorial. We also recommend 
 the RStudio IDE to work with R. 
 
 ### R Packages to Install
@@ -113,15 +113,21 @@ Click on the link to <a href="https://data.neonscience.org/data-products/DP1.101
 
 ### Downloading data with neonUtilities
 
-The metagenomics data available on the NEON website includes only the raw sequence files. The sample data available through the NMDC website have been processed through the NMDC Edge pipeline, and include taxonomic and functional genomic information. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The following examples will help you to annontate the functional and taxonomic information of NEON samples on the NMDC data portal so they can be analyzed along with all other NEON data from the soil and aquatic samples. 
+The metagenomics data available on the NEON website includes only the raw sequence files. The sample data available through the NMDC website have been processed through the NMDC Edge pipeline, and include taxonomic and functional genomic information. However, the NEON samples collected for metagenomic sequencing were also subjected to a wide range of measurements, including carbon and nitrogen isotopes, soil temperature, and pH. The following examples will help you to annotate the functional and taxonomic information of NEON samples on the NMDC data portal so they can be analyzed along with all other NEON data from the soil and aquatic samples. 
 
 We will start by accessing some soil chemical and physical measurements using the neonUtilities package. Though we will be using R to do this, it is still useful to look up the information on the NEON Data Portal. Go back to the <a href="https://data.neonscience.org/data-products/explore" target="_blank">Explore Data Products page</a>, reset all filters, then type in "Soil physical and chemical properties" in the Search bar. Scroll down and click on "Soil physical and chemical properties, periodic" (DP1.10086.001). 
 
-With the information from the Data Portal, we can download this data product using the **neonUtilities** package. We will start with a subset of terrestrial sites. Go ahead and set up the following command in a text file in RStudio or text editor. 
+With the information from the Data Portal, we can download this data product using the **neonUtilities** package. We will start with a subset of terrestrial sites. 
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+Go ahead and set up the following command in a text file in RStudio or text editor. 
 
 
 
     library(neonUtilities)
+
+    token <- Sys.getenv("NEON_TOKEN")
 
     
 
@@ -141,7 +147,9 @@ With the information from the Data Portal, we can download this data product usi
 
       site = soilTrialSites,
 
-      package='expanded')
+      package='expanded',
+
+      token=token)
 
 For full details on the `loadByProduct()` function, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr" target="_blank">'Use the neonUtilities Package' tutorial</a>. Here we will just note some of the parameters. The `dpID` parameters is taken right from the Data Portal page for that data product. The `startdate` and `enddate` define the time range, and for the `site` parameter, we can enter a list of the four-letter codes for each site. The `check.size` we are leaving as `FALSE`, to prevent the function from warning us before big downloads. For example, if you do not specify a time range with `startdate/enddate` or define the sites to download using the `site` parameter, this will be a much bigger download and it is a good idea to leave this option at `TRUE`. If you are incorporating this code into a script as part of a pipeline, for example, then you should set this at `FALSE`. 
 
@@ -203,7 +211,13 @@ We would like to be able to get these measurements for all the metagenomic subsa
 
     genomicSamples <- soilChem$sls_metagenomicsPooling %>%
 
-      tidyr::separate(genomicsPooledIDList, into=c("first","second","third"),sep="\\|",fill="right") %>%
+      tidyr::separate(genomicsPooledIDList, into=c("first",
+
+                                                   "second",
+
+                                                   "third"),
+
+                      sep="\\|",fill="right") %>%
 
       dplyr::select(genomicsSampleID,first,second,third)
 
@@ -216,7 +230,13 @@ Now we will adjust the table so that each sampleID is a row, with the `genomicsS
 
     genSampleExample <- genomicSamples %>% 
 
-      tidyr::pivot_longer(cols=c("first","second","third"),values_to = "sampleID") %>%
+      tidyr::pivot_longer(cols=c("first",
+
+                                 "second",
+
+                                 "third"),
+
+                          values_to = "sampleID") %>%
 
       dplyr::select(sampleID,genomicsSampleID) %>%
 
@@ -231,13 +251,19 @@ Now that you have all samples for each metagenomic sample listed, you can easily
 
     chemEx <- soilChem$sls_soilChemistry %>%
 
-      dplyr::select(sampleID,d15N,organicd13C,nitrogenPercent,organicCPercent)
+      dplyr::select(sampleID,d15N,organicd13C,
+
+                    nitrogenPercent,organicCPercent)
 
     
 
     ## now combine the tables 
 
-    combinedTab <- left_join(genSampleExample,chemEx, by = "sampleID") %>% drop_na()
+    combinedTab <- left_join(genSampleExample,chemEx, 
+
+                             by = "sampleID") %>% 
+
+      drop_na()
 
     
 
@@ -264,7 +290,11 @@ We now have a table that includes the genetic subsamples and their corresponding
 
       group_by(genomicsSampleID) %>%
 
-      summarize_at(c("d15N","organicd13C","nitrogenPercent","organicCPercent"), mean)
+      summarize_at(c("d15N","organicd13C",
+
+                     "nitrogenPercent",
+
+                     "organicCPercent"), mean)
 
     
 
@@ -309,7 +339,9 @@ Below we show an example with the existing data. First we will create a new tabl
 
     # now join with the existing table
 
-    combinedTab_pH <- left_join(combinedTab,soilpH_Example, by = "sampleID")
+    combinedTab_pH <- left_join(combinedTab,soilpH_Example, 
+
+                                by = "sampleID")
 
     # and the final
 
@@ -326,7 +358,11 @@ Now, we can apply the same kind of tidyverse approach as the previous example, o
 
       group_by(genomicsSampleID) %>%
 
-      summarize_at(c("soilInWaterpH","soilInCaClpH"), mean_pH) 
+      summarize_at(c("soilInWaterpH",
+
+                     "soilInCaClpH"), 
+
+                   mean_pH) 
 
     
 
@@ -341,9 +377,19 @@ One thing to note with the previous command is that all the other chemical data 
 
       {left_join(
 
-        summarize_at(.,vars("d15N","organicd13C","nitrogenPercent","organicCPercent"), mean),
+        summarize_at(.,vars("d15N","organicd13C",
 
-        summarize_at(.,vars("soilInWaterpH","soilInCaClpH"), mean_pH)
+                            "nitrogenPercent",
+
+                            "organicCPercent"), 
+
+                     mean),
+
+        summarize_at(.,vars("soilInWaterpH",
+
+                            "soilInCaClpH"), 
+
+                     mean_pH)
 
       )}
 
@@ -377,7 +423,9 @@ If you are interested in accessing raw NEON metagenomic data (not processed as t
 
                               check.size = FALSE,
 
-                              package = 'expanded') 
+                              package = 'expanded',
+
+                              token=token) 
 
 
 The following code will produce a list all of the files in that data product loaded above.

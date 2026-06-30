@@ -18,14 +18,13 @@ urlTitle: neon-brdf-refl-h5-py
 
 In this introductory tutorial, we demonstrate how to read NEON AOP bidirectional hyperspectral reflectance (Level 3, tiled - <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">DP3.30006.002</a>) data in Python. For a more general introduction to Hyperspectral remote sensing data in Python, please refer to the related lesson: <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-refl-h5-py" target="_blank">NEON AOP Hyperspectral Data in HDF5 format with Python</a>, which works with the previous revision of the same reflectance data product.
 
-In Spring 2024, AOP started producing revised (**.002**) spectrometer data products, which incorporate Bidirectional Reflectance Distribution Function (BRDF) and topographic corrections. Airborne hyperspectral data acquired between 2022 - 2024 are being processed with these corrections, and downstream Level 2 and Level 3 derived spectrometer data products (eg. vegetation and water indices, fPAR, LAI, etc.) are now generated from this bidirectional (BRDF-corrected) reflectance data. The L1 directional reflectance data will still be available under the original **.001** revision # (<a href="https://data.neonscience.org/data-products/DP1.30006.001" target="_blank">DP1.30006.001</a>). Eventually, all previous years of reflectance data (2013-2021) will also be re-processed to apply the BRDF and topographic corrections. Updates on this progress will be posted as Data Notifications on the NEON Data Portal.
+In Spring 2024, AOP started producing revised (**.002**) spectrometer data products, which incorporate Bidirectional Reflectance Distribution Function (BRDF) and topographic corrections. Airborne hyperspectral data acquired between 2022 to the present have been processed with these corrections, and downstream Level 2 and Level 3 derived spectrometer data products (eg. vegetation and water indices, fPAR, LAI, etc.) are now generated from this bidirectional (BRDF-corrected) reflectance data. The L1 directional reflectance data will still be available under the original **.001** revision # (<a href="https://data.neonscience.org/data-products/DP1.30006.001" target="_blank">DP1.30006.001</a>). Eventually, all previous years of data (2013-2021) will also be re-processed to apply the BRDF and topographic corrections. Updates on this progress will be posted as Data Notifications on the NEON Data Portal.
 
-The new bidirectional data includes some slight modifications to the H5 contents, including some additional fields specific to the BRDF corrections. This tutorial outlines the major differences beween the direcional and bidirectional reflectance datasets and highlights information you may want to incorporate when working with this revised bidirectional data product. The tutorial also covers fundamental steps of reading in and exploring the HDF5 (h5) format that the reflectance data is delivered in. You will learn code to explore and visualize the spectral data, and learn to make some functions for streamlining this process.
-.
+The new bidirectional data includes some slight modifications to the H5 contents, including some additional fields specific to the BRDF corrections. This tutorial outlines the major differences and highlights information you may want to incorporate when working with this revised data product. The tutorial also covers fundamental steps of reading in and exploring the HDF5 (h5) format that the reflectance data is delivered in. You will learn skills to explore and visualize the spectral data, and learn to make some functions for streamlining this process.
 
 <div id="ds-objectives" markdown="1">
     
-## Learning Objectives
+### Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -41,34 +40,29 @@ After completing this tutorial, you will be able to:
 * **json**
 * **pandas**
 * **neonutilities**
+* **scikit-image**
+* **python-dotenv**
 
-### Download Data
+### Things You’ll Need To Complete This Tutorial
 
-To complete this tutorial, you will download and read in surface bidirectional reflectance data collected at the NEON <a href="https://www.neonscience.org/field-sites/liro" target="_blank">Little Rock Lake (LIRO)</a> aquatic site in Wisconsin. 
+To complete this tutorial, you will need: 
+* Python version 3.9 or higher
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
-You can download this data from the NEON Data portal, using the Python neonutilities package (as shown in the lesson), or by clicking the link below:
+### Additional Resources
 
-**Download the LI Bidirectional Reflectance Tile:** <a href="https://storage.googleapis.com/neon-aop-provisional-products/2022/FullSite/D05/2022_LIRO_3/L3/Spectrometer/Reflectance/NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5" class="link--button link--arrow">NEON_D05_LIRO_DP3_290000_5097000_reflectance.h5</a>
-
-## Additional Resources
-
-
-### Hyperspectral Resources
+#### Hyperspectral Resources
 If you are new to NEON hyperspectral reflectance data, we recommend going through the tutorial series below, or at least the first lesson. This series uses the directional reflectance data (DP3.30006.001), but the same principles apply.
 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/introduction-hyperspectral-remote-sensing-data-python" target="_blank">Introduction to Hyperspectral Remote Sensing Data in Python</a>
 
 More details about the surface directional reflectance data product can be found on the data product page, linked below.
 - <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic</a>
-
-In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of the AOP data products. Please refer to the ATBDs below for a more in-depth understanding  of the reflectance data.
-- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD</a>
+In addition, NEON'S Airborne Observation Platform provides Algorithm Theoretical Basis Documents (ATBDs) for all of the AOP data products. Please refer to the ATBDs below for a more in-depth understanding  of the reflectance data.- <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.001288vB?inline=true" target="_blank">NEON Imaging Spectrometer Radiance to Reflectance ATBD</a>
 - <a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.004365vB?inline=true" target="_blank">Spectrometer Mosaic ATBD</a>
 
-**Download the Topographic and BRDF Corrections ATBD:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" class="link--button link--arrow">Topographic and BRDF Corrections ATBD</a>
-
-### Setting up a NEON Data Portal User Account and Token
-Finally, if you haven't set up a user account and token on the NEON Data Portal, please refer to the lesson <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a>. Using a token when downloading data via the API (including when using the neonutilities package) links your downloads to your user account and also enables faster download speeds. For more information about token usage and benefits, see the <a href="https://data.neonscience.org/data-api/" target="_blank">NEON API documentation page</a>. 
+**Download the Topographic and BRDF Corrections ATBD:** <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Hyperspectral/intro-hyperspectral/intro-refl-h5-bidirectional/BRDF_Algorithm_Theoretical_Basis_Documentation.pdf" class="link--button link--arrow">Topographic and BRDF Corrections Algorithm Theoretical Basis Document (ATBD)</a>
 
 
 </div>
@@ -87,9 +81,9 @@ Steep mountain slopes can significantly affect the remote sensing of vegetation.
 NEON followed the FlexBRDF approach to perform the topographic and BRDF corrections, following <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2021JG006622" target="_blank">Queally et al. 2022</a>. Details of the implementation are provided in the Topographic and BRDF Corrections ATBD, which can be downloaded from the link at the bottom of the previous section. Section 4.2 in the linked document provides a short summary of the approach. The BRDF correction is applied using the University of Wisconsin Environmental Spectroscopy Lab's Python-based open-source software <a href="https://github.com/EnSpec/hytools" target="_blank">HyTools</a>. 
 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-refl-brdf-intro/brdf_correction_rmse.png">
-    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-refl-brdf-intro/brdf_correction_rmse.png"></a>
-    <figcaption> Example dataset showing the a) original and b) BRDF-corrected datasets at the NEON CPER site; c) shows the difference in RMSE between the data processed with and without the BRDF correction.  
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-refl-brdf-intro/brdf_comparison_clbj.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/py-figs/hyperspectral-refl-brdf-intro/brdf_comparison_clbj.png"></a>
+    <figcaption> Example CLBJ reflectance datasest processed with the BRDF and topographic corrections (bidirectional, left) and without the corrections (directional, right).  
     </figcaption>
 </figure>
 
@@ -139,6 +133,15 @@ import pandas as pd
 from osgeo import gdal
 import matplotlib.pyplot as plt
 from skimage import exposure
+import dotenv
+```
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've set up your token as an environment variable, you can load it using  the `dotenv` package as follows, optionally specifying the path to the `.env` file.
+
+
+```python
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 ```
 
 ### Download the Bidirectional Reflectance Data
@@ -150,14 +153,14 @@ You can download the bidirectional reflectance data tile using the Python neonut
 list_available_dates('DP3.30006.002','LIRO')
 ```
 
-    PROVISIONAL Available Dates: 2022-06
+    PROVISIONAL Available Dates: 2022-06, 2024-07, 2025-06
     
 
-There are provisional data available in 2022 (2022-06 is the YYYY-MM date, so 2022-06 means those data are available in June 2022). If you don't want to download all of the data, you can use `by_tile_aop` to download data encompassing specified coordinates. L3 data are provided as mosaicked 1km x 1km tiles, where the UTM coordinates of the SW corner is specified in the file name. To first determine what tiles are available, you can use the `get_aop_tile_extents` function, as shown in the next cell.
+There are provisional data available in 2022, 2024, and 2025 - this is subject to change. Note that "2022-06" is the date in YYYY-MM, so the 2022 data were collected in June 2022). If you don't want to download all of the data, you can use `by_tile_aop` to download data encompassing specified coordinates. L3 data are provided as mosaicked 1km x 1km tiles, where the UTM coordinates of the SW corner is specified in the file name. To first determine what tiles are available, you can use the `get_aop_tile_extents` function, as shown in the next cell.
 
 
 ```python
-liro_2022_refl_exts = get_aop_tile_extents('DP3.30006.002','LIRO',2022)
+liro_2022_refl_exts = get_aop_tile_extents('DP3.30006.002','LIRO',2022,token=token)
 ```
 
     Easting Bounds: (289000, 292000)
@@ -166,11 +169,7 @@ liro_2022_refl_exts = get_aop_tile_extents('DP3.30006.002','LIRO',2022)
 
 This shows the Easting and Northing Bounds (minimum and maximum values). Type `print(liro_2022_refl_exts)` to display a complete list of all the UTM coordinates of the tiles. Not all of the AOP flight boxes are rectangular in shape, so for these sites that have an irregular polygon shape, it may help to see the full list of available tiles. Likewise, in some years, AOP may not obtain complete coverage of a site, due to poor weather or other logistical constraints.
 
-Next let's use `by_tile_aop` to download a bidirectional reflectance tile. We highly encourage using a token for larger AOP downloads, such as the reflectance data. Refer to the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a> tutorial to set up a User Account and Token, if you haven't already done so. Once you have a token, you can copy it into the variable `NEON_TOKEN` to use it in any downloads, as shown below.
-
-By default, the `by_tile_aop` function displays the total size of the data to be download and ask you if you want to proceed. Type `y` for yes to continue with the download. Optionally, you can set the input parameter `check_size=False` if you want to download data regardless of the size. The download may take up to a minute or two to complete.
-
-`NEON_TOKEN="YOUR_TOKEN_HERE"`
+Next let's use `by_tile_aop` to download a bidirectional reflectance tile. By default, this function will display the total size of the data to be download and ask you if you want to proceed. Type `y` for yes to continue with the download. Optionally, you can set the input parameter `check_size=False` if you want to download data regardless of the size. The download may take up to a minute or two to complete.
 
 
 ```python
@@ -180,83 +179,42 @@ by_tile_aop(dpid='DP3.30006.002',
             easting=290001,
             northing=5097001,
             include_provisional=True,
-            savepath='./data',
-            token=NEON_TOKEN)
+            savepath='C:/NEON_Data',
+            token=token)
 ```
 
-    Provisional data are included. To exclude provisional data, use input parameter include_provisional=False.
+    Provisional NEON data are included. To exclude provisional data, use input parameter include_provisional=False.
     
 
-    Continuing will download 2 files totaling approximately 669.3 MB. Do you want to proceed? (y/n)  y
+    Continuing will download 2 NEON data files totaling approximately 638.3 MB. Do you want to proceed? (y/n)  y
     
 
-    Downloading 2 files totaling approximately 669.3 MB
+    Downloading 2 NEON data files totaling approximately 638.3 MB
     
-    
-
-    100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:57<00:00, 28.51s/it]
+    100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:13<00:00,  6.83s/it]
     
 
-The reflectance data tile is now downloaded into the './data' directory and maintains a path structure as the data is stored on Google Cloud Storage (GCS). You can use the code cell below to walk through all the directories and display where the .h5 file was downloaded.
+The reflectance data tile is now downloaded into the 'C:/NEON_Data/DP3.30006.002' directory and maintains a path structure as the data is stored on Google Cloud Storage (GCS). You can use the code cell below to walk through all the directories and display where the .h5 file was downloaded.
 
 
 ```python
-for root, dirs, files in os.walk("data"):
+for root, dirs, files in os.walk(r'C:\NEON_Data\DP3.30006.002'):
     for file in files:
         if file.endswith(".h5"):
              print(os.path.join(root, file))
 ```
 
-    data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D05\2022_LIRO_3\L3\Spectrometer\Reflectance\NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5
-    
-
-You may wish to move the .h5 file to a more convenient path - for example, you could move all the .h5 files (in this case just one) downloaded to the `data` folder, for simplicity. You can do that as follows:
-
-
-```python
-# Walk through the 'data' directory
-for root, dirs, files in os.walk("data"):
-    for file in files:
-        if file.endswith(".h5"):
-            # Construct the full file path
-            file_path = os.path.join(root, file)
-            print(file_path)
-            
-            # Construct the destination path
-            destination_path = os.path.join("data", file)
-            
-            # Move the file to the 'data' directory
-            shutil.move(file_path, destination_path)
-            print(f"Moved {file} to {destination_path}")
-```
-
-    data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D05\2022_LIRO_3\L3\Spectrometer\Reflectance\NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5
-    Moved NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5 to data\NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5
+    C:\NEON_Data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D05\2022_LIRO_3\L3\Spectrometer\Reflectance\NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5
     
 
 ## Read in the bidirectional reflectance .h5 dataset
-To start, make sure the NEON surface bidirectional reflectance data (DP3.30006.002) is downloaded (see instructions at the top of this lesson) and located in the data folder under your working directory. You can change the path, but make sure to update the script to point to where you've saved this file.
+To start, make sure the path to the NEON surface bidirectional reflectance data (DP3.30006.002) is set to where you have downloaded it, if you used a different path than shown.
+
+Let's explore the hyperspectral reflectance data.
 
 
 ```python
-# display the contents in the ./data folder to confirm the file is in the correct location
-os.listdir('./data')
-```
-
-
-
-
-    ['DP3.30006.002',
-     'NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5']
-
-
-
-Let's explore the hyperspectral reflectance data. Note that if the h5 file is stored in a different directory than where you are running your notebook, you need to include the path (either relative or absolute) to the directory where that data file is stored. Use `os.path.join` to create the full path of the file. 
-
-
-```python
-# Note that you may need to update this filepath for your local machine
-h5_file = h5py.File('./data/NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5','r')
+h5_file = h5py.File(r'C:\NEON_Data\DP3.30006.002\neon-aop-provisional-products\2022\FullSite\D05\2022_LIRO_3\L3\Spectrometer\Reflectance\NEON_D05_LIRO_DP3_290000_5097000_bidirectional_reflectance.h5','r')
 ```
 
 
@@ -405,7 +363,7 @@ map_info
 
 
 
-Now that we have the spatial information, we can start looking at the data. To start, we can pull out all the Ancillary_Imagery data into a Python dictionary as follows:
+These data have the EPSG Code 32616 <a href="https://epsg.io/32616" target="_blank">EPSG Code 32616</a>, and are in UTM zone 16N. Now that we have the spatial information, let's start looking at the data. First, we can pull out all the Ancillary_Imagery data into a Python dictionary as follows:
 
 
 ```python
@@ -428,14 +386,16 @@ anc_image_dict
             ...,
             [20220623, 20220623, 20220623, ..., 20220623, 20220623, 20220623],
             [20220623, 20220623, 20220623, ..., 20220623, 20220623, 20220623],
-            [20220623, 20220623, 20220623, ..., 20220623, 20220623, 20220623]]),
+            [20220623, 20220623, 20220623, ..., 20220623, 20220623, 20220623]],
+           shape=(1000, 1000), dtype=int32),
      'Aerosol_Optical_Thickness': array([[194., 194., 194., ..., 200., 200., 200.],
             [194., 194., 194., ..., 200., 200., 200.],
             [194., 194., 194., ..., 200., 200., 200.],
             ...,
             [161., 161., 161., ..., 211., 211., 211.],
             [161., 161., 161., ..., 211., 211., 211.],
-            [161., 161., 161., ..., 211., 211., 211.]], dtype=float32),
+            [161., 161., 161., ..., 211., 211., 211.]],
+           shape=(1000, 1000), dtype=float32),
      'Aspect': array([[261.08093 , 246.32469 , 240.37682 , ...,  86.42367 ,  93.01279 ,
               90.      ],
             [245.40097 , 226.64857 , 225.40874 , ...,  83.29016 ,  81.027374,
@@ -448,42 +408,43 @@ anc_image_dict
             [150.28685 , 150.06934 , 148.8032  , ...,  43.94467 ,  42.518238,
               42.363697],
             [150.07767 , 149.9158  , 148.82988 , ...,  47.395676,  46.086636,
-              45.983833]], dtype=float32),
+              45.983833]], shape=(1000, 1000), dtype=float32),
      'Cast_Shadow': array([[1., 1., 1., ..., 1., 1., 1.],
             [1., 1., 1., ..., 1., 1., 1.],
             [1., 1., 1., ..., 1., 1., 1.],
             ...,
             [1., 1., 1., ..., 1., 1., 1.],
             [1., 1., 1., ..., 1., 1., 1.],
-            [1., 1., 1., ..., 1., 1., 1.]], dtype=float32),
+            [1., 1., 1., ..., 1., 1., 1.]], shape=(1000, 1000), dtype=float32),
      'Dark_Dense_Vegetation_Classification': array([[3, 3, 3, ..., 1, 1, 1],
             [3, 3, 3, ..., 1, 1, 1],
             [3, 3, 3, ..., 1, 1, 1],
             ...,
             [3, 3, 3, ..., 2, 2, 2],
             [3, 3, 3, ..., 2, 2, 2],
-            [3, 3, 3, ..., 2, 2, 2]], dtype=uint8),
+            [3, 3, 3, ..., 2, 2, 2]], shape=(1000, 1000), dtype=uint8),
      'Data_Selection_Index': array([[12, 12, 12, ...,  9,  9,  9],
             [12, 12, 12, ...,  9,  9,  9],
             [12, 12, 12, ...,  9,  9,  9],
             ...,
             [12, 12, 12, ...,  9,  9,  9],
             [12, 12, 12, ...,  9,  9,  9],
-            [12, 12, 12, ...,  9,  9,  9]]),
+            [12, 12, 12, ...,  9,  9,  9]], shape=(1000, 1000), dtype=int32),
      'Haze_Cloud_Water_Map': array([[3, 3, 3, ..., 1, 1, 1],
             [3, 3, 3, ..., 1, 1, 1],
             [3, 3, 3, ..., 1, 1, 1],
             ...,
             [3, 3, 3, ..., 2, 2, 2],
             [3, 3, 3, ..., 2, 2, 2],
-            [3, 3, 3, ..., 2, 2, 2]], dtype=uint8),
+            [3, 3, 3, ..., 2, 2, 2]], shape=(1000, 1000), dtype=uint8),
      'Illumination_Factor': array([[84., 85., 85., ..., 86., 86., 86.],
             [85., 87., 86., ..., 86., 86., 86.],
             [86., 87., 87., ..., 86., 86., 86.],
             ...,
             [94., 95., 95., ..., 78., 77., 77.],
             [95., 95., 95., ..., 80., 79., 79.],
-            [95., 95., 96., ..., 82., 81., 81.]], dtype=float32),
+            [95., 95., 96., ..., 82., 81., 81.]],
+           shape=(1000, 1000), dtype=float32),
      'Path_Length': array([[ 987.98065,  987.52844,  987.3978 , ..., 1052.3306 , 1052.151  ,
              1052.053  ],
             [ 988.1091 ,  987.31824,  987.32806, ..., 1052.3868 , 1052.1865 ,
@@ -496,14 +457,15 @@ anc_image_dict
             [1008.6032 , 1019.3234 , 1014.8984 , ..., 1048.8473 , 1049.2275 ,
              1046.6539 ],
             [1011.15393, 1016.7114 , 1013.91504, ..., 1048.599  , 1042.2389 ,
-             1042.2389 ]], dtype=float32),
+             1042.2389 ]], shape=(1000, 1000), dtype=float32),
      'Sky_View_Factor': array([[98., 98., 98., ..., 97., 97., 97.],
             [98., 98., 98., ..., 97., 97., 97.],
             [98., 98., 98., ..., 97., 97., 97.],
             ...,
             [95., 95., 95., ..., 90., 90., 91.],
             [95., 95., 95., ..., 93., 93., 91.],
-            [95., 94., 94., ..., 93., 93., 93.]], dtype=float32),
+            [95., 94., 94., ..., 93., 93., 93.]],
+           shape=(1000, 1000), dtype=float32),
      'Slope': array([[5.1402011e+00, 4.7354989e+00, 6.0021877e+00, ..., 1.4015521e-02,
              1.6634010e-02, 6.9941138e-03],
             [4.3225102e+00, 4.3750796e+00, 5.8721676e+00, ..., 1.4964992e-02,
@@ -516,7 +478,7 @@ anc_image_dict
             [1.1586640e+01, 1.2123251e+01, 1.2760822e+01, ..., 2.5439777e+01,
              2.5439209e+01, 2.5682121e+01],
             [1.2407374e+01, 1.2923250e+01, 1.3561447e+01, ..., 2.3443769e+01,
-             2.3602884e+01, 2.3984230e+01]], dtype=float32),
+             2.3602884e+01, 2.3984230e+01]], shape=(1000, 1000), dtype=float32),
      'Smooth_Surface_Elevation': array([[524.9416 , 525.02014, 525.0957 , ..., 495.1146 , 495.11423,
              495.114  ],
             [524.9064 , 524.96277, 525.0171 , ..., 495.11484, 495.11447,
@@ -529,28 +491,30 @@ anc_image_dict
             [518.4886 , 518.3865 , 518.27515, ..., 510.93674, 510.61002,
              510.29437],
             [518.2981 , 518.1863 , 518.0675 , ..., 511.26312, 510.9449 ,
-             510.6319 ]], dtype=float32),
+             510.6319 ]], shape=(1000, 1000), dtype=float32),
      'Visibility_Index_Map': array([[26., 26., 26., ..., 27., 27., 27.],
             [26., 26., 26., ..., 27., 27., 27.],
             [26., 26., 26., ..., 27., 27., 27.],
             ...,
             [20., 20., 20., ..., 29., 29., 29.],
             [20., 20., 20., ..., 29., 29., 29.],
-            [20., 20., 20., ..., 29., 29., 29.]], dtype=float32),
+            [20., 20., 20., ..., 29., 29., 29.]],
+           shape=(1000, 1000), dtype=float32),
      'Water_Vapor_Column': array([[2353., 2352., 2350., ..., 2349., 2349., 2349.],
             [2351., 2351., 2349., ..., 2349., 2349., 2349.],
             [2351., 2350., 2349., ..., 2349., 2349., 2349.],
             ...,
             [2154., 2153., 2152., ..., 2254., 2252., 2245.],
             [2152., 2151., 2150., ..., 2261., 2258., 2252.],
-            [2151., 2150., 2148., ..., 2268., 2265., 2259.]], dtype=float32),
+            [2151., 2150., 2148., ..., 2268., 2265., 2259.]],
+           shape=(1000, 1000), dtype=float32),
      'Weather_Quality_Indicator': array([[2, 2, 2, ..., 1, 1, 1],
             [2, 2, 2, ..., 1, 1, 1],
             [2, 2, 2, ..., 1, 1, 1],
             ...,
             [2, 2, 2, ..., 1, 1, 1],
             [2, 2, 2, ..., 1, 1, 1],
-            [2, 2, 2, ..., 1, 1, 1]])}
+            [2, 2, 2, ..., 1, 1, 1]], shape=(1000, 1000), dtype=int32)}
 
 
 

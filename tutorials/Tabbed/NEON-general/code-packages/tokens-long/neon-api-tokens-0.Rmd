@@ -16,7 +16,7 @@ urlTitle: neon-api-tokens-tutorial
 
 ---
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
 
 library(htmltools)
 

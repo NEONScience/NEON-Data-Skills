@@ -4,27 +4,31 @@ output: html_fragment
 dateCreated: '2024-12-30'
 ---
 
+```{r setup, include=FALSE}
+library(arrow)
+library(reticulate)
+reticulate::py_config()
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This tutorial explains the background of NEON API tokens, provides a few 
+options for how to store and use your API token, and demonstrates how to use a 
+token with the neonUtilities code packages. If you aren't interested in these 
+details and are looking for a quick and easy guide to getting a token and 
+storing it in the recommended way, 
+see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">Set Up an API Token</a> tutorial.
+
 NEON data can be downloaded from either the NEON Data Portal or the NEON API. 
-When downloading from the Data Portal, you can create a user account. Read 
+To download from the Data Portal, you need to create a user account. Read 
 about the benefits of an account on the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>. You can also use your account to create a token for using the 
 API. Your token is unique to your account, so don't share it.
 
-Using a token is optional! You can download data without a token, and 
-without a user account. Using a token when downloading data via the API, 
-including when using the neonUtilities package, links your downloads to 
-your user account, as well as enabling faster download speeds. For more 
-information about token usage and benefits, see the 
-<a href="https://data.neonscience.org/data-api" target="_blank">NEON API documentation</a> page.
+Requiring tokens for data downloads helps NEON track data download patterns 
+and better understand data use, and helps to deter bots that scrape data 
+autonomously. The frequency of bot downloads has increased in recent years, and 
+putting obstacles in their way improves speed and performance for human users.
 
-For now, in addition to faster downloads, using a token helps NEON to track 
-data downloads. Using **anonymized** user information, we can then calculate 
-data access statistics, such as which data products are downloaded most 
-frequently, which data products are downloaded in groups by the same users, 
-and how many users in total are downloading data. This information helps NEON 
-to evaluate the growth and reach of the observatory, and to advocate for 
-training activities, workshops, and software development.
-
-Tokens can be used whenever you use the NEON API. In this tutorial, we'll 
+Tokens should be used whenever you use the NEON API. In this tutorial, we'll 
 focus on using tokens with the neonUtilities R package and the neonutilities 
 Python package. You can follow the tutorial using your preferred programming 
 language.
@@ -38,7 +42,7 @@ After completing this activity, you will be able to:
  * Use your token when downloading data with neonUtilities 
 
 ## Things You’ll Need To Complete This Tutorial
-A recent version of R (version 4+) or Python (3.9+) installed on 
+A recent version of R (version 4+) or Python (3.10+) installed on 
 your computer.
 
 ## Install and Load Packages {.tabset}
@@ -94,12 +98,6 @@ import os
 
 </div>
 
-If you've never downloaded NEON data using the neonUtilities package before, 
-we recommend starting with the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore tutorial</a> before proceeding with this tutorial.
-
-In the next sections, we'll get an API token from the NEON Data Portal, and 
-then use it in neonUtilities when downloading data.
-
 ## Get a NEON API Token 
 
 The first step is create a NEON user account, if you don't have one. 
@@ -133,7 +131,7 @@ Click on the Copy button to copy your API token to the clipboard:
 
 In the next section, we'll walk through saving your token somewhere secure but 
 accessible to your code. But first let's try out using the token the easy way, 
-by using it as a simple text string.
+as a simple text string.
 
 NEON API tokens are very long, so it would be annoying to keep pasting the 
 entire string into functions. Assign your token an object name:
@@ -147,12 +145,13 @@ NEON_TOKEN <- "PASTE YOUR TOKEN HERE"
 ```
 
 Now we'll use the `loadByProduct()` function to download data. Your 
-API token is entered as the optional `token` input parameter. For 
-this example, we'll download Plant foliar traits (DP1.10026.001).
+API token is entered as the `token` input parameter. For 
+this example, we'll download Plant foliar traits (DP1.10026.001) at Wind River 
+(WREF).
 
-```{r getCFC, results="hide"}
+```{r getCFC, results="hide", message=FALSE}
 
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+foliar <- loadByProduct(dpID="DP1.10026.001", site="WREF", 
                         package="expanded", check.size=F,
                         token=NEON_TOKEN)
 
@@ -167,12 +166,13 @@ NEON_TOKEN = "PASTE YOUR TOKEN HERE"
 ```
 
 Now we'll use the `load_by_product()` function to download data. Your 
-API token is entered as the optional `token` input parameter. For 
-this example, we'll download Plant foliar traits (DP1.10026.001).
+API token is entered as the `token` input parameter. For 
+this example, we'll download Plant foliar traits (DP1.10026.001) at Wind River 
+(WREF).
 
 ```{python p-getCFC, results="hide"}
 
-foliar = nu.load_by_product(dpid="DP1.10026.001", site="all", 
+foliar = nu.load_by_product(dpid="DP1.10026.001", site="WREF", 
                         package="expanded", check_size=False,
                         token=NEON_TOKEN)
 
@@ -181,8 +181,7 @@ foliar = nu.load_by_product(dpid="DP1.10026.001", site="all",
 ## {-}
 
 You should now have data saved in the `foliar` object; the API 
-silently used your token. If you've downloaded data without a 
-token before, you may notice this is faster!
+silently used your token.
 
 This format applies to all `neonUtilities` functions that involve 
 downloading data or otherwise accessing the API; you can use the 
@@ -236,8 +235,9 @@ do this, we'll show two options here.
 requires a line of code in every script.
 
 * Option 2: Set the token as an environment variable and you can access it 
-from any script. This is a little harder to set up initially, but once it's 
-done, it's done globally, and it will work in every script you run.
+from any script. This is a little more work to set up initially, but once it's 
+done, it's done globally, and it will work in every script you run in that 
+environment.
 
 ## Option 1: Save token in a local file {.tabset}
 
@@ -304,13 +304,12 @@ To create a persistent environment variable in R, we use a
 R is using as your home directory:
 
 ```{r getdir, results="hide"}
-
 # For Windows:
 Sys.getenv("R_USER")
-
+```
+```{r getdir-2, results="hide"}
 # For Mac/Linux:
 Sys.getenv("HOME")
-
 ```
 
 Check the home directory to see if you already have a `.Renviron` file, **using 
@@ -338,16 +337,15 @@ NEON_TOKEN=PASTE YOUR TOKEN HERE
 
 ```
 
-Save the file as `.Renviron`, in the RStudio home directory identified above. 
-Double check the spelling, this will not work if you have a typo. Re-start 
-R to load the environment.
+Save the file as `.Renviron` in the RStudio home directory identified above. 
+Re-start R to load the environment.
 
 Once your token is assigned to an environment variable, use the function 
 `Sys.getenv()` to access it. For example, in `loadByProduct()`:
 
-```{r useEnvtToken, results="hide"}
+```{r useEnvtToken, results="hide", message=FALSE}
 
-foliar <- loadByProduct(dpID="DP1.10026.001", site="all", 
+foliar <- loadByProduct(dpID="DP1.10026.001", site="WREF", 
                         package="expanded", check.size=F,
                         token=Sys.getenv("NEON_TOKEN"))
 
@@ -395,7 +393,7 @@ dotenv.load_dotenv()
 
 ```{python p-useEnvtToken, results="hide"}
 
-foliar = nu.load_by_product(dpid="DP1.10026.001", site="all", 
+foliar = nu.load_by_product(dpid="DP1.10026.001", site="WREF", 
                         package="expanded", check_size=False,
                         token=os.environ.get("NEON_TOKEN"))
 

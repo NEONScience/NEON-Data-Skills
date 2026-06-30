@@ -27,8 +27,12 @@ After completing this tutorial you will be able to:
 ## Things You’ll Need To Complete This Tutorial
 
 ### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
+You will need a current version of R (4+) to complete this tutorial. We also recommend 
 the RStudio IDE to work with R. 
+
+### API Access
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### R Packages to Install
 Prior to starting the tutorial ensure that the following packages are installed. 
@@ -47,9 +51,11 @@ Biodiversity is a popular topic within ecology, but quantifying and describing b
 ## Load Libraries and Prepare Workspace
 First, we will load all necessary libraries into our R environment. If you have not already installed these libraries, please see the 'R Packages to Install' section above.
 
-There are also two optional sections in this code chunk: clearing your environment, and loading your NEON API token. Clearing out your environment will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! Secondly, your NEON API token will allow you increased download speeds, and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>.
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
-```{r load libraries, warning=FALSE}
+There is an optional section in this code chunk to clear your environment. Clearing out your environment will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! 
+
+```{r load libraries, warning=FALSE, message=FALSE}
 
 # clean out workspace
 
@@ -61,10 +67,9 @@ library(tidyverse)
 library(neonUtilities)
 library(vegan)
 
+# load token
+token <- Sys.getenv("NEON_TOKEN")
 
-# source .r file with my NEON_TOKEN
-# source("my_neon_token.R") # OPTIONAL - load NEON token
-# See: https://www.neonscience.org/neon-api-tokens-tutorial
 
 ```
 
@@ -83,7 +88,8 @@ my_site_list <- c('ARIK', 'POSE', 'MAYF')
 all_tabs_inv <- neonUtilities::loadByProduct(
   dpID = my_dpid,
   site = my_site_list,
-  #token = NEON_TOKEN, #Uncomment to use your token
+  release = 'RELEASE-2024',
+  token = token,
   check.size = F)
 
 ```

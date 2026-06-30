@@ -15,7 +15,7 @@ tutorialSeries: neon-pheno-temp-series
 urlTitle: neon-SAAT-temp-r
 ---
 
-In this tutorial, we explore the NEON single-aspirated air temperature data. 
+In this tutorial, we explore NEON single-aspirated air temperature data. 
 We then discuss how to interpret the variables, how to work with date-time and 
 date formats, and finally how to plot the data. 
 
@@ -33,14 +33,17 @@ After completing this activity, you will be able to:
  * plot time series data in scatter plots using ggplot function. 
 
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of R and, preferably, `RStudio` loaded
+* You will need a current version of R (4+) and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### Install R Packages
 * **neonUtilities:** `install.packages("neonUtilities")`
 * **ggplot2:** `install.packages("ggplot2")`
 * **dplyr:** `install.packages("dplyr")`
 * **tidyr:** `install.packages("tidyr")`
+* **lubridate:** `install.packages("lubridate")`
 
 <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -61,7 +64,7 @@ on your computer to complete this tutorial.
 
 </div>
 
-## Background Information About NEON Air Temperature Data
+## Background information about NEON air temperature data
 
 Air temperature is continuously monitored by NEON by two methods. At terrestrial 
 sites temperature at the top of the tower is derived from a triple 
@@ -88,7 +91,7 @@ Celsius during data processing. Details on the conversion can be found in the
 associated Algorithm Theoretic Basis Document (ATBD; see Product Details page 
 linked above).
 
-### Available Data Tables
+### Available data tables
 
 The SAAT data product contains two data tables for each site and month selected, 
 consisting of the 1-minute and 30-minute averaging intervals. In addition, there 
@@ -96,27 +99,20 @@ are several metadata files that provide additional useful information.
 
 * **readme** with information on the data product and the download
 * **variables** file that defines the terms, data types, and units
-* **EML** file with machine readable metadata in standardized Ecological Metadata Language 
+* **citation** file with the BibTeX citation for the data downloaded
 
 
-## Access NEON Data
+## Access data
 
 There are several ways to access NEON data, directly from the NEON data portal, 
 access through a data partner (select data products only), writing code to 
-directly pull data from the NEON API, or, as we'll do here, using the neonUtilities
+directly pull data from the NEON API, or, as we'll do here, using the `neonUtilities`
 package which is a wrapper for the API to make working with the data easier. 
 
-### Downloading from the Data Portal
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.’
 
-If you prefer to download data from the data portal, please 
-review the *Getting started* and *Stack the downloaded data* sections of the
-<a href="https://www.neonscience.org/download-explore-neon-data" target="_blank"> *Download and Explore NEON Data* tutorial</a>. 
-This will get you to the point where you can download data from sites or dates
-of interest and resume this tutorial. 
-
-### Downloading Data Using neonUtilities
-
-First, we need to set up our environment with the packages needed for this tutorial. 
+First, we need to set up our environment with the packages needed for this tutorial 
+and our API token.
 
 
     # Install needed package (only uncomment & run if not already installed)
@@ -135,29 +131,29 @@ First, we need to set up our environment with the packages needed for this tutor
 
     # Load required libraries
 
-    library(neonUtilities)  # for accessing NEON data
+    library(neonUtilities)
 
-    library(ggplot2)  # for plotting
+    library(ggplot2)
 
-    library(dplyr)  # for data munging
+    library(dplyr)
 
-    library(tidyr)  # for data munging
+    library(tidyr)
+
+    library(lubridate)
+
+    token <- Sys.getenv("NEON_TOKEN")
 
     
 
-    # set working directory
+    # set working directory, modify as needed
 
-    # this step is optional, only needed if you plan to save the 
-
-    # data files at the end of the tutorial
-
-    wd <- "~/data" # enter your working directory here
+    wd <- "~/data"
 
     setwd(wd)
 
 This tutorial is part of series working with discrete plant phenology data and 
-(nearly) continuous temperature data. Our overall "research" question is to see if 
-there is any correlation between plant phenology and temperature. 
+(nearly) continuous temperature data. Our overall "research" question is to 
+explore the correlation between plant phenology and temperature. 
 Therefore, we will want to work with data that 
 align with the plant phenology data that we worked with in the first tutorial. 
 If you are only interested in working with the temperature data, you do not need
@@ -167,7 +163,7 @@ Our data of interest will be the temperature data from 2018 from NEON's
 Smithsonian Conservation Biology Institute (SCBI) field site located in Virginia
 near the northern terminus of the Blue Ridge Mountains. 
 
-NEON single aspirated air temperature data is available in two averaging intervals, 
+NEON single aspirated air temperature data are available in two averaging intervals, 
 1 minute and 30 minute intervals. Which data you want to work with is going to 
 depend on your research questions. Here, we're going to only download and work 
 with the 30 minute interval data as we're primarily interest in longer term (daily, 
@@ -178,22 +174,28 @@ of the script but is always a good idea to view the size with true (`T`) before
 downloading a new dataset. 
 
 
-    # download data of interest - Single Aspirated Air Temperature
+    saat <- loadByProduct(dpID="DP1.00002.001", 
+                          site="SCBI", 
+                          startdate="2018-01", 
+                          enddate="2018-12", 
+                          package="basic", 
+                          timeIndex="30",
+                          release="RELEASE-2026",
+                          check.size = F,
+                          token=token)
 
-    saat <- loadByProduct(dpID="DP1.00002.001", site="SCBI", 
-                          startdate="2018-01", enddate="2018-12", 
-                          package="basic", timeIndex="30",
-                          check.size = F)
+## Explore temperature data
 
-## Explore Temperature Data
-
-Now that you have the data, let's take a look at the structure and understand 
+Now that we have the data, let's take a look at the structure and understand 
 what's in the data. The data (`saat`) come in as a large list of four items. 
 
 
-    View(saat)
+    names(saat)
 
-So what exactly are these five files and why would you want to use them? 
+    ## [1] "citation_00002_RELEASE-2026" "issueLog_00002"              "readme_00002"                "SAAT_30min"                 
+    ## [5] "science_review_flags_00002"  "sensor_positions_00002"      "variables_00002"
+
+What are the individual tables and how should they be used? 
 
 * **data file(s)**: There will always be one or more dataframes that include the 
 primary data of the data product you downloaded. Since we downloaded only the 30 
@@ -205,6 +207,7 @@ product and the specific instance of downloading the data.
 of each sensor, relative to a reference location. 
 * **variables_xxxxx**: This table contains all the variables found in the associated
 data table(s). This includes full definitions, units, and rounding. 
+* **citation_xxxxx**: BibTeX citation for the data downloaded.
 * **issueLog_xxxxx**: This table contains records of any known issues with the 
 data product, such as sensor malfunctions. 
 * **scienceReviewFlags_xxxxx**: This table may or may not be present. It contains 
@@ -212,8 +215,8 @@ descriptions of adverse events that led to manual flagging of the data, and is
 usually more detailed than the issue log. It only contains records relevant to 
 the sites and dates of data downloaded.
 
-Since we want to work with the individual files, let's make the elements of the 
-list into independent objects. 
+Since we want to work with the individual files, we'll save the elements of the 
+list as independent objects. 
 
 
     list2env(saat, .GlobalEnv)
@@ -230,8 +233,8 @@ Now let's take a look at the data table.
     ##  $ siteID             : chr  "SCBI" "SCBI" "SCBI" "SCBI" ...
     ##  $ horizontalPosition : chr  "000" "000" "000" "000" ...
     ##  $ verticalPosition   : chr  "010" "010" "010" "010" ...
-    ##  $ startDateTime      : POSIXct, format: "2018-01-01 00:00:00" "2018-01-01 00:30:00" "2018-01-01 01:00:00" ...
-    ##  $ endDateTime        : POSIXct, format: "2018-01-01 00:30:00" "2018-01-01 01:00:00" "2018-01-01 01:30:00" ...
+    ##  $ startDateTime      : POSIXct, format: "2018-01-01 00:00:00" "2018-01-01 00:30:00" "2018-01-01 01:00:00" "2018-01-01 01:30:00" ...
+    ##  $ endDateTime        : POSIXct, format: "2018-01-01 00:30:00" "2018-01-01 01:00:00" "2018-01-01 01:30:00" "2018-01-01 02:00:00" ...
     ##  $ tempSingleMean     : num  -11.8 -11.8 -12 -12.2 -12.4 ...
     ##  $ tempSingleMinimum  : num  -12.1 -12.2 -12.3 -12.6 -12.8 ...
     ##  $ tempSingleMaximum  : num  -11.4 -11.3 -11.3 -11.7 -12.1 ...
@@ -239,11 +242,11 @@ Now let's take a look at the data table.
     ##  $ tempSingleNumPts   : num  1800 1800 1800 1800 1800 1800 1800 1800 1800 1800 ...
     ##  $ tempSingleExpUncert: num  0.13 0.13 0.13 0.13 0.129 ...
     ##  $ tempSingleStdErMean: num  0.0034 0.0042 0.0048 0.0047 0.0045 0.004 0.0026 0.0034 0.0025 0.0011 ...
-    ##  $ finalQF            : num  0 0 0 0 0 0 0 0 0 0 ...
-    ##  $ publicationDate    : chr  "20221210T185420Z" "20221210T185420Z" "20221210T185420Z" "20221210T185420Z" ...
-    ##  $ release            : chr  "undetermined" "undetermined" "undetermined" "undetermined" ...
+    ##  $ finalQF            : int  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ publicationDate    : chr  "20230213T171855Z" "20230213T171855Z" "20230213T171855Z" "20230213T171855Z" ...
+    ##  $ release            : chr  "RELEASE-2026" "RELEASE-2026" "RELEASE-2026" "RELEASE-2026" ...
 
-## Quality Flags
+## Quality flags
 
 The sensor data undergo a variety of automated quality assurance and quality control 
 checks. You can read about them in detail in the <a href="https://data.neonscience.org/data-products/DP1.00002.001" target="_blank">Quality Flags and Quality Metrics ATBD</a>, in the Documentation section of the product details page.
@@ -266,14 +269,15 @@ What should we do with the 23% of the data that are flagged?
 This may depend on why it is flagged and what questions you are asking, 
 and the expanded data package would be useful for determining this.  
 
-For now, for demonstration purposes, we'll keep the flagged data.  
+We'll keep the flagged data for now, to illustrate how errors appear in these 
+datasets.
 
 What about null (`NA`) data? 
 
 
     sum(is.na(SAAT_30min$tempSingleMean))/nrow(SAAT_30min)
 
-    ## [1] 0.2239269
+    ## [1] 0.1475
 
     mean(SAAT_30min$tempSingleMean)
 
@@ -291,20 +295,10 @@ using the input parameter `na.rm=TRUE` in the `mean()` function, or just
 remove the empty values from our analysis.
 
 
-    # create new dataframe without NAs
-
     SAAT_30min_noNA <- SAAT_30min %>%
-    	drop_na(tempSingleMean)  # tidyr function
+    	drop_na(tempSingleMean)
 
     
-
-    # alternate base R
-
-    # SAAT_30min_noNA <- SAAT_30min[!is.na(SAAT_30min$tempSingleMean),]
-
-    
-
-    # did it work?
 
     sum(is.na(SAAT_30min_noNA$tempSingleMean))
 
@@ -328,20 +322,22 @@ to process. It is not essential for completing the next steps if this takes too
 much of your computer memory.)
 
 
-    # plot temp data
-
-    tempPlot <- ggplot(SAAT_30min, aes(startDateTime, tempSingleMean)) +
-        geom_point(size=0.3) +
+    tempPlot <- ggplot(SAAT_30min, 
+                       aes(startDateTime, 
+                           tempSingleMean)) +
+        geom_point(size=0.2) +
         ggtitle("Single Aspirated Air Temperature") +
         xlab("Date") + ylab("Temp (C)") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+        theme(plot.title = element_text(lineheight=.8, 
+                                        face="bold", 
+                                        size = 20)) +
         theme(text = element_text(size=18))
 
     
 
     tempPlot
 
-    ## Warning: Removed 19616 rows containing missing values (`geom_point()`).
+    ## Warning: Removed 12921 rows containing missing values or values outside the scale range (`geom_point()`).
 
 
 ![Scatter plot of mean temperatures for the year 2018 at the Smithsonian Conservation Biology Institute (SCBI). Plotted data shows erroneous sensor readings occured during late April/May 2018.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp/rfigs/plot-temp-1.png)
@@ -376,28 +372,21 @@ We already removed the empty records. Now we'll
 subset the data to remove the remaining flagged data. 
 
 
-    # subset and add C to name for "clean"
-
-    SAAT_30minC <- filter(SAAT_30min_noNA, SAAT_30min_noNA$finalQF==0)
-
-    
-
-    # Do any quality flags remain?
-
-    sum(SAAT_30minC$finalQF==1)
-
-    ## [1] 0
+    SAAT_30minC <- SAAT_30min_noNA %>%
+      filter(finalQF==0)
 
 Now we can plot only the unflagged data.
 
 
-    # plot temp data
-
-    tempPlot <- ggplot(SAAT_30minC, aes(startDateTime, tempSingleMean)) +
-        geom_point(size=0.3) +
+    tempPlot <- ggplot(SAAT_30minC, 
+                       aes(startDateTime, 
+                           tempSingleMean)) +
+        geom_point(size=0.2) +
         ggtitle("Single Aspirated Air Temperature") +
         xlab("Date") + ylab("Temp (C)") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+        theme(plot.title = element_text(lineheight=.8, 
+                                        face="bold", 
+                                        size = 20)) +
         theme(text = element_text(size=18))
 
     
@@ -408,7 +397,7 @@ Now we can plot only the unflagged data.
 
 That looks better! But we're still working with the 30-minute data. 
 
-## Aggregate Data by Day
+## Aggregate data by day
 
 We can use the dplyr package functions to aggregate the data. However, we have to
 choose which data we want to aggregate. Again, you might want daily 
@@ -418,39 +407,37 @@ In the context of phenology, minimum temperatures might be very important if you
 are interested in a species that is very frost susceptible. Any days with a 
 minimum temperature below 0C could dramatically change the phenophase. For other 
 species or meteorological zones, maximum thresholds may be very important. Or you 
-might be mostinterested in the daily mean.
+might be most interested in the daily mean.
 
 And note that you can combine different input values with different aggregation 
 functions - for example, you could calculate the minimum of the half-hourly 
 average temperature, or the average of the half-hourly maximum temperature.
 
+Also keep in mind the removal of NA and flagged data we did above. Always use 
+caution when aggregating incomplete data - if, for example, the missing data tend 
+to occur at particular times of day, a daily mean will be biased.
+
 For this tutorial, let's use maximum daily temperature, i.e. the maximum of the 
 `tempSingleMax` values for the day.
 
 
-    # convert to date, easier to work with
-
-    SAAT_30minC$Date <- as.Date(SAAT_30minC$startDateTime)
-
-    
-
-    # max of mean temp each day
-
     temp_day <- SAAT_30minC %>%
-    	group_by(Date) %>%
-    	distinct(Date, .keep_all=T) %>%
+    	group_by(date(startDateTime)) %>%
+    	distinct(date(startDateTime), .keep_all=T) %>%
     	mutate(dayMax=max(tempSingleMaximum))
 
 Now we can plot the cleaned up daily temperature. 
 
 
-    # plot Air Temperature Data across 2018 using daily data
-
-    tempPlot_dayMax <- ggplot(temp_day, aes(Date, dayMax)) +
+    tempPlot_dayMax <- ggplot(temp_day, 
+                              aes(startDateTime, 
+                                  dayMax)) +
         geom_point(size=0.5) +
         ggtitle("Daily Max Air Temperature") +
         xlab("") + ylab("Temp (C)") +
-        theme(plot.title = element_text(lineheight=.8, face="bold", size = 20)) +
+        theme(plot.title = element_text(lineheight=.8, 
+                                        face="bold", 
+                                        size = 20)) +
         theme(text = element_text(size=18))
 
     
@@ -464,7 +451,7 @@ Thought questions:
 * What do we gain by this visualization? 
 * What do we lose relative to the 30 minute intervals?  
 
-## ggplot - Subset by Time
+## ggplot - subset by time
 
 Sometimes we want to scale the x- or y-axis to a particular time subset without 
 subsetting the entire `data_frame`. To do this, we can define start and end 
@@ -476,7 +463,7 @@ follows:
 Let's plot just the first three months of the year. 
 
 
-    # Define Start and end times for the subset as R objects that are the time class
+    # Define Start and end times for the subset
 
     startTime <- as.Date("2018-01-01")
 
@@ -484,19 +471,13 @@ Let's plot just the first three months of the year.
 
     
 
-    # create a start and end time R object
-
     start.end <- c(startTime,endTime)
 
-    str(start.end)
+    
 
-    ##  Date[1:2], format: "2018-01-01" "2018-03-31"
-
-    # View data for first 3 months only
-
-    # And we'll add some color for a change. 
-
-    tempPlot_dayMax3m <- ggplot(temp_day, aes(Date, dayMax)) +
+    tempPlot_dayMax3m <- ggplot(temp_day, 
+                                aes(startDateTime, 
+                                    dayMax)) +
                geom_point(color="blue", size=0.5) +  
                ggtitle("Air Temperature\n Jan - March") +
                xlab("Date") + ylab("Air Temperature (C)")+ 
@@ -508,7 +489,7 @@ Let's plot just the first three months of the year.
 
     tempPlot_dayMax3m
 
-    ## Warning: Removed 268 rows containing missing values (`geom_point()`).
+    ## Warning: Removed 268 rows containing missing values or values outside the scale range (`geom_point()`).
 
 
 ![Scatter plot showing daily maximum temperatures(of 30 minute interval means) from the beginning of January 2018 through the end of March 2018 at the Smithsonian Conservation Biology Institute (SCBI).](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp/rfigs/subset-ggplot-time-1.png)
@@ -519,8 +500,6 @@ next tutorial). This is optional if you are continuing directly to the next tuto
 as you already have the data in R. 
 
 
-    # Write .csv - this step is optional 
+    # optional 
 
-    # This will write to the working directory we set at the start of the tutorial
-
-    write.csv(temp_day , file="NEONsaat_daily_SCBI_2018.csv", row.names=F)
+    write.csv(temp_day, file="NEONsaat_daily_SCBI_2018.csv", row.names=F)
