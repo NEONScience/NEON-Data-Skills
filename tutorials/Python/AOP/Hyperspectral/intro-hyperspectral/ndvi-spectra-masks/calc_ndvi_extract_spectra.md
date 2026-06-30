@@ -107,10 +107,6 @@ sys.path.insert(0, '../python_modules')
 import neon_aop_hyperspectral as neon_hs;
 ```
 
-
-
-Define the `data_url` to point to the cloud storage location of the the hyperspectral hdf5 data file
-
 As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've set up your token as an environment variable, you can load it using  the `dotenv` package as follows, optionally specifying the path to the `.env` file. Adjust the savepath variable to point to your desired location; we recommend keeping this close to the root directory since the download path to the data file will be nested.
 
 
