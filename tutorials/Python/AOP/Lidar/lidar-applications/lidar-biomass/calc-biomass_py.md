@@ -3,8 +3,8 @@ syncID: e6ccf19a4b454ca594388eeaa88ebe12
 title: "Calculate Vegetation Biomass from LiDAR Data in Python"
 description: "Learn to calculate the biomass of standing vegetation using a canopy height model data product." 
 dateCreated: 2017-06-21 
-authors: Tristan Goulden
-contributors: Bridget Hass
+authors: Tristan Goulden, Bridget Hass
+contributors:
 estimatedTime: 1 hour
 packagesLibraries: gdal, neonutilities, python-dotenv, scipy, scikit-learn, scikit-image
 topics: lidar, remote-sensing, biomass
@@ -224,7 +224,8 @@ show(chm_dataset);
 
 
     
-![png](pyfigs/output_24_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_24_0.png)
+
     
 
 It looks like SJER primarily has low vegetation with scattered taller trees. 
@@ -371,7 +372,7 @@ output_raster(
 ```
 
     
-![png](pyfigs/output_38_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_38_1.png)
     
 
 
@@ -448,7 +449,7 @@ plt.tight_layout()
 
 
     
-![png](pyfigs/output_40_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_40_0.png)
     
 
 
@@ -502,7 +503,7 @@ plt.colorbar(im2, ax=axes[1], label='Height (m)');
 
 
     
-![png](pyfigs/output_45_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_45_0.png)
     
 
 
@@ -540,7 +541,7 @@ output_raster(
 ```
 
     
-![png](pyfigs/output_48_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_48_1.png)
     
 
 
@@ -933,13 +934,13 @@ plt.tight_layout()
 
 
     
-![png](pyfigs/output_57_1.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_57_1.png)
     
 
 
 
     
-![png](pyfigs/output_57_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_57_2.png)
     
 
 
@@ -1025,4 +1026,4 @@ output_raster(
     
 
     
-![png](pyfigs/output_65_2.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-applications/lidar-biomass/pyfigs/output_65_2.png)
