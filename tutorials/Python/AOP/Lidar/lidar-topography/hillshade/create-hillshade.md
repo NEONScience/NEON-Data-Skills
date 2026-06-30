@@ -173,7 +173,7 @@ ax.ticklabel_format(useOffset=False, style='plain') # turn off scientific notati
 
 
     
-![png](create-hillshade_files/output_13_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_13_0.png)
     
 
 
@@ -197,7 +197,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 
 
     
-![png](create-hillshade_files/output_16_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_16_0.png)
     
 
 
@@ -216,7 +216,7 @@ plt.title('TEAK Hillshade + DTM');
 
 
 
-![png](create-hillshade_files/output_17_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_17_0.png)
     
 
 
@@ -250,7 +250,7 @@ ax.set_title('Canopy Height Model (DSM-DTM)');
 
 
     
-![png](create-hillshade_files/output_22_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_22_0.png)
     
 
 
@@ -281,4 +281,4 @@ plt.title('Terrain, Hillshade, & Canopy Height');
 
 
     
-![png](create-hillshade_files/output_24_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_24_0.png)
