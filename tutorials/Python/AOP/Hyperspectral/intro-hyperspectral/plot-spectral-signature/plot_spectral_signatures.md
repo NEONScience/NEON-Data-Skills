@@ -17,7 +17,7 @@ urlTitle: plot-refl-spectra-py
 
 In this tutorial, we will learn how to extract and plot a spectral reflectance profile (or spectral signature) from a single pixel of a reflectance band in a NEON hyperspectral HDF5 file. 
 
-This tutorial works with the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic. 
+This tutorial works with the Level 3 <a href="https://data.neonscience.org/data-products/DP3.30006.002" target="_blank">Spectrometer orthorectified surface bidirectional reflectance - mosaic</a>.
 
 
 <div id="ds-objectives" markdown="1">
