@@ -17,6 +17,8 @@ urlTitle: plot-neon-rgb-py
 
 This tutorial introduces NEON's Level 3 (mosaicked) RGB camera images, Data Product (<a href="https://data.neonscience.org/data-products/DP3.30010.001" target="_blank">DP3.30010.001</a>) and uses the Python package `rasterio` to read in and plot the camera data in Python. In this lesson, we will read in an RGB camera tile collected over the NEON Smithsonian Environmental Research Center (<a href="https://www.neonscience.org/field-sites/serc" target="_blank">SERC</a>) site and plot the mutliband image, as well as the individual bands. This lesson was adapted from the <a href="https://rasterio.readthedocs.io/en/stable/topics/plotting.html" target="_blank">rasterio plotting documentation</a>.
 
+<div id="ds-objectives" markdown="1">
+
 ### Learning Objectives
 
 After completing this tutorial, you will be able to: 
@@ -54,6 +56,8 @@ suite of remote sensing instruments, the <a href="https://www.neonscience.org/da
 
 For more interactive notebooks showing examples of working with airborne camera imagery, including with the DeepForest package (and other environmental applications), check out:
 - <a href="https://edsbook.org/about" target="_blank">Environmental Data Science (EDS) Book</a> and the <a href="https://edsbook.org/gallery" target="_blank">EDS Notebook Gallery</a>
+
+</div>
 
 In this lesson we will keep it simple and show how to read in and plot a single camera file (1km x 1km ortho-mosaicked tile) - a first step in any research incorporating the AOP camera data (in Python).
 
@@ -169,7 +173,7 @@ show(rgb_dataset);
 
 
     
-![png](plot-rgb_files/output_15_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/RGB-camera/plot-aop-camera/plot-rgb_files/output_15_0.png)
     
 
 
@@ -188,7 +192,7 @@ plt.show()
 
 
     
-![png](plot-rgb_files/output_17_0.png)
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/RGB-camera/plot-aop-camera/plot-rgb_files/output_17_0.png)
     
 
 
