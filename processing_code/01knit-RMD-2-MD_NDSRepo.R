@@ -14,16 +14,13 @@ options(timeout=300)
 # You can choose a high-level directory and this script will search
 # that directory recursively, knitting every .Rmd within it.
 # Note: do not put '/' at the end of your directory name
-dirs <- c("Tabbed/NEON-general/NEON-download-explore",
-          "Tabbed/NEON-general/code-packages/tokens-long",
-          "Tabbed/NEON-general/code-packages/neonUtilities",
-          "R/eddy-covariance/diel-cycle-flux",
-          "R/biodiversity/neon-phenology-temp/02-drivers-pheno-change-temp",
-          "R/NEON-general/neon-overview/release-provisional",
-          "R/NEON-general/neon-code-packages/spatialData",
-          "R/NMDC_NEON_Workshop_ESA2023",
-          "Tabbed/AOP/Lidar/veg-structure-chm",
-          "R/Aquatics/AIS-quality-flags/download-AIS-data",
+dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
+          "R/NEON-general/neon-code-packages/tokens-simple",
+          "R/biodiversity/biorepository",
+          "R/biodiversity/fish",
+          "R/NEON-general/neon-overview/site-management",
+          "R/eddy-covariance/intro-to-eddy4R/eddy_intro",
+          "R/AOP/Lidar/lidar-topography/veg_structure_and_chm",
           "R/AIS-data/L4-Discharge-Series/continuous-discharge-basic",
           "R/AIS-data/NEON-hydrology-tutorial")
 
@@ -31,7 +28,7 @@ dirs <- c("Tabbed/NEON-general/NEON-download-explore",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[4]
+subDir <- dirs[5]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"
