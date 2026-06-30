@@ -44,7 +44,9 @@ To complete this tutorial, you will need:
 
 For this lesson, we will work with L3 RGB Camera data collected at NEON's <a href="https://www.neonscience.org/field-sites/serc" target="_blank">Smithsonian Environmental Research Center (SERC)</a> site. This data is downloaded in the first part of the tutorial, using the Python `neonutilities` package.
 
-### Background
+</div>
+
+## Background
 
 As part of the 
 <a href="https://www.neonscience.org/data-collection/airborne-remote-sensing" target="_blank"> NEON Airborne Operation Platform's</a> 
@@ -57,7 +59,6 @@ suite of remote sensing instruments, the <a href="https://www.neonscience.org/da
 For more interactive notebooks showing examples of working with airborne camera imagery, including with the DeepForest package (and other environmental applications), check out:
 - <a href="https://edsbook.org/about" target="_blank">Environmental Data Science (EDS) Book</a> and the <a href="https://edsbook.org/gallery" target="_blank">EDS Notebook Gallery</a>
 
-</div>
 
 In this lesson we will keep it simple and show how to read in and plot a single camera file (1km x 1km ortho-mosaicked tile) - a first step in any research incorporating the AOP camera data (in Python).
 
