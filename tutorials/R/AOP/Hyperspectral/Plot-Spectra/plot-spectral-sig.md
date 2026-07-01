@@ -64,18 +64,11 @@ Let's start by defining the working directory, loading your token, and reading i
     # Import required libraries
 
     library(rhdf5)
-
     library(plyr)
-
     library(ggplot2)
-
     library(neonUtilities)
-
-
-    token <- Sys.getenv("NEON_TOKEN")
-
     
-
+    token <- Sys.getenv("NEON_TOKEN")
     data_dir <- "~/data/"
 
 If you haven't already downloaded the hyperspectral data tile (in one of the previous tutorials in this series), you can use the `neonUtilities` function `byTileAOP` to download a single reflectance tile. You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000, 4112000).
