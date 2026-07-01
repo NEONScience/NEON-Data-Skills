@@ -30,7 +30,7 @@ After completing this tutorial, you will be able to:
 
 * Download and read in several L3 lidar geotiff files
 * Difference lidar raster geotiff files
-* Create histograms raster differences (DTM and DSM)
+* Create histograms of raster differences
 * Mask out vegetated areas of DSM & DTMs using the CHM
 * Compare difference in DSM and DTMs over vegetated and ground pixels
 * Use this approach as a framework for understanding lidar raster uncertainty
@@ -110,7 +110,11 @@ You can run `help(byTileAOP)` to see more details on what the various inputs are
 
     ## Downloading 2 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |================================================================================| 100%
 
     ## Successfully downloaded 2 files to ~/data//DP3.30015.001
 
@@ -134,7 +138,15 @@ Similarly, we can download the Digital Elevation Models (DSM and DEM) as follows
 
     ## Downloading 4 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |===========================                                                     |  33%  |                                                                                        |=====================================================                           |  67%  |                                                                                        |================================================================================| 100%
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |===========================                                                     |  33%
+  |                                                                                      
+  |=====================================================                           |  67%
+  |                                                                                      
+  |================================================================================| 100%
 
     ## Successfully downloaded 4 files to ~/data//DP3.30024.001
 
