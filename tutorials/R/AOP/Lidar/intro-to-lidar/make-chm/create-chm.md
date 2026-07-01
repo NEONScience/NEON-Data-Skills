@@ -9,7 +9,7 @@ estimatedTime: 0.5 Hours
 packagesLibraries: terra, neonUtilities
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: DP3.30024.001, DP3.30015.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm/create-chm.R
 tutorialSeries: intro-lidar-r-series
 urlTitle: create-chm-rasters-r
@@ -80,13 +80,10 @@ Surface Model (DSM) and the Digital Terrain Model (DTM).
     # Load needed packages and set API token
 
     library(terra)
-
     library(neonUtilities)
-
     token <- Sys.getenv("NEON_TOKEN")
 
 Set the data directory where downloaded data will be saved.
-
 
     data_dir="~/data/" #This will depend on your local environment
 
@@ -106,7 +103,11 @@ You can run `help(byTileAOP)` to see more details on what the various inputs are
 
     ## Downloading 2 files
 
-    ##   |                                                                                                      |                                                                                              |   0%  |                                                                                                      |==============================================================================================| 100%
+    ## 
+  |                                                                                                    
+  |                                                                                              |   0%
+  |                                                                                                    
+  |==============================================================================================| 100%
 
     ## Successfully downloaded 2 files to ~/data//DP3.30024.001
 
@@ -125,7 +126,6 @@ First, we will read in the Digital Surface Model (DSM). The <a href="https://www
 
 
     # assign raster to object
-
     dsm <- rast(dsm_file)
 
     
@@ -157,10 +157,7 @@ represents the ground (terrain) elevation.
 
 
     # import the digital terrain model
-
     dtm <- rast(dtm_file)
-
-    
 
     plot(dtm, main="Lidar Digital Terrain Model \n SJER, California")
 
@@ -180,13 +177,9 @@ trees with negative heights!
 
 
     # use raster math to create CHM
-
     chm <- dsm - dtm
 
-    
-
     # view CHM attributes
-
     chm
 
     ## class       : SpatRaster
@@ -222,9 +215,7 @@ Convert the CHM from meters to feet and plot it.
 
 We can write out the CHM as a GeoTiff using the `writeRaster()` function. 
 
-
     # write out the CHM in tiff format. 
-
     writeRaster(chm,paste0(wd,"CHM_SJER.tif"),"GTiff")
 
 We've now successfully created a canopy height model using basic raster math -- in 
