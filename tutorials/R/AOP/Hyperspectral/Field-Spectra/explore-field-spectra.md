@@ -35,7 +35,7 @@ After completing this activity, you will be able to:
 * Compare the field spectra from leaf clip samples with airborne surface reflectance data of the pixel where the leaf-clip sample was taken
  
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of R and, preferably, `RStudio` loaded on your computer to complete this tutorial.
+You will need the most current version of R and, preferably, `RStudio` installed on your computer to complete this tutorial.
 
 ### Install R Packages
 
