@@ -73,76 +73,48 @@ First, we need to load our required packages and set the working directory.
 
 
     # load required packages
-
     library(rhdf5)
-
     library(reshape2)
-
     library(terra)
-
     library(plyr)
-
     library(ggplot2)
-
     library(grDevices)
 
-    
-
-    # set working directory, you can change this if desired
+    # set working directory, you can change the data path if desired
 
     wd <- "~/data/" 
-
     setwd(wd)
 
 Download the reflectance tile, if you haven't already, using `neonUtilities::byTileAOP`:
 
 
     byTileAOP(dpID = 'DP3.30006.001',
-
               site = 'SJER',
-
               year = '2021',
-
               easting = 257500,
-
               northing = 4112500,
-
               savepath = wd)
 
 And then we can read in the hyperspectral hdf5 data. We will also collect a few other important pieces of information (band wavelengths and scaling factor) while we're at it.
 
 
     # define filepath to the hyperspectral dataset
-
     h5_file <- paste0(wd,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
-    
-
     # read in the wavelength information from the HDF5 file
-
     wavelengths <- h5read(h5_file,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 
-    
-
     # grab scale factor from the Reflectance attributes
-
     reflInfo <- h5readAttributes(h5_file,"/SJER/Reflectance/Reflectance_Data" )
-
-    
 
     scaleFact <- reflInfo$Scale_Factor
 
 Now, we will read in the RGB image that we created in an earlier tutorial and plot it. 
 
-
     # read in RGB image as a 'stack' rather than a plain 'raster'
-
     rgbStack <- rast(paste0(wd,"NEON_D17_SJER_DP3_257000_4112000_reflectance_2021_RGB.tif"))
 
-    
-
     # plot as RGB image, with a linear stretch
-
     plotRGB(rgbStack,
             r=1,g=2,b=3, scale=300, 
             stretch = "lin")
@@ -186,32 +158,21 @@ Now we can create our RGB plot, and start clicking on this in the pop-out Graphi
 
 
     # change plotting parameters to better see the points and numbers generated from clicking
-
     par(col="red", cex=2)
 
-    
-
     # use a histogram stretch in order to provide more contrast for selecting pixels
-
     plotRGB(rgbStack, r=1, g=2, b=3, scale=300, stretch = "hist") 
 
-    
-
     # use the 'click' function
-
     c <- click(rgbStack, n = 6, id=TRUE, xy=TRUE, cell=TRUE, type="p", pch=16, col="red", col.lab="red")
 
 Once you have clicked your six points, the graphics window should close. If you want to choose new points, or if you accidentally clicked a point that you didn't intend to, run the previous 2 chunks of code again to re-start.
-
-
 
 The `click()` function identifies the cell number that you clicked, but in order to extract spectral signatures, we need to convert that cell number into a row and column, as shown here:
 
 
     # convert raster cell number into row and column (used to extract spectral signature below)
-
     c$row <- c$cell%/%nrow(rgbStack)+1 # add 1 because R is 1-indexed
-
     c$col <- c$cell%%ncol(rgbStack)
 
 ## Extract Spectral Signatures from HDF5 file
@@ -219,7 +180,6 @@ Next, we will loop through each of the cells that and use the `h5read()` functio
 
 
     # create a new dataframe from the band wavelengths so that we can add the reflectance values for each cover type
-
     pixel_df <- as.data.frame(wavelengths)
 
     # loop through each of the cells that we selected
@@ -247,7 +207,6 @@ Finally, we have everything that we need to plot the spectral signatures for eac
 
 
     # Use the melt() function to reshape the dataframe into a format that ggplot prefers
-
     pixel.melt <- reshape2::melt(pixel_df, id.vars = "wavelengths", value.name = "Reflectance")
 
     # Now, let's plot the spectral signatures!
@@ -270,15 +229,11 @@ Those irregularities around 1400nm and 1850 nm are two major atmospheric absorpt
 
 
     # grab reflectance metadata (which contains absorption band limits)
-
     reflMetadata <- h5readAttributes(h5_file,"/SJER/Reflectance" )
-
     ab1 <- reflMetadata$Band_Window_1_Nanometers
-
     ab2 <- reflMetadata$Band_Window_2_Nanometers
 
     # Plot spectral signatures again with grey rectangles highlighting the absorption bands
-
     ggplot()+
       geom_line(data = pixel.melt, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
       geom_rect(mapping=aes(ymin=min(pixel.melt$Reflectance),ymax=max(pixel.melt$Reflectance), xmin=ab1[1], xmax=ab1[2]), color="black", fill="grey40", alpha=0.8)+
@@ -296,19 +251,13 @@ Now we can clearly see that the noisy sections of each spectral signature are wi
 
 
     # Duplicate the spectral signatures into a new data.frame
-
     pixel.melt.masked <- pixel.melt
 
     # Mask out all values within each of the two atmospheric absorption bands
-
     pixel.melt.masked[pixel.melt.masked$wavelengths>ab1[1]&pixel.melt.masked$wavelengths<ab1[2],]$Reflectance <- NA
-
     pixel.melt.masked[pixel.melt.masked$wavelengths>ab2[1]&pixel.melt.masked$wavelengths<ab2[2],]$Reflectance <- NA
 
-    
-
     # Plot the masked spectral signatures
-
     ggplot()+
       geom_line(data = pixel.melt.masked, mapping = aes(x=wavelengths, y=Reflectance, color=variable), lwd=1.5)+
       scale_colour_manual(values = c("blue3","green4","green2","tan4","grey50","black"),
