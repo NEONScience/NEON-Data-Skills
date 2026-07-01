@@ -22,7 +22,7 @@ In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, a
 ### Learning Objectives
 After completing this tutorial, you will be able to:
 
-* Load several L3 Lidar tif files
+* Read in several L3 Lidar raster files
 * Difference the tif files
 * Create histograms of the DSM, DTM, and CHM differences
 * Remove vegetated areas of DSM & DTMs using the CHM
