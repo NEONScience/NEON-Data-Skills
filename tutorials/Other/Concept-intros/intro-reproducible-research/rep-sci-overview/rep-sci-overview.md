@@ -87,11 +87,7 @@ and formats so others can find, evaluate, and build on your results.
 
 <div id="ds-dataTip" markdown="1">
 
-**In practice:** You can be strong in one facet and weak in another, so
-reproducibility is usually a work in progress rather than an all-or-nothing
-goal. Start with the weakest link in your workflow; for example, sharing code
-without data provenance may limit reproducibility even when the analysis itself
-is well documented.
+**In practice:** You can be strong in one facet and weak in another, so reproducibility is usually a work in progress rather than an all-or-nothing goal. For example, sharing code without data provenance may limit reproducibility even when the analysis itself is well documented.
 
 </div>
 
@@ -160,7 +156,7 @@ However, this up-front investment usually saves time later by making analyses ea
 
 <div id="ds-dataTip" markdown="1">
 
-**Thought Questions:** Have a look at the reproducible science check list linked, above and answer the following questions:
+**Thought Questions:** Have a look at the reproducible science check list linked above and answer the following questions:
 
 * Do you currently apply any of the items in the checklist to your research?
 * Are there elements in the list that you are interested in incorporating into your
