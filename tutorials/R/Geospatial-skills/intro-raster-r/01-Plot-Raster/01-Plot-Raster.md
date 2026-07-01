@@ -37,6 +37,7 @@ As of June 2026, NEON requires an API token for data downloads, to reduce bot sc
 ### Install R Packages
 
 * **terra:** `install.packages("terra")`
+* **neonUtilities:** `install.packages("neonUtilities")`
 
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -76,19 +77,14 @@ have the `DSM_HARV` variable as defined in the pervious tutorial, <a href="https
 
 
     library(terra)
-
-    
+    library(neonUtilities)
 
     # set working directory
 
     wd <- "~/data/"
-
     setwd(wd)
 
-    
-
-    # set api token
-
+    # set API token
     token <- Sys.getenv("NEON_TOKEN")
 
 ## Download LiDAR Raster Data
