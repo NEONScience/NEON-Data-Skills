@@ -76,19 +76,13 @@ have the `DSM_HARV` variable as defined in the pervious tutorial, <a href="https
 
 
     library(terra)
-
+    library(neonUtilities)
     
-
     # set working directory
-
     wd <- "~/data/"
-
     setwd(wd)
 
-    
-
     # set api token
-
     token <- Sys.getenv("NEON_TOKEN")
 
 ## Download LiDAR Raster Data
@@ -134,7 +128,6 @@ First, let's plot our Digital Surface Model object (`DSM_HARV`) using the
 
 
     # Plot raster object
-
     plot(DSM_HARV, main="Digital Surface Model - HARV")
 
 ![Digital surface model showing the continuous elevation of NEON's site Harvard Forest](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/Geospatial-skills/intro-raster-r/01-Plot-Raster/rfigs/hist-raster-1.png)
