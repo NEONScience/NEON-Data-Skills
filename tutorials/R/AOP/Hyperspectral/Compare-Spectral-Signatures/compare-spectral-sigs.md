@@ -147,7 +147,7 @@ Now, we will read in the RGB image that we created in an earlier tutorial and pl
             r=1,g=2,b=3, scale=300, 
             stretch = "lin")
 
-![RGB image of a portion of the SJER field site using 3 bands from the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Select-Pixels-Compare-Spectral-Signatures/rfigs/read-in-RGB-and-plot-1.png)
+![RGB image of a portion of the SJER field site using 3 bands from the raster stack. Brightness values have been stretched using the stretch argument to produce a natural looking image.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Compare-Spectral-Signatures/rfigs/read-in-RGB-and-plot-1.png)
 
 ## Interactive `click` Function from the `terra` Package
 
