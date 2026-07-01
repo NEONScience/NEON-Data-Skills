@@ -177,39 +177,39 @@ Use this quick quiz to check your understanding of the learning objectives.
 
 1. Which list matches the four facets from the NEON reproducible science slides?
 
-* A) Computation, Statistics, Visualization, Reporting
-* B) Organization, Automation, Documentation, Dissemination
-* C) Planning, Coding, Publishing, Archiving
-* D) Collection, Cleaning, Modeling, Interpretation
+	**A.** Computation, Statistics, Visualization, Reporting
+	**B.** Organization, Automation, Documentation, Dissemination
+	**C.** Planning, Coding, Publishing, Archiving
+	**D.** Collection, Cleaning, Modeling, Interpretation
 
 2. Which practice is most aligned with the **Organization** facet?
 
-* A) Using informative file names and a clear directory structure
-* B) Writing results directly over raw input data
-* C) Keeping steps undocumented but fast
-* D) Sharing only a figure in a slide deck
+	**A.** Using informative file names and a clear directory structure
+	**B.** Writing results directly over raw input data
+	**C.** Keeping steps undocumented but fast
+	**D.** Sharing only a figure in a slide deck
 
 3. Why is scripting preferred over manual steps for many analyses?
 
-* A) It always requires less up-front time
-* B) It makes methods harder for collaborators to inspect
-* C) It supports efficient reruns and updates over time
-* D) It removes the need for version control
+	**A.** It always requires less up-front time
+	**B.** It makes methods harder for collaborators to inspect
+	**C.** It supports efficient reruns and updates over time
+	**D.** It removes the need for version control
 
 4. Which audiences may need access to your research workflow?
 
-* A) Only your principal investigator
-* B) Only peer reviewers
-* C) Collaborators, peer reviewers/editors, the scientific community, and the public
-* D) Only data managers
+	**A.** Principal investigators
+	**B.** Peer reviewers
+	**C.** Collaborators, peer reviewers/editors, the scientific community, and the public
+	**D.** Data managers
 
 5. Which option best reflects the **Dissemination** facet?
 
-* A) Publishing ends the workflow; no further sharing is needed
-* B) Share data snapshots and workflows in accessible platforms (for example,
+	**A.** Publishing ends the workflow; no further sharing is needed
+	**B.** Share data snapshots and workflows in accessible platforms (for example,
   repositories and notebook-sharing tools)
-* C) Keep data private unless requested by email
-* D) Share code only if journal reviewers ask for it
+	**C.** Keep data private unless requested by email
+	**D.** Share code only if journal reviewers ask for it
 
 ### Quiz Key
 
