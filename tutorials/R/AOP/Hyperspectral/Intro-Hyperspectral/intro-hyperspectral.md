@@ -25,12 +25,11 @@ In this tutorial, we will show how to read and extract NEON reflectance data sto
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
-* Explain how HDF5 data can be used to store spatial data and the associated benefits of this format when working with large spatial data cubes.
+* Explain how HDF5 data can be used to store spatial data and the benefits of this format when working with large spatial data cubes.
 * Extract metadata from HDF5 files.
 * Slice or subset HDF5 data. You will extract one band of pixels. 
 * Plot a matrix as an image and a raster.
 * Export a final GeoTIFF (spatially projected) that can be used both in further analysis and in common GIS tools like QGIS.
-
 
 ## Things You’ll Need To Complete This Tutorial
 To complete this tutorial you will need the most current version of R and, preferably, RStudio installed on your computer. 
