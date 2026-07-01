@@ -89,24 +89,18 @@ map as pixels. Each pixel value represents an area on the Earth's surface.
 
 Let's first import a raster dataset into R and explore its metadata. To open rasters in R, we will use the `terra` package.
 
-
     library(terra)
-
+	library(neonUtilities)
     
-
     token <- Sys.getenv("NEON_TOKEN")
 
-    
-
     # set working directory, you can change this if desired
-
     wd <- "~/data/" 
-
     setwd(wd)
 
 ## Download LiDAR Raster Data
 
-We can use the neonUtilities function byTileAOP to download a single elevation tiles (DSM and DTM). You can run help(byTileAOP) to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (732000, 4713500), which will download the tile with the lower left corner (732000,4713000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~8 MB, so make sure you have enough space on your local drive. You can set `check.size=TRUE` if you want to check the file size before downloading.
+We can use the neonUtilities function byTileAOP to download a single elevation tiles (DSM and DTM). You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (732000, 4713500), which will download the tile with the lower left corner (732000,4713000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~8 MB, so make sure you have enough space on your local drive. You can set `check.size=TRUE` if you want to check the file size before downloading.
 
 
     byTileAOP(dpID='DP3.30024.001', # lidar elevation
