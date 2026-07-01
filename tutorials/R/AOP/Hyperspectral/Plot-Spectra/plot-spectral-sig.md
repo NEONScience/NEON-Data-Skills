@@ -43,12 +43,6 @@ preferably, RStudio loaded on your computer.
 
 These hyperspectral remote sensing data provide information on the <a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/SJER" target="_blank" >San Joaquin Experimental Range (SJER)</a> field site in March of 2021. The data used in this lesson is the 1km by 1km mosaic tile named NEON_D17_SJER_DP3_257000_4112000_reflectance.h5. If you already completed the previous lesson in this tutorial series, you do not need to download this data again. The entire SJER reflectance dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
-
-**Set Working Directory:** This lesson assumes that you have set your working directory to the location of the downloaded and unzipped data subsets. 
-
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
-
-
 ### Recommended Skills
 
 For this tutorial, you should be comfortable reading data from a HDF5 file and have a general familiarity with hyperspectral data. If you aren't familiar with these steps already, we highly recommend you work through the <a href="https://www.neonscience.org/hsi-hdf5-r" target="_blank"> 
@@ -97,7 +91,11 @@ If you haven't already downloaded the hyperspectral data tile (in one of the pre
 
     ## Downloading 1 files
 
-    ##   |                                                                                                      |                                                                                              |   0%  |                                                                                                      |==============================================================================================| 100%
+    ## 
+  |                                                                                                    
+  |                                                                                              |   0%
+  |                                                                                                    
+  |==============================================================================================| 100%
 
     ## Successfully downloaded 1 files to ~/data//DP3.30006.001
 
