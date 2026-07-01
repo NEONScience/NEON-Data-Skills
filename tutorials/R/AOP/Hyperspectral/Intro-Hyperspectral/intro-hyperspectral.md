@@ -25,7 +25,7 @@ In this tutorial, we will show how to read and extract NEON reflectance data sto
 ## Learning Objectives
 After completing this tutorial, you will be able to:
 
-* Explain how HDF5 data can be used to store spatial data and the associated benefits of this format when working with large spatial data cubes.
+* Explain how HDF5 data can be used to store spatial data and understand benefits of this format when working with large spatial data cubes.
 * Extract metadata from HDF5 files.
 * Slice or subset HDF5 data. You will extract one band of pixels. 
 * Plot a matrix as an image and a raster.
@@ -90,16 +90,14 @@ Please be sure that you have *at least* version 2.10 of `rhdf5` installed. Use:
 
 
     # Load `terra` and `rhdf5` packages to read NIS data into R
-
     library(terra)
-
     library(rhdf5)
-
     library(neonUtilities)
 
     # Read in NEON_TOKEN (see "Things You'll Need to Complete This Tutorial" section to set this up)
 
     token <- Sys.getenv("NEON_TOKEN")
+
 Set the working directory to ensure R can find the file we are importing, and we know where the file is being saved. You can move the file that is downloaded afterward, but be sure to re-set the path to the file.
 
 
@@ -109,19 +107,12 @@ We can use the `neonUtilities` function `byTileAOP` to download a single reflect
 
 
     byTileAOP(dpID='DP3.30006.001',
-
               site='SJER',
-
               year='2021',
-
               easting=257500,
-
               northing=4112500,
-
               check.size=TRUE, # set to FALSE if you don't want to enter y/n
-
               savepath = data_dir,
-
               token=token)
 
 This file will be downloaded into a nested subdirectory under the `~/data` folder, inside a folder named `DP3.30006.001` (the Data Product ID). The file should show up in this location:  `~/data/DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5`.
@@ -135,14 +126,12 @@ This file will be downloaded into a nested subdirectory under the `~/data` folde
 
 
     # Define the h5 file name to be opened
-
     h5_file <- paste0(data_dir,"DP3.30006.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/Spectrometer/Reflectance/NEON_D17_SJER_DP3_257000_4112000_reflectance.h5")
 
 You can use `h5ls` and/or `View(h5ls(...))` to look at the contents of the hdf5 file, as follows:
 
 
     # look at the HDF5 file structure 
-
     View(h5ls(h5_file,all=T))
 
 When you look at the structure of the data, take note of the "map info" dataset, the `Coordinate_System` group, and the `wavelength` and `Reflectance` datasets. The `Coordinate_System` folder contains the spatial attributes of the data including its EPSG Code, which is easily converted to a Coordinate Reference System (CRS). The CRS documents how the data are physically located on the Earth. The `wavelength` dataset contains the wavelength values for each band in the data. The `Reflectance` dataset contains the image data that we will use for both data processing and visualization.
@@ -163,7 +152,6 @@ We can use the `h5readAttributes()` function to read and extract metadata from t
 
 
     # get information about the wavelengths of this dataset
-
     wavelengthInfo <- h5readAttributes(h5_file,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
 
     wavelengthInfo
@@ -178,9 +166,7 @@ Next, we can use the `h5read` function to read the data contained within the HDF
 
 
     # read in the wavelength information from the HDF5 file
-
     wavelengths <- h5read(h5_file,"/SJER/Reflectance/Metadata/Spectral_Data/Wavelength")
-
     head(wavelengths)
 
     ## [1] 381.6035 386.6132 391.6229 396.6327 401.6424 406.6522
@@ -227,9 +213,7 @@ In order to effectively subset our data, let's first read the reflectance metada
 
 
     # First, we need to extract the reflectance metadata:
-
     reflInfo <- h5readAttributes(h5_file, "/SJER/Reflectance/Reflectance_Data")
-
     reflInfo
 
     ## $Cloud_conditions
@@ -270,15 +254,9 @@ In order to effectively subset our data, let's first read the reflectance metada
 
     # Next, we read the different dimensions
 
-    
-
     nRows <- reflInfo$Dimensions[1]
-
     nCols <- reflInfo$Dimensions[2]
-
     nBands <- reflInfo$Dimensions[3]
-
-    
 
     nRows
 
@@ -297,13 +275,9 @@ The HDF5 read function reads data in the order: Bands, Cols, Rows. This is diffe
 
 
     # Extract or "slice" data for band 34 from the HDF5 file
-
     b34 <- h5read(h5_file,"/SJER/Reflectance/Reflectance_Data",index=list(34,1:nCols,1:nRows)) 
 
-    
-
     # what type of object is b34?
-
     class(b34)
 
     ## [1] "array"
@@ -315,13 +289,9 @@ Next, let's convert our data from an array (more than 2 dimensions) to a matrix 
 
 
     # convert from array to matrix by selecting only the first band
-
     b34 <- b34[1,,]
 
-    
-
     # display the class of this re-defined variable
-
     class(b34)
 
     ## [1] "matrix" "array"
@@ -357,7 +327,6 @@ Next, let's look at the metadata for the reflectance data. When we do this, take
 
 
     # look at the metadata for the reflectance dataset
-
     h5readAttributes(h5_file,"/SJER/Reflectance/Reflectance_Data")
 
     ## $Cloud_conditions
@@ -397,7 +366,6 @@ Next, let's look at the metadata for the reflectance data. When we do this, take
     ## [1]     0 10000
 
     # plot the image
-
     image(b34)
 
 ![Plot of reflectance values for band 34 data. This plot shows a very washed out image lacking any detail.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Intro-Hyperspectral/rfigs/read-attributes-plot-1.png)
@@ -406,7 +374,6 @@ What do you notice about the first image? It's washed out and lacking any detail
 
 
     # this is a little hard to visually interpret - what happens if we plot a log of the data?
-
     image(log(b34))
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Intro-Hyperspectral/rfigs/plot-log-b34-1.png)
@@ -415,21 +382,17 @@ Let's look at the distribution of reflectance values in our data to figure out w
 
 
     # Plot range of reflectance values as a histogram to view range
-
     # and distribution of values.
-
     hist(b34,breaks=50,col="darkmagenta")
 
 ![Histogram of reflectance values for band 34. The x-axis represents the reflectance values and ranges from 0 to 8000. The frequency of these values is on the y-axis. The histogram shows reflectance values are skewed to the right, where the majority of the values lie between 0 and 1000. We can conclude that reflectance values are not equally distributed across the range of reflectance values, resulting in a washed out image.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Intro-Hyperspectral/rfigs/hist-data-1.png)
 
     # View values between 0 and 5000
-
     hist(b34,breaks=100,col="darkmagenta",xlim = c(0, 5000))
 
 ![Histogram of reflectance values between 0 and 5000 for band 34. Reflectance values are on the x-axis, and the frequency is on the y-axis. The x-axis limit has been set 5000 in order to better visualize the distribution of reflectance values. We can confirm that the majority of the values are indeed within the 0 to 4000 range.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Intro-Hyperspectral/rfigs/hist-data-2.png)
 
     # View higher values
-
     hist(b34, breaks=100,col="darkmagenta",xlim = c(5000, 15000),ylim = c(0, 750))
 
 ![Histogram of reflectance values between 5000 and 15000 for band 34. Reflectance values are on the x-axis, and the frequency is on the y-axis. Plot shows that a very few number of pixels have reflectance values larger than 5,000. These values are skewing how the image is being rendered and heavily impacting the way the image is drawn on our monitor.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Intro-Hyperspectral/rfigs/hist-data-3.png)
@@ -445,21 +408,15 @@ Remember that the metadata for the `Reflectance` dataset designated -9999 as `da
 
 
     # there is a no data value in our raster - let's define it
-
     noDataValue <- as.numeric(reflInfo$Data_Ignore_Value)
-
     noDataValue
 
     ## [1] -9999
 
     # set all values equal to the no data value (-9999) to NA
-
     b34[b34 == noDataValue] <- NA
 
-    
-
     # plot the image now
-
     image(b34)
 
 ![Plot of reflectance values for band 34 data with values equal to -9999 set to NA. Image data in raster format will often contain no data values, which may be attributed to the sensor not collecting data in that area of the image or to processing results which yield null values. Reflectance datasets designate -9999 as data ignore values. As such, we will reassign -9999 values to NA so R won't try to render these pixels.](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Hyperspectral/Intro-Hyperspectral/rfigs/set-values-NA-1.png)
@@ -502,9 +459,7 @@ The orientation is rotated in our log adjusted image. This is because R reads in
 
 
     # We need to transpose x and y values in order for our 
-
     # final image to plot properly
-
     b34 <- t(b34)
 
     image(log(b34), main="Transposed Image")
@@ -535,27 +490,14 @@ First, we need to define the Coordinate reference system (CRS) of the raster. To
 
 
     # Extract the EPSG from the h5 dataset
-
     h5EPSG <- h5read(h5_file, "/SJER/Reflectance/Metadata/Coordinate_System/EPSG Code")
 
-    
-
     # convert the EPSG code to a CRS string
-
     h5CRS <- crs(paste0("+init=epsg:",h5EPSG))
 
-    
-
     # define final raster with projection info 
-
-    # note that capitalization will throw errors on a MAC.
-
-    # if UTM is all caps it might cause an error!
-
     b34r <- rast(b34, 
             crs=h5CRS)
-
-    
 
     # view the raster attributes
 
@@ -572,10 +514,7 @@ First, we need to define the Coordinate reference system (CRS) of the raster. To
     ## max value   : 13129
 
     # let's have a look at our properly oriented raster. Take note of the 
-
     # coordinates on the x and y axis.
-
-    
 
     image(log(b34r), 
           xlab = "UTM Easting", 
@@ -588,33 +527,20 @@ Next we define the extents of our raster. The extents will be used to calculate 
 
 
     # Grab the UTM coordinates of the spatial extent
-
     xMin <- reflInfo$Spatial_Extent_meters[1]
-
     xMax <- reflInfo$Spatial_Extent_meters[2]
-
     yMin <- reflInfo$Spatial_Extent_meters[3]
-
     yMax <- reflInfo$Spatial_Extent_meters[4]
 
-    
-
     # define the extent (left, right, top, bottom)
-
     rasExt <- ext(xMin,xMax,yMin,yMax)
-
     rasExt
 
     ## SpatExtent : 257000, 258000, 4112000, 4113000 (xmin, xmax, ymin, ymax)
-
     # assign the spatial extent to the raster
-
     ext(b34r) <- rasExt
 
-    
-
     # look at raster attributes
-
     b34r
 
     ## class       : SpatRaster
@@ -639,12 +565,8 @@ Learn more about working with Raster data in R in the Data Carpentry workshop: <
 
 We can adjust the colors of our raster as well, if desired.
 
-
     # let's change the colors of our raster and adjust the zlim 
-
-    col <- terrain.colors(25)
-
-    
+    col <- terrain.colors(25)  
 
     image(b34r,  
           xlab = "UTM Easting", 
@@ -660,17 +582,11 @@ We've now created a raster from band 34 reflectance data. We can export the data
 
 
     # write out the raster as a geotiff
-
     writeRaster(b34r,
-
                 file=paste0(data_dir,"band34.tif"),
-
                 overwrite=TRUE)
 
-    
-
     # close the H5 file
-
     H5close()
 
 
