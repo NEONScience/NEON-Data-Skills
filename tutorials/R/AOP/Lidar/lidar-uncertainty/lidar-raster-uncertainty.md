@@ -37,8 +37,7 @@ After completing this tutorial, you will be able to:
 
  
 ## Things You’ll Need To Complete This Tutorial
-You will need the most current version of R and, preferably, `RStudio` loaded 
-on your computer to complete this tutorial.
+You will need the most current version of R and, preferably, `RStudio` installed on your computer to complete this tutorial.
 
 As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
@@ -110,7 +109,11 @@ You can run `help(byTileAOP)` to see more details on what the various inputs are
 
     ## Downloading 2 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |================================================================================| 100%
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |================================================================================| 100%
 
     ## Successfully downloaded 2 files to ~/data//DP3.30015.001
 
@@ -134,7 +137,15 @@ Similarly, we can download the Digital Elevation Models (DSM and DEM) as follows
 
     ## Downloading 4 files
 
-    ##   |                                                                                        |                                                                                |   0%  |                                                                                        |===========================                                                     |  33%  |                                                                                        |=====================================================                           |  67%  |                                                                                        |================================================================================| 100%
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |===========================                                                     |  33%
+  |                                                                                      
+  |=====================================================                           |  67%
+  |                                                                                      
+  |================================================================================| 100%
 
     ## Successfully downloaded 4 files to ~/data//DP3.30024.001
 
