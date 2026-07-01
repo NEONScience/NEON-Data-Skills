@@ -9,7 +9,7 @@ estimatedTime: 0.5 Hours
 packagesLibraries: terra, neonUtilities
 topics: lidar, R, raster, remote-sensing, spatial-data-gis
 languagesTool: R
-dataProduct:
+dataProduct: DP3.30024.001, DP3.30015.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm/create-chm.R
 tutorialSeries: intro-lidar-r-series
 urlTitle: create-chm-rasters-r
@@ -106,7 +106,11 @@ You can run `help(byTileAOP)` to see more details on what the various inputs are
 
     ## Downloading 2 files
 
-    ##   |                                                                                                      |                                                                                              |   0%  |                                                                                                      |==============================================================================================| 100%
+    ## 
+  |                                                                                                    
+  |                                                                                              |   0%
+  |                                                                                                    
+  |==============================================================================================| 100%
 
     ## Successfully downloaded 2 files to ~/data//DP3.30024.001
 
