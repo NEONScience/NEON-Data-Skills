@@ -22,6 +22,10 @@ urlTitle: rep-sci-intro
 From Powers, S. M., and S. E. Hampton (2019),
 <a href="https://doi.org/10.1002/eap.1822" target="_blank">Open science, reproducibility, and transparency in ecology</a> (Abstract)
 
+This lesson introduces the core principles of reproducible science in ecology, including organization, automation, documentation, and dissemination, and provides practical ways to apply them in your own research workflows.
+
+In ecological science, reproducibility is especially important because observations are often context-dependent in space and time, so transparent and computationally reproducible workflows are critical for credible science, management, and policy decisions.
+
 <div id="ds-objectives" markdown="1">
 
 ## Learning Objectives
@@ -41,7 +45,7 @@ This lesson summarizes key concepts about reproducible science, adapted from the
 ### Why use reproducible methods?
 
 Reproducible methods make science more efficient, more collaborative, and more
-trustworthy across the full lifecycle of a project. Some benefits include:
+trustworthy across the full lifecycle of a project. Some benefits to reproducibility include:
 
 * More efficient, less redundant.
 * Allows for continuity in your own work over time.
@@ -70,12 +74,6 @@ Reproducibility is often discussed as one idea, but in practice it has several
 connected facets. Improving all four helps make your work more robust and more
 useful to others.
 
-<div id="ds-dataTip" markdown="1">
-**Source note:** The four facets below are taken from the NEON "Intro to
-Reproducible Science" slides (adapted from the Reproducible Science
-Curriculum).
-</div>
-
 1. **Organization**: use clear file structures, informative file names, and
 explicit separation of raw, intermediate, and final outputs.
 2. **Automation**: prefer scripts over point-and-click steps so analyses can be
@@ -86,8 +84,10 @@ workflow steps so others (and your future self) can understand the work.
 and formats so others can find, evaluate, and build on your results.
 
 <div id="ds-dataTip" markdown="1">
+
 **In practice:** You can be strong in one facet and weak in another. For
 example, sharing code without data provenance may limit reproducibility.
+
 </div>
 
 ## How Reproducible Workflows Improve Research
@@ -109,7 +109,7 @@ re-analyzed, cited, and used for synthesis.
 ## Incorporating Reproducible Science Into Your Workflow
 
 You do not need to adopt everything at once. Start with small, high-impact
-changes and build over time.
+changes and build over time. 
 
 ### Quick Wins (start this week)
 
@@ -128,7 +128,7 @@ changes and build over time.
 ### Advanced Practices (ongoing)
 
 * Build end-to-end pipelines that regenerate figures and tables.
-* Use computational environments (for example, lockfiles or containers) to
+* Use computational environments (for example, containers) to
 improve run-to-run consistency.
 * Add executable reports/notebooks that pair narrative, code, and outputs.
 * Include clear licensing, citation, and contribution guidance for re-use.
@@ -157,9 +157,7 @@ How reproducible is your current research?
 
 <div id="ds-dataTip" markdown="1">
 
-**Thought Questions:** Have a look at the reproducible
-science check list linked, above and answer the
-following questions:
+**Thought Questions:** Have a look at the reproducible science check list linked, above and answer the following questions:
 
 * Do you currently apply any of the items in the checklist to your research?
 * Are there elements in the list that you are interested in incorporating into your
@@ -185,23 +183,21 @@ Use this quick quiz to check your understanding of the learning objectives.
 	C) Keeping steps undocumented but fast
 	D) Sharing only a figure in a slide deck
 
-3. According to the slides, why is scripting preferred over manual steps for
-many analyses?
+3. Why is scripting preferred over manual steps for many analyses?
 
 	A) It always requires less up-front time
 	B) It makes methods harder for collaborators to inspect
 	C) It supports efficient reruns and updates over time
 	D) It removes the need for version control
 
-4. Which audience is explicitly listed in the slides as needing access to your
-workflow?
+4. Which audiences may need access to your research workflow?
 
 	A) Only your principal investigator
 	B) Only peer reviewers
 	C) Collaborators, peer reviewers/editors, the scientific community, and the public
 	D) Only data managers
 
-5. Which option best reflects the **Dissemination** facet from the slides?
+5. Which option best reflects the **Dissemination** facet?
 
 	A) Publishing ends the workflow; no further sharing is needed
 	B) Share data snapshots and workflows in accessible platforms (for example,
@@ -232,24 +228,15 @@ adopt this month?
 * How might improved transparency change trust in your results for a policy,
 management, or stakeholder audience?
 
-## Additional Readings and Recent Resources (optional)
+## Additional Readings and Resources (optional)
 
-### Core and historical resources
+### Resources
 
-* Nature has collated and published (with open access) a special archive on the
+* Nature magazine's special archive on the
 <a href="https://www.nature.com/news/reproducibility-1.17552" target="_blank">Challenges of Irreproducible Science</a>.
-* Nature has also created a
-<a href="https://www.nature.com/documents/nr-reporting-summary-flat.pdf" target="_blank">reporting summary checklist</a>
-that focuses on reporting transparency and includes sections relevant to data
-and code availability.
 * Open-access issue of
 <a href="https://onlinelibrary.wiley.com/toc/16000587/2016/39/4" target="_blank">Ecography</a>
 focusing on reproducible ecology and software practices.
-
-### Recommended recent resources
-
-#### Resources
-
 * Hampton, S. E., et al. (2015). 
 <a href="https://doi.org/10.1002/eap.1822" target="_blank">Open science, reproducibility, and transparency in ecology</a>.
 Ecological Applications.
@@ -268,4 +255,4 @@ Science Essentials):
 * Software Carpentry lesson (R):
 <a href="https://swcarpentry.github.io/r-novice-gapminder/" target="_blank">R for Reproducible Scientific Analysis</a>.
 * Reproducible Data Science in Python:
-<a href="https://valdanchev.github.io/reproducible-data-science-python/intro.html#" target="_blank">Course notes and hands-on reproducible workflow guidance</a>.
+<a href="https://valdanchev.github.io/reproducible-data-science-python/intro.html#" target="_blank">Textbook on reproducible workflows in Python</a>.
