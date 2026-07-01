@@ -335,8 +335,8 @@ method. We can assign this string to an R object, too.
 The `CRS` of our `DSM_HARV` object tells us that our data are in the UTM projection, in zone 18N.
 
 <figure>
-    <a href="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg">
-    <img src="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg"
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/Utm-zones-USA.png">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/Utm-zones-USA.png"
     alt="Image showing the ten different UTM zones (10-19) across the continental United States."></a>
    	<figcaption> The UTM zones across the continental United States. Source: Chrismurf, wikimedia.org.
 		</figcaption>
