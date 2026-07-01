@@ -3,8 +3,8 @@ syncID: 6e908b9477034bc9b4a23b37c16a2455
 title: "The Importance of Reproducible Science"
 description: "This lesson introduces the core principles of reproducible science in ecology and provides practical ways to apply them in research workflows."
 dateCreated: 2014-05-06
-authors: Megan A. Jones
-contributors: Felipe Sanchez, Bridget Hass
+authors: Megan Jones, Bridget Hass
+contributors: Felipe Sanchez
 estimatedTime: 1.0 Hour
 packagesLibraries:
 topics: data-management, reproducible-science
@@ -22,9 +22,11 @@ urlTitle: rep-sci-intro
 From Powers, S. M., and S. E. Hampton (2019),
 <a href="https://doi.org/10.1002/eap.1822" target="_blank">Open science, reproducibility, and transparency in ecology</a> (Abstract)
 
-This lesson introduces the core principles of reproducible science in ecology, including organization, automation, documentation, and dissemination, and provides practical ways to apply them in your own research workflows.
+This lesson introduces the core principles of reproducible science in ecology and provides practical ways to apply them in your own research workflows.
 
 In ecological science, reproducibility is especially important because observations are often context-dependent in space and time, so transparent and computationally reproducible workflows are critical for credible science, management, and policy decisions.
+
+NEON data are especially well suited for reproducible ecological workflows because they are collected using standardized protocols across sites and time, include rich metadata and documentation, and are delivered in formats that make analyses easier to trace, rerun, and compare.
 
 <div id="ds-objectives" markdown="1">
 
@@ -40,7 +42,7 @@ your own research.
 
 ## Getting Started with Reproducible Science
 
-This lesson summarizes key concepts about reproducible science, adapted from the Reproducible Science Curriculum, https://github.com/Reproducible-Science-Curriculum).
+This lesson summarizes key concepts about reproducible science, adapted from the <a href="https://github.com/Reproducible-Science-Curriculum" target="_blank">Reproducible Science Curriculum</a>.
 
 ### Why use reproducible methods?
 
@@ -85,8 +87,11 @@ and formats so others can find, evaluate, and build on your results.
 
 <div id="ds-dataTip" markdown="1">
 
-**In practice:** You can be strong in one facet and weak in another. For
-example, sharing code without data provenance may limit reproducibility.
+**In practice:** You can be strong in one facet and weak in another, so
+reproducibility is usually a work in progress rather than an all-or-nothing
+goal. Start with the weakest link in your workflow; for example, sharing code
+without data provenance may limit reproducibility even when the analysis itself
+is well documented.
 
 </div>
 
