@@ -136,22 +136,20 @@ improve run-to-run consistency.
 ## Practical Challenges and Tradeoffs
 
 Adopting reproducible methods often requires more setup time at the beginning.
-However, the slide deck emphasizes that this up-front investment usually saves
-time later by making analyses easier to update, repeat, and explain.
+However, this up-front investment usually saves time later by making analyses easier to update, repeat, and explain. Moving towards reproducibility can be approached with a "good-better-best" framework. See the figure below to assess where your work lies on the reproducability spectrum.
 
-## Reproducibility and Your Research
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Good-better-best_RepSciCur_PengScience.jpg">
 	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/dev-aten/graphics/reproducible-science/Good-better-best_RepSciCur_PengScience.jpg"
-	alt="Graphic showing the spectrum of reproducibility for published research. From left to right, left being not reproducible and right being the gold standard, we have publication only, publication plus code, publication plus code and data, publication with linked and executable code and data, and full replication.">
+	alt="The spectrum of reproducibility for published research. From left to right, left being not reproducible and right being the gold standard.">
 	</a>
 	<figcaption> Reproducibility spectrum for published research.
-	Source: Peng, RD Reproducible Research in Computational Science Science (2011): 1226–1227 via <a href="http://reproducible-science-curriculum.github.io/bosc2015/#/15" target="_blank">Reproducible Science Curriculum</a>
+	Source: Peng, RD Reproducible Research in Computational Science (2011): 1226–1227 via <a href="http://reproducible-science-curriculum.github.io/bosc2015/#/15" target="_blank">Reproducible Science Curriculum</a>
 	</figcaption>
 </figure>
 
-How reproducible is your current research?
+### How reproducible is your current research?
 
 <a class="link--button link--arrow" href="https://github.com/Reproducible-Science-Curriculum/rr-intro/blob/master/checklist.md" target="_blank"> View Reproducible Science Checklist </a>
 
@@ -244,8 +242,6 @@ Ecological Applications.
 <a href="https://science.nasa.gov/open-science/" target="_blank">Open Science at NASA</a>.
 * The Turing Way (living handbook):
 <a href="https://book.the-turing-way.org/reproducible-research/reproducible-research/" target="_blank">The Turing Way: A handbook for reproducible, ethical, and collaborative data science</a>.
-* NASEM report on reproducibility and replicability:
-<a href="https://nap.nationalacademies.org/catalog/25303/reproducibility-and-replicability-in-science" target="_blank">Reproducibility and Replicability in Science</a>.
 
 #### Hands-on tutorials and workshops
 
