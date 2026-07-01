@@ -33,6 +33,7 @@ After completing this activity, you will be able to:
 * Understand uncertainty associated with the foliar spectra data
 * Link field spectra data to foliar trait data to determine the precise location of leaf clip samples
 * Compare the field spectra from leaf clip samples with airborne surface reflectance data of the pixel where the leaf-clip sample was taken
+* Extract pixels from the tree crown polygon shapefile corresponding to the tree where foliar samples were taken
  
 ## Things You’ll Need To Complete This Tutorial
 You will need the most current version of R and, preferably, `RStudio` loaded on your computer to complete this tutorial.
