@@ -76,9 +76,8 @@ hyperspectral dataset. This value represents the spread of the band around that 
 </figure>
 
 In the illustration above, the band that covers 695-700nm has a FWHM of 5 nm. 
-While a general spectral resolution of the sensor is often provided, not all 
-sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are listed below (Courtesy of <a href="http://landsat.usgs.gov" target="_blank">USGS</a>)
 
+While a general spectral resolution of the sensor is often provided, not all sensors create bands of uniform widths. For instance bands 1-9 of Landsat 8 are listed below (Courtesy of <a href="http://landsat.usgs.gov" target="_blank">USGS</a>)
 
 | Band | Wavelength range (microns) | Spatial Resolution (m) | Spectral Width (microns)|
 |-------------------------------------|------------------|--------------------|----------------|
