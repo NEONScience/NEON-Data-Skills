@@ -78,17 +78,14 @@ Model (DSM), Digital Terrain Model (DTM), and Canopy Height Model (CHM).
 
 
     # Load needed packages and read in NEON API token
-
     library(terra)
-
     library(neonUtilities)
 
     token <- Sys.getenv("NEON_TOKEN")
 
-Set the working directory so you know where to download data.
+Set the directory where NEON data will be downloaded
 
-
-    data_dir="~/data/" #This will depend on your local environment
+    data_dir="~/data/" 
 
 We can use the `neonUtilities` function `byTileAOP` to download a single CHM, DTM, and DSM tile at PRIN. The CHM is delivered under the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure (DP3.30015.001)</a> data product. Both the DTM and DSM are delivered 
 under the <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR (DP3.30024.001)</a> data product.
