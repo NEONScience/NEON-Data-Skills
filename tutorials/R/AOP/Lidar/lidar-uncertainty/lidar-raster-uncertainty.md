@@ -87,7 +87,7 @@ Set the directory where NEON data will be downloaded
 We can use the `neonUtilities` function `byTileAOP` to download a single CHM, DTM, and DSM tile at PRIN. The CHM is delivered under the <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure (DP3.30015.001)</a> data product. Both the DTM and DSM are delivered 
 under the <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR (DP3.30024.001)</a> data product.
 
-You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (607000, 3696000), which will download the tile with the lower left corner (607000, 3696000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). You can set `check.size=FALSE` if you want to download without a prompt. This example will not be very large (~8MB), since it is only downloading two single-band rasters (plus some associated metadata).
+You can run `help(byTileAOP)` to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (607000, 3696000), which will download the tile with the lower left corner (607000, 3696000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). You can set `check.size=FALSE` if you want to download without a prompt. This example will not be very large (~2MB), since it is only downloading two single-band rasters (plus some associated metadata).
 
 
     byTileAOP(dpID='DP3.30015.001',
@@ -96,7 +96,7 @@ You can run `help(byTileAOP)` to see more details on what the various inputs are
               easting=607000,
               northing=3696000,
               check.size=FALSE, # set to TRUE if you want to confirm before downloading
-              savepath = data_dir,
+              savepath=data_dir,
               token=token)
 
     ## Downloading files totaling approximately 1.888932 MB
