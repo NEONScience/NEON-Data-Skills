@@ -16,10 +16,7 @@ urlTitle: lidar-uncertainty-r
 ---
 
 
-In 2016 the NEON AOP flew the PRIN site in D11 on a poor weather day to ensure coverage of the site. The following day, the weather improved and the site was flown again to collect clear-weather spectrometer data. Having collections only one day apart provides an opportunity to assess lidar uncertainty because we expect that nothing has changed at the site between the two collections. In this exercise we will analyze several NEON Level 3 lidar rasters to assess the uncertainty.
-
-In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) 
-and assess the uncertainty between data collected over the same area on different days, collected a day apart.
+In 2016 the NEON AOP flew the PRIN site in D11 on a poor weather day to ensure coverage of the site. The following day, the weather improved and the site was flown again to collect clear-weather spectrometer data. Having collections only one day apart provides an opportunity to assess lidar uncertainty because we expect that nothing has changed at the site between the two collections. In this exercise we will analyze several NEON Level-3 lidar rasters (DSM, DTM, and CHM) and assess the uncertainty between two datasets over the same area collected a day apart.
 
 
 <div id="ds-objectives" markdown="1">
