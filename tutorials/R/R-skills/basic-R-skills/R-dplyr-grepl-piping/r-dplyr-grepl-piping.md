@@ -137,12 +137,8 @@ For example, if we want to find the mean body weight of male mice, we'd do this:
 
 
     	myMammalData %>%                     # start with a data frame
-
     		filter(sex=='M') %>%               # first filter for rows where sex is male
-
-    		summarise (mean_weight = mean(weight))  # find the mean of the weight 
-
-                                                # column, store as mean_weight
+    		summarise (mean_weight = mean(weight))  # find the mean of the weight column, store as mean_weight
 
 This is read as "from data frame `myMammalData`, select only males and return 
 the mean weight as a new list `mean_weight`".
@@ -166,33 +162,21 @@ disease epidemic.
     # load packages and token
 
     library(dplyr)
-
     library(neonUtilities)
 
     token <- Sys.getenv("NEON_TOKEN")
 
-    
-
     # load the NEON small mammal capture data
-
     # NOTE: the check.size = TRUE argument means the function 
-
     # will require confirmation from you that you want to load 
-
     # the quantity of data requested
 
     loadData <- loadByProduct(dpID="DP1.10072.001", site = "HARV", 
-
                      startdate = "2014-01", enddate = "2014-12", 
-
                      check.size = TRUE, # console requires your response (y/n)
-
                      token=token) 
 
-    
-
     # if you'd like, check out the data
-
     str(loadData)
 
 
@@ -206,8 +190,6 @@ just that one and call it 'myData'.
 
 
     myData <- loadData$mam_pertrapnight
-
-    
 
     class(myData) # Confirm that 'myData' is a data.frame
 
@@ -240,32 +222,24 @@ disease-causing bacterium.
 
 
     # filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
-
     # two equals signs (==) signifies "is"
 
     data_PeroManicFemales <- filter(myData, 
                        scientificName == 'Peromyscus maniculatus', 
                        sex == 'F')
 
-    
-
     # Note how we were able to put multiple conditions into the filter statement,
-
     # pretty cool!
 
 So we have a dataframe with our female *P. mainculatus* but how many are there? 
 
-
     # how many female P. maniculatus are in the dataset
-
     # would could simply count the number of rows in the new dataset
-
     nrow(data_PeroManicFemales)
 
     ## [1] 98
 
     # or we could write is as a sentence
-
     print(paste('In 2014, NEON technicians captured',
                        nrow(data_PeroManicFemales),
                        'female Peromyscus maniculatus at Harvard Forest.',
@@ -288,7 +262,6 @@ that are unambiguous identifications.
 
 
     # filter on `scientificName` is Peromyscus maniculatus and `sex` is female. 
-
     # two equals signs (==) signifies "is"
 
     data_PeroManicFemalesCertain <- filter(myData, 
@@ -296,10 +269,7 @@ that are unambiguous identifications.
                        sex == 'F',
                        identificationQualifier =="NA")
 
-    
-
     # Count the number of un-ambiguous identifications
-
     nrow(data_PeroManicFemalesCertain)
 
     ## [1] 0
@@ -336,14 +306,10 @@ We can use the `dplyr` function `filter()` in combination with the base function
 
 
     # combine filter & grepl to get all Peromyscus (a part of the 
-
     # scientificName string)
-
     data_PeroFemales <- filter(myData,
                        grepl('Peromyscus', scientificName),
                        sex == 'F')
-
-    
 
     # how many female Peromyscus are in the dataset
 
@@ -383,13 +349,9 @@ code, using `group_by` and `summarise`.
     # how many of each species & sex were there?
 
     # step 1: group by species & sex
-
     dataBySpSex <- dplyr::group_by(myData, scientificName, sex)
 
-    
-
     # step 2: summarize the number of individuals of each using the new df
-
     countsBySpSex <- dplyr::summarise(dataBySpSex, n_individuals = dplyr::n())
 
     ## `summarise()` has regrouped the output.
@@ -430,19 +392,15 @@ also read the help documentation for this function by running the code:
 
 
     # View class of 'myData' object
-
     class(myData)
 
     ## [1] "data.frame"
-
     # View class of 'dataBySpSex' object
-
     class(dataBySpSex)
 
     ## [1] "grouped_df" "tbl_df"     "tbl"        "data.frame"
 
     # View help file for group_by() function
-
     ?group_by()
 
 ## Pipe functions together
@@ -456,23 +414,15 @@ females, `grepl` to get only Peromyscus spp., `group_by` individual species, and
 
 
     # combine several functions to get a summary of the numbers of individuals of 
-
     # female Peromyscus species in our dataset.
 
-    
-
     # remember %>% are "pipes" that allow us to pass information from one function 
-
     # to the next. 
-
-    
 
     dataBySpFem <- myData %>% 
                       dplyr::filter(grepl('Peromyscus', scientificName), sex == "F") %>%
                       dplyr::group_by(scientificName) %>%
                       dplyr::summarise(n_individuals = dplyr::n())
-
-    
 
     # view the data
 
@@ -496,11 +446,8 @@ to accomplish the same task.
 
 
     # For reference, the same output but using R's base functions
-
     
-
     # First, subset the data to only female Peromyscus
-
     dataFemPero  <- myData[myData$sex == 'F' & 
                        grepl('Peromyscus', myData$scientificName), ]
 
@@ -509,13 +456,10 @@ to accomplish the same task.
     # Option 1 --------------------------------
 
     # Use aggregate and then rename columns
-
     dataBySpFem_agg <-aggregate(dataFemPero$sex ~ dataFemPero$scientificName, 
                        data = dataFemPero, FUN = length)
 
     names(dataBySpFem_agg) <- c('scientificName', 'n_individuals')
-
-    
 
     # view output
 
@@ -530,13 +474,8 @@ to accomplish the same task.
 
     # Do it by hand
 
-    
-
     # Get the unique scientificNames in the subset
-
     sppInDF <- unique(dataFemPero$scientificName[!is.na(dataFemPero$scientificName)])
-
-    
 
     # Use a loop to calculate the numbers of individuals of each species
 
@@ -547,17 +486,11 @@ to accomplish the same task.
       numInd <- c(numInd, length(which(dataFemPero$scientificName==i)))
     }
 
-    
-
     #Create the desired output data frame
-
     dataBySpFem_byHand <- data.frame('scientificName'=sciName, 
                        'n_individuals'=numInd)
 
-    
-
     # view output
-
     dataBySpFem_byHand
 
     ##           scientificName n_individuals
