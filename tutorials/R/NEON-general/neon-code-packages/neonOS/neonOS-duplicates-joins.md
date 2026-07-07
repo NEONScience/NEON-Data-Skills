@@ -98,7 +98,11 @@ loaded on your computer to complete this tutorial.
 
 ## Set Up R Environment and Download Data
 
-First install and load the necessary packages.
+First install and load the necessary packages. As of June 2026, NEON requires 
+an API token for data downloads, to reduce bot scraping and improve user 
+support. Tokens can be generated in NEON data portal user accounts - log in to 
+your account or create one, and go to the API Tokens section. For best 
+practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 
     # install packages. you can skip this step if 
@@ -111,6 +115,8 @@ First install and load the necessary packages.
 
     install.packages("ggplot2")
 
+    install.packages("dplyr")
+
     
 
     # load packages
@@ -120,6 +126,14 @@ First install and load the necessary packages.
     library(neonOS)
 
     library(ggplot2)
+
+    library(dplyr)
+
+    
+
+    # load token
+
+    token <- Sys.getenv("NEON_TOKEN")
 
 
 
@@ -138,7 +152,8 @@ and Toolik Lake sites, specifying the 2022 data release.
                             site=c("PRLA","SUGG","TOOK"), 
                             package="expanded",
                             release="RELEASE-2022",
-                            check.size=F)
+                            check.size=F,
+                            token=token)
 
 Copy each of the downloaded tables into the R environment.
 
@@ -204,7 +219,7 @@ Records that can be merged to a single record by these criteria are flagged
 with `duplicateRecordQF=1`. Records with mis-matched data that can't be merged 
 are retained as-is and flagged with `duplicateRecordQF=2`.
 
-Note that even in fully identical duplicates, the `uid` field (universal 
+Note that even in fully identical duplicates, the `uid` field (unique 
 identifier) will always be unique. Thus the `uid` field in merged records 
 will always contain the pipe-delimited set of uids of the original records.
 
@@ -212,24 +227,21 @@ What does this look like in practice? Let's look at the two resolved
 duplicates:
 
 
-    apl_plantExternalLabDataPerSample[which(
-      apl_plantExternalLabDataPerSample$duplicateRecordQF==1),]
+    apl_plantExternalLabDataPerSample |>
+      filter(duplicateRecordQF==1)
 
-    ##                                                                          uid domainID siteID
-    ## 55 cca9850e-165d-4cb7-9872-eff490c79ffa|1f5a5389-c18c-4fbf-81d6-9cd45e65f48a      D03   SUGG
-    ## 60 e6cab47f-427b-47a9-a281-cbfe7c101fc3|368e16bb-23d4-4596-b624-b338777bc9bc      D03   SUGG
-    ##     namedLocation collectDate              sampleID sampleCondition
-    ## 55 SUGG.AOS.reach  2016-02-22 SUGG.20160222.UTFO.Q5    condition ok
-    ## 60 SUGG.AOS.reach  2016-02-22 SUGG.20160222.UTFO.Q5    condition ok
-    ##                                      laboratoryName analysisDate   analyzedBy sampleType replicate
-    ## 55 Academy of Natural Sciences of Drexel University   2016-07-12 OKgcKejxXbI=         CN         1
-    ## 60 Academy of Natural Sciences of Drexel University   2016-07-12 OKgcKejxXbI=         CN         1
-    ##    sampleVolumeFiltered filterSize percentFilterAnalyzed  analyte analyteConcentration plantAlgaeLabUnits
-    ## 55                   NA         25                   100   carbon                34.01            percent
-    ## 60                   NA         25                   100 nitrogen                 2.84            percent
-    ##    method externalRemarks  publicationDate      release duplicateRecordQF
-    ## 55   <NA>            <NA> 20211221T225348Z RELEASE-2022                 1
-    ## 60   <NA>            <NA> 20211221T225348Z RELEASE-2022                 1
+    ##                                                                         uid domainID siteID  namedLocation collectDate
+    ## 1 cca9850e-165d-4cb7-9872-eff490c79ffa|1f5a5389-c18c-4fbf-81d6-9cd45e65f48a      D03   SUGG SUGG.AOS.reach  2016-02-22
+    ## 2 e6cab47f-427b-47a9-a281-cbfe7c101fc3|368e16bb-23d4-4596-b624-b338777bc9bc      D03   SUGG SUGG.AOS.reach  2016-02-22
+    ##                sampleID sampleCondition                                   laboratoryName analysisDate   analyzedBy sampleType
+    ## 1 SUGG.20160222.UTFO.Q5    condition ok Academy of Natural Sciences of Drexel University   2016-07-12 OKgcKejxXbI=         CN
+    ## 2 SUGG.20160222.UTFO.Q5    condition ok Academy of Natural Sciences of Drexel University   2016-07-12 OKgcKejxXbI=         CN
+    ##   replicate sampleVolumeFiltered filterSize percentFilterAnalyzed  analyte analyteConcentration plantAlgaeLabUnits method
+    ## 1         1                   NA         25                   100   carbon                34.01            percent   <NA>
+    ## 2         1                   NA         25                   100 nitrogen                 2.84            percent   <NA>
+    ##   externalRemarks  publicationDate      release duplicateRecordQF
+    ## 1            <NA> 20211221T225348Z RELEASE-2022                 1
+    ## 2            <NA> 20211221T225348Z RELEASE-2022                 1
 
 You can see that both records have two pipe-delimited uids, and are 
 flagged.
@@ -237,77 +249,77 @@ flagged.
 Let's look at the unresolveable duplicates:
 
 
-    apl_plantExternalLabDataPerSample[which(
-      apl_plantExternalLabDataPerSample$duplicateRecordQF==2),]
+    apl_plantExternalLabDataPerSample |>
+      filter(duplicateRecordQF==2)
 
-    ##                                     uid domainID siteID  namedLocation collectDate              sampleID
-    ## 1  5fa69a8b-d19e-40f1-84a8-e46ed08cdc59      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
-    ## 2  cebefd95-f4c7-4e60-9b79-93efd3f27691      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
-    ## 3  a4b6d931-b093-419e-bb69-0b684219405e      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
-    ## 4  f462390b-2d4a-4aec-92e1-b46a740ec40d      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
-    ## 5  d4fa7f65-6b2b-46fa-9bca-529745970c56      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
-    ## 6  ab43c466-b235-4f3d-9146-a1f81a91012d      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
-    ## 7  1140a4c2-139e-40dc-a14d-c2446e3a5664      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
-    ## 8  5201dc04-da3d-4bc2-b2bf-668ad4a3ddb5      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
-    ## 9  1e36cdeb-4e94-431d-8342-5ce5ff6ac6ae      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
-    ## 10 b98069a4-74fb-40d8-8b98-7a5aedea7912      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
-    ## 11 9633d367-bd10-4588-a6e2-cbe954327bf6      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9
-    ## 12 309ccbe3-d4a8-4bd3-b773-85aa98dd7627      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
-    ## 13 6d6b1da2-049f-439c-81c9-add482f6fab8      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1
-    ## 14 841e51f4-dcc9-45fc-937b-871678ff16f2      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
-    ## 15 3e04c3a1-7e2f-4349-a1c2-822d736fc2cf      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7
-    ## 16 431a4418-fdd0-4566-8791-d16ecfce76eb      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3
-    ##    sampleCondition                                   laboratoryName analysisDate   analyzedBy sampleType
-    ## 1     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 2     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 3     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 4     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 5     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 6     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 7     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 8     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 9     condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 10    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 11    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 12    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 13    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 14    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 15    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ## 16    condition ok Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN
-    ##    replicate sampleVolumeFiltered filterSize percentFilterAnalyzed  analyte analyteConcentration
-    ## 1          1                   NA         25                   100   carbon                38.22
-    ## 2          1                   NA         25                   100 nitrogen                 2.26
-    ## 3          1                   NA         25                   100 nitrogen                 1.98
-    ## 4          1                   NA         25                   100   carbon                43.79
-    ## 5          1                   NA         25                   100 nitrogen                 3.16
-    ## 6          1                   NA         25                   100   carbon                39.77
-    ## 7          1                   NA         25                   100   carbon                43.26
-    ## 8          1                   NA         25                   100 nitrogen                 3.14
-    ## 9          1                   NA         25                   100 nitrogen                 2.94
-    ## 10         1                   NA         25                   100   carbon                43.20
-    ## 11         1                   NA         25                   100 nitrogen                 3.00
-    ## 12         1                   NA         25                   100   carbon                38.23
-    ## 13         1                   NA         25                   100 nitrogen                 2.02
-    ## 14         1                   NA         25                   100 nitrogen                 2.23
-    ## 15         1                   NA         25                   100   carbon                43.93
-    ## 16         1                   NA         25                   100   carbon                39.66
-    ##    plantAlgaeLabUnits method   externalRemarks  publicationDate      release duplicateRecordQF
-    ## 1             percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
-    ## 2             percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
-    ## 3             percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
-    ## 4             percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 5             percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 6             percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
-    ## 7             percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 8             percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 9             percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 10            percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 11            percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 12            percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
-    ## 13            percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
-    ## 14            percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
-    ## 15            percent   <NA>     Nuphar Luteum 20220110T211020Z RELEASE-2022                 2
-    ## 16            percent   <NA> Limnobium spongia 20220110T211020Z RELEASE-2022                 2
+    ##                                     uid domainID siteID  namedLocation collectDate              sampleID sampleCondition
+    ## 1  5fa69a8b-d19e-40f1-84a8-e46ed08cdc59      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1    condition ok
+    ## 2  cebefd95-f4c7-4e60-9b79-93efd3f27691      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3    condition ok
+    ## 3  a4b6d931-b093-419e-bb69-0b684219405e      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1    condition ok
+    ## 4  f462390b-2d4a-4aec-92e1-b46a740ec40d      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7    condition ok
+    ## 5  d4fa7f65-6b2b-46fa-9bca-529745970c56      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7    condition ok
+    ## 6  ab43c466-b235-4f3d-9146-a1f81a91012d      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3    condition ok
+    ## 7  1140a4c2-139e-40dc-a14d-c2446e3a5664      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9    condition ok
+    ## 8  5201dc04-da3d-4bc2-b2bf-668ad4a3ddb5      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7    condition ok
+    ## 9  1e36cdeb-4e94-431d-8342-5ce5ff6ac6ae      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9    condition ok
+    ## 10 b98069a4-74fb-40d8-8b98-7a5aedea7912      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9    condition ok
+    ## 11 9633d367-bd10-4588-a6e2-cbe954327bf6      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.9    condition ok
+    ## 12 309ccbe3-d4a8-4bd3-b773-85aa98dd7627      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1    condition ok
+    ## 13 6d6b1da2-049f-439c-81c9-add482f6fab8      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.1    condition ok
+    ## 14 841e51f4-dcc9-45fc-937b-871678ff16f2      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3    condition ok
+    ## 15 3e04c3a1-7e2f-4349-a1c2-822d736fc2cf      D03   SUGG SUGG.AOS.reach  2014-07-09  SUGG.20140709.NULU.7    condition ok
+    ## 16 431a4418-fdd0-4566-8791-d16ecfce76eb      D03   SUGG SUGG.AOS.reach  2014-07-09 SUGG.20140709.LISP2.3    condition ok
+    ##                                      laboratoryName analysisDate   analyzedBy sampleType replicate sampleVolumeFiltered
+    ## 1  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 2  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 3  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 4  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 5  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 6  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 7  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 8  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 9  Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 10 Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 11 Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 12 Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 13 Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 14 Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 15 Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ## 16 Academy of Natural Sciences of Drexel University   2015-02-05 OKgcKejxXbI=         CN         1                   NA
+    ##    filterSize percentFilterAnalyzed  analyte analyteConcentration plantAlgaeLabUnits method   externalRemarks
+    ## 1          25                   100   carbon                38.22            percent   <NA> Limnobium spongia
+    ## 2          25                   100 nitrogen                 2.26            percent   <NA> Limnobium spongia
+    ## 3          25                   100 nitrogen                 1.98            percent   <NA> Limnobium spongia
+    ## 4          25                   100   carbon                43.79            percent   <NA>     Nuphar Luteum
+    ## 5          25                   100 nitrogen                 3.16            percent   <NA>     Nuphar Luteum
+    ## 6          25                   100   carbon                39.77            percent   <NA> Limnobium spongia
+    ## 7          25                   100   carbon                43.26            percent   <NA>     Nuphar Luteum
+    ## 8          25                   100 nitrogen                 3.14            percent   <NA>     Nuphar Luteum
+    ## 9          25                   100 nitrogen                 2.94            percent   <NA>     Nuphar Luteum
+    ## 10         25                   100   carbon                43.20            percent   <NA>     Nuphar Luteum
+    ## 11         25                   100 nitrogen                 3.00            percent   <NA>     Nuphar Luteum
+    ## 12         25                   100   carbon                38.23            percent   <NA> Limnobium spongia
+    ## 13         25                   100 nitrogen                 2.02            percent   <NA> Limnobium spongia
+    ## 14         25                   100 nitrogen                 2.23            percent   <NA> Limnobium spongia
+    ## 15         25                   100   carbon                43.93            percent   <NA>     Nuphar Luteum
+    ## 16         25                   100   carbon                39.66            percent   <NA> Limnobium spongia
+    ##     publicationDate      release duplicateRecordQF
+    ## 1  20220110T211020Z RELEASE-2022                 2
+    ## 2  20220110T211020Z RELEASE-2022                 2
+    ## 3  20220110T211020Z RELEASE-2022                 2
+    ## 4  20220110T211020Z RELEASE-2022                 2
+    ## 5  20220110T211020Z RELEASE-2022                 2
+    ## 6  20220110T211020Z RELEASE-2022                 2
+    ## 7  20220110T211020Z RELEASE-2022                 2
+    ## 8  20220110T211020Z RELEASE-2022                 2
+    ## 9  20220110T211020Z RELEASE-2022                 2
+    ## 10 20220110T211020Z RELEASE-2022                 2
+    ## 11 20220110T211020Z RELEASE-2022                 2
+    ## 12 20220110T211020Z RELEASE-2022                 2
+    ## 13 20220110T211020Z RELEASE-2022                 2
+    ## 14 20220110T211020Z RELEASE-2022                 2
+    ## 15 20220110T211020Z RELEASE-2022                 2
+    ## 16 20220110T211020Z RELEASE-2022                 2
 
 The key for this data table is the sample identifier and analyte, and 
 here there are multiple records with the same sample identifier, both for 
@@ -327,7 +339,7 @@ Of course, NEON scientists also review NEON data and identify
 duplicates as part of quality assurance and quality control procedures, 
 and resolve them if possible. In the data download step above, we 
 accessed RELEASE-2022. The data release is stable and reproducible over 
-time, but duplicates you find in one release may be resolved in future 
+time, but duplicates you find in one release may be resolved in later 
 releases.
 
 ## Join Data Tables
@@ -459,7 +471,8 @@ how you can use this information, using Mosquitoes sampled from CO2 traps
     mos <- loadByProduct(dpID="DP1.10043.001",
                          site="TOOL", 
                          release="RELEASE-2022",
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
     list2env(mos, .GlobalEnv)
 
@@ -529,7 +542,7 @@ do:
 
     gg
 
-    ## Warning: Removed 599 rows containing non-finite values (stat_boxplot).
+    ## Warning: Removed 599 rows containing non-finite outside the scale range (`stat_boxplot()`).
 
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-code-packages/neonOS/rfigs/mos-fig-1.png)

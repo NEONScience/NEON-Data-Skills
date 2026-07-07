@@ -32,8 +32,10 @@ After completing this activity, you will be able to:
 * Understand and filter data using quality flags.
 
 ## Things You'll Need To Complete This Tutorial
-To complete this tutorial you will need R (version >4.1) and, 
+* To complete this tutorial you will need R (version >4.1) and, 
 preferably, RStudio loaded on your computer.
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### Install R Packages
 
@@ -62,21 +64,22 @@ data every time.
 
 Before we get the NEON data, we need to install (if not already done) and load 
 the `neonUtilities` R package, as well as other packages we will use in the 
-analysis. 
+analysis. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r set-up-env, eval=F}
 # Install neonUtilities package if you have not yet.
 install.packages("neonUtilities")
 install.packages("ggplot2")
+install.packages("dplyr")
 ```
 
-```{r load-packages}
-# Set global option to NOT convert all character variables to factors
-options(stringsAsFactors=F)
+```{r load-packages, warning=FALSE, message=FALSE}
 
-# Load required packages
+# Load required packages and token
 library(neonUtilities)
 library(ggplot2)
+library(dplyr)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 The inputs to `loadByProduct()` control which data to download and how 
@@ -101,8 +104,7 @@ working directory.
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set this to F.
-* `token`: this allows you to input your NEON API token to obtain faster 
-downloads.
+* `token`: your NEON API token
 
 Learn more about NEON API tokens in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
 
@@ -164,12 +166,16 @@ flags we will download the expanded package.  We want the most current release.
 Finally, since we are only downloading one site-month of data we do not need to
 check the file size, but for larger downloads this is advisable.
 
-```{r download-data-waq, results='hide'}
+```{r download-data-waq, results='hide', message=FALSE}
 # download data of interest - Water Quality
-waq <- loadByProduct(dpID="DP1.20288.001", site="PRIN", 
-                     startdate="2020-02", enddate="2020-02", 
-                     package="expanded", release="current", 
-                     check.size = F)
+waq <- loadByProduct(dpID="DP1.20288.001", 
+                     site="PRIN", 
+                     startdate="2020-02", 
+                     enddate="2020-02", 
+                     package="expanded", 
+                     release="current", 
+                     check.size = F,
+                     token=token)
 
 ```
 
@@ -279,9 +285,13 @@ different sensor set locations: upstream and the downstream.
 ```{r split-waq-hor}
 # Split data into separate dataframes by upstream/downstream locations.
 waq_up <- 
-  waq_instantaneous[(waq_instantaneous$horizontalPosition=="101"),]
+  waq_instantaneous %>%
+  filter(horizontalPosition=="101")
+
 waq_down <- 
-  waq_instantaneous[(waq_instantaneous$horizontalPosition=="102"),]
+  waq_instantaneous %>%
+  filter(horizontalPosition=="102")
+
 ```
 
 ## Plot Data
@@ -313,14 +323,17 @@ The data columns we would like to plot are `dissolvedOxygen` and
 `dissolvedOxygenExpUncert`.
 
 ```{r plot-waq-do}
-# plot
+
 doPlot <- ggplot() +
-	geom_line(data = waq_down,aes(endDateTime, dissolvedOxygen),na.rm=TRUE, color="blue") +
+	geom_line(data = waq_down,aes(endDateTime, 
+	                              dissolvedOxygen),
+	          na.rm=TRUE, color="blue") +
   geom_ribbon(data=waq_down,aes(x=endDateTime, 
                   ymin = (dissolvedOxygen - dissolvedOxygenExpUncert), 
                   ymax = (dissolvedOxygen + dissolvedOxygenExpUncert)), 
               alpha = 0.4, fill = "grey25") +
-	ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + ggtitle("PRIN Downstream DO with Uncertainty Bounds") 
+	ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + 
+  ggtitle("PRIN Downstream DO with Uncertainty Bounds") 
 
 doPlot
 ```
@@ -345,8 +358,10 @@ print(paste0("Total columns in DP1.20288.001 expanded package = ",
 
 # Let's just look at those corresponding to dissolvedOxygen.
 # We need to remove those associated with dissolvedOxygenSaturation.
-do_qf_names <- waq_qf_names[grep("dissolvedOxygen",waq_qf_names)]
-do_qf_names <- do_qf_names[grep("dissolvedOxygenSat",do_qf_names,invert=T)]
+do_qf_names <- waq_qf_names[grep("dissolvedOxygen",
+                                 waq_qf_names)]
+do_qf_names <- do_qf_names[grep("dissolvedOxygenSat",
+                                do_qf_names,invert=T)]
 
 print("dissolvedOxygen columns in DP1.20288.001 expanded package:")
 print(do_qf_names)
@@ -426,10 +441,13 @@ color.
 ```{r plot-waq-do-flags}
 # plot
 doPlot <- ggplot() +
-	geom_line(data = waq_down, aes(x=endDateTime, y=dissolvedOxygen,
-	                 color=factor(dissolvedOxygenFinalQF)), na.rm=TRUE) +
+	geom_line(data = waq_down, aes(x=endDateTime, 
+	                               y=dissolvedOxygen,
+	                 color=factor(dissolvedOxygenFinalQF)), 
+	          na.rm=TRUE) +
   scale_color_manual(values = c("0" = "blue","1"="red")) +
-  ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + ggtitle("PRIN Downstream DO filtered by FinalQF") 
+  ylim(8, 15) + ylab("DO (mg/L)") + xlab("Date") + 
+  ggtitle("PRIN Downstream DO filtered by FinalQF") 
   
 doPlot
 ```
@@ -440,12 +458,16 @@ Applying what we've learned, let's look at a different data product,Temperature
 of Surface Water (DP1.20053.001).  Can you download for the same site and month
 that we just looked at for water quality?
 
-```{r download-data-tsw, results='hide'}
+```{r download-data-tsw, results='hide', message=FALSE}
 # download continuous discharge data
-csd <- loadByProduct(dpID="DP1.20053.001", site="PRIN", 
-                     startdate="2020-02", enddate="2020-02", 
-                     package="expanded", release="current", 
-                     check.size = F)
+csd <- loadByProduct(dpID="DP1.20053.001", 
+                     site="PRIN", 
+                     startdate="2020-02", 
+                     enddate="2020-02", 
+                     package="expanded", 
+                     release="current", 
+                     check.size = F,
+                     token=token)
 list2env(csd,.GlobalEnv)
 
 ```
@@ -467,7 +489,8 @@ Let's use the downstream data just like we did for water quality.
 ```{r split-tsw-hor}
 # Split data into separate dataframe for downstream location.
 tsw_down <- 
-  TSW_30min[(TSW_30min$horizontalPosition=="102"),]
+  TSW_30min %>% 
+  filter(horizontalPosition=="102")
 
 ```
 
@@ -475,7 +498,8 @@ Can you remove the quality flagged values?
 
 ```{r remove-tsw-flagged}
 # remove values with a final quality flag
-tsw_down<-tsw_down[(tsw_down$finalQF=="0"),]
+tsw_down <- tsw_down %>%
+  filter(finalQF==0)
 
 ```
 
@@ -484,12 +508,15 @@ Can you plot the data?
 ```{r plot-tsw}
 # plot
 csdPlot <- ggplot() +
-	geom_line(data = tsw_down,aes(endDateTime, surfWaterTempMean),na.rm=TRUE, color="blue") +
+	geom_line(data = tsw_down,aes(endDateTime, 
+	                              surfWaterTempMean),
+	          na.rm=TRUE, color="blue") +
   geom_ribbon(data=tsw_down,aes(x=endDateTime, 
                   ymin = (surfWaterTempMean-surfWaterTempExpUncert), 
                   ymax = (surfWaterTempMean+surfWaterTempExpUncert)), 
               alpha = 0.4, fill = "grey25") +
-	ylim(2, 16) + ylab("Temp (C)") + xlab("Date") + ggtitle("PRIN Downstream Temp with Uncertainty Bounds") 
+	ylim(2, 16) + ylab("Temp (C)") + xlab("Date") + 
+  ggtitle("PRIN Downstream Temp with Uncertainty Bounds") 
 
 csdPlot
 ```
@@ -500,12 +527,16 @@ Applying what we've learned, let's look at a different data product,
 Continuous discharge (DP4.00130.001).  Can you download for the same site and
 month that we just looked at for water quality?
 
-```{r download-data-csd, results='hide'}
+```{r download-data-csd, results='hide', message=FALSE}
 # download continuous discharge data
-csd <- loadByProduct(dpID="DP4.00130.001", site="PRIN", 
-                     startdate="2020-02", enddate="2020-02", 
-                     package="expanded", release="current", 
-                     check.size = F)
+csd <- loadByProduct(dpID="DP4.00130.001", 
+                     site="PRIN", 
+                     startdate="2020-02", 
+                     enddate="2020-02", 
+                     package="expanded", 
+                     release="current", 
+                     check.size = F,
+                     token=token)
 list2env(csd,.GlobalEnv)
 
 ```
@@ -516,21 +547,28 @@ values?
 
 ```{r remove-csd-flagged}
 # remove values with a final quality flag
-csd_continuousDischarge<-csd_continuousDischarge[(csd_continuousDischarge$dischargeFinalQF=="0"),]
+csd_continuousDischarge <- 
+  csd_continuousDischarge %>%
+  filter(dischargeFinalQF==0)
 
 ```
 
 Can you plot the discharge data?
 
 ```{r plot-q}
-# plot
+
 csdPlot <- ggplot() +
-	geom_line(data = csd_continuousDischarge,aes(endDate, maxpostDischarge),na.rm=TRUE, color="blue") +
-  geom_ribbon(data=csd_continuousDischarge,aes(x=endDate, 
+	geom_line(data = csd_continuousDischarge,
+	          aes(endDate, 
+	              maxpostDischarge),
+	          na.rm=TRUE, color="blue") +
+  geom_ribbon(data=csd_continuousDischarge,
+              aes(x=endDate, 
                   ymin = (withRemnUncQLower1Std), 
                   ymax = (withRemnUncQUpper1Std)), 
               alpha = 0.4, fill = "grey25") +
-	ylim(0, 4000) + ylab("Q (L/s)") + xlab("Date") + ggtitle("PRIN Discharge with Uncertainty Bounds") 
+	ylim(0, 4000) + ylab("Q (L/s)") + xlab("Date") + 
+  ggtitle("PRIN Discharge with Uncertainty Bounds") 
 
 csdPlot
 ```

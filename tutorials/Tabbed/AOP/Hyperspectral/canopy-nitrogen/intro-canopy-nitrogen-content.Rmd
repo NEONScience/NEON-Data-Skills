@@ -77,6 +77,7 @@ pip install rasterio
 ```{r R-library, results="hide", message=FALSE, warning=FALSE}
 library(neonUtilities)
 library(terra)
+token <- Sys.getenv("NEON_TOKEN")
 ```
 
 ### Python
@@ -91,6 +92,7 @@ import matplotlib.patches as mpatches
 import rasterio
 from rasterio.plot import show
 from rasterio.plot import plotting_extent
+import dotenv
 ```
 
 ## {-}
@@ -170,7 +172,7 @@ byTileAOP(dpID="DP3.30018.002", # download the Canopy Nitrogen Product
           include.provisional=TRUE, # include provisional data
           check.size=FALSE, # skip check size prompt, for single tile
           savepath=download_dir,
-          token=Sys.getenv("NEON_TOKEN")) # make sure your API token is set!
+          token=token) # make sure your API token is set!
 ```
 
 #### Python

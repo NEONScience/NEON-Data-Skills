@@ -17,7 +17,7 @@ urlTitle: new-features-2025
 ---
 
 
-This tutorial provides a tour of recent (as of fall 2025) updates and enhancements to NEON code resources.
+This tutorial provides a tour of recent (as of fall 2025, with a minor update in spring 2026) updates and enhancements to NEON code resources.
 
 If you are new to using NEON data, we recommend first following the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore</a> tutorial to get familiar with NEON data formats and the `neonUtilities` package.
 
@@ -26,7 +26,7 @@ If you are new to using NEON data, we recommend first following the <a href="htt
 
 ## Set up R environment
 
-First install and load the necessary packages.
+First install and load the necessary packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
 
 ```{r setup, eval=FALSE}
 
@@ -47,9 +47,11 @@ library(lubridate)
 library(dplyr)
 library(visNetwork)
 
+token <- Sys.getenv("NEON_TOKEN")
+
 ```
 
-```{r libraries, include=FALSE, results="hide"}
+```{r libraries, include=FALSE, results="hide", warning=FALSE, message=FALSE}
 
 library(neonUtilities)
 library(neonOS)
@@ -57,6 +59,8 @@ library(ggplot2)
 library(lubridate)
 library(dplyr)
 library(visNetwork)
+
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -81,7 +85,8 @@ soil <- loadByProduct(dpID="DP1.10086.001",
                      enddate="2024-12",
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 list2env(soil, .GlobalEnv)
 
@@ -111,8 +116,10 @@ Now we can join the tables.
 
 ``` {r join-chem-moist}
 
-moistchem <- joinTableNEON(sls_soilMoisture,
-                           sls_soilChemistry)
+moistchem <- joinTableNEON(moisturedups,
+                           chemdups,
+                           name1="sls_soilMoisture",
+                           name2="sls_soilChemistry")
 
 ```
 
@@ -138,7 +145,9 @@ The Site management and event reporting (DP1.10111.001) data product contains re
 
 ``` {r soap-fire}
 
-sim <- byEventSIM("fire", site="SOAP")
+sim <- byEventSIM("fire", 
+                  site="SOAP",
+                  token=token)
 
 sim$sim_eventData
 
@@ -159,10 +168,12 @@ Chemistry measurements were made in 2018 and 2024, before and after the fires. D
 ``` {r plot-time}
 
 plot(nitrogenPercent~soilMoisture, 
-     data=moistchem[which(year(moistchem$collectDate.y)==2018),],
+     data=subset(moistchem,
+                 year(collectDate.y)==2018),
      pch=20)
 points(nitrogenPercent~soilMoisture, 
-     data=moistchem[which(year(moistchem$collectDate.y)==2024),],
+     data=subset(moistchem,
+                 year(collectDate.y)==2024),
      pch=20, col="red")
 
 ```
@@ -171,9 +182,9 @@ No obvious differences in the pattern between the two measurement dates.
 
 If we wanted to dig into the effects of fire more deeply, note that the event data table includes a `locationID` field. This field contains a record of the NEON sampling plots affected by the event - in this case, which plots burned. If there are both burned and unburned plots in our dataset, this could be very informative.
 
-### Pending feature: Site management location data details
+### Site management location data details
 
-There is a NEON code package in development that will help users to more easily work with the location data associated with site events. Stay tuned!
+There is a new NEON code package to help users to more easily work with the location data associated with site events. Get an introduction to this package in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/site-management" target="_blank">Site management tutorial</a>.
 
 ## Community data
 
@@ -192,7 +203,8 @@ micro <- loadByProduct(dpID="DP1.10081.002",
                      package="expanded",
                      include.provisional=T,
                      progress=F,
-                     check.size=F)
+                     check.size=F,
+                     token=token)
 
 list2env(micro, .GlobalEnv)
 
@@ -202,7 +214,8 @@ Let's look at the distribution by phylum of fungal taxon units at SOAP.
 
 ``` {r plot-microbe-data}
 
-gg <- ggplot(mct_soilPerSampleTaxonomy_ITS, aes(phylum, individualCount)) +
+gg <- ggplot(mct_soilPerSampleTaxonomy_ITS, 
+             aes(phylum, individualCount)) +
   geom_col() +
   theme(axis.text.x = element_text(angle = 90))
 gg
@@ -239,9 +252,12 @@ First sample:
 
 ``` {r get-sample-tree-1}
 
-samp <- getSampleTree(sls_soilCoreCollection$sampleID[1])
-edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
-nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[1],
+                      token=token)
+edges <- data.frame(cbind(to=samp$sampleUuid, 
+                          from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, 
+                          label=samp$sampleTag))
 visNetwork(nodes, edges) |>
   visEdges(arrows="to")
 
@@ -251,9 +267,12 @@ Second sample:
 
 ``` {r get-sample-tree-2}
 
-samp <- getSampleTree(sls_soilCoreCollection$sampleID[2])
-edges <- data.frame(cbind(to=samp$sampleUuid, from=samp$parentSampleUuid))
-nodes <- data.frame(cbind(id=samp$sampleUuid, label=samp$sampleTag))
+samp <- getSampleTree(sls_soilCoreCollection$sampleID[2],
+                      token=token)
+edges <- data.frame(cbind(to=samp$sampleUuid, 
+                          from=samp$parentSampleUuid))
+nodes <- data.frame(cbind(id=samp$sampleUuid, 
+                          label=samp$sampleTag))
 visNetwork(nodes, edges) |>
   visEdges(arrows="to")
 
@@ -274,6 +293,8 @@ Aside from some minor formatting differences - `neonutilities` in all lower case
 ```
 
 import neonutilities as nu
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 
 soil = nu.load_by_product(dpid="DP1.10086.001", 
                      site="SOAP",
@@ -281,15 +302,16 @@ soil = nu.load_by_product(dpid="DP1.10086.001",
                      enddate="2024-12",
                      include_provisional=True,
                      progress=False,
-                     check_size=False)
+                     check_size=False,
+                     token=token)
 
 ```
 
-Other code packages, including `neonOS` and `geoNEON`, haven't been implemented in Python yet. Similarly, not all features of neonUtilities are available in Python yet. In particular, we are actively working on incoporating the surface-atmosphere exchange functions in Python.
+Other code packages, including `neonOS` and `geoNEON`, haven't been implemented in Python yet.
 
-### Pending feature: Surface-atmosphere exchange data stacking in Python
+### Feature: Surface-atmosphere exchange data stacking in Python
 
-This should be available within a few weeks.
+This is now available in the `stack_eddy()` function! The <a href="https://www.neonscience.org/resources/learning-hub/tutorials/eddy-data-intro" target="_blank">Introduction to NEON Flux Data</a> tutorial now includes code in both languages.
 
 ### Feature: Cloud mode
 

@@ -38,6 +38,8 @@ After completing this tutorial, you will be able to:
 You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Install R Packages
 
 * **terra:** `install.packages("terra")`
@@ -46,12 +48,9 @@ on your computer to complete this tutorial.
 
 ### Download Data
 
-Data required for this tutorial will be downloaded using `neonUtilities` in the lesson.
-
+Data required for this tutorial will be downloaded using `neonUtilities` in the lesson. 
 The LiDAR and imagery data used in this lesson were collected over the 
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> 
-field site. 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> field site. 
 
 The entire dataset can be accessed from the 
 <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
@@ -61,15 +60,13 @@ The entire dataset can be accessed from the
 
 **Set Working Directory:** This lesson will explain how to set the working directory. You may wish to set your working directory to some other location, depending on how you prefer to organize your data.
 
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
 ****
 
-* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">
-Read more about the `terra` package in R.</a>
-* <a href="https://www.neonscience.org/raster-data-r" target="_blank"> NEON Data Skills tutorial: Raster Data in R - The Basics</a>
-* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank"> NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
+* <a href="https://cran.r-project.org/web/packages/terra/terra.pdf" target="_blank">Read more about the `terra` package in R.</a>
+* <a href="https://www.neonscience.org/raster-data-r" target="_blank">NEON Data Skills tutorial: Raster Data in R - The Basics</a>
+* <a href="https://www.neonscience.org/image-raster-data-r" target="_blank">NEON Data Skills tutorial: Image Raster Data in R - An Intro</a>
 
 </div>
 
@@ -93,6 +90,8 @@ Let's first import a raster dataset into R and explore its metadata. To open ras
 ```{r load-libraries, results="hide"}
 library(terra)
 
+token <- Sys.getenv("NEON_TOKEN")
+
 # set working directory, you can change this if desired
 wd <- "~/data/" 
 setwd(wd)
@@ -102,14 +101,15 @@ setwd(wd)
 
 We can use the neonUtilities function byTileAOP to download a single elevation tiles (DSM and DTM). You can run help(byTileAOP) to see more details on what the various inputs are. For this exercise, we'll specify the UTM Easting and Northing to be (732000, 4713500), which will download the tile with the lower left corner (732000,4713000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~8 MB, so make sure you have enough space on your local drive. You can set `check.size=TRUE` if you want to check the file size before downloading.
 
-``` {r download-dsm-data, eval=FALSE}
+``` {r download-dsm-data, eval=TRUE}
 byTileAOP(dpID='DP3.30024.001', # lidar elevation
           site='HARV',
           year='2022',
           easting=732000,
           northing=4713500,
-          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-          savepath = wd)
+          check.size=FALSE, # set to TRUE or remove to check the size before downloading
+          savepath = wd,
+          token=token)
 ```
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30024.001 (the Data Product ID). The file should show up in this location: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.
 
@@ -163,7 +163,7 @@ maps include:
 
 #### Categorical Landcover Map for the United States 
 <figure>
-    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif ">
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif">
     <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/geospatial-skills/NLCD06_conus_lg.gif"
     alt="Map of the different land cover types of the continental United States each represented by different colors." >
     </a>
@@ -255,11 +255,15 @@ Read More:
 * <a href="https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/OverviewCoordinateReferenceSystems.pdf" target="_blank"> NCEAS Overview of CRS in R.</a>
 
 ### How Map Projections Can Fool the Eye
-Check out this short video, from 
-<a href="https://www.youtube.com/channel/UCBUVGPsJzc1U8SECMgBaMFw" target="_blank"> Buzzfeed</a>, 
-highlighting how map projections can make continents seems proportionally larger or smaller than they actually are!
+Check out this animation which highlights how map projections can make continents seems proportionally larger or smaller than they actually are!
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/KUF_Ckv8HbE" frameborder="0" allowfullscreen></iframe>
+<figure>
+    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif">
+    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/raster-general/map_projections_animation.gif"
+    alt="A relation between the Mercator projection and the actual relative size of each country.">
+    </a>
+    <figcaption> Credit: Jakub Nowosad, wikimedia.org</figcaption>
+</figure>
 
  
 ### View Raster Coordinate Reference System (CRS) in R
@@ -279,14 +283,13 @@ The `CRS` of our `DSM_HARV` object tells us that our data are in the UTM project
 
 <figure>
     <a href="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Utm-zones-USA.svg/720px-Utm-zones-USA.svg.png"
+    <img src="https://en.wikipedia.org/wiki/File:Utm-zones-USA.svg"
     alt="Image showing the ten different UTM zones (10-19) across the continental United States."></a>
    	<figcaption> The UTM zones across the continental United States. Source: Chrismurf, wikimedia.org.
 		</figcaption>
 </figure>
 
-The CRS in this case is in a `char` format. This means that the projection
-information is strung together as a series of text elements.
+The CRS in this case is in a `char` format. This means that the projection information is strung together as a series of text elements.
 
 We'll focus on the first few components of the CRS, as described above.
 
@@ -367,14 +370,15 @@ region.
 
 Let's take a look at some of the RGB Camera data over HARV, this time downloading a tile at the edge of the flight box.
 
-``` {r download-rgb-data, eval=FALSE}
+``` {r download-rgb-data, eval=TRUE}
 byTileAOP(dpID='DP3.30010.001',
           site='HARV',
           year='2022',
           easting=737500,
           northing=4701500,
-          check.size=FALSE, # set to TRUE or remove if you want to check the size before downloading
-          savepath = wd)
+          check.size=FALSE, # set to TRUE to check the size before downloading
+          savepath = wd,
+          token=token)
 ```
 
 This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30010.001 (the Camera Data Product ID). The file should show up in this location: ~/data/DP3.30010.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/Camera/Mosaic/2022_HARV_7_737000_4701000_image.tif.

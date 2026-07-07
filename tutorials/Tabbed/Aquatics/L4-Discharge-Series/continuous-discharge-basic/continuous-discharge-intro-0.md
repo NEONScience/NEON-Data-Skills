@@ -111,10 +111,12 @@ import matplotlib.pyplot as plt</code></pre>
 </div>
 <div id="set-neon-data-portal-api-token" class="section level2 tabset">
 <h2 class="tabset">Set NEON Data Portal API Token</h2>
-<p>It is recommended that NEON data users have a NEON Data Portal API
-token set as an environment variable. See
+<p>As of June 2026, NEON data users are required to have a user account for 
+downloads. To use neonUtilities download functions, you will need an API token 
+associated with your user account. See 
 <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">this
-tutorial.</a> for instructions on obtaining a NEON API token.</p>
+tutorial</a> for instructions on obtaining a NEON API token and setting it as 
+an environment variable.</p>
 <div id="r-2" class="section level3">
 <h3>R</h3>
 <pre class="r"><code>Sys.setenv(NEON_PAT=&quot;YOUR_API_TOKEN_HERE&quot;)</code></pre>

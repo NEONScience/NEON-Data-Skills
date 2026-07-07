@@ -67,7 +67,8 @@ been tested.
 
 ## Set Up R Environment
 
-First install and load the necessary packages.
+First install and load the necessary packages. As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 
 
     # install packages. can skip this step if 
@@ -83,6 +84,12 @@ First install and load the necessary packages.
     library(neonUtilities)
 
     library(ggplot2)
+
+    
+
+    # load token
+
+    token <- Sys.getenv("NEON_TOKEN")
 
     
 
@@ -149,7 +156,7 @@ doing this is available on the <a href="https://www.neonscience.org/data-samples
 ### Latest and provisional
 
 Go back to the main Explore Data Products page and click on Download Data. 
-Select BARR (Utquiagvik) and BONA (Caribou Creek) for the year of 2023. 
+Select BARR (Utqiagvik) and BONA (Caribou Creek) for the year of 2023. 
 Click Next.
 
 <figure>
@@ -198,18 +205,19 @@ tutorial as well as this one, for a more complete introduction.
 
 Let's download a full year of data for two sites, as we did on the Data 
 Portal above. Here we'll download data from HEAL (Healy) and GUAN 
-(Guanica), January 2023 - December 2023.
+(Guanica), January 2025 - December 2025.
 
-(Note: To see the code behavior below, if you are following this tutorial in 
-2025 or later, you may need to adjust the dates. In general, use the most 
-recent full year of data.)
+(Note: To see the expected data results below, if you are following this 
+tutorial in 2027 or later, you may need to adjust the dates. In general, use 
+the most recent full year of data.)
 
 
     qpr <- loadByProduct(dpID="DP1.00066.001", 
                          site=c("HEAL", "GUAN"),
-                         startdate="2023-01",
-                         enddate="2023-12",
-                         check.size=F)
+                         startdate="2025-01",
+                         enddate="2025-12",
+                         check.size=F,
+                         token=token)
 
 In the messages output as this function runs, you will see:
 
@@ -232,19 +240,20 @@ We'll do that below. But first, let's take a look at the data we downloaded:
 
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-release-1.png)
 
-As we can see, the only data present from 2023 are from the first 
-half of the year, the data included in RELEASE-2024. Provisional 
-data from July 2023 onward were omitted.
+As we can see, the only data present from 2025 are from the first 
+half of the year, the data included in RELEASE-2026. Provisional 
+data from July 2025 onward were omitted.
 
 Now let's download the Provisional data as well:
 
 
     qpr <- loadByProduct(dpID="DP1.00066.001", 
                          site=c("HEAL", "GUAN"),
-                         startdate="2023-01",
-                         enddate="2023-12",
+                         startdate="2025-01",
+                         enddate="2025-12",
                          include.provisional=T,
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
 And now plot the full year of data:
 
@@ -269,7 +278,8 @@ Let's download the data from collection year 2021 in RELEASE-2023.
                          startdate="2021-01",
                          enddate="2021-12",
                          release="RELEASE-2023",
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
 What types of differences might there be in data from different 
 Releases? Let's look at the same data set in RELEASE-2024.
@@ -280,7 +290,8 @@ Releases? Let's look at the same data set in RELEASE-2024.
                          startdate="2021-01",
                          enddate="2021-12",
                          release="RELEASE-2024",
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
 Plot mean PAR from each release. This time we'll only use data from 
 soil plot 001, to simplify the figure. We'll plot RELEASE-2023 in black 
@@ -288,13 +299,15 @@ and RELEASE-2024 in partially transparent blue, to see differences
 where they're overlaid.
 
 
-    gg <- ggplot(qpr23$PARQL_30min
-                 [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
+
+
+    gg <- ggplot(data=subset(qpr23$PARQL_30min,
+                        horizontalPosition=="001"), 
                  aes(endDateTime, linePARMean)) +
       geom_line() +
       facet_wrap(~siteID) +
-      geom_line(data=qpr24$PARQL_30min
-                [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+      geom_line(data=subset(qpr24$PARQL_30min,
+                horizontalPosition=="001"),
                 color="blue", alpha=0.3)
 
     gg
@@ -309,52 +322,48 @@ the data.
 
     tail(qpr24$issueLog_00066)
 
-    ##       id parentIssueID            issueDate         resolvedDate       dateRangeStart
-    ##    <int>         <int>               <char>               <char>               <char>
-    ## 1: 45613            NA 2022-01-18T00:00:00Z 2022-01-01T00:00:00Z 2013-01-01T00:00:00Z
-    ## 2: 60104            NA 2022-07-05T00:00:00Z 2022-10-19T00:00:00Z 2021-10-15T00:00:00Z
-    ## 3: 66607            NA 2022-09-12T00:00:00Z 2022-10-31T00:00:00Z 2022-06-12T00:00:00Z
-    ## 4: 78006            NA 2023-03-02T00:00:00Z 2023-11-03T00:00:00Z 2023-03-02T00:00:00Z
-    ## 5: 78310            NA 2023-03-16T00:00:00Z 2023-03-31T00:00:00Z 2014-02-18T00:00:00Z
-    ## 6: 85004            NA 2024-01-04T00:00:00Z 2024-01-04T00:00:00Z 2013-12-01T00:00:00Z
-    ##            dateRangeEnd                                       locationAffected
-    ##                  <char>                                                 <char>
-    ## 1: 2021-10-01T00:00:00Z                                                    All
-    ## 2: 2022-10-19T00:00:00Z                    WREF soil plot 3 (HOR.VER: 003.000)
-    ## 3: 2022-10-31T00:00:00Z                                                   YELL
-    ## 4: 2023-11-03T00:00:00Z                                                    All
-    ## 5: 2023-03-01T00:00:00Z All CPER soil plots (HOR: 001, 002, 003, 004, and 005)
-    ## 6: 2023-12-31T00:00:00Z                                  All terrestrial sites
+    ##        id parentIssueID            issueDate         resolvedDate       dateRangeStart         dateRangeEnd
+    ## 58  85004            NA 2024-01-04T00:00:00Z 2024-01-04T00:00:00Z 2013-12-01T00:00:00Z 2023-12-31T00:00:00Z
+    ## 59  94204            NA 2024-10-28T00:00:00Z 2021-08-04T00:00:00Z 2021-07-07T00:00:00Z 2021-08-04T00:00:00Z
+    ## 60  94504            NA 2024-10-31T00:00:00Z 2024-10-31T00:00:00Z 2022-11-18T00:00:00Z 2023-09-20T00:00:00Z
+    ## 61  95904            NA 2024-11-14T00:00:00Z 2024-11-14T00:00:00Z 2024-06-01T00:00:00Z 2024-10-02T00:00:00Z
+    ## 62 105209            NA 2025-10-23T00:00:00Z 2025-07-03T00:00:00Z 2010-01-01T00:00:00Z 2025-07-03T00:00:00Z
+    ## 63 110222            NA 2026-01-28T00:00:00Z 2025-10-06T00:00:00Z 2025-10-06T00:00:00Z 2025-10-06T00:00:00Z
+    ##                                                    locationAffected
+    ## 58                                            All terrestrial sites
+    ## 59 SCBI soil plots 1, 3, and 5 (HOR.VER: 001.000, 003.000, 005.000)
+    ## 60              LENO soil plots 3 and 5 (HOR.VER: 003.000, 005.000)
+    ## 61                         STER soil plots (HOR: 001, 003, and 005)
+    ## 62                         LAJA soil plots (HOR: 001, 003, and 005)
+    ## 63                                                             DELA
     ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             issue
-    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <char>
-    ## 1:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Data were reprocessed to incorporate minor and/or isolated corrections to quality control thresholds, sensor installation periods, geolocation data, and manual quality flags.
-    ## 2:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Sensor malfunction indicated by positive nighttime radiation
-    ## 3:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Severe flooding destroyed several roads into Yellowstone National Park in June 2022, making the YELL and BLDE sites inaccessible to NEON staff. Preventive and corrective maintenance were not able to be performed, nor was the annual exchange of sensors for calibration and validation. While automated quality control routines are likely to detect and flag most issues, users are advised to review data carefully.
-    ## 4:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Photosynthetically active radiation (quantum line) measurement height (zOffset) incorrectly shown as 0 m in the sensor positions file in the download package. The actual measurement height is 3+ cm above the soil surface.
-    ## 5:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Two different soil plot reference corner records were created for each CPER soil plot, which resulted in two partially different sets of sensor location data being reported in the sensor_positions file. Affected variables were referenceLatitude, referenceLongitude, referenceElevation, eastOffset, northOffset, xAzimuth, and yAzimuth. Other sensor location metadata, including sensor height/depth (zOffset), were unaffected but were still reported twice for each sensor.
-    ## 6: Photosynthetically active radiation (quantum line) (DP1.00066.001) has been reprocessed using NEON’s new instrument processing pipeline. Computation of skewness and kurtosis statistics has been updated in the new pipeline. Previously, these statistics were computed with the Apache Commons Mathematics Library, version 3.6.1, which uses special unbiased formulations and not those described in the Algorithm Theoretical Basis Document (ATBD), which cites the standard formulations. Differences in data values between previous and reprocessed data for the skewness statistic are typically < 1% for 30-min averages and < 10% for 1-min averages. Differences for the kurtosis statistic are much larger, as the previous version reported excess kurtosis which subtracts a value of three so that a normal distribution is equal to zero. Thus, new values for kurtosis are typically greater by 3 ± 1% for 30-min averages and 3 ± 10% for 1-min averages.
-    ##                                                                                                                                                                                                                                                                                                                                                                                 resolution
-    ##                                                                                                                                                                                                                                                                                                                                                                                     <char>
-    ## 1:                                                                                                                                                                                                                                 Reprocessed provisional data are available now. Reprocessed data previously included in RELEASE-2021 will become available when RELEASE-2022 is issued.
-    ## 2:                                                                                                                                                                                                                                                                                                                                                 Data flagged and sensor cable replaced.
-    ## 3:                     Normal operations resumed on October 31, 2022, when the National Park Service opened a newly constructed road from Gardiner, MT to Mammoth, WY with minimal restrictions. For more details about data impacts, see Data Notification https://www.neonscience.org/impact/observatory-blog/data-impacts-neons-yellowstone-sites-yell-blde-due-catastrophic-flooding-0
-    ## 4: Measurement heights have been added and data republication has been requested, which should be completed within a few weeks. Heights will be available from July 2022 onwards once data republication is complete and will be available for all data once RELEASE-2024 data are published (expected January 2024). The issue will persist in RELEASE-2023 data and prior data releases.
-    ## 5:                                                                                          The erroneous reference corner record was deleted and data were scheduled for republication. This issue will persist in data from June 2022 and earlier until the RELEASE-2024 data is published (approximately January 2024). It will also persist in RELEASE-2023 and earlier data releases.
-    ## 6:                                                                                                                                                                                                                              All provisional data have been updated, and data for all time and all sites will be updated in RELEASE-2024 (expected to be issued in late January, 2024).
+    ## 58 Photosynthetically active radiation (quantum line) (DP1.00066.001) has been reprocessed using NEON’s new instrument processing pipeline. Computation of skewness and kurtosis statistics has been updated in the new pipeline. Previously, these statistics were computed with the Apache Commons Mathematics Library, version 3.6.1, which uses special unbiased formulations and not those described in the Algorithm Theoretical Basis Document (ATBD), which cites the standard formulations. Differences in data values between previous and reprocessed data for the skewness statistic are typically < 1% for 30-min averages and < 10% for 1-min averages. Differences for the kurtosis statistic are much larger, as the previous version reported excess kurtosis which subtracts a value of three so that a normal distribution is equal to zero. Thus, new values for kurtosis are typically greater by 3 ± 1% for 30-min averages and 3 ± 10% for 1-min averages.
+    ## 59                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Sensors were found to be non-level on 7 Jul 2021 (start date is unknown). Impact on data quality appears to be small relative to typical variability, therefore, data were not flagged.
+    ## 60                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          Sensor locations swapped in database.
+    ## 61                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Soil plots became overgrown with weeds due to heavy rains and time needed for other maintenance activities, resulting in significant mismatches with the surrounding vegetation. Start date is approximate.
+    ## 62                                                                                                                                                                                                                                                                                                                                                                                                                                                      Prior to March 2025, field staff regularly cut vegetation within the fenced soil plots at LAJA to mimic cattle grazing in the surrounding field. This was a considerable amount of effort, and it was difficult to exactly match the surrounding vegetation. Between March and July 2025, the soil plot fences were removed (first from plots 2 and 4, then 1 and 5, and lastly from plot 3) to test whether the cattle could graze the plots without significantly increasing damage to the sensors and infrastructure. 
+    ## 63                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      NEON Operations ended at the Dead Lake (DELA) terrestrial site in the fall of 2025, at the request of the site host. Instrument Systems (IS) data collection discontinued as of Oct. 6, 2025, and Observation Systems (OS) data collection discontinued as of Dec 31, 2025. Airborne Observation Platform (AOP) data will continue to be collected. For more details, see  https://www.neonscience.org/impact/observatory-blog/neon-operations-coming-close-dead-lake-alabama-field-site.
+    ##                                                                                                                                                                                                                                                           resolution
+    ## 58                                                                                                        All provisional data have been updated, and data for all time and all sites will be updated in RELEASE-2024 (expected to be issued in late January, 2024).
+    ## 59                                                                                                                                                                                                                                             Sensors were levelled
+    ## 60                                                                Locations were corrected in the database and the data were reprocessed. This issue will be resolved in the RELEASE-2025 data release, but will persist for data prior to Jul 2023 in RELEASE-2024.
+    ## 61                                                                                                                                                                                                                      Weeds were cut on October 1st and 2nd, 2024.
+    ## 62 The test was successful, i.e., no damage from the cattle was observed, and it increased the consistency between the vegetation in the soil plots and the surrounding field. The soil plot cattle fences have been permanently removed for the foreseeable future.
+    ## 63                                                                                    All data and samples collected at DELA up until the site decommissioning will remain available on the NEON Data Portal and Biorepository Data Portal for the lifetime of NEON.
 
-The final issue noted in the table was reported and resolved in January 
+The issue on row 58 in the table was reported and resolved in January 
 2024. It tells us that the data were reprocessed for the 2024 Release, and 
 the algorithms for the skewness and kurtosis statistics were updated. Let's 
 take a look at the kurtosis statistics from the two Releases.
 
 
-    gg <- ggplot(qpr23$PARQL_30min
-                 [which(qpr23$PARQL_30min$horizontalPosition=="001"),], 
+    gg <- ggplot(data=subset(qpr23$PARQL_30min,
+                 horizontalPosition=="001"), 
                  aes(endDateTime, linePARKurtosis)) +
       geom_line() +
       facet_wrap(~siteID) +
-      geom_line(data=qpr24$PARQL_30min
-                [which(qpr24$PARQL_30min$horizontalPosition=="001"),], 
+      geom_line(data=subset(qpr24$PARQL_30min,
+                horizontalPosition=="001"), 
                 color="blue", alpha=0.3)
 
     gg
@@ -362,7 +371,7 @@ take a look at the kurtosis statistics from the two Releases.
 ![ ](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/NEON-general/neon-overview/release-provisional/rfigs/plot-release-compare-k-1.png)
 
 Here, we can see the kurtosis values have shifted slightly higher in 
-RELEASE-2024, relative to their values in RELEASE-2023. This is a 
+RELEASE-2024, relative to their values in RELEASE-2023. Kurtosis is a 
 metric of the distribution of PAR observations within the averaging 
 interval; if this aspect of variability is important for your analysis, 
 you would now be able to incorporate these improved estimates into your 
@@ -386,24 +395,23 @@ Provisional:
     ##   language = {en},
     ##   title = {Photosynthetically active radiation (quantum line) (DP1.00066.001)},
     ##   publisher = {National Ecological Observatory Network (NEON)},
-    ##   year = {2024}
+    ##   year = {2026}
     ## }
 
-RELEASE-2024:
+RELEASE-2026:
 
 
-    writeLines(qpr$`citation_00066_RELEASE-2024`)
+    writeLines(qpr$`citation_00066_RELEASE-2026`)
 
-    ## @misc{https://doi.org/10.48443/8r8b-0789,
-    ##   doi = {10.48443/8R8B-0789},
-    ##   url = {https://data.neonscience.org/data-products/DP1.00066.001/RELEASE-2024},
+    ## @misc{https://doi.org/10.48443/h7yn-ng11,
+    ##   doi = {10.48443/H7YN-NG11},
+    ##   url = {https://data.neonscience.org/data-products/DP1.00066.001/RELEASE-2026},
     ##   author = {{National Ecological Observatory Network (NEON)}},
     ##   keywords = {solar radiation, soil surface radiation, photosynthetically active radiation (PAR), photosynthetic photon flux density (PPFD), quantum line sensor},
     ##   language = {en},
     ##   title = {Photosynthetically active radiation (quantum line) (DP1.00066.001)},
     ##   publisher = {National Ecological Observatory Network (NEON)},
-    ##   year = {2024},
-    ##   copyright = {Creative Commons Zero v1.0 Universal}
+    ##   year = {2026}
     ## }
 
 These can be adapted as needed for other formatting conventions.
@@ -422,7 +430,7 @@ Provisional data, you may want to re-download each time you work on an
 analysis, to ensure you're always working with the most up-to-date 
 data.
 
-The `neonUtilities` <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">cheat sheet</a> includes an overview 
+The `neonUtilities` <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> includes an overview 
 of the operations carried out by each function, for reference.
 
 Here, we'll outline some suggested workflows for data management, 
@@ -441,7 +449,8 @@ work on your analysis, rather than downloading again.
     tick <- loadByProduct(dpID="DP1.10093.001", 
                          site=c("GUAN"),
                          release="RELEASE-2024",
-                         check.size=F)
+                         check.size=F,
+                         token=token)
 
     
 
@@ -475,7 +484,8 @@ file contents.
                   enddate="2023-06",
                   release="RELEASE-2024",
                   savepath=getwd(),
-                  check.size=F)
+                  check.size=F,
+                  token=token)
 
     
 
@@ -508,6 +518,9 @@ Provisional data can be downloaded at any given time.
 DOIs for past Releases of AOP data remain available, and can be used to 
 cite the data in perpetuity. Their DOI status is set to "tombstone", the 
 term used to denote a dataset that is citable but no longer accessible.
+
+Guidelines and recommendations for data management when working with AOP data 
+can be found in the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/aop-data-management-releases" target="_blank">Best Practices for AOP Data Management</a> tutorial.
 
 See the Large Data Packages section on the 
 <a href="https://www.neonscience.org/data-samples/guidelines-policies/publishing-research-outputs" target="_blank">Publishing Research Outputs</a> page for 

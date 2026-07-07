@@ -16,7 +16,7 @@ urlTitle: neon-refl-h5-py
 ---
 
 
-In this introductory tutorial, we demonstrate how to read NEON AOP hyperspectral reflectance (Level 3, tiled) data in Python. This starts with the fundamental steps of downloading, reading in, and getting familiar with the HDF5 (h5) format that the reflectance data is delivered in. Then you will develop and practice skills to explore and visualize the spectral data. 
+In this introductory tutorial, we demonstrate how to read NEON AOP hyperspectral reflectance (Level 3, tiled) data in Python. This starts with the fundamental steps of downloading, reading in, and becoming familiar with the HDF5 (h5) format of the AOP reflectance data. Then you will develop and practice skills to explore and visualize the spectral data. 
 
 <div id="ds-objectives" markdown="1">
     
@@ -31,6 +31,13 @@ After completing this tutorial, you will be able to:
 * Extract and plot a single band of reflectance data.
 * Apply a histogram stretch and adaptive equalization to improve the contrast of an image. 
 
+## Things You’ll Need To Complete This Tutorial
+
+To complete this tutorial, you will need: 
+* Python version 3.9 or higher
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
+
 ### Install Python Packages
 
 * **numpy**
@@ -40,10 +47,6 @@ After completing this tutorial, you will be able to:
 * **neonutilities**
 * **ipywidgets** (optional)
 * **scikit-image** (optional)
-
-### Set Up NEON User Account and Token
-
-To download data from NEON, we strongly recommend setting up a NEON User Account and creating a token. Using a token when downloading data via the API, including when using the `neonutilities` package, links your downloads to your user account, and also enables faster download speeds. Follow the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities</a> for complete instructions on setting up a token.
 
 ### Download Data
 
@@ -66,13 +69,13 @@ Hyperspectral remote sensing data is a useful tool for measuring changes to our 
 
 For more information on spectral remote sensing watch the video below. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3iaFzafWJQE" frameborder="0" allowfullscreen></iframe>
+<!-- <iframe width="560" height="315" src="youtube.com/watch?v=3iaFzafWJQE&source_ve_path=MTc4NDI0" frameborder="0" allowfullscreen></iframe> -->
 
+<iframe width="969" height="545" src="https://www.youtube.com/embed/3iaFzafWJQE" title="Mapping the Invisible: Introduction to Spectral Remote Sensing" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## Set up
 
-
-First let's import the required packages:
+First, import the required packages, and read your API token into a variable.
 
 
 ```python
@@ -82,6 +85,15 @@ import numpy as np
 import h5py
 import matplotlib.pyplot as plt
 import neonutilities as nu
+```
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+
+```python
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
+# print(token) # uncomment to display the token; if you haven't set the token properly in the environment, this will print nothing
 ```
 
 <div id="ds-objectives" markdown="1">
@@ -99,34 +111,9 @@ or
 </div>
 
 
-## Download the reflectance dataset
+## Find available AOP data and get spatial extents
 
-To start, we will download the NEON bidirectional surface reflectance data (DP3.30006.002) which are provided in hdf5 (.h5) format. Use the neonutilities `by_tile_aop` function below to download the data from the portal. First, set up your token and explore the available data. We will set up the token as an environment variable and use the `dotenv` package to , but you can also hard-code it into the script if you prefer (with the caveat that this is less reproducible).
-
-```python
-dotenv.set_key(dotenv_path = ".env",
-key_to_set = "NEON_TOKEN",
-value_to_set = "YOUR_TOKEN_HERE") # replace this string with the token copied from your NEON User Account page
-```
-
-
-```python
-dotenv.load_dotenv()
-```
-
-
-
-
-    True
-
-
-
-
-```python
-neon_token = os.environ.get("NEON_TOKEN")
-```
-
-Now that you have set up the token, you can use it in in the `by_tile_aop` function downloading. Before downloading data, we'll run a couple more `neonutilities` functions to determine what dates of data are available for the SERC site, as well as the spatial extent of the data. We'll start with `list_available_dates` to determine the available dates for the bidirectional reflectance data. This just requires the data product id (`dpid`) and site code (in this case, "SERC") for inputs.
+To start, we will download the NEON bidirectional surface reflectance data (DP3.30006.002) which are provided in hdf5 (.h5) format. Use the neonutilities `by_tile_aop` function below to download the data from the portal, using the token you've set up. Before downloading data, we'll run a couple more `neonutilities` functions to determine what dates of data are available for the SERC site, as well as the spatial extent of the data. We'll start with `list_available_dates` to determine the available dates for the bidirectional reflectance data. This just requires the data product id (`dpid`) and site code (in this case, "SERC") for inputs.
 
 
 ```python
@@ -136,27 +123,26 @@ nu.list_available_dates('DP3.30006.002','SERC')
     PROVISIONAL Available Dates: 2022-05, 2025-06
     
 
-Currently (as of Nov 2025) there are provisional data available at the SERC site in 2022 and 2025.
+Currently (as of May 2026) there are provisional data for the bidirectional reflectance available at the SERC site in 2022 and 2025. What is available provisionally is subject to change! See the <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases" target="_blank">Data Product Revisions and Releases</a> page for more details.
 
-We will also need to provide the easting and northing (in UTM) of the coordinates of the reflectance tile we want to download. To determine the tile extents, we can use the `get_aop_tile_extents` function as follows:
+We will also need to provide the easting and northing (in UTM) of the coordinates of the reflectance tile we want to download when using `by_tile_aop`. To determine the tile extents, we can use the `get_aop_tile_extents` function as follows:
 
 
 ```python
-serc2025_extents = nu.get_aop_tile_extents('DP3.30006.002','SERC','2025')
-# optionally use your token
-# serc2025_extents = nu.get_aop_tile_extents('DP3.30006.002','SERC','2025',token=neon_token)
+serc2025_extents = nu.get_aop_tile_extents('DP3.30006.002','SERC','2025',token=token)
 ```
 
     Easting Bounds: (358000, 370000)
     Northing Bounds: (4298000, 4312000)
     
 
-We'll select a single tile to download and explore, that covers some different land types: water, buildings, and vegetation. This tile has southwest coordinates of 368000 (easting) and 4306000 (northing). Use `help(nu.by_tile_aop)` for more details on the function and the required inputs. By default, if you leave out check_size, you will be prompted to continue downloading after seeing the size of the data. This data tile is under 700 MB, but always make sure to check that you have enough space locally before downloading AOP data, as they can be quite large in volume (especially when working with a full site or a larger portion of a site). Set your data download directory, we recommend setting this close to the root directory as the function will maintain the folder structure as it is organized on the cloud storage and the data are somewhat nested.
+## Download reflectance data
+
+We'll select a single tile to download and explore, that covers some different land types: water, buildings, and vegetation. This tile has southwest coordinates of 368000 (easting) and 4306000 (northing). Use `help(nu.by_tile_aop)` for more details on the function and the required inputs. By default, if you leave out check_size, you will be prompted to continue downloading after seeing the size of the data. This data tile is under 700 MB, but always make sure to check that you have enough space locally before downloading AOP data, as they can be quite large in volume (especially when working with a full site or a larger portion of a site). Set your data download directory, we recommend setting this close to the root directory as the function will maintain the folder structure as it is organized on the cloud storage location so this will shorten the path to the data files.
 
 
 ```python
-home_dir = os.path.expanduser("~")
-data_dir = os.path.join(home_dir,'data')
+data_dir = r'C:\NEON_Data'
 ```
 
 
@@ -169,24 +155,32 @@ nu.by_tile_aop(
     northing=4306000,
     include_provisional=True,
     savepath=data_dir,
-    token=neon_token)
+    token=token)
 ```
 
+    Provisional NEON data are included. To exclude provisional data, use input parameter include_provisional=False.
+    
 
-```python
+    Continuing will download 2 NEON data files totaling approximately 661.3 MB. Do you want to proceed? (y/n)  y
+    
+
+    Downloading 2 NEON data files totaling approximately 661.3 MB
+    
+    100%|█████████████████████████████████████████████████████████████████████████████| 2/2 [00:10<00:00,  5.38s/it]
+    
+
 We can see where we downloaded the files using `os.walk` as follows:
-```
 
 
 ```python
 # iterate over directory and subdirectory to get the complete list of h5 files
-for root, dirs, files in os.walk(data_dir):
+for root, dirs, files in os.walk(os.path.join(data_dir,'DP3.30006.002')):
     for name in files:
         if name.endswith('.h5'):
             print(os.path.join(root, name))  # print full file name, including the path
 ```
 
-    C:\Users\bhass\data\DP3.30006.002\neon-aop-provisional-products\2025\FullSite\D02\2025_SERC_7\L3\Spectrometer\Reflectance\NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5
+    C:\NEON_Data\DP3.30006.002\neon-aop-provisional-products\2025\FullSite\D02\2025_SERC_7\L3\Spectrometer\Reflectance\NEON_D02_SERC_DP3_368000_4306000_bidirectional_reflectance.h5
     
 
 Now that we've downloaded the data, we can read it in using the `h5py` package.
@@ -285,8 +279,7 @@ def ls_dataset(name,node):
         print(node)
 ```
 
-**Data Tip:** To see what the `visititems` method does, type `?` at the end, eg.
-`f.visititems?`
+**Data Tip:** To see what the `visititems` method does, type `?` at the end, eg. `f.visititems?`
 
 
 ```python
@@ -654,4 +647,4 @@ Here you can see that adjusting the colorlimit displays features (eg. roads, bui
 
 ## Recap
 
-In this lesson, you learned to use several of the AOP-focused functions in the `neonutilities` package to find available AOP data, see the spatial extents for the reflectance data product in the year of interest. You then learned how to download a single tile of the bidirectional reflectance data using `nu.by_tile_aop`, explored the contents of the h5 reflectance file, and carried out some basic pre-processing and visualization steps. Great job!
+In this lesson, you learned to use several of the AOP-related functions in the `neonutilities` package to find available AOP data, see the spatial extents for the reflectance data product in the year of interest. You then learned how to download a single tile of the bidirectional reflectance data using `nu.by_tile_aop`, explored the contents of the h5 reflectance file, and carried out some basic pre-processing and visualization steps. Great job!

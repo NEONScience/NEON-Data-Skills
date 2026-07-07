@@ -34,8 +34,11 @@ After completing this tutorial you will be able to:
 ## Things You’ll Need To Complete This Tutorial
 
 ### R Programming Language
-You will need a current version of R to complete this tutorial. We also recommend 
+
+* You will need a current version of R (4+) to complete this tutorial. We also recommend 
 the RStudio IDE to work with R. 
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
 
 ### R Packages To Install
 Start by installing any packages that are used during the course of the tutorial (if necessary) and setting options. Installation can be run once, then periodically to get package updates.
@@ -51,7 +54,9 @@ Start by installing any packages that are used during the course of the tutorial
 
 ## 1. Setup
 
-### Load R Packages
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+### Load R Packages and token
 
     library(neonUtilities)
 
@@ -60,6 +65,8 @@ Start by installing any packages that are used during the course of the tutorial
     library(dplyr)
 
     library(tidyr)
+
+    token <- Sys.getenv("NEON_TOKEN")
 
 ### Download NEON Fish Data
 Download <a href="https://data.neonscience.org/data-products/DP1.20107.001" target="_blank">Fish electrofishing, gill netting, and fyke netting counts</a> data using the `loadByProduct()` function in the `neonUtilities` package. Inputs needed to the function are:
@@ -70,6 +77,7 @@ Download <a href="https://data.neonscience.org/data-products/DP1.20107.001" targ
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
 * `startdate` and `enddate`: we will work with 2024 data in this tutorial
 * `release`: a particular data release, or `current` for the most recent release
+* `token`: your NEON API token
 
 Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
 for the `neonUtilities` package for more details.
@@ -84,7 +92,8 @@ For more background on NEON data structures and use of the neonUtilities package
       check.size = FALSE,
       startdate = "2024-01",
       enddate = "2024-12",
-      release = 'RELEASE-2026')
+      release = 'RELEASE-2026',
+      token=token)
 
 ### NEON Data Citation
 The use of NEON data should be cited according to our
@@ -105,16 +114,9 @@ The data are downloaded into a list of separate tables. Before working with the 
 
     names(fshdat)
 
-    ##  [1] "categoricalCodes_20107"     
-    ##  [2] "citation_20107_RELEASE-2026"
-    ##  [3] "fsh_bulkCount"              
-    ##  [4] "fsh_fieldData"              
-    ##  [5] "fsh_perFish"                
-    ##  [6] "fsh_perPass"                
-    ##  [7] "issueLog_20107"             
-    ##  [8] "readme_20107"               
-    ##  [9] "validation_20107"           
-    ## [10] "variables_20107"
+    ##  [1] "categoricalCodes_20107"      "citation_20107_RELEASE-2026" "fsh_bulkCount"               "fsh_fieldData"              
+    ##  [5] "fsh_perFish"                 "fsh_perPass"                 "issueLog_20107"              "readme_20107"               
+    ##  [9] "validation_20107"            "variables_20107"
 * The `categoricalCodes` file provides controlled lists used in the data
 
 * The `issueLog` and `readme` have the same information that you will find on the data product landing page of the data portal.
@@ -253,20 +255,13 @@ Information about fixed vs. random reaches is found in the `fsh_fieldData` table
 
     print(fixedRandomReach)
 
-    ##          eventID              namedLocation
-    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
-    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06
-    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07
-    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08
-    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09
-    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10
-    ##   fixedRandomReach samplingImpractical
-    ## 1            fixed                <NA>
-    ## 2            fixed          logistical
-    ## 3           random          logistical
-    ## 4           random          logistical
-    ## 5           random                <NA>
-    ## 6            fixed          logistical
+    ##          eventID              namedLocation fixedRandomReach samplingImpractical
+    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03            fixed                <NA>
+    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.06            fixed          logistical
+    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.07           random          logistical
+    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.08           random          logistical
+    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.09           random                <NA>
+    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.10            fixed          logistical
 
     samplerType <- fsh_perPass %>% 
       filter(eventID== "CRAM.2024.fall") %>%
@@ -277,24 +272,15 @@ Information about fixed vs. random reaches is found in the `fsh_fieldData` table
 
     print(samplerType)
 
-    ##          eventID              namedLocation
-    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03
-    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03
-    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03
-    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03
-    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03
-    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09
-    ## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09
-    ## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09
-    ##   passNumber   samplerType
-    ## 1          1 electrofisher
-    ## 2          2 electrofisher
-    ## 3          3 electrofisher
-    ## 4          4 mini-fyke net
-    ## 5          5      gill net
-    ## 6          1 electrofisher
-    ## 7          4 mini-fyke net
-    ## 8          5      gill net
+    ##          eventID              namedLocation passNumber   samplerType
+    ## 1 CRAM.2024.fall CRAM.AOS.riparian.point.03          1 electrofisher
+    ## 2 CRAM.2024.fall CRAM.AOS.riparian.point.03          2 electrofisher
+    ## 3 CRAM.2024.fall CRAM.AOS.riparian.point.03          3 electrofisher
+    ## 4 CRAM.2024.fall CRAM.AOS.riparian.point.03          4 mini-fyke net
+    ## 5 CRAM.2024.fall CRAM.AOS.riparian.point.03          5      gill net
+    ## 6 CRAM.2024.fall CRAM.AOS.riparian.point.09          1 electrofisher
+    ## 7 CRAM.2024.fall CRAM.AOS.riparian.point.09          4 mini-fyke net
+    ## 8 CRAM.2024.fall CRAM.AOS.riparian.point.09          5      gill net
 Now let's take a look at the capture data from Crampton Lake during the Fall of 2024, which contains data from one fixed reach and one random reach.
 
 

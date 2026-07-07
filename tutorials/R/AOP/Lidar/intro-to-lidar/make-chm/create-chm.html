@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="generator" content="litedown 0.9">
+<title>Create a Canopy Height Model from Lidar-derived rasters in R</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+body, .abstract, code, .footnotes, footer, #refs, .caption { font-size: .9em; }
+li li { font-size: .95em; }
+ul:has(li > input[type="checkbox"]) { list-style: none; padding-left: 1em; }
+*, :before, :after { box-sizing: border-box; }
+a { color: steelblue; }
+pre, img { max-width: 100%; }
+pre { white-space: pre-wrap; word-break: break-word; }
+pre code { display: block; padding: 1em; overflow-x: auto; }
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre, th) > code, code[class], div > .caption { background: #f8f8f8; }
+pre > code:is(:not([class]), .language-plain, .language-none, .plain), .box, .figure, .table { background: inherit; border: 1px solid #eee; }
+pre > code {
+  &.message { border-color: #9eeaf9; }
+  &.warning { background: #fff3cd; border-color: #fff3cd; }
+  &.error { background: #f8d7da; border-color: #f8d7da; }
+}
+.fenced-chunk { border-left: 1px solid #666; }
+.code-fence {
+  opacity: .4;
+  border: 1px dashed #666;
+  border-left: 2px solid;
+  &:hover { opacity: inherit; }
+}
+.box, .figure, .table, table { margin: 1em auto; }
+div > .caption { padding: 1px 1em; }
+.figure { p:has(img, svg), pre:has(svg) { text-align: center; } }
+.flex-col { display: flex; justify-content: space-between; }
+table {
+  &:only-child:not(.table > *) { margin: auto; }
+  th, td { padding: 5px; font-variant-numeric: tabular-nums; }
+  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+  thead th { border-bottom: 1px solid #ddd; }
+  &:not(.datatable-table) {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+  }
+}
+blockquote {
+  color: #666;
+  margin: 0;
+  padding: 1px 1em;
+  border-left: .5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC {
+  a { text-decoration: none; }
+  ul { list-style: none; padding-left: 1em; }
+  & > ul { padding: 0; }
+  ul ul { border-left: 1px solid lightsteelblue; }
+}
+.body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.main-number::after { content: "."; }
+span[class^="ref-number-"] { font-weight: bold; }
+.ref-number-fig::after, .ref-number-tab::after { content: ":"; }
+.cross-ref-chp::before { content: "Chapter "; }
+.cross-ref-sec::before { content: "Section "; }
+.cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
+.cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
+.cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
+.abstract, #refs {
+  &::before { display: block; margin: 1em auto; font-weight: bold; }
+}
+.abstract::before { content: "Abstract"; text-align: center; }
+#refs::before { content: "Bibliography"; font-size: 1.5em; }
+.ref-paren-open::before { content: "("; }
+.ref-paren-close::after { content: ")"; }
+.ref-semicolon::after { content: "; "; }
+.ref-and::after { content: " and "; }
+.ref-et-al::after { content: " et al."; font-style: italic; }
+.footnote-ref a {
+  &::before { content: "["; }
+  &::after { content: "]"; }
+}
+section.footnotes {
+  margin-top: 2em;
+  &::before { content: ""; display: block; max-width: 20em; }
+}
+.fade {
+  background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
+  opacity: 0.6;
+}
+
+@media print {
+  body { max-width: 100%; }
+  tr, img { break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  body:not(.pagesjs) pre:has(.line-numbers):not(:hover) { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Create a Canopy Height Model from Lidar-derived rasters in R</h1></div>
+</div>
+<div class="body">
+<p>A common analysis using lidar data are to derive top of the canopy height values
+from the lidar data. These values are often used to track changes in forest
+structure over time, to calculate biomass, and even leaf area index (LAI). Let’s
+dive into the basics of working with raster formatted lidar data in R!</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="sec:learning-objectives">Learning Objectives</h2>
+<p>After completing this tutorial, you will be able to:</p>
+<ul>
+<li>Work with digital terrain model (DTM) &amp; digital surface model (DSM) raster files.</li>
+<li>Carry out basic raster math using the <code>terra</code> package.</li>
+<li>Create a canopy height model (CHM) raster from DTM &amp; DSM rasters.</li>
+<li>Understand the basics of the pit-free CHM algoirthm used to generate NEON’s Ecosystem Structure data product.</li>
+</ul>
+<h2 id="sec:things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<p>You will need the most current version of R and, preferably, <code>RStudio</code> loaded
+on your computer to complete this tutorial.</p>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.</p>
+<h3 id="sec:install-r-packages">Install R Packages</h3>
+<ul>
+<li><strong>terra:</strong> <code>install.packages(&quot;terra&quot;)</code></li>
+<li><strong>neonUtilities:</strong> <code>install.packages(&quot;neonUtilities&quot;)</code></li>
+</ul>
+<p><a href="https://www.neonscience.org/packages-in-r" target="_blank">More on Packages in R - Adapted from Software Carpentry.</a></p>
+<h2 id="sec:download-data">Download Data</h2>
+<p>Lidar elevation raster data are downloaded using the R <code>neonUtilities::byTileAOP()</code> function in the script.</p>
+<p>These remote sensing data files provide information on the vegetation at the
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network’s</a>
+<a href="https://www.neonscience.org/field-sites/SJER" target="_blank"> San Joaquin Experimental Range</a> site. The entire datasets can be accessed from the
+<a href="http://data.neonscience.org" target="_blank"> NEON Data Portal</a>.</p>
+<p><strong>R Script &amp; Challenge Code:</strong> NEON data lessons often contain challenges to reinforce
+skills. If available, the code for challenge solutions is found in the downloadable R
+script of the entire lesson, available in the footer of each lesson page.</p>
+<h2 id="sec:recommended-reading">Recommended Reading</h2>
+<a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">
+What is a CHM, DSM and DTM? About Gridded, Raster LiDAR Data</a>
+</div>
+<h2 id="sec:create-a-lidar-derived-canopy-height-model-chm">Create a Lidar-derived Canopy Height Model (CHM)</h2>
+<p>The National Ecological Observatory Network (NEON) provides lidar-derived data products including the 1) Digital Terrain Model and Digital Surface Model (DTM/DSM), 2) Slope and Aspect, and 3) Ecosystem Structure or Canopy Height Model (CHM). These products come in the GeoTIFF format, which is a .tif raster format that is spatially located on the earth.</p>
+<p>In this tutorial, we create a Canopy Height Model. The <a href="https://www.neonscience.org/chm-dsm-dtm-gridded-lidar-data" target="_blank">Canopy Height Model (CHM)</a>, represents the heights of the trees on the ground. We can derive the CHM
+by subtracting the ground elevation from the elevation of the top of the surface (or the tops of the trees).</p>
+<p>We will use the <code>terra</code> R package to work with the the lidar-derived Digital
+Surface Model (DSM) and the Digital Terrain Model (DTM).</p>
+<pre><code># Load needed packages and set API token
+
+library(terra)
+
+library(neonUtilities)
+
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
+</code></pre>
+<p>Set the data directory where downloaded data will be saved.</p>
+<pre><code>data_dir=&quot;~/data/&quot; #This will depend on your local environment
+</code></pre>
+<p>We can use the <code>neonUtilities</code> function <code>byTileAOP</code> to download a single DTM and DSM tile at SJER. Both the DTM and DSM are delivered under the <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR (DP3.30024.001)</a> data product.</p>
+<p>You can run <code>help(byTileAOP)</code> to see more details on what the various inputs are. For this exercise, we’ll specify the UTM Easting and Northing to be (257500, 4112500), which will download the tile with the lower left corner (257000,4112000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). You can set <code>check.size=FALSE</code> if you want to download without a prompt. This example will not be very large (~8MB), since it is only downloading two single-band rasters (plus some associated metadata).</p>
+<pre><code>byTileAOP(dpID='DP3.30024.001',
+          site='SJER',
+          year='2021',
+          easting=257500,
+          northing=4112500,
+          check.size=TRUE, # set to FALSE if you don't want to enter y/n
+          savepath = data_dir,
+          token=token)
+
+## Downloading 2 files
+
+## 
+</code></pre>
+<p>|<br />
+|                                                                                              |   0%
+|<br />
+|==============================================================================================| 100%</p>
+<pre><code>## Successfully downloaded 2 files to ~/data//DP3.30024.001
+</code></pre>
+<p>This file will be downloaded into a nested subdirectory under the <code>~/data</code> folder, inside a folder named <code>DP3.30024.001</code> (the Data Product ID). The files should show up in these locations:  <code>~/data/DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DSMGtif/NEON_D17_SJER_DP3_257000_4112000_DSM.tif</code> and <code>~/data/DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DTMGtif/NEON_D17_SJER_DP3_257000_4112000_DTM.tif</code>.</p>
+<p>Now we can read in the files. You can move the files to a different location (eg. shorten the path), but make sure to change the path that points to the file accordingly.</p>
+<pre><code># Define the DSM and DTM file names, including the full path
+
+dsm_file &lt;- paste0(data_dir,&quot;DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DSMGtif/NEON_D17_SJER_DP3_257000_4112000_DSM.tif&quot;)
+
+dtm_file &lt;- paste0(data_dir,&quot;DP3.30024.001/neon-aop-products/2021/FullSite/D17/2021_SJER_5/L3/DiscreteLidar/DTMGtif/NEON_D17_SJER_DP3_257000_4112000_DTM.tif&quot;)
+</code></pre>
+<p>First, we will read in the Digital Surface Model (DSM). The <a href="https://www.neonscience.org/resources/learning-hub/tutorials/chm-dsm-dtm" target="_blank">DSM</a> represents the elevation of the top of the objects on the ground (trees, buildings, etc).</p>
+<pre><code># assign raster to object
+
+dsm &lt;- rast(dsm_file)
+
+
+
+# view info about the raster.
+
+dsm
+
+## class       : SpatRaster
+## size        : 1000, 1000, 1  (nrow, ncol, nlyr)
+## resolution  : 1, 1  (x, y)
+## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
+## coord. ref. : WGS 84 / UTM zone 11N (EPSG:32611)
+## source      : NEON_D17_SJER_DP3_257000_4112000_DSM.tif
+## name        : NEON_D17_SJER_DP3_257000_4112000_DSM
+
+# plot the DSM
+
+plot(dsm, main=&quot;Lidar Digital Surface Model \n SJER, California&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm/rfigs/import-dsm-1.png" alt=" " /></p>
+<p>Note the resolution, extent, and coordinate reference system (CRS) of the raster.
+To do later steps, our DTM will need to be the same.</p>
+<p>Next, we will import the Digital Terrain Model (DTM) for the same area. The
+<a href="{{ base.url }}/chm-dsm-dtm-gridded-lidar-data" target="_blank">DTM</a>
+represents the ground (terrain) elevation.</p>
+<pre><code># import the digital terrain model
+
+dtm &lt;- rast(dtm_file)
+
+
+
+plot(dtm, main=&quot;Lidar Digital Terrain Model \n SJER, California&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm/rfigs/plot-DTM-1.png" alt=" " /></p>
+<p>With both of these rasters now loaded, we can create the Canopy Height Model
+(CHM). The <a href="{{ base.url }}/chm-dsm-dtm" target="_blank">CHM</a>
+represents the difference between the DSM and the DTM or the height of all objects
+on the surface of the earth.</p>
+<p>To do this we perform some basic raster math to calculate the CHM. You can
+perform the same raster math in a GIS program like
+<a href="http://www.qgis.org/en/site/" target="_blank">QGIS</a>.</p>
+<p>When you do the math, make sure to subtract the DTM from the DSM or you’ll get
+trees with negative heights!</p>
+<pre><code># use raster math to create CHM
+
+chm &lt;- dsm - dtm
+
+
+
+# view CHM attributes
+
+chm
+
+## class       : SpatRaster
+## size        : 1000, 1000, 1  (nrow, ncol, nlyr)
+## resolution  : 1, 1  (x, y)
+## extent      : 257000, 258000, 4112000, 4113000  (xmin, xmax, ymin, ymax)
+## coord. ref. : WGS 84 / UTM zone 11N (EPSG:32611)
+## source(s)   : memory
+## varname     : NEON_D17_SJER_DP3_257000_4112000_DSM
+## name        : NEON_D17_SJER_DP3_257000_4112000_DSM
+## min value   :                                    0
+## max value   :                            24.130005
+
+plot(chm, main=&quot;Lidar CHM - SJER, California&quot;)
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm/rfigs/calculate-plot-CHM-1.png" alt=" " /></p>
+<p>We’ve now created a CHM from our DSM and DTM. What do you notice about the
+canopy cover at this location in the San Joaquin Experimental Range?</p>
+<h2 id="sec:pit-free-canopy-height-model">Pit-Free Canopy Height Model</h2>
+<p>Note that NEON’s <a href="https://data.neonscience.org/data-products/DP3.30015.001" target="_blank">Ecosystem Structure</a> (or CHM) data product is not a simple difference between the DSM and DTM. Directly subtracting the DTM from the DSM to determine a CHM can introduce artifacts into the CHM known as data pits. Data pits manifest as abnormally low elevation pixels within a tree crown and underestimate the true canopy height, and are a commonly observed problem in CHMs derived from LiDAR. To address this issue, NEON uses a “pit-free” CHM algorithm, following the method of Khosravipour et al. (2014). To read more about how the NEON CHM is derived, please reference the <a href=" https://data.neonscience.org/api/v0/documents/NEON.DOC.002387vB?inline=true" target="_blank">Ecosystem Structure ATBD</a>.</p>
+<div id="ds-challenge" markdown="1">
+<h3 id="sec:challenge-basic-raster-math">Challenge: Basic Raster Math</h3>
+<p>Convert the CHM from meters to feet and plot it.</p>
+</div>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/AOP/Lidar/intro-to-lidar/make-chm/rfigs/challenge-code-raster-math-1.png" alt=" " /></p>
+<p>We can write out the CHM as a GeoTiff using the <code>writeRaster()</code> function.</p>
+<pre><code># write out the CHM in tiff format. 
+
+writeRaster(chm,paste0(wd,&quot;CHM_SJER.tif&quot;),&quot;GTiff&quot;)
+</code></pre>
+<p>We’ve now successfully created a canopy height model using basic raster math – in
+R! We can bring the <code>CHM_SJER.tif</code> file into QGIS (or any GIS program) and look
+at it.</p>
+<hr />
+<p>Consider checking out the tutorial
+<a href="https://www.neonscience.org/tree-heights-veg-structure-chm/" target="_blank"><em>Compare tree height measured from the ground to a Lidar-based Canopy Height Model</em></a> to compare a LiDAR-derived CHM with ground-based observations!</p>
+<h3 id="sec:references">References:</h3>
+<p>Khosravipour, A., Skidmore, A. K., Isenburg, M., Wang, T., &amp; Hussin, Y. A. (2014). Generating pit-free canopy height models from airborne lidar. Photogrammetric Engineering &amp; Remote Sensing, 80(9), 863–872.</p>
+</div>
+</body>
+</html>

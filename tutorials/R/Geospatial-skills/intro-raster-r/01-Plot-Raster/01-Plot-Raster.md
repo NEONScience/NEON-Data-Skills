@@ -16,9 +16,7 @@ urlTitle: plot-raster-data-r
 ---
 
 
-This tutorial reviews how to plot a raster in R using the `plot()` 
-function. It also covers how to layer a raster on top of a hillshade to produce 
-an eloquent map.
+This tutorial reviews how to plot a raster in R using the `plot()` function. It also covers how to layer a raster on top of a hillshade to produce an eloquent map.
 
 <div id="ds-objectives" markdown="1">
 
@@ -26,18 +24,20 @@ an eloquent map.
 
 After completing this tutorial, you will be able to:
 
-* Know how to plot a single band raster in R.
-* Know how to layer a raster dataset on top of a hillshade to create an elegant 
-basemap.
+* Plot a single band raster in R.
+* Layer a raster dataset on top of a hillshade to create an elegant basemap.
 
 ## Things You’ll Need To Complete This Tutorial
 
 You will need the most current version of R and, preferably, `RStudio` loaded
 on your computer to complete this tutorial.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
 ### Install R Packages
 
 * **terra:** `install.packages("terra")`
+* **neonUtilities:** `install.packages("neonUtilities")`
 
 * <a href="https://www.neonscience.org/packages-in-r" target="_blank"> More on Packages in R </a>– Adapted from Software Carpentry.
 
@@ -46,20 +46,16 @@ on your computer to complete this tutorial.
 Data required for this tutorial will be downloaded using `neonUtilities` in the lesson.
 
 The LiDAR and imagery data used in this lesson were collected over the 
-<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> 
-<a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> 
-field site. 
+<a href="https://www.neonscience.org/" target="_blank"> National Ecological Observatory Network's</a> <a href="https://www.neonscience.org/field-sites/HARV" target="_blank" >Harvard Forest (HARV)</a> field site. 
 
-The entire dataset can be accessed from the 
-<a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
+The entire dataset can be accessed from the <a href="http://data.neonscience.org" target="_blank">NEON Data Portal</a>.
 
 
 ****
 
 **Set Working Directory:** This lesson will explain how to set the working directory. You may wish to set your working directory to some other location, depending on how you prefer to organize your data.
 
-<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview
-of setting the working directory in R can be found here.</a>
+<a href="https://www.neonscience.org/set-working-directory-r" target="_blank"> An overview of setting the working directory in R can be found here.</a>
 
 
 ****
@@ -81,16 +77,47 @@ have the `DSM_HARV` variable as defined in the pervious tutorial, <a href="https
 
 
     library(terra)
-
-    
+    library(neonUtilities)
 
     # set working directory
 
     wd <- "~/data/"
-
     setwd(wd)
 
-    
+    # set API token
+    token <- Sys.getenv("NEON_TOKEN")
+
+## Download LiDAR Raster Data
+
+We can use the `neonUtilities` function `byTileAOP` to download a single elevation tiles (DSM and DTM). If you have already run the previous tutorial in this series, you do not need to do this again. 
+
+For this exercise, we'll specify the UTM Easting and Northing to be (732000, 4713500), which will download the tile with the lower left corner (732000,4713000). By default, the function will check the size total size of the download and ask you whether you wish to proceed (y/n). This file is ~8 MB, so make sure you have enough space on your local drive. You can set `check.size=TRUE` if you want to check the file size before downloading.
+
+
+    byTileAOP(dpID='DP3.30024.001', # lidar elevation
+              site='HARV',
+              year='2022',
+              easting=732000,
+              northing=4713500,
+              check.size=FALSE, # set to TRUE to check the size before downloading
+              savepath = wd,
+              token=token)
+
+    ## Downloading files totaling approximately 5.239584 MB
+
+    ## Downloading 2 files
+
+    ## 
+  |                                                                                      
+  |                                                                                |   0%
+  |                                                                                      
+  |================================================================================| 100%
+
+    ## Successfully downloaded 2 files to ~/data//DP3.30024.001
+
+This file will be downloaded into a nested subdirectory under the ~/data folder, inside a folder named DP3.30024.001 (the Data Product ID). The file should show up in this location: ~/data/DP3.30024.001/neon-aop-products/2022/FullSite/D01/2022_HARV_7/L3/DiscreteLidar/DSMGtif/NEON_D01_HARV_DP3_732000_4713000_DSM.tif.
+
+
 
     # import raster into R
 

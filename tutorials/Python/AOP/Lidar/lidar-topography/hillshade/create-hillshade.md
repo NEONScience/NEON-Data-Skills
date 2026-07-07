@@ -6,10 +6,10 @@ dateCreated: 2017-06-21
 authors: Bridget Hass
 contributors: Donal O'Leary
 estimatedTime: 0.5 hour
-packagesLibraries: gdal, rasterio, requests
-topics: lidar, raster, remote-sensing, elevation
+packagesLibraries: gdal, rasterio, neonutilities, python-dotenv
+topics: lidar, raster, remote-sensing, elevation, hillshade
 languagesTool: Python
-dataProduct: DP1.30003, DP3.30015, DP3.30024, DP3.30025
+dataProduct: DP3.30015.001, DP3.30024.001
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade.ipynb
 tutorialSeries: intro-lidar-py-series
 urlTitle: create-hillshade-py
@@ -19,7 +19,7 @@ This tutorial covers how to create a hillshade from a terrain raster in Python, 
 
 <div id="ds-objectives" markdown="1">
 
-### Objectives
+### Learning Objectives
 
 After completing this tutorial, you will be able to:
 
@@ -28,15 +28,23 @@ After completing this tutorial, you will be able to:
 * Create a hillshade from the DTM
 * Calculate and plot Canopy Height along with hillshade and elevation
 
-### Install Python Packages
+### Things You’ll Need To Complete This Tutorial
+
+To complete this tutorial, you will need: 
+* Python version 3.9 or higher
+* Create a <a href="https://www.neonscience.org/about/user-accounts" target="_blank">NEON user account</a>
+* Generate an <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">API token</a> for downloading data
+
+#### Install Python Packages
 
 * **gdal** 
 * **rasterio**
-* **requests** 
+* **neonutilities**
+* **python-dotenv** 
 
-### Download Data
+#### Download Data
 
-For this lesson, we will read in Digital Terrain Model (DTM) data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `requests` package.
+For this lesson, we will read in Digital Terrain Model (DTM) data collected at NEON's <a href="https://www.neonscience.org/field-sites/teak" target="_blank">Lower Teakettle (TEAK)</a> site in California. This data is downloaded in the first part of the tutorial, using the Python `neonutilities` package.
 
 ### Additional Resources
 
@@ -51,12 +59,21 @@ First, let's import the required packages:
 
 
 ```python
+import dotenv
 import os
 import numpy as np
-import requests
+import neonutilities as nu
 import rasterio as rio
 from rasterio.plot import show
 import matplotlib.pyplot as plt
+```
+
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. Once you've set up your token as an environment variable, you can load it using  the `python-dotenv` package as follows, optionally specifying the path to the `.env` file in `load_dotenv()`.
+
+
+```python
+dotenv.load_dotenv()
+token = os.environ.get("NEON_TOKEN")
 ```
 
 ## Read in the datasets
@@ -64,35 +81,50 @@ import matplotlib.pyplot as plt
 
 To start, we will download the NEON Elevation Models (DTM and DSM) which are provided in geotiff (.tif) format. Use the `download_url` function below to download the data directly from the cloud storage location.
 
-For more information on these data products, refer to the NEON Data Portal page, linked below:
-
-<a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR</a>.
+For more information on these data products, refer to the NEON Data Portal page, linked here: <a href="https://data.neonscience.org/data-products/DP3.30024.001" target="_blank">Elevation - LiDAR</a>.
 
 
 ```python
-# function to download data stored on the internet in a public url to a local file
-def download_url(url,download_dir):
-    if not os.path.isdir(download_dir):
-        os.makedirs(download_dir)
-    filename = url.split('/')[-1]
-    r = requests.get(url, allow_redirects=True)
-    file_object = open(os.path.join(download_dir,filename),'wb')
-    file_object.write(r.content)
+# download the DSM and DTM data to the C:/data directory - change this if desired
+nu.by_tile_aop(dpid='DP3.30024.001',
+               site='TEAK',
+               year=2021,
+               easting=320000,
+               northing=4092000,
+               token=token,
+               savepath=r'C:\data')
 ```
+
+    Provisional NEON data are not included. To download provisional data, use input parameter include_provisional=True.
+    
+
+    Continuing will download 3 NEON data files totaling approximately 6.7 MB. Do you want to proceed? (y/n)  y
+    
+
+    Downloading 3 NEON data files totaling approximately 6.7 MB
+    
+    100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:01<00:00,  2.97it/s]
+    
+
+Display the DSM and DTM files that have been downloaded:
 
 
 ```python
-# define the urls for downloading the Aspect and NDVI geotiff tiles
-dtm_url = "https://storage.googleapis.com/neon-aop-products/2021/FullSite/D17/2021_TEAK_5/L3/DiscreteLidar/DTMGtif/NEON_D17_TEAK_DP3_320000_4092000_DTM.tif"
-dsm_url = "https://storage.googleapis.com/neon-aop-products/2021/FullSite/D17/2021_TEAK_5/L3/DiscreteLidar/DSMGtif/NEON_D17_TEAK_DP3_320000_4092000_DSM.tif"
+dem_dir = os.path.expanduser(r"C:\data\DP3.30024.001")
 
-# download the raster data using the download_url function
-download_url(dtm_url,'.\data')
-download_url(dsm_url,'.\data')
-
-# display the contents in the ./data folder to confirm the download completed
-os.listdir('./data')
+for root, dirs, files in os.walk(dem_dir):
+    for file in files:
+        if file.endswith('DTM.tif'):
+            dtm_file = os.path.join(root, file)
+            print(os.path.join(root, file).replace(os.path.expanduser('~/Downloads/'),'..'))
+        if file.endswith('DSM.tif'):
+            dsm_file = os.path.join(root, file)
+            print(os.path.join(root, file).replace(os.path.expanduser('~/Downloads/'),'..'))
 ```
+
+    C:\data\DP3.30024.001\neon-aop-products\2021\FullSite\D17\2021_TEAK_5\L3\DiscreteLidar\DSMGtif\NEON_D17_TEAK_DP3_320000_4092000_DSM.tif
+    C:\data\DP3.30024.001\neon-aop-products\2021\FullSite\D17\2021_TEAK_5\L3\DiscreteLidar\DTMGtif\NEON_D17_TEAK_DP3_320000_4092000_DTM.tif
+    
 
 ###  Calculate Hillshade
 
@@ -124,19 +156,26 @@ def hillshade(array,azimuth,angle_altitude):
 
 
 ```python
-dtm_dataset = rio.open(os.path.join('.\data','NEON_D17_TEAK_DP3_320000_4092000_DTM.tif'))
+dtm_dataset = rio.open(dtm_file)
 dtm_data = dtm_dataset.read(1)
 ```
 
 
+
 ```python
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
-dtm_map = show(dtm_dataset,title='Digital Terrain Model',ax=ax);
-show(dtm_dataset,contour=True, ax=ax); #overlay the contours
+dtm_map = show(dtm_dataset, title='Digital Terrain Model', adjust=False, cmap='terrain', ax=ax); # adjust=False prevents auto-normalization
+show(dtm_dataset, adjust=False, contour=True, ax=ax); # overlay the contours
 im = dtm_map.get_images()[0]
 fig.colorbar(im, label = 'Elevation (m)', ax=ax) # add a colorbar
 ax.ticklabel_format(useOffset=False, style='plain') # turn off scientific notation
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_13_0.png)
+    
+
 
 Now that we have a function to generate hillshade, we need to read in the DTM raster using rasterio and then calculate hillshade using the `hillshade` function. We can then plot both.
 
@@ -150,12 +189,17 @@ hs_data = hillshade(dtm_data,225,45)
 ```python
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
 ext = [dtm_dataset.bounds.left, dtm_dataset.bounds.right, dtm_dataset.bounds.bottom, dtm_dataset.bounds.top]
-plt.imshow(hs_data,extent=ext)
-plt.colorbar(); plt.set_cmap('RdYlGn'); 
+plt.imshow(hs_data, extent=ext)
 plt.title('TEAK Hillshade')
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
 rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels 90 degrees
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_16_0.png)
+    
+
 
 
 ```python
@@ -170,15 +214,22 @@ plt.grid('on'); # plt.colorbar();
 plt.title('TEAK Hillshade + DTM');
 ```
 
+
+
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_17_0.png)
+    
+
+
 ### Calculate CHM & Overlay on Top of Hillshade
 
 Canopy Height can be simply calculated by subtracting the Digital Terrain Model from the Digital Surface Model. While NEON's CHM is calculated using a slightly more sophisticated "pit-free" algorithm (see the ATBD linked at the top of this tutorial), in this example, we'll calculate the CHM with the simple difference formula. First, read in the DSM data set, which we previously downloaded into the data folder.
 
 
 ```python
-dsm_dataset = rio.open(os.path.join('.\data','NEON_D17_TEAK_DP3_320000_4092000_DSM.tif'))
+dsm_dataset = rio.open(dsm_file)
 dsm_data = dsm_dataset.read(1)
 ```
+
 
 
 ```python
@@ -193,8 +244,15 @@ Plot the Canopy Height Model for reference:
 fig, ax = plt.subplots(1, 1, figsize=(6,6))
 im1 = plt.imshow(chm_data,cmap='Greens',extent=ext); 
 ax=plt.gca(); ax.ticklabel_format(useOffset=False, style='plain') #do not use scientific notation 
+fig.colorbar(im1, label = 'CHM (m)', ax=ax) # add a colorbar
 ax.set_title('Canopy Height Model (DSM-DTM)');
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_22_0.png)
+    
+
 
 Finally, we can make a plot to bring together all of these visualizations from earlier in the tutorial.
 
@@ -220,3 +278,7 @@ rotatexlabels = plt.setp(ax.get_xticklabels(),rotation=90) #rotate x tick labels
 plt.grid('on'); # plt.colorbar(); 
 plt.title('Terrain, Hillshade, & Canopy Height');
 ```
+
+
+    
+![png](https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Lidar/lidar-topography/hillshade/create-hillshade_files/output_24_0.png)
