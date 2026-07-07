@@ -33,11 +33,20 @@ After completing this tutorial, you will be able to:
 
 ## Types of samples in the Biorepository
 
-The NEON Biorepository archives physical materials generated through NEON <a href="https://www.neonscience.org/data-collection/observational-sampling" target="_blank">observational sampling</a> at terrestrial and aquatic sites. Because NEON sampling is designed to characterize whole ecosystems, the Biorepository contains many **interconnected sample types** collected from the same location and time periods, including plants, insects, fish, soils, microbes, and environmental materials, unlike traditional natural history collections.
+The NEON Biorepository archives physical materials generated through NEON <a href="https://www.neonscience.org/data-collection/observational-sampling" target="_blank">observational sampling</a> at terrestrial and aquatic sites.
 
-In addition to field-collected samples and preserved specimens, the Biorepository also **archives downstream materials** generated through  laboratory processing and analytical workflows. These include things like tissues, DNA extracts, taxonomic reference slides, and identified bulk organismal samples.
+The  different kinds of samples include:
 
-This means that observational protocols produce multiple archived materials from the same collection event. For example, small mammal sampling produces specimens, frozen tissues, pathogen DNA extracts, and mammal DNA extracts, while microbial sampling produces frozen unanalyzed subsamples and analyzed metagenomic DNA extracts. These physical materials are all available through the Biorepository Sample Portal, while associated analytical and observational data are available through the NEON Data Portal.
+* Common Biosamples: Beetles, mosquitoes, mammals, herbarium specimens, fish
+* Uncommon Biosamples: Aquatic macroinvertebrates, zooplankton, aquatic plants, soil/water microbes, litterfall
+* Geosamples: Precipitation, dust, soil.
+* Ecosamples: Derived tissues, derived DNA, taxonomic reference materials, bycatch samples
+
+Because NEON sampling is designed to characterize whole ecosystems, the Biorepository contains **interconnected samples** collected from the same location and time periods. In addition to field-collected bio- and geosamples, the Biorepository also **archives downstream ecosamples** generated through laboratory processing and analytical workflows. This means that collection protocols produce multiple archived materials from the same collection event.
+
+For example: Collecting a small mammal produces a specimen, frozen tissues, pathogen DNA extracts, and mammal DNA extracts, while microbial sampling produces frozen unanalyzed subsamples and analyzed metagenomic DNA extracts.
+
+These physical materials are all available through the <a href="https://biorepo.neonscience.org/portal/neon/search/index.php?utm_source=neon_tutorials&utm_medium=directlink" target="_blank">Biorepository Sample Portal</a>, while associated analytical and observational data are available through the <a href="https://data.neonscience.org/data-products/explore" target="_blank">NEON Data Portal</a>.
 
 The table below summarizes the major sample types available in the Biorepository.
 
@@ -45,7 +54,7 @@ The table below summarizes the major sample types available in the Biorepository
 
 ## Sample Type Browser
 
-The Sample Type Browser is designed to help researchers understand what kinds of materials are available in the Biorepository. It organizes these materials by taxonomic group, collection workflow, and preservation method.
+The Sample Type Browser is designed to help researchers understand the materials available in the Biorepository. It organizes these by taxonomic group, collection workflow, and preservation method.
 
 This can help clarify:
 
