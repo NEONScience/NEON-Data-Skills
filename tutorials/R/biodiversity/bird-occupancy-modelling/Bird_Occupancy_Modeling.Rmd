@@ -117,9 +117,9 @@ First, we’ll download the breeding landbird data product (<a href="https://dat
 
 On the first run, this code block will download the full dataset for all sites. Because the data product is large and spans multiple years-including years before some sites became operational-the initial download may take some time. A cached version of the dataset is saved locally, so on re-run, the code simply loads the local file instead of downloading the data again.
 
-A NEON token is used to download the original data for this workflow. Tokens are optional but recommended, as they allow authenticated access and help avoid API rate limits when downloading large datasets. For more information, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities tutorial</a> and the <a href="https://data.neonscience.org/data-api/rate-limiting/#api-tokens" target="_blank">NEON API token documentation</a>.
+A NEON user account and an API token are required to download the data for this workflow. You can use your account to create a token. For more information, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities tutorial</a> and the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>.
 
-```{r}
+```{r warning=FALSE}
 # Define NEON sites
 large_sites <- c(
   "BARR", "BART", "BONA", "CLBJ", "CPER", "DEJU", "DSNY", "GRSM",
@@ -265,7 +265,7 @@ In this tutorial, we construct detection histories at the site level and define 
 
 ### Filter to a single species
 
-First, select a species to model. Here we use *Melanerpes carolinus* (Red-bellied Woodpecker), which is widespread and frequently detected.
+First, select a species to model. Here we use *Melanerpes carolinus* (Red-bellied Woodpecker), which is a widespread and frequently detected species.
 
 We filter the combined dataset we just prepared to include only observations of this species.
 
@@ -375,7 +375,7 @@ birds_occupancy_simple <- occMod(
   data = birds_pao_simple,           
   model = list(
     psi ~ 1,
-    p ~ 1), # p ~ SURVEY
+    p ~ 1),
   type = 'so'
   )
 
@@ -408,9 +408,9 @@ ests <- ests[1:2,] %>%
     c(
       Parameter = parm,
       Estimate = est,
-      SE = se,
-      L95 = lower,
-      U95 = upper
+      SE = se, # Standard Error
+      L95 = lower, #95% Confidence Interval - Lower Boundary
+      U95 = upper #95% Confidence Interval - Upper Boundary
     )
   ) %>% 
   `rownames<-`(seq_len(nrow(ests[1:2,])))
@@ -420,14 +420,23 @@ ests
 
 From these results, we see that *Melanerpes carolinus* has an estimated **occupancy probability (ψ) of about 0.47**. This means that if you randomly select a NEON site, there is roughly a 47% chance that the species can be found at that site—equivalently, the species is present at about 47% of NEON sites in this dataset. We can see that if we overlay a range map for *Melanerpes carolinus*, it covers roughly half of NEON sites.
 
-> U.S. Geological Survey (USGS) - Gap Analysis Project (GAP), 2018, Red-bellied Woodpecker (Melanerpes carolinus) bRBWOx_CONUS_2001v1 Range Map: U.S. Geological Survey data release, https://doi.org/10.5066/F7JW8CX7.
+> U.S. Geological Survey (USGS) - Gap Analysis Project (GAP), 2018, Red-bellied Woodpecker (Melanerpes carolinus) bRBWOx_CONUS_2001v1 Range Map: U.S. Geological Survey data release, <a href="https://doi.org/10.5066/F7JW8CX7" target="_blank">https://doi.org/10.5066/F7JW8CX7</a>.
 
 ```{r message=FALSE, warning=FALSE}
 library(sf)
 library(rnaturalearth)
 
-melanerpes_carolinus_range <- st_read("data/bRBWOx_CONUS_Range_2001v1/bRBWOx_CONUS_Range_2001v1.shp", quiet = TRUE) %>%
-  st_transform(crs = 4326)
+url <- "https://www.sciencebase.gov/catalog/file/get/59f5ec2be4b063d5d307e4c3?f=__disk__b5%2F37%2Ffc%2Fb537fc3bf8c92b1162bca650dda01c052e87ec6e"
+
+zip <- tempfile(fileext = ".zip")
+dir <- tempdir()
+
+download.file(url, zip, mode = "wb")
+unzip(zip, exdir = dir)
+
+melanerpes_carolinus_range <-
+  st_read(list.files(dir, "\\.shp$", full.names = TRUE), quiet = TRUE) |>
+  st_transform(4326)
 
 site_map <- brd_perpoint_clean %>%
   select(siteID, decimalLatitude, decimalLongitude) %>%
@@ -582,10 +591,13 @@ ggplot(species_estimates,
   geom_errorbar(aes(ymin = L95, ymax = U95),
                 position = position_dodge(width = 0.7),
                 width = 0.15) +
-  scale_x_discrete(labels = c(
-    psi = "Occupancy (ψ)",
-    p = "Detection (p)"
-  )) +
+  scale_x_discrete(
+    limits = c("psi", "p"),
+    labels = c(
+      psi = "Occupancy (ψ)",
+      p = "Detection (p)"
+    )
+  ) +
   scale_y_continuous(limits = c(0, 1)) +
   labs(
     x = NULL,
@@ -618,9 +630,9 @@ By including these variables in our model, we can either:
 
 ### Site Covariates
 
-So far, our model assumed that occupancy and detection probabilities were constant across all sites and surveys. In reality, site characteristics often influence whether a species occupies a location or is more easily detected. We can test these effects by including site covariates in the occupancy model. Remember that site characteristics can influence both occupancy and/or detection.
+So far, our model assumed that occupancy and detection probabilities were constant across all sites and surveys. Site characteristics often influence whether a species occupies a location or is more easily detected. We can test these effects by including site covariates in the occupancy model. Remember that site characteristics can influence both occupancy and/or detection.
 
-In this example, we examine whether **elevation** influences the occupancy probability of *Melanerpes carolinus* (Red-bellied Woodpecker).
+In this example, we examine if **elevation** influences the occupancy probability of *Melanerpes carolinus* (Red-bellied Woodpecker).
 
 #### Create a site covariate table
 
@@ -629,7 +641,7 @@ Site-level covariates must be provided to `createPao()` as a separate table with
 Here we extract the elevation for each site from the combined dataset `brd_joineddata_clean` we prepared at the beginning of the tutorial.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** For the bird dataset, NEON includes several common environmental variables, making it easy to incorporate these characteristics directly into analyses. More broadly, NEON collects a wide range of co-located environmental measurements. These additional data products can be used to create covariates describing habitat, climate, or other conditions for occupancy models.
+<i class="fa fa-star"></i> **Data Tip:** For the bird dataset, NEON includes some common environmental variables, making it easy to incorporate these characteristics directly into analyses. NEON also collects a wide range of co-located environmental measurements using NEON instrumentation on the towers or sensor arrays. These additional data products can be used to create covariates describing habitat, climate, or other conditions for occupancy models.
 </div> 
 
 ```{r}
@@ -679,7 +691,7 @@ In this model, the formula `psi ~ elevation` specifies that occupancy probabilit
 Other functional forms can also be used, but aren't included in this tutorial. For example:
 
 * `psi ~ elevation + I(elevation^2)` could model a polynomial relationship. For example, a species might prefer mid-elevation forests but be less common at both low and high elevations.
-* `psi ~ elevation + forest_cover` could include multiple covariates influencing occupancy. For example, a bird may be more likely to occur at higher elevations plus areas with greater forest cover.
+* `psi ~ elevation + forest_cover` could include multiple covariates influencing occupancy. For example, a bird may be more likely to occur at higher elevations and in areas with greater forest cover.
 * `psi ~ elevation * forest_cover` could model an interaction between variables. For example, forest cover might increase occupancy at low elevations but have little effect at high elevations.
 
 Detection probability could also be modeled as a function of site covariates in the same way. In this example, however, we keep detection probability constant using `p ~ 1` so that we can focus on how elevation influences occupancy.

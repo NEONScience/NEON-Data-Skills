@@ -123,7 +123,7 @@ First, we’ll download the breeding landbird data product (<a href="https://dat
 
 On the first run, this code block will download the full dataset for all sites. Because the data product is large and spans multiple years-including years before some sites became operational-the initial download may take some time. A cached version of the dataset is saved locally, so on re-run, the code simply loads the local file instead of downloading the data again.
 
-A NEON token is used to download the original data for this workflow. Tokens are optional but recommended, as they allow authenticated access and help avoid API rate limits when downloading large datasets. For more information, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities tutorial</a> and the <a href="https://data.neonscience.org/data-api/rate-limiting/#api-tokens" target="_blank">NEON API token documentation</a>.
+A NEON user account and an API token are required to download the data for this workflow. You can use your account to create a token. For more information, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities tutorial</a> and the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>.
 
 
     # Define NEON sites
@@ -179,9 +179,6 @@ A NEON token is used to download the original data for this workflow. Tokens are
       save(bird.counts, file = bird_counts_path)
     }
 
-    ## Warning in load(bird_counts_path): strings not representable in native encoding will be
-    ## translated to UTF-8
-
 ## Preparing the Data
 NEON provides separate tables for point-count survey metadata (`brd_perpoint`) and the bird counts themselves (`brd_countdata`).
 
@@ -205,7 +202,7 @@ Take a look at their structure (that is, what fields are included) and the data 
     ##  $ coordinateUncertainty     : num  250 250 250 250 250 ...
     ##  $ elevation                 : num  576 576 576 576 576 ...
     ##  $ elevationUncertainty      : num  0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.8 0.8 0.8 ...
-    ##  $ startDate                 : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:43:00" "2015-06-14 10:31:00" ...
+    ##  $ startDate                 : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:43:00" "2015-06-14 10:31:00" "2015-06-14 11:24:00" ...
     ##  $ boutNumber                : num  1 1 1 1 1 1 1 1 1 1 ...
     ##  $ samplingImpracticalRemarks: chr  NA NA NA NA ...
     ##  $ samplingImpractical       : chr  "OK" "OK" "OK" "OK" ...
@@ -226,48 +223,36 @@ Take a look at their structure (that is, what fields are included) and the data 
 
     head(bird.counts$brd_perpoint, n=5)
 
-    ##                                    uid         namedLocation domainID siteID   plotID    plotType
-    ## 1 30d14ecc-65a8-4e73-bcb3-d5132c153da2 BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 2 f97b6fa3-5719-4c0d-9922-1b23ec949911 BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 3 6fdac273-77b0-4e30-86d1-f6ff94f92e66 BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 4 ff9f059e-46fa-471a-a41d-2ac759881ff0 BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 5 e3f73906-fe6f-4f88-a05e-067a567d6516 BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ##   pointID       nlcdClass decimalLatitude decimalLongitude geodeticDatum coordinateUncertainty
-    ## 1       3 evergreenForest        44.06015        -71.31548         WGS84                 250.3
-    ## 2       2 evergreenForest        44.06015        -71.31548         WGS84                 250.3
-    ## 3       1 evergreenForest        44.06015        -71.31548         WGS84                 250.3
-    ## 4       4 evergreenForest        44.06015        -71.31548         WGS84                 250.3
-    ## 5       5 evergreenForest        44.06015        -71.31548         WGS84                 250.3
-    ##   elevation elevationUncertainty           startDate boutNumber samplingImpracticalRemarks
-    ## 1     575.8                  0.3 2015-06-14 09:23:00          1                       <NA>
-    ## 2     575.8                  0.3 2015-06-14 09:43:00          1                       <NA>
-    ## 3     575.8                  0.3 2015-06-14 10:31:00          1                       <NA>
-    ## 4     575.8                  0.3 2015-06-14 11:24:00          1                       <NA>
-    ## 5     575.8                  0.3 2015-06-14 12:20:00          1                       <NA>
-    ##   samplingImpractical         eventID startCloudCoverPercentage endCloudCoverPercentage startRH
-    ## 1                  OK BRD.BART.2015.1                        20                      40      72
-    ## 2                  OK BRD.BART.2015.1                        20                      40      72
-    ## 3                  OK BRD.BART.2015.1                        20                      40      72
-    ## 4                  OK BRD.BART.2015.1                        20                      40      72
-    ## 5                  OK BRD.BART.2015.1                        20                      40      72
-    ##   endRH                  observedHabitat observedAirTemp kmPerHourObservedWindSpeed
-    ## 1    56                 evergreen forest              18                          1
-    ## 2    56                 deciduous forest              19                          3
-    ## 3    56 mixed deciduous/evergreen forest              17                          0
-    ## 4    56                 deciduous forest              19                          0
-    ## 5    56                 deciduous forest              16                          0
-    ##                    laboratoryName samplingProtocolVersion remarks measuredBy  publicationDate
-    ## 1 Bird Conservancy of the Rockies       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z
-    ## 2 Bird Conservancy of the Rockies       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z
-    ## 3 Bird Conservancy of the Rockies       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z
-    ## 4 Bird Conservancy of the Rockies       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z
-    ## 5 Bird Conservancy of the Rockies       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z
-    ##        release
-    ## 1 RELEASE-2026
-    ## 2 RELEASE-2026
-    ## 3 RELEASE-2026
-    ## 4 RELEASE-2026
-    ## 5 RELEASE-2026
+    ##                                    uid         namedLocation domainID siteID   plotID    plotType pointID       nlcdClass
+    ## 1 30d14ecc-65a8-4e73-bcb3-d5132c153da2 BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 evergreenForest
+    ## 2 f97b6fa3-5719-4c0d-9922-1b23ec949911 BART_025.birdGrid.brd      D01   BART BART_025 distributed       2 evergreenForest
+    ## 3 6fdac273-77b0-4e30-86d1-f6ff94f92e66 BART_025.birdGrid.brd      D01   BART BART_025 distributed       1 evergreenForest
+    ## 4 ff9f059e-46fa-471a-a41d-2ac759881ff0 BART_025.birdGrid.brd      D01   BART BART_025 distributed       4 evergreenForest
+    ## 5 e3f73906-fe6f-4f88-a05e-067a567d6516 BART_025.birdGrid.brd      D01   BART BART_025 distributed       5 evergreenForest
+    ##   decimalLatitude decimalLongitude geodeticDatum coordinateUncertainty elevation elevationUncertainty           startDate
+    ## 1        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 09:23:00
+    ## 2        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 09:43:00
+    ## 3        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 10:31:00
+    ## 4        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 11:24:00
+    ## 5        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 12:20:00
+    ##   boutNumber samplingImpracticalRemarks samplingImpractical         eventID startCloudCoverPercentage endCloudCoverPercentage
+    ## 1          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
+    ## 2          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
+    ## 3          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
+    ## 4          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
+    ## 5          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
+    ##   startRH endRH                  observedHabitat observedAirTemp kmPerHourObservedWindSpeed                  laboratoryName
+    ## 1      72    56                 evergreen forest              18                          1 Bird Conservancy of the Rockies
+    ## 2      72    56                 deciduous forest              19                          3 Bird Conservancy of the Rockies
+    ## 3      72    56 mixed deciduous/evergreen forest              17                          0 Bird Conservancy of the Rockies
+    ## 4      72    56                 deciduous forest              19                          0 Bird Conservancy of the Rockies
+    ## 5      72    56                 deciduous forest              16                          0 Bird Conservancy of the Rockies
+    ##   samplingProtocolVersion remarks measuredBy  publicationDate      release
+    ## 1       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 2       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 3       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 4       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 5       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
 
 `brd_countdata` contains data for the birds observed during each point-count survey, including identification, observation method, distance, and observed minute.
 
@@ -282,7 +267,7 @@ Take a look at their structure (that is, what fields are included) and the data 
     ##  $ plotID                 : chr  "BART_025" "BART_025" "BART_025" "BART_025" ...
     ##  $ plotType               : chr  "distributed" "distributed" "distributed" "distributed" ...
     ##  $ pointID                : chr  "3" "3" "3" "3" ...
-    ##  $ startDate              : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:23:00" "2015-06-14 09:23:00" ...
+    ##  $ startDate              : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:23:00" "2015-06-14 09:23:00" "2015-06-14 09:23:00" ...
     ##  $ boutNumber             : num  1 1 1 1 1 1 1 1 1 1 ...
     ##  $ eventID                : chr  "BRD.BART.2015.1" "BRD.BART.2015.1" "BRD.BART.2015.1" "BRD.BART.2015.1" ...
     ##  $ pointCountMinute       : num  1 1 2 2 1 3 4 1 1 6 ...
@@ -304,36 +289,30 @@ Take a look at their structure (that is, what fields are included) and the data 
 
     head(bird.counts$brd_countdata, n=5)
 
-    ##                                    uid         namedLocation domainID siteID   plotID    plotType
-    ## 1 08b95360-854d-4d74-a276-93fc7d2423ca BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 2 f2d2d4ce-c978-46a5-befb-4d3b749b1cdb BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 3 754c7b57-1892-4f1f-9f49-594c40d47bfa BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 4 6212a830-6d2d-4999-b169-19273526790e BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ## 5 192585ee-0a3d-4994-856f-3da8090a37c3 BART_025.birdGrid.brd      D01   BART BART_025 distributed
-    ##   pointID           startDate boutNumber         eventID pointCountMinute targetTaxaPresent
-    ## 1       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1                 Y
-    ## 2       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1                 Y
-    ## 3       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                2                 Y
-    ## 4       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                2                 Y
-    ## 5       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1                 Y
-    ##   taxonID       scientificName taxonRank               vernacularName observerDistance
-    ## 1    REVI      Vireo olivaceus   species               Red-eyed Vireo                9
-    ## 2    BTNW     Setophaga virens   species Black-throated Green Warbler               12
-    ## 3    BTNW     Setophaga virens   species Black-throated Green Warbler               50
-    ## 4    BAWW      Mniotilta varia   species      Black-and-white Warbler               17
-    ## 5    BCCH Poecile atricapillus   species       Black-capped Chickadee               42
-    ##   detectionMethod visualConfirmation sexOrAge clusterSize clusterCode identifiedBy
-    ## 1         singing                 No     Male           1        <NA>        JRUEB
-    ## 2         singing                 No     Male           1        <NA>        JRUEB
-    ## 3         singing                 No     Male           1        <NA>        JRUEB
-    ## 4         singing                 No     Male           1        <NA>        JRUEB
-    ## 5         singing                 No     Male           1        <NA>        JRUEB
-    ##   identificationHistoryID  publicationDate      release
-    ## 1                    <NA> 20260106T223419Z RELEASE-2026
-    ## 2                    <NA> 20260106T223419Z RELEASE-2026
-    ## 3                    <NA> 20260106T223419Z RELEASE-2026
-    ## 4                    <NA> 20260106T223419Z RELEASE-2026
-    ## 5                    <NA> 20260106T223419Z RELEASE-2026
+    ##                                    uid         namedLocation domainID siteID   plotID    plotType pointID           startDate
+    ## 1 08b95360-854d-4d74-a276-93fc7d2423ca BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
+    ## 2 f2d2d4ce-c978-46a5-befb-4d3b749b1cdb BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
+    ## 3 754c7b57-1892-4f1f-9f49-594c40d47bfa BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
+    ## 4 6212a830-6d2d-4999-b169-19273526790e BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
+    ## 5 192585ee-0a3d-4994-856f-3da8090a37c3 BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
+    ##   boutNumber         eventID pointCountMinute targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
+    ## 1          1 BRD.BART.2015.1                1                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
+    ## 2          1 BRD.BART.2015.1                1                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+    ## 3          1 BRD.BART.2015.1                2                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+    ## 4          1 BRD.BART.2015.1                2                 Y    BAWW      Mniotilta varia   species      Black-and-white Warbler
+    ## 5          1 BRD.BART.2015.1                1                 Y    BCCH Poecile atricapillus   species       Black-capped Chickadee
+    ##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode identifiedBy identificationHistoryID
+    ## 1                9         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ## 2               12         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ## 3               50         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ## 4               17         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ## 5               42         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ##    publicationDate      release
+    ## 1 20260106T223419Z RELEASE-2026
+    ## 2 20260106T223419Z RELEASE-2026
+    ## 3 20260106T223419Z RELEASE-2026
+    ## 4 20260106T223419Z RELEASE-2026
+    ## 5 20260106T223419Z RELEASE-2026
 
 Before we can build detection histories and fit an occupancy model, we need to clean the data a bit. This includes:
 
@@ -409,66 +388,48 @@ Finally, we join the cleaned detection data (`brd_countdata_clean`) with the cle
 
     head(brd_joineddata_clean, n=5)
 
-    ##                                    uid         namedLocation domainID siteID   plotID    plotType
-    ## 1 28587fd5-e9c6-4dd9-ac2f-2a80d9d69ec2 BART_018.birdGrid.brd      D01   BART BART_018 distributed
-    ## 2 09f4496e-72c5-42ff-a4bf-aadcbf739397 BART_018.birdGrid.brd      D01   BART BART_018 distributed
-    ## 3 8721c42a-1e64-4c60-a40f-26b41ec3f51a BART_018.birdGrid.brd      D01   BART BART_018 distributed
-    ## 4 8ea10abd-5835-4fda-b592-ba3533c3311a BART_018.birdGrid.brd      D01   BART BART_018 distributed
-    ## 5 39915ebd-b013-4681-9903-9debb0ab7166 BART_018.birdGrid.brd      D01   BART BART_018 distributed
-    ##   pointID           startDate boutNumber         eventID pointCountMinute targetTaxaPresent
-    ## 1       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1                 Y
-    ## 2       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                2                 Y
-    ## 3       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1                 Y
-    ## 4       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1                 Y
-    ## 5       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1                 Y
-    ##   taxonID       scientificName taxonRank               vernacularName observerDistance
-    ## 1    BTNW     Setophaga virens   species Black-throated Green Warbler               40
-    ## 2    RBWO Melanerpes carolinus   species       Red-bellied Woodpecker               20
-    ## 3    REVI      Vireo olivaceus   species               Red-eyed Vireo               45
-    ## 4    OVEN  Seiurus aurocapilla   species                     Ovenbird               40
-    ## 5    HETH    Catharus guttatus   species                Hermit Thrush               50
-    ##   detectionMethod visualConfirmation sexOrAge clusterSize clusterCode identifiedBy
-    ## 1         singing                 No     Male           1        <NA>        JRUEB
-    ## 2         calling                 No  Unknown           1        <NA>        JRUEB
-    ## 3         singing                 No     Male           1        <NA>        JRUEB
-    ## 4         singing                 No     Male           1        <NA>        JRUEB
-    ## 5         singing                 No     Male           1        <NA>        JRUEB
-    ##   identificationHistoryID  publicationDate      release year                pointSurveyID
-    ## 1                    <NA> 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1
-    ## 2                    <NA> 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1
-    ## 3                    <NA> 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1
-    ## 4                    <NA> 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1
-    ## 5                    <NA> 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1
-    ##     nlcdClass decimalLatitude decimalLongitude geodeticDatum coordinateUncertainty elevation
-    ## 1 mixedForest        44.05997         -71.2779         WGS84                 250.1     297.2
-    ## 2 mixedForest        44.05997         -71.2779         WGS84                 250.1     297.2
-    ## 3 mixedForest        44.05997         -71.2779         WGS84                 250.1     297.2
-    ## 4 mixedForest        44.05997         -71.2779         WGS84                 250.1     297.2
-    ## 5 mixedForest        44.05997         -71.2779         WGS84                 250.1     297.2
-    ##   elevationUncertainty samplingImpracticalRemarks samplingImpractical startCloudCoverPercentage
-    ## 1                  0.2                       <NA>                  OK                       100
-    ## 2                  0.2                       <NA>                  OK                       100
-    ## 3                  0.2                       <NA>                  OK                       100
-    ## 4                  0.2                       <NA>                  OK                       100
-    ## 5                  0.2                       <NA>                  OK                       100
-    ##   endCloudCoverPercentage startRH endRH  observedHabitat observedAirTemp
-    ## 1                     100      73    78 deciduous forest              15
-    ## 2                     100      73    78 deciduous forest              15
-    ## 3                     100      73    78 deciduous forest              15
-    ## 4                     100      73    78 deciduous forest              15
-    ## 5                     100      73    78 deciduous forest              15
-    ##   kmPerHourObservedWindSpeed                  laboratoryName samplingProtocolVersion remarks
-    ## 1                          1 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>
-    ## 2                          1 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>
-    ## 3                          1 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>
-    ## 4                          1 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>
-    ## 5                          1 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>
-    ##   measuredBy
-    ## 1      JRUEB
-    ## 2      JRUEB
-    ## 3      JRUEB
-    ## 4      JRUEB
-    ## 5      JRUEB
+    ##                                    uid         namedLocation domainID siteID   plotID    plotType pointID           startDate
+    ## 1 28587fd5-e9c6-4dd9-ac2f-2a80d9d69ec2 BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
+    ## 2 09f4496e-72c5-42ff-a4bf-aadcbf739397 BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
+    ## 3 8721c42a-1e64-4c60-a40f-26b41ec3f51a BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
+    ## 4 8ea10abd-5835-4fda-b592-ba3533c3311a BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
+    ## 5 39915ebd-b013-4681-9903-9debb0ab7166 BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
+    ##   boutNumber         eventID pointCountMinute targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
+    ## 1          1 BRD.BART.2017.1                1                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+    ## 2          1 BRD.BART.2017.1                2                 Y    RBWO Melanerpes carolinus   species       Red-bellied Woodpecker
+    ## 3          1 BRD.BART.2017.1                1                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
+    ## 4          1 BRD.BART.2017.1                1                 Y    OVEN  Seiurus aurocapilla   species                     Ovenbird
+    ## 5          1 BRD.BART.2017.1                1                 Y    HETH    Catharus guttatus   species                Hermit Thrush
+    ##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode identifiedBy identificationHistoryID
+    ## 1               40         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ## 2               20         calling                 No  Unknown           1        <NA>        JRUEB                    <NA>
+    ## 3               45         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ## 4               40         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ## 5               50         singing                 No     Male           1        <NA>        JRUEB                    <NA>
+    ##    publicationDate      release year                pointSurveyID   nlcdClass decimalLatitude decimalLongitude geodeticDatum
+    ## 1 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 2 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 3 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 4 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 5 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ##   coordinateUncertainty elevation elevationUncertainty samplingImpracticalRemarks samplingImpractical startCloudCoverPercentage
+    ## 1                 250.1     297.2                  0.2                       <NA>                  OK                       100
+    ## 2                 250.1     297.2                  0.2                       <NA>                  OK                       100
+    ## 3                 250.1     297.2                  0.2                       <NA>                  OK                       100
+    ## 4                 250.1     297.2                  0.2                       <NA>                  OK                       100
+    ## 5                 250.1     297.2                  0.2                       <NA>                  OK                       100
+    ##   endCloudCoverPercentage startRH endRH  observedHabitat observedAirTemp kmPerHourObservedWindSpeed                  laboratoryName
+    ## 1                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
+    ## 2                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
+    ## 3                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
+    ## 4                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
+    ## 5                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
+    ##   samplingProtocolVersion remarks measuredBy
+    ## 1       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 2       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 3       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 4       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 5       NEON.DOC.014041vH    <NA>      JRUEB
 
 ## Building the Detection History
 
@@ -485,7 +446,7 @@ In this tutorial, we construct detection histories at the site level and define 
 
 ### Filter to a single species
 
-First, select a species to model. Here we use *Melanerpes carolinus* (Red-bellied Woodpecker), which is widespread and frequently detected.
+First, select a species to model. Here we use *Melanerpes carolinus* (Red-bellied Woodpecker), which is a widespread and frequently detected species.
 
 We filter the combined dataset we just prepared to include only observations of this species.
 
@@ -612,7 +573,7 @@ In practice, detection and occupancy are often modeled as functions of site or s
       data = birds_pao_simple,           
       model = list(
         psi ~ 1,
-        p ~ 1), # p ~ SURVEY
+        p ~ 1),
       type = 'so'
       )
 
@@ -655,9 +616,9 @@ Now that we have a model, we can examine our estimated values. We can use the `p
         c(
           Parameter = parm,
           Estimate = est,
-          SE = se,
-          L95 = lower,
-          U95 = upper
+          SE = se, # Standard Error
+          L95 = lower, #95% Confidence Interval - Lower Boundary
+          U95 = upper #95% Confidence Interval - Upper Boundary
         )
       ) %>% 
       `rownames<-`(seq_len(nrow(ests[1:2,])))
@@ -672,7 +633,7 @@ Now that we have a model, we can examine our estimated values. We can use the `p
 
 From these results, we see that *Melanerpes carolinus* has an estimated **occupancy probability (ψ) of about 0.47**. This means that if you randomly select a NEON site, there is roughly a 47% chance that the species can be found at that site—equivalently, the species is present at about 47% of NEON sites in this dataset. We can see that if we overlay a range map for *Melanerpes carolinus*, it covers roughly half of NEON sites.
 
-> U.S. Geological Survey (USGS) - Gap Analysis Project (GAP), 2018, Red-bellied Woodpecker (Melanerpes carolinus) bRBWOx_CONUS_2001v1 Range Map: U.S. Geological Survey data release, https://doi.org/10.5066/F7JW8CX7.
+> U.S. Geological Survey (USGS) - Gap Analysis Project (GAP), 2018, Red-bellied Woodpecker (Melanerpes carolinus) bRBWOx_CONUS_2001v1 Range Map: U.S. Geological Survey data release, <a href="https://doi.org/10.5066/F7JW8CX7" target="_blank">https://doi.org/10.5066/F7JW8CX7</a>.
 
 
     library(sf)
@@ -681,8 +642,25 @@ From these results, we see that *Melanerpes carolinus* has an estimated **occupa
 
     
 
-    melanerpes_carolinus_range <- st_read("data/bRBWOx_CONUS_Range_2001v1/bRBWOx_CONUS_Range_2001v1.shp", quiet = TRUE) %>%
-      st_transform(crs = 4326)
+    url <- "https://www.sciencebase.gov/catalog/file/get/59f5ec2be4b063d5d307e4c3?f=__disk__b5%2F37%2Ffc%2Fb537fc3bf8c92b1162bca650dda01c052e87ec6e"
+
+    
+
+    zip <- tempfile(fileext = ".zip")
+
+    dir <- tempdir()
+
+    
+
+    download.file(url, zip, mode = "wb")
+
+    unzip(zip, exdir = dir)
+
+    
+
+    melanerpes_carolinus_range <-
+      st_read(list.files(dir, "\\.shp$", full.names = TRUE), quiet = TRUE) |>
+      st_transform(4326)
 
     
 
@@ -852,10 +830,13 @@ We'll visualize the estimates in a plot.
       geom_errorbar(aes(ymin = L95, ymax = U95),
                     position = position_dodge(width = 0.7),
                     width = 0.15) +
-      scale_x_discrete(labels = c(
-        psi = "Occupancy (ψ)",
-        p = "Detection (p)"
-      )) +
+      scale_x_discrete(
+        limits = c("psi", "p"),
+        labels = c(
+          psi = "Occupancy (ψ)",
+          p = "Detection (p)"
+        )
+      ) +
       scale_y_continuous(limits = c(0, 1)) +
       labs(
         x = NULL,
@@ -889,9 +870,9 @@ By including these variables in our model, we can either:
 
 ### Site Covariates
 
-So far, our model assumed that occupancy and detection probabilities were constant across all sites and surveys. In reality, site characteristics often influence whether a species occupies a location or is more easily detected. We can test these effects by including site covariates in the occupancy model. Remember that site characteristics can influence both occupancy and/or detection.
+So far, our model assumed that occupancy and detection probabilities were constant across all sites and surveys. Site characteristics often influence whether a species occupies a location or is more easily detected. We can test these effects by including site covariates in the occupancy model. Remember that site characteristics can influence both occupancy and/or detection.
 
-In this example, we examine whether **elevation** influences the occupancy probability of *Melanerpes carolinus* (Red-bellied Woodpecker).
+In this example, we examine if **elevation** influences the occupancy probability of *Melanerpes carolinus* (Red-bellied Woodpecker).
 
 #### Create a site covariate table
 
@@ -900,7 +881,7 @@ Site-level covariates must be provided to `createPao()` as a separate table with
 Here we extract the elevation for each site from the combined dataset `brd_joineddata_clean` we prepared at the beginning of the tutorial.
 
 <div id="ds-dataTip" markdown="1">
-<i class="fa fa-star"></i> **Data Tip:** For the bird dataset, NEON includes several common environmental variables, making it easy to incorporate these characteristics directly into analyses. More broadly, NEON collects a wide range of co-located environmental measurements. These additional data products can be used to create covariates describing habitat, climate, or other conditions for occupancy models.
+<i class="fa fa-star"></i> **Data Tip:** For the bird dataset, NEON includes some common environmental variables, making it easy to incorporate these characteristics directly into analyses. NEON also collects a wide range of co-located environmental measurements using NEON instrumentation on the towers or sensor arrays. These additional data products can be used to create covariates describing habitat, climate, or other conditions for occupancy models.
 </div> 
 
 
@@ -978,7 +959,7 @@ In this model, the formula `psi ~ elevation` specifies that occupancy probabilit
 Other functional forms can also be used, but aren't included in this tutorial. For example:
 
 * `psi ~ elevation + I(elevation^2)` could model a polynomial relationship. For example, a species might prefer mid-elevation forests but be less common at both low and high elevations.
-* `psi ~ elevation + forest_cover` could include multiple covariates influencing occupancy. For example, a bird may be more likely to occur at higher elevations plus areas with greater forest cover.
+* `psi ~ elevation + forest_cover` could include multiple covariates influencing occupancy. For example, a bird may be more likely to occur at higher elevations and in areas with greater forest cover.
 * `psi ~ elevation * forest_cover` could model an interaction between variables. For example, forest cover might increase occupancy at low elevations but have little effect at high elevations.
 
 Detection probability could also be modeled as a function of site covariates in the same way. In this example, however, we keep detection probability constant using `p ~ 1` so that we can focus on how elevation influences occupancy.
