@@ -1191,6 +1191,8 @@ We now fit a model where:
 * occupancy varies linearly with elevation
 * detection probability varies linearly with survey effort
 
+Let's see if this is a better fit.
+
 
     birds_occupancy_surveycov <- occMod(
       data = birds_pao_surveycov,           
