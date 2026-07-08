@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Estimating Bird Occupancy and Detection Using NEON Observational Data</title>
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+body, .footnotes, code { font-size: .9em; }
+li li { font-size: .95em; }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+pre, img { max-width: 100%; }
+pre, pre:hover {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre code {
+  display: block;
+  overflow-x: auto;
+}
+code { font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace; }
+:not(pre) > code, code[class] { background-color: #F8F8F8; }
+code.language-undefined, pre > code:not([class]) {
+  background-color: inherit;
+  border: 1px solid #eee;
+}
+table {
+  margin: auto;
+  border-top: 1px solid #666;
+}
+table thead th { border-bottom: 1px solid #ddd; }
+th, td { padding: 5px; }
+thead, tfoot, tr:nth-child(even) { background: #eee; }
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.5em solid #eee;
+}
+hr, .footnotes::before { border: 1px dashed #ddd; }
+.frontmatter { text-align: center; }
+#TOC .numbered li { list-style: none; }
+#TOC .numbered { padding-left: 0; }
+#TOC .numbered ul { padding-left: 1em; }
+table, .body h2 { border-bottom: 1px solid #666; }
+.body .appendix, .appendix ~ h2 { border-bottom-style: dashed; }
+.footnote-ref a::before { content: "["; }
+.footnote-ref a::after { content: "]"; }
+section.footnotes::before {
+  content: "";
+  display: block;
+  max-width: 20em;
+}
+
+@media print {
+  body {
+    font-size: 12pt;
+    max-width: 100%;
+  }
+  tr, img { page-break-inside: avoid; }
+}
+@media only screen and (min-width: 992px) {
+  pre { white-space: pre; }
+}
+</style>
+</head>
+<body>
+<div class="frontmatter">
+<div class="title"><h1>Estimating Bird Occupancy and Detection Using NEON Observational Data</h1></div>
+<div class="author"><h2></h2></div>
+<div class="date"><h3></h3></div>
+</div>
+<div class="body">
+<p>This tutorial explores the use of NEON breeding landbird data for occupancy modeling. The focus is on building detection histories from observational data, fitting a simple occupancy model, and testing how site and survey conditions may influence occupancy and detection.</p>
+<p>Although birds are used here, the same workflow could be applied to other <a href="https://www.neonscience.org/data-collection/observation-types" target="_blank">observational sampling datasets</a> that provide species-level detections, such as <a href="https://www.neonscience.org/data-collection/small-mammals" target="_blank">small mammals</a> or <a href="https://www.neonscience.org/data-collection/fish" target="_blank">fish</a>. Environmental covariates for these models can also be drawn from other NEON data products, such as weather and climate measurements collected by <a href="https://www.neonscience.org/data-collection/automated-instruments" target="_blank">NEON’s Automated Instrument Systems</a>.</p>
+<div id="ds-objectives" markdown="1">
+<h2 id="learning-objectives">Learning Objectives</h2>
+<p>After completing this tutorial you will be able to:</p>
+<ul>
+<li>Understand the basics of occupancy modeling.</li>
+<li>Build detection histories of NEON breeding landbird data.</li>
+<li>Fit occupancy models in R and interpret occupancy and detection estimates.</li>
+<li>Incorporate site-level and survey-level environmental covariates to evaluate factors influencing detection and occupancy.</li>
+</ul>
+<h2 id="things-you-ll-need-to-complete-this-tutorial">Things You’ll Need To Complete This Tutorial</h2>
+<h3 id="r-programming-language">R Programming Language</h3>
+<p>You will need a current version of R to complete this tutorial. We also recommend
+the RStudio IDE to work with R.</p>
+</div>
+<h2 id="introduction-to-neon-bird-observations">Introduction to NEON Bird Observations</h2>
+<p>NEON’s breeding landbird point count dataset provides taxonomic identifications, detection methods, and associated survey and site information for birds observed during standardized six-minute surveys. The protocol focuses on diurnal, terrestrial breeding landbirds, a group chosen because they respond strongly to changes in climate, habitat, and land use.</p>
+<p>Field crews survey spatially distributed plots across NEON <a href="https://www.neonscience.org/field-sites" target="_blank">field sites</a> during the breeding season every year, recording every bird seen or heard. These repeated surveys produce rich detection–nondetection data suited for occupancy modeling.</p>
+<p>NEON’s terrestrial field <strong>sites</strong> are designated as <em>large</em> or <em>small</em>, which determines the sampling design. Large sites are surveyed once per year and contain 5–10 <strong>plots</strong> each containing a bird grid, made up of a 3×3 array of nine <strong>points</strong> spaced 250 m apart (see Figure 1). Field crews visit every point in a grid and conduct a 6-minute <strong>point-count survey</strong>. Smaller sites, which cannot accommodate full grids, contain 2–25 point-count locations randomly distributed across the site and spaced at least 250 m apart. These are surveyed twice per year.</p>
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** NEON’s bird data follow a hierarchical structure: DomainID → SiteID → PlotID → PointID. Large sites use points labeled 1–9, while small sites use point label 21 for all locations.
+For example: (Large Site) D07 → GRSM → GRSM_002 → 5 | (Small Site) D20 → PUUM → PUUM_001 → 21.
+</div> 
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/bird-occupancy-modelling/rfigs/birdGrid.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/bird-occupancy-modelling/rfigs/birdGrid.jpg" alt="Design of the bird point count grid, consisting of 9 points separated by a minimum of 250 m."></a>
+	<figcaption>Figure 1: Design of a bird grid, consisting of 9 points separated by a minimum of 250 m. Source: National Ecological Observatory Network, CC-BY (NEON)  
+	</figcaption>
+</figure>
+<p>More details on NEON’s bird monitoring program are available on the <a href="https://www.neonscience.org/data-collection/birds" target="_blank">NEON bird resource page</a>. Protocols referenced in the data can be found in the <a href="https://data.neonscience.org/documents" target="_blank">Document Library</a>.</p>
+<h2 id="introduction-to-occupancy-modeling">Introduction to Occupancy Modeling</h2>
+<p>When searching for a species, there are technically three possible outcomes:</p>
+<ol>
+<li>The species is present and you detect it,</li>
+<li>the species is present and you do not detect it, or</li>
+<li>the species is absent and therefore not detected.</li>
+</ol>
+<p>Traditional presence–absence data cannot distinguish missed detections from true absences. Occupancy modeling addresses this challenge by explicitly modeling two linked processes: the true <strong>occupancy</strong> of the species and the probability of <strong>detecting</strong> the species given that it is present.
+A key assumption of occupancy modeling is closure during the sampling period: the true occupancy state of a site does not change between repeated surveys.</p>
+<p>This framework estimates two key parameters:</p>
+<ul>
+<li>the probability that a site is occupied by a species, i.e., occupancy (ψ)</li>
+<li>the probability of detecting the species during a survey, given that it is present, i.e., detection (p).</li>
+</ul>
+<p>To tease apart ψ and p, occupancy models require repeated surveys of the same site. NEON’s observational sampling design is ideal for this approach, because surveys include repeated, standardized visits to locations across time.</p>
+<h2 id="setup-r-environment">Setup R Environment</h2>
+<p>We’ll need several R packages in this tutorial. Install the packages, if not already installed, and load the libraries for each.</p>
+<pre><code># run once to get the package, and re-run if you need to get updates
+
+install.packages(&quot;neonUtilities&quot;) # work with NEON data
+
+install.packages('RPresence', repo='https://www.mbr-pwrc.usgs.gov/mbrCRAN') # library for occupancy modelling
+
+install.packages(&quot;dplyr&quot;) # data manipulation
+
+install.packages(&quot;tidyr&quot;) # data reshaping and tidying
+
+install.packages(&quot;stringr&quot;) # string handling and text processing
+
+install.packages(&quot;ggplot2&quot;) # visualization and plotting
+
+
+# load the libraries into your environment
+
+library(neonUtilities)
+
+library(RPresence)
+
+library(dplyr)
+
+library(tidyr)
+
+library(stringr)
+
+library(ggplot2)
+</code></pre>
+<h2 id="importing-neon-data">Importing NEON Data</h2>
+<p>First, we’ll download the breeding landbird data product (<a href="https://data.neonscience.org/data-products/DP1.10003.001" target="_blank">DP1.10003.001</a>) for all NEON terrestrial field sites included in <a href="https://www.neonscience.org/data-samples/data-management/data-revisions-releases/release-2026" target="_blank">RELEASE-2026</a>.</p>
+<ul>
+<li>NEON (National Ecological Observatory Network). Breeding landbird point counts (DP1.10003.001), RELEASE-2026. <a href="https://doi.org/10.48443/v6hs-mx57" target="_blank"><a href="https://doi.org/10.48443/v6hs-mx57">https://doi.org/10.48443/v6hs-mx57</a></a>. Dataset accessed in R via neonUtilities on <span id="access-date"></span>.</li>
+</ul>
+<script>
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById("access-date").textContent =
+    new Date().toLocaleDateString(undefined, options);
+</script>
+<p>On the first run, this code block will download the full dataset for all sites. Because the data product is large and spans multiple years-including years before some sites became operational-the initial download may take some time. A cached version of the dataset is saved locally, so on re-run, the code simply loads the local file instead of downloading the data again.</p>
+<p>A NEON user account and an API token are required to download the data for this workflow. You can use your account to create a token. For more information, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities tutorial</a> and the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>.</p>
+<pre><code># Define NEON sites
+
+large_sites &lt;- c(
+  &quot;BARR&quot;, &quot;BART&quot;, &quot;BONA&quot;, &quot;CLBJ&quot;, &quot;CPER&quot;, &quot;DEJU&quot;, &quot;DSNY&quot;, &quot;GRSM&quot;,
+  &quot;GUAN&quot;, &quot;HARV&quot;, &quot;HEAL&quot;, &quot;JERC&quot;, &quot;JORN&quot;, &quot;KONZ&quot;, &quot;MLBS&quot;, &quot;MOAB&quot;,
+  &quot;NIWO&quot;, &quot;OAES&quot;, &quot;ONAQ&quot;, &quot;ORNL&quot;, &quot;OSBS&quot;, &quot;RMNP&quot;, &quot;SJER&quot;, &quot;SRER&quot;,
+  &quot;STEI&quot;, &quot;TALL&quot;, &quot;TEAK&quot;, &quot;UKFS&quot;, &quot;UNDE&quot;, &quot;WOOD&quot;, &quot;WREF&quot;, &quot;YELL&quot;
+)
+
+small_sites &lt;- c(
+  &quot;DELA&quot;, &quot;LENO&quot;, &quot;TOOL&quot;, &quot;SOAP&quot;, &quot;STER&quot;, &quot;PUUM&quot;, &quot;KONA&quot;,
+  &quot;SERC&quot;, &quot;DCFS&quot;, &quot;NOGP&quot;, &quot;LAJA&quot;, &quot;BLAN&quot;, &quot;SCBI&quot;, &quot;ABBY&quot;, &quot;TREE&quot;
+)
+
+sites &lt;- c(large_sites, small_sites)
+
+
+
+# Set up directories
+
+if (!dir.exists(&quot;data&quot;)) {
+  dir.create(&quot;data&quot;)
+}
+
+
+
+# Path to cached dataset
+
+bird_counts_path &lt;- file.path(&quot;data&quot;, &quot;bird_counts.RData&quot;)
+
+
+
+# Load cached data if available; otherwise download and save
+
+if (file.exists(bird_counts_path)) {
+  load(bird_counts_path)
+} else {
+  bird.counts &lt;- loadByProduct(
+    dpID    = &quot;DP1.10003.001&quot;,
+    package = &quot;basic&quot;,
+    release = &quot;RELEASE-2026&quot;,
+    token   = Sys.getenv(&quot;NEON_TOKEN&quot;),
+    site    = sites,
+    check.size = FALSE
+  )
+  
+  save(bird.counts, file = bird_counts_path)
+}
+</code></pre>
+<h2 id="preparing-the-data">Preparing the Data</h2>
+<p>NEON provides separate tables for point-count survey metadata (<code>brd_perpoint</code>) and the bird counts themselves (<code>brd_countdata</code>).</p>
+<p>Take a look at their structure (that is, what fields are included) and the data in them. We see that <code>brd_perpoint</code> contains fields describing the location, elevation, date and field-crew recorded weather conditions for each point-count survey.</p>
+<pre><code>str(bird.counts$brd_perpoint)
+
+## 'data.frame':	27076 obs. of  32 variables:
+##  $ uid                       : chr  &quot;30d14ecc-65a8-4e73-bcb3-d5132c153da2&quot; &quot;f97b6fa3-5719-4c0d-9922-1b23ec949911&quot; &quot;6fdac273-77b0-4e30-86d1-f6ff94f92e66&quot; &quot;ff9f059e-46fa-471a-a41d-2ac759881ff0&quot; ...
+##  $ namedLocation             : chr  &quot;BART_025.birdGrid.brd&quot; &quot;BART_025.birdGrid.brd&quot; &quot;BART_025.birdGrid.brd&quot; &quot;BART_025.birdGrid.brd&quot; ...
+##  $ domainID                  : chr  &quot;D01&quot; &quot;D01&quot; &quot;D01&quot; &quot;D01&quot; ...
+##  $ siteID                    : chr  &quot;BART&quot; &quot;BART&quot; &quot;BART&quot; &quot;BART&quot; ...
+##  $ plotID                    : chr  &quot;BART_025&quot; &quot;BART_025&quot; &quot;BART_025&quot; &quot;BART_025&quot; ...
+##  $ plotType                  : chr  &quot;distributed&quot; &quot;distributed&quot; &quot;distributed&quot; &quot;distributed&quot; ...
+##  $ pointID                   : chr  &quot;3&quot; &quot;2&quot; &quot;1&quot; &quot;4&quot; ...
+##  $ nlcdClass                 : chr  &quot;evergreenForest&quot; &quot;evergreenForest&quot; &quot;evergreenForest&quot; &quot;evergreenForest&quot; ...
+##  $ decimalLatitude           : num  44.1 44.1 44.1 44.1 44.1 ...
+##  $ decimalLongitude          : num  -71.3 -71.3 -71.3 -71.3 -71.3 ...
+##  $ geodeticDatum             : chr  &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; &quot;WGS84&quot; ...
+##  $ coordinateUncertainty     : num  250 250 250 250 250 ...
+##  $ elevation                 : num  576 576 576 576 576 ...
+##  $ elevationUncertainty      : num  0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.8 0.8 0.8 ...
+##  $ startDate                 : POSIXct, format: &quot;2015-06-14 09:23:00&quot; &quot;2015-06-14 09:43:00&quot; &quot;2015-06-14 10:31:00&quot; ...
+##  $ boutNumber                : num  1 1 1 1 1 1 1 1 1 1 ...
+##  $ samplingImpracticalRemarks: chr  NA NA NA NA ...
+##  $ samplingImpractical       : chr  &quot;OK&quot; &quot;OK&quot; &quot;OK&quot; &quot;OK&quot; ...
+##  $ eventID                   : chr  &quot;BRD.BART.2015.1&quot; &quot;BRD.BART.2015.1&quot; &quot;BRD.BART.2015.1&quot; &quot;BRD.BART.2015.1&quot; ...
+##  $ startCloudCoverPercentage : num  20 20 20 20 20 20 20 100 100 100 ...
+##  $ endCloudCoverPercentage   : num  40 40 40 40 40 40 40 100 100 100 ...
+##  $ startRH                   : num  72 72 72 72 72 72 72 93 93 93 ...
+##  $ endRH                     : num  56 56 56 56 56 56 56 85 85 85 ...
+##  $ observedHabitat           : chr  &quot;evergreen forest&quot; &quot;deciduous forest&quot; &quot;mixed deciduous/evergreen forest&quot; &quot;deciduous forest&quot; ...
+##  $ observedAirTemp           : num  18 19 17 19 16 18 18 13 13 14 ...
+##  $ kmPerHourObservedWindSpeed: num  1 3 0 0 0 0 1 0 0 0 ...
+##  $ laboratoryName            : chr  &quot;Bird Conservancy of the Rockies&quot; &quot;Bird Conservancy of the Rockies&quot; &quot;Bird Conservancy of the Rockies&quot; &quot;Bird Conservancy of the Rockies&quot; ...
+##  $ samplingProtocolVersion   : chr  &quot;NEON.DOC.014041vG&quot; &quot;NEON.DOC.014041vG&quot; &quot;NEON.DOC.014041vG&quot; &quot;NEON.DOC.014041vG&quot; ...
+##  $ remarks                   : chr  NA NA NA NA ...
+##  $ measuredBy                : chr  &quot;JRUEB&quot; &quot;JRUEB&quot; &quot;JRUEB&quot; &quot;JRUEB&quot; ...
+##  $ publicationDate           : chr  &quot;20260106T223419Z&quot; &quot;20260106T223419Z&quot; &quot;20260106T223419Z&quot; &quot;20260106T223419Z&quot; ...
+##  $ release                   : chr  &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; ...
+
+head(bird.counts$brd_perpoint, n=5)
+
+##                                    uid         namedLocation domainID siteID   plotID
+## 1 30d14ecc-65a8-4e73-bcb3-d5132c153da2 BART_025.birdGrid.brd      D01   BART BART_025
+## 2 f97b6fa3-5719-4c0d-9922-1b23ec949911 BART_025.birdGrid.brd      D01   BART BART_025
+## 3 6fdac273-77b0-4e30-86d1-f6ff94f92e66 BART_025.birdGrid.brd      D01   BART BART_025
+## 4 ff9f059e-46fa-471a-a41d-2ac759881ff0 BART_025.birdGrid.brd      D01   BART BART_025
+## 5 e3f73906-fe6f-4f88-a05e-067a567d6516 BART_025.birdGrid.brd      D01   BART BART_025
+##      plotType pointID       nlcdClass decimalLatitude decimalLongitude geodeticDatum
+## 1 distributed       3 evergreenForest        44.06015        -71.31548         WGS84
+## 2 distributed       2 evergreenForest        44.06015        -71.31548         WGS84
+## 3 distributed       1 evergreenForest        44.06015        -71.31548         WGS84
+## 4 distributed       4 evergreenForest        44.06015        -71.31548         WGS84
+## 5 distributed       5 evergreenForest        44.06015        -71.31548         WGS84
+##   coordinateUncertainty elevation elevationUncertainty           startDate boutNumber
+## 1                 250.3     575.8                  0.3 2015-06-14 09:23:00          1
+## 2                 250.3     575.8                  0.3 2015-06-14 09:43:00          1
+## 3                 250.3     575.8                  0.3 2015-06-14 10:31:00          1
+## 4                 250.3     575.8                  0.3 2015-06-14 11:24:00          1
+## 5                 250.3     575.8                  0.3 2015-06-14 12:20:00          1
+##   samplingImpracticalRemarks samplingImpractical         eventID startCloudCoverPercentage
+## 1                       &lt;NA&gt;                  OK BRD.BART.2015.1                        20
+## 2                       &lt;NA&gt;                  OK BRD.BART.2015.1                        20
+## 3                       &lt;NA&gt;                  OK BRD.BART.2015.1                        20
+## 4                       &lt;NA&gt;                  OK BRD.BART.2015.1                        20
+## 5                       &lt;NA&gt;                  OK BRD.BART.2015.1                        20
+##   endCloudCoverPercentage startRH endRH                  observedHabitat observedAirTemp
+## 1                      40      72    56                 evergreen forest              18
+## 2                      40      72    56                 deciduous forest              19
+## 3                      40      72    56 mixed deciduous/evergreen forest              17
+## 4                      40      72    56                 deciduous forest              19
+## 5                      40      72    56                 deciduous forest              16
+##   kmPerHourObservedWindSpeed                  laboratoryName samplingProtocolVersion
+## 1                          1 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+## 2                          3 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+## 3                          0 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+## 4                          0 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+## 5                          0 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+##   remarks measuredBy  publicationDate      release
+## 1    &lt;NA&gt;      JRUEB 20260106T223419Z RELEASE-2026
+## 2    &lt;NA&gt;      JRUEB 20260106T223419Z RELEASE-2026
+## 3    &lt;NA&gt;      JRUEB 20260106T223419Z RELEASE-2026
+## 4    &lt;NA&gt;      JRUEB 20260106T223419Z RELEASE-2026
+## 5    &lt;NA&gt;      JRUEB 20260106T223419Z RELEASE-2026
+</code></pre>
+<p><code>brd_countdata</code> contains data for the birds observed during each point-count survey, including identification, observation method, distance, and observed minute.</p>
+<pre><code>str(bird.counts$brd_countdata)
+
+## 'data.frame':	373518 obs. of  26 variables:
+##  $ uid                    : chr  &quot;08b95360-854d-4d74-a276-93fc7d2423ca&quot; &quot;f2d2d4ce-c978-46a5-befb-4d3b749b1cdb&quot; &quot;754c7b57-1892-4f1f-9f49-594c40d47bfa&quot; &quot;6212a830-6d2d-4999-b169-19273526790e&quot; ...
+##  $ namedLocation          : chr  &quot;BART_025.birdGrid.brd&quot; &quot;BART_025.birdGrid.brd&quot; &quot;BART_025.birdGrid.brd&quot; &quot;BART_025.birdGrid.brd&quot; ...
+##  $ domainID               : chr  &quot;D01&quot; &quot;D01&quot; &quot;D01&quot; &quot;D01&quot; ...
+##  $ siteID                 : chr  &quot;BART&quot; &quot;BART&quot; &quot;BART&quot; &quot;BART&quot; ...
+##  $ plotID                 : chr  &quot;BART_025&quot; &quot;BART_025&quot; &quot;BART_025&quot; &quot;BART_025&quot; ...
+##  $ plotType               : chr  &quot;distributed&quot; &quot;distributed&quot; &quot;distributed&quot; &quot;distributed&quot; ...
+##  $ pointID                : chr  &quot;3&quot; &quot;3&quot; &quot;3&quot; &quot;3&quot; ...
+##  $ startDate              : POSIXct, format: &quot;2015-06-14 09:23:00&quot; &quot;2015-06-14 09:23:00&quot; &quot;2015-06-14 09:23:00&quot; ...
+##  $ boutNumber             : num  1 1 1 1 1 1 1 1 1 1 ...
+##  $ eventID                : chr  &quot;BRD.BART.2015.1&quot; &quot;BRD.BART.2015.1&quot; &quot;BRD.BART.2015.1&quot; &quot;BRD.BART.2015.1&quot; ...
+##  $ pointCountMinute       : num  1 1 2 2 1 3 4 1 1 6 ...
+##  $ targetTaxaPresent      : chr  &quot;Y&quot; &quot;Y&quot; &quot;Y&quot; &quot;Y&quot; ...
+##  $ taxonID                : chr  &quot;REVI&quot; &quot;BTNW&quot; &quot;BTNW&quot; &quot;BAWW&quot; ...
+##  $ scientificName         : chr  &quot;Vireo olivaceus&quot; &quot;Setophaga virens&quot; &quot;Setophaga virens&quot; &quot;Mniotilta varia&quot; ...
+##  $ taxonRank              : chr  &quot;species&quot; &quot;species&quot; &quot;species&quot; &quot;species&quot; ...
+##  $ vernacularName         : chr  &quot;Red-eyed Vireo&quot; &quot;Black-throated Green Warbler&quot; &quot;Black-throated Green Warbler&quot; &quot;Black-and-white Warbler&quot; ...
+##  $ observerDistance       : num  9 12 50 17 42 27 62 26 21 46 ...
+##  $ detectionMethod        : chr  &quot;singing&quot; &quot;singing&quot; &quot;singing&quot; &quot;singing&quot; ...
+##  $ visualConfirmation     : chr  &quot;No&quot; &quot;No&quot; &quot;No&quot; &quot;No&quot; ...
+##  $ sexOrAge               : chr  &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; &quot;Male&quot; ...
+##  $ clusterSize            : num  1 1 1 1 1 1 1 1 1 1 ...
+##  $ clusterCode            : chr  NA NA NA NA ...
+##  $ identifiedBy           : chr  &quot;JRUEB&quot; &quot;JRUEB&quot; &quot;JRUEB&quot; &quot;JRUEB&quot; ...
+##  $ identificationHistoryID: chr  NA NA NA NA ...
+##  $ publicationDate        : chr  &quot;20260106T223419Z&quot; &quot;20260106T223419Z&quot; &quot;20260106T223419Z&quot; &quot;20260106T223419Z&quot; ...
+##  $ release                : chr  &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; &quot;RELEASE-2026&quot; ...
+
+head(bird.counts$brd_countdata, n=5)
+
+##                                    uid         namedLocation domainID siteID   plotID
+## 1 08b95360-854d-4d74-a276-93fc7d2423ca BART_025.birdGrid.brd      D01   BART BART_025
+## 2 f2d2d4ce-c978-46a5-befb-4d3b749b1cdb BART_025.birdGrid.brd      D01   BART BART_025
+## 3 754c7b57-1892-4f1f-9f49-594c40d47bfa BART_025.birdGrid.brd      D01   BART BART_025
+## 4 6212a830-6d2d-4999-b169-19273526790e BART_025.birdGrid.brd      D01   BART BART_025
+## 5 192585ee-0a3d-4994-856f-3da8090a37c3 BART_025.birdGrid.brd      D01   BART BART_025
+##      plotType pointID           startDate boutNumber         eventID pointCountMinute
+## 1 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1
+## 2 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1
+## 3 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                2
+## 4 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                2
+## 5 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1
+##   targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
+## 1                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
+## 2                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+## 3                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+## 4                 Y    BAWW      Mniotilta varia   species      Black-and-white Warbler
+## 5                 Y    BCCH Poecile atricapillus   species       Black-capped Chickadee
+##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode
+## 1                9         singing                 No     Male           1        &lt;NA&gt;
+## 2               12         singing                 No     Male           1        &lt;NA&gt;
+## 3               50         singing                 No     Male           1        &lt;NA&gt;
+## 4               17         singing                 No     Male           1        &lt;NA&gt;
+## 5               42         singing                 No     Male           1        &lt;NA&gt;
+##   identifiedBy identificationHistoryID  publicationDate      release
+## 1        JRUEB                    &lt;NA&gt; 20260106T223419Z RELEASE-2026
+## 2        JRUEB                    &lt;NA&gt; 20260106T223419Z RELEASE-2026
+## 3        JRUEB                    &lt;NA&gt; 20260106T223419Z RELEASE-2026
+## 4        JRUEB                    &lt;NA&gt; 20260106T223419Z RELEASE-2026
+## 5        JRUEB                    &lt;NA&gt; 20260106T223419Z RELEASE-2026
+</code></pre>
+<p>Before we can build detection histories and fit an occupancy model, we need to clean the data a bit. This includes:</p>
+<ul>
+<li>Creating a unique identifier for each point-count survey.</li>
+<li>Filtering out incomplete point-count surveys.</li>
+<li>Remove surveys conducted before 2017.</li>
+<li>Keeping only detections identified to the species level.</li>
+<li>Joining the two tables into a single dataset.</li>
+</ul>
+<h3 id="create-a-unique-point-count-survey-id">Create a unique point-count survey ID</h3>
+<p>Each point-count survey needs a unique identifier so that we can match each point-count survey record (brd_perpoint) to its corresponding bird data (brd_countdata). We extract the survey year from eventID and then combine the site, plot, point, year, and bout into a single key called pointSurveyID for each of the tables. Note, because the siteID is already included in the plotID (e.g., BART_012), siteID is not actually included in the construction of <code>pointSurveyID</code>.</p>
+<pre><code>brd_perpoint_clean &lt;- bird.counts$brd_perpoint %&gt;%
+  mutate(year = str_extract(eventID, &quot;\\d{4}&quot;)) %&gt;%
+  mutate(pointSurveyID = paste(plotID, &quot;point&quot;, pointID, year, &quot;bout&quot;, boutNumber, sep = &quot;_&quot;))
+
+
+
+brd_countdata_clean &lt;- bird.counts$brd_countdata %&gt;%
+  mutate(year = str_extract(eventID, &quot;\\d{4}&quot;)) %&gt;%
+  mutate(pointSurveyID = paste(plotID, &quot;point&quot;, pointID, year, &quot;bout&quot;, boutNumber, sep = &quot;_&quot;))
+</code></pre>
+<h3 id="remove-incomplete-surveys">Remove incomplete surveys</h3>
+<p>The <code>samplingImpractical</code> field flags point-count surveys that could not be completed (e.g., weather, access issues). For our purposes, we keep only surveys marked as “OK”.</p>
+<pre><code>brd_perpoint_clean &lt;- brd_perpoint_clean %&gt;%
+  filter(samplingImpractical == &quot;OK&quot;)
+</code></pre>
+<h3 id="remove-surveys-prior-to-2017">Remove surveys prior to 2017</h3>
+<p>Point-count surveys were not conducted consistently at all sites in the early years of the NEON program. To ensure a consistent survey effort across sites and years, we remove surveys conducted before 2017.</p>
+<pre><code>brd_perpoint_clean &lt;- brd_perpoint_clean %&gt;%
+  filter(year &gt;= 2017)
+</code></pre>
+<h3 id="keep-only-species-level-records">Keep only species-level records</h3>
+<p>For this workflow, we only focus on detections identified to the species level. Records that are not identified to species (or have <code>NA</code> in <code>taxonRank</code>) are dropped.</p>
+<pre><code>brd_countdata_clean &lt;- brd_countdata_clean %&gt;%
+  filter(taxonRank == &quot;species&quot;)
+</code></pre>
+<h3 id="join-per-point-and-count-tables">Join per-point and count tables</h3>
+<p>Finally, we join the cleaned detection data (<code>brd_countdata_clean</code>) with the cleaned per-point metadata (<code>brd_perpoint_clean</code>) using the <code>pointSurveyID</code> identifer we created earlier as the primary key. After the join, we drop duplicate columns and keep a single, combined dataset.</p>
+<pre><code>#Join the tables
+
+brd_joineddata_clean &lt;- inner_join(
+  brd_countdata_clean,
+  brd_perpoint_clean,
+  by = &quot;pointSurveyID&quot;,
+  suffix = c(&quot;.count&quot;, &quot;.perpoint&quot;)
+)
+
+
+
+#Remove duplicate columns between tables
+
+brd_joineddata_clean &lt;- brd_joineddata_clean %&gt;%
+  select(-matches(&quot;\\.perpoint$&quot;))
+
+names(brd_joineddata_clean) &lt;- gsub(&quot;\\.count$&quot;, &quot;&quot;, names(brd_joineddata_clean))
+
+
+
+head(brd_joineddata_clean, n=5)
+
+##                                    uid         namedLocation domainID siteID   plotID
+## 1 28587fd5-e9c6-4dd9-ac2f-2a80d9d69ec2 BART_018.birdGrid.brd      D01   BART BART_018
+## 2 09f4496e-72c5-42ff-a4bf-aadcbf739397 BART_018.birdGrid.brd      D01   BART BART_018
+## 3 8721c42a-1e64-4c60-a40f-26b41ec3f51a BART_018.birdGrid.brd      D01   BART BART_018
+## 4 8ea10abd-5835-4fda-b592-ba3533c3311a BART_018.birdGrid.brd      D01   BART BART_018
+## 5 39915ebd-b013-4681-9903-9debb0ab7166 BART_018.birdGrid.brd      D01   BART BART_018
+##      plotType pointID           startDate boutNumber         eventID pointCountMinute
+## 1 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+## 2 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                2
+## 3 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+## 4 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+## 5 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+##   targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
+## 1                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+## 2                 Y    RBWO Melanerpes carolinus   species       Red-bellied Woodpecker
+## 3                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
+## 4                 Y    OVEN  Seiurus aurocapilla   species                     Ovenbird
+## 5                 Y    HETH    Catharus guttatus   species                Hermit Thrush
+##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode
+## 1               40         singing                 No     Male           1        &lt;NA&gt;
+## 2               20         calling                 No  Unknown           1        &lt;NA&gt;
+## 3               45         singing                 No     Male           1        &lt;NA&gt;
+## 4               40         singing                 No     Male           1        &lt;NA&gt;
+## 5               50         singing                 No     Male           1        &lt;NA&gt;
+##   identifiedBy identificationHistoryID  publicationDate      release year
+## 1        JRUEB                    &lt;NA&gt; 20260106T223356Z RELEASE-2026 2017
+## 2        JRUEB                    &lt;NA&gt; 20260106T223356Z RELEASE-2026 2017
+## 3        JRUEB                    &lt;NA&gt; 20260106T223356Z RELEASE-2026 2017
+## 4        JRUEB                    &lt;NA&gt; 20260106T223356Z RELEASE-2026 2017
+## 5        JRUEB                    &lt;NA&gt; 20260106T223356Z RELEASE-2026 2017
+##                  pointSurveyID   nlcdClass decimalLatitude decimalLongitude geodeticDatum
+## 1 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+## 2 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+## 3 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+## 4 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+## 5 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+##   coordinateUncertainty elevation elevationUncertainty samplingImpracticalRemarks
+## 1                 250.1     297.2                  0.2                       &lt;NA&gt;
+## 2                 250.1     297.2                  0.2                       &lt;NA&gt;
+## 3                 250.1     297.2                  0.2                       &lt;NA&gt;
+## 4                 250.1     297.2                  0.2                       &lt;NA&gt;
+## 5                 250.1     297.2                  0.2                       &lt;NA&gt;
+##   samplingImpractical startCloudCoverPercentage endCloudCoverPercentage startRH endRH
+## 1                  OK                       100                     100      73    78
+## 2                  OK                       100                     100      73    78
+## 3                  OK                       100                     100      73    78
+## 4                  OK                       100                     100      73    78
+## 5                  OK                       100                     100      73    78
+##    observedHabitat observedAirTemp kmPerHourObservedWindSpeed
+## 1 deciduous forest              15                          1
+## 2 deciduous forest              15                          1
+## 3 deciduous forest              15                          1
+## 4 deciduous forest              15                          1
+## 5 deciduous forest              15                          1
+##                    laboratoryName samplingProtocolVersion remarks measuredBy
+## 1 Bird Conservancy of the Rockies       NEON.DOC.014041vH    &lt;NA&gt;      JRUEB
+## 2 Bird Conservancy of the Rockies       NEON.DOC.014041vH    &lt;NA&gt;      JRUEB
+## 3 Bird Conservancy of the Rockies       NEON.DOC.014041vH    &lt;NA&gt;      JRUEB
+## 4 Bird Conservancy of the Rockies       NEON.DOC.014041vH    &lt;NA&gt;      JRUEB
+## 5 Bird Conservancy of the Rockies       NEON.DOC.014041vH    &lt;NA&gt;      JRUEB
+</code></pre>
+<h2 id="building-the-detection-history">Building the Detection History</h2>
+<p>Occupancy models require <strong>detection histories</strong>, which record whether a species was detected or not. For single-species occupancy models, detection histories are typically represented as a table of 0s and 1s, where:</p>
+<ul>
+<li>Each row represents a sampling location</li>
+<li>Each column represents a survey (time).</li>
+</ul>
+<p>A value of 1 indicates the species was detected during that survey, while 0 indicates it was not detected.</p>
+<p>The way detection histories are constructed depends on the research question. For NEON observational data, locations could be defined at the plot or site level, depending on the scale of the analysis. Survey could also be defined in different ways. For example, individual surveys could be aggregated within a year, month, or other time period.</p>
+<p>In this tutorial, we construct detection histories at the site level and define survey occasions by year (i.e., each cell in our table will correspond to a <strong>site-year</strong> combination)</p>
+<h3 id="filter-to-a-single-species">Filter to a single species</h3>
+<p>First, select a species to model. Here we use <em>Melanerpes carolinus</em> (Red-bellied Woodpecker), which is a widespread and frequently detected species.</p>
+<p>We filter the combined dataset we just prepared to include only observations of this species.</p>
+<pre><code># Filter table by species
+
+bird_species &lt;- &quot;Melanerpes carolinus&quot;
+
+
+
+brd_single_species &lt;- brd_joineddata_clean %&gt;%
+  filter(scientificName == bird_species)
+</code></pre>
+<h3 id="identify-valid-site-years">Identify valid site-years</h3>
+<p>Next, we create a table of all site–year combinations where surveys actually occurred - Remember that surveys marked as incomplete were removed above. This ensures that when we build the detection history, site–year surveys that did not have valid surveys well be recorded as NA, not 0.</p>
+<pre><code># Get all valid site-year combinations across sites (so we can fill in NAs)
+
+valid_site_years &lt;- brd_perpoint_clean %&gt;%
+  distinct(siteID, year)
+</code></pre>
+<h3 id="identify-bird-detections">Identify bird detections</h3>
+<p><code>brd_single_species</code> contains only presence records for our species. Here, we summarize those observations so that each site–year combination where the species was detected at least once is recorded with a value of 1. We will use this table to fill in the presence values when constructing the detection history.</p>
+<pre><code># Get detections (so we can fill in 0/1s)
+
+detections &lt;- brd_single_species %&gt;%
+  group_by(siteID, year) %&gt;%
+  summarize(present = 1, .groups = &quot;drop&quot;)
+</code></pre>
+<h3 id="create-the-detection-history-table">Create the detection history table</h3>
+<p>Finally, we will combine the tables and reshape the data. Any site–year combinations without a detection are filled with 0, indicating the species was not detected. The data are then reshaped so that each row represents a site and each column represents a year, as explained above. We also sort the table alphabetically by siteID and chronologically by year.</p>
+<pre><code># Join and fill
+
+detection_history &lt;- valid_site_years %&gt;%
+  left_join(detections, by = c(&quot;siteID&quot;, &quot;year&quot;)) %&gt;%
+  mutate(present = replace_na(present, 0)) %&gt;%
+  pivot_wider(
+    names_from = year,
+    values_from = present
+  ) %&gt;%
+  arrange(siteID) %&gt;% # sort siteIDs
+  select(siteID, sort(names(.)[-1])) # sort surveys
+
+
+
+head(detection_history, n=10)
+
+## # A tibble: 10 x 9
+##    siteID `2017` `2018` `2019` `2020` `2021` `2022` `2023` `2024`
+##    &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##  1 ABBY        0      0      0     NA      0      0      0      0
+##  2 BARR        0      0      0     NA      0      0      0      0
+##  3 BART        1      0      0      0      0      0      0      0
+##  4 BLAN        1      1      1      1      1      1      1      1
+##  5 BONA        0      0      0      0      0      0      0      0
+##  6 CLBJ        1      1      1      1      1      1      1      1
+##  7 CPER        0      0      0      0      0      0      0      0
+##  8 DCFS        0      0      0      0      0      0     NA      0
+##  9 DEJU        0      0      0      0      0      0      0      0
+## 10 DELA        1      1      1      1      1      1      1      1
+</code></pre>
+<h2 id="fit-a-simple-occupancy-model">Fit a Simple Occupancy Model</h2>
+<p>Now that we have constructed a detection history, we can fit a simple occupancy model! In this example, we fit a single-species, single-season occupancy model for our woodpecker.</p>
+<p>A single-season occupancy model assumes that the occupancy state of each site does not change during the period represented by the surveys. Remember this model will estimate two key parameters:</p>
+<ul>
+<li>ψ (psi): the probability that a site is <strong>occupied</strong> by the species</li>
+<li>p: the probability of <strong>detecting</strong> the species during a survey, given that it is present</li>
+</ul>
+<h3 id="create-the-presence-absence-object-pao_1">Create the Presence-Absence Object (pao)</h3>
+<p>The basic input for nearly every occupancy analysis in RPresence is an object of class <code>pao</code>, which stands for <em>presence–absence object</em>. This object contains the detection history and any associated data needed to fit an occupancy model.</p>
+<p>A <code>pao</code> object is created using the <code>createPao()</code> function. At a minimum, this function requires a detection history containing the detection (=1) and non-detection (=0) data with observations from a sampling unit along a row, and surveys in the columns. Missing values are allowed (=NA).</p>
+<p>Additional arguments allow users to include site-level or survey-level covariates but we will not include those in this initial model.</p>
+<p>In this example, we provide two arguments:</p>
+<ul>
+<li>
+<p>data – the detection history (0/1 data)</p>
+</li>
+<li>
+<p>unitnames – a label for each sampling unit (here, NEON sites)</p>
+<p>birds_pao_simple &lt;- createPao(
+data = detection_history[, -1], # detection/nondetection data (survey columns only) from detection_history
+unitnames = detection_history$siteID # siteIDs from detection_history
+)</p>
+</li>
+</ul>
+<h3 id="fit-the-model">Fit the model</h3>
+<p>Once the detection history has been converted into a <code>pao</code> object, we can fit the occupancy model using the <code>occMod()</code> function from the RPresence package.</p>
+<p>There are several arguments to the occMod() function, but here are the ones needed for this model:</p>
+<ul>
+<li>model = list of formula for each parameter. We need a formula for ψ (occupancy) and a formula for p (detection).</li>
+<li>data = <code>pao</code> data object.</li>
+<li>type = a string indicating the type of occupancy model to fit. In this tutorial, we are fitting a single season occupancy model, which has the type of “so” (static occupancy).</li>
+</ul>
+<p>The model formulas follow the standard R formula syntax:</p>
+<p><code>parameter ~ predictors</code></p>
+<p>In this first example, we fit a null model, meaning that both occupancy and detection probability for our bird are assumed to be constant across all sites and surveys. This means we will have one resulting value for ψ (psi) and one resulting value for p. This is written as:</p>
+<p><code>psi ~ 1, p ~ 1</code></p>
+<p>The formula can also include predictors to allow parameters to vary across surveys or sites. In RPresence, a factor called <code>SURVEY</code> is automatically included in the pao object to allow for survey-specific detection probabilities.</p>
+<p>For example, we could use the formula <code>p ~ SURVEY</code> to specify a model in which detection probability varies by survey, resulting in a separate value of p for each survey.</p>
+<p>In practice, detection and occupancy are often modeled as functions of site or survey covariates, such as habitat characteristics or weather conditions. We will explore how to include these types of predictors later in the tutorial.</p>
+<pre><code>birds_occupancy_simple &lt;- occMod(
+  data = birds_pao_simple,           
+  model = list(
+    psi ~ 1,
+    p ~ 1),
+  type = 'so'
+  )
+
+
+
+summary(birds_occupancy_simple)
+
+## Model name=psi(1)p(1)
+## AIC=207.9761
+## -2*log-likelihood=203.9761
+## num. par=2
+## Warning: Numerical convergence may not have been reached. Parameter estimates converged to approximately 7 signifcant digits.
+</code></pre>
+<p>The model summary includes a few statistics describing model fit.</p>
+<p>The values reported are:</p>
+<ul>
+<li>Model name  – RPresence names models using the formulae used.</li>
+<li>AIC (Akaike Information Criterion) – a measure used to compare competing models. Lower AIC values indicate a better balance between model fit and model complexity.</li>
+<li>−2 log-likelihood – a measure of how well the model fits the data. This value is used internally to calculate the AIC.</li>
+<li>num.par – Number of parameters estimated in the model. Here, two parameters are estimated: one for occupancy (ψ) and one for detection probability (p).</li>
+<li>Warning message – This indicates that numerical convergence may not have been fully reached during optimization. However, the estimates converged to about seven significant digits, which is generally sufficient and not a cause for concern.</li>
+</ul>
+<p>In later sections, we will fit additional models and use AIC comparisons to determine whether including environmental covariates improves model performance.</p>
+<h3 id="displaying-results">Displaying Results</h3>
+<p>Now that we have a model, we can examine our estimated values. We can use the <code>print_one_site_estimates()</code> function to retrieve our estimates, and then do some light data wrangling to shape the results into a presentable table.</p>
+<pre><code>ests &lt;- as.data.frame(print_one_site_estimates(mod = birds_occupancy_simple))
+
+
+
+#Rename some values for readability
+
+ests &lt;- ests[1:2,] %&gt;% 
+  mutate(parm = c(&quot;psi&quot;, &quot;p&quot;)) %&gt;% 
+  select(parm, est, se, lower, upper) %&gt;% 
+  rename(., 
+    c(
+      Parameter = parm,
+      Estimate = est,
+      SE = se, # Standard Error
+      L95 = lower, #95% Confidence Interval - Lower Boundary
+      U95 = upper #95% Confidence Interval - Upper Boundary
+    )
+  ) %&gt;% 
+  `rownames&lt;-`(seq_len(nrow(ests[1:2,])))
+
+
+
+ests
+
+##   Parameter  Estimate         SE       L95       U95
+## 1       psi 0.4681362 0.07279173 0.3316722 0.6095392
+## 2         p 0.8604286 0.02643372 0.8001831 0.9046737
+</code></pre>
+<p>From these results, we see that <em>Melanerpes carolinus</em> has an estimated <strong>occupancy probability (ψ) of about 0.47</strong>. This means that if you randomly select a NEON site, there is roughly a 47% chance that the species can be found at that site—equivalently, the species is present at about 47% of NEON sites in this dataset. We can see that if we overlay a range map for <em>Melanerpes carolinus</em>, it covers roughly half of NEON sites.</p>
+<blockquote>
+<p>U.S. Geological Survey (USGS) - Gap Analysis Project (GAP), 2018, Red-bellied Woodpecker (Melanerpes carolinus) bRBWOx_CONUS_2001v1 Range Map: U.S. Geological Survey data release, <a href="https://doi.org/10.5066/F7JW8CX7" target="_blank"><a href="https://doi.org/10.5066/F7JW8CX7">https://doi.org/10.5066/F7JW8CX7</a></a>.</p>
+</blockquote>
+<pre><code>library(sf)
+
+library(rnaturalearth)
+
+
+
+url &lt;- &quot;https://www.sciencebase.gov/catalog/file/get/59f5ec2be4b063d5d307e4c3?f=__disk__b5%2F37%2Ffc%2Fb537fc3bf8c92b1162bca650dda01c052e87ec6e&quot;
+
+
+
+zip &lt;- tempfile(fileext = &quot;.zip&quot;)
+
+dir &lt;- tempdir()
+
+
+
+download.file(url, zip, mode = &quot;wb&quot;)
+
+unzip(zip, exdir = dir)
+
+
+
+melanerpes_carolinus_range &lt;-
+  st_read(list.files(dir, &quot;\\.shp$&quot;, full.names = TRUE), quiet = TRUE) |&gt;
+  st_transform(4326)
+
+
+
+site_map &lt;- brd_perpoint_clean %&gt;%
+  select(siteID, decimalLatitude, decimalLongitude) %&gt;%
+  distinct(siteID, .keep_all = TRUE) %&gt;%
+  left_join(
+    brd_single_species %&gt;%
+      distinct(siteID) %&gt;%
+      mutate(present = 1),
+    by = &quot;siteID&quot;
+  ) %&gt;%
+  mutate(present = ifelse(is.na(present), 0, present))
+
+
+
+usa &lt;- bind_rows(
+  ne_states(country = &quot;United States of America&quot;, returnclass = &quot;sf&quot;),
+  ne_states(country = &quot;Puerto Rico&quot;, returnclass = &quot;sf&quot;)
+) %&gt;%
+  st_transform(4326)
+
+
+
+ggplot() +
+  geom_sf(data = usa, fill = NA, color = &quot;black&quot;) +
+  geom_sf(data = melanerpes_carolinus_range,
+          fill = &quot;lightgreen&quot;,
+          color = NA,
+          alpha = 0.4) +
+  geom_point(data = site_map,
+             aes(x = decimalLongitude,
+                 y = decimalLatitude,
+                 color = factor(present)),
+             size = 2) +
+  scale_color_manual(
+    values = c(&quot;0&quot; = &quot;gray70&quot;, &quot;1&quot; = &quot;darkgreen&quot;),
+    labels = c(&quot;Not detected&quot;, &quot;Detected&quot;),
+    name = &quot;Species observed&quot;
+  ) +
+  coord_sf(
+  xlim = c(-170, -60),
+  ylim = c(15, 72),
+  expand = FALSE
+) +
+  labs(
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;,
+    title = &quot;Red-bellied Woodpecker Range and NEON Site Detections&quot;
+  ) +
+  theme_bw()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/bird-occupancy-modelling/rfigs/unnamed-chunk-15-1.png" alt=" " /></p>
+<p>At this broad scale, this estimate is mostly descriptive and could be approximated directly from the data. Occupancy estimates become more informative when applied at finer spatial scales or when combined with covariates, which help explain why species occurs in some locations but not others.</p>
+<p>The <strong>estimated detection probability (p) is about 0.86</strong>, meaning that if the species is present at a site, there is about a 86% chance it will be detected.</p>
+<h2 id="comparing-species">Comparing Species</h2>
+<p>Now that we have demonstrated a simple occupancy model, we can repeat the same workflow for additional species and compare their occupancy and detection probabilities.</p>
+<p>Below we fit the same model for:</p>
+<ul>
+<li><em>Bubo virginianus</em> (Great Horned Owl)</li>
+<li><em>Cyanocitta cristata</em> (Blue Jay)</li>
+</ul>
+<p>For each species, we construct a detection history, create a pao object, and fit the same simple occupancy model (<code>psi ~ 1, p ~ 1</code>), following the same steps as above.</p>
+<pre><code># Function to run the simple occupancy model workflow for any species
+
+run_simple_species_model &lt;- function(species_name, common_name){
+
+  brd_species &lt;- brd_joineddata_clean %&gt;%
+    filter(siteID %in% sites,
+           scientificName == species_name)
+
+  detections &lt;- brd_species %&gt;%
+    group_by(siteID, year) %&gt;%
+    summarize(present = 1, .groups = &quot;drop&quot;)
+
+  detection_history &lt;- valid_site_years %&gt;%
+    left_join(detections, by = c(&quot;siteID&quot;, &quot;year&quot;)) %&gt;%
+    mutate(present = replace_na(present, 0)) %&gt;%
+    pivot_wider(names_from = year, values_from = present) %&gt;%
+    arrange(siteID) %&gt;%
+    select(siteID, sort(names(.)[-1]))
+
+  pao &lt;- createPao(
+    data = detection_history[, -1],
+    unitnames = detection_history$siteID,
+    title = common_name
+  )
+
+  model &lt;- occMod(
+    data = pao,
+    model = list(
+      psi ~ 1,
+      p ~ 1
+    ),
+    type = &quot;so&quot;
+  )
+
+  return(model)
+}
+</code></pre>
+<p>Now we run the model for both species.</p>
+<pre><code>owl_model &lt;- run_simple_species_model(
+  species_name = &quot;Bubo virginianus&quot;,
+  common_name = &quot;Great Horned Owl&quot;
+)
+
+
+
+jay_model &lt;- run_simple_species_model(
+  species_name = &quot;Cyanocitta cristata&quot;,
+  common_name = &quot;Blue Jay&quot;
+)
+</code></pre>
+<p>Next, we extract the estimated occupancy (ψ) and detection probability (p) for each species.</p>
+<pre><code># Function to extract and rename estimates for simple model
+
+extract_estimates &lt;- function(model){
+  
+  ests &lt;- as.data.frame(print_one_site_estimates(mod = model))
+
+  ests &lt;- ests[1:2,] %&gt;% 
+    mutate(Parameter = c(&quot;psi&quot;, &quot;p&quot;)) %&gt;%
+    select(Parameter, est, se, lower, upper) %&gt;%
+    rename(
+      Estimate = est,
+      SE = se,
+      L95 = lower,
+      U95 = upper
+    )
+
+  return(ests)
+}
+
+
+
+owl_estimates &lt;- extract_estimates(owl_model) %&gt;%
+  mutate(Species = &quot;Great Horned Owl&quot;)
+
+
+
+jay_estimates &lt;- extract_estimates(jay_model) %&gt;%
+  mutate(Species = &quot;Blue Jay&quot;)
+
+
+
+# Combine estimates for plotting
+
+species_estimates &lt;- bind_rows(owl_estimates, jay_estimates)
+</code></pre>
+<p>We’ll visualize the estimates in a plot.</p>
+<pre><code>ggplot(species_estimates,
+       aes(x = Parameter, y = Estimate, fill = Species)) +
+  geom_col(position = position_dodge(width = 0.7), width = 0.6) +
+  geom_errorbar(aes(ymin = L95, ymax = U95),
+                position = position_dodge(width = 0.7),
+                width = 0.15) +
+  scale_x_discrete(
+    limits = c(&quot;psi&quot;, &quot;p&quot;),
+    labels = c(
+      psi = &quot;Occupancy (ψ)&quot;,
+      p = &quot;Detection (p)&quot;
+    )
+  ) +
+  scale_y_continuous(limits = c(0, 1)) +
+  labs(
+    x = NULL,
+    y = &quot;Estimated Probability&quot;,
+    title = &quot;Occupancy and Detection Estimates by Species&quot;
+  ) +
+  theme_bw()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/bird-occupancy-modelling/rfigs/unnamed-chunk-19-1.png" alt=" " /></p>
+<p>Here we can see that although Blue Jays and Great Horned Owls have similar occupancy probabilities (.51 and .56), their detection probabilities differ dramatically (.90 and .22). Blue Jays are highly detectable during point-count surveys, whereas Great Horned Owls are much more difficult to detect under the same protocol.</p>
+<h2 id="introducing-covariates">Introducing Covariates</h2>
+<p>In reality, occupancy and detection probabilities are rarely constant across all sites and surveys. Many factors can influence whether a species occurs at a site and whether it is detected during a survey. These factors can be included in occupancy models as covariates.</p>
+<p><strong>Site</strong> characteristics can influence occupancy <strong>or</strong> detection. For example:</p>
+<ul>
+<li>Vegetation density – dense vegetation may make birds harder to detect than in more open habitats.</li>
+<li>Habitat type – some species only occupy sites with suitable habitat, such as forests, wetlands, or grasslands.</li>
+</ul>
+<p><strong>Survey</strong> characteristics can <strong>only</strong> affect detection. For example:</p>
+<ul>
+<li>Observer differences – some observers may be better at detecting or identifying certain species.</li>
+<li>Weather conditions – rain, wind, or poor visibility can make birds harder to hear or see.</li>
+</ul>
+<p>By including these variables in our model, we can either:</p>
+<ul>
+<li><strong>Account for known sources of variation to improve model fit</strong> or</li>
+<li><strong>Test whether occupancy or detection is dependent on a particular covariate</strong>.</li>
+</ul>
+<h3 id="site-covariates">Site Covariates</h3>
+<p>So far, our model assumed that occupancy and detection probabilities were constant across all sites and surveys. Site characteristics often influence whether a species occupies a location or is more easily detected. We can test these effects by including site covariates in the occupancy model. Remember that site characteristics can influence both occupancy and/or detection.</p>
+<p>In this example, we examine if <strong>elevation</strong> influences the occupancy probability of <em>Melanerpes carolinus</em> (Red-bellied Woodpecker).</p>
+<h4 id="create-a-site-covariate-table">Create a site covariate table</h4>
+<p>Site-level covariates must be provided to <code>createPao()</code> as a separate table with one row per site. The rows must correspond to the same sites used in the detection history.</p>
+<p>Here we extract the elevation for each site from the combined dataset <code>brd_joineddata_clean</code> we prepared at the beginning of the tutorial.</p>
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** For the bird dataset, NEON includes some common environmental variables, making it easy to incorporate these characteristics directly into analyses. NEON also collects a wide range of co-located environmental measurements using NEON instrumentation on the towers or sensor arrays. These additional data products can be used to create covariates describing habitat, climate, or other conditions for occupancy models.
+</div> 
+<pre><code>site_cov &lt;- brd_joineddata_clean %&gt;%
+  select(siteID, elevation) %&gt;%
+  distinct(siteID, .keep_all = TRUE) %&gt;%
+  arrange(siteID) %&gt;%
+  tibble::column_to_rownames(&quot;siteID&quot;)
+
+
+
+head(site_cov, n=10)
+
+##      elevation
+## ABBY     386.6
+## BARR       5.6
+## BART     297.2
+## BLAN     137.4
+## BONA     403.6
+## CLBJ     312.5
+## CPER    1637.1
+## DCFS     590.4
+## DEJU     453.3
+## DELA      23.7
+</code></pre>
+<p>Note that other types of site covariates could also be used. For example, categorical variables such as land cover class could be included instead. When including categorical variables as covariates, they must be converted to factors.</p>
+<pre><code># Example categorical covariate
+
+ site_cov_categorical &lt;- brd_perpoint_clean %&gt;%
+   select(siteID, nlcdClass) %&gt;%
+   distinct(siteID, .keep_all = TRUE) %&gt;%
+   mutate(nlcdClass = as.factor(nlcdClass)) %&gt;%
+   arrange(siteID) %&gt;%
+   tibble::column_to_rownames(&quot;siteID&quot;)
+
+
+
+site_cov_categorical$nlcdClass &lt;- factor(site_cov_categorical$nlcdClass)
+
+
+
+head(site_cov_categorical, n=10)
+
+##                       nlcdClass
+## ABBY        grasslandHerbaceous
+## BARR emergentHerbaceousWetlands
+## BART                mixedForest
+## BLAN            deciduousForest
+## BONA                 shrubScrub
+## CLBJ            deciduousForest
+## CPER        grasslandHerbaceous
+## DCFS        grasslandHerbaceous
+## DEJU                 shrubScrub
+## DELA              woodyWetlands
+</code></pre>
+<h4 id="create-the-presence-absence-object-pao_2">Create the Presence-Absence Object (pao)</h4>
+<p>Next, we create a new pao object that includes the site covariate table. We will use the same <code>detection_history</code> table as before.</p>
+<pre><code>birds_pao_sitecov &lt;- createPao(
+  data = detection_history[, -1], # detection/nondetection data (survey columns only) from detection_history
+  unitnames = detection_history$siteID, # site IDs from detection_history
+  unitcov = site_cov # add the site covariates
+)
+</code></pre>
+<h4 id="fit-the-covariate-model_1">Fit the covariate model</h4>
+<p>We now fit a model where occupancy varies with elevation, while detection probability remains constant.</p>
+<p>In this model, the formula <code>psi ~ elevation</code> specifies that occupancy probability is modeled as a linear function of elevation, meaning the model estimates how occupancy probability changes as elevation increases or decreases. As a result, occupancy probability will not be a single value but will vary depending on the elevation of each site.</p>
+<p>Other functional forms can also be used, but aren’t included in this tutorial. For example:</p>
+<ul>
+<li><code>psi ~ elevation + I(elevation^2)</code> could model a polynomial relationship. For example, a species might prefer mid-elevation forests but be less common at both low and high elevations.</li>
+<li><code>psi ~ elevation + forest_cover</code> could include multiple covariates influencing occupancy. For example, a bird may be more likely to occur at higher elevations and in areas with greater forest cover.</li>
+<li><code>psi ~ elevation * forest_cover</code> could model an interaction between variables. For example, forest cover might increase occupancy at low elevations but have little effect at high elevations.</li>
+</ul>
+<p>Detection probability could also be modeled as a function of site covariates in the same way. In this example, however, we keep detection probability constant using <code>p ~ 1</code> so that we can focus on how elevation influences occupancy.</p>
+<pre><code>birds_occupancy_sitecov &lt;- occMod(
+  data = birds_pao_sitecov,           
+  model = list(psi ~ elevation, 
+               p ~ 1),
+  type = 'so'
+  )
+</code></pre>
+<h4 id="model-results_1">Model Results</h4>
+<p>Now that the model has been fit, we can examine the results to see whether elevation improves model performance and how it influences occupancy probability. We will do this by:</p>
+<ul>
+<li><strong>Comparing AIC values</strong> to evaluate which model provides the best balance between model fit and complexity.</li>
+<li><strong>Calculating a likelihood ratio test</strong> to determine whether adding the elevation covariate significantly improves model fit.</li>
+<li><strong>Inspecting the model coefficients</strong> to understand the direction and strength of the relationship between elevation and occupancy probability.</li>
+<li><strong>Visualizing the predicted occupancy values</strong> to illustrate how occupancy probability changes across the elevation gradient.</li>
+</ul>
+<h5 id="compare-aic-akaike-information-criterion_1">Compare AIC (Akaike Information Criterion)</h5>
+<p>We can compare the new model with elevation to the original model without to see whether including elevation improves the model fit. One common way to compare models is using AIC (Akaike Information Criterion), which balances model fit with model complexity. In general, models with lower AIC values are preferred.</p>
+<p>The output table also includes additional statistics, such as the −2 log-likelihood (neg2ll) and other model parameters. These metrics can also be used to evaluate model performance, but we will focus on AIC for this tutorial.</p>
+<pre><code>mod.list &lt;-  list(
+    birds_occupancy_simple, # the model with formula psi ~ 1, p ~ 1
+    birds_occupancy_sitecov # the model with formula psi ~ elevation, p ~ 1
+)
+
+aictable &lt;- createAicTable(mod.list = mod.list)
+
+aictable$table
+
+##                Model      AIC   neg2ll npar warn.conv warn.VC    DAIC modlike    wgt
+## 2 psi(elevation)p(1) 191.7794 185.7794    3         7       0  0.0000   1e+00 0.9997
+## 1         psi(1)p(1) 207.9761 203.9761    2         7       0 16.1967   3e-04 0.0003
+</code></pre>
+<p>Looking at the two models, the model including elevation has a lower AIC value (191.7794 vs 207.9761). Because AIC balances model fit with the number of parameters, the lower value suggests that the model including elevation provides a better and more parsimonious explanation of the data.</p>
+<h5 id="likelihood-ratio-test_1">Likelihood Ratio Test</h5>
+<p>We can also calculate a p-value using a likelihood ratio test (LRT) to quantify whether the model including elevation provides a significantly better fit than the simpler model without it. This method is appropriate for “nested” models only, meaning the simpler model is a special case of the more complex one. In this case, the simple model (<code>psi ~ 1</code>) is a reduced version of the model that includes elevation (<code>psi ~ elevation</code>).</p>
+<p>The likelihood ratio test compares how well the two models explain the data by examining the difference in their −2 log-likelihood values. The difference in −2 log-likelihood values is compared to a chi-square distribution, where the degrees of freedom equals the difference in the number of parameters between the two models.</p>
+<pre><code>#get the difference in the neg2loglike between the two models
+
+diff &lt;- abs(birds_occupancy_simple$neg2loglike - birds_occupancy_sitecov$neg2loglike)
+
+
+
+#look up our observed difference on a chi-square distribution with 1 degree of freedom (the difference between the number of parameters)
+
+pchisq(diff, 
+       df = abs(birds_occupancy_simple$npar - birds_occupancy_sitecov$npar),
+       lower.tail = FALSE)
+
+## [1] 1.992237e-05
+</code></pre>
+<p>The resulting p-value tests the null hypothesis that adding elevation does not improve the model fit. Because the p-value is very small (1.992237e-05), we reject the null hypothesis and conclude that including elevation significantly improves the model. Therefore, elevation appears to be an important predictor of occupancy for this species in our dataset!</p>
+<h5 id="inspect-coeffiecients_1">Inspect coeffiecients</h5>
+<p>We can also examine the estimated coefficients from the model to understand exactly how the covariate influences occupancy probability. In this case, the coefficient for elevation tells us the direction and strength of the relationship between elevation and the probability that a site is occupied.</p>
+<pre><code>coef(birds_occupancy_sitecov, 'psi', prob = 0.95)
+
+##                           Beta_est       se      lowerCI      upperCI
+## psi_A1.Int                1.477853 0.378737  0.735542120  2.220163880
+## psi_A1.Int.psi.elevation -0.002936 0.000668 -0.004245256 -0.001626744
+</code></pre>
+<p>The beta estimate for elevation is slightly negative (-0.002936), meaning that occupancy probability decreases as elevation increases.</p>
+<p>The output also includes 95% confidence intervals for each estimate. In this case, the confidence interval for elevation (-0.004245256 to -0.001626744) does not include 0 and lies entirely below it. This indicates that the estimated relationship between elevation and occupancy is consistently negative across the range of plausible values for the coefficient. In other words, it is quite likely that occupancy probability decreases as elevation increases.</p>
+<h5 id="display-results_1">Display Results</h5>
+<p>It can also be helpful to visually examine how occupancy probability changes across the elevation gradient. To do this, we extract the predicted occupancy probabilities for each site from the model output and plot them against site elevation.</p>
+<pre><code>data &lt;- cbind(site_cov, birds_occupancy_sitecov$real$psi) %&gt;% 
+  distinct(.keep_all = TRUE) %&gt;%
+  arrange(elevation)
+
+
+
+ggplot(data, aes(x = elevation, y = est)) +
+  geom_point(size = 2, alpha = 0.8) +
+  labs(
+    x = &quot;Elevation&quot;,
+    y = &quot;Predicted Occupancy Probability&quot;
+  ) +
+  scale_y_continuous(limits = c(0, 1)) +
+  theme_bw()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/bird-occupancy-modelling/rfigs/unnamed-chunk-27-1.png" alt=" " /></p>
+<div id="ds-dataTip" markdown="1">
+<i class="fa fa-star"></i> **Data Tip:** An occupancy model with a linear effect will produce a curved (sigmoidal) prediction line when plotting probability. This is because technically the model is linear on the *logit* (log-odds) scale, and transforming log-odds back to probabilities  creates a non-linear curve.
+</div> 
+<h3 id="survey-covariates">Survey Covariates</h3>
+<p>In addition to site characteristics, the conditions under which a survey is conducted can also influence whether a species is detected. Factors such as weather, time of day, or observer differences can affect how likely it is that an observer detects a species during a survey.</p>
+<p>Unlike site covariates, survey covariate can <strong>only</strong> influence detection probability, not whether a species occupies a site.</p>
+<p>In this example, we examine whether survey effort influences the detection probability of <em>Melanerpes carolinus</em>. Survey effort here is defined as the total number of minutes spent conducting bird point-count surveys at a site within a year. Although each survey lasts six minutes, the number of surveys conducted can vary among site–year combinations due to differences in sampling design (e.g., large vs. small sites) and the number of plots sampled at each site. Greater survey effort could provide more opportunities to detect a species if it is present.</p>
+<h4 id="create-a-survey-covariate-table">Create a survey covariate table</h4>
+<p>NEON bird surveys follow a standardized protocol in which each point-count survey lasts 6 minutes. To estimate survey effort for each site–year combination, we count the number of point-count surveys conducted and multiply by six minutes. Survey covariates supplied to <code>createPao()</code> must be provided in the same order as the rows and columns of <code>detection_history</code>, so we also sort by siteID and year to match.</p>
+<pre><code>survey_effort &lt;- brd_perpoint_clean %&gt;% # we start with brd_perpoint_clean since we want all point-count surveys conducted, not just those that detected birds
+  distinct(pointSurveyID, siteID, year) %&gt;%
+  group_by(siteID, year) %&gt;%
+  summarize(
+    survey_effort = n() * 6, # the number of surveys multiplied by 6
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  pivot_wider(
+    names_from = year,
+    values_from = survey_effort,
+    values_fill = 0 # We can fill in NAs as 0s since no time was spend conducting surveys for incomplete surveys
+  ) %&gt;%
+  tibble::column_to_rownames(&quot;siteID&quot;) %&gt;% # sort siteIDs alphabetically
+  select(sort(names(.))) # sort years
+
+
+
+head(survey_effort, n=10)
+
+##      2017 2018 2019 2020 2021 2022 2023 2024
+## ABBY  258  156  240    0  228  228  228  204
+## BARR  432  426  426    0  378  318  378  378
+## BART  474  474  468  474  480  474  480  480
+## BLAN  144  132  120  132  132  132  132  132
+## BONA  810  522  540  534  540  540  534  540
+## CLBJ  486  486  486  480  486  486  486  486
+## CPER  810  540  540  540  540  540  540  540
+## DCFS  240  240  240  240  240  240    0  240
+## DEJU  540  540  540  540  540  540  540  540
+## DELA  216  180  180  168  168  168  168  168
+</code></pre>
+<p><code>createPao()</code> expects survey covariates in a single column vector rather than a matrix, so we flatten the survey_effort matrix into a vector.</p>
+<pre><code># flatten the data frame
+
+surveycov &lt;-  data.frame(
+  survey_effort = unlist(survey_effort)
+  #it is possible to add other survey covariates here
+  )
+
+
+
+# remove the rownames
+
+row.names(surveycov) &lt;- NULL
+
+
+
+head(surveycov)
+
+##   survey_effort
+## 1           258
+## 2           432
+## 3           474
+## 4           144
+## 5           810
+## 6           486
+</code></pre>
+<h4 id="create-the-presence-absence-object-pao_3">Create the Presence-Absence Object (pao)</h4>
+<p>Next we create a new <code>pao</code> object that includes both the site covariate (elevation) from before (since adding elevation provides a better model fit) and the survey covariate (survey effort).</p>
+<pre><code>birds_pao_surveycov &lt;- createPao(
+  data = detection_history[, -1], # detection/nondetection data (survey columns only) from detection_history
+  unitnames = detection_history$siteID, # site IDs from detection_history
+  unitcov = site_cov, # add the site covariates
+  survcov = surveycov # add the survey covariates
+)
+</code></pre>
+<h4 id="fit-the-covariate-model_2">Fit the covariate model</h4>
+<p>We now fit a model where:</p>
+<ul>
+<li>
+<p>occupancy varies linearly with elevation</p>
+</li>
+<li>
+<p>detection probability varies linearly with survey effort</p>
+<p>birds_occupancy_surveycov &lt;- occMod(
+data = birds_pao_surveycov,<br />
+model = list(psi ~ elevation,  p ~ survey_effort),
+type = ‘so’
+)</p>
+<p>summary(birds_occupancy_surveycov)</p>
+<h2 id="model-name-psi-elevation-p-survey-effort">Model name=psi(elevation)p(survey_effort)</h2>
+<h2 id="aic-193-1907">AIC=193.1907</h2>
+<h2 id="2-log-likelihood-185-1907">-2*log-likelihood=185.1907</h2>
+<h2 id="num-par-4">num. par=4</h2>
+<h2 id="warning-numerical-convergence-may-not-have-been-reached-parameter-estimates-converged-to-approximately-7-signifcant-digits">Warning: Numerical convergence may not have been reached. Parameter estimates converged to approximately 7 signifcant digits.</h2>
+</li>
+</ul>
+<h4 id="model-results_2">Model Results</h4>
+<p>We can evaluate the survey covariate model using the same approaches used above.</p>
+<h5 id="compare-aic-akaike-information-criterion_2">Compare AIC (Akaike Information Criterion)</h5>
+<p>We can again compare models using AIC. Here we compare the simple original model, the site covariate elevation model, and the survey covariate survey_effort model.</p>
+<pre><code>mod.list &lt;-  list(
+    birds_occupancy_simple, # the model with formula psi ~ 1, p ~ 1
+    birds_occupancy_sitecov, # the model with formula psi ~ elevation, p ~ 1
+    birds_occupancy_surveycov # the model with formula psi ~ elevation, p ~ survey_effort
+)
+
+aictable &lt;- createAicTable(mod.list = mod.list)
+
+aictable$table
+
+##                            Model      AIC   neg2ll npar warn.conv warn.VC    DAIC modlike
+## 2             psi(elevation)p(1) 191.7794 185.7794    3         7       0  0.0000  1.0000
+## 3 psi(elevation)p(survey_effort) 193.1907 185.1907    4         7       0  1.4113  0.4938
+## 1                     psi(1)p(1) 207.9761 203.9761    2         7       0 16.1967  0.0003
+##      wgt
+## 2 0.6693
+## 3 0.3305
+## 1 0.0002
+</code></pre>
+<p>Looking at the three models, the model including elevation only has the lowest AIC value (191.7794), followed by the model including elevation and survey effort (193.1907), and finally the simple model with no covariates (207.9761). This suggests that adding survey effort as a detection covariate does not improve the model relative to the elevation-only model, and the additional parameter does not provide enough improvement in model fit to justify the more complex model.</p>
+<h5 id="likelihood-ratio-test_2">Likelihood Ratio Test</h5>
+<p>We can also calculate a p-value using a likelihood ratio test to quantify whether adding survey effort improves the model relative to the elevation-only model. Remember, we can do this because the <code>psi ~ elevation, p ~ 1</code> model is a simpler version of the <code>psi ~ elevation, p ~ survey_effort</code> model.</p>
+<pre><code>#get the difference in the neg2loglike between the two models
+
+diff &lt;- abs(birds_occupancy_sitecov$neg2loglike - birds_occupancy_surveycov$neg2loglike)
+
+
+
+#look up our observed difference on a chi-square distribution with 1 degree of freedom (the difference between the number of parameters)
+
+pchisq(diff, 
+       df = abs(birds_occupancy_sitecov$npar - birds_occupancy_surveycov$npar),
+       lower.tail = FALSE)
+
+## [1] 0.4429223
+</code></pre>
+<p>The resulting p-value tests the null hypothesis that including survey effort does not improve the model fit. In this case, the p-value (0.4429223) is relatively large, meaning we do not have evidence that adding survey effort improves the model.</p>
+<h5 id="inspect-coeffiecients_2">Inspect coeffiecients</h5>
+<p>Lets take a look at the coeffients associated with our model.</p>
+<pre><code>coef(birds_occupancy_surveycov, 'p', prob = 0.95)
+
+##                            Beta_est       se      lowerCI      upperCI
+## p1_B1.Int                  2.279714 0.332403  1.628216092 2.9312119084
+## p1_B1.Int.p.survey_effort -0.001102 0.000728 -0.002528854 0.0003248538
+</code></pre>
+<p>The coefficient for survey effort is slightly negative (-0.001102), meaning the model estimates that detection probability decreases slightly as survey effort increases. However, the 95% confidence interval for this estimate (-0.00253 to 0.00032) includes 0. This means the data are consistent with either a small negative effect, no effect, or even a very small positive effect. In other words, the coefficient estimates do not provide strong evidence that survey effort meaningfully influences detection probability either.</p>
+<h5 id="display-results_2">Display Results</h5>
+<p>Finally, we can visualize how predicted detection probability changes across the range of survey effort values, just to see what it looks like, even though we are fairly confident that survey_effort does not have any real effect on detection for <em>Melanerpes carolinus</em>.</p>
+<pre><code>data &lt;- cbind(surveycov, birds_occupancy_surveycov$real$p) %&gt;% 
+  distinct(.keep_all = TRUE) %&gt;%
+  arrange(survey_effort)
+
+
+
+ggplot(data, aes(x = survey_effort, y = est)) +
+  geom_point(size = 2, alpha = 0.8) +
+  labs(
+    x = &quot;Survey Effort&quot;,
+    y = &quot;Predicted Detection Probability&quot;
+  ) +
+  scale_y_continuous(limits = c(0, 1)) +
+  theme_bw()
+</code></pre>
+<p><img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/bird-occupancy-modelling/rfigs/unnamed-chunk-35-1.png" alt=" " /></p>
+<p>Biologically, the fact that <code>survey_effort</code> does not have any real effect on detection likely has to do with <em>Melanerpes carolinus</em>’s high detection rate (80%-90%). Since the species is already highly detectable, observers are likely to detect it quickly when it is present, so increasing survey effort does not meaningfully increase detection probability.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this tutorial, we demonstrated how NEON breeding landbird data can be used to build detection histories and fit a single-species, single-season occupancy model. We estimated occupancy and detection probabilities, incorporated both site-level and survey-level covariates and examined ways to test model performance.</p>
+<p>While this tutorial focused on a relatively simple, but powerful, model, occupancy modeling can be extended in several ways. For example, <strong>multi-season occupancy models</strong> allow occupancy probability to change over time (we assumed it was constant here), enabling researchers to estimate local colonization and extinction rates and their predictors for a species. <strong>Multi-species occupancy models</strong> can also be used to analyze patterns across entire communities at a location, allowing researchers to examine how species traits influence occupancy and detection probabilities.</p>
+</div>
+</body>
+</html>
