@@ -142,7 +142,6 @@ First, we will load all necessary libraries into our R environment. If you are n
 library(tidyverse)
 library(neonUtilities)
 library(ecocomDP)
-token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -156,13 +155,12 @@ token <- Sys.getenv("NEON_TOKEN")
 library(tidyverse)
 library(neonUtilities)
 library(ecocomDP)
-token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
 This code chunk also includes two optional lines for clearing out your environment, which will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! 
 
-Also, consider using a NEON API token. This will allow you increased download speeds and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.
+As of June 2026, NEON requires users to download data using an API token. This enables NEON to limit harmful bots and __anonymously__ track data usage statistics, which helps us optimize data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Sign up for a NEON data user account, and get a token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.
 
 
 <div id="ds-objectives" markdown="1">

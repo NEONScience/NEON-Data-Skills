@@ -63,9 +63,9 @@ Exercises in this lesson will cover:
 
 You will need some familiarity with the R programming language to complete this tutorial and we recommend you use a version of the [RStudio IDE](https://www.rstudio.com/products/rstudio/). In this tutorial, we will describe how to access an instance of RStudio with all the required packages pre-installed via your web browser using the Visual Interactive Computing Environment (VICE) provided in the [CyVerse Discovery Environment](https://cyverse.org/discovery-environment). Alternatively, you can also complete most of the exercises in this tutorial using a locally installed version of [R](https://cran.r-project.org/) and [RStudio](https://www.rstudio.com/products/rstudio/download/).
 
-#### _2. [OPTIONAL] A NEON user account and API token_  
+#### _2. A NEON user account and API token_  
 
-We recommend that you sign up for a NEON user account and set up an API token to access NEON data following the instructions outlined in [this tutorial](https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial). This is not required. You can download NEON data without a token, but using an API token will enable faster download speeds. 
+NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. 
 
 #### _3. [OPTIONAL] Create a CyVerse account and request access to VICE_  
 
@@ -155,7 +155,7 @@ First, we will load all necessary libraries into our R environment. If you are n
 
 This code chunk also includes two optional lines for clearing out your environment, which will erase _all_ of the variables and data that are currently loaded in your R session. This is a good practice for many reasons, but only do this if you are completely sure that you won't be losing any important information! 
 
-Also, consider using a NEON API token. This will allow you increased download speeds and helps NEON __anonymously__ track data usage statistics, which helps us optimize our data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Please consider signing up for a NEON data user account, and using your token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.
+As of June 2026, NEON requires users to download data using an API token. This enables NEON to limit harmful bots and __anonymously__ track data usage statistics, which helps us optimize data delivery platforms, and informs our monthly and annual reporting to our funding agency, the National Science Foundation. Sign up for a NEON data user account, and get a token <a href="https://www.neonscience.org/neon-api-tokens-tutorial">as described in this tutorial here</a>. The linked tutorial describes a couple options for using your API token if you are running code locally. Below, we provide instructions for setting up an environmental variable to use your API token with the VICE cloud.
 
 
 <div id="ds-objectives" markdown="1">
