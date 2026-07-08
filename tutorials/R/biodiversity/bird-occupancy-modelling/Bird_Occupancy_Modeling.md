@@ -1,6 +1,6 @@
 ---
 title: "Estimating Bird Occupancy and Detection Using NEON Observational Data"
-syncID:
+syncID: 2fa5a64d01b6451fa38025d28677dec7
 description: "Use NEON breeding landbird data and the RPresence package to build detection histories, fit occupancy models, and incorporate site and survey covariates."
 dateCreated: 2026-04-07
 authors: Anushka Gupta
@@ -124,6 +124,8 @@ First, we’ll download the breeding landbird data product (<a href="https://dat
 On the first run, this code block will download the full dataset for all sites. Because the data product is large and spans multiple years-including years before some sites became operational-the initial download may take some time. A cached version of the dataset is saved locally, so on re-run, the code simply loads the local file instead of downloading the data again.
 
 A NEON user account and an API token are required to download the data for this workflow. You can use your account to create a token. For more information, see the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-api-tokens-tutorial" target="_blank">Using an API Token when Accessing NEON Data with neonUtilities tutorial</a> and the <a href="https://www.neonscience.org/data/about-data/data-portal-user-accounts" target="_blank">User Account page</a>.
+
+For this tutorial, we assume your token is stored as an environment variable named `NEON_TOKEN`. Modify code as needed if your token is stored in a different way.
 
 
     # Define NEON sites
