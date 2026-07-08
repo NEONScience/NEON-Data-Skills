@@ -150,10 +150,6 @@ A NEON user account and an API token are required to download the data for this 
       dir.create("data")
     }
 
-    if (!dir.exists("outputs")) {
-      dir.create("outputs")
-    }
-
     
 
     # Path to cached dataset
@@ -202,7 +198,7 @@ Take a look at their structure (that is, what fields are included) and the data 
     ##  $ coordinateUncertainty     : num  250 250 250 250 250 ...
     ##  $ elevation                 : num  576 576 576 576 576 ...
     ##  $ elevationUncertainty      : num  0.3 0.3 0.3 0.3 0.3 0.3 0.3 0.8 0.8 0.8 ...
-    ##  $ startDate                 : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:43:00" "2015-06-14 10:31:00" "2015-06-14 11:24:00" ...
+    ##  $ startDate                 : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:43:00" "2015-06-14 10:31:00" ...
     ##  $ boutNumber                : num  1 1 1 1 1 1 1 1 1 1 ...
     ##  $ samplingImpracticalRemarks: chr  NA NA NA NA ...
     ##  $ samplingImpractical       : chr  "OK" "OK" "OK" "OK" ...
@@ -223,36 +219,48 @@ Take a look at their structure (that is, what fields are included) and the data 
 
     head(bird.counts$brd_perpoint, n=5)
 
-    ##                                    uid         namedLocation domainID siteID   plotID    plotType pointID       nlcdClass
-    ## 1 30d14ecc-65a8-4e73-bcb3-d5132c153da2 BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 evergreenForest
-    ## 2 f97b6fa3-5719-4c0d-9922-1b23ec949911 BART_025.birdGrid.brd      D01   BART BART_025 distributed       2 evergreenForest
-    ## 3 6fdac273-77b0-4e30-86d1-f6ff94f92e66 BART_025.birdGrid.brd      D01   BART BART_025 distributed       1 evergreenForest
-    ## 4 ff9f059e-46fa-471a-a41d-2ac759881ff0 BART_025.birdGrid.brd      D01   BART BART_025 distributed       4 evergreenForest
-    ## 5 e3f73906-fe6f-4f88-a05e-067a567d6516 BART_025.birdGrid.brd      D01   BART BART_025 distributed       5 evergreenForest
-    ##   decimalLatitude decimalLongitude geodeticDatum coordinateUncertainty elevation elevationUncertainty           startDate
-    ## 1        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 09:23:00
-    ## 2        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 09:43:00
-    ## 3        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 10:31:00
-    ## 4        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 11:24:00
-    ## 5        44.06015        -71.31548         WGS84                 250.3     575.8                  0.3 2015-06-14 12:20:00
-    ##   boutNumber samplingImpracticalRemarks samplingImpractical         eventID startCloudCoverPercentage endCloudCoverPercentage
-    ## 1          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
-    ## 2          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
-    ## 3          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
-    ## 4          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
-    ## 5          1                       <NA>                  OK BRD.BART.2015.1                        20                      40
-    ##   startRH endRH                  observedHabitat observedAirTemp kmPerHourObservedWindSpeed                  laboratoryName
-    ## 1      72    56                 evergreen forest              18                          1 Bird Conservancy of the Rockies
-    ## 2      72    56                 deciduous forest              19                          3 Bird Conservancy of the Rockies
-    ## 3      72    56 mixed deciduous/evergreen forest              17                          0 Bird Conservancy of the Rockies
-    ## 4      72    56                 deciduous forest              19                          0 Bird Conservancy of the Rockies
-    ## 5      72    56                 deciduous forest              16                          0 Bird Conservancy of the Rockies
-    ##   samplingProtocolVersion remarks measuredBy  publicationDate      release
-    ## 1       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
-    ## 2       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
-    ## 3       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
-    ## 4       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
-    ## 5       NEON.DOC.014041vG    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ##                                    uid         namedLocation domainID siteID   plotID
+    ## 1 30d14ecc-65a8-4e73-bcb3-d5132c153da2 BART_025.birdGrid.brd      D01   BART BART_025
+    ## 2 f97b6fa3-5719-4c0d-9922-1b23ec949911 BART_025.birdGrid.brd      D01   BART BART_025
+    ## 3 6fdac273-77b0-4e30-86d1-f6ff94f92e66 BART_025.birdGrid.brd      D01   BART BART_025
+    ## 4 ff9f059e-46fa-471a-a41d-2ac759881ff0 BART_025.birdGrid.brd      D01   BART BART_025
+    ## 5 e3f73906-fe6f-4f88-a05e-067a567d6516 BART_025.birdGrid.brd      D01   BART BART_025
+    ##      plotType pointID       nlcdClass decimalLatitude decimalLongitude geodeticDatum
+    ## 1 distributed       3 evergreenForest        44.06015        -71.31548         WGS84
+    ## 2 distributed       2 evergreenForest        44.06015        -71.31548         WGS84
+    ## 3 distributed       1 evergreenForest        44.06015        -71.31548         WGS84
+    ## 4 distributed       4 evergreenForest        44.06015        -71.31548         WGS84
+    ## 5 distributed       5 evergreenForest        44.06015        -71.31548         WGS84
+    ##   coordinateUncertainty elevation elevationUncertainty           startDate boutNumber
+    ## 1                 250.3     575.8                  0.3 2015-06-14 09:23:00          1
+    ## 2                 250.3     575.8                  0.3 2015-06-14 09:43:00          1
+    ## 3                 250.3     575.8                  0.3 2015-06-14 10:31:00          1
+    ## 4                 250.3     575.8                  0.3 2015-06-14 11:24:00          1
+    ## 5                 250.3     575.8                  0.3 2015-06-14 12:20:00          1
+    ##   samplingImpracticalRemarks samplingImpractical         eventID startCloudCoverPercentage
+    ## 1                       <NA>                  OK BRD.BART.2015.1                        20
+    ## 2                       <NA>                  OK BRD.BART.2015.1                        20
+    ## 3                       <NA>                  OK BRD.BART.2015.1                        20
+    ## 4                       <NA>                  OK BRD.BART.2015.1                        20
+    ## 5                       <NA>                  OK BRD.BART.2015.1                        20
+    ##   endCloudCoverPercentage startRH endRH                  observedHabitat observedAirTemp
+    ## 1                      40      72    56                 evergreen forest              18
+    ## 2                      40      72    56                 deciduous forest              19
+    ## 3                      40      72    56 mixed deciduous/evergreen forest              17
+    ## 4                      40      72    56                 deciduous forest              19
+    ## 5                      40      72    56                 deciduous forest              16
+    ##   kmPerHourObservedWindSpeed                  laboratoryName samplingProtocolVersion
+    ## 1                          1 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+    ## 2                          3 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+    ## 3                          0 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+    ## 4                          0 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+    ## 5                          0 Bird Conservancy of the Rockies       NEON.DOC.014041vG
+    ##   remarks measuredBy  publicationDate      release
+    ## 1    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 2    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 3    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 4    <NA>      JRUEB 20260106T223419Z RELEASE-2026
+    ## 5    <NA>      JRUEB 20260106T223419Z RELEASE-2026
 
 `brd_countdata` contains data for the birds observed during each point-count survey, including identification, observation method, distance, and observed minute.
 
@@ -267,7 +275,7 @@ Take a look at their structure (that is, what fields are included) and the data 
     ##  $ plotID                 : chr  "BART_025" "BART_025" "BART_025" "BART_025" ...
     ##  $ plotType               : chr  "distributed" "distributed" "distributed" "distributed" ...
     ##  $ pointID                : chr  "3" "3" "3" "3" ...
-    ##  $ startDate              : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:23:00" "2015-06-14 09:23:00" "2015-06-14 09:23:00" ...
+    ##  $ startDate              : POSIXct, format: "2015-06-14 09:23:00" "2015-06-14 09:23:00" "2015-06-14 09:23:00" ...
     ##  $ boutNumber             : num  1 1 1 1 1 1 1 1 1 1 ...
     ##  $ eventID                : chr  "BRD.BART.2015.1" "BRD.BART.2015.1" "BRD.BART.2015.1" "BRD.BART.2015.1" ...
     ##  $ pointCountMinute       : num  1 1 2 2 1 3 4 1 1 6 ...
@@ -289,30 +297,36 @@ Take a look at their structure (that is, what fields are included) and the data 
 
     head(bird.counts$brd_countdata, n=5)
 
-    ##                                    uid         namedLocation domainID siteID   plotID    plotType pointID           startDate
-    ## 1 08b95360-854d-4d74-a276-93fc7d2423ca BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
-    ## 2 f2d2d4ce-c978-46a5-befb-4d3b749b1cdb BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
-    ## 3 754c7b57-1892-4f1f-9f49-594c40d47bfa BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
-    ## 4 6212a830-6d2d-4999-b169-19273526790e BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
-    ## 5 192585ee-0a3d-4994-856f-3da8090a37c3 BART_025.birdGrid.brd      D01   BART BART_025 distributed       3 2015-06-14 09:23:00
-    ##   boutNumber         eventID pointCountMinute targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
-    ## 1          1 BRD.BART.2015.1                1                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
-    ## 2          1 BRD.BART.2015.1                1                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
-    ## 3          1 BRD.BART.2015.1                2                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
-    ## 4          1 BRD.BART.2015.1                2                 Y    BAWW      Mniotilta varia   species      Black-and-white Warbler
-    ## 5          1 BRD.BART.2015.1                1                 Y    BCCH Poecile atricapillus   species       Black-capped Chickadee
-    ##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode identifiedBy identificationHistoryID
-    ## 1                9         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ## 2               12         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ## 3               50         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ## 4               17         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ## 5               42         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ##    publicationDate      release
-    ## 1 20260106T223419Z RELEASE-2026
-    ## 2 20260106T223419Z RELEASE-2026
-    ## 3 20260106T223419Z RELEASE-2026
-    ## 4 20260106T223419Z RELEASE-2026
-    ## 5 20260106T223419Z RELEASE-2026
+    ##                                    uid         namedLocation domainID siteID   plotID
+    ## 1 08b95360-854d-4d74-a276-93fc7d2423ca BART_025.birdGrid.brd      D01   BART BART_025
+    ## 2 f2d2d4ce-c978-46a5-befb-4d3b749b1cdb BART_025.birdGrid.brd      D01   BART BART_025
+    ## 3 754c7b57-1892-4f1f-9f49-594c40d47bfa BART_025.birdGrid.brd      D01   BART BART_025
+    ## 4 6212a830-6d2d-4999-b169-19273526790e BART_025.birdGrid.brd      D01   BART BART_025
+    ## 5 192585ee-0a3d-4994-856f-3da8090a37c3 BART_025.birdGrid.brd      D01   BART BART_025
+    ##      plotType pointID           startDate boutNumber         eventID pointCountMinute
+    ## 1 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1
+    ## 2 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1
+    ## 3 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                2
+    ## 4 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                2
+    ## 5 distributed       3 2015-06-14 09:23:00          1 BRD.BART.2015.1                1
+    ##   targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
+    ## 1                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
+    ## 2                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+    ## 3                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+    ## 4                 Y    BAWW      Mniotilta varia   species      Black-and-white Warbler
+    ## 5                 Y    BCCH Poecile atricapillus   species       Black-capped Chickadee
+    ##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode
+    ## 1                9         singing                 No     Male           1        <NA>
+    ## 2               12         singing                 No     Male           1        <NA>
+    ## 3               50         singing                 No     Male           1        <NA>
+    ## 4               17         singing                 No     Male           1        <NA>
+    ## 5               42         singing                 No     Male           1        <NA>
+    ##   identifiedBy identificationHistoryID  publicationDate      release
+    ## 1        JRUEB                    <NA> 20260106T223419Z RELEASE-2026
+    ## 2        JRUEB                    <NA> 20260106T223419Z RELEASE-2026
+    ## 3        JRUEB                    <NA> 20260106T223419Z RELEASE-2026
+    ## 4        JRUEB                    <NA> 20260106T223419Z RELEASE-2026
+    ## 5        JRUEB                    <NA> 20260106T223419Z RELEASE-2026
 
 Before we can build detection histories and fit an occupancy model, we need to clean the data a bit. This includes:
 
@@ -388,48 +402,66 @@ Finally, we join the cleaned detection data (`brd_countdata_clean`) with the cle
 
     head(brd_joineddata_clean, n=5)
 
-    ##                                    uid         namedLocation domainID siteID   plotID    plotType pointID           startDate
-    ## 1 28587fd5-e9c6-4dd9-ac2f-2a80d9d69ec2 BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
-    ## 2 09f4496e-72c5-42ff-a4bf-aadcbf739397 BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
-    ## 3 8721c42a-1e64-4c60-a40f-26b41ec3f51a BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
-    ## 4 8ea10abd-5835-4fda-b592-ba3533c3311a BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
-    ## 5 39915ebd-b013-4681-9903-9debb0ab7166 BART_018.birdGrid.brd      D01   BART BART_018 distributed       1 2017-06-21 09:03:00
-    ##   boutNumber         eventID pointCountMinute targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
-    ## 1          1 BRD.BART.2017.1                1                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
-    ## 2          1 BRD.BART.2017.1                2                 Y    RBWO Melanerpes carolinus   species       Red-bellied Woodpecker
-    ## 3          1 BRD.BART.2017.1                1                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
-    ## 4          1 BRD.BART.2017.1                1                 Y    OVEN  Seiurus aurocapilla   species                     Ovenbird
-    ## 5          1 BRD.BART.2017.1                1                 Y    HETH    Catharus guttatus   species                Hermit Thrush
-    ##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode identifiedBy identificationHistoryID
-    ## 1               40         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ## 2               20         calling                 No  Unknown           1        <NA>        JRUEB                    <NA>
-    ## 3               45         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ## 4               40         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ## 5               50         singing                 No     Male           1        <NA>        JRUEB                    <NA>
-    ##    publicationDate      release year                pointSurveyID   nlcdClass decimalLatitude decimalLongitude geodeticDatum
-    ## 1 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
-    ## 2 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
-    ## 3 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
-    ## 4 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
-    ## 5 20260106T223356Z RELEASE-2026 2017 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
-    ##   coordinateUncertainty elevation elevationUncertainty samplingImpracticalRemarks samplingImpractical startCloudCoverPercentage
-    ## 1                 250.1     297.2                  0.2                       <NA>                  OK                       100
-    ## 2                 250.1     297.2                  0.2                       <NA>                  OK                       100
-    ## 3                 250.1     297.2                  0.2                       <NA>                  OK                       100
-    ## 4                 250.1     297.2                  0.2                       <NA>                  OK                       100
-    ## 5                 250.1     297.2                  0.2                       <NA>                  OK                       100
-    ##   endCloudCoverPercentage startRH endRH  observedHabitat observedAirTemp kmPerHourObservedWindSpeed                  laboratoryName
-    ## 1                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
-    ## 2                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
-    ## 3                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
-    ## 4                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
-    ## 5                     100      73    78 deciduous forest              15                          1 Bird Conservancy of the Rockies
-    ##   samplingProtocolVersion remarks measuredBy
-    ## 1       NEON.DOC.014041vH    <NA>      JRUEB
-    ## 2       NEON.DOC.014041vH    <NA>      JRUEB
-    ## 3       NEON.DOC.014041vH    <NA>      JRUEB
-    ## 4       NEON.DOC.014041vH    <NA>      JRUEB
-    ## 5       NEON.DOC.014041vH    <NA>      JRUEB
+    ##                                    uid         namedLocation domainID siteID   plotID
+    ## 1 28587fd5-e9c6-4dd9-ac2f-2a80d9d69ec2 BART_018.birdGrid.brd      D01   BART BART_018
+    ## 2 09f4496e-72c5-42ff-a4bf-aadcbf739397 BART_018.birdGrid.brd      D01   BART BART_018
+    ## 3 8721c42a-1e64-4c60-a40f-26b41ec3f51a BART_018.birdGrid.brd      D01   BART BART_018
+    ## 4 8ea10abd-5835-4fda-b592-ba3533c3311a BART_018.birdGrid.brd      D01   BART BART_018
+    ## 5 39915ebd-b013-4681-9903-9debb0ab7166 BART_018.birdGrid.brd      D01   BART BART_018
+    ##      plotType pointID           startDate boutNumber         eventID pointCountMinute
+    ## 1 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+    ## 2 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                2
+    ## 3 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+    ## 4 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+    ## 5 distributed       1 2017-06-21 09:03:00          1 BRD.BART.2017.1                1
+    ##   targetTaxaPresent taxonID       scientificName taxonRank               vernacularName
+    ## 1                 Y    BTNW     Setophaga virens   species Black-throated Green Warbler
+    ## 2                 Y    RBWO Melanerpes carolinus   species       Red-bellied Woodpecker
+    ## 3                 Y    REVI      Vireo olivaceus   species               Red-eyed Vireo
+    ## 4                 Y    OVEN  Seiurus aurocapilla   species                     Ovenbird
+    ## 5                 Y    HETH    Catharus guttatus   species                Hermit Thrush
+    ##   observerDistance detectionMethod visualConfirmation sexOrAge clusterSize clusterCode
+    ## 1               40         singing                 No     Male           1        <NA>
+    ## 2               20         calling                 No  Unknown           1        <NA>
+    ## 3               45         singing                 No     Male           1        <NA>
+    ## 4               40         singing                 No     Male           1        <NA>
+    ## 5               50         singing                 No     Male           1        <NA>
+    ##   identifiedBy identificationHistoryID  publicationDate      release year
+    ## 1        JRUEB                    <NA> 20260106T223356Z RELEASE-2026 2017
+    ## 2        JRUEB                    <NA> 20260106T223356Z RELEASE-2026 2017
+    ## 3        JRUEB                    <NA> 20260106T223356Z RELEASE-2026 2017
+    ## 4        JRUEB                    <NA> 20260106T223356Z RELEASE-2026 2017
+    ## 5        JRUEB                    <NA> 20260106T223356Z RELEASE-2026 2017
+    ##                  pointSurveyID   nlcdClass decimalLatitude decimalLongitude geodeticDatum
+    ## 1 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 2 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 3 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 4 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ## 5 BART_018_point_1_2017_bout_1 mixedForest        44.05997         -71.2779         WGS84
+    ##   coordinateUncertainty elevation elevationUncertainty samplingImpracticalRemarks
+    ## 1                 250.1     297.2                  0.2                       <NA>
+    ## 2                 250.1     297.2                  0.2                       <NA>
+    ## 3                 250.1     297.2                  0.2                       <NA>
+    ## 4                 250.1     297.2                  0.2                       <NA>
+    ## 5                 250.1     297.2                  0.2                       <NA>
+    ##   samplingImpractical startCloudCoverPercentage endCloudCoverPercentage startRH endRH
+    ## 1                  OK                       100                     100      73    78
+    ## 2                  OK                       100                     100      73    78
+    ## 3                  OK                       100                     100      73    78
+    ## 4                  OK                       100                     100      73    78
+    ## 5                  OK                       100                     100      73    78
+    ##    observedHabitat observedAirTemp kmPerHourObservedWindSpeed
+    ## 1 deciduous forest              15                          1
+    ## 2 deciduous forest              15                          1
+    ## 3 deciduous forest              15                          1
+    ## 4 deciduous forest              15                          1
+    ## 5 deciduous forest              15                          1
+    ##                    laboratoryName samplingProtocolVersion remarks measuredBy
+    ## 1 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 2 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 3 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 4 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>      JRUEB
+    ## 5 Bird Conservancy of the Rockies       NEON.DOC.014041vH    <NA>      JRUEB
 
 ## Building the Detection History
 
@@ -1193,10 +1225,14 @@ We can again compare models using AIC. Here we compare the simple original model
 
     aictable$table
 
-    ##                            Model      AIC   neg2ll npar warn.conv warn.VC    DAIC modlike    wgt
-    ## 2             psi(elevation)p(1) 191.7794 185.7794    3         7       0  0.0000  1.0000 0.6693
-    ## 3 psi(elevation)p(survey_effort) 193.1907 185.1907    4         7       0  1.4113  0.4938 0.3305
-    ## 1                     psi(1)p(1) 207.9761 203.9761    2         7       0 16.1967  0.0003 0.0002
+    ##                            Model      AIC   neg2ll npar warn.conv warn.VC    DAIC modlike
+    ## 2             psi(elevation)p(1) 191.7794 185.7794    3         7       0  0.0000  1.0000
+    ## 3 psi(elevation)p(survey_effort) 193.1907 185.1907    4         7       0  1.4113  0.4938
+    ## 1                     psi(1)p(1) 207.9761 203.9761    2         7       0 16.1967  0.0003
+    ##      wgt
+    ## 2 0.6693
+    ## 3 0.3305
+    ## 1 0.0002
 Looking at the three models, the model including elevation only has the lowest AIC value (191.7794), followed by the model including elevation and survey effort (193.1907), and finally the simple model with no covariates (207.9761). This suggests that adding survey effort as a detection covariate does not improve the model relative to the elevation-only model, and the additional parameter does not provide enough improvement in model fit to justify the more complex model.
 
 ##### Likelihood Ratio Test

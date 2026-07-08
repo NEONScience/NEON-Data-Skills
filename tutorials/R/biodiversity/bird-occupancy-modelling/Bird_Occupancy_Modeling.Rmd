@@ -137,9 +137,6 @@ sites <- c(large_sites, small_sites)
 if (!dir.exists("data")) {
   dir.create("data")
 }
-if (!dir.exists("outputs")) {
-  dir.create("outputs")
-}
 
 # Path to cached dataset
 bird_counts_path <- file.path("data", "bird_counts.RData")

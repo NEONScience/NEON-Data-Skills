@@ -1,8 +1,8 @@
-## ----setup, include=FALSE---------------------------------------------------------------------------------------------------------
+## ----setup, include=FALSE-----------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
 
-## ----install, eval=FALSE----------------------------------------------------------------------------------------------------------
+## ----install, eval=FALSE------------------------------------------------------------------
 ## 
 ## # run once to get the package, and re-run if you need to get updates
 ## install.packages("neonUtilities") # work with NEON data
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## 
 
 
-## ----message=FALSE, warning=FALSE-------------------------------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE---------------------------------------------------------
 # load the libraries into your environment
 library(neonUtilities)
 library(RPresence)
@@ -24,7 +24,7 @@ library(stringr)
 library(ggplot2)
 
 
-## ----warning=FALSE----------------------------------------------------------------------------------------------------------------
+## ----warning=FALSE------------------------------------------------------------------------
 # Define NEON sites
 large_sites <- c(
   "BARR", "BART", "BONA", "CLBJ", "CPER", "DEJU", "DSNY", "GRSM",
@@ -41,9 +41,6 @@ sites <- c(large_sites, small_sites)
 # Set up directories
 if (!dir.exists("data")) {
   dir.create("data")
-}
-if (!dir.exists("outputs")) {
-  dir.create("outputs")
 }
 
 # Path to cached dataset
@@ -66,19 +63,19 @@ if (file.exists(bird_counts_path)) {
 }
 
 
-## ----brd_perpoint-----------------------------------------------------------------------------------------------------------------
+## ----brd_perpoint-------------------------------------------------------------------------
 str(bird.counts$brd_perpoint)
 
 head(bird.counts$brd_perpoint, n=5)
 
 
-## ----brd_countdata----------------------------------------------------------------------------------------------------------------
+## ----brd_countdata------------------------------------------------------------------------
 str(bird.counts$brd_countdata)
 
 head(bird.counts$brd_countdata, n=5)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 brd_perpoint_clean <- bird.counts$brd_perpoint %>%
   mutate(year = str_extract(eventID, "\\d{4}")) %>%
   mutate(pointSurveyID = paste(plotID, "point", pointID, year, "bout", boutNumber, sep = "_"))
@@ -88,22 +85,22 @@ brd_countdata_clean <- bird.counts$brd_countdata %>%
   mutate(pointSurveyID = paste(plotID, "point", pointID, year, "bout", boutNumber, sep = "_"))
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 brd_perpoint_clean <- brd_perpoint_clean %>%
   filter(samplingImpractical == "OK")
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 brd_perpoint_clean <- brd_perpoint_clean %>%
   filter(year >= 2017)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 brd_countdata_clean <- brd_countdata_clean %>%
   filter(taxonRank == "species")
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 #Join the tables
 brd_joineddata_clean <- inner_join(
   brd_countdata_clean,
@@ -120,7 +117,7 @@ names(brd_joineddata_clean) <- gsub("\\.count$", "", names(brd_joineddata_clean)
 head(brd_joineddata_clean, n=5)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # Filter table by species
 bird_species <- "Melanerpes carolinus"
 
@@ -128,20 +125,20 @@ brd_single_species <- brd_joineddata_clean %>%
   filter(scientificName == bird_species)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # Get all valid site-year combinations across sites (so we can fill in NAs)
 valid_site_years <- brd_perpoint_clean %>%
   distinct(siteID, year)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # Get detections (so we can fill in 0/1s)
 detections <- brd_single_species %>%
   group_by(siteID, year) %>%
   summarize(present = 1, .groups = "drop")
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # Join and fill
 detection_history <- valid_site_years %>%
   left_join(detections, by = c("siteID", "year")) %>%
@@ -156,14 +153,14 @@ detection_history <- valid_site_years %>%
 head(detection_history, n=10)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 birds_pao_simple <- createPao(
   data = detection_history[, -1], # detection/nondetection data (survey columns only) from detection_history
   unitnames = detection_history$siteID # siteIDs from detection_history
 )
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 birds_occupancy_simple <- occMod(
   data = birds_pao_simple,           
   model = list(
@@ -175,7 +172,7 @@ birds_occupancy_simple <- occMod(
 summary(birds_occupancy_simple)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 ests <- as.data.frame(print_one_site_estimates(mod = birds_occupancy_simple))
 
 #Rename some values for readability
@@ -196,7 +193,7 @@ ests <- ests[1:2,] %>%
 ests
 
 
-## ----message=FALSE, warning=FALSE-------------------------------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE---------------------------------------------------------
 library(sf)
 library(rnaturalearth)
 
@@ -258,7 +255,7 @@ ggplot() +
   theme_bw()
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # Function to run the simple occupancy model workflow for any species
 run_simple_species_model <- function(species_name, common_name){
 
@@ -296,7 +293,7 @@ run_simple_species_model <- function(species_name, common_name){
 }
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 owl_model <- run_simple_species_model(
   species_name = "Bubo virginianus",
   common_name = "Great Horned Owl"
@@ -308,7 +305,7 @@ jay_model <- run_simple_species_model(
 )
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # Function to extract and rename estimates for simple model
 extract_estimates <- function(model){
   
@@ -337,7 +334,7 @@ jay_estimates <- extract_estimates(jay_model) %>%
 species_estimates <- bind_rows(owl_estimates, jay_estimates)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 ggplot(species_estimates,
        aes(x = Parameter, y = Estimate, fill = Species)) +
   geom_col(position = position_dodge(width = 0.7), width = 0.6) +
@@ -360,7 +357,7 @@ ggplot(species_estimates,
   theme_bw()
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 site_cov <- brd_joineddata_clean %>%
   select(siteID, elevation) %>%
   distinct(siteID, .keep_all = TRUE) %>%
@@ -370,7 +367,7 @@ site_cov <- brd_joineddata_clean %>%
 head(site_cov, n=10)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # Example categorical covariate
  site_cov_categorical <- brd_perpoint_clean %>%
    select(siteID, nlcdClass) %>%
@@ -384,7 +381,7 @@ site_cov_categorical$nlcdClass <- factor(site_cov_categorical$nlcdClass)
 head(site_cov_categorical, n=10)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 birds_pao_sitecov <- createPao(
   data = detection_history[, -1], # detection/nondetection data (survey columns only) from detection_history
   unitnames = detection_history$siteID, # site IDs from detection_history
@@ -392,7 +389,7 @@ birds_pao_sitecov <- createPao(
 )
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 birds_occupancy_sitecov <- occMod(
   data = birds_pao_sitecov,           
   model = list(psi ~ elevation, 
@@ -401,7 +398,7 @@ birds_occupancy_sitecov <- occMod(
   )
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 mod.list <-  list(
     birds_occupancy_simple, # the model with formula psi ~ 1, p ~ 1
     birds_occupancy_sitecov # the model with formula psi ~ elevation, p ~ 1
@@ -410,7 +407,7 @@ aictable <- createAicTable(mod.list = mod.list)
 aictable$table
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 #get the difference in the neg2loglike between the two models
 diff <- abs(birds_occupancy_simple$neg2loglike - birds_occupancy_sitecov$neg2loglike)
 
@@ -421,11 +418,11 @@ pchisq(diff,
 
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 coef(birds_occupancy_sitecov, 'psi', prob = 0.95)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 data <- cbind(site_cov, birds_occupancy_sitecov$real$psi) %>% 
   distinct(.keep_all = TRUE) %>%
   arrange(elevation)
@@ -440,7 +437,7 @@ ggplot(data, aes(x = elevation, y = est)) +
   theme_bw()
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 survey_effort <- brd_perpoint_clean %>% # we start with brd_perpoint_clean since we want all point-count surveys conducted, not just those that detected birds
   distinct(pointSurveyID, siteID, year) %>%
   group_by(siteID, year) %>%
@@ -459,7 +456,7 @@ survey_effort <- brd_perpoint_clean %>% # we start with brd_perpoint_clean since
 head(survey_effort, n=10)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 # flatten the data frame
 surveycov <-  data.frame(
   survey_effort = unlist(survey_effort)
@@ -473,7 +470,7 @@ head(surveycov)
 
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 birds_pao_surveycov <- createPao(
   data = detection_history[, -1], # detection/nondetection data (survey columns only) from detection_history
   unitnames = detection_history$siteID, # site IDs from detection_history
@@ -482,7 +479,7 @@ birds_pao_surveycov <- createPao(
 )
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 birds_occupancy_surveycov <- occMod(
   data = birds_pao_surveycov,           
   model = list(psi ~ elevation,  p ~ survey_effort),
@@ -492,7 +489,7 @@ birds_occupancy_surveycov <- occMod(
 summary(birds_occupancy_surveycov)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 mod.list <-  list(
     birds_occupancy_simple, # the model with formula psi ~ 1, p ~ 1
     birds_occupancy_sitecov, # the model with formula psi ~ elevation, p ~ 1
@@ -502,7 +499,7 @@ aictable <- createAicTable(mod.list = mod.list)
 aictable$table
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 #get the difference in the neg2loglike between the two models
 diff <- abs(birds_occupancy_sitecov$neg2loglike - birds_occupancy_surveycov$neg2loglike)
 
@@ -513,11 +510,11 @@ pchisq(diff,
 
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 coef(birds_occupancy_surveycov, 'p', prob = 0.95)
 
 
-## ---------------------------------------------------------------------------------------------------------------------------------
+## -----------------------------------------------------------------------------------------
 data <- cbind(surveycov, birds_occupancy_surveycov$real$p) %>% 
   distinct(.keep_all = TRUE) %>%
   arrange(survey_effort)
