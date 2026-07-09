@@ -69,6 +69,8 @@ First install and load the necessary packages. Skip the install step if packages
 are already installed, and modify the working directory file path for your 
 computer.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. This tutorial assumes your token is stored as an environment variable named `NEON_TOKEN`, as demonstrated in the linked tutorial. Modify token retrieval code as needed if your token is stored differently.
+
 ```{r setup, eval=FALSE}
 
 install.packages("neonUtilities")
@@ -103,6 +105,7 @@ library(tidyselect)
 library(tibble)
 
 setwd("~/data")
+token <- Sys.getenv("NEON_TOKEN")
 
 ```
 
@@ -123,6 +126,8 @@ library(magrittr)
 library(tidyselect)
 library(tibble)
 
+token <- Sys.getenv("NEON_TOKEN")
+
 ```
 
 
@@ -135,7 +140,8 @@ The simplest way to access site event data is to download all the events for a p
 events <- loadByProduct(dpID="DP1.10111.001", 
                         site="TEAK",
                         check.size=F,
-                        include.provisional=T)
+                        include.provisional=T,
+                        token=token)
 
 ```
 
@@ -221,7 +227,8 @@ In many cases, you may be interested in a particular type of disturbance across 
 
 fires <- byEventSIM(eventType="fire", 
                     site=c("SJER","SOAP","BIGC","TEAK","TECR"),
-                    include.provisional=T)
+                    include.provisional=T,
+                    token=token)
 
 ```
 
@@ -280,18 +287,20 @@ We can now use the easting and northing coordinates to download tiles of AOP dat
 byTileAOP("DP3.30026.001", site="SOAP", year=2019,
           easting=fire.SOAP$locationID_easting,
           northing=fire.SOAP$locationID_northing,
-          buffer=10, check.size=F, savepath=getwd())
+          buffer=10, check.size=F, token=token,
+          savepath=getwd())
 
 byTileAOP("DP3.30026.001", site="SOAP", year=2021,
           easting=fire.SOAP$locationID_easting,
           northing=fire.SOAP$locationID_northing,
-          buffer=10, check.size=F, savepath=getwd())
+          buffer=10, check.size=F, token=token,
+          savepath=getwd())
 
 ```
 
 Vegetation indices are downloaded as zip files, so first we need to unzip them.
 
-``` {r unzip-AOP, results="hide"}
+``` {r unzip-AOP, results="hide", warning=FALSE}
 
 zippaths <- list.files(getwd(), pattern=".zip", 
                         full.names=T, recursive=T)
@@ -357,7 +366,7 @@ We can utilize the `neonSiteMgmtEventData` package's `createSIMPolygon()` functi
 # wildfire polygons
 wf.SOAP.df <- fire.loc |>
   filter(siteID=="SOAP" & endDate<"2021-01-01" & 
-           eventType == "fire" & 
+           eventType=="fire" & 
            methodTypeChoice=="fire-wildfire") 
 
 wf.SOAP.polygon <- createSIMPolygon(df= wf.SOAP.df)
