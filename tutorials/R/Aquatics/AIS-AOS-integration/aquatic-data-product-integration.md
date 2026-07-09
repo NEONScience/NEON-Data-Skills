@@ -89,6 +89,14 @@ and it ends with ready-to-use tables in R. However, if you use it in
 a workflow you run repeatedly, keep in mind it will re-download the 
 data every time.
 
+As of June 2026, NEON requires an API token for data downloads, to reduce bot 
+scraping and improve user support. Tokens can be generated in NEON data portal 
+user accounts - log in to your account or create one, and go to the API Tokens 
+section. For best practices in storing and using tokens, follow the 
+instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. This tutorial assumes your API token is stored 
+as an environment variable named `NEON_TOKEN`, as demonstrated in the linked 
+tutorial.
+
 Before we get the NEON data, we need to install (if not already done) and load 
 the neonUtilities R package, as well as other packages we will use in the 
 analysis. 
@@ -171,9 +179,7 @@ only applicable to IS data.
 data and warn you about the size of your download? Defaults to T; if 
 you are using this function within a script or batch process you 
 will want to set this to F.
-* `token`: this allows you to input your NEON API token to obtain faster 
-downloads. 
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank">**Using an API Token when Accessing NEON Data with neonUtilities** tutorial</a>. 
+* `token`: NEON API token
 
 There are additional inputs you can learn about in the 
 <a href="https//:www.neonscience.org/neonDataStackR" target="_blank">**Use the neonUtilities R Package to Access NEON Data** tutorial</a>. 
@@ -300,9 +306,10 @@ To work with each of them, select them from the list using the `$` operator.
 
     names(inv)
 
-    ##  [1] "categoricalCodes_20120"      "citation_20120_RELEASE-2026" "inv_fieldData"               "inv_persample"              
-    ##  [5] "inv_taxonomyProcessed"       "inv_taxonomyRaw"             "issueLog_20120"              "readme_20120"               
-    ##  [9] "validation_20120"            "variables_20120"
+    ##  [1] "categoricalCodes_20120"      "citation_20120_RELEASE-2026" "inv_fieldData"              
+    ##  [4] "inv_persample"               "inv_taxonomyProcessed"       "inv_taxonomyRaw"            
+    ##  [7] "issueLog_20120"              "readme_20120"                "validation_20120"           
+    ## [10] "variables_20120"
 
 We can see that there are at least 9 objects in the downloaded macroinvertebrate 
 collection data.
@@ -417,8 +424,9 @@ Let's see what files are included with an AIS data product download
 
     names(csd)
 
-    ## [1] "categoricalCodes_00130"      "citation_00130_RELEASE-2026" "csd_15_min"                  "issueLog_00130"             
-    ## [5] "readme_00130"                "science_review_flags_00130"  "sensor_positions_00130"      "variables_00130"
+    ## [1] "categoricalCodes_00130"      "citation_00130_RELEASE-2026" "csd_15_min"                 
+    ## [4] "issueLog_00130"              "readme_00130"                "science_review_flags_00130" 
+    ## [7] "sensor_positions_00130"      "variables_00130"
 
 This AIS data product contains 1 data table available in the basic package:
 
@@ -1070,12 +1078,13 @@ data.
 
     print(unique(swc_externalLabDataByAnalyte$analyte))
 
-    ##  [1] "Ca"                     "Fe"                     "Cl"                     "K"                      "TPC"                   
-    ##  [6] "TN"                     "Na"                     "F"                      "TPN"                    "SO4"                   
-    ## [11] "NO3+NO2 - N"            "DIC"                    "Mn"                     "TDS"                    "Ortho - P"             
-    ## [16] "DOC"                    "NH4 - N"                "TDN"                    "TSS"                    "TP"                    
-    ## [21] "UV Absorbance (254 nm)" "Si"                     "TOC"                    "TDP"                    "NO2 - N"               
-    ## [26] "Br"                     "UV Absorbance (280 nm)" "Mg"
+    ##  [1] "Ca"                     "Fe"                     "Cl"                     "K"                     
+    ##  [5] "TPC"                    "TN"                     "Na"                     "F"                     
+    ##  [9] "TPN"                    "SO4"                    "NO3+NO2 - N"            "DIC"                   
+    ## [13] "Mn"                     "TDS"                    "Ortho - P"              "DOC"                   
+    ## [17] "NH4 - N"                "TDN"                    "TSS"                    "TP"                    
+    ## [21] "UV Absorbance (254 nm)" "Si"                     "TOC"                    "TDP"                   
+    ## [25] "NO2 - N"                "Br"                     "UV Absorbance (280 nm)" "Mg"
 
 For this exercise, we will subset lab data to only dissolved organic carbon
 (DOC). Let's see what a DOC timeseries looks like.
@@ -1616,6 +1625,10 @@ products, we will embed them as `ggplot` subplots in the larger `plotly` plot.
                         width=4, height=7, units="cm")
       }
     }
+
+    ## 
+    ## 1: Yes
+    ## 2: No
 
     # re-generate the CUPE plot with particle size distribution subplots added
 

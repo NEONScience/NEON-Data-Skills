@@ -168,6 +168,13 @@ choice because it ensures you’re always working with the most up-to-date data,
 and it ends with ready-to-use tables in R. However, if you use it in
 a workflow you run repeatedly, keep in mind it will re-download the
 data every time.</p>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot
+scraping and improve user support. Tokens can be generated in NEON data portal
+user accounts - log in to your account or create one, and go to the API Tokens
+section. For best practices in storing and using tokens, follow the
+instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. This tutorial assumes your API token is stored
+as an environment variable named <code>NEON_TOKEN</code>, as demonstrated in the linked
+tutorial.</p>
 <p>Before we get the NEON data, we need to install (if not already done) and load
 the neonUtilities R package, as well as other packages we will use in the
 analysis.</p>
@@ -243,9 +250,7 @@ only applicable to IS data.</li>
 data and warn you about the size of your download? Defaults to T; if
 you are using this function within a script or batch process you
 will want to set this to F.</li>
-<li><code>token</code>: this allows you to input your NEON API token to obtain faster
-downloads.
-Learn more about NEON API tokens in the <a href="https//:www.neonscience.org/neon-api-tokens-tutorial" target="_blank"><strong>Using an API Token when Accessing NEON Data with neonUtilities</strong> tutorial</a>.</li>
+<li><code>token</code>: NEON API token</li>
 </ul>
 <p>There are additional inputs you can learn about in the
 <a href="https//:www.neonscience.org/neonDataStackR" target="_blank"><strong>Use the neonUtilities R Package to Access NEON Data</strong> tutorial</a>.</p>
@@ -358,9 +363,10 @@ To work with each of them, select them from the list using the <code>$</code> op
 
 names(inv)
 
-##  [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_RELEASE-2026&quot; &quot;inv_fieldData&quot;               &quot;inv_persample&quot;              
-##  [5] &quot;inv_taxonomyProcessed&quot;       &quot;inv_taxonomyRaw&quot;             &quot;issueLog_20120&quot;              &quot;readme_20120&quot;               
-##  [9] &quot;validation_20120&quot;            &quot;variables_20120&quot;
+##  [1] &quot;categoricalCodes_20120&quot;      &quot;citation_20120_RELEASE-2026&quot; &quot;inv_fieldData&quot;              
+##  [4] &quot;inv_persample&quot;               &quot;inv_taxonomyProcessed&quot;       &quot;inv_taxonomyRaw&quot;            
+##  [7] &quot;issueLog_20120&quot;              &quot;readme_20120&quot;                &quot;validation_20120&quot;           
+## [10] &quot;variables_20120&quot;
 </code></pre>
 <p>We can see that there are at least 9 objects in the downloaded macroinvertebrate
 collection data.</p>
@@ -474,8 +480,9 @@ csd &lt;- loadByProduct(dpID=&quot;DP4.00130.001&quot;,
 
 names(csd)
 
-## [1] &quot;categoricalCodes_00130&quot;      &quot;citation_00130_RELEASE-2026&quot; &quot;csd_15_min&quot;                  &quot;issueLog_00130&quot;             
-## [5] &quot;readme_00130&quot;                &quot;science_review_flags_00130&quot;  &quot;sensor_positions_00130&quot;      &quot;variables_00130&quot;
+## [1] &quot;categoricalCodes_00130&quot;      &quot;citation_00130_RELEASE-2026&quot; &quot;csd_15_min&quot;                 
+## [4] &quot;issueLog_00130&quot;              &quot;readme_00130&quot;                &quot;science_review_flags_00130&quot; 
+## [7] &quot;sensor_positions_00130&quot;      &quot;variables_00130&quot;
 </code></pre>
 <p>This AIS data product contains 1 data table available in the basic package:</p>
 <ul>
@@ -1057,12 +1064,13 @@ data.</p>
 
 print(unique(swc_externalLabDataByAnalyte$analyte))
 
-##  [1] &quot;Ca&quot;                     &quot;Fe&quot;                     &quot;Cl&quot;                     &quot;K&quot;                      &quot;TPC&quot;                   
-##  [6] &quot;TN&quot;                     &quot;Na&quot;                     &quot;F&quot;                      &quot;TPN&quot;                    &quot;SO4&quot;                   
-## [11] &quot;NO3+NO2 - N&quot;            &quot;DIC&quot;                    &quot;Mn&quot;                     &quot;TDS&quot;                    &quot;Ortho - P&quot;             
-## [16] &quot;DOC&quot;                    &quot;NH4 - N&quot;                &quot;TDN&quot;                    &quot;TSS&quot;                    &quot;TP&quot;                    
-## [21] &quot;UV Absorbance (254 nm)&quot; &quot;Si&quot;                     &quot;TOC&quot;                    &quot;TDP&quot;                    &quot;NO2 - N&quot;               
-## [26] &quot;Br&quot;                     &quot;UV Absorbance (280 nm)&quot; &quot;Mg&quot;
+##  [1] &quot;Ca&quot;                     &quot;Fe&quot;                     &quot;Cl&quot;                     &quot;K&quot;                     
+##  [5] &quot;TPC&quot;                    &quot;TN&quot;                     &quot;Na&quot;                     &quot;F&quot;                     
+##  [9] &quot;TPN&quot;                    &quot;SO4&quot;                    &quot;NO3+NO2 - N&quot;            &quot;DIC&quot;                   
+## [13] &quot;Mn&quot;                     &quot;TDS&quot;                    &quot;Ortho - P&quot;              &quot;DOC&quot;                   
+## [17] &quot;NH4 - N&quot;                &quot;TDN&quot;                    &quot;TSS&quot;                    &quot;TP&quot;                    
+## [21] &quot;UV Absorbance (254 nm)&quot; &quot;Si&quot;                     &quot;TOC&quot;                    &quot;TDP&quot;                   
+## [25] &quot;NO2 - N&quot;                &quot;Br&quot;                     &quot;UV Absorbance (280 nm)&quot; &quot;Mg&quot;
 </code></pre>
 <p>For this exercise, we will subset lab data to only dissolved organic carbon
 (DOC). Let’s see what a DOC timeseries looks like.</p>
@@ -1552,6 +1560,10 @@ for(s in 1:length(unique(geo_pebbleCount_freqCumm$siteID))){
                     width=4, height=7, units=&quot;cm&quot;)
   }
 }
+
+## 
+## 1: Yes
+## 2: No
 
 # re-generate the CUPE plot with particle size distribution subplots added
 
