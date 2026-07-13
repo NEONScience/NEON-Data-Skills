@@ -1,9 +1,9 @@
-## ----setup, eval=FALSE------------------------------------------------------------------------------------------------------
+## ----setup, eval=FALSE-------------------------------------------------------------------------------------------------------------------------
 # 
 # install.packages("neonUtilities")
 # install.packages("devtools")
-# devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
-# devtools::install_github("NEONScience/neonSiteMgmtEventData")
+# pak::pak("NEONScience/NEON-geolocation/geoNEON")
+# pak::pak("NEONScience/neonSiteMgmtEventData")
 # install.packages("ggplot2")
 # install.packages("dplyr")
 # install.packages("stringr")
@@ -32,10 +32,11 @@
 # library(tibble)
 # 
 # setwd("~/data")
+# token <- Sys.getenv("NEON_TOKEN")
 # 
 
 
-## ----libraries, include=FALSE, results="hide", message=FALSE----------------------------------------------------------------
+## ----libraries, include=FALSE, results="hide", message=FALSE-----------------------------------------------------------------------------------
 
 library(neonUtilities)
 library(geoNEON)
@@ -52,36 +53,39 @@ library(magrittr)
 library(tidyselect)
 library(tibble)
 
+token <- Sys.getenv("NEON_TOKEN")
 
 
-## ----load-data, results="hide", message=FALSE-------------------------------------------------------------------------------
+
+## ----load-data, results="hide", message=FALSE--------------------------------------------------------------------------------------------------
 
 events <- loadByProduct(dpID="DP1.10111.001", 
                         site="TEAK",
                         check.size=F,
-                        include.provisional=T)
+                        include.provisional=T,
+                        token=token)
 
 
 
-## ----view-data,sim_eventData------------------------------------------------------------------------------------------------
+## ----view-data,sim_eventData-------------------------------------------------------------------------------------------------------------------
 
 list2env(events, .GlobalEnv)
 head(sim_eventData)
 
 
 
-## ----view-types-------------------------------------------------------------------------------------------------------------
+## ----view-types--------------------------------------------------------------------------------------------------------------------------------
 sim_eventData |>
   select(eventType, methodTypeChoice) |>
   unique()
 
 
 
-## ----view-types, neonSiteMgmtEventData::summarizeSIM------------------------------------------------------------------------
+## ----view-types, neonSiteMgmtEventData::summarizeSIM-------------------------------------------------------------------------------------------
 summarizeSIM(df= sim_eventData)
 
 
-## ----herb-locs--------------------------------------------------------------------------------------------------------------
+## ----herb-locs---------------------------------------------------------------------------------------------------------------------------------
 
 burn <- sim_eventData |>
   filter(methodTypeChoice=="fire-wildfire")
@@ -98,40 +102,41 @@ burn.locs
 
 
 
-## ----load-CA-fires, results="hide", message=FALSE---------------------------------------------------------------------------
+## ----load-CA-fires, results="hide", message=FALSE----------------------------------------------------------------------------------------------
 
 fires <- byEventSIM(eventType="fire", 
                     site=c("SJER","SOAP","BIGC","TEAK","TECR"),
-                    include.provisional=T)
+                    include.provisional=T,
+                    token=token)
 
 
 
-## ----fire-dates-------------------------------------------------------------------------------------------------------------
+## ----fire-dates--------------------------------------------------------------------------------------------------------------------------------
 
 fires$sim_eventData |>
   select(siteID, startDate, endDate, methodTypeChoice)
 
 
-## ----fire-dates, summarizeSIM-----------------------------------------------------------------------------------------------
+## ----fire-dates, summarizeSIM------------------------------------------------------------------------------------------------------------------
 fireSummary <- summarizeSIM(df= fires$sim_eventData)
 
 fireSummary$yearlyEventTypeTable
 
 
-## ----CA-locations, results="hide", message=FALSE----------------------------------------------------------------------------
+## ----CA-locations, results="hide", message=FALSE-----------------------------------------------------------------------------------------------
 
 fire.loc <- getLocTOS(fires$sim_eventData, 
                       "sim_eventData")
 
 
 
-## ----ex-location-table------------------------------------------------------------------------------------------------------
+## ----ex-location-table-------------------------------------------------------------------------------------------------------------------------
 
 fire.loc$locationID[7]
 
 
 
-## ----SOAP-locations---------------------------------------------------------------------------------------------------------
+## ----SOAP-locations----------------------------------------------------------------------------------------------------------------------------
 
 fire.SOAP <- fire.loc |>
   filter(siteID=="SOAP" & endDate<"2021-01-01") |>
@@ -139,21 +144,23 @@ fire.SOAP <- fire.loc |>
 
 
 
-## ----download-AOP, results="hide", message=FALSE----------------------------------------------------------------------------
+## ----download-AOP, results="hide", message=FALSE-----------------------------------------------------------------------------------------------
 
 byTileAOP("DP3.30026.001", site="SOAP", year=2019,
           easting=fire.SOAP$locationID_easting,
           northing=fire.SOAP$locationID_northing,
-          buffer=10, check.size=F, savepath=getwd())
+          buffer=10, check.size=F, token=token,
+          savepath=getwd())
 
 byTileAOP("DP3.30026.001", site="SOAP", year=2021,
           easting=fire.SOAP$locationID_easting,
           northing=fire.SOAP$locationID_northing,
-          buffer=10, check.size=F, savepath=getwd())
+          buffer=10, check.size=F, token=token,
+          savepath=getwd())
 
 
 
-## ----unzip-AOP, results="hide"----------------------------------------------------------------------------------------------
+## ----unzip-AOP, results="hide", warning=FALSE--------------------------------------------------------------------------------------------------
 
 zippaths <- list.files(getwd(), pattern=".zip", 
                         full.names=T, recursive=T)
@@ -164,7 +171,7 @@ for(i in 1:length(zippaths)) {
 
 
 
-## ----tiles-2019-------------------------------------------------------------------------------------------------------------
+## ----tiles-2019--------------------------------------------------------------------------------------------------------------------------------
 
 tiles2019 <- list.files(getwd(), pattern="NDVI.tif", 
                         full.names=T, recursive=T)
@@ -178,7 +185,7 @@ for(i in 2:length(tiles2019)) {
 
 
 
-## ----plot-2019-wf, fig.width=8, fig.height=4--------------------------------------------------------------------------------
+## ----plot-2019-wf, fig.width=8, fig.height=4---------------------------------------------------------------------------------------------------
 
 plot(ndvi2019)
 
@@ -190,7 +197,7 @@ points(wf.SOAP$locationID_easting,
 
 
 
-## ----plot-2019-all, fig.width=8, fig.height=4-------------------------------------------------------------------------------
+## ----plot-2019-all, fig.width=8, fig.height=4--------------------------------------------------------------------------------------------------
 
 plot(ndvi2019)
 
@@ -207,12 +214,12 @@ points(cb.SOAP$locationID_easting,
 
 
 
-## ----plot-2019-add-polygons, fig.width=8, fig.height=4----------------------------------------------------------------------
+## ----plot-2019-add-polygons, fig.width=8, fig.height=4-----------------------------------------------------------------------------------------
 
 # wildfire polygons
 wf.SOAP.df <- fire.loc |>
   filter(siteID=="SOAP" & endDate<"2021-01-01" & 
-           eventType == "fire" & 
+           eventType=="fire" & 
            methodTypeChoice=="fire-wildfire") 
 
 wf.SOAP.polygon <- createSIMPolygon(df= wf.SOAP.df)
@@ -263,7 +270,7 @@ plot(sf::st_geometry(cb.SOAP.polygon.utm),
        add = TRUE)
 
 
-## ----tiles-2021-------------------------------------------------------------------------------------------------------------
+## ----tiles-2021--------------------------------------------------------------------------------------------------------------------------------
 
 tiles2021 <- list.files(getwd(), pattern="NDVI.tif", 
                         full.names=T, recursive=T)
@@ -277,7 +284,7 @@ for(i in 2:length(tiles2021)) {
 
 
 
-## ----plot-2021-all, fig.width=8, fig.height=4-------------------------------------------------------------------------------
+## ----plot-2021-all, fig.width=8, fig.height=4--------------------------------------------------------------------------------------------------
 
 plot(ndvi2021)
 
@@ -301,7 +308,7 @@ plot(sf::st_geometry(cb.SOAP.polygon.utm),
 
 
 
-## ----export polygons, warnings= F-------------------------------------------------------------------------------------------
+## ----export polygons, warning= F---------------------------------------------------------------------------------------------------------------
 # export the wildfire polygons as kmls
 writeExportFile(sfList = wf.SOAP.polygon$sfObjects, 
                 outDir = getwd(),

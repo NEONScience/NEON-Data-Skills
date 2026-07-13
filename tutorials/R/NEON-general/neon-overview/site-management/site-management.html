@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="eng">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="generator" content="litedown 0.7">
+<meta name="generator" content="litedown 0.10">
 <title>Working with NEON Site Management Data</title>
 <style type="text/css">
 body {
@@ -45,9 +45,9 @@ div > .caption { padding: 1px 1em; }
 table {
   &:only-child:not(.table > *) { margin: auto; }
   th, td { padding: 5px; font-variant-numeric: tabular-nums; }
-  thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
-  thead th { border-bottom: 1px solid #ddd; }
-  &:not(.datatable-table) {
+  &:not([class]) {
+    thead, tfoot, tr:nth-child(even) { background: whitesmoke; }
+    thead th { border-bottom: 1px solid #ddd; }
     border-top: 1px solid #666;
     border-bottom: 1px solid #666;
   }
@@ -62,7 +62,7 @@ hr, .footnotes::before { border: 1px dashed #ddd; }
 .frontmatter { text-align: center; }
 #TOC {
   a { text-decoration: none; }
-  ul { list-style: none; padding-left: 1em; }
+  ul { list-style: none; padding-left: 1em; columns: 24em; }
   & > ul { padding: 0; }
   ul ul { border-left: 1px solid lightsteelblue; }
 }
@@ -73,6 +73,7 @@ span[class^="ref-number-"] { font-weight: bold; }
 .ref-number-fig::after, .ref-number-tab::after { content: ":"; }
 .cross-ref-chp::before { content: "Chapter "; }
 .cross-ref-sec::before { content: "Section "; }
+.cross-ref-apd::before { content: "Appendix "; }
 .cross-ref-fig::before, .ref-number-fig::before { content: "Figure "; }
 .cross-ref-tab::before, .ref-number-tab::before { content: "Table "; }
 .cross-ref-eqn::before, .MathJax_ref:has(mjx-mtext > mjx-c + mjx-c)::before { content: "Equation "; }
@@ -98,7 +99,10 @@ section.footnotes {
   background: repeating-linear-gradient(135deg, white, white 30px, #ddd 32px, #ddd 32px);
   opacity: 0.6;
 }
-
+@media (prefers-color-scheme: dark) {
+  html, img, video, iframe { filter: invert(1); }
+  body { background: #ededed; }
+}
 @media print {
   body { max-width: 100%; }
   tr, img { break-inside: avoid; }
@@ -132,9 +136,9 @@ versions but it hasn’t been tested.</p>
 <h3 id="sec:install-r-packages">Install R Packages</h3>
 <ul>
 <li><strong>neonUtilities:</strong> <code>install.packages(&quot;neonUtilities&quot;)</code></li>
-<li><strong>devtools:</strong> <code>install.packages(&quot;devtools&quot;)</code></li>
-<li><strong>geoNEON:</strong> <code>devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)</code></li>
-<li><strong>neonSiteMgmtEventData:</strong> <code>devtools::install_github(&quot;NEONScience/neonSiteMgmtEventData&quot;)</code></li>
+<li><strong>pak:</strong> <code>install.packages(&quot;pak&quot;)</code></li>
+<li><strong>geoNEON:</strong> <code>pak::pak(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)</code></li>
+<li><strong>neonSiteMgmtEventData:</strong> <code>pak::pak(&quot;NEONScience/neonSiteMgmtEventData&quot;)</code></li>
 </ul>
 <h2 id="sec:additional-resources">Additional Resources</h2>
 <ul>
@@ -150,13 +154,14 @@ versions but it hasn’t been tested.</p>
 <p>First install and load the necessary packages. Skip the install step if packages
 are already installed, and modify the working directory file path for your
 computer.</p>
+<p>As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. Tokens can be generated in NEON data portal user accounts - log in to your account or create one, and go to the API Tokens section. For best practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>. This tutorial assumes your token is stored as an environment variable named <code>NEON_TOKEN</code>, as demonstrated in the linked tutorial. Modify token retrieval code as needed if your token is stored differently.</p>
 <pre><code>install.packages(&quot;neonUtilities&quot;)
 
 install.packages(&quot;devtools&quot;)
 
-devtools::install_github(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
+pak::pak(&quot;NEONScience/NEON-geolocation/geoNEON&quot;)
 
-devtools::install_github(&quot;NEONScience/neonSiteMgmtEventData&quot;)
+pak::pak(&quot;NEONScience/neonSiteMgmtEventData&quot;)
 
 install.packages(&quot;ggplot2&quot;)
 
@@ -213,13 +218,16 @@ library(tibble)
 
 
 setwd(&quot;~/data&quot;)
+
+token &lt;- Sys.getenv(&quot;NEON_TOKEN&quot;)
 </code></pre>
 <h2 id="sec:downloading-event-data-all-events-at-a-site">Downloading event data: All events at a site</h2>
 <p>The simplest way to access site event data is to download all the events for a particular site. Let’s check out events at Lower Teakettle (TEAK) in California. We’ll use <code>include.provisional=T</code> to get events up to the present.</p>
 <pre><code>events &lt;- loadByProduct(dpID=&quot;DP1.10111.001&quot;, 
                         site=&quot;TEAK&quot;,
                         check.size=F,
-                        include.provisional=T)
+                        include.provisional=T,
+                        token=token)
 </code></pre>
 <p>The download includes the usual metadata files associated with NEON data, and two data tables: <code>sim_eventData</code> and <code>sim_locationVisitsAndAttributes</code>.</p>
 <p>The <code>sim_locationVisitsAndAttributes</code> table provides a summary of annual visit totals, environmental context, and mitigation actions by location to support estimates of NEON sampling impact and location vulnerability. For TEAK, and all other terrestrial sites, each <code>namedLocation</code> has a record per year for the total unique visits per sampling location. Additional fields describe environmental context (slope, soilOrder, land cover type), document location-specific mitigation measures (such as boardwalks or geoblocks used to minimize trampling), and report the number of sampling events that were cancelled because the location was deemed too vulnerable. Currently, TEAK has no additional mitigation structures, and one sampling bout at TEAK_013 was cancelled in 2025 due to vulnerability. At aquatic sites the total number of visits per site per year is reported, and more specific environmental context fields are not provided.</p>
@@ -230,27 +238,27 @@ setwd(&quot;~/data&quot;)
 
 head(sim_eventData)
 
-##                                    uid domainID siteID namedLocation locationID  startDate    endDate ongoingEvent
-## 1 2a34be0f-2cb1-4938-8aed-105b6e8b2370      D17   TEAK          TEAK       TEAK 2017-05-01 2017-05-31            Y
-## 2 49424b80-bdf1-41ed-9b18-5f34085d5d55      D17   TEAK          TEAK       TEAK 2017-05-31 2017-06-30            Y
-## 3 cba1abc5-e6b0-4cd4-b394-ce14f662d295      D17   TEAK          TEAK       TEAK 2017-08-29 2017-09-28            Y
-## 4 b28e62bd-76a1-4654-9e1a-8dfd04b611e7      D17   TEAK          TEAK       TEAK 2017-06-30 2017-07-30            Y
-## 5 07ae2dab-6622-47a2-9410-0bb4a7a6cff6      D17   TEAK          TEAK       TEAK 2017-07-30 2017-08-29            Y
-## 6 07b58f3e-791a-4b13-82f6-36833d41620f      D17   TEAK          TEAK       TEAK 2017-09-28 2017-10-28            Y
-##   estimatedOrActualDate dateRemarks               eventID samplingProtocolVersion eventType methodTypeChoice name
-## 1                actual        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;
-## 2                actual        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;
-## 3                actual        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;
-## 4                actual        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;
-## 5                actual        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;
-## 6                actual        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;
-##   scientificName otherScientificName fireSeverity biomassRemoval minQuantity maxQuantity quantityUnit reporterType
-## 1           &lt;NA&gt;          Bos taurus         &lt;NA&gt;           &lt;NA&gt;           1          25        count    secondary
-## 2           &lt;NA&gt;          Bos taurus         &lt;NA&gt;           &lt;NA&gt;           1          25        count    secondary
-## 3           &lt;NA&gt;          Bos taurus         &lt;NA&gt;           &lt;NA&gt;           1          25        count    secondary
-## 4           &lt;NA&gt;          Bos taurus         &lt;NA&gt;           &lt;NA&gt;           1          25        count    secondary
-## 5           &lt;NA&gt;          Bos taurus         &lt;NA&gt;           &lt;NA&gt;           1          25        count    secondary
-## 6           &lt;NA&gt;          Bos taurus         &lt;NA&gt;           &lt;NA&gt;           1          25        count    secondary
+##                                    uid domainID siteID namedLocation locationID  startDate    endDate ongoingEvent estimatedOrActualDate
+## 1 2a34be0f-2cb1-4938-8aed-105b6e8b2370      D17   TEAK          TEAK       TEAK 2017-05-01 2017-05-31            Y                actual
+## 2 b28e62bd-76a1-4654-9e1a-8dfd04b611e7      D17   TEAK          TEAK       TEAK 2017-06-30 2017-07-30            Y                actual
+## 3 49424b80-bdf1-41ed-9b18-5f34085d5d55      D17   TEAK          TEAK       TEAK 2017-05-31 2017-06-30            Y                actual
+## 4 07ae2dab-6622-47a2-9410-0bb4a7a6cff6      D17   TEAK          TEAK       TEAK 2017-07-30 2017-08-29            Y                actual
+## 5 cba1abc5-e6b0-4cd4-b394-ce14f662d295      D17   TEAK          TEAK       TEAK 2017-08-29 2017-09-28            Y                actual
+## 6 07b58f3e-791a-4b13-82f6-36833d41620f      D17   TEAK          TEAK       TEAK 2017-09-28 2017-10-28            Y                actual
+##   dateRemarks               eventID samplingProtocolVersion eventType methodTypeChoice name scientificName otherScientificName fireSeverity
+## 1        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;           &lt;NA&gt;          Bos taurus         &lt;NA&gt;
+## 2        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;           &lt;NA&gt;          Bos taurus         &lt;NA&gt;
+## 3        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;           &lt;NA&gt;          Bos taurus         &lt;NA&gt;
+## 4        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;           &lt;NA&gt;          Bos taurus         &lt;NA&gt;
+## 5        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;           &lt;NA&gt;          Bos taurus         &lt;NA&gt;
+## 6        &lt;NA&gt; TEAK.20170501.grazing       NEON.DOC.003282vD   grazing          grazing &lt;NA&gt;           &lt;NA&gt;          Bos taurus         &lt;NA&gt;
+##   biomassRemoval minQuantity maxQuantity quantityUnit reporterType
+## 1           &lt;NA&gt;           1          25        count    secondary
+## 2           &lt;NA&gt;           1          25        count    secondary
+## 3           &lt;NA&gt;           1          25        count    secondary
+## 4           &lt;NA&gt;           1          25        count    secondary
+## 5           &lt;NA&gt;           1          25        count    secondary
+## 6           &lt;NA&gt;           1          25        count    secondary
 ##                                                                                                                                                                                  remarks
 ## 1 Low intensity grazing occurs yearlong within the National Forest surrounding TEAK. Quantity of cows are unknown but periodically cows or evidence of cows are spotted within the site.
 ## 2 Low intensity grazing occurs yearlong within the National Forest surrounding TEAK. Quantity of cows are unknown but periodically cows or evidence of cows are spotted within the site.
@@ -260,10 +268,10 @@ head(sim_eventData)
 ## 6 Low intensity grazing occurs yearlong within the National Forest surrounding TEAK. Quantity of cows are unknown but periodically cows or evidence of cows are spotted within the site.
 ##   recordedBy dataQF  publicationDate      release
 ## 1       &lt;NA&gt;   &lt;NA&gt; 20251204T234423Z RELEASE-2026
-## 2       &lt;NA&gt;   &lt;NA&gt; 20251205T000821Z RELEASE-2026
-## 3       &lt;NA&gt;   &lt;NA&gt; 20251205T013836Z RELEASE-2026
-## 4       &lt;NA&gt;   &lt;NA&gt; 20251205T014918Z RELEASE-2026
-## 5       &lt;NA&gt;   &lt;NA&gt; 20251205T005407Z RELEASE-2026
+## 2       &lt;NA&gt;   &lt;NA&gt; 20251205T014918Z RELEASE-2026
+## 3       &lt;NA&gt;   &lt;NA&gt; 20251205T000821Z RELEASE-2026
+## 4       &lt;NA&gt;   &lt;NA&gt; 20251205T005407Z RELEASE-2026
+## 5       &lt;NA&gt;   &lt;NA&gt; 20251205T013836Z RELEASE-2026
 ## 6       &lt;NA&gt;   &lt;NA&gt; 20251205T015325Z RELEASE-2026
 </code></pre>
 <p>Let’s first check out the types of events recorded.</p>
@@ -286,7 +294,7 @@ head(sim_eventData)
 
 ## $summary
 ##   totalRecords uniqueEvents uniqueEventTypes
-## 1          111            4                4
+## 1          117            4                4
 ## 
 ## $eventTypeTable
 ##             eventType TEAK Total
@@ -310,6 +318,7 @@ head(sim_eventData)
 ## 11  2024             grazing    1                 1
 ## 12  2025                fire    1                 1
 ## 13  2025             grazing    1                 1
+## 14  2026             grazing    1                 1
 </code></pre>
 <p>The <code>$summary</code> table sums the number of records in the input dataframe and summarizes the number of individual records, unique events (since a event that is longer than one month will have multiple records), and unique event types.</p>
 <p>Next, the <code>$eventTypeTable</code> counts the number of unique eventIDs by eventType and site. The <code>$yearlyEventTypeTable</code> includes grouping by year as well.  At TEAK, there are over 100 records but most correspond to a long term grazing event.</p>
@@ -354,7 +363,8 @@ burn.locs
 <p>In many cases, you may be interested in a particular type of disturbance across sites, rather than in various disturbances within a site. Above, we found a report of a fire at TEAK, which is in the mountains in California. In recent years, the western US has experienced a large number of fires, and many of the individual fires have been unusually large. Let’s look for all the fires that have affected NEON sites in California. We can do this using the <code>neonUtilities::byEventSIM()</code> function:</p>
 <pre><code>fires &lt;- byEventSIM(eventType=&quot;fire&quot;, 
                     site=c(&quot;SJER&quot;,&quot;SOAP&quot;,&quot;BIGC&quot;,&quot;TEAK&quot;,&quot;TECR&quot;),
-                    include.provisional=T)
+                    include.provisional=T,
+                    token=token)
 </code></pre>
 <p>The set of files returned by this function is the same as <code>loadByProduct()</code>, but the data in <code>sim_eventData</code> are filtered down to only the events where the <code>eventType</code> is <code>&quot;fire&quot;</code>.</p>
 <p>Let’s start by looking at the <code>siteID</code>, <code>startDate</code>, <code>endDate</code>, and <code>methodTypeChoice</code> fields to see which sites and years experienced fires.</p>
@@ -399,76 +409,66 @@ fireSummary$yearlyEventTypeTable
 <pre><code>fire.loc$locationID[7]
 
 ## [[1]]
-##                namedLocation            locationDescription domainID siteID locationCurrent    locationStartDate
-## 1      SOAP_003.tickPlot.tck Plot &quot;SOAP_003&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 2      SOAP_007.basePlot.all Plot &quot;SOAP_007&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 3      SOAP_016.basePlot.all Plot &quot;SOAP_016&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 4      SOAP_017.basePlot.all Plot &quot;SOAP_017&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 5      SOAP_018.basePlot.all Plot &quot;SOAP_018&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 6      SOAP_019.basePlot.all Plot &quot;SOAP_019&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 7 SOAP_036.mosquitoPoint.mos Plot &quot;SOAP_036&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 8 SOAP_039.mosquitoPoint.mos Plot &quot;SOAP_039&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-## 9 SOAP_041.mosquitoPoint.mos Plot &quot;SOAP_041&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z
-##   decimalLatitude decimalLongitude elevation      easting      northing utmZone namedLocationCoordUncertainty
-## 1        37.03299      -119.249666   1135.91 299905.83167 4100898.65583     11N                          0.14
-## 2       37.028597      -119.249997   1194.27 299864.85317 4100411.91612     11N                           0.1
-## 3       37.028524      -119.253018   1205.89 299595.90776  4100410.1795     11N                           0.1
-## 4       37.030901      -119.242317   1142.85  300554.1072  4100651.4236     11N                          0.11
-## 5       37.028985      -119.243605   1204.66 300434.51203 4100441.53199     11N                           0.1
-## 6       37.030844      -119.245692   1182.84 300253.72138 4100652.18439     11N                           0.1
-## 7       37.034408      -119.243066   1052.06 300496.65662 4101042.12275     11N                         10.47
-## 8       37.031342      -119.262184   1198.13 298787.92115  4100742.2176     11N                         20.49
-## 9       37.031894      -119.251043   1156.97 299780.45941 4100779.94541     11N                          20.1
-##   namedLocationElevUncertainty coordinateSource      country county geodeticDatum stateProvince utmHemisphere utmZoneNumber
-## 1                         0.14       GeoXH 6000 unitedStates Fresno         WGS84            CA             N            11
-## 2                          0.1       GeoXH 6000 unitedStates Fresno         WGS84            CA             N            11
-## 3                          0.1  Geo 7X (H-Star) unitedStates Fresno         WGS84            CA             N            11
-## 4                         0.11  Geo 7X (H-Star) unitedStates Fresno         WGS84            CA             N            11
-## 5                          0.1  Geo 7X (H-Star) unitedStates Fresno         WGS84            CA             N            11
-## 6                          0.1  Geo 7X (H-Star) unitedStates Fresno         WGS84            CA             N            11
-## 7                         1.01  Geo 7X (H-Star) unitedStates Fresno         WGS84            CA             N            11
-## 8                         0.64  Geo 7X (H-Star) unitedStates Fresno         WGS84            CA             N            11
-## 9                          0.1  Geo 7X (H-Star) unitedStates Fresno         WGS84            CA             N            11
-##   alphaOrientation betaOrientation gammaOrientation xOffset yOffset zOffset locationEndDate filteredPositions plotHdop
-## 1                0               0                0       0       0       0            &lt;NA&gt;               356      3.5
-## 2                0               0                0       0       0       0            &lt;NA&gt;               439        1
-## 3                0               0                0       0       0       0            &lt;NA&gt;               392      1.1
-## 4                0               0                0       0       0       0            &lt;NA&gt;               411      1.1
-## 5                0               0                0       0       0       0            &lt;NA&gt;               461      1.1
-## 6                0               0                0       0       0       0            &lt;NA&gt;               457      1.4
-## 7                0               0                0       0       0       0            &lt;NA&gt;               700      2.7
-## 8                0               0                0       0       0       0            &lt;NA&gt;               707      5.3
-## 9                0               0                0       0       0       0            &lt;NA&gt;               700      3.6
-##   maximumElevation minimumElevation plotPdop slopeAspect slopeGradient       nlcdClass plotDimensions   plotID plotSize
-## 1          1138.16          1130.86      6.6          57             9 evergreenForest      40m x 40m SOAP_003     1600
-## 2          1202.44          1188.53      2.1         130          8.53 evergreenForest      40m x 40m SOAP_007     1600
-## 3          1210.62          1195.51      2.7       342.5         18.83 evergreenForest      40m x 40m SOAP_016     1600
-## 4          1153.86           1126.8      2.8          45         24.23 evergreenForest      40m x 40m SOAP_017     1600
-## 5          1207.18          1195.92      1.9       228.8         14.09 evergreenForest      40m x 40m SOAP_018     1600
-## 6          1188.82          1178.83      2.7          45          7.13 evergreenForest      40m x 40m SOAP_019     1600
-## 7          1052.06          1052.06      6.6         290            15 evergreenForest             0m SOAP_036        0
-## 8          1198.13          1198.13      6.5         115            14 evergreenForest             0m SOAP_039        0
-## 9          1156.97          1156.97      5.4         301             6      shrubScrub             0m SOAP_041        0
-##         subtype    plotType referencePointPosition soilTypeOrder siteType siteTimezone stateAbbreviation subtypeSpecification
-## 1      tickPlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 2      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 3      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 4      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 5      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 6      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 7 mosquitoPoint distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 8 mosquitoPoint distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-## 9 mosquitoPoint distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;                 &lt;NA&gt;
-##   type description locationPointID locationType locationParent locationParentUrl referenceLocation.locationName
-## 1   NA          NA              NA           NA             NA                NA                             NA
-## 2   NA          NA              NA           NA             NA                NA                             NA
-## 3   NA          NA              NA           NA             NA                NA                             NA
-## 4   NA          NA              NA           NA             NA                NA                             NA
-## 5   NA          NA              NA           NA             NA                NA                             NA
-## 6   NA          NA              NA           NA             NA                NA                             NA
-## 7   NA          NA              NA           NA             NA                NA                             NA
-## 8   NA          NA              NA           NA             NA                NA                             NA
-## 9   NA          NA              NA           NA             NA                NA                             NA
+##                namedLocation            locationDescription domainID siteID locationCurrent    locationStartDate decimalLatitude
+## 1      SOAP_003.tickPlot.tck Plot &quot;SOAP_003&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z        37.03299
+## 2      SOAP_007.basePlot.all Plot &quot;SOAP_007&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.028597
+## 3      SOAP_016.basePlot.all Plot &quot;SOAP_016&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.028524
+## 4      SOAP_017.basePlot.all Plot &quot;SOAP_017&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.030901
+## 5      SOAP_018.basePlot.all Plot &quot;SOAP_018&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.028985
+## 6      SOAP_019.basePlot.all Plot &quot;SOAP_019&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.030844
+## 7 SOAP_036.mosquitoPoint.mos Plot &quot;SOAP_036&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.034408
+## 8 SOAP_039.mosquitoPoint.mos Plot &quot;SOAP_039&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.031342
+## 9 SOAP_041.mosquitoPoint.mos Plot &quot;SOAP_041&quot; at site &quot;SOAP&quot;      D17   SOAP            TRUE 2010-01-01T00:00:00Z       37.031894
+##   decimalLongitude elevation      easting      northing utmZone namedLocationCoordUncertainty namedLocationElevUncertainty coordinateSource
+## 1      -119.249666   1135.91 299905.83167 4100898.65583     11N                          0.14                         0.14       GeoXH 6000
+## 2      -119.249997   1194.27 299864.85317 4100411.91612     11N                           0.1                          0.1       GeoXH 6000
+## 3      -119.253018   1205.89 299595.90776  4100410.1795     11N                           0.1                          0.1  Geo 7X (H-Star)
+## 4      -119.242317   1142.85  300554.1072  4100651.4236     11N                          0.11                         0.11  Geo 7X (H-Star)
+## 5      -119.243605   1204.66 300434.51203 4100441.53199     11N                           0.1                          0.1  Geo 7X (H-Star)
+## 6      -119.245692   1182.84 300253.72138 4100652.18439     11N                           0.1                          0.1  Geo 7X (H-Star)
+## 7      -119.243066   1052.06 300496.65662 4101042.12275     11N                         10.47                         1.01  Geo 7X (H-Star)
+## 8      -119.262184   1198.13 298787.92115  4100742.2176     11N                         20.49                         0.64  Geo 7X (H-Star)
+## 9      -119.251043   1156.97 299780.45941 4100779.94541     11N                          20.1                          0.1  Geo 7X (H-Star)
+##        country county geodeticDatum stateProvince utmHemisphere utmZoneNumber alphaOrientation betaOrientation gammaOrientation xOffset yOffset
+## 1 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 2 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 3 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 4 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 5 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 6 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 7 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 8 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+## 9 unitedStates Fresno         WGS84            CA             N            11                0               0                0       0       0
+##   zOffset locationEndDate filteredPositions plotHdop maximumElevation minimumElevation plotPdop slopeAspect slopeGradient       nlcdClass
+## 1       0            &lt;NA&gt;               356      3.5          1138.16          1130.86      6.6          57             9 evergreenForest
+## 2       0            &lt;NA&gt;               439        1          1202.44          1188.53      2.1         130          8.53 evergreenForest
+## 3       0            &lt;NA&gt;               392      1.1          1210.62          1195.51      2.7       342.5         18.83 evergreenForest
+## 4       0            &lt;NA&gt;               411      1.1          1153.86           1126.8      2.8          45         24.23 evergreenForest
+## 5       0            &lt;NA&gt;               461      1.1          1207.18          1195.92      1.9       228.8         14.09 evergreenForest
+## 6       0            &lt;NA&gt;               457      1.4          1188.82          1178.83      2.7          45          7.13 evergreenForest
+## 7       0            &lt;NA&gt;               700      2.7          1052.06          1052.06      6.6         290            15 evergreenForest
+## 8       0            &lt;NA&gt;               707      5.3          1198.13          1198.13      6.5         115            14 evergreenForest
+## 9       0            &lt;NA&gt;               700      3.6          1156.97          1156.97      5.4         301             6      shrubScrub
+##   plotDimensions   plotID plotSize       subtype    plotType referencePointPosition soilTypeOrder siteType siteTimezone stateAbbreviation
+## 1      40m x 40m SOAP_003     1600      tickPlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 2      40m x 40m SOAP_007     1600      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 3      40m x 40m SOAP_016     1600      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 4      40m x 40m SOAP_017     1600      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 5      40m x 40m SOAP_018     1600      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 6      40m x 40m SOAP_019     1600      basePlot distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 7             0m SOAP_036        0 mosquitoPoint distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 8             0m SOAP_039        0 mosquitoPoint distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+## 9             0m SOAP_041        0 mosquitoPoint distributed                     41      Alfisols     &lt;NA&gt;         &lt;NA&gt;              &lt;NA&gt;
+##   subtypeSpecification type description locationPointID locationType locationParent locationParentUrl referenceLocation.locationName
+## 1                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 2                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 3                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 4                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 5                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 6                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 7                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 8                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
+## 9                 &lt;NA&gt;   NA          NA              NA           NA             NA                NA                             NA
 ##   referenceLocation.locationDecimalLatitude referenceLocation.locationDecimalLongitude referenceLocation.locationElevation
 ## 1                                        NA                                         NA                                  NA
 ## 2                                        NA                                         NA                                  NA
@@ -500,14 +500,16 @@ fireSummary$yearlyEventTypeTable
 <pre><code>byTileAOP(&quot;DP3.30026.001&quot;, site=&quot;SOAP&quot;, year=2019,
           easting=fire.SOAP$locationID_easting,
           northing=fire.SOAP$locationID_northing,
-          buffer=10, check.size=F, savepath=getwd())
+          buffer=10, check.size=F, token=token,
+          savepath=getwd())
 
 
 
 byTileAOP(&quot;DP3.30026.001&quot;, site=&quot;SOAP&quot;, year=2021,
           easting=fire.SOAP$locationID_easting,
           northing=fire.SOAP$locationID_northing,
-          buffer=10, check.size=F, savepath=getwd())
+          buffer=10, check.size=F, token=token,
+          savepath=getwd())
 </code></pre>
 <p>Vegetation indices are downloaded as zip files, so first we need to unzip them.</p>
 <pre><code>zippaths &lt;- list.files(getwd(), pattern=&quot;.zip&quot;, 
@@ -518,10 +520,6 @@ byTileAOP(&quot;DP3.30026.001&quot;, site=&quot;SOAP&quot;, year=2021,
 for(i in 1:length(zippaths)) {
   unzip(zippaths[i], exdir=dirname(zippaths[i]))
 }
-
-## Warning in unzip(zippaths[i], exdir = dirname(zippaths[i])): error 1 in extracting from zip file
-
-## Warning in unzip(zippaths[i], exdir = dirname(zippaths[i])): error 1 in extracting from zip file
 </code></pre>
 <p>We’ll start with the pre-fire 2019 data. We’ve downloaded 8 tiles, so we need to read them in and merge them into a single raster.</p>
 <pre><code>tiles2019 &lt;- list.files(getwd(), pattern=&quot;NDVI.tif&quot;, 
@@ -574,7 +572,7 @@ points(cb.SOAP$locationID_easting,
 
 wf.SOAP.df &lt;- fire.loc |&gt;
   filter(siteID==&quot;SOAP&quot; &amp; endDate&lt;&quot;2021-01-01&quot; &amp; 
-           eventType == &quot;fire&quot; &amp; 
+           eventType==&quot;fire&quot; &amp; 
            methodTypeChoice==&quot;fire-wildfire&quot;) 
 
 
@@ -720,12 +718,9 @@ writeExportFile(sfList = wf.SOAP.polygon$sfObjects,
 writeExportFile(sfList = cb.SOAP.polygon$sfObjects, 
                 outDir = getwd(),
                 outType = &quot;shapefile&quot;)
-
-## Warning in abbreviate_shapefile_names(obj): Field names abbreviated for ESRI Shapefile driver
 </code></pre>
 <p>For more information and examples using the <code>createSIMPolygon()</code> function please see the vignette associated with the package.</p>
-<pre><code>devtools::install_github('NEONScience/neonSiteMgmtEventData', 
-                force = TRUE, build_vignettes = TRUE)
+<pre><code>remotes::install_github(&quot;NEONScience/neonSiteMgmtEventData&quot;, build_vignettes = TRUE, force = T)
 browseVignettes(&quot;neonSiteMgmtEventData&quot;)
 </code></pre>
 </div>
