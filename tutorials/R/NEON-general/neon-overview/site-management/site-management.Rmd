@@ -42,9 +42,9 @@ versions but it hasn't been tested.
 ### Install R Packages
 
 * **neonUtilities:** `install.packages("neonUtilities")`
-* **devtools:** `install.packages("devtools")`
-* **geoNEON:** `devtools::install_github("NEONScience/NEON-geolocation/geoNEON")`
-* **neonSiteMgmtEventData:** `devtools::install_github("NEONScience/neonSiteMgmtEventData")`
+* **pak:** `install.packages("pak")`
+* **geoNEON:** `pak::pak("NEONScience/NEON-geolocation/geoNEON")`
+* **neonSiteMgmtEventData:** `pak::pak("NEONScience/neonSiteMgmtEventData")`
 
 ## Additional Resources
 
@@ -75,8 +75,8 @@ As of June 2026, NEON requires an API token for data downloads, to reduce bot sc
 
 install.packages("neonUtilities")
 install.packages("devtools")
-devtools::install_github("NEONScience/NEON-geolocation/geoNEON")
-devtools::install_github("NEONScience/neonSiteMgmtEventData")
+pak::pak("NEONScience/NEON-geolocation/geoNEON")
+pak::pak("NEONScience/neonSiteMgmtEventData")
 install.packages("ggplot2")
 install.packages("dplyr")
 install.packages("stringr")
@@ -469,7 +469,7 @@ In addition, we only downloaded the 8 NDVI tiles overlapping the sampling locati
 
 If helpful for further analysis, we can export the polygons into a shapefile or kml using `sim_locationVisitsAndAttributes::writeExportFile()`.
 
-``` {r export polygons, warnings= F}
+``` {r export polygons, warning= F}
 # export the wildfire polygons as kmls
 writeExportFile(sfList = wf.SOAP.polygon$sfObjects, 
                 outDir = getwd(),
@@ -485,8 +485,7 @@ writeExportFile(sfList = cb.SOAP.polygon$sfObjects,
 For more information and examples using the `createSIMPolygon()` function please see the vignette associated with the package. 
 
 ```
-devtools::install_github('NEONScience/neonSiteMgmtEventData', 
-                force = TRUE, build_vignettes = TRUE)
+remotes::install_github("NEONScience/neonSiteMgmtEventData", build_vignettes = TRUE, force = T)
 browseVignettes("neonSiteMgmtEventData")
 ```
 
