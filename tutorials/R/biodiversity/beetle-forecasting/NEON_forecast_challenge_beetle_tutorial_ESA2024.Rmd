@@ -130,7 +130,7 @@ For this tutorial, we are going to focus on the [NEON site at Ordway-Swisher Bio
 
 If you're interested to learn more about downloading and exploring NEON data beyond beetles at OSBS, follow [this link](https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr) to get an overview of NEON's data products, how to download the data, and how to interact visualize and analyze the data. 
 
-**When**: Target data are available as early as 2013 at some sites, and data are available at all sites from 2019 on. Pitfall trap deployments are typically two weeks in duration (i.e., a sampling bout lasts two weeks), and traps are collected and redeployed throughout the growing season at each NEON site. Note that the target data for The Challenge are standardized to represent beetle abundance per trap night. Because pitfall trap samples need to be sorted and individuals counted and identified, the latency for data publication can be nearly a year. In this tutorial we will train our models on data from 2013-2021 and we will make forecasts for the 2022 season so that we can score them immediately. 
+**When**: Target data are available as early as 2013 at some sites, and data are available at all sites from 2019 on. Pitfall trap deployments are typically two weeks in duration (i.e., a sampling bout lasts two weeks), and traps are collected and redeployed throughout the growing season at each NEON site. Note that the target data for The Challenge are standardized to represent beetle abundance per trap night. Because pitfall trap samples need to be sorted and individuals counted and identified, the latency for data publication can be nearly a year. In this tutorial we will train our models on data from 2013-2023 and we will make forecasts for the 2024 season so that we can score them immediately. 
 
 Check current ground beetle data availability on the [NEON Data Portal](https://data.neonscience.org/data-products/DP1.10022.001#:~:text=last_page-,Availability%20and%20Download,-July%202013%20%E2%80%93%20January).
 
@@ -155,10 +155,10 @@ my_site = "OSBS"
 Choose forecast start and end dates:
 ```{r site forecast dates}
 # date where we will start making predictions
-forecast_startdate <- "2022-01-01" #fit up through 2021, forecast 2022 data
+forecast_startdate <- "2024-01-01" #fit up through 2023, forecast 2024 data
 
 # date where we will stop making predictions
-forecast_enddate <- "2025-01-01"
+forecast_enddate <- "2028-01-01"
 ```
 Note that the `forecast_startdate` will be renamed `reference_datetime` when we submit our forecast to the The Challenge. As the parameter name indicates, this date represents the beginning of the forecast. For this tutorial, we are using a `forecast_startdate`, or `reference_datetime`, that is in the past so that we can evaluate the accuracy of our forecasts at the end of this tutorial. 
 
@@ -178,7 +178,7 @@ url <- "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project
 targets <- read_csv(url) %>%
   mutate(datetime = as_date(datetime)) %>%  # set proper formatting
   dplyr::filter(site_id == my_site,  # filter to desired site
-                datetime < "2022-12-31") # excluding provisional data 
+                datetime < "2024-12-31") # excluding provisional data 
 ```
 
 ### Visualise the target data
@@ -198,7 +198,7 @@ targets %>%
   theme(legend.position = "none")
 
 ```
-Note that target data are available through 2022. As of the writing of this document, some provisional 2023 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2025 release will include all of the 2022 data but not all of 2023. The full 2022 NEON Ground Beetle data set will be QC'd in 2024 and published as a release with a DOI in January 2025 pending there are no data collection and data processing setbacks. 
+Note that target data are available through 2024. As of the writing of this document, some provisional 2025 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2027 release will include all of the 2024 data but not all of 2025. The full 2024 NEON Ground Beetle data set will be QC'd in 2026 and published as a release with a DOI in January 2027 pending there are no data collection and data processing setbacks. 
 
 ### Create the training dataset
 
@@ -232,7 +232,7 @@ At the end of this tutorial, we will compare the performance of our best regress
 
 ### Forecast beetle abundance: null models
 
-Here, we fit our two null models to the training data and then create forecasts for 2022-2024. Note that we are using a `log(x + 1)` transform (using the `log1p()` function) for the abundance data in all of our models. This is a common transform for abundance data for communities, which are typically log-normal, but with zeros. We are keeping the model simple for this example, but you could substitute generalized linear regression models, zero-inflated models, or other approaches better model the distribution of beetle abundances. 
+Here, we fit our two null models to the training data and then create forecasts for 2024-2027. Note that we are using a `log(x + 1)` transform (using the `log1p()` function) for the abundance data in all of our models. This is a common transform for abundance data for communities, which are typically log-normal, but with zeros. We are keeping the model simple for this example, but you could substitute generalized linear regression models, zero-inflated models, or other approaches better model the distribution of beetle abundances. 
 ```{r null forecasts}
 # specify and fit models
 # Using a log(x + 1) transform on the abundance data
@@ -244,7 +244,7 @@ mod_fits <- targets_train %>%
 
 # make a forecast
 fc_null <- mod_fits %>%
-  fabletools::forecast(h = "3 years") 
+  fabletools::forecast(h = "4 years") 
 ```
 
 Next, we can visualize our two null model forecasts. 
@@ -497,30 +497,30 @@ head(my_scores)
 
 ### How to score your own forecast
 
-For immediate feedback, we can use the targets data from 2022 to score our forecast for the 2022 field season at OSBS. 
+For immediate feedback, we can use the targets data from 2024 to score our forecast for the 2024 field season at OSBS.
 ```{r score forecast}
-# filter to 2022 because that is the latest release year
-# 2023 is provisional and most sites do not yet have data reported
-targets_2022 <- targets %>% 
+# filter to 2024 because that is the year we want to forecast
+# 2025 is provisional and most sites do not yet have data reported
+targets_2024 <- targets %>% 
   dplyr::filter(
-    datetime >= "2022-01-01", 
-    datetime < "2023-01-01",
+    datetime >= "2024-01-01", 
+    datetime < "2025-01-01",
     variable == "abundance",
     observation > 0)
 
 # list of target site dates for filtering mod predictions
-target_site_dates_2022 <- targets_2022 %>%
+target_site_dates_2024 <- targets_2024 %>%
   select(site_id, datetime) %>% distinct()
 
 # filter model forecast data to dates where we have observations
 mod_results_to_score_lm <- fc_best_lm_efi %>%
-  left_join(target_site_dates_2022,.) %>%
+  left_join(target_site_dates_2024,.) %>%
   dplyr::filter(!is.na(parameter))
 
 # score the forecasts
 mod_scores <- score(
   forecast = mod_results_to_score_lm,
-  target = targets_2022) 
+  target = targets_2024) 
 
 head(mod_scores)
 ```
@@ -534,15 +534,15 @@ fc_null_efi <- fc_null %>%
   mutate(site_id = my_site) %>% #efi needs a NEON site ID
   neon4cast::efi_format() 
 
-# filter to dates where we have target data from 2022
+# filter to dates where we have target data from 2024
 mod_results_to_score_null <- fc_null_efi %>%
-  left_join(target_site_dates_2022,.) %>%
+  left_join(target_site_dates_2024,.) %>%
   dplyr::filter(!is.na(parameter))
 
 # score the forecasts for those dates
 mod_null_scores <- score(
   forecast = mod_results_to_score_null,
-  target = targets_2022) 
+  target = targets_2024) 
 
 # stack the scores for our best_lm and the null models
 # forcing reference_datetime to be the same type in both tables
@@ -554,7 +554,7 @@ all_mod_scores <- bind_rows(
     reference_datetime = as.character(reference_datetime)))
 ```
 
-Before we visualize the scores, we can visualize the target 2022 observations and compare them against the forecast ensembles (parameters) among all three models. Each individual line in the figure below represents a single forecast ensemble and all the lines together represents the forecast's uncertainty. The points represent the direct observed target data and assumes there is no uncertainty. 
+Before we visualize the scores, we can visualize the target 2024 observations and compare them against the forecast ensembles (parameters) among all three models. Each individual line in the figure below represents a single forecast ensemble and all the lines together represents the forecast's uncertainty. The points represent the direct observed target data and assumes there is no uncertainty. 
 ```{r plot forecasts to raw target data, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Compare Forecasts to Raw Data. Ensemble forecasts are the lines and the black circles are the direct observations."}
 
 mod_results_to_score_lm <- mod_results_to_score_lm |> select(site_id,datetime,parameter,model_id,family,variable,prediction)
@@ -562,20 +562,20 @@ mod_results_to_score_lm <- mod_results_to_score_lm |> select(site_id,datetime,pa
 rbind(mod_results_to_score_null,mod_results_to_score_lm) %>% 
   ggplot(., aes(datetime, prediction, color = model_id, group=interaction(parameter, model_id))) +
   geom_line(lwd = 1)+
-  geom_point(aes(datetime, observation), color = "black", size = 6, inherit.aes = F, data = targets_2022)+
+  geom_point(aes(datetime, observation), color = "black", size = 6, inherit.aes = F, data = targets_2024)+
   ylab("Abundance")+
   theme_classic()
 
 ```
 
 Let's plot the scores. Remember, lower scores indicate better forecast accuracy. 
-```{r plot forecast scores, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season"}
+```{r plot forecast scores, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2024 field season"}
 
 all_mod_scores %>%
   ggplot(aes(datetime, crps, color = model_id)) +
   geom_line() +
   theme_bw() +
-  ggtitle("Forecast scores over time at OSBS for 2022")
+  ggtitle("Forecast scores over time at OSBS for 2024")
 
 ```
 

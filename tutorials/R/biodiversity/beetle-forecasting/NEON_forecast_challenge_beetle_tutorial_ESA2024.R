@@ -42,10 +42,10 @@ my_site = "OSBS"
 
 ## ----site forecast dates--------------------------------------------------------------------------------------------------------------
 # date where we will start making predictions
-forecast_startdate <- "2022-01-01" #fit up through 2021, forecast 2022 data
+forecast_startdate <- "2024-01-01" #fit up through 2023, forecast 2024 data
 
 # date where we will stop making predictions
-forecast_enddate <- "2025-01-01"
+forecast_enddate <- "2028-01-01"
 
 
 ## ----read data------------------------------------------------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ url <- "https://sdsc.osn.xsede.org/bio230014-bucket01/challenges/targets/project
 targets <- read_csv(url) %>%
   mutate(datetime = as_date(datetime)) %>%  # set proper formatting
   dplyr::filter(site_id == my_site,  # filter to desired site
-                datetime < "2022-12-31") # excluding provisional data 
+                datetime < "2024-12-31") # excluding provisional data
 
 
 ## ----targets table--------------------------------------------------------------------------------------------------------------------
@@ -91,7 +91,7 @@ mod_fits <- targets_train %>%
 
 # make a forecast
 fc_null <- mod_fits %>%
-  fabletools::forecast(h = "3 years") 
+  fabletools::forecast(h = "4 years") 
 
 
 ## ----plot null forecast, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: NULL forecasts of ground beetle abundance at OSBS"----
@@ -216,7 +216,7 @@ fc_best_lm_efi <- fc_best_lm %>%
 head(fc_best_lm_efi)
 
 
-## ----plot tslm submission, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: TSLM forecast submission file for OSBS, parameter indicates emsemble member"----
+## ----plot tslm submission, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: TSLM forecast submission file for OSBS, parameter indicates ensemble member"----
 # visualize the EFI-formatted submission
 fc_best_lm_efi %>% 
   as_tsibble(index = datetime,
@@ -281,28 +281,28 @@ fc_best_lm_efi %>%
 
 
 ## ----score forecast-------------------------------------------------------------------------------------------------------------------
-# filter to 2022 because that is the latest release year
-# 2023 is provisional and most sites do not yet have data reported
-targets_2022 <- targets %>% 
+# filter to 2024 because that is the year we want to forecast
+# 2025 is provisional and most sites do not yet have data reported
+targets_2024 <- targets %>% 
   dplyr::filter(
-    datetime >= "2022-01-01", 
-    datetime < "2023-01-01",
+    datetime >= "2024-01-01", 
+    datetime < "2025-01-01",
     variable == "abundance",
     observation > 0)
 
 # list of target site dates for filtering mod predictions
-target_site_dates_2022 <- targets_2022 %>%
+target_site_dates_2024 <- targets_2024 %>%
   select(site_id, datetime) %>% distinct()
 
 # filter model forecast data to dates where we have observations
 mod_results_to_score_lm <- fc_best_lm_efi %>%
-  left_join(target_site_dates_2022,.) %>%
+  left_join(target_site_dates_2024,.) %>%
   dplyr::filter(!is.na(parameter))
 
 # score the forecasts
 mod_scores <- score(
   forecast = mod_results_to_score_lm,
-  target = targets_2022) 
+  target = targets_2024) 
 
 head(mod_scores)
 
@@ -315,15 +315,15 @@ fc_null_efi <- fc_null %>%
   mutate(site_id = my_site) %>% #efi needs a NEON site ID
   neon4cast::efi_format() 
 
-# filter to dates where we have target data from 2022
+# filter to dates where we have target data from 2024
 mod_results_to_score_null <- fc_null_efi %>%
-  left_join(target_site_dates_2022,.) %>%
+  left_join(target_site_dates_2024,.) %>%
   dplyr::filter(!is.na(parameter))
 
 # score the forecasts for those dates
 mod_null_scores <- score(
   forecast = mod_results_to_score_null,
-  target = targets_2022) 
+  target = targets_2024) 
 
 # stack the scores for our best_lm and the null models
 # forcing reference_datetime to be the same type in both tables
@@ -342,18 +342,18 @@ mod_results_to_score_lm <- mod_results_to_score_lm |> select(site_id,datetime,pa
 rbind(mod_results_to_score_null,mod_results_to_score_lm) %>% 
   ggplot(., aes(datetime, prediction, color = model_id, group=interaction(parameter, model_id))) +
   geom_line(lwd = 1)+
-  geom_point(aes(datetime, observation), color = "black", size = 6, inherit.aes = F, data = targets_2022)+
+  geom_point(aes(datetime, observation), color = "black", size = 6, inherit.aes = F, data = targets_2024)+
   ylab("Abundance")+
   theme_classic()
 
 
 
-## ----plot forecast scores, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season"----
+## ----plot forecast scores, fig.height = 6, fig.width = 12, fig.align = "center", fig.cap="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2024 field season"----
 
 all_mod_scores %>%
   ggplot(aes(datetime, crps, color = model_id)) +
   geom_line() +
   theme_bw() +
-  ggtitle("Forecast scores over time at OSBS for 2022")
+  ggtitle("Forecast scores over time at OSBS for 2024")
 
 
