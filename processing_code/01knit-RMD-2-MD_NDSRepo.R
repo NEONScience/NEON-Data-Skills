@@ -18,6 +18,7 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
           "R/NEON-general/neon-code-packages/tokens-simple",
           "R/biodiversity/biorepository",
           "R/biodiversity/fish",
+          "R/biodiversity/beetle-forecasting",
           "R/Aquatics/AIS-AOS-integration",
           "R/NEON-general/neon-overview/site-management",
           "R/eddy-covariance/intro-to-eddy4R/eddy_intro",
@@ -29,7 +30,7 @@ dirs <- c("R/NEON-general/neon-overview/NEON-download-explore",
 
 # set directory (order above) that you'd like to build
 
-subDir <- dirs[6]
+subDir <- dirs[5]
 
 # Inputs - Where the git repo is on your computer
 gitRepoPath <-"~/GitHub/NEON-Data-Skills"

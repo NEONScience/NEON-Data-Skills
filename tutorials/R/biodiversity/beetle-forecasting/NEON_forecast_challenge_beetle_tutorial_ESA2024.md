@@ -79,7 +79,7 @@ Then load the packages.
 
     version$version.string
 
-    ## [1] "R version 4.4.3 (2025-02-28 ucrt)"
+    ## [1] "R version 4.6.0 (2026-04-24)"
 
     library(tidyverse)
 
@@ -141,7 +141,7 @@ For this tutorial, we are going to focus on the [NEON site at Ordway-Swisher Bio
 
 If you're interested to learn more about downloading and exploring NEON data beyond beetles at OSBS, follow [this link](https://www.neonscience.org/resources/learning-hub/tutorials/neondatastackr) to get an overview of NEON's data products, how to download the data, and how to interact visualize and analyze the data. 
 
-**When**: Target data are available as early as 2013 at some sites, and data are available at all sites from 2019 on. Pitfall trap deployments are typically two weeks in duration (i.e., a sampling bout lasts two weeks), and traps are collected and redeployed throughout the growing season at each NEON site. Note that the target data for The Challenge are standardized to represent beetle abundance per trap night. Because pitfall trap samples need to be sorted and individuals counted and identified, the latency for data publication can be nearly a year. In this tutorial we will train our models on data from 2013-2021 and we will make forecasts for the 2022 season so that we can score them immediately. 
+**When**: Target data are available as early as 2013 at some sites, and data are available at all sites from 2019 on. Pitfall trap deployments are typically two weeks in duration (i.e., a sampling bout lasts two weeks), and traps are collected and redeployed throughout the growing season at each NEON site. Note that the target data for The Challenge are standardized to represent beetle abundance per trap night. Because pitfall trap samples need to be sorted and individuals counted and identified, the latency for data publication can be nearly a year. In this tutorial we will train our models on data from 2013-2023 and we will make forecasts for the 2024 season so that we can score them immediately. 
 
 Check current ground beetle data availability on the [NEON Data Portal](https://data.neonscience.org/data-products/DP1.10022.001#:~:text=last_page-,Availability%20and%20Download,-July%202013%20%E2%80%93%20January).
 
@@ -167,13 +167,13 @@ Choose forecast start and end dates:
 
     # date where we will start making predictions
 
-    forecast_startdate <- "2022-01-01" #fit up through 2021, forecast 2022 data
+    forecast_startdate <- "2024-01-01" #fit up through 2023, forecast 2024 data
 
     
 
     # date where we will stop making predictions
 
-    forecast_enddate <- "2025-01-01"
+    forecast_enddate <- "2028-01-01"
 Note that the `forecast_startdate` will be renamed `reference_datetime` when we submit our forecast to the The Challenge. As the parameter name indicates, this date represents the beginning of the forecast. For this tutorial, we are using a `forecast_startdate`, or `reference_datetime`, that is in the past so that we can evaluate the accuracy of our forecasts at the end of this tutorial. 
 
 The `forecast_enddate` is used to determine the forecast horizon. In this example, we are setting a horizon to extend into the future. 
@@ -196,7 +196,7 @@ We begin by first looking at the historic data - called the 'targets'. These dat
     targets <- read_csv(url) %>%
       mutate(datetime = as_date(datetime)) %>%  # set proper formatting
       dplyr::filter(site_id == my_site,  # filter to desired site
-                    datetime < "2022-12-31") # excluding provisional data 
+                    datetime < "2024-12-31") # excluding provisional data 
 
 ### Visualise the target data
 
@@ -232,7 +232,7 @@ It is good practice to examine the dataset before proceeding with analysis:
 <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot targets-1.png" alt="Figure: Beetle targets data at OSBS"  />
 <p class="caption">Figure: Beetle targets data at OSBS</p>
 </div>
-Note that target data are available through 2022. As of the writing of this document, some provisional 2023 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2025 release will include all of the 2022 data but not all of 2023. The full 2022 NEON Ground Beetle data set will be QC'd in 2024 and published as a release with a DOI in January 2025 pending there are no data collection and data processing setbacks. 
+Note that target data are available through 2024. As of the writing of this document, some provisional 2025 data may be available. The beetle data are consistently on a 2-year release lag instead of the usual 1-year release tag for other products, so the 2027 release will include all of the 2024 data but not all of 2025. The full 2024 NEON Ground Beetle data set will be QC'd in 2026 and published as a release with a DOI in January 2027 pending there are no data collection and data processing setbacks. 
 
 ### Create the training dataset
 
@@ -265,7 +265,7 @@ At the end of this tutorial, we will compare the performance of our best regress
 
 ### Forecast beetle abundance: null models
 
-Here, we fit our two null models to the training data and then create forecasts for 2022-2024. Note that we are using a `log(x + 1)` transform (using the `log1p()` function) for the abundance data in all of our models. This is a common transform for abundance data for communities, which are typically log-normal, but with zeros. We are keeping the model simple for this example, but you could substitute generalized linear regression models, zero-inflated models, or other approaches better model the distribution of beetle abundances. 
+Here, we fit our two null models to the training data and then create forecasts for 2024-2027. Note that we are using a `log(x + 1)` transform (using the `log1p()` function) for the abundance data in all of our models. This is a common transform for abundance data for communities, which are typically log-normal, but with zeros. We are keeping the model simple for this example, but you could substitute generalized linear regression models, zero-inflated models, or other approaches better model the distribution of beetle abundances. 
 
     # specify and fit models
 
@@ -282,7 +282,7 @@ Here, we fit our two null models to the training data and then create forecasts 
     # make a forecast
 
     fc_null <- mod_fits %>%
-      fabletools::forecast(h = "3 years") 
+      fabletools::forecast(h = "4 years") 
 
 Next, we can visualize our two null model forecasts. 
 
@@ -399,9 +399,9 @@ Next, specify and fit simple linear regression models using `fable::TSLM()`, and
     ## # A tibble: 3 × 2
     ##   .model            AIC
     ##   <chr>           <dbl>
-    ## 1 mod_temp        -610.
-    ## 2 mod_precip      -606.
-    ## 3 mod_temp_precip -608.
+    ## 1 mod_temp        -768.
+    ## 2 mod_precip      -764.
+    ## 3 mod_temp_precip -766.
 
 Now, plot the predicted versus observed abundance data.
 
@@ -435,18 +435,18 @@ We could use all of these models to make an ensemble forecast, but for simplicit
     ## 
     ## Residuals:
     ##      Min       1Q   Median       3Q      Max 
-    ## -0.07759 -0.04002 -0.01051  0.02192  0.28585 
+    ## -0.08261 -0.04298 -0.00928  0.02467  0.27955 
     ## 
     ## Coefficients:
     ##                      Estimate Std. Error t value Pr(>|t|)  
-    ## (Intercept)         -0.031335   0.051783  -0.605   0.5463  
-    ## temperature_2m_mean  0.003947   0.002029   1.945   0.0544 .
+    ## (Intercept)         -0.008788   0.044952  -0.195   0.8453  
+    ## temperature_2m_mean  0.003299   0.001766   1.868   0.0638 .
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.0645 on 110 degrees of freedom
-    ## Multiple R-squared: 0.03324,	Adjusted R-squared: 0.02445
-    ## F-statistic: 3.782 on 1 and 110 DF, p-value: 0.054357
+    ## Residual standard error: 0.06602 on 140 degrees of freedom
+    ## Multiple R-squared: 0.02433,	Adjusted R-squared: 0.01736
+    ## F-statistic: 3.491 on 1 and 140 DF, p-value: 0.063803
 
     # make a forecast
 
@@ -516,14 +516,14 @@ What does the content of the submission look like?
     head(fc_best_lm_efi)
 
     ## # A tibble: 6 × 10
-    ##   datetime   site_id parameter model_id                    family   variable  prediction project_id reference_datetime duration
-    ##   <date>     <chr>   <chr>     <chr>                       <chr>    <chr>          <dbl> <chr>      <chr>              <chr>   
-    ## 1 2022-01-01 OSBS    1         bet_abund_example_tslm_temp ensemble abundance    -0.0717 neon4cast  2022-01-01         P1W     
-    ## 2 2022-01-01 OSBS    2         bet_abund_example_tslm_temp ensemble abundance     0.0803 neon4cast  2022-01-01         P1W     
-    ## 3 2022-01-01 OSBS    3         bet_abund_example_tslm_temp ensemble abundance     0.0882 neon4cast  2022-01-01         P1W     
-    ## 4 2022-01-01 OSBS    4         bet_abund_example_tslm_temp ensemble abundance    -0.0219 neon4cast  2022-01-01         P1W     
-    ## 5 2022-01-01 OSBS    5         bet_abund_example_tslm_temp ensemble abundance     0.0817 neon4cast  2022-01-01         P1W     
-    ## 6 2022-01-01 OSBS    6         bet_abund_example_tslm_temp ensemble abundance     0.177  neon4cast  2022-01-01         P1W
+    ##   datetime   site_id parameter model_id     family variable prediction project_id reference_datetime duration
+    ##   <date>     <chr>   <chr>     <chr>        <chr>  <chr>         <dbl> <chr>      <chr>              <chr>   
+    ## 1 2024-01-01 OSBS    1         bet_abund_e… ensem… abundan…     0.0721 neon4cast  2024-01-01         P1W     
+    ## 2 2024-01-01 OSBS    2         bet_abund_e… ensem… abundan…     0.153  neon4cast  2024-01-01         P1W     
+    ## 3 2024-01-01 OSBS    3         bet_abund_e… ensem… abundan…     0.103  neon4cast  2024-01-01         P1W     
+    ## 4 2024-01-01 OSBS    4         bet_abund_e… ensem… abundan…     0.0658 neon4cast  2024-01-01         P1W     
+    ## 5 2024-01-01 OSBS    5         bet_abund_e… ensem… abundan…     0.0257 neon4cast  2024-01-01         P1W     
+    ## 6 2024-01-01 OSBS    6         bet_abund_e… ensem… abundan…     0.0222 neon4cast  2024-01-01         P1W
 
 
     # visualize the EFI-formatted submission
@@ -647,16 +647,16 @@ You can also download the raw scores from the bucket directly, for example:
 
 ### How to score your own forecast
 
-For immediate feedback, we can use the targets data from 2022 to score our forecast for the 2022 field season at OSBS. 
+For immediate feedback, we can use the targets data from 2024 to score our forecast for the 2024 field season at OSBS.
 
-    # filter to 2022 because that is the latest release year
+    # filter to 2024 because that is the year we want to forecast
 
-    # 2023 is provisional and most sites do not yet have data reported
+    # 2025 is provisional and most sites do not yet have data reported
 
-    targets_2022 <- targets %>% 
+    targets_2024 <- targets %>% 
       dplyr::filter(
-        datetime >= "2022-01-01", 
-        datetime < "2023-01-01",
+        datetime >= "2024-01-01", 
+        datetime < "2025-01-01",
         variable == "abundance",
         observation > 0)
 
@@ -664,7 +664,7 @@ For immediate feedback, we can use the targets data from 2022 to score our forec
 
     # list of target site dates for filtering mod predictions
 
-    target_site_dates_2022 <- targets_2022 %>%
+    target_site_dates_2024 <- targets_2024 %>%
       select(site_id, datetime) %>% distinct()
 
     
@@ -672,7 +672,7 @@ For immediate feedback, we can use the targets data from 2022 to score our forec
     # filter model forecast data to dates where we have observations
 
     mod_results_to_score_lm <- fc_best_lm_efi %>%
-      left_join(target_site_dates_2022,.) %>%
+      left_join(target_site_dates_2024,.) %>%
       dplyr::filter(!is.na(parameter))
 
     
@@ -681,22 +681,23 @@ For immediate feedback, we can use the targets data from 2022 to score our forec
 
     mod_scores <- score(
       forecast = mod_results_to_score_lm,
-      target = targets_2022) 
+      target = targets_2024) 
 
     
 
     head(mod_scores)
 
     ## # A tibble: 6 × 17
-    ##   model_id             reference_datetime site_id datetime   family variable observation   crps   logs   mean median     sd quantile97.5
-    ##   <chr>                <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>        <dbl>
-    ## 1 bet_abund_example_t… 2022-01-01         OSBS    2022-04-04 sample abundan…      0.102  0.0351 -1.30  0.0435 0.0492 0.0750       0.149 
-    ## 2 bet_abund_example_t… 2022-01-01         OSBS    2022-04-18 sample abundan…      0.188  0.155  20.1   0.0166 0.0209 0.0312       0.0529
-    ## 3 bet_abund_example_t… 2022-01-01         OSBS    2022-04-25 sample abundan…      0.0877 0.0149 -1.77  0.0697 0.0759 0.0547       0.157 
-    ## 4 bet_abund_example_t… 2022-01-01         OSBS    2022-05-02 sample abundan…      0.0857 0.0358 -1.22  0.0306 0.0290 0.0639       0.133 
-    ## 5 bet_abund_example_t… 2022-01-01         OSBS    2022-05-16 sample abundan…      0.0786 0.0152 -1.81  0.100  0.0818 0.0559       0.185 
-    ## 6 bet_abund_example_t… 2022-01-01         OSBS    2022-05-30 sample abundan…      0.133  0.0594 -0.761 0.0511 0.0466 0.0440       0.118 
-    ## # ℹ 4 more variables: quantile02.5 <dbl>, quantile90 <dbl>, quantile10 <dbl>, horizon <drtn>
+    ##   model_id      reference_datetime site_id datetime   family variable observation   crps   logs   mean median
+    ##   <chr>         <chr>              <chr>   <date>     <chr>  <chr>          <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+    ## 1 bet_abund_ex… 2024-01-01         OSBS    2024-03-18 sample abundan…      0.0357 0.0307 -1.33  0.0799 0.0762
+    ## 2 bet_abund_ex… 2024-01-01         OSBS    2024-04-01 sample abundan…      0.107  0.0280 -1.66  0.0518 0.0828
+    ## 3 bet_abund_ex… 2024-01-01         OSBS    2024-04-15 sample abundan…      0.139  0.0816 -0.194 0.0292 0.0364
+    ## 4 bet_abund_ex… 2024-01-01         OSBS    2024-04-29 sample abundan…      0.0635 0.0321 -1.06  0.0624 0.0802
+    ## 5 bet_abund_ex… 2024-01-01         OSBS    2024-05-13 sample abundan…      0.0952 0.0163 -1.82  0.101  0.121 
+    ## 6 bet_abund_ex… 2024-01-01         OSBS    2024-05-27 sample abundan…      0.206  0.0933 -0.111 0.0872 0.0877
+    ## # ℹ 6 more variables: sd <dbl>, quantile97.5 <dbl>, quantile02.5 <dbl>, quantile90 <dbl>, quantile10 <dbl>,
+    ## #   horizon <drtn>
 
 Are these scores better than our null models? Here, we will score the `mod_mean` and `mod_naive` models, and combine the null model scores with the scores for our `best_lm` forecast above. Then we can compare. 
 
@@ -712,10 +713,10 @@ Are these scores better than our null models? Here, we will score the `mod_mean`
 
     
 
-    # filter to dates where we have target data from 2022
+    # filter to dates where we have target data from 2024
 
     mod_results_to_score_null <- fc_null_efi %>%
-      left_join(target_site_dates_2022,.) %>%
+      left_join(target_site_dates_2024,.) %>%
       dplyr::filter(!is.na(parameter))
 
     
@@ -724,7 +725,7 @@ Are these scores better than our null models? Here, we will score the `mod_mean`
 
     mod_null_scores <- score(
       forecast = mod_results_to_score_null,
-      target = targets_2022) 
+      target = targets_2024) 
 
     
 
@@ -740,7 +741,7 @@ Are these scores better than our null models? Here, we will score the `mod_mean`
       mod_scores %>% mutate(
         reference_datetime = as.character(reference_datetime)))
 
-Before we visualize the scores, we can visualize the target 2022 observations and compare them against the forecast ensembles (parameters) among all three models. Each individual line in the figure below represents a single forecast ensemble and all the lines together represents the forecast's uncertainty. The points represent the direct observed target data and assumes there is no uncertainty. 
+Before we visualize the scores, we can visualize the target 2024 observations and compare them against the forecast ensembles (parameters) among all three models. Each individual line in the figure below represents a single forecast ensemble and all the lines together represents the forecast's uncertainty. The points represent the direct observed target data and assumes there is no uncertainty. 
 
     mod_results_to_score_lm <- mod_results_to_score_lm |> select(site_id,datetime,parameter,model_id,family,variable,prediction)
 
@@ -749,7 +750,7 @@ Before we visualize the scores, we can visualize the target 2022 observations an
     rbind(mod_results_to_score_null,mod_results_to_score_lm) %>% 
       ggplot(., aes(datetime, prediction, color = model_id, group=interaction(parameter, model_id))) +
       geom_line(lwd = 1)+
-      geom_point(aes(datetime, observation), color = "black", size = 6, inherit.aes = F, data = targets_2022)+
+      geom_point(aes(datetime, observation), color = "black", size = 6, inherit.aes = F, data = targets_2024)+
       ylab("Abundance")+
       theme_classic()
 
@@ -764,11 +765,11 @@ Let's plot the scores. Remember, lower scores indicate better forecast accuracy.
       ggplot(aes(datetime, crps, color = model_id)) +
       geom_line() +
       theme_bw() +
-      ggtitle("Forecast scores over time at OSBS for 2022")
+      ggtitle("Forecast scores over time at OSBS for 2024")
 
 <div class="figure" style="text-align: center">
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot forecast scores-1.png" alt="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season"  />
-<p class="caption">Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2022 field season</p>
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/R/biodiversity/beetle-forecasting/rfigs/plot forecast scores-1.png" alt="Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2024 field season"  />
+<p class="caption">Figure: Forecast scores (CRPS) for models predicting beetle abundance at the OSBS NEON site during the 2024 field season</p>
 </div>
 
 
