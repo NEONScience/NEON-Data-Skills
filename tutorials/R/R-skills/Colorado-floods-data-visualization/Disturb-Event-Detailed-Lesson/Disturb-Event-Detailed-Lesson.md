@@ -274,10 +274,10 @@ Boulder is reported in daily averages.  Take a look at the plot below to explore
 
 <figure class="half">
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/500-yr-flood_cropped.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/500-yr-flood_cropped.jpg" style="width: 30%;>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/500-yr-flood_cropped.jpg" style="width: 30%;">
 	</a>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/DailyCamera_100-yearFlood_cropped.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/DailyCamera_100-yearFlood_cropped.jpg" style="width: 30%;>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/DailyCamera_100-yearFlood_cropped.jpg" style="width: 30%;">
 	</a>
 	<figcaption>Return intervals make for shocking headlines but how are they calculated?
 	</figcaption>
@@ -366,7 +366,7 @@ number of points to precisely map the region. This method can be very time inten
 <figure>
    <a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/TotalStation_NEONTechJGallowayD08_PhotoByMichaelPatterson.jpg">
    <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/TotalStation_NEONTechJGallowayD08_PhotoByMichaelPatterson.jpg"></a>
-   <figcaption>Survey of a NEON field site done with a total station Source: Michael Patterson</a>.  
+	<figcaption>Survey of a NEON field site done with a total station. Source: Michael Patterson.
     </figcaption>
 </figure>
 
@@ -380,7 +380,7 @@ elevation changes from 2D pictures.
 
 <figure>
    <a href="https://theoldtopographer.files.wordpress.com/2014/06/sokkisha-13.jpg?w=584&h=444">
-   <img src="https://theoldtopographer.files.wordpress.com/2014/06/sokkisha-13.jpg?w=584&h=444" style="width: 25%;"></a>
+   <img src="https://theoldtopographer.files.wordpress.com/2014/06/sokkisha-13.jpg?w=584&h=444" style="width: 25%"></a>
    <figcaption>A Sokkisha MS-16 stereoscope and the overlapping imaged used to 
    create 3-D visuals from a aerial photo. Source: <a href="https://oldtopographer.net/2014/07/" target="_blank"> Brian Haren</a>.  
     </figcaption>
