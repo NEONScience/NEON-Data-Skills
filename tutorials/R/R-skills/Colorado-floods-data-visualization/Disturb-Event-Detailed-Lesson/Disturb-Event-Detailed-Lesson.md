@@ -111,29 +111,19 @@ How do we measure drought?
 
 <div id="ds-dataTip" markdown="1">
 
-**Definition:** The **Palmer Drought Severity Index** is a measure of soil moisture content. It is calculated from soil 
-available water content,precipitation and temperature data. The values range from **extreme drought** (values <-4.0) through **near normal** (-.49 to .49) 
+**Definition:** The **Palmer Drought Severity Index** is a measure of soil moisture content. It is calculated from soil available water content, precipitation and temperature data. The values range from **extreme drought** (values <-4.0) through **near normal** (-.49 to .49) 
 to **extremely moist** (>4.0).
 
 </div>
 
-Bonus: There are several other commonly used drought indices. The 
-<a href="http://drought.unl.edu/Planning/Monitoring/ComparisonofDroughtIndices.aspx" target="_blank"> National Drought Mitigation Center </a> 
-provides a comparison of the different indices.  
-
-This interactive plot shows the Palmer Drought Severity Index from 2006 through the latest available 2026 data for Colorado.
-
-<iframe title="Colorado Palmer Drought Severity Index animation, 2006-2026" width="800" height="650" frameborder="0" scrolling="no" src="colorado-pdsi-2006-2026.html"></iframe>
-
-Palmer Drought Severity Index for Colorado 2006-2026. Source: National Ecological Observatory Network (NEON) based on
-<a href="https://www.ncei.noaa.gov/access/monitoring/historical-palmers/" target="_blank">NOAA National Centers for Environmental Information Palmer Drought Severity Index divisional data</a>.
+View the <a href="https://www.ncei.noaa.gov/access/monitoring/historical-palmers/" target="_blank">NOAA Historical Palmer Drought Indices</a> page to view an interactive plot showing the Palmer Drought Severity Index for the continental U.S.
 
 #### Questions
-Use the figure above to answer these questions: 
+Use the webpage above to answer these questions: 
 
-1. In this dataset, what years are **near normal**, **extreme drought**, and **extreme wet** on the Palmer Drought Severity Index? 
-1. What are the patterns of drought within Colorado that you observe using this Palmer Drought Severity Index?
-1. What were the drought conditions immediately before the September 2013 floods? 
+1. In this dataset, what years are **near normal**, **extreme drought**, and **extreme wet** for Colorado on the Palmer Drought Severity Index? 
+2. What are the patterns of drought within Colorado that you observe using this Palmer Drought Severity Index?
+3. What were the drought conditions immediately before the September 2013 floods? 
 
 Over this decade and a half, there have been several cycles of dry and wet periods. The 2013 flooding occurred right at the end of a severe drought. 
 
