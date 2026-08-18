@@ -228,7 +228,7 @@ increases significantly during a flood event.
 
 #### How is stream discharge measured? 
 
-> Most USGS streamgages operate by measuring the elevation of the water in the 
+> Most USGS stream gages operate by measuring the elevation of the water in the 
 > river or stream and then converting the water elevation (called 'stage') to a 
 > streamflow ('discharge') by using a curve that relates the elevation to a set 
 > of actual discharge measurements. This is done because currently the 
@@ -240,7 +240,7 @@ increases significantly during a flood event.
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png" style="width: 25%;"></a>
 	<figcaption> Stream discharge in Boulder Creek from 2001 to 2026.  
 	Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank">USGS</a>. 
 	</figcaption>
