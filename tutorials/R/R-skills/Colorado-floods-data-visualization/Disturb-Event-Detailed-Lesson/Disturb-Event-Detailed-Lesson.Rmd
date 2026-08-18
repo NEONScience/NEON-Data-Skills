@@ -237,7 +237,7 @@ increases significantly during a flood event.
 <a href="http://water.usgs.gov/nsip/definition9.html" target="_blank"> USGS National Streamflow Information Program</a>
 <figure>
    <a href="http://water.usgs.gov/edu/images/streamflow1-fig2.jpg">
-   <img src="http://water.usgs.gov/edu/images/streamflow1-fig2.jpg"></a>
+   <img src="http://water.usgs.gov/edu/images/streamflow1-fig2.jpg" style="width: 25%;"></a>
    <figcaption>A typical USGS stream gauge using a stilling well. Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank"> USGS</a>.  
     </figcaption>
 </figure>
@@ -250,7 +250,7 @@ Boulder is reported in daily averages.  Take a look at the plot below to explore
 
 <figure>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png" style="width: 25%;"></a>
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png"></a>
 	<figcaption> Stream discharge in Boulder Creek from 2001 to 2026.  
 	Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank">USGS</a>. 
 	</figcaption>

@@ -235,15 +235,11 @@ increases significantly during a flood event.
 > technology is not available to measure the flow of the water accurately 
 > enough directly.  From the
 <a href="http://water.usgs.gov/nsip/definition9.html" target="_blank"> USGS National Streamflow Information Program</a>
-
-
-
 <figure>
-	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png" style="width: 25%;"></a>
-	<figcaption> Stream discharge in Boulder Creek from 2001 to 2026.  
-	Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank">USGS</a>. 
-	</figcaption>
+   <a href="http://water.usgs.gov/edu/images/streamflow1-fig2.jpg">
+   <img src="http://water.usgs.gov/edu/images/streamflow1-fig2.jpg" style="width: 25%;"></a>
+   <figcaption>A typical USGS stream gauge using a stilling well. Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank"> USGS</a>.  
+    </figcaption>
 </figure>
 
 
@@ -253,7 +249,13 @@ The data for the stream gauge along Boulder Creek 5 miles downstream of downtown
 Boulder is reported in daily averages.  Take a look at the plot below to explore discharge patterns.
 
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_jan2001_jan2026.png"></iframe>
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png"></a>
+	<figcaption> Stream discharge in Boulder Creek from 2001 to 2026.  
+	Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank">USGS</a>. 
+	</figcaption>
+</figure>
 
 #### Questions: 
 
