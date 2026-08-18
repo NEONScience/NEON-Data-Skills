@@ -1,17 +1,14 @@
 ---
 title: Quantifying The Drivers and Impacts of Natural Disturbance Events – The 2013 Colorado Floods
 code1: 
-contributors: Donal O'Leary
+contributors: Bridget Hass
 dataProduct: DP3.30024.001
 dateCreated: '2015-05-18'
 description: This teaching module demonstrates ways that scientists identify and use
-  data that they use to study disturbance events. Further, it encourages students
-  to think about why we need to quantify change and different types of data needed
-  to quantify the change. The focus is on flooding as a natural disturbance event
-  with impacts on the local human populations. Specifically, it focuses on the causes
+  data that they use to study disturbance events. Specifically, it focuses on the causes
   and impacts of flooding that occurred in 2013 throughout Colorado with an emphasis
   on Boulder county.
-estimatedTime: 4 hours
+estimatedTime: 2 hours
 languagesTool: spreadsheet, R, plotly
 packagesLibraries: ggplot2, plotly
 syncID: 1ca06930711c4a50bf9cf3b6fd5aec5f
@@ -114,10 +111,8 @@ How do we measure drought?
 
 <div id="ds-dataTip" markdown="1">
 
-**Definition:** The **Palmer Drought Severity 
-Index** is a measure of soil moisture content. It is calculated from soil 
-available water content,precipitation and temperature data. The values range 
-from **extreme drought** (values <-4.0) through **near normal** (-.49 to .49) 
+**Definition:** The **Palmer Drought Severity Index** is a measure of soil moisture content. It is calculated from soil 
+available water content,precipitation and temperature data. The values range from **extreme drought** (values <-4.0) through **near normal** (-.49 to .49) 
 to **extremely moist** (>4.0).
 
 </div>
@@ -126,27 +121,21 @@ Bonus: There are several other commonly used drought indices. The
 <a href="http://drought.unl.edu/Planning/Monitoring/ComparisonofDroughtIndices.aspx" target="_blank"> National Drought Mitigation Center </a> 
 provides a comparison of the different indices.  
 
-This interactive plot shows the Palmer Drought Severity Index from 1991 through 
-2015 for Colorado. 
+This interactive plot shows the Palmer Drought Severity Index from 2006 through the latest available 2026 data for Colorado.
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/2.embed"></iframe>
+<iframe title="Colorado Palmer Drought Severity Index animation, 2006-2026" width="800" height="650" frameborder="0" scrolling="no" src="colorado-pdsi-2006-2026.html"></iframe>
 
-Palmer Drought Severity Index for Colorado 1991-2015. Source: National 
-Ecological Observatory Network (NEON) based on data from 
-<a href="http://www7.ncdc.noaa.gov/CDO/CDODivisionalSelect.jsp" target="_blank"> National Climatic Data Center–NOAA</a>. 
+Palmer Drought Severity Index for Colorado 2006-2026. Source: National Ecological Observatory Network (NEON) based on
+<a href="https://www.ncei.noaa.gov/access/monitoring/historical-palmers/" target="_blank">NOAA National Centers for Environmental Information Palmer Drought Severity Index divisional data</a>.
 
 #### Questions
 Use the figure above to answer these questions: 
 
-1. In this dataset, what years are **near normal**, **extreme drought**, and 
-**extreme wet** on the Palmer Drought Severity Index? 
-1. What are the patterns of drought within Colorado that you observe using this 
-Palmer Drought Severity Index?
-1. What were the drought conditions immediately before the September 2013
-floods? 
+1. In this dataset, what years are **near normal**, **extreme drought**, and **extreme wet** on the Palmer Drought Severity Index? 
+1. What are the patterns of drought within Colorado that you observe using this Palmer Drought Severity Index?
+1. What were the drought conditions immediately before the September 2013 floods? 
 
-Over this decade and a half, there have been several cycles of dry and wet 
-periods. The 2013 flooding occurred right at the end of a severe drought. 
+Over this decade and a half, there have been several cycles of dry and wet periods. The 2013 flooding occurred right at the end of a severe drought. 
 
 There is a connection between the dry soils during a drought and the potential 
 for flooding. In a severe drought the top layers of the soil dry out. Organic 
@@ -180,8 +169,7 @@ How do we measure precipitation?
 
 <div id="ds-dataTip" markdown="1">
 
-**Definition:** Precipitation is the moisture that
-falls from clouds including rain, hail and snow. 
+**Definition:** Precipitation is the moisture that falls from clouds including rain, hail and snow. 
 
 </div>
 
@@ -197,22 +185,25 @@ the high plains. The average annual precipitation is near 20". However, the
 precipitation comes in many forms -- winter snow, intense summer thunderstorms, 
 and intermittent storms throughout the year.
 
-The figure below show the total precipitation each month from 1948 to 2013 for
-the National Weather Service's COOP site Boulder 2 (Station ID:050843) that is 
-centrally located in Boulder, CO. 
+The figure below show the total precipitation each month from 2001 to 2026 for
+the NOAA station CO-BO-30 located in Boulder, CO. 
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/6.embed"></iframe>
+<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_apr2013_jan2014.png"></iframe>
 
-Notice the general pattern of rainfall across the 65 years. 
+Notice the general pattern of rainfall across the 25 years. 
 
 1. How much rain generally falls within one month?
 1. Is there a strong annual or seasonal pattern? (Remember, with 
 interactive Plotly plots you can zoom in on the data) 
 1. Do any other events over the last 65 years equal the September 2013 event?
 
-Now that we've looked at 65 years of data from Boulder, CO. Let's focus more 
+Now that we've looked at 25 years of data from Boulder, CO. Let's focus more 
 specifically on the September 2013 event. The plot below shows daily 
-precipitation between August 15 - October 15, 2013. 
+precipitation between April 2013 - Jan 2014, obtained from the 
+<a href="https://dex.cocorahs.org/stations/CO-BO-30/precip-summary" target="_blank">NOAA CoCoRaHS Data Explorer</a>.
+
+<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_jan2001_jan2026.png"></iframe>
+
 
 Explore the data and answer the following questions:
 
@@ -220,7 +211,7 @@ Explore the data and answer the following questions:
 1. What was the total precipitation on these days? 
 1. In what units is this value?
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/4.embed"></iframe>
+<iframe width="800" height="800" frameborder="0" scrolling="no" src=""></iframe>
 
 
 **Optional Data Activity:** <a href="https://www.neonscience.org/da-viz-coop-precip-data-R" target="_blank">Visualize <b>Precipitation Data</b> in R to Better Understand the 2013 Colorado Floods</a>.
@@ -253,11 +244,10 @@ increases significantly during a flood event.
 #### What was the stream discharge prior to and during the flood events?  
 
 The data for the stream gauge along Boulder Creek 5 miles downstream of downtown 
-Boulder is reported in daily averages.  Take a look at the interactive plot 
-below to see how patterns of discharge seen in these data?
+Boulder is reported in daily averages.  Take a look at the plot below to explore discharge patterns.
 
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://plot.ly/~NEONDataSkills/8.embed"></iframe>
+<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_jan2001_jan2026.png"></iframe>
 
 #### Questions: 
 
@@ -268,7 +258,7 @@ below to see how patterns of discharge seen in these data?
 
 <div id="ds-dataTip" markdown="1">
 
-**Definition:**  A **flood** is any time water inundates normally dry land. 
+**Definition:**  A **flood** occurs anytime water inundates normally dry land. 
 
 </div>
 
@@ -287,32 +277,25 @@ below to see how patterns of discharge seen in these data?
 
 #### A 1000 year Flood!!!  Understanding Return Periods
 
-When talking about major disturbance events we often hear "It was a 1000-year
-flood" or "That was a 100-year storm".  What does this really mean?  
+When talking about major disturbance events we often hear "It was a 1000-year flood" or "That was a 100-year storm".  What does this really mean?  
   
 <div id="ds-dataTip" markdown="1">
 
-**Definition:** A **return interval** is the likelihood, a statistical 
-measurement, of how often an event will occur for a given area. 
+**Definition:** A **return interval** is the likelihood, a statistical measurement, of how often an event will occur for a given area. 
 
 </div>
 
 Check out this 
-<a href="https://weather.com/news/weather/video/1000-year-flood-explained" target="_blank">video explanation from The Weather Channel </a>
+<a href="https://www.youtube.com/watch?v=Qk4z2H6sSxs" target="_blank">video explanation from NSF NCAR & UCAR Science Education </a>
 on how return intervals are calculated and what they mean to us.
 
-And it isn't just floods, major hurricanes are forecast to strike New Orleans, 
-Louisiana once every 
-<a href="http://climatica.org.uk/climate-science-information/return-periods-extreme-events" target="_blank"> 20 years</a>. 
-Yet in 2005 New Orleans was pummeled by 4 hurricanes and 1
-tropical storm.  Hurricane Cindy in July 2013 caused the worst black out in New
-Orleans for 40 years.  Eight weeks later Hurricane Katrina came ashore over New 
-Orleans, changed the landscape of the city and became the costliest natural
-disaster to date in the United States.  It was frequently called a 100-year
-storm. 
+And it isn't just floods, major hurricanes are forecast to strike New Orleans, Louisiana once every 20 years. 
+Yet in 2005 New Orleans was pummeled by 4 hurricanes and 1 tropical storm.  Hurricane Cindy in July 2013 
+caused the worst black out in New Orleans for 40 years.  Eight weeks later Hurricane Katrina came ashore 
+over New Orleans, changed the landscape of the city and became the costliest natural disaster to date in 
+the United States.  It was frequently called a 100-year storm. 
 
-If we say the return period is 20 years then how did 4 hurricanes strike New 
-Orleans in 1 year?
+If we say the return period is 20 years then how did 4 hurricanes strike New Orleans in 1 year?
 
 The return period of extreme events is also referred to as _recurrence_
 _interval_. It is an estimate of the likelihood of an extreme event
@@ -323,14 +306,14 @@ events for human populations but can also be used by biologists when creating
 habitat management plans or conservation plans for endangered species. The
 concept is based on the _magnitude-frequency_ _principle_, where large magnitude
 events (such as major hurricanes) are comparatively less frequent than smaller
-magnitude incidents (such as rain showers).  (For more information visit  
-<a href="http://climatica.org.uk/climate-science-information/return-periods-extreme-events" target="_blank"> Climatica's Return Periods of Extreme Events.</a>)
+magnitude incidents (such as rain showers). (For more information visit  
+<a href="https://climatedata.ca/resource/understanding-climate-extremes-return-periods-and-return-levels/" target="_blank"> Climate Data Canada "Understanding climate extremes: Return Periods and Return Levels".</a>)
 
 
 #### Question
 Your friend is thinking about buying a house near Boulder Creek.  The 
 house is above the level of seasonal high water but was flooded in the 2013
-flood.  He realizes how expensive flood insurance is and says, "Why do I have to
+flood. He realizes how expensive flood insurance is and says, "Why do I have to
 buy this insurance, a flood like that won't happen for another 100 years? 
 I won't live here any more."  How would you explain to him that even though the
 flood was a 100-year flood he should still buy the flood insurance?  
@@ -358,20 +341,16 @@ flooding during periods of high discharge.
 How can we evaluate the impact of a flooding event? 
 
 #### 1. Economic Impacts
-We could look at economic damages to homes, businesses, and other 
-infrastructure. 
-<a href="https://bouldercolorado.gov/flood/flood-maps" target="_blank"> Click here to view the City of Boulder's maps for flood damages.</a> 
+We could look at economic damages to homes, businesses, and other infrastructure. 
+<a href="https://bouldercolorado.gov/maps-floodplains" target="_blank"> Click here to view the City of Boulder's maps for floodplains and flood damages.</a> 
 
 #### 2. Before & After Photos
-We could view photos from before and after the disturbance event to see where
-erosion or sedimentation has occurred. 
+We could view photos from before and after the disturbance event to see where erosion or sedimentation has occurred. 
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/bUcWERTM-OA?rel=0&loop=1" frameborder="0" allowfullscreen></iframe>
 
-Images are great for an overall impression of what happened, where soil has 
-eroded, and where soil or rocks have been deposited. But it is hard to 
-get measurements of change from these 2D images. There are several ways that we can 
-measure the apparent erosion and soil deposition.  
+Images are great for an overall impression of what happened, where soil has eroded, and where soil or rocks have been deposited. But it is hard to 
+get measurements of change from these 2D images. There are several ways that we can measure the apparent erosion and soil deposition.  
 
 #### 3. Field Surveys
 Standard surveys can be done to map the three-dimensional position of points allowing
@@ -456,8 +435,8 @@ Digital Elevation Model of Difference (DoD).
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/DoD_DTM.png">
   <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/lidar-derived-products/DoD_DTM.png"></a>
   <figcaption> A cross-section showing the data represented by a Digital
-  Elevation Model of Difference (DoD) created by subtracting one DTM from 
-  another. The resultant DoD shows the change that has occurred in a given
+  Elevation Model of Difference created by subtracting one DTM from 
+  another. The resultant difference map shows the change that has occurred in a given
   location- here, in orange, the areas where the earth's surface is lower than
   before and, in teal, the areas where the earth's surface is higher than 
   before.
