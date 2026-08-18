@@ -82,7 +82,7 @@ my_token=""
 
 We can load the vegetation structure data using the `load_by_product` function in the `neonutilities` package (imported as `nu`). Inputs to the function can be shown by typing `help(load_by_product)`.
   
-Refer to the  <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target=_blank>R neonUtilities cheat sheet</a>  or the <a href="https://neon-utilities-python.readthedocs.io/en/latest/" target=_blank>Python neonutilities documentation</a> for more details and the complete list of possible function inputs. The cheat sheet is focused on the R package, but nearly all the inputs are the same in Python neonutilitiese
+Refer to the  <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target=_blank>R neonUtilities cheat sheet</a>  or the <a href="https://neon-utilities-python.readthedocs.io/en/latest/" target=_blank>Python neonutilities documentation</a> for more details and the complete list of possible function inputs. The cheat sheet is focused on the R package, but nearly all the inputs are the same in Python neonutilitiese
 
 Note that in this example, we will pull in all the woody vegetation data (collected over all years), but if you are trying to model data collected in a single year, you can select just that year by specifying the `startdate` and `enddate`, or later filtering out the vegetation data by the `eventID`. We have set `check_size=False` since the data are not very large, but to check the size of what the data you are downloading first, you could omit this input, or set it to `True`.
 
