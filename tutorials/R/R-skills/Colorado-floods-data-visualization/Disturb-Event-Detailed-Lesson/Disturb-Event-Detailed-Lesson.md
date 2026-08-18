@@ -175,10 +175,16 @@ the high plains. The average annual precipitation is near 20". However, the
 precipitation comes in many forms -- winter snow, intense summer thunderstorms, 
 and intermittent storms throughout the year.
 
-The figure below show the total precipitation each month from 2001 to 2026 for
+The figure below shows the total precipitation each month from 2001 to 2026 for
 the NOAA station CO-BO-30 located in Boulder, CO. 
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_apr2013_jan2014.png"></iframe>
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_jan2001_jan2026.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_jan2001_jan2026.png"></a>
+	<figcaption> Precipitation in Boulder CO from 2001 to 2026.  
+	Source: <a href="https://dex.cocorahs.org/stations/CO-BO-30/precip-summary" target="_blank">CoCoRaHS Data Explorer</a>. 
+	</figcaption>
+</figure>
 
 Notice the general pattern of rainfall across the 25 years. 
 
@@ -192,7 +198,13 @@ specifically on the September 2013 event. The plot below shows daily
 precipitation between April 2013 - Jan 2014, obtained from the 
 <a href="https://dex.cocorahs.org/stations/CO-BO-30/precip-summary" target="_blank">NOAA CoCoRaHS Data Explorer</a>.
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_jan2001_jan2026.png"></iframe>
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_apr2013_jan2014.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_apr2013_jan2014.png"></a>
+	<figcaption> Precipitation in Boulder CO from 2001 to 2026.  
+	Source: <a href="https://dex.cocorahs.org/stations/CO-BO-30/precip-summary" target="_blank">CoCoRaHS Data Explorer</a>. 
+	</figcaption>
+</figure>
 
 
 Explore the data and answer the following questions:
