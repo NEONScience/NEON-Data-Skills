@@ -380,7 +380,7 @@ elevation changes from 2D pictures.
 
 <figure>
    <a href="https://theoldtopographer.files.wordpress.com/2014/06/sokkisha-13.jpg?w=584&h=444">
-   <img src="https://theoldtopographer.files.wordpress.com/2014/06/sokkisha-13.jpg?w=584&h=444"></a>
+   <img src="https://theoldtopographer.files.wordpress.com/2014/06/sokkisha-13.jpg?w=584&h=444" style="width: 25%;"></a>
    <figcaption>A Sokkisha MS-16 stereoscope and the overlapping imaged used to 
    create 3-D visuals from a aerial photo. Source: <a href="https://oldtopographer.net/2014/07/" target="_blank"> Brian Haren</a>.  
     </figcaption>
