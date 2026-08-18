@@ -79,8 +79,8 @@ Download <a href="https://data.neonscience.org/data-products/DP1.20107.001" targ
 * `release`: a particular data release, or `current` for the most recent release
 * `token`: your NEON API token
 
-Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a> 
-for the `neonUtilities` package for more details.
+Refer to the <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
+for more details on the `neonUtilities` package.
 
 For more background on NEON data structures and use of the neonUtilities package, follow the <a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> tutorial.
 

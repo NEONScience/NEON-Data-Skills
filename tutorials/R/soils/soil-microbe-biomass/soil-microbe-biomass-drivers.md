@@ -75,8 +75,8 @@ needed for the function are:
 * `check.size`: should this function prompt the user with an estimated download size? Set to `FALSE` here for ease of processing as a script, but good to leave as default `TRUE` when downloading a dataset for the first time.
 * `token`: Your NEON API token
 
-Since microbial biomass is only measured a few times per year in ten plots the amount of data is relatively small so we'll download all available data by not specifying start and end dates. Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">cheat sheet</a> 
-for the `neonUtilities` package for more details if desired.
+Since microbial biomass is only measured a few times per year in ten plots the amount of data is relatively small so we'll download all available data by not specifying start and end dates. Refer to the <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
+for more details on the `neonUtilities` package.
 
 
     microb <- loadByProduct(dpID = "DP1.10104.001", 

@@ -161,8 +161,8 @@ needed for the function are:</p>
 <li><code>check.size</code>: should this function prompt the user with an estimated download size? Set to <code>FALSE</code> here for ease of processing as a script, but good to leave as default <code>TRUE</code> when downloading a dataset for the first time.</li>
 <li><code>token</code>: Your NEON API token</li>
 </ul>
-<p>Since microbial biomass is only measured a few times per year in ten plots the amount of data is relatively small so we’ll download all available data by not specifying start and end dates. Refer to the <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">cheat sheet</a>
-for the <code>neonUtilities</code> package for more details if desired.</p>
+<p>Since microbial biomass is only measured a few times per year in ten plots the amount of data is relatively small so we’ll download all available data by not specifying start and end dates. Refer to the <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat sheet</a>
+for more details on the <code>neonUtilities</code> package.</p>
 <pre><code>microb &lt;- loadByProduct(dpID = &quot;DP1.10104.001&quot;, 
                         site = &quot;GUAN&quot;, 
                         release = &quot;RELEASE-2024&quot;, 
