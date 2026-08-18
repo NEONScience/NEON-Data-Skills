@@ -274,10 +274,10 @@ Boulder is reported in daily averages.  Take a look at the plot below to explore
 
 <figure class="half">
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/500-yr-flood_cropped.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/500-yr-flood_cropped.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/500-yr-flood_cropped.jpg" style="width: 30%;>
 	</a>
 	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/DailyCamera_100-yearFlood_cropped.jpg">
-	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/DailyCamera_100-yearFlood_cropped.jpg">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/DailyCamera_100-yearFlood_cropped.jpg" style="width: 30%;>
 	</a>
 	<figcaption>Return intervals make for shocking headlines but how are they calculated?
 	</figcaption>
@@ -353,12 +353,9 @@ We could look at economic damages to homes, businesses, and other infrastructure
 <a href="https://bouldercolorado.gov/maps-floodplains" target="_blank"> Click here to view the City of Boulder's maps for floodplains and flood damages.</a> 
 
 #### 2. Before & After Photos
-We could view photos from before and after the disturbance event to see where erosion or sedimentation has occurred. 
+We could view photos from before and after the disturbance event to see where erosion or sedimentation has occurred. See <a href="https://scied.ucar.edu/interactive/boulder-floods" target="_blank"> UCAR What Flooding Looked Like in Boulder, Colorado</a> to pan between before and after photos of the flood.
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/bUcWERTM-OA?rel=0&loop=1" frameborder="0" allowfullscreen></iframe>
-
-Images are great for an overall impression of what happened, where soil has eroded, and where soil or rocks have been deposited. But it is hard to 
-get measurements of change from these 2D images. There are several ways that we can measure the apparent erosion and soil deposition.  
+Images are great for an overall impression of what happened, where soil has eroded, and where soil or rocks have been deposited. But it is hard to get measurements of change from these 2D images. There are several ways that we can measure the apparent erosion and soil deposition.  
 
 #### 3. Field Surveys
 Standard surveys can be done to map the three-dimensional position of points allowing
