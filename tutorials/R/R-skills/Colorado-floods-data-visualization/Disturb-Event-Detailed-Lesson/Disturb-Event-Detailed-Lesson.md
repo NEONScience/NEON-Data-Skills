@@ -210,10 +210,9 @@ precipitation between April 2013 - Jan 2014, obtained from the
 Explore the data and answer the following questions:
 
 1. What dates were the highest precipitation values observed? 
-1. What was the total precipitation on these days? 
-1. In what units is this value?
+2. What was the total precipitation on these days? 
+3. In what units is this value?
 
-<iframe width="800" height="800" frameborder="0" scrolling="no" src=""></iframe>
 
 
 **Optional Data Activity:** <a href="https://www.neonscience.org/da-viz-coop-precip-data-R" target="_blank">Visualize <b>Precipitation Data</b> in R to Better Understand the 2013 Colorado Floods</a>.
@@ -236,12 +235,17 @@ increases significantly during a flood event.
 > technology is not available to measure the flow of the water accurately 
 > enough directly.  From the
 <a href="http://water.usgs.gov/nsip/definition9.html" target="_blank"> USGS National Streamflow Information Program</a>
+
+
+
 <figure>
-   <a href="http://water.usgs.gov/edu/images/streamflow1-fig2.jpg">
-   <img src="http://water.usgs.gov/edu/images/streamflow1-fig2.jpg"></a>
-   <figcaption>A typical USGS stream gauge using a stilling well. Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank"> USGS</a>.  
-    </figcaption>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png"></a>
+	<figcaption> Stream discharge in Boulder Creek from 2001 to 2026.  
+	Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank">USGS</a>. 
+	</figcaption>
 </figure>
+
 
 #### What was the stream discharge prior to and during the flood events?  
 

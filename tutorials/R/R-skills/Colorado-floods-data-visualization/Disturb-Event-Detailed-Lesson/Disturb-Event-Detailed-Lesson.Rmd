@@ -207,13 +207,12 @@ precipitation between April 2013 - Jan 2014, obtained from the
 	</figcaption>
 </figure>
 
+
 Explore the data and answer the following questions:
 
 1. What dates were the highest precipitation values observed? 
 1. What was the total precipitation on these days? 
 1. In what units is this value?
-
-<iframe width="800" height="800" frameborder="0" scrolling="no" src=""></iframe>
 
 
 **Optional Data Activity:** <a href="https://www.neonscience.org/da-viz-coop-precip-data-R" target="_blank">Visualize <b>Precipitation Data</b> in R to Better Understand the 2013 Colorado Floods</a>.
@@ -248,6 +247,14 @@ increases significantly during a flood event.
 The data for the stream gauge along Boulder Creek 5 miles downstream of downtown 
 Boulder is reported in daily averages.  Take a look at the plot below to explore discharge patterns.
 
+
+<figure>
+	<a href="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png">
+	<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/usgs_discharge_2001-2026.png"></a>
+	<figcaption> Stream discharge in Boulder Creek from 2001 to 2026.  
+	Source: <a href="http://water.usgs.gov/edu/streamflow1.html" target="_blank">USGS</a>. 
+	</figcaption>
+</figure>
 
 <iframe width="800" height="800" frameborder="0" scrolling="no" src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/graphics/disturb-events-co13/boulder_precip_jan2001_jan2026.png"></iframe>
 
