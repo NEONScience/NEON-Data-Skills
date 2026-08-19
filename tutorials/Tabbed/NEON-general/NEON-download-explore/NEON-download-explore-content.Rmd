@@ -86,7 +86,7 @@ pip install dotenv
 
 * <a href="https://github.com/NEONScience/NEON-Utilities" target="_blank">GitHub repository for neonUtilities R package</a>
 * <a href="https://github.com/NEONScience/NEON-utilities-python" target="_blank">GitHub repository for neonutilities Python package</a>
-* <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users. Focuses on the R package, but applicable to Python as well.
+* <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities cheat sheet</a>. A quick reference guide for users. Focuses on the R package, but applicable to Python as well.
 
 </div>
 

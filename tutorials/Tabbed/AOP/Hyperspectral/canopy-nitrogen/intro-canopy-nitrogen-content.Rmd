@@ -65,7 +65,7 @@ pip install rasterio
     repository for R neonUtilities</a>
 -   <a href="https://github.com/NEONScience/NEON-utilities-python" target="_blank">GitHub
     repository for Python neonutilities</a>
--   <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>: R neonUtilities reference guide
+-   <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities cheat sheet</a>: R neonUtilities reference guide
 -   <a href="https://data.neonscience.org/api/v0/documents/quick-start-guides/NEON.QSG.DP3.30018.002?inline=TRUE" target="_blank">Canopy Nitrogen Quick Start Guide</a>
 -   <a href="https://developers.google.com/earth-engine/datasets/catalog/projects_neon-prod-earthengine_assets_CNC_002" target="_blank">Canopy Nitrogen Image Collection on Google Earth Engine</a>
 

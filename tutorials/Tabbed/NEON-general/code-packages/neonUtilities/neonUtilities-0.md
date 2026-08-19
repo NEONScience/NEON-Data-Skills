@@ -33,7 +33,7 @@ data, see the
 and Explore</a> tutorial. If you are already familiar with the
 <code>neonUtilities</code> package, and need a quick reference guide to
 function inputs and notation, see the
-<a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities
+<a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities
 cheat sheet</a>.</p>
 <div id="function-index" class="section level2 tabset">
 <h2 class="tabset">Function index</h2>

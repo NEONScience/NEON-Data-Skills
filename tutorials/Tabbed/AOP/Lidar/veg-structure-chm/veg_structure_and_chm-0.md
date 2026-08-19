@@ -159,7 +159,7 @@ processing as a script, but good to leave as default <code>TRUE</code>
 when downloading a dataset for the first time.</li>
 </ul>
 <p>Refer to the
-<a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat
+<a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat
 sheet</a> for the <code>neonUtilities</code> package for more details
 and the complete index of possible function inputs.</p>
 <pre class="r"><code>veglist &lt;- loadByProduct(dpID=&quot;DP1.10098.001&quot;, 
@@ -189,7 +189,7 @@ processing as a script, but good to leave as default <code>True</code>
 when downloading a dataset for the first time.</li>
 </ul>
 <p>Refer to the
-<a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities.pdf" target="_blank">cheat
+<a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">cheat
 sheet</a> for the <code>neonUtilities</code> package for more details
 and the complete index of possible function inputs. The cheat sheet is
 focused on the R package, but nearly all the inputs are the same.</p>

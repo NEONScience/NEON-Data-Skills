@@ -91,7 +91,7 @@ pip install statsmodels
     for using neonUtilities from both R and Python environments.</a>
 -   <a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub
     repository for neonUtilities</a>
--   <a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities
+-   <a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities
     cheat sheet</a>. A quick reference guide for users.
 -   <a href="https://www.hydroshare.org/resource/53718072f33646fa920f1b72d7b403eb/" target="_blank">HydroShare
     Collection - NEON Hydrologic Data Products: Site-Level

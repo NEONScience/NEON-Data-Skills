@@ -85,7 +85,7 @@ pip install matplotlib</code></pre>
 for using neonUtilities from both R and Python environments.</a></li>
 <li><a href="https://github.com/NEONScience/NEON-Utilities/neonUtilities" target="_blank">GitHub
 repository for neonUtilities</a></li>
-<li><a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities
+<li><a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities
 cheat sheet</a>. A quick reference guide for users.</li>
 </ul>
 </div>

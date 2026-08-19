@@ -20,7 +20,7 @@ functions and their inputs; for more in-depth guidance in using these
 functions to work with NEON data, see the <a href="https://www.neonscience.org/download-explore-neon-data" target="_blank">Download and Explore</a> 
 tutorial. If you are already familiar with the `neonUtilities` package, 
 and need a quick reference guide to function inputs and notation, see the 
-<a href="https://www.neonscience.org/sites/default/files/cheat-sheet-neonUtilities_0.pdf" target="_blank">neonUtilities cheat sheet</a>.
+<a href="https://github.com/NEONScience/NEON-utilities/blob/main/cheat-sheet-neonUtilities.pdf" target="_blank">neonUtilities cheat sheet</a>.
 
 ## Function index {.tabset}
 
