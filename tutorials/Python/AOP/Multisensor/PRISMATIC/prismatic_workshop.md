@@ -296,7 +296,7 @@ normalize_laz(cfg, site, year)
 clip_lidar_by_plots(cfg, site, year)
 ```
 
-<img src="docs/2a_tilelaz.png" width="45%"> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2a_plotlaz.png" width="20%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2a_tilelaz.png" width="45%"> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2a_plotlaz.png" width="20%">
 
 *Left, 1 km2 NEON AOP normalized lidar tile point cloud. Right, lidar point cloud clipped to plot extent*
 
