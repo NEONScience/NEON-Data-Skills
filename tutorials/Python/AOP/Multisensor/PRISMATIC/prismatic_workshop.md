@@ -19,7 +19,7 @@ urlTitle: prismatic-workshop
 
 ## Workshop Overview
 
-### Initializing The FATES Model using NEON Remote Sensing Data
+### Initializing the FATES Model using NEON Remote Sensing Data
 
 Plants influence carbon storage, water and energy exchange, habitat, and competition within ecosystems. To represent those processes in an ecosystem model, we need more than a list of species: we need to know **how much vegetation is present, which plant functional types (PFTs) they are, and how that vegetation is arranged across the landscape**.
 
