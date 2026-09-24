@@ -1,4 +1,4 @@
-```python
+---
 syncID: c4e0dd0bf8d949d483d35b5f1d0bcc55
 title: "Building Vegetation Model Initial Conditions from Field and Remote Sensing Data" 
 description: "This tutorial demonstrates how to combine forest inventory plots and NEON airborne remote sensing to estimate vegetation structure and composition for initializing an ecosystem model."
@@ -13,7 +13,7 @@ dataProducts: DP1.10098.001, DP3.30010.001, DP3.30006.001, DP3.30026.001, DP1.30
 code1: https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/prismatic_workshop.ipynb
 tutorialSeries: 
 urlTitle: prismatic-workshop
-```
+---
 
 ---
 # PRISMATIC Workshop: Initializing FATES from NEON Remote Sensing
