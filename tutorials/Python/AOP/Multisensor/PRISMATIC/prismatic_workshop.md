@@ -64,6 +64,7 @@ Keep this question in mind throughout the notebook: **What ecological informatio
 
 For additional project motivation and context, see the <a href="https://canva.link/0e9gdg4lr18gdu9" target=_blank>workshop background presentation</a>.
 
+<div id="ds-objectives" markdown="1">
 
 ## Learning objectives
 
@@ -119,6 +120,7 @@ The notebook downloads data programmatically and stores intermediate products in
 
 The workshop uses TEAK, 2021, and a single remote-sensing tile as a reproducible example. Data access, download size, NEON product availability, and processing time may change over time.
 
+</div>
 
 ## Setup
 
