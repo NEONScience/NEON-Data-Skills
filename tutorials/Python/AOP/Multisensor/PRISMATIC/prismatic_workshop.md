@@ -82,7 +82,7 @@ You do not need to be an expert in remote sensing or FATES. The notebook introdu
 
 ### Computing environment
 
-This tutorial is designed to run in the provided CyVerse container, which supplies the Python, R, geospatial, and machine-learning dependencies used by PRISMATIC. You can also run the notebook in a compatible local or cloud environment, but will need to  install the python environment locally.
+This tutorial is designed to run in the provided CyVerse container, which supplies the Python, R, geospatial, and machine-learning dependencies used by PRISMATIC. You can also run the notebook in a compatible local or cloud environment, but will need to  install the python environment locally; using the <a href="https://github.com/RS-PRISMATIC/PRISMATIC/blob/main/environment.yml" target=_blank>PRISMATIC environment.yml</a>.
 
 To use the workshop container:
 
