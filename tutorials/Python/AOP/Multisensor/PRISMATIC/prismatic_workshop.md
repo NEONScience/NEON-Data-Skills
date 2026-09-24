@@ -16,15 +16,16 @@ urlTitle: prismatic-workshop
 ---
 
 ---
-# PRISMATIC Workshop: Initializing FATES from NEON Remote Sensing
 
-## Tutorial Overview
+## Workshop Overview
+
+### Initializing The FATES Model using NEON Remote Sensing Data
 
 Plants influence carbon storage, water and energy exchange, habitat, and competition within ecosystems. To represent those processes in an ecosystem model, we need more than a list of species: we need to know **how much vegetation is present, which plant functional types (PFTs) they are, and how that vegetation is arranged across the landscape**.
 
 In this tutorial, you will use field observations (tree inventory) and airborne remote sensing data from the National Ecological Observatory Network (NEON) to build those descriptions for the Lower Teakettle site (TEAK) in California. The final products are initial-condition files for FATES, the Functionally Assembled Terrestrial Ecosystem Simulator.
 
-The notebook demonstrates a smaller-scale version of the [**PRISMATIC pipeline**](https://github.com/RS-PRISMATIC/PRISMATIC). This notebook walks through the PRISMATIC pipeline to use plot-based and remote sensing forest data to generate initial conditions for the FATES (Functionally Assembled Terrestrial Ecosystem Simulator) vegetation model. The main steps in the workflow are:
+The notebook demonstrates a smaller-scale version of the <a href="https://github.com/RS-PRISMATIC/PRISMATIC" target=_blank>**PRISMATIC pipeline**</a>. This notebook walks through the PRISMATIC pipeline to use plot-based and remote sensing forest data to generate initial conditions for the FATES (Functionally Assembled Terrestrial Ecosystem Simulator) vegetation model. The main steps in the workflow are:
 
 1) Download and clean NEON remote sensing and forest inventory data.
 2) Develop a model to estimate vegetation size classes (height of canopy layers) calibrated by known tree sizes in forest inventory plots.
@@ -37,7 +38,7 @@ You can adapt the workflow to another NEON site, year, spatial extent, or PFTs.
 
 ### What is FATES?
 
-**FATES**, the **Functionally Assembled Terrestrial Ecosystem Simulator**, is an open-source numerical model of terrestrial vegetation and ecosystem dynamics. It is primarily supported by the U.S. Department of Energy. FATES is implemented as a vegetation model that can be coupled to land-surface and Earth system modeling frameworks. Learn more in the open-source [FATES GitHub repository](https://github.com/ngeet/fates) and the [FATES User's Guide](https://fates-users-guide.readthedocs.io/).
+**FATES**, the **Functionally Assembled Terrestrial Ecosystem Simulator**, is an open-source numerical model of terrestrial vegetation and ecosystem dynamics. It is primarily supported by the U.S. Department of Energy. FATES is implemented as a vegetation model that can be coupled to land-surface and Earth system modeling frameworks. Learn more in the open-source <a href="https://github.com/ngeet/fates" target=_blank>FATES GitHub repository</a> and the <a href="https://fates-users-guide.readthedocs.io/" target=_blank>FATES User's Guide</a>.
 
 To explain FATES briefly for the purposes of this tutorial, FATES represents vegetation by size and functional group. Plants are grouped as **plant functional types (PFTs)** that differ in traits relevant to growth, resource use, disturbance response, etc. Within a spatial unit of shared disturbance history, or **patch**, plants are further organized into **cohorts**, plants of the same PFT with similar size. Cohorts compete for light, water, and nutrients.
 
@@ -51,7 +52,7 @@ Observation-informed initialization can help researchers investigate how variati
 
 ### Study design
 
-This workshop uses one 1 km x 1 km remote-sensing tile from NEON's Lower Teakettle (TEAK) site from 2021, however [the whole workflow](https://github.com/RS-PRISMATIC/PRISMATIC) allows for entire site, multi-site, and multi-year implementation. Changing configuration values or forcing a rerun lets you explore how workflow choices affect the result.
+This workshop uses one 1 km x 1 km remote-sensing tile from NEON's Lower Teakettle (TEAK) site from 2021, however <a href="https://github.com/RS-PRISMATIC/PRISMATIC" target=_blank>the whole workflow</a> allows for entire site, multi-site, and multi-year implementation. Changing configuration values or forcing a rerun lets you explore how workflow choices affect the result.
 
 ### Why combine field data and remote sensing?
 
@@ -61,8 +62,7 @@ The PRISMATIC strategy is therefore a supervised, observation-to-model workflow.
 
 Keep this question in mind throughout the notebook: **What ecological information is being measured directly, what is being estimated, and how is uncertainty introduced at each handoff?**
 
-For additional project motivation and context, see the workshop background presentation: https://canva.link/0e9gdg4lr18gdu9
-
+For additional project motivation and context, see the <a href="https://canva.link/0e9gdg4lr18gdu9" target=_blank>workshop background presentation</a>.
 
 
 ## Learning objectives
@@ -95,7 +95,7 @@ To use the workshop container:
 
 As of June 2026, NEON requires an API token for data downloads, to reduce bot scraping and improve user support. The workshop's CyVerse environment provides the token needed for the tutorial downloads, so participants do not need to place a token in the notebook or repository.
 
-If you run the workflow on your own computer or in another environment, you will need to create and securely configure your own token. Tokens can be generated through a NEON Data Portal user account: log in to your account or create one, then open the **API Tokens** section. For best practices on storing and using tokens, follow NEON's [API token setup instructions](https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup).
+If you run the workflow on your own computer or in another environment, you will need to create and securely configure your own token. Tokens can be generated through a NEON Data Portal user account: log in to your account or create one, then open the **API Tokens** section. For best practices on storing and using tokens, follow NEON's <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target=_blank>API token setup instructions</a>.
 
 Once you have saved your token securely, set it as the `NEON_API_TOKEN` environment variable before running the download functions. For example, in Python:
 
@@ -198,8 +198,7 @@ def step(fn, **kwargs):
 
 ## 1. Download and clean data
 
-
-<img src="docs/1_workflow.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/1_workflow.png" width="90%">
 
 ### 1a. Download data
 
@@ -262,7 +261,7 @@ prep_veg_structure(cfg, site, year)
 prep_polygons(cfg, site, year)
 ```
 
-<img src="docs/1b_TEAK.png" width="60%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/1_workflow.png/1b_TEAK.png" width="60%">
 
 *Count of taxonomic types in NEON forest inventory plots at TEAK in 2021*
 
@@ -271,7 +270,7 @@ prep_polygons(cfg, site, year)
 ## 2. Develop a size model
 
 
-<img src="docs/2_workflow.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2_workflow.png" width="90%">
 
 
 ### 2a. Processing lidar: Normalization and Clipping
@@ -295,7 +294,7 @@ normalize_laz(cfg, site, year)
 clip_lidar_by_plots(cfg, site, year)
 ```
 
-<img src="docs/2a_tilelaz.png" width="45%"> <img src="docs/2a_plotlaz.png" width="20%">
+<img src="docs/2a_tilelaz.png" width="45%"> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2a_plotlaz.png" width="20%">
 
 *Left, 1 km2 NEON AOP normalized lidar tile point cloud. Right, lidar point cloud clipped to plot extent*
 
@@ -313,7 +312,7 @@ from initialize.lad import prep_lad
 prep_lad(cfg, site, year)
 ```
 
-<img src="docs/2b_plot_52_321100_4097500_lad.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2b_plot_52_321100_4097500_lad.png" width="90%">
 
 *Leaf area density profile for a plot. Local maxima mark candidate size classes used to define FATES cohorts.*
 
@@ -333,11 +332,11 @@ from initialize.biomass import prep_biomass
 prep_biomass(cfg, site, year)
 ```
 
-<img src="docs/2c_biomassraster.png" width="50%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2c_biomassraster.png" width="50%">
 
 *Example of biomass map generated across NEON SOAP site (also in California)*
 
-<img src="docs/2c_biomassscrnsht.png" width="50%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/2c_biomassscrnsht.png" width="50%">
 
 *In this workflow we also calculate stem density, basal area, and biomass per plot*
 
@@ -345,7 +344,7 @@ prep_biomass(cfg, site, year)
 
 ## 3. Develop plant functional type (PFT) classifier
 
-<img src="docs/3_workflow.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3_workflow.png" width="90%">
 
 ### 3a. Preparing Hyperspectral Imagery
 
@@ -361,7 +360,7 @@ from initialize.hyperspectral import prep_aop_imagery
 prep_aop_imagery(cfg, site, year)
 ```
 
-<img src="docs/3a_single_multi_raster.png" width="80%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3a_single_multi_raster.png" width="80%">
 
 *Visualization of the raster stack used as training data.*
 
@@ -382,7 +381,7 @@ from initialize.hyperspectral import extract_spectra_from_polygon
 extract_spectra_from_polygon(cfg, site, year)
 ```
 
-<img src="docs/3b_manualcrownssnrnsht.png" width="60%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3b_manualcrownssnrnsht.png" width="60%">
 
 *Screenshot of a few manually labelled polygons used as training data.*
 
@@ -404,21 +403,21 @@ from initialize.hyperspectral import train_pft_classifier
 train_pft_classifier(cfg, site, year)
 ```
 
-<img src="docs/3c_rf_CMnorm.png" width="70%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3c_rf_CMnorm.png" width="70%">
 
 *Confusion matrix of random forest performance on training data*
 
-<img src="docs/3c_rf_FeatImp.png" width="70%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3c_rf_FeatImp.png" width="70%">
 
 *Rank of raster layers (or features) used in training in order of importance*
 
-<img src="docs/3c_uncertainty_agreement_hist.png" width="70%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3c_uncertainty_agreement_hist.png" width="70%">
 
 *Per pixel agreement through k-fold cross-validation*
 
-<img src="docs/3c_52_321100_4097500_comparison.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3c_52_321100_4097500_comparison.png" width="90%">
 
-<img src="docs/3c_54_321300_4097500_comparison.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/3c_54_321300_4097500_comparison.png" width="90%">
 
 *Two plots where we compare RGB, CHM, and classified PFT rasters.*
 
@@ -437,7 +436,7 @@ The final products are two space-delimited files:
 
 
 
-<img src="docs/4_workflow.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_workflow.png" width="90%">
 
 
 ```python
@@ -447,15 +446,15 @@ from initialize.generate_initial_conditions import generate_initial_conditions
 generate_initial_conditions(cfg, site, year)
 ```
 
-<img src="docs/4_cohortfile.png" width="100%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_cohortfile.png" width="100%">
 
 *Cohort file example*
 
-<img src="docs/4_patchfile.png" width="90%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_patchfile.png" width="90%">
 
 *Patch file example*
 
-<img src="docs/4_rs_wall2wall_agb.png" width="50%"> <img src="docs/4_rs_wall2wall_ba.png" width="50%"> <img src="docs/4_rs_wall2wall_lai.png" width="50%"> <img src="docs/4_rs_wall2wall_leafbiom.png" width="50%"> <img src="docs/4_rs_wall2wall_stemdens.png" width="50%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_rs_wall2wall_agb.png" width="50%"> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_rs_wall2wall_ba.png" width="50%"> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_rs_wall2wall_lai.png" width="50%"> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_rs_wall2wall_leafbiom.png" width="50%"> <img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/4_rs_wall2wall_stemdens.png" width="50%">
 
 *Summary community measurements across this TEAK AOP tile*  
 
@@ -467,11 +466,11 @@ The patch and cohort files generated above are inputs, not the endpoint of the e
 
 Below are example outputs from FATES runs initialized with PRISMATIC data, showing how the spatially-informed PFT structure and size classes translate into simulated forest dynamics over time.
 
-<img src="docs/5_fatesICcomp.png" width="60%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/5_fatesICcomp.png" width="60%">
 
 *Comparison initial conditions from field and remote sensing sources.*
 
-<img src="docs/5_fatessims.png" width="60%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/5_fatessims.png" width="60%">
 
 *Visualization of FATES PFT distributions through time from varying initial conditions sources*
 
