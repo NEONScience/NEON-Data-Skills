@@ -66,6 +66,7 @@ For additional project motivation and context, see the <a href="https://canva.li
 
 <div id="ds-objectives" markdown="1">
 
+
 ## Learning objectives
 
 By the end of the workshop, you should be able to:
@@ -124,7 +125,7 @@ The workshop uses TEAK, 2021, and a single remote-sensing tile as a reproducible
 
 ## Setup
 
-Here we load the PRISMATIC modules which are python and R scripts saved in and reads the Hydra configuration. It sets the study site and years, identifies the raw, intermediate, and final data locations, and exposes parameters that control the analysis.
+Here we load the PRISMATIC modules which are Python and R scripts. The `hydra` module establishes the Hydra configuration, which sets the study site and years, identifies the raw, intermediate, and final data locations, and exposes parameters that control the analysis.
 
 The `step()` helper wraps each pipeline function with the workflow's cache and rerun logic, which is helpful in a live workshop. 
 
