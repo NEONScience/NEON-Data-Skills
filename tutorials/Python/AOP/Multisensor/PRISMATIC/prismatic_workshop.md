@@ -55,7 +55,7 @@ This workshop uses one 1 km x 1 km remote-sensing tile from NEON's Lower Teakett
 
 ### Why combine field data and remote sensing?
 
-Frest inventory data give detailed information about individual stems, but these data are sparse, labor-intensive to collect, and may not represent the full variation of a landscape. Airborne observations provide broad spatial coverage.
+Field inventory data give detailed information about individual stems, but these data are sparse, labor-intensive to collect, and may not represent the full variation of a landscape. Airborne observations provide broad spatial coverage.
 
 The PRISMATIC strategy is therefore a supervised, observation-to-model workflow. It uses field measurements to define and calibrate plant functional type classification and forest structure.
 
