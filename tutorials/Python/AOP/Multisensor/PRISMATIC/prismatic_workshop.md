@@ -263,7 +263,7 @@ prep_veg_structure(cfg, site, year)
 prep_polygons(cfg, site, year)
 ```
 
-<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/1_workflow.png/1b_TEAK.png" width="60%">
+<img src="https://raw.githubusercontent.com/NEONScience/NEON-Data-Skills/main/tutorials/Python/AOP/Multisensor/PRISMATIC/docs/1b_TEAK.png" width="60%">
 
 *Count of taxonomic types in NEON forest inventory plots at TEAK in 2021*
 
