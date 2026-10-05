@@ -1,0 +1,265 @@
+---
+syncID: 
+title: "Using the neonPlants Package to Estimate Woody Plant Biomass and Production"
+description: "Use the functions in the neonPlants package to estimate biomass and production of woody plants."
+dateCreated: 2026-10-05
+authors: Claire K. Lunch, Courtney Meier
+contributors: 
+estimatedTime: 60 minutes
+packagesLibraries: neonOS, neonUtilities, neonPlants
+topics: biomass, production, trees
+languageTool: R
+dataProduct: 
+code1: 
+tutorialSeries:
+urlTitle: woody-biomass-production
+
+---
+
+NEON collects a wide variety of plant measurements designed for estimation of 
+terrestrial plant biomass and primary production. For full details, see the 
+<a href="https://data.neonscience.org/api/v0/documents/NEON.DOC.000914vC" target="_blank">TOS Science Design for Plant Biomass and Productivity</a>. In this tutorial, we will focus on biomass and 
+production of trees. For biomass and production of herbaceous plants, see the 
+<a href="TBD" target="_blank">herbaceous tutorial</a>. For aquatic plant 
+biomass, see the <a href="TBD" target="_blank">aquatic plant tutorial</a>.
+
+If you are new to using NEON data, or new to the `neonUtilities` R package, you 
+may want to start with the 
+<a href="https://www.neonscience.org/resources/learning-hub/tutorials/download-explore-neon-data" target="_blank">Download and Explore NEON Data</a> tutorial, 
+which provides an overview of NEON data access and the structure of NEON 
+data and metadata files.
+
+<div id="ds-objectives" markdown="1">
+
+## Objectives
+
+After completing this activity, you will be able to:
+
+ * Use the `neonPlants` R package to estimate biomass and production of trees
+ * Understand the algorithms used in the `neonPlants` R package to estimate biomass and production of trees
+ * Understand the assumptions and exceptions in the algorithm
+
+## Things You’ll Need To Complete This Tutorial
+
+You will need a version of R (4.0 or higher. This code may work with 
+earlier versions but it hasn't been tested) and, preferably, `RStudio` 
+loaded on your computer to complete this tutorial.
+
+## Additional Resources
+
+* NEON <a href="http://data.neonscience.org" target="_blank"> Data Portal </a>
+* <a href="https://www.neonscience.org/resources/code-hub" target="_blank">NEON Code Hub</a>
+* <a href="TBD" target="_blank">NEON plant data tutorial series</a>
+
+</div>
+
+
+## Set up R environment and download data
+
+First install and load the necessary packages. As of June 2026, NEON requires 
+an API token for data downloads, to reduce bot scraping and improve user 
+support. Tokens can be generated in NEON data portal user accounts - log in to 
+your account or create one, and go to the API Tokens section. For best 
+practices in storing and using tokens, follow the instructions <a href="https://www.neonscience.org/resources/learning-hub/tutorials/api-token-setup" target="_blank">here</a>.
+
+```{r setup, eval=FALSE}
+
+# install packages. you can skip this step if 
+# the packages are already installed
+install.packages("neonUtilities")
+install.packages("neonOS")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("pak")
+pak::pkg_install("NEONScience/neonPlants")
+
+# load packages
+library(neonUtilities)
+library(neonOS)
+library(neonPlants)
+library(ggplot2)
+library(dplyr)
+
+# load token
+token <- Sys.getenv("NEON_TOKEN")
+
+```
+
+```{r libraries, include=FALSE}
+
+library(neonUtilities)
+library(neonOS)
+library(neonPlants)
+library(ggplot2)
+library(dplyr)
+
+token <- Sys.getenv("NEON_TOKEN")
+
+```
+
+The productivity functions in `neonPlants` are designed to work with a single 
+site at a time, and it's best to include all available data for a given site, 
+to maximize the time series and reduce the impacts of any missing data. We'll 
+use the Wind River Experimental Forest (WREF) as the example site 
+throughout this tutorial. WREF is a conifer forest in southwestern Washington 
+State. 
+
+Use the `neonUtilities` function `loadByProduct()` to download and read 
+in the data. Include provisional data to ensure the most recent data are 
+included.
+
+``` {r load-data, results="hide", message=FALSE}
+
+# CKL: UPDATE TO REMOVE LATEST FOR PUBLICATION
+
+veg <- loadByProduct(dpID="DP1.10098.001", 
+                     site="SJER", 
+                     include.provisional=T,
+                     release="LATEST",
+                     check.size=F,
+                     token=token)
+
+```
+
+Copy each of the downloaded tables into the R environment.
+
+``` {r env, results="hide"}
+
+list2env(veg, .GlobalEnv)
+
+```
+
+
+## Explore data tables
+
+For woody vegetation biomass and production, there are three data tables we 
+will use:
+
+* `vst_mappingandtagging`: Location and identification of mapped trees
+* `vst_perplotperyear`: Record of which plots were sampled in which years
+* `vst_apparentindividual`: Measurements of status, height, and diameter of monitored trees
+
+Before proceeding, let's check each of these tables for duplicates.
+
+``` {r remove-dups-all}
+
+vegmap <- removeDups(data=vst_mappingandtagging, 
+                          variables=variables_10098)
+
+vegplot <- removeDups(data=vst_perplotperyear, 
+                          variables=variables_10098)
+
+vegai <- removeDups(data=vst_apparentindividual, 
+                          variables=variables_10098)
+
+```
+
+There were no duplicates found in the `vst_mappingandtagging`  or 
+`vst_perplotperyear` data tables. There were 50 duplicates in 
+`vst_apparentindividual`, out of 13499 total records. Let's take a look at 
+those records.
+
+``` {r view-flag-values}
+
+View(vegai[which(vegai$duplicateRecordQF!=0),])
+
+```
+
+One of the duplicate record pairs is of a single-bole tree, and we can see one 
+record lists "tagRemoved" and the other contains stem and height measurements. 
+We'll keep the record with the measurements.
+
+``` {r drop-duplicate, message=FALSE}
+
+vegai <- vegai |>
+  filter_out(individualID=="NEON.PLA.D17.SJER.00014" &
+               tagStatus=="tagRemoved")
+
+```
+
+The other duplicate records are shrubs, and we are focused on trees in this 
+tutorial, so those duplicates will not affect our analysis.
+
+## Estimate biomass
+
+Use the `estimateWoodMass()` function from the `neonPlants` package to estimate 
+the biomass of trees. Possible inputs to this function are:
+
+* `inputDataList`: The list returned by `loadByProduct()`, which we named `veg` here
+* `inputPerPlot`: The `vst_perplotperyear` table
+* `inputMapTag`: The `vst_mappingandtagging` table
+* `inputIndividual`: The `vst_apparentindvidual` table
+* `inputNonWoody`: The `vst_non-woody` table
+* `plotSubset`: The field plots to include in the analysis. Can be "all", "towerAll", "towerAnnualSubset", or "distributed".
+* `growthFormSubset`: The growth forms to include in the analysis. Can be "all" or "tree".
+
+The function can accept either a list of tables (`inputDataList`) or the 
+individual tables. Since we modified the `vst_apparentindvidual` table and 
+removed a duplicate, we'll input the individual tables rather than the 
+original list returned by `loadByProduct()`.
+
+We are interested in trees from all plots, so we enter `plotSubset="all` and 
+`growthFormSubset="tree"`. We don't need to include the `vst_non-woody` table 
+since we are not estimating non-woody mass.
+
+``` {r biomass}
+
+biom <- estimateWoodMass(inputIndividual=vegai,
+                         inputMapTag=vegmap,
+                         inputPerPlot=vegplot,
+                         plotSubset="all",
+                         growthFormSubset="tree")
+
+```
+
+What is returned by this function?
+
+``` {r biomass-tables}
+
+names(biom)
+
+```
+
+We have five tables, containing above-ground biomass estimates for individual 
+trees, at the plot level, and at the site level, for each year of measurement. 
+There is also a table with a list of lost or downed trees, and a `variables` 
+table that provides definitions for the data fields in the other tables.
+
+Let's check out the biomass trajectory over the years measured. We'll plot 
+live biomass by year. Note that total biomass includes standing dead trees! 
+These can be very interesting, but be careful how you evaluate them in analyses.
+
+```{r plot-biomass-site}
+
+gg <- ggplot(biom$vst_AGB_site, aes(year, woodLiveMassMean_Mgha)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  ylab("Live wood mass")
+gg
+
+```
+
+There are some surprising ups and downs here. But consider that different sets 
+of sampling plots are measured in different years. Let's look at biomass by 
+plot by year:
+
+```{r plot-biomass-plot}
+
+gg <- ggplot(biom$vst_AGB_plot, aes(year, agbLive_Mgha, 
+                                    group=plotID,
+                                    color=plotID)) +
+  
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  ylab("Live wood mass")
+gg
+
+```
+
+Here we can see most plots are quite consistent in biomass over time.
+
+
+
+
