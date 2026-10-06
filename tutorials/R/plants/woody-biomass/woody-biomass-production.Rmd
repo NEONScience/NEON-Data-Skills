@@ -100,9 +100,8 @@ token <- Sys.getenv("NEON_TOKEN")
 The productivity functions in `neonPlants` are designed to work with a single 
 site at a time, and it's best to include all available data for a given site, 
 to maximize the time series and reduce the impacts of any missing data. We'll 
-use the Wind River Experimental Forest (WREF) as the example site 
-throughout this tutorial. WREF is a conifer forest in southwestern Washington 
-State. 
+use the San Joaquin Experimental Range (SJER) as the example site 
+throughout this tutorial. SJER is an oak savanna site in California.
 
 Use the `neonUtilities` function `loadByProduct()` to download and read 
 in the data. Include provisional data to ensure the most recent data are 
@@ -225,24 +224,30 @@ trees, at the plot level, and at the site level, for each year of measurement.
 There is also a table with a list of lost or downed trees, and a `variables` 
 table that provides definitions for the data fields in the other tables.
 
+INSERT DISCUSSION OF ALLOMETRY ALGORITHM
+
 Let's check out the biomass trajectory over the years measured. We'll plot 
 live biomass by year. Note that total biomass includes standing dead trees! 
 These can be very interesting, but be careful how you evaluate them in analyses.
+
+We'll also include error bars for the standard deviation.
 
 ```{r plot-biomass-site}
 
 gg <- ggplot(biom$vst_AGB_site, aes(year, woodLiveMassMean_Mgha)) +
   geom_line() +
   geom_point() +
+  geom_linerange(aes(ymin=woodLiveMassMean_Mgha-woodLiveMassSD_Mgha,
+                     ymax=woodLiveMassMean_Mgha+woodLiveMassSD_Mgha))
   xlab("Year") +
   ylab("Live wood mass")
 gg
 
 ```
 
-There are some surprising ups and downs here. But consider that different sets 
-of sampling plots are measured in different years. Let's look at biomass by 
-plot by year:
+There are some surprising ups and downs here, and the standard deviations are 
+large. But consider that different sets of sampling plots are measured in 
+different years. Let's look at biomass by plot by year:
 
 ```{r plot-biomass-plot}
 
@@ -258,8 +263,81 @@ gg
 
 ```
 
-Here we can see most plots are quite consistent in biomass over time.
+Here we can see most plots are quite consistent in biomass over time. The 
+year-to-year variation in the site-level biomass estimate, and the high 
+uncertainty, are driven by the variation in biomass between plots. This is 
+important to consider when structuring your analyses. If you want to evaluate 
+biomass over time, you may want to work at the plot level, or work with a 
+subset of plots that are measured at the same frequency (e.g. the annually 
+measured tower plots).
 
+And keep in mind this can also manifest differently at different sites. SJER 
+is an open woodland with scattered trees, so it's not surprising that plots 
+vary substantially in biomass. This level of variation might be less likely at 
+a more densely forested site.
 
+Let's dig into the data a little more to look for evidence that this is what's 
+driving the variation - are there different numbers of trees in different 
+plots, or trees of very different biomass in different plots?
+
+Let's get the most recent individual-level data for each plot, and plot the 
+biomass of each tree at that time.
+
+```{r plot-individuals-plot}
+
+agb_recent <- biom$vst_AGB_indiv |>
+  group_by(plotID, individualID) |>
+  filter(year==max(year))
+
+gg <- ggplot(agb_recent, aes(plotID, agb_kg, 
+                                    group=individualID,
+                                    color=plotID)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  xlab("") +
+  ylab("Live wood mass")
+gg
+
+```
+
+Here we can see both things are true: the number of trees varies quite a bit 
+between plots, and the size of trees in each plot also varies a lot.
+
+What next? We started out looking at site-level biomass over time. If we're 
+interested in the trajectory of biomass, we are probably interested in 
+productivity.
+
+## Estimate production
+
+Your first thought might be to simply calculate the change in biomass from one 
+measurement point to the next, perhaps in the plot-level data above. But the 
+calculation is a bit more complicated than that.
+
+The `estimateWoodProd()` function in the `neonPlants` package follows the 
+paradigm laid out in Clark et al 2000 (INSERT LINK). Essentially, we calculate 
+the growth increment for each living tree between two time points, subtract 
+the biomass of any trees that died, and add in the increment for any new, 
+young trees.
+
+Again, you may be thinking, doesn't that work out mathematically to be the same 
+as the change in total live biomass? Not quite. In particular, new trees have 
+to be calculated carefully. Like all forest monitoring, NEON uses a threshold 
+for minimum tree size - in NEON's case, 10cm diameter. If a tree was 9cm in 
+2022 and 11cm in 2023, its contribution to the biomass estimate in 2022 was 
+zero, but its growth increment from 2022 to 2023 was not 11cm. To estimate 
+productivity accurately, we estimate the time when its diameter was 10cm, and 
+then calculate the growth increment since then.
+
+Similarly, trees that died may have grown between measurement periods before 
+dying, and subtracting out their biomass at last measurement may underestimate 
+the amount of live biomass lost. As of late 2026, `estimateWoodProd()` does not 
+yet make this adjustment, but we plan to add it in a later version of the 
+package. In most cases, this adjustment is much smaller than the adjustment for 
+new trees.
+
+Finally, there is the case of entire plots that died or grew young trees. In 
+the figure above of biomass per plot, if a plot is measured for the first time 
+in a later year than 2015, you can't tell whether NEON didn't visit that plot 
+in 2015 or whether there were no trees in that plot then (IS THIS TRUE?).
 
 
