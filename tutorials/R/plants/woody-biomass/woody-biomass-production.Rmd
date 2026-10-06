@@ -324,8 +324,8 @@ to be calculated carefully. In common with all forest monitoring projects, NEON
 uses a threshold for minimum tree size - in NEON's case, 10cm diameter. If a 
 tree was 9cm in 2022 and 11cm in 2023, its contribution to the biomass estimate 
 in 2022 was zero, but its growth increment from 2022 to 2023 was not 11cm. To 
-estimate productivity accurately, we estimate the time when its diameter was 
-10cm, and then calculate the growth increment since then.
+estimate productivity accurately, we estimate the growth increment since it 
+reached the 10cm threshold.
 
 Similarly, trees that died between sampling bouts are ignored when calculating 
 the increment for the growth interval during which they died, whereas they are 
