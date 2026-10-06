@@ -245,7 +245,7 @@ gg
 
 ```
 
-There are some surprising ups and downs here, and the standard deviations are 
+There are some ups and downs here, and the standard deviations are 
 large. But consider that different sets of sampling plots are measured in 
 different years. Let's look at biomass by plot by year:
 
@@ -335,9 +335,124 @@ yet make this adjustment, but we plan to add it in a later version of the
 package. In most cases, this adjustment is much smaller than the adjustment for 
 new trees.
 
-Finally, there is the case of entire plots that died or grew young trees. In 
-the figure above of biomass per plot, if a plot is measured for the first time 
-in a later year than 2015, you can't tell whether NEON didn't visit that plot 
-in 2015 or whether there were no trees in that plot then (IS THIS TRUE?).
+Let's use `estimateWoodProd()` to estimate production at SJER. The data inputs 
+are the same, except we don't need to specify the growth form, since this 
+function is only configured to work for trees.
+
+``` {r production}
+
+prod <- estimateWoodProd(inputIndividual=vegai,
+                         inputMapTag=vegmap,
+                         inputPerPlot=vegplot,
+                         plotSubset="all")
+
+```
+
+What is returned by this function?
+
+``` {r production-tables}
+
+names(prod)
+
+```
+
+As with the biomass function, we have tables of production estimates by 
+individual, plot, and site; and table of variable definitions. We also have 
+tables for duplicates, flagged, and missing. These tables contain information 
+about possible data errors that may impact analyses. Details on each one:
+
+* `vst_ANPP_duplicates`: If there are duplicate records in the `vst_apparentindividual` table (i.e. more than one measurement of the same stem in the same year), the code will remove them and copy them to this table. Note that NEON staff work to identify and remove duplicates internally; if you see duplicates here they may be removed in future data releases.
+* `vst_ANPP_flagged`: There are a few scenarios that `estimateWoodProd()` will flag. (1) A tree is recorded as dead or not found in a sampling bout that is bracketed by sampling bouts where it is recorded as alive. In these cases we infer that it was alive at the intermediate point. (2) There is an implausibly large change in the mass of a tree from one measurement to the next, or (3) there is an implausibly large change in the stem diameter of a tree from one measurement to the next. The default behavior of `estimateWoodProd()` is to retain these records in the biomass calculation and copy all records relating to affected trees into this table for reference. To exclude records of type 2 and 3 from biomass calculations, add `flagged=filter` to the function call.
+* `vst_ANPP_missing`: Sometimes a given tree is measured in one or more sampling bouts and then never observed in the plot again, alive or dead. Records associated with trees affected by this issue are copied into this table. The default behavior of `estimateWoodProd()` is to exclude these trees from biomass calculations; to include the trees and assume they have died, add `missing=retain` to the function call.
+
+Let's take a look at productivity at the site level over time:
+
+```{r plot-production-site}
+
+gg <- ggplot(prod$vst_ANPP_site, aes(year, woodProd_Mghayr)) +
+  geom_line() +
+  geom_point() +
+  geom_linerange(aes(ymin=woodProd_Mghayr-woodProdSD_Mghayr,
+                     ymax=woodProd_Mghayr+woodProdSD_Mghayr)) +
+  xlab("Year") +
+  ylab("ANPP (Mg per hectare per year)")
+gg
+
+```
+
+Some ups and downs and some variability, but nothing alarming. Note that ANPP 
+in the first year is set to zero, because we can't evaluate productivity 
+without a prior biomass measurement (SHOULD IT BE LIKE THIS? NA?).
+
+Let's take a look at the plot level.
+
+```{r plot-production-plot}
+
+gg <- ggplot(prod$vst_ANPP_plot, aes(year, woodProd_Mghayr, 
+                                    group=plotID,
+                                    color=plotID)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  ylab("ANPP (Mg per hectare per year)")
+gg
+
+```
+
+It might seem surprising that a number of plots saw negative ANPP between 
+2015 and 2016. Remember that  
+<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022JG007234" target="_blank">California experienced a severe drought</a> in 
+2012-2016, and that negative ANPP typically results from tree mortality. 
+
+Let's take a look at the frequency of recorded mortality and recruitment 
+(growth of a new tree) events in 2016 versus the other measurement years.
+
+```{r mortality-percent}
+
+mortality_pct <- prod$vst_ANPP_indiv |>
+  group_by(year) |>
+  summarize(mortality_num=sum(transitionStatus=="mortality", na.rm=T),
+            recruitment_num=sum(transitionStatus=="recruitment", na.rm=T),
+            n=length(unique(individualID)))
+
+mortality_pct <- mortality_pct |>
+  mutate(mortality_pct=100*mortality_num/n,
+         recruitment_pct=100*recruitment_num/n)
+
+gg <- ggplot(mortality_pct, aes(year, mortality_pct)) +
+  geom_point() +
+  geom_line() +
+  xlab("") +
+  ylab("Percent mortality")
+gg
+
+```
+
+The mortality rate was fairly high in 2016, but even higher in 2019, which 
+doesn't match the pattern in productivity. Let's calculate the biomass lost to 
+mortality in each year.
+
+```{r mortality-mass}
+
+mortality_mass <- prod$vst_ANPP_indiv |>
+  group_by(year, transitionStatus) |>
+  summarize(status_mass=sum(agb_kg, na.rm=T))
+
+mortality_mass_pct <- mortality_mass |>
+  tidyr::pivot_wider(names_from=transitionStatus,
+              values_from=status_mass)
+
+mortality_mass_pct <- mortality_mass_pct |>
+  mutate(mortality_mass_pct=100*mortality/sum(`NA`, 
+                                              noChange, 
+                                              recruitment, 
+                                              mortality,
+                                              na.rm=T),
+         recruitment_mass_pct=100*recruitment/sum(`NA`, 
+                                              noChange, 
+                                              recruitment, 
+                                              mortality,
+                                              na.rm=T))
 
 
+```
