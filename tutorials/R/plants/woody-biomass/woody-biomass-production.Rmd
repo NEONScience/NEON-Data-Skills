@@ -315,9 +315,8 @@ calculation is a bit more complicated than that.
 
 The `estimateWoodProd()` function in the `neonPlants` package follows the 
 paradigm laid out in Clark et al 2001 (INSERT LINK). Essentially, we calculate 
-the growth increment for each living tree between two time points, subtract 
-the biomass of any trees that died, and add in the increment for any new, 
-young trees.
+the growth increment for each living tree between two time points and add in 
+the increment for any new, young trees.
 
 Again, you may be thinking, doesn't that work out mathematically to be the same 
 as the change in total live biomass? Not quite. In particular, new trees have 
@@ -328,12 +327,9 @@ in 2022 was zero, but its growth increment from 2022 to 2023 was not 11cm. To
 estimate productivity accurately, we estimate the time when its diameter was 
 10cm, and then calculate the growth increment since then.
 
-Similarly, trees that died may have grown between measurement periods before 
-dying, and subtracting out their biomass at last measurement may underestimate 
-the amount of live biomass lost. As of late 2026, `estimateWoodProd()` does not 
-yet make this adjustment, but we plan to add it in a later version of the 
-package. In most cases, this adjustment is much smaller than the adjustment for 
-new trees.
+Similarly, trees that died between sampling bouts are ignored when calculating 
+the increment for the growth interval during which they died, whereas they are 
+included in the live biomass data until they die.
 
 Let's use `estimateWoodProd()` to estimate production at SJER. The data inputs 
 are the same, except we don't need to specify the growth form, since this 
