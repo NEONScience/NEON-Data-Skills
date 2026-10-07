@@ -158,9 +158,11 @@ There were no duplicates found in the `vst_mappingandtagging`  or
 `vst_apparentindividual`, out of 13499 total records. Let's take a look at 
 those records.
 
-``` {r view-flag-values}
+``` {r view-flag-values, eval=FALSE}
 
-View(vegai[which(vegai$duplicateRecordQF!=0),])
+vegai |>
+  filter(duplicateRecordQF!=0) |>
+  View()
 
 ```
 
@@ -319,13 +321,14 @@ the growth increment for each living tree between two time points and add in
 the increment for any new, young trees.
 
 Again, you may be thinking, doesn't that work out mathematically to be the same 
-as the change in total live biomass? Not quite. In particular, new trees have 
-to be calculated carefully. In common with all forest monitoring projects, NEON 
-uses a threshold for minimum tree size - in NEON's case, 10cm diameter. If a 
-tree was 9cm in 2022 and 11cm in 2023, its contribution to the biomass estimate 
-in 2022 was zero, but its growth increment from 2022 to 2023 was not 11cm. To 
-estimate productivity accurately, we estimate the growth increment since it 
-reached the 10cm threshold.
+as the change in total live biomass? Not quite. See the Clark paper for 
+details, but in particular, new trees have to be accounted for carefully. In 
+common with all forest monitoring projects, NEON uses a threshold for minimum 
+tree size - in NEON's case, 10cm diameter. If a tree was 9cm in 2022 and 11cm 
+in 2023, its contribution to the biomass estimate in 2022 was zero, but its 
+growth increment from 2022 to 2023 was not 11cm. To estimate productivity 
+accurately, we estimate the growth increment since it reached the 10cm 
+threshold.
 
 Similarly, trees that died between sampling bouts are ignored when calculating 
 the increment for the growth interval during which they died, whereas they are 
@@ -358,7 +361,7 @@ tables for duplicates, flagged, and missing. These tables contain information
 about possible data errors that may impact analyses. Details on each one:
 
 * `vst_ANPP_duplicates`: If there are duplicate records in the `vst_apparentindividual` table (i.e. more than one measurement of the same stem in the same year), the code will remove them and copy them to this table. Note that NEON staff work to identify and remove duplicates internally; if you see duplicates here they may be removed in future data releases.
-* `vst_ANPP_flagged`: There are a few scenarios that `estimateWoodProd()` will flag. (1) A tree is recorded as dead or not found in a sampling bout that is bracketed by sampling bouts where it is recorded as alive. In these cases we infer that it was alive at the intermediate point. (2) There is an implausibly large change in the mass of a tree from one measurement to the next, or (3) there is an implausibly large change in the stem diameter of a tree from one measurement to the next. The default behavior of `estimateWoodProd()` is to retain these records in the biomass calculation and copy all records relating to affected trees into this table for reference. To exclude records of type 2 and 3 from biomass calculations, add `flagged=filter` to the function call.
+* `vst_ANPP_flagged`: There are a few scenarios that `estimateWoodProd()` will flag. (1) A tree is recorded as dead or not found in a sampling bout that is bracketed by sampling bouts where it is recorded as alive. In these cases we infer that it was alive at the intermediate point. (2) There is an implausibly large change in the mass of a tree from one measurement to the next, or (3) there is an implausibly large change in the stem diameter of a tree from one measurement to the next. The default behavior of `estimateWoodProd()` is to retain these records in the productivity calculation and copy all records relating to affected trees into this table for reference. To exclude records of type 2 and 3 from productivity calculations, add `flagged=filter` to the function call.
 * `vst_ANPP_missing`: Sometimes a given tree is measured in one or more sampling bouts and then never observed in the plot again, alive or dead. Records associated with trees affected by this issue are copied into this table. The default behavior of `estimateWoodProd()` is to exclude these trees from biomass calculations; to include the trees and assume they have died, add `missing=retain` to the function call.
 
 Let's take a look at productivity at the site level over time:
@@ -376,7 +379,7 @@ gg
 
 ```
 
-Some ups and downs and some variability, but nothing alarming. Note that ANPP 
+Some ups and downs and some variability. Note that ANPP 
 in the first year is set to zero, because we can't evaluate productivity 
 without a prior biomass measurement (SHOULD IT BE LIKE THIS? NA?).
 
@@ -395,60 +398,63 @@ gg
 
 ```
 
-It might seem surprising that a number of plots saw negative ANPP between 
-2015 and 2016. Remember that  
-<a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2022JG007234" target="_blank">California experienced a severe drought</a> in 
-2012-2016, and that negative ANPP typically results from tree mortality. 
+A number of plots saw negative ANPP between 2015 and 2016. Production is a 
+measurement of growth, and should always be positive. Negative values are 
+sometimes observed when the diameter of a tree shrinks between measurement 
+intervals, and for small shrinkage, this can be within the uncertainty of the 
+method - trees shrink and swell with water content, for example.
 
-Let's take a look at the frequency of recorded mortality and recruitment 
-(growth of a new tree) events in 2016 versus the other measurement years.
+Let's take a look at the negative values here.
 
-```{r mortality-percent}
+``` {r view-neg-values, eval=FALSE}
 
-mortality_pct <- prod$vst_ANPP_indiv |>
-  group_by(year) |>
-  summarize(mortality_num=sum(transitionStatus=="mortality", na.rm=T),
-            recruitment_num=sum(transitionStatus=="recruitment", na.rm=T),
-            n=length(unique(individualID)))
+prod$vst_ANPP_indiv |>
+  filter(agbIncr_kg<0) |>
+  View()
 
-mortality_pct <- mortality_pct |>
-  mutate(mortality_pct=100*mortality_num/n,
-         recruitment_pct=100*recruitment_num/n)
+```
 
-gg <- ggplot(mortality_pct, aes(year, mortality_pct)) +
-  geom_point() +
+There are plenty of records with small reductions in size, but there are some 
+with large changes. They are especially prevalent in 2016, and they are 
+generally flagged. Let's re-run the calculation, excluding flagged records, 
+and view plot-level production again.
+
+```{r run-prod-flagged}
+
+prodf <- estimateWoodProd(inputIndividual=vegai,
+                          inputMapTag=vegmap,
+                          inputPerPlot=vegplot,
+                          plotSubset="all",
+                          flagged="filter")
+
+gg <- ggplot(prodf$vst_ANPP_plot, aes(year, woodProd_Mghayr, 
+                                    group=plotID,
+                                    color=plotID)) +
   geom_line() +
-  xlab("") +
-  ylab("Percent mortality")
+  geom_point() +
+  xlab("Year") +
+  ylab("ANPP (Mg per hectare per year)")
+gg
+```
+
+Far fewer negative values, and a little noisy, but that is expected. At the 
+site level, things are looking smoother:
+
+```{r plot-production-site-flagged}
+
+gg <- ggplot(prodf$vst_ANPP_site, aes(year, woodProd_Mghayr)) +
+  geom_line() +
+  geom_point() +
+  geom_linerange(aes(ymin=woodProd_Mghayr-woodProdSD_Mghayr,
+                     ymax=woodProd_Mghayr+woodProdSD_Mghayr)) +
+  xlab("Year") +
+  ylab("ANPP (Mg per hectare per year)")
 gg
 
 ```
 
-The mortality rate was fairly high in 2016, but even higher in 2019, which 
-doesn't match the pattern in productivity. Let's calculate the biomass lost to 
-mortality in each year.
-
-```{r mortality-mass}
-
-mortality_mass <- prod$vst_ANPP_indiv |>
-  group_by(year, transitionStatus) |>
-  summarize(status_mass=sum(agb_kg, na.rm=T))
-
-mortality_mass_pct <- mortality_mass |>
-  tidyr::pivot_wider(names_from=transitionStatus,
-              values_from=status_mass)
-
-mortality_mass_pct <- mortality_mass_pct |>
-  mutate(mortality_mass_pct=100*mortality/sum(`NA`, 
-                                              noChange, 
-                                              recruitment, 
-                                              mortality,
-                                              na.rm=T),
-         recruitment_mass_pct=100*recruitment/sum(`NA`, 
-                                              noChange, 
-                                              recruitment, 
-                                              mortality,
-                                              na.rm=T))
+Now what?
 
 
-```
+
+
