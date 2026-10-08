@@ -179,7 +179,9 @@ vegai <- vegai |>
 ```
 
 The other duplicate records are shrubs, and we are focused on trees in this 
-tutorial, so those duplicates will not affect our analysis.
+tutorial, so those duplicates will not affect our analysis. Also note that NEON 
+staff work to identify and remove duplicates internally; the duplicates 
+identified here may be removed in future data releases.
 
 ## Estimate biomass
 
@@ -360,7 +362,7 @@ individual, plot, and site; and table of variable definitions. We also have
 tables for duplicates, flagged, and missing. These tables contain information 
 about possible data errors that may impact analyses. Details on each one:
 
-* `vst_ANPP_duplicates`: If there are duplicate records in the `vst_apparentindividual` table (i.e. more than one measurement of the same stem in the same year), the code will remove them and copy them to this table. Note that NEON staff work to identify and remove duplicates internally; if you see duplicates here they may be removed in future data releases.
+* `vst_ANPP_duplicates`: If there are duplicate records in the `vst_apparentindividual` table (i.e. more than one measurement of the same stem in the same year), the code will remove them and copy them to this table. The criteria for identifying duplicates here are more stringent than in the `removeDups()` function used above, and are specific to the tree growth form, which is why the two pairs of duplicates we see here weren't identified above.
 * `vst_ANPP_flagged`: There are a few scenarios that `estimateWoodProd()` will flag. (1) A tree is recorded as dead or not found in a sampling bout that is bracketed by sampling bouts where it is recorded as alive. In these cases we infer that it was alive at the intermediate point. (2) There is an implausibly large change in the mass of a tree from one measurement to the next, or (3) there is an implausibly large change in the stem diameter of a tree from one measurement to the next. The default behavior of `estimateWoodProd()` is to retain these records in the productivity calculation and copy all records relating to affected trees into this table for reference. To exclude records of type 2 and 3 from productivity calculations, add `flagged=filter` to the function call.
 * `vst_ANPP_missing`: Sometimes a given tree is measured in one or more sampling bouts and then never observed in the plot again, alive or dead. Records associated with trees affected by this issue are copied into this table. The default behavior of `estimateWoodProd()` is to exclude these trees from biomass calculations; to include the trees and assume they have died, add `missing=retain` to the function call.
 
@@ -381,7 +383,7 @@ gg
 
 Some ups and downs and some variability. Note that ANPP 
 in the first year is set to zero, because we can't evaluate productivity 
-without a prior biomass measurement (SHOULD IT BE LIKE THIS? NA?).
+without a prior biomass measurement (COURTNEY IS UPDATING THIS TO NA).
 
 Let's take a look at the plot level.
 
@@ -453,8 +455,159 @@ gg
 
 ```
 
-Now what?
+## Compare sites
 
+Now that we have a picture of how the functions work and how to understand the 
+outputs, let's take a look at the other two terrestrial sites in California, 
+Soaproot Saddle (SOAP) and Lower Teakettle (TEAK).
+
+Note that we could download these sites' data together, into a single set of 
+outputs, but since `estimateWoodProd()` can only process a single site at a 
+time, downloading each site separately will make the code steps easier.
+
+``` {r load-data-other, results="hide", message=FALSE}
+
+# CKL: UPDATE TO REMOVE LATEST FOR PUBLICATION
+
+vegsoap <- loadByProduct(dpID="DP1.10098.001", 
+                     site="SOAP", 
+                     include.provisional=T,
+                     release="LATEST",
+                     check.size=F,
+                     token=token)
+
+vegteak <- loadByProduct(dpID="DP1.10098.001", 
+                     site="TEAK", 
+                     include.provisional=T,
+                     release="LATEST",
+                     check.size=F,
+                     token=token)
+
+```
+
+Let's check the relevant tables for duplicates.
+
+``` {r remove-dups-sites}
+
+vegmapsoap <- removeDups(data=vegsoap$vst_mappingandtagging, 
+                         table="vst_mappingandtagging",
+                         variables=variables_10098)
+
+vegplotsoap <- removeDups(data=vegsoap$vst_perplotperyear, 
+                          table="vst_perplotperyear",
+                          variables=variables_10098)
+
+vegaisoap <- removeDups(data=vegsoap$vst_apparentindividual, 
+                        table="vst_apparentindividual",
+                        variables=variables_10098)
+
+vegmapteak <- removeDups(data=vegteak$vst_mappingandtagging, 
+                         table="vst_mappingandtagging",
+                         variables=variables_10098)
+
+vegplotteak <- removeDups(data=vegteak$vst_perplotperyear, 
+                          table="vst_perplotperyear",
+                          variables=variables_10098)
+
+vegaiteak <- removeDups(data=vegteak$vst_apparentindividual, 
+                        table="vst_apparentindividual",
+                        variables=variables_10098)
+
+```
+
+Again we see no duplicates in the plot or mapping data, but a few in the annual 
+measurements. Let's take a look.
+
+``` {r view-flag-values-sites, eval=FALSE}
+
+vegaisoap |>
+  filter(duplicateRecordQF!=0) |>
+  View()
+
+vegaiteak |>
+  filter(duplicateRecordQF!=0) |>
+  View()
+
+```
+
+Among the full-sized trees, there are two pairs of duplicates at SOAP and five 
+at TEAK.
+
+Code not shown, because this is a manual/visual process: we examine all the 
+records in `vst_apparentindividual` over the years for each of the affected 
+individuals, and conclude the records indicated below are inconsistent with 
+other records for the individual and should be dropped:
+
+``` {r drop-duplicates-sites, message=FALSE}
+
+vegaisoap <- vegaisoap |>
+  filter_out(individualID=="NEON.PLA.D17.SOAP.03218" &
+               growthForm=="multi-bole tree")
+
+vegaisoap <- vegaisoap |>
+  filter_out(individualID=="NEON.PLA.D17.SOAP.03510" &
+               plantStatus=="Downed")
+
+vegaiteak <- vegaiteak |>
+  filter_out(individualID %in% c("NEON.PLA.D17.TEAK.00324",
+                                 "NEON.PLA.D17.TEAK.01139",
+                                 "NEON.PLA.D17.TEAK.01558") &
+               plantStatus=="Standing dead")
+
+vegaiteak <- vegaiteak |>
+  filter_out(individualID=="NEON.PLA.D17.SOAP.01844" &
+               growthForm=="sapling")
+
+vegaiteak <- vegaiteak |>
+  filter_out(individualID=="NEON.PLA.D17.SOAP.03269" &
+               plantStatus=="Lost, presumed dead")
+
+```
+
+And now let's calculate biomass and production:
+
+``` {r biomass-sites}
+
+biosoap <- estimateWoodMass(inputIndividual=vegaisoap,
+                         inputMapTag=vegmapsoap,
+                         inputPerPlot=vegplotsoap,
+                         plotSubset="all",
+                         growthFormSubset="tree")
+
+bioteak <- estimateWoodMass(inputIndividual=vegaiteak,
+                         inputMapTag=vegmapteak,
+                         inputPerPlot=vegplotteak,
+                         plotSubset="all",
+                         growthFormSubset="tree")
+
+prodsoap <- estimateWoodProd(inputIndividual=vegaisoap,
+                         inputMapTag=vegmapsoap,
+                         inputPerPlot=vegplotsoap,
+                         plotSubset="all",
+                          flagged="filter")
+
+prodteak <- estimateWoodProd(inputIndividual=vegaiteak,
+                         inputMapTag=vegmapteak,
+                         inputPerPlot=vegplotteak,
+                         plotSubset="all",
+                          flagged="filter")
+
+```
+
+Although we processed them separately, let's stitch the sites together for 
+easier plotting.
+
+``` {r stack-tables}
+
+bioplots <- rbind(biom$vst_AGB_plot, 
+                  biosoap$vst_AGB_plot, 
+                  bioteak$vst_AGB_plot)
+
+prodsites <- rbind(prodf$vst_ANPP_site,
+                   prodsoap$vst_ANPP_site,
+                   prodteak$vst_ANPP_site)
+
+```
 
 
 
