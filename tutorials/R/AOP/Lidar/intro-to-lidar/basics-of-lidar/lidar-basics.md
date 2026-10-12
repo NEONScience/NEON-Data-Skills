@@ -132,23 +132,20 @@ modelling the understory of a canopy.
 
 ## LiDAR File Formats
 
-Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. A collection of discrete return LiDAR 
-points is known as a LiDAR point cloud.
+Whether it is collected as discrete points or full waveform, most often LiDAR data are available as discrete points. A collection of discrete return LiDAR points is known as a LiDAR point cloud.
 
-The commonly used file format to store LIDAR point cloud data is called ".las" which is a format supported by the American Society of Photogrammetry and Remote 
-Sensing (ASPRS). Recently, the <a href= "https://laszip.org" target="_blank"> .laz</a> format has been developed by Martin Isenberg of LasTools. The differences is that .laz is a highly compressed version of .las.
+The commonly used file format to store LiDAR point cloud data is called ".las" which is a format supported by the American Society of Photogrammetry and Remote 
+Sensing (ASPRS). The <a href= "https://laszip.org" target="_blank"> .laz</a> format was developed by Martin Isenberg of LAStools; where .laz is a highly compressed version of .las. NEON's <a href= "https://data.neonscience.org/data-products/DP1.30003.001" target="_blank">Discrete return LiDAR point cloud</a> data are delivered as .laz files.
 
 Data products derived from LiDAR point cloud data are often raster files that may be in GeoTIFF (.tif) formats. 
 
 ## LiDAR Data Attributes: X, Y, Z, Intensity and Classification
 
-LiDAR data attributes can vary, depending upon how the data were collected and processed. You can determine what attributes are available for each lidar point 
-by looking at the metadata. All lidar data points will have an associated X,Y location and Z (elevation) values. Most lidar data points will have an intensity value, representing the amount of light energy recorded by the sensor.
+LiDAR data attributes can vary, depending upon how the data were collected and processed. You can determine what attributes are available for each lidar point by looking at the metadata. All lidar data points will have an associated X,Y location and Z (elevation) values. Most lidar data points will have an intensity value, representing the amount of light energy recorded by the sensor.
 
 Some LiDAR data will also be "classified" -- not top secret, but with specifications about what the data represent. Classification of LiDAR point clouds is an additional processing step. Classification simply represents the type of object that the laser return reflected off of. So if the light energy reflected off of a tree, it might be classified as "vegetation" point. And if it reflected off of the ground, it might be classified as "ground" point.
 
-Some LiDAR products will be classified as "ground/non-ground". Some datasets will be further processed to determine which points reflected off of buildings 
-and other infrastructure. Some LiDAR data will be classified according to the vegetation type. 
+Some LiDAR products will be classified as "ground/non-ground". Some datasets will be further processed to determine which points reflected off of buildings and other infrastructure. Some LiDAR data will be classified according to the vegetation type. 
 
 
 ## Exploring 3D LiDAR data
