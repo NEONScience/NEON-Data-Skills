@@ -151,11 +151,9 @@ Some LiDAR products will be classified as "ground/non-ground". Some datasets wil
 and other infrastructure. Some LiDAR data will be classified according to the vegetation type. 
 
 
-## Exploring 3D LiDAR data in a free Online Viewer
+## Exploring 3D LiDAR data
 
-Check out our tutorial on viewing LiDAR point cloud data using the Plas.io online viewer: 
-<a href="https://www.neonscience.org/plasio-view-pointclouds" target="_blank"> *Plas.io: Free Online Data Viz to Explore LiDAR Data*</a>. 
-The Plas.io viewer used in this tutorial was developed by Martin Isenberg of Las Tools and his colleagues.
+To visualize LiDAR point cloud data you can use the free <a href="https://github.com/potree/potree" target="_blank">potree</a> software, or check out the tutorial <a href="https://www.neonscience.org/resources/learning-hub/tutorials/neon-discrete-point-clouds" target="_blank">Introduction to NEON Discrete Lidar Data in Python</a>.
 
 
 ## Summary

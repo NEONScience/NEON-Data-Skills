@@ -531,5 +531,4 @@ There are also a number of open-source tools for working with point-cloud data. 
 
 * <a href="https://rapidlasso.com/lastools/" target="_blank">LAStools</a>
 * <a href="https://pdal.io/en/stable/" target="_blank">PDAL (Point Data Abstraction Library)</a> 
-* <a href="https://plas.io/" target="_blank">plas.io (free, interactive, web-based point cloud visualization)</a> 
 * <a href="https://r-lidar.github.io/lidRbook/" target="_blank"> lidR (R package for point cloud data)</a>
