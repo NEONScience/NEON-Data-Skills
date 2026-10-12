@@ -169,7 +169,6 @@ To visualize LiDAR point cloud data you can use the free <a href="https://github
 
 ## Additional Resources
 
-*	What is the <a href="http://www.asprs.org/committee-general/laser-las-file-format-exchange-activities.html" target="_blank">LAS format?</a>
-*	Using .las with Python? <a href="http://laspy.readthedocs.org/en/latest/tut_background.html" target="_blank">las: python ingest</a>
-*	Specifications for <a href="http://www.asprs.org/a/society/committees/standards/asprs_las_spec_v13.pdf" target="_blank">las v1.3</a>
-
+*	What is the <a href="https://github.com/ASPRSorg/LAS" target="_blank">LAS format?</a>
+*	Using .las with Python? <a href="https://laspy.readthedocs.io/en/latest/" target="_blank">laspy</a>
+*	Using .las with R? <a href="https://github.com/r-lidar/rlas" target="_blank">rlas</a>
