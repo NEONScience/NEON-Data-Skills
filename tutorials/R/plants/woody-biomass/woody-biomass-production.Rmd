@@ -609,5 +609,38 @@ prodsites <- rbind(prodf$vst_ANPP_site,
 
 ```
 
+And let's take a look at biomass by plot for these three sites.
+
+```{r plot-bio-3}
+
+gg <- ggplot(bioplots, aes(year, agbLive_Mgha, 
+                           group=plotID,
+                           color=plotID)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~siteID) +
+  xlab("Year") +
+  ylab("Live wood mass (Mg per hectare)") +
+  theme(legend.position="none")
+gg
+
+```
+
+Let's see production by site for these three sites.
+
+```{r plot-prod-3}
+
+gg <- ggplot(prodsites, aes(year, woodProd_Mghayr)) +
+  geom_line() +
+  geom_point() +
+  geom_linerange(aes(ymin=woodProd_Mghayr-woodProdSD_Mghayr,
+                     ymax=woodProd_Mghayr+woodProdSD_Mghayr)) +
+  facet_wrap(~siteID) +
+  xlab("Year") +
+  ylab("ANPP (Mg per hectare per year)") +
+  theme(legend.position="none")
+gg
+
+```
 
 
